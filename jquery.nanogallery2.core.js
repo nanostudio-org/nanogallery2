@@ -1027,9 +1027,9 @@ fnThumbnailSelection : null,
       navigationFilterSelected:    '<i style="color:#fff;" class="nGY2Icon icon-toggle-on"></i>',
       navigationFilterUnselected:    '<i style="color:#aaa;" class="nGY2Icon icon-toggle-off"></i>',
       navigationFilterSelectedAll:    '<i class="nGY2Icon icon-toggle-on"></i><i class="nGY2Icon icon-ok"></i>',
-      thumbnailSelected:    '<i class="nGY2Icon icon-ok-circled"></i>',
-      thumbnailUnselected:    '<i class="nGY2Icon icon-circle-empty"></i>',
-      thumbnailFeatured:    '<i style="color:#ffa;" class="nGY2Icon icon-star"></i>',
+      thumbnailSelected:    '<i style="color:#bff;" class="nGY2Icon icon-ok-circled"></i>',
+      thumbnailUnselected:    '<i style="color:#bff;" class="nGY2Icon icon-circle-empty"></i>',
+      thumbnailFeatured:    '<i style="color:#ee9;" class="nGY2Icon icon-star"></i>',
       thumbnailCounter:    '<i class="nGY2Icon icon-picture"></i>',
       thumbnailShare:    '<i class="nGY2Icon icon-share"></i>',
       thumbnailDownload:    '<i class="nGY2Icon icon-download"></i>',
@@ -1264,7 +1264,7 @@ fnThumbnailSelection : null,
     // author: underscore.js - http://underscorejs.org/docs/underscore.html
     // Returns a function, that, when invoked, will only be triggered at most once during a given window of time.
     // Normally, the throttled function will run as much as it can, without ever going more than once per wait duration;
-    // but if you’d like to disable the execution on the leading edge, pass {leading: false}.
+    // but if youâ€™d like to disable the execution on the leading edge, pass {leading: false}.
     // To disable execution on the trailing edge, ditto.
     var throttle = function(func, wait, options) {
       var context, args, result;
@@ -1575,8 +1575,8 @@ fnThumbnailSelection : null,
       navigationBreadcrumb : { background: '#111', color: '#fff', colorHover: '#ccc', borderRadius: '6px' },
       navigationFilter : { color: '#ddd', background: '#111', colorSelected: '#fff', backgroundSelected: '#111', borderRadius: '6px' },
       thumbnail : { background: '#000', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#eee', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '' },
-      thumbnailIcon : { margin: '5px', color: '#fff', iconSelectedColor: '#bff', iconUnSelectedColor: '#bff', iconFeaturedColor: '#f00' },
-      pagination : { background: '#111', backgroundSelected: '#066', color: '#fff', borderRadius: '4px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
+      thumbnailIcon : { margin: '5px', color: '#fff' },
+      pagination : { background: '#111', backgroundSelected: '#666', color: '#fff', borderRadius: '4px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
     };
 
     G.colorScheme_light = {
@@ -1584,7 +1584,7 @@ fnThumbnailSelection : null,
       navigationBreadcrumb : { background: '#eee', color: '#000', colorHover: '#333', borderRadius: '6px' },
       navigationFilter : { background: '#eee', color: '#222', background: '#eee', colorSelected: '#000', backgroundSelected: '#eee', borderRadius: '6px' },
       thumbnail : { background: '#000', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#eee', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '' },
-      thumbnailIcon : { margin: '5px', color: '#fff', iconSelectedColor: '#bff', iconUnSelectedColor: '#bff', iconFeaturedColor: '#f00' },
+      thumbnailIcon : { margin: '5px', color: '#fff' },
       pagination : { background: '#eee', backgroundSelected: '#aaa', color: '#000', borderRadius: '4px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
     };
 
@@ -4508,7 +4508,8 @@ fnThumbnailSelection : null,
           break;
         // JSON, Flickr, Picasa, ...
         default:
-          jQuery.nanogallery2['data_'+G.O.kind](G, 'Init' );
+console.log(G.O.kind);
+        jQuery.nanogallery2['data_'+G.O.kind](G, 'Init' );
       }
 
     }
@@ -5088,9 +5089,6 @@ fnThumbnailSelection : null,
       s+=s1+'.nGY2GThumbnailIcons { margin:'+cs.thumbnailIcon.margin+'; }\n';
       s+=s1+'.nGY2GThumbnailIcon { color:'+cs.thumbnailIcon.color+'; }\n';
       s+=s1+'.nGY2GThumbnailIconTextBadge { background-color:'+cs.thumbnailIcon.color+'; }\n';
-      s+=s1+'.nGY2ThumbnailSelected:before { color:'+cs.thumbnailIcon.iconSelectedColor+'; }\n';
-      s+=s1+'.nGY2ThumbnailUnselected:before { color:'+cs.thumbnailIcon.iconUnSelectedColor+'; }\n';
-      s+=s1+'.nGY2GThumbnailIconImageFeatured:before { color:'+cs.thumbnailIcon.iconFeaturedColor+'; }\n';
       
       // gallery pagination -> dot/rectangle based
       if( G.O.galleryPaginationMode != 'NUMBERS' ) {
@@ -5201,7 +5199,7 @@ fnThumbnailSelection : null,
         };
       }
 
-      // requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
+      // requestAnimationFrame polyfill by Erik MÃ¶ller. fixes from Paul Irish and Tino Zijdel
       // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
       // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
       // MIT license
@@ -5419,7 +5417,7 @@ fnThumbnailSelection : null,
       var item=G.I[idx];
 
       var currentURL=document.location.protocol +'//'+document.location.hostname + document.location.pathname;
-      var newLocationHash='#nanogallery2/'+G.baseEltID+'/';
+      var newLocationHash='#nanogallery/'+G.baseEltID+'/';
       if( item.kind == 'image' ) {
         newLocationHash+=item.albumID + '/' + item.GetID();
       }
@@ -5477,7 +5475,7 @@ fnThumbnailSelection : null,
           case 'GOOGLE+':
             shareURL="https://plus.google.com/share?url="+currentURL;
             break;
-          case 'TWITER':
+          case 'TWITTER':
             // shareURL="https://twitter.com/share?url="+currentURL+"&text="+currentTitle;
             shareURL='https://twitter.com/intent/tweet?text='+currentTitle+'url='+ currentURL;
             break;
@@ -6886,8 +6884,6 @@ if( G.O.viewerDisplayLogo ) {
       }
       G.$E.base.text('');
 
-    
-    
       // RTL or LTR
       var sRTL='';
       if( G.O.RTL ) {
@@ -6907,11 +6903,11 @@ if( G.O.viewerDisplayLogo ) {
       }
 
       // Navigation bar
-      var style="";
+      var styleNavigation="";
       if( G.O.navigationFontSize != undefined && G.O.navigationFontSize != '' ) {
-        style=' style="font-size:'+G.O.navigationFontSize+';"';
+        styleNavigation=' style="font-size:'+G.O.navigationFontSize+';"';
       }      
-      G.$E.conNavigationBar=jQuery('<div class="nGY2Navigationbar" '+style+'></div>').appendTo(G.$E.base);
+      G.$E.conNavigationBar=jQuery('<div class="nGY2Navigationbar" '+styleNavigation+'></div>').appendTo(G.$E.base);
 
       // pre-loader
       G.$E.conLoadingB=jQuery('<div class="nanoGalleryLBarOff"><div></div><div></div><div></div><div></div><div></div></div>').appendTo(G.$E.base);
@@ -6932,14 +6928,14 @@ if( G.O.viewerDisplayLogo ) {
       }
 
       
-      //      G.$E.conTnParent[0].addEventListener('click', GalleryClicked, true);
-      G.$E.conTnParent.on({
+//      G.$E.conTnParent[0].addEventListener('click', GalleryClicked, true);
+//      G.$E.conTnParent.on({
 //        mouseenter: GalleryMouseEnter,
 //        mouseleave: GalleryMouseLeave
-      }, ".nGY2GThumbnail"); //pass the element as an argument to .on
+//      }, ".nGY2GThumbnail"); //pass the element as an argument to .on
       
       // Gallery bottom container
-      G.$E.conTnBottom=jQuery('<div class="nGY2GalleryBottom"></div>').appendTo(G.$E.conTnParent);
+      G.$E.conTnBottom=jQuery('<div class="nGY2GalleryBottom" '+styleNavigation+'></div>').appendTo(G.$E.conTnParent);
       
       // Error console
       G.$E.conConsole=jQuery('<div class="nGY2ConsoleParent"></div>').appendTo(G.$E.base);
@@ -7143,7 +7139,6 @@ if( G.O.viewerDisplayLogo ) {
     //---- Set a new browser location hash
     function SetLocationHash(albumID, imageID ) {
       if( !G.O.locationHash ) { return false; }
-
       if( albumID == '-1' || albumID == '0' ) {
         // root album level --> do not set top.location.hash if not already set
         if( location.hash != '' ) {
@@ -7159,7 +7154,7 @@ if( G.O.viewerDisplayLogo ) {
         return;
       }
       
-      var newLocationHash='nanogallery2/'+G.baseEltID+'/'+ albumID;
+      var newLocationHash='nanogallery/'+G.baseEltID+'/'+ albumID;
       if( imageID != '' ) {
         newLocationHash+='/'+imageID;
       }
@@ -7332,7 +7327,7 @@ console.log('handleGestureStart4');
         if( G.O.paginationSwipe && G.layout.support.rows && G.galleryDisplayMode.Get() == 'PAGINATION' ) {
           // swipe pagination
         
-//G.galleryMaxRows.Get() a mettre à 0
+//G.galleryMaxRows.Get() a mettre Ã  0
         
           var differenceInY = initialTouchPos.y - lastTouchPosition.y;
           var differenceInX = initialTouchPos.x - lastTouchPosition.x;
