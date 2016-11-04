@@ -82,6 +82,30 @@
     flex:1 0 auto;
 }
 
+
+
+
+    /* Responsive SVG LOGO */
+    .svg-container {
+      display: inline-block;
+      position: relative;
+      width: 100%;
+      max-width: 450px;
+      /*padding-bottom: 100%;*/
+      vertical-align: middle;
+      overflow: hidden;
+    }
+    svg-content {
+      display: inline-block;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+
+
+
+
     </style>
   
 </head>
@@ -133,7 +157,14 @@
       <div class="row" >
         <br><br><br><br>
         <div class="col-md-12 text-center">
-          <a href="http://ngy2.brisbois.fr/" rel="home" title="nanogallery2"><img src="logo/nanogallery2.svg" alt="nanoGALLERY2" style="width:400px;padding:0px 15px;"></a>
+        <!--
+          <a href="http://ngy2.brisbois.fr/" rel="home" title="nanogallery2"><img src="logo/nanogallery2.svg" alt="nanoGALLERY2" style="width:350px;padding:0px 15px;"></a>
+        -->
+          <div class="svg-container">
+            <object type="image/svg+xml" data="logo/nanogallery2.svg" width="100%" height="100%" class="svg-content"></object>
+          </div>
+
+
           <h4 style="color:#eee;">beautiful javascript image gallery for your website</h4>
         </div>
       </div>
@@ -398,8 +429,8 @@
         userID: '111186676244625461692',
         blackList: 'forhomepage|scrapbook|profil',
         thumbnailDisplayTransition: 'slideDown',
-        thumbnailHeight: 200, thumbnailWidth: 'auto',
-        thumbnailL1Height: 200, thumbnailL1Width: 300,
+        thumbnailHeight: '200 XS100 SM150', thumbnailWidth: 'auto',
+        thumbnailL1Height: '200 XS100 SM150', thumbnailL1Width: '300 XS150 SM225',
         galleryL1DisplayMode: 'pagination',
         galleryDisplayMode: 'rows',
         galleryPaginationMode: 'rectangles',
