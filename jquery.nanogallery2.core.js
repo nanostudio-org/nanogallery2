@@ -954,7 +954,7 @@ allowHTMLinData: false,
       align: 'center',
       autoMinimize:0,
       standard:'minimizeButton,label',
-      minimized:'minimizeButton,infoButton,downloadButton,linkOriginalButton,label'
+      minimized:'minimizeButton,infoButton,downloadButton,linkOriginalButton,label,closeButton'
       // minimized:'minimizeButton,label'
     },
 // NEW
@@ -5413,6 +5413,8 @@ console.log(G.O.kind);
     function PopupShare(idx) {
     
       // SEE SAMPLES: https://gist.github.com/chrisjlee/5196139
+    // https://github.com/Julienh/Sharrre
+    
     
       var item=G.I[idx];
 
@@ -5431,10 +5433,11 @@ console.log(G.O.kind);
       content+='<div class="nGY2PopupOneItem" style="text-align:center;">Tumblr</div>';
       content+='<div class="nGY2PopupOneItem" style="text-align:center;">Twitter</div>';
       content+='<div class="nGY2PopupOneItem" style="text-align:center;">Google+</div>';
+      content+='<div class="nGY2PopupOneItem" style="text-align:center;"></div>';
       content+='<input class="nGY2PopupOneItem" readonly type="text" value="'+currentURL+newLocationHash+'" style="width:100%;text-align:center;">';
       content+='<br>';
 
-      currentURL=document.location.protocol +'//'+encodeURIComponent(document.location.hostname + document.location.pathname + newLocationHash);
+      currentURL=encodeURIComponent(document.location.protocol +'//'+document.location.hostname + document.location.pathname + newLocationHash);
 
       var currentTitle=item.title;
       var currentTn=item.thumbImg().src;
@@ -5474,6 +5477,7 @@ console.log(G.O.kind);
             break;
           case 'GOOGLE+':
             shareURL="https://plus.google.com/share?url="+currentURL;
+https://plus.google.com/share?url=https%3A%2F%2Fsachinchoolur.github.io%2FlightGallery%2Fdemos%2Fshare.html%23lg%3D1%26slide%3D1
             break;
           case 'TWITTER':
             // shareURL="https://twitter.com/share?url="+currentURL+"&text="+currentTitle;
@@ -6347,7 +6351,7 @@ if( G.O.viewerDisplayLogo ) {
       }
       else {
         G.$E.vwImgC[0].style[G.CSStransformName]= 'translateX('+posX+'px)';
-        if(  G.O.imageTransition == 'slide' ) {
+        if(  G.O.imageTransition == 'swipe' ) {
           if( posX > 0 ) {
             var $new=G.$E.vwImgP;
             var dir=getViewport().w;
@@ -6583,7 +6587,7 @@ if( G.O.viewerDisplayLogo ) {
       G.$E.vwImgP.css({ opacity:0, left:0, visibility:'hidden'}).attr('src','');
       G.$E.vwImgP.attr('src',G.emptyGif).attr('src',G.VOM.Item(GetPreviousImageIdx(vomIdx)).responsiveURL());
 
-// slideshow mode - wait until image is loaded to start the delay for next image
+      // slideshow mode - wait until image is loaded to start the delay for next image
       var item=G.VOM.Item(G.VOM.currItemIdx);
       if( G.VOM.playSlideshow || item.imageHeight == 0 || item.imageWidth == 0) {
         G.$E.vwImgC.ngimagesLoaded().always( function( instance ) {
