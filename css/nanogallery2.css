@@ -707,16 +707,16 @@
 }
 
 .nGY2 .nGY2ViewerAreaPrevious {
-	color: #ddd;
+	color: #eee;
 	display:block;
 	position:absolute;
-	/* Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px; */
-	background: rgba(0,0,0,0.2);
+	Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px; 
+	/*background: rgba(0,0,0,0.2);*/
 	font-size:1.5em;
 	top: 50%;
 	/*height:20px;*/
 	/*width:20px;*/
-	padding:10px 0px 10px 5px;
+	padding:10px 0px 10px 1px;
 	margin-top:-25px;
 	left:0px;
 	text-align: left;
@@ -733,16 +733,16 @@
 }
 
 .nGY2 .nGY2ViewerAreaNext {
-	color: #ddd; 
+	color: #eee; 
 	display:block;
 	position:absolute;
-	/* Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px; */
-	background: rgba(0,0,0,0.2);
+	Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px;
+	/*background: rgba(0,0,0,0.2);*/
 	font-size:1.5em;
 	top: 50%;
 	/*height:20px;*/
 	/*width:20px;*/
-	padding:10px 5px 10px 0px;
+	padding:10px 1px 10px 0px;
 	margin-top:-25px;
 	right:0px;
 	text-align: right;
@@ -775,7 +775,7 @@
 	vertical-align:middle;
 	overflow:hidden;
   color:#;
-  padding:2px 10px;
+  padding:2px 0px;
 	margin: 1px;
 	box-sizing: content-box;
 	-webkit-box-sizing: content-box;
@@ -792,7 +792,6 @@
 	background: rgba(0,0,0,0.2);
 	left:0px;
 	top:0px;
-	padding: 5px;
 	position:absolute;
 	/*Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px;*/
 	opacity:1;
@@ -807,7 +806,6 @@
 	background: rgba(0,0,0,0.2);
 	right:0px;
 	top:0px;
-	padding: 5px;
 	position:absolute;
 	/* Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px;*/
 	opacity:1;
@@ -822,7 +820,7 @@
   font-size:1.5em;
 	display: table-cell;
 	cursor:pointer;
-	padding: 2px 10px;
+	padding: 2px 5px;
 	vertical-align:middle;
 	box-sizing: content-box;
 	-webkit-box-sizing: content-box;
