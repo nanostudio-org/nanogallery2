@@ -19,6 +19,10 @@
 <script> TouchEmulator(); </script>
 -->
 
+<!--
+	<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+-->
+
   <!-- BOOTSTRAP -->
   <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <script src="bootstrap/js/bootstrap.min.js"></script>
@@ -26,14 +30,14 @@
 
   <!-- #################################################################################################################### -->
   <!-- nanogallery2 CSS files                                                                                               -->
-	<link href="../css/nanogallery2.css" rel="stylesheet" type="text/css">
+	<link href="./css/nanogallery2.css" rel="stylesheet" type="text/css">
   <!-- #################################################################################################################### -->
 
   <!-- #################################################################################################################### -->
 	<!-- nanogallery2 javascript                                                                                              -->
-	<script type="text/javascript" src="../jquery.nanogallery2.core.js"></script>
-	<script type="text/javascript" src="../jquery.nanogallery2.data_google.js"></script>
-	<script type="text/javascript" src="../jquery.nanogallery2.data_flickr.js"></script>
+	<script type="text/javascript" src="./jquery.nanogallery2.core.js"></script>
+	<script type="text/javascript" src="./jquery.nanogallery2.data_google.js"></script>
+	<script type="text/javascript" src="./jquery.nanogallery2.data_flickr.js"></script>
 	<!-- 
   <script type="text/javascript" src="jquery.nanogallery2.builder.js"></script>
   -->
@@ -73,17 +77,6 @@
     .ngy2color4  {
       color: #CFF19A;
     }
-.flex, .flex > div[class*='col-'] {  
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    flex:1 0 auto;
-}
-
-
-
 
     /* Responsive SVG LOGO */
     .svg-container {
@@ -101,10 +94,6 @@
       top: 0;
       left: 0;
     }
-
-
-
-
 
     </style>
   
@@ -157,14 +146,9 @@
       <div class="row" >
         <br><br><br><br>
         <div class="col-md-12 text-center">
-        <!--
-          <a href="http://ngy2.brisbois.fr/" rel="home" title="nanogallery2"><img src="logo/nanogallery2.svg" alt="nanoGALLERY2" style="width:350px;padding:0px 15px;"></a>
-        -->
           <div class="svg-container">
             <object type="image/svg+xml" data="logo/nanogallery2.svg" width="100%" height="100%" class="svg-content"></object>
           </div>
-
-
           <h4 style="color:#eee;">beautiful javascript image gallery for your website</h4>
         </div>
       </div>
@@ -270,6 +254,7 @@
       <div class="col-md-8" >
         <br><br><br><br><br>
         <h3><b>nanogallery2</b> creates beautiful and high quality photo galleries</h3>
+        <br><br>
         nanogallery2 is focused on performance and on providing the best experience to user with any device.<br>
         Galleries are highly customizable: choose between justified, grid or cascading layout and style it to suit your personnal needs.
         <br><br>
@@ -321,8 +306,8 @@
       <div class="col-md-2" ></div>
       <div class="col-md-8" >
         <h2>Licensing</h2>
-        
-        <p>nanogallery2 is licensed under <a href="https://creativecommons.org/licenses/by-nc/3.0/" target="_blank">CC BY-NC 3.0.</a> <font color="#d00"><b>nanogallery2 may be used in commercial projects and applications, or in business environments with the purchase of a professional license (website license or OEM license).</b></font></p>
+        <br>
+        <p class="lead">nanogallery2 is licensed under <a href="https://creativecommons.org/licenses/by-nc/3.0/" target="_blank">CC BY-NC 3.0.</a> <font color="#d00"><b>nanogallery2 may be used in commercial projects and applications, or in business environments with the purchase of a professional license (website license or OEM license).</b></font></p>
         <br>
         <h3>Open source license</h3>
         <p>For personal, non-profit organizations, or open source projects (without any kind of fee), you may use nanogallery2 for free. If fees are associated to the use of nanogallery2, your project is not eligible to this license.
@@ -346,7 +331,7 @@
           </div>
           <div class = "panel-body">
             professional license to use nanogallery2 on ONE of your website (unlimited number of instances).<br><br><br>
-            <a href="." class="btn btn-primary btn-lg" ><i class="fa fa-cart-plus" aria-hidden="true"></i> &nbsp; 25â‚¬</a>
+            <a href="." class="btn btn-primary btn-lg" ><i class="fa fa-cart-plus" aria-hidden="true"></i> &nbsp; 25€</a>
           </div>
         </div>
       </div>
@@ -357,7 +342,7 @@
           </div>
           <div class = "panel-body">
             professional license to include nanogallery2 in your own non-free applications and products, or for an unlimited number of websites.<br><br>
-            <a href="." class="btn btn-primary btn-lg"><i class="fa fa-cart-plus" aria-hidden="true"></i> &nbsp; 90â‚¬</a>
+            <a href="." class="btn btn-primary btn-lg"><i class="fa fa-cart-plus" aria-hidden="true"></i> &nbsp; 90€</a>
           </div>
         </div>
       </div>
@@ -389,7 +374,7 @@
 
     <div class="row text-center">
       <div class="col-md-2" ></div>
-      <div class="col-md-8" >
+      <div class="col-md-8 lead" >
         <h2>Support</h2>
         <br>Need help using nanogallery2?
       </div>
@@ -397,9 +382,18 @@
     </div>
     <br><br><br>
     <div class="row">
-      <div class="col-md-12 text-center">
-        <a href="documentation.html" class="btn btn-primary btn-lg" ><i class="fa fa-book fa-2x" aria-hidden="true"></i><br>documentation</a>
-        <a href="https://github.com/Kris-B/nanogallery2" class="btn btn-primary btn-lg" target="_blank"><i class="fa fa-github fa-2x" aria-hidden="true"></i><br>github issues</a>
+      <div class="col-md-1 text-center">
+      </div>
+      <div class="col-md-3 text-center">
+        <a href="documentation.html" class="lead"><img src="img/documentation.png" style="height:50px;"><br><br>read the documentation</a>
+      </div>
+      <div class="col-md-3 text-center">
+        <a href="https://github.com/nanostudio-org/nanogallery2/issues" class="lead" target="_blank"><img src="img/github.png" style="height:50px;"><br><br>report bugs on GitHub issues</a>
+      </div>
+      <div class="col-md-3 text-center">
+        <a href="http://stackoverflow.com/questions/ask?tags=nanogallery2" class="lead" target="_blank"><img src="img/stackoverflow.png" style="height:50px;"><br><br>ask your technical question on StackOverflow</a>
+      </div>
+      <div class="col-md-2 text-center">
       </div>
     </div>
     
@@ -441,7 +435,7 @@
         //thumbnailL1HoverEffect2: 'labelAppear',
         //thumbnailHoverEffect2: 'label_font-size_1em_2em|title_color_#ffffff_#B2E16A|label_bottom_0px_15px|toolsAppear|image_grayscale_0%_100%|image_scale_100_110_5000',
         //thumbnailHoverEffect2: 'label_font-size_1em_2em|title_backgroundColor_rgba(255,255,255,0.34)_rgba((115,166,35,0.6)|title_color_#000_#fff|label_bottom_0px_15px|toolsAppear|image_grayscale_0%_100%_500|image_scale_100_110_5000',
-        thumbnailHoverEffect2: 'label_font-size_1em_2em|title_backgroundColor_rgba(255,255,255,0.34)_rgba((115,166,35,0.6)|title_color_#000_#fff|toolsAppear|image_grayscale_0%_100%_500|image_scale_100_110_5000',
+        thumbnailHoverEffect2: 'label_font-size_1em_2em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((84,132,12,0.8)|title_color_#000_#fff|toolsAppear|image_grayscale_0%_100%_500|image_scale_100_110_5000',
 
         thumbnailToolbarImage : { topLeft: 'select', topRight : 'share,featured,download' },
 
@@ -597,9 +591,11 @@
   
 </body>
 
-<footer class="footer">
-  <div class="container">
-    nanogallery2 by <a class="grey-text text-lighten-4" href="http://brisbois.fr">Christophe Brisbois</a>
+<footer class="footer text-center lead" style="background-color:#54840C;">
+  <div class="container" style="color:#fff;">
+    <br>
+    nanogallery2 by <a style="color:#fff;" href="http://nanostudio.org">nanostudio.org</a>
+    <br><br>
   </div>
 </footer>
 
