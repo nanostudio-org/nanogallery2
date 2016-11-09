@@ -169,8 +169,42 @@
             }
             newItem.src=src;    // image's URL
 
+            // image size
             newItem.imageWidth=parseInt(data.gphoto$width.$t);
             newItem.imageHeight=parseInt(data.gphoto$height.$t);
+
+            if( data.media$group != null && data.media$group.media$credit != null && data.media$group.media$credit.length > 0 ) {
+              newItem.author=data.media$group.media$credit[0].$t;
+            }
+
+            
+            // exif data
+            if( data.exif$tags.exif$exposure != undefined ) {
+              newItem.exif.exposure= data.exif$tags.exif$exposure.$t;
+            }
+            if( data.exif$tags.exif$flash != undefined ) {
+              if( data.exif$tags.exif$flash.$t == 'true' ) {
+                newItem.exif.flash= 'flash';
+              }
+            }
+            if( data.exif$tags.exif$focallength != undefined ) {
+              newItem.exif.focallength= data.exif$tags.exif$focallength.$t;
+            }
+            if( data.exif$tags.exif$fstop != undefined ) {
+              newItem.exif.fstop= data.exif$tags.exif$fstop.$t;
+            }
+            if( data.exif$tags.exif$iso != undefined ) {
+              newItem.exif.iso= data.exif$tags.exif$iso.$t;
+            }
+            if( data.exif$tags.exif$model != undefined ) {
+              newItem.exif.model= data.exif$tags.exif$model.$t;
+            }
+            
+            // geo location
+            if( data.gphoto$location != undefined ) {
+              newItem.exif.location= data.gphoto$location;
+            }
+            
           }
           else {
             newItem.author=data.author[0].name.$t;

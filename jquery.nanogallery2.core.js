@@ -289,6 +289,7 @@ Now supports multiple GooglePlus (ex Picasa) private albums.
             this.tags = [];                 // list of tags of the current item
             this.albumTagList = [];         // list of all the tags of the items contained in the current album
             this.albumTagListSel = [];      // list of currently selected tags
+            this.exif= {exposure:'', flash:'', focallength:'', fstop:'', iso: '', model: '', time:'', location:''};
           }
 
           // public static
@@ -937,7 +938,7 @@ allowHTMLinData: false,
 
     viewer : 'internal',
     viewerFullscreen: false,
-    viewerDisplayLogo : false,
+    viewerDisplayLogo : true,
     fancyBoxOptions : null,
     imageTransition : 'swipe',
     viewerZoom : true,
@@ -954,12 +955,12 @@ allowHTMLinData: false,
       align: 'center',
       autoMinimize:0,
       standard:'minimizeButton,label',
-      minimized:'minimizeButton,infoButton,downloadButton,linkOriginalButton,label,closeButton'
+      minimized:'minimizeButton,infoButton,downloadButton,linkOriginalButton,label,fullscreenButton,closeButton'
       // minimized:'minimizeButton,label'
     },
 // NEW
     viewerTools : {
-      topLeft: 'pageCounter,playPauseButton', topRight:'zoomButton,fullscreenButton,shareButton,closeButton' 
+      topLeft: 'pageCounter,playPauseButton', topRight:'zoomButton,shareButton,closeButton' 
     },
 // NEW
 thumbnailLevelUp : false,
@@ -1029,7 +1030,7 @@ fnThumbnailSelection : null,
       navigationFilterSelectedAll:    '<i class="nGY2Icon icon-toggle-on"></i><i class="nGY2Icon icon-ok"></i>',
       thumbnailSelected:    '<i style="color:#bff;" class="nGY2Icon icon-ok-circled"></i>',
       thumbnailUnselected:    '<i style="color:#bff;" class="nGY2Icon icon-circle-empty"></i>',
-      thumbnailFeatured:    '<i style="color:#ee9;" class="nGY2Icon icon-star"></i>',
+      thumbnailFeatured:    '<i style="color:#dd5;" class="nGY2Icon icon-star"></i>',
       thumbnailCounter:    '<i class="nGY2Icon icon-picture"></i>',
       thumbnailShare:    '<i class="nGY2Icon icon-share"></i>',
       thumbnailDownload:    '<i class="nGY2Icon icon-download"></i>',
@@ -1053,6 +1054,19 @@ fnThumbnailSelection : null,
       viewerLinkOriginal:    '<i class="nGY2Icon icon-link-ext"></i>',
       viewerInfo:    '<i class="nGY2Icon icon-info"></i>',
       viewerShare:    '<i class="nGY2Icon icon-share"></i>',
+      user:    '<i class="nGY2Icon icon-user"></i>',
+      location:    '<i class="nGY2Icon icon-location"></i>',
+      config:    '<i class="nGY2Icon icon-wrench"></i>',
+      viewerCustomTool1:    'T1',
+      viewerCustomTool2:    'T2',
+      viewerCustomTool3:    'T3',
+      viewerCustomTool4:    'T4',
+      viewerCustomTool5:    'T5',
+      viewerCustomTool6:    'T6',
+      viewerCustomTool7:    'T7',
+      viewerCustomTool8:    'T8',
+      viewerCustomTool9:    'T9',
+      viewerCustomTool10:    'T10',
     }
   };
 
@@ -1264,7 +1278,7 @@ fnThumbnailSelection : null,
     // author: underscore.js - http://underscorejs.org/docs/underscore.html
     // Returns a function, that, when invoked, will only be triggered at most once during a given window of time.
     // Normally, the throttled function will run as much as it can, without ever going more than once per wait duration;
-    // but if youâ€™d like to disable the execution on the leading edge, pass {leading: false}.
+    // but if you’d like to disable the execution on the leading edge, pass {leading: false}.
     // To disable execution on the trailing edge, ditto.
     var throttle = function(func, wait, options) {
       var context, args, result;
@@ -1313,9 +1327,10 @@ fnThumbnailSelection : null,
       conConsole: null,       // console for error messages
       conNavigationBar: null, // gallery navigation bar
       conTnBottom: null,      // container on the bottom of the gallery
-      conVwCon: null,
-      conVw: null,
-      vwContent: null,
+      conVwCon: null,         // viewer container
+      conVw: null,            // viewer
+      conVwTb: null,          // viewer toolbar
+      vwContent: null,        // viewer content
       vwImgP: null,           // viewer - previous image
       vwImgC: null,           // viewer - current image
       vwImgN: null            // viewer - next image
@@ -1538,24 +1553,25 @@ fnThumbnailSelection : null,
     //------------------------
     //--- Viewer Object Model
     G.VOM = {
-      viewerDisplayed: false,   // is the viewer currently displayed
-      viewerIsFullscreen: false,
+      viewerDisplayed: false,     // is the viewer currently displayed
+      viewerIsFullscreen: false,  // viewer in fullscreen mode
+      infoDisplayed: false,       // is the info box displayed
       currentZoom: 1,
       isZooming: false,
-      padding: { H:0, V:0 },    // padding for the image
+      padding: { H:0, V:0 },      // padding for the image
       window: { lastWidth:0, lastHeight:0 },
-      toolbarMode: 'std',       // current toolbar mode (standard, minimized)
-      playSlideshow : false,    // slide show mode status
-      playSlideshowTimerID: 0,  // slideshow mode time
-      slideshowDelay: 3000,     // slideshow mode - delay before next image
+      toolbarMode: 'std',         // current toolbar mode (standard, minimized)
+      playSlideshow : false,      // slide show mode status
+      playSlideshowTimerID: 0,    // slideshow mode time
+      slideshowDelay: 3000,       // slideshow mode - delay before next image
       albumID: -1,
       currItemIdx: -1,
-      viewerImageIsChanged: false,  // image is currently modified
-      items: [],                // current list of images to be managed by the viewer
+      viewerImageIsChanged: false,  // image display is currently modified
+      items: [],                    // current list of images to be managed by the viewer
       Item: function(idx) {
         return G.I[this.items[idx].imageIdx];
       },
-      userEvents: null,         // user events management
+      userEvents: null,             // user events management
       hammertime: null,
       swipePosX: 0,
       panPosX: 0,
@@ -1568,6 +1584,38 @@ fnThumbnailSelection : null,
       this.imageIdx = index;
       this.imageNumber = 0;
     }
+    
+    //------------------------
+    //--- popup
+    G.popup = {
+      isDisplayed: false,
+      $elt: null,
+      close: function() {
+        if( this.$elt != null ) {
+          var tweenable = new NGTweenable();
+          tweenable.tween({
+            from:       { opacity:1  },
+            to:         { opacity:0 },
+            attachment: { t: this },
+            easing:     'easeInOutSine',
+            duration:   100,
+            step: function (state, att) {
+              if( att.t.$elt != null ) {
+                att.t.$elt.css('opacity',state.opacity);
+              }
+            },
+            finish: function (state, att) {
+              if( att.t.$elt != null ) {
+                att.t.$elt.remove();
+                att.t.$elt=null;
+              }
+              att.t.isDisplayed=false;
+            }
+          });
+        }
+      }
+    }
+    
     
     // Color schemes - Gallery
     G.colorScheme_dark = {
@@ -5199,7 +5247,7 @@ console.log(G.O.kind);
         };
       }
 
-      // requestAnimationFrame polyfill by Erik MÃ¶ller. fixes from Paul Irish and Tino Zijdel
+      // requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
       // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
       // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
       // MIT license
@@ -5413,7 +5461,7 @@ console.log(G.O.kind);
     function PopupShare(idx) {
     
       // SEE SAMPLES: https://gist.github.com/chrisjlee/5196139
-    // https://github.com/Julienh/Sharrre
+      // https://github.com/Julienh/Sharrre
     
     
       var item=G.I[idx];
@@ -5443,27 +5491,9 @@ console.log(G.O.kind);
       var currentTn=item.thumbImg().src;
       
       
-      var $popup=Popup('Share to:', content);
-      $popup.find('.nGY2PopupCloseButton').on('click', function(e) {
-        e.stopPropagation();
-        var tweenable = new NGTweenable();
-        tweenable.tween({
-          from:       { opacity:1  },
-          to:         { opacity:0 },
-          attachment: { $e:$popup },
-          easing: 'easeInOutSine',
-          duration: 100,
-          step: function (state, att) {
-            att.$e.css('opacity',state.opacity);
-          },
-          finish: function (state, att) {
-            att.$e.css('opacity',0);
-            att.$e.remove();
-          }
-        });
-      });
+      Popup('Share to:', content);
       
-      $popup.find('.nGY2PopupOneItem').on('click', function(e) {
+      G.popup.$elt.find('.nGY2PopupOneItem').on('click', function(e) {
         e.stopPropagation();
         var dest=jQuery(this).text();
 
@@ -5477,7 +5507,6 @@ console.log(G.O.kind);
             break;
           case 'GOOGLE+':
             shareURL="https://plus.google.com/share?url="+currentURL;
-https://plus.google.com/share?url=https%3A%2F%2Fsachinchoolur.github.io%2FlightGallery%2Fdemos%2Fshare.html%23lg%3D1%26slide%3D1
             break;
           case 'TWITTER':
             // shareURL="https://twitter.com/share?url="+currentURL+"&text="+currentTitle;
@@ -5498,7 +5527,8 @@ https://plus.google.com/share?url=https%3A%2F%2Fsachinchoolur.github.io%2FlightG
         
         if( found ) {
           window.open(shareURL,"","height=550,width=500,left=100,top=100,menubar=0");
-          $popup.remove();
+          G.popup.close();
+          // $popup.remove();
         }
         
       });
@@ -5512,25 +5542,29 @@ https://plus.google.com/share?url=https%3A%2F%2Fsachinchoolur.github.io%2FlightG
       pp+=content;
       pp+='</div></div>';
       
-      var $elt=jQuery(pp).appendTo('body');
-      setElementOnTop( G.$E.conVw, $elt);
+      G.popup.$elt=jQuery(pp).appendTo('body');
+      setElementOnTop( G.$E.conVw, G.popup.$elt);
+      
+      G.popup.isDisplayed=true;
       
       var tweenable = new NGTweenable();
       tweenable.tween({
         from:       { opacity:0  },
         to:         { opacity:1 },
-        attachment: { $e:$elt },
         easing: 'easeInOutSine',
         duration: 180,
         step: function (state, att) {
-          att.$e.css('opacity',state.opacity);
+          G.popup.$elt.css('opacity',state.opacity);
         },
         finish: function (state, att) {
-          att.$e.css('opacity',1);
+          G.popup.$elt.css('opacity',1);
         }
       });
       
-      return $elt;
+      G.popup.$elt.find('.nGY2PopupCloseButton').on('click', function(e) {
+        e.stopPropagation();
+        G.popup.close();
+      });
       
     }
 
@@ -5763,6 +5797,7 @@ https://plus.google.com/share?url=https%3A%2F%2Fsachinchoolur.github.io%2FlightG
         ToolbarVisibilityStd();
       }
       
+      // top-left toolbar
       if( G.O.viewerTools.topLeft != '' ) {
         var sTopLeft='<div class="nGY2ViewerToolsTopLeft nGEvent"><div class="toolbar nGEvent">';
         var sTL = G.O.viewerTools.topLeft.split(',');
@@ -5772,6 +5807,7 @@ https://plus.google.com/share?url=https%3A%2F%2Fsachinchoolur.github.io%2FlightG
         sTopLeft+='</div></div>';
         G.$E.conVwTbTL=jQuery(sTopLeft).appendTo(G.$E.conVw);
       }
+      // top-right toolbar
       if( G.O.viewerTools.topRight != '' ) {
         var sTopRight='<div class="nGY2ViewerToolsTopRight nGEvent"><div class="toolbar nGEvent">';
         var sTR = G.O.viewerTools.topRight.split(',');
@@ -5788,43 +5824,21 @@ https://plus.google.com/share?url=https%3A%2F%2Fsachinchoolur.github.io%2FlightG
         ngscreenfull.request();
       }
 
-
-if( G.O.viewerDisplayLogo ) {
-  // G.$E.vwLogo=jQuery('<div class="nanoLogo"></div>').appendTo(G.$E.conVw);
-}
+      // display logo
+      if( G.O.viewerDisplayLogo ) {
+        G.$E.vwLogo=jQuery('<div class="nGY2 nGY2ViewerLogo"></div>').appendTo(G.$E.conVw);
+      }
 
       setElementOnTop('',G.$E.conVw);
       ResizeInternalViewer(true);
 
       G.VOM.timeImgChanged=new Date().getTime();
       
-
-      // custom button click
-      // G.$E.conVwTb.find('.ngCustomBtn').on("touchstart click",function(e){
-
-        // e.stopPropagation();
-        // if( typeof G.O.fnImgToolbarCustClick == 'function' ) {
-          // var target = e.target || e.srcElement;
-          // while( target == null || target.getAttribute('class') == null || target.getAttribute('class').indexOf('ngCustomBtn') == -1 ) {       // go element parent up to find the custom element
-            // target = target.parentNode;
-          // }
-          // var v=target.getAttribute('class');
-          // if( v.indexOf('ngCustomBtn') >=0 ) {
-            // var vs=v.split(' ');
-            // for( var i=0, l=vs.length; i<l; i++) {
-              // if( vs[i].indexOf('custom') == 0 ) {
-                // G.O.fnImgToolbarCustClick(vs[i], jQuery(target), G.VOM.Item(G.VOM.currItemIdx), ExposedObjects())
-              // }
-            // }
-          // }
-        // }
-      // });
-      
-      
       // action button
       G.$E.conVw.find('.ngy2viewerToolAction').on("touchstart click",function(e){ 
         var $this=$(this);
-        switch( $this.data('ngy2action') ) {
+        var ngy2action=$this.data('ngy2action');
+        switch( ngy2action ) {
           case 'next':
             e.stopPropagation();
             DisplayNextImage();
@@ -5872,9 +5886,10 @@ if( G.O.viewerDisplayLogo ) {
             break;
           case 'info':
             e.stopPropagation();
-            if( typeof G.O.fnViewerInfo == 'function' ) {
-              G.O.fnViewerInfo(G.VOM.Item(G.VOM.currItemIdx), ExposedObjects());
-            }
+            // if( typeof G.O.fnViewerInfo == 'function' ) {
+              // G.O.fnViewerInfo(G.VOM.Item(G.VOM.currItemIdx), ExposedObjects());
+            // }
+            ViewerInfoSet();
             break;
           case 'close':
             e.stopPropagation();
@@ -5888,6 +5903,11 @@ if( G.O.viewerDisplayLogo ) {
             DownloadImage(G.VOM.items[G.VOM.currItemIdx].imageIdx);
             break;
           case 'share':
+            e.stopPropagation();
+            e.preventDefault();
+            PopupShare(G.VOM.items[G.VOM.currItemIdx].imageIdx);
+            break;
+          case 'custom':
             e.stopPropagation();
             e.preventDefault();
             PopupShare(G.VOM.items[G.VOM.currItemIdx].imageIdx);
@@ -5907,6 +5927,13 @@ if( G.O.viewerDisplayLogo ) {
             }
             break;
         }
+        
+        // custom button
+        if( ngy2action.indexOf('custom') == 0  && typeof G.O.fnImgToolbarCustClick == 'function') {
+          var n=ngy2action.substring(6);
+          G.O.fnImgToolbarCustClick(ngy2action, $this, G.VOM.Item(G.VOM.currItemIdx));
+        }
+        
       });
       
       
@@ -5996,7 +6023,51 @@ if( G.O.viewerDisplayLogo ) {
         SlideshowToggle();
       }
     }
+    
+    // Display phot infos
+    function ViewerInfoSet() {
+      var item=G.VOM.Item(G.VOM.currItemIdx);
+    console.log(item);
+      var content='<div class="nGY2PopupOneItem">'+item.title+'</div>';
+      content+='<div class="nGY2PopupOneItem">'+item.description+'</div>';
+      content+='<div class="nGY2PopupOneItem">'+G.O.icons.user+' '+item.author+'</div>';
+      if( item.exif.model != '' ) {
+        content+='<div class="nGY2PopupOneItem">'+G.O.icons.config+' '+item.exif.model+'</div>';
+      }
+      var sexif='';
+      if( item.exif.flash != '' ) {
+        sexif+= ' &nbsp; '+item.exif.flash;
+      }
+      if( item.exif.focallength != '' ) {
+        sexif+= ' &nbsp; '+item.exif.focallength+'mm';
+      }
+      if( item.exif.fstop != '' ) {
+        sexif+= ' &nbsp; f'+item.exif.fstop;
+      }
+      if( item.exif.exposure != '' ) {
+        sexif+= ' &nbsp; '+item.exif.exposure+'s';
+      }
+      if( item.exif.iso != '' ) {
+        sexif+= ' &nbsp; '+item.exif.iso+' ISO';
+      }
+      if( item.exif.time != '' ) {
+        var date = new Date(parseInt(item.exif.time));
+        sexif+= ' &nbsp; '+date.toLocaleDateString();
+      }
+      content+='<div class="nGY2PopupOneItem">'+sexif+'</div>';
+      
+      if( item.exif.location != '' ) {
+        content+='<div class="nGY2PopupOneItem">'+G.O.icons.location+' <a href="http://maps.google.com/maps?z=12&t=m&q='+encodeURIComponent(item.exif.location)+'" target="_blank">'+item.exif.location+'</a></div>';
+        // embed google map in iframe (no api key needed)
+        content+='<iframe width="300" height="150" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?&amp;t=m&amp;q='+encodeURIComponent( item.exif.location ) +'&amp;output=embed"></iframe>';  
+      }
 
+      var $popup=Popup(G.O.icons.viewerInfo, content);
+    
+    }
+    
+
+    
     function ToolbarAddElt( elt ) {
       var r='',
       e=elt.replace(/^\s+|\s+$/g, '');    // remove trailing/leading whitespace
@@ -6028,9 +6099,9 @@ if( G.O.viewerDisplayLogo ) {
           }
           break;
         case 'infoButton':
-          if( typeof G.O.fnViewerInfo == 'function' ) {
+          // if( typeof G.O.fnViewerInfo == 'function' ) {
             r='<div class="ngbt ngy2viewerToolAction infoButton nGEvent" data-ngy2action="info">'+G.O.icons.viewerInfo+'</div>';
-          }
+          // }
           break;
         case 'linkOriginalButton':
           if( G.O.kind == 'flickr' || G.O.kind == 'google' ) {
@@ -6047,8 +6118,19 @@ if( G.O.viewerDisplayLogo ) {
           r='<div class="label"><div class="title nGEvent" itemprop="name"></div><div class="description nGEvent" itemprop="description"></div></div>';
           break;
         default:
+          // custom button
           if( e.indexOf('custom') == 0 ) {
-            r='<div class="ngbt ngCustomBtn '+e+' nGEvent">' + (typeof G.O.fnImgToolbarCustInit == 'function' ? G.O.fnImgToolbarCustInit(e) : '') + '</div>';
+            var t='';
+            if( typeof G.O.fnImgToolbarCustInit == 'function' ) {
+              // content to display from custom script
+              t=G.O.fnImgToolbarCustInit(e);
+            }
+            if( t == '' ) {
+              // content from icons
+              var n=e.substring(6);
+              t=G.O.icons['viewerCustomTool'+n];
+            }
+            r='<div class="ngbt ngy2viewerToolAction ngCustomBtn '+e+' nGEvent" data-ngy2action="'+e+'">' + t + '</div>';
           }
           break;
         }
@@ -6610,12 +6692,12 @@ if( G.O.viewerDisplayLogo ) {
       
       G.$E.vwImgC.on("click",function(e){
         e.stopPropagation();
-        if( e.pageX < (jQuery(window).width()/2) ) {
-          DisplayPreviousImage();
-        }
-        else {
-          DisplayNextImage();
-        }
+        // if( e.pageX < (jQuery(window).width()/2) ) {
+          // DisplayPreviousImage();
+        // }
+        // else {
+          // DisplayNextImage();
+        // }
       });
 
       ResizeInternalViewer();
@@ -6693,7 +6775,7 @@ if( G.O.viewerDisplayLogo ) {
       // custom elements
       var $cu=G.$E.conVwTb.find('.ngCustomBtn');
       if( $cu.length > 0 && typeof G.O.fnImgToolbarCustDisplay == 'function' ) {
-        G.O.fnImgToolbarCustDisplay( $cu, item, ExposedObjects());
+        G.O.fnImgToolbarCustDisplay( $cu, item);
       }
 
       // if( setTxt && (G.O.viewerToolbar.label == 'always' || G.O.viewerToolbar.label == G.VOM.toolbarMode) ) {
@@ -6899,7 +6981,6 @@ if( G.O.viewerDisplayLogo ) {
       // gallery color scheme
       SetColorScheme();
 
-
       // Hide icons (thumbnails and breadcrumb)
       if( G.O.thumbnailLabel.get('hideIcons') ) {
         G.O.icons.thumbnailAlbum='';
@@ -7059,29 +7140,38 @@ if( G.O.viewerDisplayLogo ) {
       $(window).on('scroll.nanogallery2',  debounce( OnScrollEvent, 100, false) );
       
       
-      // Keyboard management --> Image Viewer
+      // Keyboard management
       jQuery(document).keyup(function(e) {
-        if( G.VOM.viewerDisplayed ) {
+        if( G.popup.isDisplayed ) {
           switch( e.keyCode) {
             case 27:    // Esc key
-              CloseInternalViewer(G.VOM.currItemIdx);
+              G.popup.close();
               break;
-            case 32:    // SPACE
-            case 13:    // ENTER
-              SlideshowToggle();
-              break;
-            case 38:    // UP
-            case 39:    // RIGHT
-            case 33:    // PAGE UP
-              DisplayNextImage();
-              break;
-            case 40:    // DOWN
-            case 37:    // LEFT
-            case 34:    // PAGE DOWN
-              DisplayPreviousImage();
-              break;
-            case 35:    // END
-            case 36:    // BEGIN
+          }
+        }
+        else {
+          if( G.VOM.viewerDisplayed ) {
+            switch( e.keyCode) {
+              case 27:    // Esc key
+                CloseInternalViewer(G.VOM.currItemIdx);
+                break;
+              case 32:    // SPACE
+              case 13:    // ENTER
+                SlideshowToggle();
+                break;
+              case 38:    // UP
+              case 39:    // RIGHT
+              case 33:    // PAGE UP
+                DisplayNextImage();
+                break;
+              case 40:    // DOWN
+              case 37:    // LEFT
+              case 34:    // PAGE DOWN
+                DisplayPreviousImage();
+                break;
+              case 35:    // END
+              case 36:    // BEGIN
+            }
           }
         }
       });
@@ -7331,7 +7421,7 @@ console.log('handleGestureStart4');
         if( G.O.paginationSwipe && G.layout.support.rows && G.galleryDisplayMode.Get() == 'PAGINATION' ) {
           // swipe pagination
         
-//G.galleryMaxRows.Get() a mettre Ã  0
+//G.galleryMaxRows.Get() a mettre à 0
         
           var differenceInY = initialTouchPos.y - lastTouchPosition.y;
           var differenceInX = initialTouchPos.x - lastTouchPosition.x;
