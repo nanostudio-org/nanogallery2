@@ -40,11 +40,12 @@
 
 @font-face {
   font-family: 'ngy2_icon_font';
-  src: url('./font/ngy2_icon_font.eot?99425769');
-  src: url('./font/ngy2_icon_font.eot?99425769#iefix') format('embedded-opentype'),
-       url('./font/ngy2_icon_font.woff?99425769') format('woff'),
-       url('./font/ngy2_icon_font.ttf?99425769') format('truetype'),
-       url('./font/ngy2_icon_font.svg?99425769#ngy2_icon_font') format('svg');
+  src: url('font/ngy2_icon_font.eot?60750294');
+  src: url('font/ngy2_icon_font.eot?60750294#iefix') format('embedded-opentype'),
+       url('font/ngy2_icon_font.woff2?60750294') format('woff2'),
+       url('font/ngy2_icon_font.woff?60750294') format('woff'),
+       url('font/ngy2_icon_font.ttf?60750294') format('truetype'),
+       url('font/ngy2_icon_font.svg?60750294#ngy2_icon_font') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -67,8 +68,7 @@
 .icon-home:before { content: '\e80e'; } /* '?' */
 .icon-link:before { content: '\e80f'; } /* '?' */
 .icon-link-ext:before { content: '\e810'; } /* '?' */
-.icon-attach:before { content: '\e811'; } /* '?' */
-.icon-pin:before { content: '\e812'; } /* '?' */
+.icon-heart:before { content: '\e811'; } /* '?' */
 .icon-download:before { content: '\e813'; } /* '?' */
 .icon-upload:before { content: '\e814'; } /* '?' */
 .icon-reply-all:before { content: '\e815'; } /* '?' */
@@ -95,7 +95,6 @@
 .icon-level-up:before { content: '\e82a'; } /* '?' */
 .icon-play:before { content: '\e82b'; } /* '?' */
 .icon-pause:before { content: '\e82c'; } /* '?' */
-.icon-ellipsis:before { content: '\e82d'; } /* '?' */
 .icon-ellipsis-vert:before { content: '\e82e'; } /* '?' */
 .icon-toggle-off:before { content: '\e82f'; } /* '?' */
 .icon-toggle-on:before { content: '\e830'; } /* '?' */
@@ -109,8 +108,8 @@
 .icon-facebook-squared:before { content: '\e838'; } /* '?' */
 .icon-basket:before { content: '\e839'; } /* '?' */
 .icon-ok-circled:before { content: '\e83a'; } /* '?' */
+.icon-user:before { content: '\e83b'; } /* '?' */
 .icon-circle-empty:before { content: '\f10c'; } /* '?' */
-.icon-angle-circled-up:before { content: '\f139'; } /* '?' */
 
 
 .nGY2Icon {
@@ -122,7 +121,7 @@
 	speak: none;
 	display: inline-block;
 	text-decoration: inherit;
-	width: 1em;
+	/* width: 1em; */
 	text-align: center;
 	font-variant: normal;
 	text-transform: none;
@@ -579,7 +578,7 @@
   bottom: 0px;
   right: 0px;
   background: rgba(0,0,0,0.5);
-  z-index: 2000;
+/*  z-index: 2000;*/
 }
 .nGY2PopupContent {
   position: fixed;
@@ -603,7 +602,7 @@
 .nGY2PopupTitle {
   font-size: 1.5em;
   border-bottom: 4px solid #888;
-  padding: 0 0 30px 0;
+  padding: 0 0 5px 0;
   margin-bottom: 10px;
 }
 .nGY2PopupCloseButton {
@@ -613,7 +612,7 @@
 }
 
 .nGY2PopupOneItem {
-  padding : 15px 10px;
+  padding : 10px 10px;
   font-size: 1.2em;
 	cursor: pointer;
 }
@@ -646,6 +645,17 @@
 	-moz-box-sizing: content-box;
 	-o-box-sizing: content-box;
   clear: both;
+}
+.nGY2 .nGY2ViewerLogo {
+  text-align: center;
+  float: left;
+  position: relative;
+  top: 50px;
+  left: 0px;
+  background: url(nanogallery2_logo.png) RGBA(0,0,0,0.5) no-repeat center;
+  display: block;
+  height: 58px;
+  width: 230px;
 }
 
 .nGY2 .nGY2ViewerContent {
@@ -707,12 +717,13 @@
 }
 
 .nGY2 .nGY2ViewerAreaPrevious {
-	color: #eee;
+  transform: scaleX(0.5);
+	color: #fff; 
 	display:block;
 	position:absolute;
 	Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px; 
 	/*background: rgba(0,0,0,0.2);*/
-	font-size:1.5em;
+	font-size:3em;
 	top: 50%;
 	/*height:20px;*/
 	/*width:20px;*/
@@ -731,14 +742,18 @@
 	-moz-box-sizing: content-box;
 	-o-box-sizing: content-box;
 }
+.nGY2 .nGY2ViewerAreaPrevious > i {
+  margin-left:0px;
+}
 
 .nGY2 .nGY2ViewerAreaNext {
-	color: #eee; 
+  transform: scaleX(0.5);
+	color: #fff; 
 	display:block;
 	position:absolute;
 	Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px;
 	/*background: rgba(0,0,0,0.2);*/
-	font-size:1.5em;
+	font-size:3em;
 	top: 50%;
 	/*height:20px;*/
 	/*width:20px;*/
@@ -757,8 +772,9 @@
 	-moz-box-sizing: content-box;
 	-o-box-sizing: content-box;
 }
-
-
+.nGY2 .nGY2ViewerAreaNext > i {
+  margin-right:0px;
+}
 
 .nGY2 .toolbarContainer {
 	/*bottom:0px;*/
@@ -815,7 +831,6 @@
 	-o-transition: all 0.2s ease;
 }
 
-
 .nGY2 .toolbar .ngbt {
   font-size:1.5em;
 	display: table-cell;
@@ -828,8 +843,11 @@
 	-o-box-sizing: content-box;
 }
 
+.nGY2 .ngy2viewerToolAction {
+	opacity: 1;
+}
 .nGY2 .ngy2viewerToolAction:hover {
-	opacity: 0.7;
+	opacity: 0.8;
 }
 
 .nGY2 .toolbar .pageCounter{
