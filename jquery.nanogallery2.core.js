@@ -903,6 +903,8 @@ galleryL1DisplayMode : null,  // pagination, fullContent, moreButton*, rows
 // NEW
 galleryPaginationMode : 'rectangles',  // 'dots', 'rectangles', 'numbers'
 
+// NEW
+thumbnailCrop: true,
 
 // REMOVE/REPLACED by galleryMaxRows/galleryL1MaxRows
 // paginationMaxLinesPerPage : 1,
@@ -1390,6 +1392,11 @@ fnThumbnailSelection : null,
     G.gallerySorting = { l1: '', lN: '',
       Get: function() {
         return G.gallerySorting[G.GOM.curNavLevel];
+      }
+    };
+    G.thumbnailCrop = { l1: true, lN: true,
+      Get: function() {
+        return G.thumbnailCrop[G.GOM.curNavLevel];
       }
     };
 
@@ -3217,7 +3224,7 @@ fnThumbnailSelection : null,
       var checkImageSize=false,
       src=item.thumbImg().src;
 
-      if( ( G.layout.engine == 'CASCADING' && G.I[idx].thumbImg().height == 0) || ( G.layout.engine == 'JUSTIFIED' && G.I[idx].thumbImg().width == 0) ) {
+      if( ( G.layout.engine == 'CASCADING' && item.thumbImg().height == 0) || ( G.layout.engine == 'JUSTIFIED' && item.thumbImg().width == 0) ) {
         checkImageSize=true;
       }
 
@@ -3233,7 +3240,19 @@ fnThumbnailSelection : null,
           newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="height:'+G.tn.settings.getH()+'px;"><img class="nGY2GThumbnailImg" src="'+src+'" alt="'+sTitle+'" ></div>';
           break;
         default:    // GRID
-          newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="width:'+G.tn.settings.getW()+'px;height:'+G.tn.settings.getH()+'px;"><img class="nGY2GThumbnailImg" src="'+src+'" alt="'+sTitle+'" style="max-width:'+G.tn.settings.getW()+'px;max-height:'+G.tn.settings.getH()+'px;" ></div>';
+          var imgSize='max-width:'+G.tn.settings.getW()+'px;max-height:'+G.tn.settings.getH()+'px;'
+          if( G.thumbnailCrop.Get() == true && item.thumbImg().height > 0 && item.thumbImg().width > 0 ) {
+            if( item.thumbImg().height > item.thumbImg().width ) {
+              imgSize='width:'+G.tn.settings.getW()+'px;';
+            }
+            else {
+              var r=item.thumbImg().width/item.thumbImg().height;
+              var d=(G.tn.settings.getH()*r-G.tn.settings.getH())/2;
+              imgSize='height:'+G.tn.settings.getH()+'px;left:-'+d+'px;';
+            }
+          }
+          // newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="width:'+G.tn.settings.getW()+'px;height:'+G.tn.settings.getH()+'px;"><img class="nGY2GThumbnailImg" src="'+src+'" alt="'+sTitle+'" style="max-width:'+G.tn.settings.getW()+'px;max-height:'+G.tn.settings.getH()+'px;" ></div>';
+          newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="width:'+G.tn.settings.getW()+'px;height:'+G.tn.settings.getH()+'px;"><img class="nGY2GThumbnailImg" src="'+src+'" alt="'+sTitle+'" style="'+imgSize+'" ></div>';
           break;
       }
 
@@ -4235,6 +4254,16 @@ fnThumbnailSelection : null,
       if( G.O.blackList != '' ) { G.blackList=G.O.blackList.toUpperCase().split('|'); }
       if( G.O.whiteList != '' ) { G.whiteList=G.O.whiteList.toUpperCase().split('|'); }
       if( G.O.albumList != '' ) { G.albumList=G.O.albumList.toUpperCase().split('|'); }
+
+        console.log(G.O.thumbnailCrop);
+      // thumbnail image crop
+      if( typeof G.O.thumbnailCrop == 'boolean' ) {
+        G.thumbnailCrop.lN=G.O.thumbnailCrop;
+        G.thumbnailCrop.l1=G.O.thumbnailCrop;
+      }
+      if( G.O.thumbnailL1Crop !== undefined &&  G.O.thumbnailL1Crop != null && G.O.thumbnailL1Crop != '' ) {
+        G.thumbnailCrop.l1=G.O.thumbnailL1Crop;
+      }
 
       // gallery display mode
       if( G.O.galleryDisplayMode !== undefined && G.O.galleryDisplayMode != '' ) {
@@ -5818,10 +5847,12 @@ console.log(G.O.kind);
         G.$E.conVwTbTR=jQuery(sTopRight).appendTo(G.$E.conVw);
       }
 
-      if( G.O.viewerFullscreen ) {
-        G.VOM.viewerIsFullscreen=true;
-        G.$E.conVwTb.find('.fullscreenButton').html(G.O.icons.viewerFullscreenOn);
-        ngscreenfull.request();
+      if( G.supportFullscreenAPI ) {
+        if( G.O.viewerFullscreen ) {
+          G.VOM.viewerIsFullscreen=true;
+          G.$E.conVwTb.find('.fullscreenButton').html(G.O.icons.viewerFullscreenOn);
+          ngscreenfull.request();
+        }
       }
 
       // display logo
@@ -5873,15 +5904,17 @@ console.log(G.O.kind);
           case 'fullScreen':
             // Toggle viewer fullscreen mode on/off
             e.stopPropagation();
-            if( ngscreenfull.enabled ) {
-              ngscreenfull.toggle();
-              if( G.VOM.viewerIsFullscreen ) {
-                G.VOM.viewerIsFullscreen=false;
-                G.$E.conVw.find('.fullscreenButton').html(G.O.icons.viewerFullscreenOff);
-              }
-              else {
-                G.VOM.viewerIsFullscreen=true;
-                G.$E.conVw.find('.fullscreenButton').html(G.O.icons.viewerFullscreenOn);
+            if( G.supportFullscreenAPI ) {
+              if( ngscreenfull.enabled ) {
+                ngscreenfull.toggle();
+                if( G.VOM.viewerIsFullscreen ) {
+                  G.VOM.viewerIsFullscreen=false;
+                  G.$E.conVw.find('.fullscreenButton').html(G.O.icons.viewerFullscreenOff);
+                }
+                else {
+                  G.VOM.viewerIsFullscreen=true;
+                  G.$E.conVw.find('.fullscreenButton').html(G.O.icons.viewerFullscreenOn);
+                }
               }
             }
             break;
@@ -6821,9 +6854,11 @@ console.log(G.O.kind);
         G.VOM.hammertime.destroy();
         G.VOM.hammertime=null;
 
-        if( G.VOM.viewerIsFullscreen ) {
-          G.VOM.viewerIsFullscreen=false;
-          ngscreenfull.exit();
+        if( G.supportFullscreenAPI ) {
+          if( G.VOM.viewerIsFullscreen ) {
+            G.VOM.viewerIsFullscreen=false;
+            ngscreenfull.exit();
+          }
         }
         
         G.$E.conVwCon.hide(0).off().show(0).html('').remove();
@@ -8759,6 +8794,10 @@ function makeArray( obj ) {
 // by sindresorhus - https://github.com/sindresorhus
 // from: https://github.com/sindresorhus/screenfull.js
 
+// NGY BUILD:
+// replace "screenfull" with "ngscreenfull"
+// 
+
 (function () {
 	'use strict';
 
@@ -8859,8 +8898,6 @@ function makeArray( obj ) {
 				this.request(elem);
 			}
 		},
-		onchange: function () {},
-		onerror: function () {},
 		raw: fn
 	};
 
@@ -8877,7 +8914,7 @@ function makeArray( obj ) {
 	Object.defineProperties(ngscreenfull, {
 		isFullscreen: {
 			get: function () {
-				return !!document[fn.fullscreenElement];
+				return Boolean(document[fn.fullscreenElement]);
 			}
 		},
 		element: {
@@ -8890,17 +8927,9 @@ function makeArray( obj ) {
 			enumerable: true,
 			get: function () {
 				// Coerce to boolean in case of old WebKit
-				return !!document[fn.fullscreenEnabled];
+				return Boolean(document[fn.fullscreenEnabled]);
 			}
 		}
-	});
-
-	document.addEventListener(fn.fullscreenchange, function (e) {
-		ngscreenfull.onchange.call(ngscreenfull, e);
-	});
-
-	document.addEventListener(fn.fullscreenerror, function (e) {
-		ngscreenfull.onerror.call(ngscreenfull, e);
 	});
 
 	if (isCommonjs) {
@@ -8922,7 +8951,7 @@ function makeArray( obj ) {
  * By Jeremy Kahn - jeremyckahn@gmail.com
  */
 
-// NG BUILD:
+// NGY BUILD:
 // 
 // replace "Tweenable" with "NGTweenable"
 // replace "define.amd" with "define.amdDISABLED"
@@ -8938,7 +8967,7 @@ function makeArray( obj ) {
 
 // HAMMER.JS
 
-// NG BUILD:
+// NGY BUILD:
 // replace "Hammer" with "NGHammer" (case sensitive)
 
 
