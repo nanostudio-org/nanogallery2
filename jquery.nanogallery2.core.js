@@ -688,7 +688,7 @@ Now supports multiple GooglePlus (ex Picasa) private albums.
           };
 
           //--- thumbnail hover animation
-          NGY2Item.prototype.animate = function ( effect, hoverIn ) {
+          NGY2Item.prototype.animate = function ( effect, delay, hoverIn ) {
             if( this.$getElt() == null  ) { return; }
 
             var context={};
@@ -701,7 +701,7 @@ Now supports multiple GooglePlus (ex Picasa) private albums.
               context.animeFrom=effect.from;
               context.animeTo=effect.to;
               context.animeDuration=parseInt(effect.duration);
-              context.animeDelay=parseInt(effect.delay);
+              context.animeDelay=parseInt(effect.delay+delay);
               context.animeEasing=effect.easing;
               effect.lastValue=null;
             }
@@ -714,7 +714,7 @@ Now supports multiple GooglePlus (ex Picasa) private albums.
               }
               context.animeTo=effect.from;
               context.animeDuration=parseInt(effect.durationBack);
-              context.animeDelay=parseInt(effect.delayBack);
+              context.animeDelay=parseInt(effect.delayBack+delay);
               context.animeEasing=effect.easingBack;
             }
 
@@ -3707,7 +3707,7 @@ fnThumbnailSelection : null,
 
       try {
         for( var j=0; j<effects.length; j++) {
-          item.animate( effects[j], true );
+          item.animate( effects[j], j*10,  true );
         }
         // effects on whole layout
         // GalleryResize( GOMidx );
@@ -3750,7 +3750,7 @@ fnThumbnailSelection : null,
       var effects=G.tn.hoverEffects.get();
       try {
         for( var j=0; j<effects.length; j++) {
-          item.animate( effects[j], false );
+          item.animate( effects[j], j*10, false );
         }
         // effects on whole layout
         // GalleryResize( );
@@ -5862,6 +5862,7 @@ console.log(G.O.kind);
           case 'minimize':
             // toggle toolbar visibility
             e.stopPropagation();
+            e.preventDefault();
             if( G.VOM.toolbarMode == 'std' ) {
               ToolbarVisibilityMin();
             }
