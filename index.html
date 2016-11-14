@@ -30,14 +30,14 @@
 
   <!-- #################################################################################################################### -->
   <!-- nanogallery2 CSS files                                                                                               -->
-	<link href="./css/nanogallery2.css" rel="stylesheet" type="text/css">
+	<link href="../css/nanogallery2.css" rel="stylesheet" type="text/css">
   <!-- #################################################################################################################### -->
 
   <!-- #################################################################################################################### -->
 	<!-- nanogallery2 javascript                                                                                              -->
-	<script type="text/javascript" src="./jquery.nanogallery2.core.js"></script>
-	<script type="text/javascript" src="./jquery.nanogallery2.data_google.js"></script>
-	<script type="text/javascript" src="./jquery.nanogallery2.data_flickr.js"></script>
+	<script type="text/javascript" src="../jquery.nanogallery2.core.js"></script>
+	<script type="text/javascript" src="../jquery.nanogallery2.data_google.js"></script>
+	<script type="text/javascript" src="../jquery.nanogallery2.data_flickr.js"></script>
 	<!-- 
   <script type="text/javascript" src="jquery.nanogallery2.builder.js"></script>
   -->
@@ -96,7 +96,24 @@
     }
 
     </style>
-  
+
+  <!-- Asynchronous Google Analytics snippet -->
+  <script>
+    var _gaq = _gaq || [];
+    var pluginUrl =
+   'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+    _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+    _gaq.push(['_setAccount', 'UA-39069349-8']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = 'https://stats.g.doubleclick.net/dc.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    
+
+  </script>
 </head>
 
 
@@ -221,7 +238,7 @@
       <div class="col-md-2" ></div>
       <div class="col-md-4" style="font-size:1.2em;padding: 0 0 0 60px;">
         <img src="img/tap.svg" style="height:35px;margin:4px;position: absolute;left: 0;top: 0;"><span>
-        <span class="text-uppercase ngy2color1"><b>easy to implement</b></span> - no scripting, just HTML markup
+        <span class="text-uppercase ngy2color1"><b>easy to implement</b></span> - just HTML markup; scripting is also supported
       </div>
       <div class="col-md-1" ></div>
       <div class="col-md-4" style="font-size:1.2em;padding: 0 0 0 60px;">
@@ -271,9 +288,12 @@
         <h3>Eye-catching effects</h3>
         Hundreds of transitions and effects to capture the attention of your visitors. Use presets or create complex effects very easily.
 
-        <h3>What's new?</h3>
+        <h3>What's new since nanoGALLERY?</h3>
         nanogallery2 is following the popular nanoGALLERY script.
         The display algorithm has been completly rewritten for a better user experience. New features include: filter by keywords, shopping cart, social sharing, advanced hover effects, styling, tools on thumbnails, more button, thumbnail display transitions, navigation in albums without breadcrumb, ...
+        
+        <h3>Features</h3>
+        Image gallery with lightbox, multiple responsive layouts, thumbnail display animation and hover effects, mobile friendly, smart lazy load, deep linking, browser back/forward, Flickr, Google Photos, self hosted images, display location/GPS with Google Maps, gesture (swipe and pinch zoom), album and sub-albums, breadcrumb, filter on tags, social sharing, tools on thumbnail, etc.
         
         <h3>Start now</h3>
         A demonstration is worth a thousand words: <a href="demonstration.html" style="background-color:#eee;" >&nbsp;just have a look at the feature showcase page to discover nanogallery2 </a>.
@@ -308,7 +328,7 @@
         <h2>User experience</h2>
         <br>
         <p>
-        desc
+        Easy to use on any device, using the mouse, the keyboard or the touch screen.
         </p>
         <br><br><br>
       </div>
@@ -367,7 +387,7 @@
           </div>
           <div class = "panel-body">
             professional license to use nanogallery2 on ONE of your website.
-            <a href="." class="btn btn-primary btn-lg" ><i class="fa fa-cart-plus" aria-hidden="true"></i> &nbsp; 25€</a>
+            <a href="." class="btn btn-primary btn-lg" ><i class="fa fa-cart-plus" aria-hidden="true"></i> &nbsp; 25â‚¬</a>
           </div>
         </div>
       </div>
@@ -378,7 +398,7 @@
           </div>
           <div class = "panel-body">
             to include nanogallery2 in your own non-free applications and products, or for an unlimited number of websites.
-            <a href="." class="btn btn-primary btn-lg"><i class="fa fa-cart-plus" aria-hidden="true"></i> &nbsp; 90€</a>
+            <a href="." class="btn btn-primary btn-lg"><i class="fa fa-cart-plus" aria-hidden="true"></i> &nbsp; 90â‚¬</a>
           </div>
         </div>
       </div>
@@ -418,7 +438,7 @@
         <a href="https://github.com/nanostudio-org/nanogallery2/issues" class="lead" target="_blank"><img src="img/github.png" style="height:50px;"><br><br>report bugs on GitHub issues</a>
       </div>
       <div class="col-md-3 text-center">
-        <a href="http://stackoverflow.com/questions/ask?tags=nanogallery2" class="lead" target="_blank"><img src="img/stackoverflow.png" style="height:50px;"><br><br>ask your technical question on StackOverflow</a>
+        <a href="http://stackoverflow.com/questions/ask?tags=nanogallery2,javascript,jquery" class="lead" target="_blank"><img src="img/stackoverflow.png" style="height:50px;"><br><br>ask your technical question on StackOverflow</a>
       </div>
       <div class="col-md-2 text-center">
       </div>
