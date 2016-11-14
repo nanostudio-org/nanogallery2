@@ -1280,7 +1280,7 @@ fnThumbnailSelection : null,
     // author: underscore.js - http://underscorejs.org/docs/underscore.html
     // Returns a function, that, when invoked, will only be triggered at most once during a given window of time.
     // Normally, the throttled function will run as much as it can, without ever going more than once per wait duration;
-    // but if youíd like to disable the execution on the leading edge, pass {leading: false}.
+    // but if you‚Äôd like to disable the execution on the leading edge, pass {leading: false}.
     // To disable execution on the trailing edge, ditto.
     var throttle = function(func, wait, options) {
       var context, args, result;
@@ -1510,7 +1510,6 @@ fnThumbnailSelection : null,
     G.supportFullscreenAPI = false;
     G.i18nLang = '';
     G.timeLastTouchStart = 0;
-    G.lastOpenAlbumID = -1;
     G.custGlobals = {};
     
     //------------------------
@@ -1674,10 +1673,10 @@ fnThumbnailSelection : null,
       G.baseEltID = G.$E.base.attr('id');
       G.O.$markup=[];
       
-      defineVariables();
-      setPolyFills();
-      buildSkeleton();
-      setGlobalEvents();
+      DefineVariables();
+      SetPolyFills();
+      BuildSkeleton();
+      SetGlobalEvents();
       
       // check if only one specific album will be used
       var albumToDisplay=G.O.album;
@@ -3783,7 +3782,7 @@ fnThumbnailSelection : null,
 
     /** @function DisplayPhoto */
     function DisplayPhoto( imageID, albumID ) {
-
+console.log('#DisplayPhoto : '+  albumID +'-'+ imageID);
       var albumIdx=NGY2Item.GetIdx(G, albumID);
       // if( albumIdx == 0 || albumIdx == -1 ) {
       if( albumIdx == 0 ) {
@@ -3807,7 +3806,8 @@ fnThumbnailSelection : null,
         AlbumGetContent( albumID, DisplayPhoto, imageID, albumID );
         return;
       }
-      
+console.log('#DisplayPhoto : '+  imageIdx);
+     
       DisplayPhotoIdx(imageIdx);
     
     }
@@ -4209,8 +4209,8 @@ fnThumbnailSelection : null,
     // ################################
 
     
-    /** @function defineVariables */
-    function defineVariables() {
+    /** @function DefineVariables */
+    function DefineVariables() {
 
       // change 'picasa' to 'google' for compatibility reason
       if( G.O.kind.toUpperCase() == 'PICASA' ) {
@@ -5246,8 +5246,8 @@ console.log(G.O.kind);
 
 
     
-    /** @function setPolyFills */
-    function setPolyFills() {
+    /** @function SetPolyFills */
+    function SetPolyFills() {
 
       // POLYFILL FOR BIND function --> for older Safari mobile
       // found on MDN: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind#Compatibility
@@ -5276,7 +5276,7 @@ console.log(G.O.kind);
         };
       }
 
-      // requestAnimationFrame polyfill by Erik Mˆller. fixes from Paul Irish and Tino Zijdel
+      // requestAnimationFrame polyfill by Erik M√∂ller. fixes from Paul Irish and Tino Zijdel
       // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
       // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
       // MIT license
@@ -5705,7 +5705,7 @@ console.log(G.O.kind);
       var vimg=new VImg(imageIdx);
       G.VOM.items.push(vimg);
       items.push(G.I[imageIdx]);
-      
+//pipo -> danger -> pourquoi reconstruire la liste si d√©j√† ouvert (back/forward)     
       var l=G.I.length;
       for( var idx=imageIdx+1; idx<l ; idx++) {
         var item=G.I[idx];
@@ -5744,7 +5744,10 @@ console.log(G.O.kind);
       }
       else {
         // display
-        DisplayInternalViewer(imageIdx, '');
+        // DisplayInternalViewer(imageIdx, '');
+        G.$E.vwImgC.css({ opacity:0, left:0, visibility:'hidden' }).attr('src','');
+        G.$E.vwImgC.attr('src',G.emptyGif).attr('src',G.VOM.Item(0).responsiveURL());
+        DisplayInternalViewer(0, '');
       }
     }
 
@@ -5980,6 +5983,7 @@ console.log(G.O.kind);
         return false;
       });
       
+      ImageSwipeTranslateX(G.VOM.swipePosX);
       DisplayInternalViewer(vomIdx, '');
 
       // viwer gesture handling
@@ -6266,12 +6270,6 @@ console.log(G.O.kind);
       }
     }
     
-
-
-
-
-
-
     
     // Viewer user events handling
     // function ViewerSwipeSupport(element) {
@@ -6889,66 +6887,65 @@ console.log(G.O.kind);
       forceUpdate = typeof forceUpdate !== 'undefined' ? forceUpdate : false;
       
       // window.requestAnimationFrame( function() {    // synchronize with screen
-        var windowsW=G.$E.conVw.width();
-        var windowsH=G.$E.conVw.height();
-        var $elt=G.$E.vwImgC;
-        if( $elt == null || G.VOM.currItemIdx == -1 ) { return; }
-        
-        if( !forceUpdate && G.VOM.window.lastWidth == windowsW  && G.VOM.window.lastHeight == windowsH ) { return; }
-        
-        G.VOM.window.lastWidth=windowsW;
-        G.VOM.window.lastHeight=windowsH;
+      var windowsW=G.$E.conVw.width();
+      var windowsH=G.$E.conVw.height();
+      var $elt=G.$E.vwImgC;
+      if( $elt == null || G.VOM.currItemIdx == -1 ) { return; }
+      
+      if( !forceUpdate && G.VOM.window.lastWidth == windowsW  && G.VOM.window.lastHeight == windowsH ) { return; }
+      
+      G.VOM.window.lastWidth=windowsW;
+      G.VOM.window.lastHeight=windowsH;
 
-        var vwImgC_H=$elt.height(),
-        vwImgC_W=$elt.width(),
-        vwImgC_OHt=$elt.outerHeight(true),
-        vwImgC_OHf=$elt.outerHeight(false);
-  
-        var $tb=G.$E.conVwTb.find('.toolbar');
-        var tb_OHt=$tb.outerHeight(true);
-        // if( vwImgC_H <= 40 || !G.O.viewerToolbar.display ) {
-          // G.$E.conVwTb.css({visibility:'hidden'});
-        // }
-        // else {
-          // G.$E.conVwTb.css({visibility:'visible'});
-        // }
+      var vwImgC_H=$elt.height(),
+      vwImgC_W=$elt.width(),
+      vwImgC_OHt=$elt.outerHeight(true),
+      vwImgC_OHf=$elt.outerHeight(false);
 
-        switch( G.O.viewerToolbar.position ) {
-          case 'topOverImage':
-            G.$E.vwContent.css({height:windowsH, width:windowsW, top:0  });
-            G.$E.conVwTb.css({top: 0, bottom:''});
-            break;
-          case 'top':
-            windowsH-=tb_OHt;
-            G.$E.vwContent.css({height:windowsH, width:windowsW, top:tb_OHt  });
-            G.$E.conVwTb.css({top: 0});
-            break;
-          case 'bottomOverImage':
-            G.$E.vwContent.css({height:windowsH, width:windowsW, bottom:0, top:0  });
-            G.$E.conVwTb.css({bottom: 0});
-            break;
-          case 'bottom':
-          default:
-            windowsH-=tb_OHt;
-            G.$E.vwContent.css({ width:windowsW, top:0, bottom:tb_OHt });
-            G.$E.conVwTb.css({bottom: 0});
-            break;
-        }
+      var $tb=G.$E.conVwTb.find('.toolbar');
+      var tb_OHt=$tb.outerHeight(true);
+      // if( vwImgC_H <= 40 || !G.O.viewerToolbar.display ) {
+        // G.$E.conVwTb.css({visibility:'hidden'});
+      // }
+      // else {
+        // G.$E.conVwTb.css({visibility:'visible'});
+      // }
 
-        if( !G.VOM.viewerImageIsChanged && G.O.viewerZoom && G.VOM.isZooming ) {
-          ViewerImageSetPosition(G.VOM.panPosX, G.VOM.panPosY, false);
-          //G.VOM.isZooming=true;
-          // G.$E.vwContent.children('img').css({'max-width':(windowsW-G.VOM.padding.H), 'max-height':(windowsH-G.VOM.padding.V) });
-        }
-        else {
-          G.VOM.isZooming=false;
-          G.$E.vwContent.children('img').css({'max-width':(windowsW-G.VOM.padding.H), 'max-height':(windowsH-G.VOM.padding.V), 'height':'auto', 'width':'auto', 'top':0, 'left':0 });
-        }
-        
+      switch( G.O.viewerToolbar.position ) {
+        case 'topOverImage':
+          G.$E.vwContent.css({height:windowsH, width:windowsW, top:0  });
+          G.$E.conVwTb.css({top: 0, bottom:''});
+          break;
+        case 'top':
+          windowsH-=tb_OHt;
+          G.$E.vwContent.css({height:windowsH, width:windowsW, top:tb_OHt  });
+          G.$E.conVwTb.css({top: 0});
+          break;
+        case 'bottomOverImage':
+          G.$E.vwContent.css({height:windowsH, width:windowsW, bottom:0, top:0  });
+          G.$E.conVwTb.css({bottom: 0});
+          break;
+        case 'bottom':
+        default:
+          windowsH-=tb_OHt;
+          G.$E.vwContent.css({ width:windowsW, top:0, bottom:tb_OHt });
+          G.$E.conVwTb.css({bottom: 0});
+          break;
+      }
 
-      // });
+      if( !G.VOM.viewerImageIsChanged && G.O.viewerZoom && G.VOM.isZooming ) {
+        ViewerImageSetPosition(G.VOM.panPosX, G.VOM.panPosY, false);
+        //G.VOM.isZooming=true;
+        // G.$E.vwContent.children('img').css({'max-width':(windowsW-G.VOM.padding.H), 'max-height':(windowsH-G.VOM.padding.V) });
+      }
+      else {
+        G.VOM.isZooming=false;
+        G.$E.vwContent.children('img').css({'max-width':(windowsW-G.VOM.padding.H), 'max-height':(windowsH-G.VOM.padding.V), 'height':'auto', 'width':'auto', 'top':0, 'left':0 });
+      }
+      
     }
     
+    // position the image depending on the zoom factor and the pan X/Y position
     function ViewerImageSetPosition(posX, posY, savePosition ) {
       var item=G.VOM.Item(G.VOM.currItemIdx);
       var imageCurrentHeight=item.imageHeight*G.VOM.currentZoom;
@@ -6995,9 +6992,9 @@ console.log(G.O.kind);
 
     
     
-    /** @function buildSkeleton */
+    /** @function BuildSkeleton */
     /** Build the gallery structure **/
-    function buildSkeleton() {
+    function BuildSkeleton() {
     
       // store markup if defined
       var $elements=G.$E.base.children('a');
@@ -7076,8 +7073,8 @@ console.log(G.O.kind);
 
     }
     
-    /** @function setGlobalEvents */
-    function setGlobalEvents() {
+    /** @function SetGlobalEvents */
+    function SetGlobalEvents() {
       // GLOBAL EVENT MANAGEMENT
       
       // gallery event management
@@ -7104,11 +7101,11 @@ console.log(G.O.kind);
             return;
           }
           if( ev.deltaX > 50 ) {
-            paginationNextPage();
+            paginationPreviousPage();
             return;
           }
           if(  ev.deltaX < -50 ) {
-            paginationPreviousPage();
+            paginationNextPage();
             return;
           }
           G.$E.conTn.css( G.CSStransformName , 'translateX(0px)');
@@ -7238,22 +7235,25 @@ console.log(G.O.kind);
 
       var curGal='#nanogallery/'+G.baseEltID+'/',
       newLocationHash=location.hash;
-
-      if( newLocationHash == G.locationHashLastUsed ) { return; }
+console.log('newLocationHash1: ' +newLocationHash);
+console.log('G.locationHashLastUsed: ' +G.locationHashLastUsed);
       
       if( newLocationHash == '' ) {
-        if( G.lastOpenAlbumID != -1 ) {
+        if( G.GOM.lastDisplayedIdx != -1 ) {
           // back button and no hash --> display first album
           G.locationHashLastUsed='';
           DisplayAlbum( '', '0');
           return true;
         }
       }
+
+      if( newLocationHash == G.locationHashLastUsed ) { return; }
       
       if( newLocationHash.indexOf(curGal) == 0 ) {
         // item IDs detected
         var IDs=parseIDs( newLocationHash.substring(curGal.length) );
         if( IDs.imageID != '0' ) {
+console.log('display: ' + IDs.albumID +'-'+ IDs.imageID );
           DisplayPhoto( IDs.imageID, IDs.albumID );
           return true;
         }
@@ -7269,6 +7269,7 @@ console.log(G.O.kind);
     //---- Set a new browser location hash
     function SetLocationHash(albumID, imageID ) {
       if( !G.O.locationHash ) { return false; }
+
       if( albumID == '-1' || albumID == '0' ) {
         // root album level --> do not set top.location.hash if not already set
         if( location.hash != '' ) {
@@ -7284,14 +7285,18 @@ console.log(G.O.kind);
         return;
       }
       
-      var newLocationHash='nanogallery/'+G.baseEltID+'/'+ albumID;
+      var newLocationHash='#'+'nanogallery/'+G.baseEltID+'/'+ albumID;
       if( imageID != '' ) {
         newLocationHash+='/'+imageID;
       }
 
       var lH=location.hash;
+console.log('newLocationHash2: '+newLocationHash);
+console.log('lH: '+lH);
       if(  lH == '' || lH != newLocationHash ) {
-        G.locationHashLastUsed='#'+newLocationHash;
+        // G.locationHashLastUsed='#'+newLocationHash;
+        G.locationHashLastUsed=newLocationHash;
+        console.log('new G.locationHashLastUsed: '+G.locationHashLastUsed);
         try {
           top.location.hash=newLocationHash;
         }
@@ -7457,7 +7462,7 @@ console.log('handleGestureStart4');
         if( G.O.paginationSwipe && G.layout.support.rows && G.galleryDisplayMode.Get() == 'PAGINATION' ) {
           // swipe pagination
         
-//G.galleryMaxRows.Get() a mettre ‡ 0
+//G.galleryMaxRows.Get() a mettre √† 0
         
           var differenceInY = initialTouchPos.y - lastTouchPosition.y;
           var differenceInX = initialTouchPos.x - lastTouchPosition.x;
