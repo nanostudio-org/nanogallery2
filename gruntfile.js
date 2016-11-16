@@ -14,6 +14,6 @@ grunt.initConfig({
 
 grunt.loadNpmTasks('grunt-chmod');
 
-
+grunt.registerTask('default', ['chmod']);
 
 };
