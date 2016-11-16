@@ -10,6 +10,6 @@
   },
   "scripts": {
     "perms": "chmod(*.js, 777)",
-    "test": "./jquery.nanogallery2.core.js"
+    "test": "jshint ./jquery.nanogallery2.core.js"
   }
 }
