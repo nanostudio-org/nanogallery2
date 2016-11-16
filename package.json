@@ -5,7 +5,8 @@
   "version": "0.0.1",
   "devDependencies": {
     "jshint": "^2.6.0",
-    "grunt-chmod": "^1.1.1"
+    "grunt-chmod": "^1.1.1",
+    "chmod": "latest"
   },
   "scripts": {
     "perms": "chmod(*.js, 777)",
