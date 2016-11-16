@@ -78,7 +78,7 @@ Now supports multiple GooglePlus (ex Picasa) private albums.
           NGY2Tools.AreaShuffle = function (o) {
             for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
             return o;
-          }
+          };
 
           // check album name - albumList/blackList/whiteList
           NGY2Tools.FilterAlbumName = function( title, ID ) {
