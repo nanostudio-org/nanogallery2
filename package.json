@@ -7,7 +7,7 @@
     "jshint": "^2.6.0"
   },
   "scripts": {
-    /* "test": "jshint ./jquery.nanogallery2.core.js" */
+    // "test": "jshint ./jquery.nanogallery2.core.js"
     "grunt": "grunt build-minimal"
   }
 }
