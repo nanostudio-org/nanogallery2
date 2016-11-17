@@ -22,6 +22,7 @@ module.exports = function(grunt) {
           dest: 'mypage.html'
         }
       }
+    });
       
     grunt.registerTask('build-minimal', [
       'concat:minimal'
