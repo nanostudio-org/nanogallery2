@@ -3,6 +3,13 @@ node_js:
   - 0.12
 before_script:
   - npm install grunt-cli -g
+deploy:
+  provider: releases
+  api_key: "640fa3318d7f5e4af57554a18c40c4babee5261d"
+  file: "mypage.html"
+  skip_cleanup: true
+  on:
+    tags: true
 branches:
   only:
   - dev-gh-pages
