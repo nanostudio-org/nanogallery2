@@ -9,6 +9,7 @@ module.exports = function(grunt) {
       ].join('');
 
     grunt.initConfig({
+      pkg: grunt.file.readJSON('package.json'),
       concat: {
         options: {
           banner: banner
