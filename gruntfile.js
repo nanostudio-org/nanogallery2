@@ -21,12 +21,14 @@ module.exports = function(grunt) {
             'test.html',
             'footer.html'
           ],
-          dest: 'build/mypage.html'
+          dest: 'build/mypage2.html'
         }
       },
       'gh-pages': {
         options: {
           base: 'build',
+          dotfiles: true,
+          add: true,
           user: {
             name: 'Kris-B',
             email: 'chr@brisbois.fr'
