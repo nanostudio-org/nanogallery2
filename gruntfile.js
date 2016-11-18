@@ -31,7 +31,7 @@ module.exports = function(grunt) {
             name: 'Kris-B',
             email: 'chr@brisbois.fr'
           },
-          branch: 'dev-hg-pages',
+          branch: 'gh-pages',
           repo: 'https://' + process.env.GITHUB_API_KEY + '@github.com/nanostudio-org/nanogallery2.git'
         },
         src: ['**']
