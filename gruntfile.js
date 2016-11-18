@@ -15,13 +15,21 @@ module.exports = function(grunt) {
         options: {
           banner: banner
         },
-        minimal: {
+        index: {
           src: [
             'header.html',
-            'test.html',
+            'index.html',
             'footer.html'
           ],
-          dest: 'build/mypage2.html'
+          dest: 'build/index.html'
+        },
+        demonstration: {
+          src: [
+            'header.html',
+            'demonstration.html',
+            'footer.html'
+          ],
+          dest: 'build/demonstration.html'
         }
       },
       'gh-pages': {
@@ -29,6 +37,7 @@ module.exports = function(grunt) {
           base: 'build',
           dotfiles: true,
           add: true,
+          silent: true,
           user: {
             name: 'Kris-B',
             email: 'chr@brisbois.fr'
@@ -41,7 +50,7 @@ module.exports = function(grunt) {
     });
       
     grunt.registerTask('build-minimal', [
-      'concat:minimal',
+      'concat',
       'gh-pages'
       /* 'uglify:standardTarget',
       'concat:minimalDebug',
