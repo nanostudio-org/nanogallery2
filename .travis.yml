@@ -3,19 +3,19 @@ node_js:
   - 0.12
 before_script:
   - npm install grunt-cli -g
-after_success: |
+after_success:
   if [ -n "$GITHUB_API_KEY" ]; then
     cd "$TRAVIS_BUILD_DIR"
     # This generates a `web` directory containing the website.
     make web
     cd web
     git init
-    git checkout -b gh-pages
+    git checkout -b dev-gh-pages
     git add .
     git -c user.name='travis' -c user.email='travis' commit -m init
     # Make sure to make the output quiet, or else the API token will leak!
     # This works because the API key can replace your password.
-    git push -f -q https://<me>:$GITHUB_API_KEY@github.com/<me>/<myrepo>-gh-pages gh-pages &2>/dev/null
+    git push -f -q https://Kris-B:$GITHUB_API_KEY@github.com/Kris-B/nanostudio-org-dev-gh-pages dev-gh-pages &2>/dev/null
     cd "$TRAVIS_BUILD_DIR"
   fi
 branches:
