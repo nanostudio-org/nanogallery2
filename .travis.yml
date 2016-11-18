@@ -7,7 +7,7 @@ after_success:
   if [ -n "$GITHUB_API_KEY" ]; then
     cd "$TRAVIS_BUILD_DIR"
     # This generates a `web` directory containing the website.
-    make web
+    mkdir web
     cd web
     git init
     git checkout -b dev-gh-pages
