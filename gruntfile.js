@@ -2,6 +2,7 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-gh-pages');
 
   var banner = [
         '/* <%= pkg.name %> - v<%= pkg.version %> - ',
@@ -20,13 +21,22 @@ module.exports = function(grunt) {
             'test.html',
             'footer.html'
           ],
-          dest: 'mypage.html'
+          dest: 'build/mypage.html'
         }
+      },
+      'gh-pages': {
+        options: {
+          base: 'build',
+          branch: 'dev-hg-pages',
+          repo: 'https://github.com/nanostudio-org/nanogallery2.git'
+        },
+        src: ['**']
       }
     });
       
     grunt.registerTask('build-minimal', [
-      'concat:minimal'
+      'concat:minimal',
+      'gh-pages'
       /* 'uglify:standardTarget',
       'concat:minimalDebug',
       'yuidoc',
