@@ -5420,10 +5420,17 @@ console.log(G.O.kind);
     // Download an image
     function DownloadImage(idx) {
       var url=G.I[idx].src;
-      var $a = document.createElement('a');
-      $a.download = url.split('.').pop();
-      $a.href = url;
-      $a.click();
+      // var $a = document.createElement('a');
+      // $a.download = url.split('.').pop();
+      // $a.href = url;
+      // $a.click();
+var a = document.createElement('a');
+a.href = url;;
+a.download = "output.png";
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);      
+      
     }
     
     // add one image to the shopping cart
