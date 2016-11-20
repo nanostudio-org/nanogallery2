@@ -11734,10 +11734,13 @@ if (typeof define === 'function' && define.amd) {
 // nanogallery2 auto start whithout javascript call
 (function(){
   'use strict';
+console.log('ok');
   jQuery(document).ready(function () {
   
     var t=document.querySelectorAll('[data-nanogallery2]');
+ console.dir(t);
     for( var i=0; i < t.length; i++ ) {
+      console.dir(jQuery(t[i]).data('nanogallery2'));
       jQuery(t[i]).nanogallery2(jQuery(t[i]).data('nanogallery2'));
     }
   });
