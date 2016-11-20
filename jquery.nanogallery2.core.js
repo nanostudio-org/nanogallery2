@@ -11738,9 +11738,9 @@ console.log('ok');
   jQuery(document).ready(function () {
   
     var t=document.querySelectorAll('[data-nanogallery2]');
- console.dir(t);
+ console.log(t);
     for( var i=0; i < t.length; i++ ) {
-      console.dir(jQuery(t[i]).data('nanogallery2'));
+      console.log(jQuery(t[i]).data('nanogallery2'));
       jQuery(t[i]).nanogallery2(jQuery(t[i]).data('nanogallery2'));
     }
   });
