@@ -981,7 +981,7 @@ thumbnailToolbarImage : { topLeft: 'select', topRight : 'share,featured,download
 thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,counter' },
   thumbnailDisplayInterval : 30,
 // CHANGED
-thumbnailDisplayTransition : 'SCALEDOWN',
+thumbnailDisplayTransition : 'fadeIn',
 // NEW
 thumbnailDisplayTransitionDuration: 240,
 // NEW
@@ -4120,10 +4120,10 @@ console.log('#DisplayPhoto : '+  imageIdx);
 
         var tags=null;
         if( jQuery(item).attr('data-ngtags') !== undefined ) {
-          ID=jQuery(item).attr('data-ngtags');
+          tags=jQuery(item).attr('data-ngtags');
         }
         if( jQuery(item).attr('data-ngTags') !== undefined ) {
-          ID=jQuery(item).attr('data-ngTags');
+          tags=jQuery(item).attr('data-ngTags');
         }
 
         var newItem=NGY2Item.New( G, title, description, ID, albumID, kind, tags );
@@ -4160,6 +4160,64 @@ console.log('#DisplayPhoto : '+  imageIdx);
           width: { l1 : { xs:tw, sm:tw, me:tw, la:tw, xl:tw }, lN : { xs:tw, sm:tw, me:tw, la:tw, xl:tw } },
           height: { l1 : { xs:th, sm:th, me:th, la:th, xl:th }, lN : { xs:th, sm:th, me:th, la:th, xl:th } }
         };
+
+        // Exif - model
+        if( jQuery(item).attr('data-ngexifmodel') !== undefined ) {
+          newItem.exif.model=jQuery(item).attr('data-ngexifmodel');
+        }
+        if( jQuery(item).attr('data-ngExifModel') !== undefined ) {
+          newItem.exif.model=jQuery(item).attr('data-ngExifModel');
+        }
+        // Exif - flash
+        if( jQuery(item).attr('data-ngexifflash') !== undefined ) {
+          newItem.exif.flash=jQuery(item).attr('data-ngexifflash');
+        }
+        if( jQuery(item).attr('data-ngExifFlash') !== undefined ) {
+          newItem.exif.flash=jQuery(item).attr('data-ngExifFlash');
+        }
+        // Exif - focallength
+        if( jQuery(item).attr('data-ngexiffocallength') !== undefined ) {
+          newItem.exif.focallength=jQuery(item).attr('data-ngexiffocallength');
+        }
+        if( jQuery(item).attr('data-ngExifFocalLength') !== undefined ) {
+          newItem.exif.focallength=jQuery(item).attr('data-ngExifFocalLength');
+        }
+        // Exif - fstop
+        if( jQuery(item).attr('data-ngexiffstop') !== undefined ) {
+          newItem.exif.fstop=jQuery(item).attr('data-ngexiffstop');
+        }
+        if( jQuery(item).attr('data-ngExifFStop') !== undefined ) {
+          newItem.exif.fstop=jQuery(item).attr('data-ngExifFStop');
+        }
+        // Exif - exposure
+        if( jQuery(item).attr('data-ngexifexposure') !== undefined ) {
+          newItem.exif.exposure=jQuery(item).attr('data-ngexifexposure');
+        }
+        if( jQuery(item).attr('data-ngExifExposure') !== undefined ) {
+          newItem.exif.exposure=jQuery(item).attr('data-ngExifExposure');
+        }
+        // Exif - iso
+        if( jQuery(item).attr('data-ngexifiso') !== undefined ) {
+          newItem.exif.iso=jQuery(item).attr('data-ngexifiso');
+        }
+        if( jQuery(item).attr('data-ngExifIso') !== undefined ) {
+          newItem.exif.iso=jQuery(item).attr('data-ngExifIso');
+        }
+        // Exif - time
+        if( jQuery(item).attr('data-ngexiftime') !== undefined ) {
+          newItem.exif.time=jQuery(item).attr('data-ngexiftime');
+        }
+        if( jQuery(item).attr('data-ngExifTime') !== undefined ) {
+          newItem.exif.time=jQuery(item).attr('data-ngExifTime');
+        }
+        // Exif - location
+        if( jQuery(item).attr('data-ngexiflocation') !== undefined ) {
+          newItem.exif.time=jQuery(item).attr('data-ngexiflocation');
+        }
+        if( jQuery(item).attr('data-ngExifLocation') !== undefined ) {
+          newItem.exif.time=jQuery(item).attr('data-ngExifLocation');
+        }
+
         
         newItem.contentIsLoaded=true;
 
@@ -5420,16 +5478,13 @@ console.log(G.O.kind);
     // Download an image
     function DownloadImage(idx) {
       var url=G.I[idx].src;
-      // var $a = document.createElement('a');
-      // $a.download = url.split('.').pop();
-      // $a.href = url;
-      // $a.click();
-var a = document.createElement('a');
-a.href = url;;
-a.download = "output.png";
-document.body.appendChild(a);
-a.click();
-document.body.removeChild(a);      
+
+      var a = document.createElement('a');
+      a.href = url;;
+      a.download = url.split('.').pop();
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);      
       
     }
     
@@ -7101,7 +7156,7 @@ document.body.removeChild(a);
       if( document.fullscreenEnabled || document.webkitFullscreenEnabled || document.msFullscreenEnabled || document.mozFullScreenEnabled) {
         G.supportFullscreenAPI=true;
       } else {
-        NGY2Tools.nanoConsoleLog('Your browser does not support the fullscreen API. Fullscreen button will not be displayed.');
+        NGY2Tools.NanoConsoleLog('Your browser does not support the fullscreen API. Fullscreen button will not be displayed.');
       }
 
       // cache some thumbnails data (sizes, styles...)
