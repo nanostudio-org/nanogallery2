@@ -1638,7 +1638,7 @@ fnThumbnailSelection : null,
     G.colorScheme_light = {
       navigationBar : { background: 'none', borderTop: '', borderBottom: '', borderRight: '', borderLeft: '' },
       navigationBreadcrumb : { background: '#eee', color: '#000', colorHover: '#333', borderRadius: '6px' },
-      navigationFilter : { background: '#eee', color: '#222', background: '#eee', colorSelected: '#000', backgroundSelected: '#eee', borderRadius: '6px' },
+      navigationFilter : { background: '#eee', color: '#222', colorSelected: '#000', backgroundSelected: '#eee', borderRadius: '6px' },
       thumbnail : { background: '#000', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#eee', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '' },
       thumbnailIcon : { margin: '5px', color: '#fff' },
       pagination : { background: '#eee', backgroundSelected: '#aaa', color: '#000', borderRadius: '4px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
