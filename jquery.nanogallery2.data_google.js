@@ -1,7 +1,7 @@
 /**!
- * @preserve nanogallery2 v0.1.0
- * Demo: http://nanogallery2.brisbois.fr
- * Sources: https://github.com/Kris-B/nanogallery1
+ * @preserve nanogallery2 - javascript image gallery
+ * Homepage: http://nanogallery2.nanostudio.org
+ * Sources: https://github.com/nanostudio-org/nanogallery2
  *
  * License: For personal, non-profit organizations, or open source projects (without any kind of fee), you may use nanoGALLERY for jQuery for free. 
  * -------- ALL OTHER USES REQUIRE THE PURCHASE OF A PROFESSIONAL LICENSE.
@@ -339,7 +339,7 @@
           // albums
           // the Google API returns incorrect height/width values
           if( G.tn.settings.width[level][sizes[i]] != 'auto' ) {
-            tn.width[level][sizes[i]]=data.media$group.media$thumbnail[startI+i].width;
+//            tn.width[level][sizes[i]]=data.media$group.media$thumbnail[startI+i].width;
           }
           else {
             var url=tn.url[level][sizes[i]].substring(0, tn.url[level][sizes[i]].lastIndexOf('/'));
@@ -348,7 +348,7 @@
           }
           
           if( G.tn.settings.height[level][sizes[i]] != 'auto' ) { 
-            tn.height[level][sizes[i]]=data.media$group.media$thumbnail[startI+i].height;
+//            tn.height[level][sizes[i]]=data.media$group.media$thumbnail[startI+i].height;
           }
           else {
               var url=tn.url[level][sizes[i]].substring(0, tn.url[level][sizes[i]].lastIndexOf('/'));
@@ -369,16 +369,25 @@
         thumbSizes:''
       };
 
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.xs, G.tn.settings.height.l1.xs, G.tn.settings.width.l1.xsc, G.tn.settings.height.l1.xsc );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.sm, G.tn.settings.height.l1.sm, G.tn.settings.width.l1.smc, G.tn.settings.height.l1.smc );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.me, G.tn.settings.height.l1.me, G.tn.settings.width.l1.mec, G.tn.settings.height.l1.mec );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.la, G.tn.settings.height.l1.la, G.tn.settings.width.l1.lac, G.tn.settings.height.l1.lac );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.xl, G.tn.settings.height.l1.xl, G.tn.settings.width.l1.xlc, G.tn.settings.height.l1.xlc );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.xs, G.tn.settings.height.lN.xs, G.tn.settings.width.lN.xsc, G.tn.settings.height.lN.xsc );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.sm, G.tn.settings.height.lN.sm, G.tn.settings.width.lN.smc, G.tn.settings.height.lN.smc );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.me, G.tn.settings.height.lN.me, G.tn.settings.width.lN.mec, G.tn.settings.height.lN.mec );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.la, G.tn.settings.height.lN.la, G.tn.settings.width.lN.lac, G.tn.settings.height.lN.lac );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.xl, G.tn.settings.height.lN.xl, G.tn.settings.width.lN.xlc, G.tn.settings.height.lN.xlc );
+      var sfL1=1;
+      if( G.thumbnailCrop.l1 === true ) {
+        sfL1=G.O.thumbnailCropScaleFactor;
+      }
+      var sfLN=1;
+      if( G.thumbnailCrop.lN === true ) {
+        sfLN=G.O.thumbnailCropScaleFactor;
+      }
+
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.xs*sfL1, G.tn.settings.height.l1.xs*sfL1, G.tn.settings.width.l1.xsc, G.tn.settings.height.l1.xsc );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.sm*sfL1, G.tn.settings.height.l1.sm*sfL1, G.tn.settings.width.l1.smc, G.tn.settings.height.l1.smc );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.me*sfL1, G.tn.settings.height.l1.me*sfL1, G.tn.settings.width.l1.mec, G.tn.settings.height.l1.mec );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.la*sfL1, G.tn.settings.height.l1.la*sfL1, G.tn.settings.width.l1.lac, G.tn.settings.height.l1.lac );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.xl*sfL1, G.tn.settings.height.l1.xl*sfL1, G.tn.settings.width.l1.xlc, G.tn.settings.height.l1.xlc );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.xs*sfLN, G.tn.settings.height.lN.xs*sfLN, G.tn.settings.width.lN.xsc, G.tn.settings.height.lN.xsc );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.sm*sfLN, G.tn.settings.height.lN.sm*sfLN, G.tn.settings.width.lN.smc, G.tn.settings.height.lN.smc );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.me*sfLN, G.tn.settings.height.lN.me*sfLN, G.tn.settings.width.lN.mec, G.tn.settings.height.lN.mec );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.la*sfLN, G.tn.settings.height.lN.la*sfLN, G.tn.settings.width.lN.lac, G.tn.settings.height.lN.lac );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.xl*sfLN, G.tn.settings.height.lN.xl*sfLN, G.tn.settings.width.lN.xlc, G.tn.settings.height.lN.xlc );
     }
     
     function GoogleAddOneThumbSize(thumbSizes, v1, v2, c1, c2 ) {

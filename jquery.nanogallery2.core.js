@@ -1,7 +1,7 @@
 /**!
- * @preserve nanogallery2 v0.1.0
- * Demo: http://nanogallery2.brisbois.fr
- * Sources: https://github.com/Kris-B/nanogallery2
+ * @preserve nanogallery2 - javascript image gallery
+ * Homepage: http://nanogallery2.nanostudio.org
+ * Sources: https://github.com/nanostudio-org/nanogallery2
  *
  * License: For personal, non-profit organizations, or open source projects (without any kind of fee), you may use nanogallery2 for free. 
  * -------- ALL OTHER USES REQUIRE THE PURCHASE OF A PROFESSIONAL LICENSE.
@@ -905,6 +905,7 @@ galleryPaginationMode : 'rectangles',  // 'dots', 'rectangles', 'numbers'
 
 // NEW
 thumbnailCrop: true,
+thumbnailCropScaleFactor: 1.5,
 
 // REMOVE/REPLACED by galleryMaxRows/galleryL1MaxRows
 // paginationMaxLinesPerPage : 1,
@@ -1356,9 +1357,15 @@ fnThumbnailSelection : null,
             G.layout.prerequisite.imageSize=true;
             return;
           }
-          G.layout.support.rows=true;
-          G.layout.prerequisite.imageSize=false;
+          
           G.layout.engine='GRID';
+          G.layout.support.rows=true;
+          if( G.thumbnailCrop.Get() === true ) {
+            G.layout.prerequisite.imageSize=true;
+          }
+          else {
+            G.layout.prerequisite.imageSize=false;
+          }
         }
       }
     };
@@ -2460,6 +2467,38 @@ fnThumbnailSelection : null,
               item.thumbs.width[G.GOM.curNavLevel][G.GOM.curWidth]=curTn.imageWidth;
               item.thumbs.height[G.GOM.curNavLevel][G.GOM.curWidth]=curTn.imageHeight;
  
+              if( G.layout.engine == 'GRID' && G.thumbnailCrop.Get() === true && item.$getElt('.nGY2GThumbnailImg') !== null ) {
+                // special case (GRID + cropped thumbnails) -> just reposition the image in the thumbnail
+                if( item.thumbImg().height > item.thumbImg().width ) {
+                  // portrait
+                  item.$getElt('.nGY2GThumbnailImg').css({ width: G.tn.settings.getW()+'px' });
+                }
+                else {
+                  // paysage
+
+                  // step 1: adjust height
+                  var r2=G.tn.settings.getH()/item.thumbImg().height;
+                  
+                  var newH= G.tn.settings.getH();
+                  var newW= item.thumbImg().width*r2;
+                  
+                  // step 2: check if width needs to be adjusted
+                  if( newW >= G.tn.settings.getW() ) {
+                    // no adjustement
+                    var d=(item.thumbImg().width*r2-G.tn.settings.getW()) / 2;
+                    item.$getElt('.nGY2GThumbnailImg').css({ height: G.tn.settings.getH()+'px',left: d+'px' });
+                  }
+                  else {
+                    // yes, adjust width
+                    // after scaling to adjust the height, the width is too narrow => upscale again to fit width
+                    var rW=G.tn.settings.getW()/item.thumbImg().width;
+                    var w=item.thumbImg().width*rW;
+                    item.$getElt('.nGY2GThumbnailImg').css({ width: w+'px' });
+                  }
+                }
+              }
+
+              // resize the gallery
               G.GalleryResizeThrottled();
               
               // set the retrieved size to all levels with same configuration  
@@ -3191,7 +3230,6 @@ fnThumbnailSelection : null,
 
       newElt[newEltIdx++]='    <div class="nGY2GThumbnailImage" style="width:'+w+'px;height:'+h+'px;"><img class="nGY2GThumbnailImg" src="'+G.emptyGif+'" alt="" style="max-width:'+w+'px;max-height:'+h+'px;" ></div>';
       newElt[newEltIdx++]='    <div class="nGY2GThumbnailAlbumUp" style="width:'+w+'px;height:'+h+'px;">'+G.O.icons.thumbnailAlbumUp+'</div>';
-      // newElt[newEltIdx++]='    <div class="nGY2GThumbnailAlbumUp" style="width:'+w+'px;height:'+h+'px;"></div>';
       newElt[newEltIdx++]='  </div>';
       newElt[newEltIdx++]='</div>';
       
@@ -3201,7 +3239,7 @@ fnThumbnailSelection : null,
       $newDiv.data('index',GOMidx);
       item.$getElt('.nGY2GThumbnailImg').data('index',GOMidx);
       
-      return $newDiv;
+      return;
     }
 
     
@@ -3214,7 +3252,8 @@ fnThumbnailSelection : null,
       item.$Elts=[];
 
       if( item.kind == 'albumUp' ) {
-        return { e$: ThumbnailBuildAlbumpUp( item, idx, GOMidx), cIS:false };
+        ThumbnailBuildAlbumpUp( item, idx, GOMidx);
+        return;
       }
 
       var newElt=[],
@@ -3222,14 +3261,8 @@ fnThumbnailSelection : null,
 
       newElt[newEltIdx++]='<div class="nGY2GThumbnail" style="display:none;opacity:0;" ><div class="nGY2GThumbnailSub '+(G.O.thumbnailSelectable && item.selected?"nGY2GThumbnailSubSelected":"")+'">';
       
-      var checkImageSize=false,
-      src=item.thumbImg().src;
-
-      if( ( G.layout.engine == 'CASCADING' && item.thumbImg().height == 0) || ( G.layout.engine == 'JUSTIFIED' && item.thumbImg().width == 0) ) {
-        checkImageSize=true;
-      }
-
-      var sTitle=getThumbnailTitle(item),
+      var src=item.thumbImg().src,
+      sTitle=getThumbnailTitle(item),
       sDesc=getTumbnailDescription(item);
       
       // image
@@ -3242,17 +3275,36 @@ fnThumbnailSelection : null,
           break;
         default:    // GRID
           var imgSize='max-width:'+G.tn.settings.getW()+'px;max-height:'+G.tn.settings.getH()+'px;'
+          // crop images => no black border
           if( G.thumbnailCrop.Get() == true && item.thumbImg().height > 0 && item.thumbImg().width > 0 ) {
             if( item.thumbImg().height > item.thumbImg().width ) {
+              // portrait
               imgSize='width:'+G.tn.settings.getW()+'px;';
             }
             else {
-              var r=item.thumbImg().width/item.thumbImg().height;
-              var d=(G.tn.settings.getH()*r-G.tn.settings.getH())/2;
-              imgSize='height:'+G.tn.settings.getH()+'px;left:-'+d+'px;';
+              // paysage
+
+              // step 1: adjust height
+              var r2=G.tn.settings.getH()/item.thumbImg().height;
+              
+              var newH= G.tn.settings.getH();
+              var newW= item.thumbImg().width*r2;
+              
+              // step 2: check if width needs to be adjusted
+              if( newW >= G.tn.settings.getW() ) {
+                // no adjustement
+                var d=-(item.thumbImg().width*r2-G.tn.settings.getW()) / 2;
+                imgSize='height:'+G.tn.settings.getH()+'px;left:'+d+'px;';
+              }
+              else {
+                // yes, adjust width
+                // after scaling to adjust the height, the width is too narrow => upscale again to fit width
+                var rW=G.tn.settings.getW()/item.thumbImg().width;
+                var w=item.thumbImg().width*rW;
+                imgSize='width:'+w+'px;';
+              }
             }
           }
-          // newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="width:'+G.tn.settings.getW()+'px;height:'+G.tn.settings.getH()+'px;"><img class="nGY2GThumbnailImg" src="'+src+'" alt="'+sTitle+'" style="max-width:'+G.tn.settings.getW()+'px;max-height:'+G.tn.settings.getH()+'px;" ></div>';
           newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="width:'+G.tn.settings.getW()+'px;height:'+G.tn.settings.getH()+'px;"><img class="nGY2GThumbnailImg" src="'+src+'" alt="'+sTitle+'" style="'+imgSize+'" ></div>';
           break;
       }
@@ -3262,7 +3314,6 @@ fnThumbnailSelection : null,
 
       // annotation (=area for labels + icons)
       if( G.O.thumbnailLabel.get('display') == true ) {
-        // newElt[newEltIdx++]= '<div class="nGY2GThumbnailAnnotation" '+G.tn.style.getAnnotation()+'>';
         // Labels: title and description
         newElt[newEltIdx++]= '  <div class="nGY2GThumbnailLabel" '+ G.tn.style.getLabel(item) +'>';
         if( item.kind == 'album' ) {
@@ -3270,11 +3321,9 @@ fnThumbnailSelection : null,
         }
         else {
           newElt[newEltIdx++]= '    <div class="nGY2GThumbnailTitle nGY2GThumbnailImageTitle" '+G.tn.style.getTitle()+'>'+G.O.icons.thumbnailImage + sTitle+'</div>';
-          // newElt[newEltIdx++]= '    <div class="nGY2GThumbnailTitle nGY2GThumbnail'+(item.kind == 'album' ? 'Album' : 'Image')+'Title" '+G.tn.style.getTitle()+'>'+svg+sTitle+'</div>';
         }
         newElt[newEltIdx++]= '    <div class="nGY2GThumbnailDescription" '+G.tn.style.getDesc()+'>'+sDesc+'</div>';
         newElt[newEltIdx++]= '  </div>';
-        // newElt[newEltIdx++]= '</div>';
       }
 
       // Tool layer
@@ -3292,7 +3341,6 @@ fnThumbnailSelection : null,
       
       // Custom init function
       if( typeof G.O.fnThumbnailInit == 'function' ) { 
-        // G.O.fnThumbnailInit($newDiv, item, ExposedObjects());
         G.O.fnThumbnailInit($newDiv, item, GOMidx);
       }
 
@@ -3300,7 +3348,7 @@ fnThumbnailSelection : null,
         ThumbnailOverInit(GOMidx);
       }
       
-      return { e$:$newDiv, cIS:checkImageSize };
+      return ;
     }
 
     
@@ -4326,7 +4374,6 @@ console.log('#DisplayPhoto : '+  imageIdx);
       if( G.O.whiteList != '' ) { G.whiteList=G.O.whiteList.toUpperCase().split('|'); }
       if( G.O.albumList != '' ) { G.albumList=G.O.albumList.toUpperCase().split('|'); }
 
-        console.log(G.O.thumbnailCrop);
       // thumbnail image crop
       if( typeof G.O.thumbnailCrop == 'boolean' ) {
         G.thumbnailCrop.lN=G.O.thumbnailCrop;
@@ -4672,7 +4719,6 @@ console.log('#DisplayPhoto : '+  imageIdx);
           break;
         // JSON, Flickr, Picasa, ...
         default:
-console.log(G.O.kind);
         jQuery.nanogallery2['data_'+G.O.kind](G, 'Init' );
       }
 
@@ -5854,8 +5900,10 @@ console.log(G.O.kind);
 
       G.$E.conVw=jQuery('<div class="nGY2Viewer" itemscope itemtype="http://schema.org/ImageObject"></div>').appendTo(G.$E.conVwCon);
 
-      // avoid pinch zoom
-      G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});      
+// avoid pinch zoom
+G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});      
+// TODO -> still required?
+
       
       var sImg='',
       l=G.I.length;

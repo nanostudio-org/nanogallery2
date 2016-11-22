@@ -220,11 +220,18 @@
     }
 
     function FlickrRetrieveImages(tn, item, level ) {
+
+      var sf=1;
+      if( G.thumbnailCrop[level] === true ) {
+        sf=G.O.thumbnailCropScaleFactor;
+      }
+    
+    
       var sizes=['xs','sm','me','la','xl'];
       for(var i=0; i<sizes.length; i++ ) {
         if( G.tn.settings.width[level][sizes[i]] == 'auto' || G.tn.settings.width[level][sizes[i]] == '' ) {
           var sdir='height_';
-          var tsize=Math.ceil(G.tn.settings.height[level][sizes[i]]*G.tn.scale);
+          var tsize=Math.ceil(G.tn.settings.height[level][sizes[i]]*G.tn.scale*sf);
           var one=FlickrRetrieveOneImage(sdir, tsize, item );
           tn.url[level][sizes[i]]=one.url;
           tn.width[level][sizes[i]]=one.width;
@@ -233,7 +240,7 @@
         else 
           if( G.tn.settings.height[level][sizes[i]] == 'auto' || G.tn.settings.height[level][sizes[i]] == '' ) {
             var sdir='width_';
-            var tsize=Math.ceil(G.tn.settings.width[level][sizes[i]]*G.tn.scale);
+            var tsize=Math.ceil(G.tn.settings.width[level][sizes[i]]*G.tn.scale*sf);
             var one=FlickrRetrieveOneImage(sdir, tsize, item );
             tn.url[level][sizes[i]]=one.url;
             tn.width[level][sizes[i]]=one.width;
@@ -241,10 +248,10 @@
           }
           else {
             var sdir='height_';
-            var tsize=Math.ceil(G.tn.settings.height[level][sizes[i]]*G.tn.scale);
+            var tsize=Math.ceil(G.tn.settings.height[level][sizes[i]]*G.tn.scale*sf);
             if( G.tn.settings.width[level][sizes[i]] > G.tn.settings.height[level][sizes[i]] ) {
               sdir='width_';
-              tsize=Math.ceil(G.tn.settings.width[level][sizes[i]]*G.tn.scale);
+              tsize=Math.ceil(G.tn.settings.width[level][sizes[i]]*G.tn.scale*sf);
             }
             var one=FlickrRetrieveOneImage(sdir, tsize, item );
             tn.url[level][sizes[i]]=one.url;
