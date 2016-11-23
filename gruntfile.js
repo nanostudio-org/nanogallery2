@@ -53,6 +53,7 @@ module.exports = function(grunt) {
           dotfiles: true,
           add: true,
           silent: true,
+          clone: 'dist',
           user: {
             name: 'Kris-B',
             email: 'chr@brisbois.fr'
@@ -60,7 +61,7 @@ module.exports = function(grunt) {
           branch: 'master',
           repo: 'https://' + process.env.GITHUB_API_KEY + '@github.com/nanostudio-org/nanogallery2.git'
         },
-        src: ['**']
+        src: ['**/*']
       }
     });
       
