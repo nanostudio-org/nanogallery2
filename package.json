@@ -17,7 +17,7 @@
     "grunt-gh-pages": "latest"
   },
   "scripts": {
-    "test": "grunt build-minimal"
+    "build": "grunt build-minimal"
   },
   "repository": {
     "type": "git",
