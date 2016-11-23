@@ -20,8 +20,8 @@ module.exports = function(grunt) {
       uglify: {
         standardTarget: {
           files: {
-            'dist/jquery.nanogallery2.min.js': [
-              'dist/jquery.nanogallery2.js'
+            'dist/dist/jquery.nanogallery2.min.js': [
+              'dist/dist/jquery.nanogallery2.js'
             ]
           }
         }
@@ -36,7 +36,7 @@ module.exports = function(grunt) {
             'src/jquery.nanogallery2.data_google.js',
             'src/jquery.nanogallery2.data_flickr.js'
           ],
-          dest: 'dist/jquery.nanogallery2.js'
+          dest: 'dist/dist/jquery.nanogallery2.js'
         },
         demonstration: {
           src: [
