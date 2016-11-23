@@ -1,10 +1,9 @@
 {
-  "name": "nanogallery2",
-  "version": "0.9",
+  "name": "learn-travis-YOURNAME",
+  "description": "Simple Travis-CI check for JSHint (Code Linting)",
+  "author": "your name here :-)",
+  "version": "0.0.2",
   "homepage": "http://nanogallery2.nanostudio.org",
-  "author": "Christophe Brisbois <chr@brisbois.fr>",
-  "description": "the image gallery for your website",
-  "main": "dist/jquery.nanogallery2.min.js",
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-bump": "0.0.13",
@@ -13,31 +12,10 @@
     "grunt-contrib-copy": "^0.7.0",
     "grunt-contrib-jshint": "latest",
     "grunt-contrib-qunit": "latest",
-    "grunt-contrib-uglify": "latest",
+    "grunt-contrib-uglify": "^0.9.2",
     "grunt-gh-pages": "latest"
   },
   "scripts": {
     "build": "grunt build-nanogallery2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/nanostudio-org/nanogallery2.git"
-  },
-  "keywords": [
-    "nanogallery",
-    "nanogallery2",
-    "image",
-    "gallery",
-    "photo",
-    "photoset",
-    "slideshow",
-    "flickr",
-    "google photos",
-    "googleplus",
-    "picasa",
-    "swipe",
-    "responsive",
-    "jquery-plugin"
-  ],
-  "license": "Dual: GPLv3 and commercial"
+  }
 }
