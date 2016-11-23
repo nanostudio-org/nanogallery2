@@ -59,7 +59,7 @@ module.exports = function(grunt) {
       }
     });
       
-    grunt.registerTask('build-minimal', [
+    grunt.registerTask('build-nanogallery2', [
       'concat:package',
       'uglify:standardTarget',
       /* 'uglify:standardTarget',
