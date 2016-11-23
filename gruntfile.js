@@ -8,6 +8,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-codepainter');
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-gh-pages');
     
   var banner = [
         '/* <%= pkg.name %> - v<%= pkg.version %> - ',
@@ -48,7 +49,7 @@ module.exports = function(grunt) {
       },
       'gh-pages': {
         options: {
-          base: 'build',
+          base: 'dist',
           dotfiles: true,
           add: true,
           silent: true,
@@ -56,7 +57,7 @@ module.exports = function(grunt) {
             name: 'Kris-B',
             email: 'chr@brisbois.fr'
           },
-          branch: 'gh-pages',
+          branch: 'master',
           repo: 'https://' + process.env.GITHUB_API_KEY + '@github.com/nanostudio-org/nanogallery2.git'
         },
         src: ['**']
@@ -65,7 +66,8 @@ module.exports = function(grunt) {
       
     grunt.registerTask('build-nanogallery2', [
       'concat:package',
-      'uglify:standardTarget'
+      'uglify:standardTarget',
+      'gh-pages'
       /* 'uglify:standardTarget',
       'concat:minimalDebug',
       'yuidoc',
