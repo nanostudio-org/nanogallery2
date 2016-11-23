@@ -2,6 +2,7 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-gh-pages');
 
   var banner = [
@@ -12,11 +13,12 @@ module.exports = function(grunt) {
     grunt.initConfig({
       pkg: grunt.file.readJSON('package.json'),
       uglify: {
-      standardTarget: {
-        files: {
-          'dist/jquery.nanogallery2.min.js': [
-            'dist/jquery.nanogallery2.js'
-          ]
+        standardTarget: {
+          files: {
+            'dist/jquery.nanogallery2.min.js': [
+              'dist/jquery.nanogallery2.js'
+            ]
+          }
         }
       },
       concat: {
@@ -25,9 +27,9 @@ module.exports = function(grunt) {
         },
         package: {
           src: [
-            'jquery.nanogallery2.core.js',
-            'jquery.nanogallery2.data_google.js',
-            'jquery.nanogallery2.data_flickr.js'
+            'src/jquery.nanogallery2.core.js',
+            'src/jquery.nanogallery2.data_google.js',
+            'src/jquery.nanogallery2.data_flickr.js'
           ],
           dest: 'dist/jquery.nanogallery2.js'
         },
