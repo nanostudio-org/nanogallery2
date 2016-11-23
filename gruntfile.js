@@ -52,7 +52,7 @@ module.exports = function(grunt) {
           base: 'dist',
           dotfiles: true,
           add: true,
-          silent: true,
+          silent: false,
           clone: 'dist',
           user: {
             name: 'Kris-B',
