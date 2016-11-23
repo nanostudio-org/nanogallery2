@@ -52,14 +52,13 @@ module.exports = function(grunt) {
           base: 'dist',
           dotfiles: true,
           add: true,
-          silent: false,
-          clone: 'dist',
+          silent: true,
           user: {
             name: 'Kris-B',
             email: 'chr@brisbois.fr'
           },
           branch: 'master',
-          repo: 'https://' + process.env.GITHUB_API_KEY + '@github.com/nanostudio-org/nanogallery2.git'
+          repo: 'https://' + process.env.GITHUB_API_KEY + '@github.com/nanostudio-org/nanogallery2.git/dist'
         },
         src: ['**/*']
       }
