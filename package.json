@@ -1,0 +1,32 @@
+{
+  "name": "nanogallery2",
+  "version": "0.9",
+  "homepage": "http://nanogallery2.nanostudio.org",
+  "author": "Christophe Brisbois <chr@brisbois.fr>",
+  "description": "the image gallery for your website",
+  "main": "dist/jquery.nanogallery2.min.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nanostudio-org/nanogallery2.git"
+  },
+  "keywords": [
+    "nanogallery",
+    "nanogallery2",
+    "image",
+    "gallery",
+    "photo",
+    "photoset",
+    "slideshow",
+    "flickr",
+    "google photos",
+    "googleplus",
+    "picasa",
+    "swipe",
+    "responsive",
+    "jquery-plugin"
+  ],
+  "license": "Dual: GPLv3 and commercial"
+}
