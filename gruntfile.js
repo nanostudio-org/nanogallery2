@@ -61,7 +61,7 @@ module.exports = function(grunt) {
       
     grunt.registerTask('build-nanogallery2', [
       'concat:package',
-      'uglify:standardTarget',
+      'uglify:standardTarget'
       /* 'uglify:standardTarget',
       'concat:minimalDebug',
       'yuidoc',
