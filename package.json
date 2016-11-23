@@ -16,6 +16,6 @@
     "grunt-gh-pages": "latest"
   },
   "scripts": {
-    "build": "grunt build-nanogallery2"
+    "test": "grunt build-nanogallery2"
   }
 }
