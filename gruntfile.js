@@ -58,7 +58,7 @@ module.exports = function(grunt) {
             email: 'chr@brisbois.fr'
           },
           branch: 'master',
-          repo: 'https://' + process.env.GITHUB_API_KEY + '@github.com/nanostudio-org/nanogallery2.git/dist'
+          repo: 'https://' + process.env.GITHUB_API_KEY + '@github.com/nanostudio-org/nanogallery2.git'
         },
         src: ['**/*']
       }
