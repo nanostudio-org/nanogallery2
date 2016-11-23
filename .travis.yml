@@ -5,5 +5,5 @@ before_script:
   - npm install grunt-cli -g
 branches:
   only:
-  - dev-gh-pages
+#  - dev-gh-pages
   - master
