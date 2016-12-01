@@ -1,0 +1,1 @@
+copy /b jquery.nanogallery2.core.js + jquery.nanogallery2.data_flickr.js + jquery.nanogallery2.data_google.js jquery.nanogallery2.js
