@@ -738,8 +738,10 @@ Now supports multiple GooglePlus (ex Picasa) private albums.
             }
 
             // handle some special cases
-            if( hoverIn && effect.element == '.nGY2GThumbnail' && effect.type == 'scale' ) {
-              setElementOnTop('', this.$getElt(effect.element) );
+            if( hoverIn && effect.element == '.nGY2GThumbnail' && ( effect.type == 'scale' || effect.type == 'rotateX') ) {
+              this.G.GOM.lastZIndex++;
+              this.$getElt(effect.element).css('z-index',this.G.GOM.lastZIndex);
+              // setElementOnTop(this.G.$E.base, this.$getElt(effect.element) );
             }
 
             // animation
@@ -880,7 +882,7 @@ Now supports multiple GooglePlus (ex Picasa) private albums.
     breadcrumbAutoHideTopLevel : true,
     displayBreadcrumb : true,
 // NEW
-breadcrumbOnlyCurrentLevel : false,
+breadcrumbOnlyCurrentLevel : true,
 // NEW
 breadcrumbHideIcons : false,
     theme : 'nGY2',
@@ -1562,7 +1564,8 @@ fnThumbnailSelection : null,
       userEvents: null,
       hammertime: null,
       curNavLevel: 'l1',                            // current navigation level (l1 or LN)
-      curWidth: 'me'
+      curWidth: 'me',
+      lastZIndex: 0                                 // used to put a thumbnail on top of all others (for exemple for scale hover effect)
     };
     
     // One GOM item (thumbnail)
@@ -7304,7 +7307,11 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
         G.O.$markup=$elements;
       }
       G.$E.base.text('');
-
+      G.GOM.lastZIndex = parseInt(G.$E.base.css('z-index'));
+      if( isNaN(G.GOM.lastZIndex) ) {
+        G.GOM.lastZIndex=0;
+      }
+      
       // RTL or LTR
       var sRTL='';
       if( G.O.RTL ) {
