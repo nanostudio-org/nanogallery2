@@ -569,7 +569,9 @@
           <tr>
             <td>Contribution</td>
             <td><a ref="." class="btn btn-primary btn-lg"><i class="fa fa-cart-plus" aria-hidden="true"></i> &nbsp;&nbsp; <i class="fa fa-gift" aria-hidden="true"></i> <i class="fa fa-smile-o" aria-hidden="true"></i></a></td>
-            <td><a href="." class="btn btn-primary btn-lg" ><i class="fa fa-cart-plus" aria-hidden="true"></i> &nbsp; 25€</a></td>
+            <td>
+              <a href="." class="btn btn-primary btn-lg" ><i class="fa fa-cart-plus" aria-hidden="true"></i> &nbsp; 25€</a>
+            </td>
             <td><a href="." class="btn btn-primary btn-lg"><i class="fa fa-cart-plus" aria-hidden="true"></i> &nbsp; 90€</a></td>
           </tr>
         </tbody>
@@ -579,6 +581,19 @@
       <div class="col-md-2" ></div>
     </div>
   
+<form action="/your-server-side-code" method="POST">
+<script
+  src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+  data-key="pk_test_MVoEqBllGSkK0HmSsG4H2Pke"
+  data-amount="2500"
+  data-name="nanogallery2 website license"
+  data-description="Usage permission for commercial usage."
+  data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+  data-locale="auto"
+  data-zip-code="true"
+  data-currency="eur">
+</script>
+</form>
    
     
  
@@ -641,8 +656,10 @@
 
 
       jQuery("#nanogallery").nanogallery2({
-        kind: 'google',
-        userID: '111186676244625461692',
+        //kind: 'google',
+        //userID: '111186676244625461692',
+        kind: 'flickr',
+        userID: '149035168@N08',
         blackList: 'forhomepage|scrapbook|profil',
 //        thumbnailDisplayTransition: 'slideDown',
         thumbnailDisplayTransition: 'scaleDown_2',
@@ -656,15 +673,16 @@
         
 //thumbnailL1HoverEffect2: 'labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear|image_rotateZ_0_10|image_scale_100_130',
 //thumbnailL1HoverEffect2: '.nGY2GThumbnailSub_rotateX_0_50|labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear|image_translateX_-10px_10px',
-thumbnailL1HoverEffect2: 'thumbnail_rotateX_50deg_0deg|thumbnail_scale_1.00_1.20|labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear|image_translateX_-10px_10px',
+//thumbnailL1HoverEffect2: 'thumbnail_rotateX_20deg_0deg|thumbnail_scale_1.00_1.20|labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear|image_translateX_-10px_10px',
+thumbnailL1HoverEffect2: 'thumbnail_rotateX_10deg_-10deg|thumbnail_scale_1.00_1.40|labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear',
 
-thumbnailL1BuildInit2: 'image_scale_1.10|thumbnail_rotateX_50',
-galleryBuildInit2 : 'perspective_600px',
+//thumbnailL1BuildInit2: 'image_scale_1.10',
+//galleryBuildInit2 : 'perspective_900px',
 
         //thumbnailL1HoverEffect2: 'labelAppear',
         //thumbnailHoverEffect2: 'label_font-size_1em_2em|title_color_#ffffff_#B2E16A|label_bottom_0px_15px|toolsAppear|image_grayscale_0%_100%|image_scale_100_110_5000',
         //thumbnailHoverEffect2: 'label_font-size_1em_2em|title_backgroundColor_rgba(255,255,255,0.34)_rgba((115,166,35,0.6)|title_color_#000_#fff|label_bottom_0px_15px|toolsAppear|image_grayscale_0%_100%_500|image_scale_100_110_5000',
-//        thumbnailHoverEffect2: 'label_font-size_1em_2em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((84,132,12,0.8)|title_color_#000_#fff|toolsAppear|image_grayscale_0%_100%_500|image_scale_1.00_1.10_5000',
+        thumbnailHoverEffect2: 'label_font-size_1em_2em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((84,132,12,0.8)|title_color_#000_#fff|toolsAppear|image_grayscale_0%_100%_500|image_scale_1.00_1.10_5000',
 
         thumbnailToolbarImage : { topLeft: 'select', topRight : 'share,featured,download' },
 
@@ -675,8 +693,6 @@ galleryBuildInit2 : 'perspective_600px',
         thumbnailBorderHorizontal: 0,
         thumbnailBorderVertical: 0,
         thumbnailSelectable: false,
-        breadcrumbAutoHideTopLevel: true,
-        breadcrumbOnlyCurrentLevel: true,
         breadcrumbHideIcons: true,
         navigationFontSize: '1.2em',
         gallerySorting: 'random',
