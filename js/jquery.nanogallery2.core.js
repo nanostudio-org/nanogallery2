@@ -4539,7 +4539,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
       G.galleryFilterTags.lN=G.O.galleryFilterTags;
       G.galleryFilterTags.l1=G.O.galleryFilterTags;
       if( G.O.galleryL1FilterTags != null && G.O.galleryL1FilterTags != undefined ) {
-        G.galleryL1FilterTags.l1=G.O.galleryL1FilterTags;
+        G.galleryFilterTags.l1=G.O.galleryL1FilterTags;
       }
       
       
