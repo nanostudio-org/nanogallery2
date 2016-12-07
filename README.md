@@ -1,7 +1,6 @@
+# :red_circle: :red_circle: :red_circle: ALPHA VERSION - DO NOT USE, EVEN FOR TESTING PURPOSES!!!
 
-```diff
-- ALPHA VERSION - DO NOT USE, EVEN FOR TESTING PURPOSES!!!
-```
+
 # nanogallery2  
 
 
