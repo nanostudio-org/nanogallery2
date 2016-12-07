@@ -9,6 +9,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-gh-pages');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
     
   var banner = [
         '/* <%= pkg.name %> - v<%= pkg.version %> - ',
@@ -61,12 +62,25 @@ module.exports = function(grunt) {
           repo: 'https://' + process.env.GITHUB_API_KEY + '@github.com/nanostudio-org/nanogallery2.git'
         },
         src: ['**/*']
-      }
+      },
+      cssmin: {
+        options: {
+          shorthandCompacting: false,
+          roundingPrecision: -1
+        },
+        target: {
+          files: {
+            'dist/dist/css/nanogallery2.min.css': ['src/css/nanogallery2.css']
+          }
+        }
+      }      
+      
     });
       
     grunt.registerTask('build-nanogallery2', [
       'concat:package',
       'uglify:standardTarget',
+      'ccsmin',
       'gh-pages'
       /* 'uglify:standardTarget',
       'concat:minimalDebug',
