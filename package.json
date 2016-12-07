@@ -1,7 +1,7 @@
 {
-  "name": "learn-travis-YOURNAME",
-  "description": "Simple Travis-CI check for JSHint (Code Linting)",
-  "author": "your name here :-)",
+  "name": "nanogallery2",
+  "description": "beautiful image gallery for your website",
+  "author": "Christophe Brisbois",
   "version": "0.0.2",
   "homepage": "http://nanogallery2.nanostudio.org",
   "devDependencies": {
