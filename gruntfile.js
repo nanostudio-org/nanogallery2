@@ -19,6 +19,10 @@ module.exports = function(grunt) {
     grunt.initConfig({
       pkg: grunt.file.readJSON('package.json'),
       uglify: {
+        options: {
+          banner: banner,
+          preserveComments: 'some'
+        },
         standardTarget: {
           files: {
             'dist/dist/jquery.nanogallery2.min.js': [
