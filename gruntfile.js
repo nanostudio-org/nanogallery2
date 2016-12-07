@@ -48,6 +48,17 @@ module.exports = function(grunt) {
           dest: 'build/demonstration.html'
         }
       },
+      cssmin: {
+        options: {
+          shorthandCompacting: false,
+          roundingPrecision: -1
+        },
+        target: {
+          files: {
+            'dist/dist/css/nanogallery2.min.css': ['src/css/nanogallery2.css']
+          }
+        }
+      },      
       'gh-pages': {
         options: {
           base: 'dist',
@@ -62,25 +73,13 @@ module.exports = function(grunt) {
           repo: 'https://' + process.env.GITHUB_API_KEY + '@github.com/nanostudio-org/nanogallery2.git'
         },
         src: ['**/*']
-      },
-      cssmin: {
-        options: {
-          shorthandCompacting: false,
-          roundingPrecision: -1
-        },
-        target: {
-          files: {
-            'dist/dist/css/nanogallery2.min.css': ['src/css/nanogallery2.css']
-          }
-        }
-      }      
-      
+      }
     });
       
     grunt.registerTask('build-nanogallery2', [
       'concat:package',
       'uglify:standardTarget',
-      'ccsmin',
+      'cssmin',
       'gh-pages'
       /* 'uglify:standardTarget',
       'concat:minimalDebug',
