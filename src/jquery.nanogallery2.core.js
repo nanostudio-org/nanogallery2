@@ -3,7 +3,7 @@
  * Homepage: http://nanogallery2.nanostudio.org
  * Sources:  https://github.com/nanostudio-org/nanogallery2
  *
- * TEST
+ * TEST2
  * License:  GPLv3 and commercial licence
  * 
  * Requirements:
