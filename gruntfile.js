@@ -69,6 +69,7 @@ module.exports = function(grunt) {
           dotfiles: true,
           add: true,
           silent: true,
+          message: '[ci skip]',
           user: {
             name: 'Kris-B',
             email: 'chr@brisbois.fr'
