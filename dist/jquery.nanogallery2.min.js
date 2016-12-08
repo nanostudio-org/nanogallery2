@@ -1,5 +1,5 @@
 /* nanogallery2 - v0.0.2 - 2016-12-08 - http://nanogallery2.nanostudio.org */
-/**! TEST
+/**! TEST2
  * @preserve nanogallery2 - javascript image gallery
  * Homepage: http://nanogallery2.nanostudio.org
  * Sources:  https://github.com/nanostudio-org/nanogallery2
