@@ -1,4 +1,4 @@
-/* nanogallery2 - v0.0.2 - 2016-12-07 - http://nanogallery2.nanostudio.org */
+/* nanogallery2 - v0.0.2 - 2016-12-08 - http://nanogallery2.nanostudio.org */
 /**!
  * @preserve nanogallery2 v0.1.0
  * Demo: http://nanogallery2.brisbois.fr
