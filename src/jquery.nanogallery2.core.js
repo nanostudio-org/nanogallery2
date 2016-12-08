@@ -1,4 +1,4 @@
-/**! TEST
+/**! TEST2
  * @preserve nanogallery2 - javascript image gallery
  * Homepage: http://nanogallery2.nanostudio.org
  * Sources:  https://github.com/nanostudio-org/nanogallery2
