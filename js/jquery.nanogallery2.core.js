@@ -3,6 +3,7 @@
  * Homepage: http://nanogallery2.nanostudio.org
  * Sources:  https://github.com/nanostudio-org/nanogallery2
  *
+ * TEST3
  * License:  GPLv3 and commercial licence
  * 
  * Requirements:
@@ -20,6 +21,7 @@
  */
 
 
+ 
 /*
 
 nanoGALLERY2 v0.1.0 release notes.
@@ -1657,7 +1659,7 @@ fnThumbnailSelection : null,
       navigationBar : { background: 'none', borderTop: '', borderBottom: '', borderRight: '', borderLeft: '' },
       navigationBreadcrumb : { background: '#111', color: '#fff', colorHover: '#ccc', borderRadius: '6px' },
       navigationFilter : { color: '#ddd', background: '#111', colorSelected: '#fff', backgroundSelected: '#111', borderRadius: '6px' },
-      thumbnail : { background: '#000', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#eee', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '' },
+      thumbnail : { background: '#000', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '' },
       thumbnailIcon : { padding: '5px', color: '#fff' },
       pagination : { background: '#111', backgroundSelected: '#666', color: '#fff', borderRadius: '4px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
     };
@@ -1666,7 +1668,7 @@ fnThumbnailSelection : null,
       navigationBar : { background: 'none', borderTop: '', borderBottom: '', borderRight: '', borderLeft: '' },
       navigationBreadcrumb : { background: '#eee', color: '#000', colorHover: '#333', borderRadius: '6px' },
       navigationFilter : { background: '#eee', color: '#222', colorSelected: '#000', backgroundSelected: '#eee', borderRadius: '6px' },
-      thumbnail : { background: '#000', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#eee', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '' },
+      thumbnail : { background: '#000', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '' },
       thumbnailIcon : { padding: '5px', color: '#fff' },
       pagination : { background: '#eee', backgroundSelected: '#aaa', color: '#000', borderRadius: '4px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
     };
@@ -7367,9 +7369,7 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
       }
       
       // configure gallery depending on thumbnial hover effects
-      var effects=[];
-      effects.push(G.tn.hoverEffects.std);
-      effects.push(G.tn.hoverEffects.level1);
+      var effects=G.tn.hoverEffects.std.concat(G.tn.hoverEffects.level1);
       for( var j=0; j<effects.length; j++) {
         switch( effects[j].type ) {
           case 'scale':
