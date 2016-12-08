@@ -1,16 +1,15 @@
 /**!
- * @preserve nanogallery2 v0.1.0
- * Demo: http://nanogallery2.brisbois.fr
- * Sources: https://github.com/Kris-B/nanogallery1
+ * @preserve nanogallery2 - FLICKR data provider
+ * Homepage: http://nanogallery2.nanostudio.org
+ * Sources:  https://github.com/nanostudio-org/nanogallery2
  *
- * License: For personal, non-profit organizations, or open source projects (without any kind of fee), you may use nanoGALLERY for jQuery for free. 
- * -------- ALL OTHER USES REQUIRE THE PURCHASE OF A PROFESSIONAL LICENSE.
+ * License:  GPLv3 and commercial licence
  * 
 */
  
-// ###################################################
-// ##### nanogallery2 - module for FLICKR PHOTOS #####
-// ###################################################
+// ############################################
+// ##### nanogallery2 - module for FLICKR #####
+// ############################################
 
 
 ;(function ($) {
