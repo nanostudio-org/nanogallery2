@@ -25,8 +25,8 @@ module.exports = function(grunt) {
         },
         standardTarget: {
           files: {
-            'work/dist/jquery.nanogallery2.min.js': [
-              'work/dist/jquery.nanogallery2.js'
+            'build/dist/jquery.nanogallery2.min.js': [
+              'build/dist/jquery.nanogallery2.js'
             ]
           }
         }
@@ -41,7 +41,7 @@ module.exports = function(grunt) {
             'src/jquery.nanogallery2.data_google.js',
             'src/jquery.nanogallery2.data_flickr.js'
           ],
-          dest: 'work/dist/jquery.nanogallery2.js'
+          dest: 'build/dist/jquery.nanogallery2.js'
         },
         demonstration: {
           src: [
@@ -59,13 +59,13 @@ module.exports = function(grunt) {
         },
         target: {
           files: {
-            'work/dist/css/nanogallery2.min.css': ['src/css/nanogallery2.css']
+            'build/dist/css/nanogallery2.min.css': ['src/css/nanogallery2.css']
           }
         }
       },      
       'gh-pages': {
         options: {
-          base: 'work',
+          base: 'build',
           dotfiles: true,
           add: true,
           silent: true,
@@ -76,7 +76,7 @@ module.exports = function(grunt) {
           branch: 'master',
           repo: 'https://' + process.env.GITHUB_API_KEY + '@github.com/nanostudio-org/nanogallery2.git'
         },
-        src: ['**/*']
+        src: '**/*'
       }
     });
       
