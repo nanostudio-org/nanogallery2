@@ -41,7 +41,7 @@ module.exports = function(grunt) {
             'src/jquery.nanogallery2.data_google.js',
             'src/jquery.nanogallery2.data_flickr.js'
           ],
-          dest: 'dist/dist/jquery.nanogallery2.js'
+          dest: 'work/dist/jquery.nanogallery2.js'
         },
         demonstration: {
           src: [
@@ -59,13 +59,13 @@ module.exports = function(grunt) {
         },
         target: {
           files: {
-            'dist/dist/css/nanogallery2.min.css': ['src/css/nanogallery2.css']
+            'work/dist/css/nanogallery2.min.css': ['src/css/nanogallery2.css']
           }
         }
       },      
       'gh-pages': {
         options: {
-          base: 'dist',
+          base: 'work',
           dotfiles: true,
           add: true,
           silent: true,
