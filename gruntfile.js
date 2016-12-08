@@ -25,8 +25,8 @@ module.exports = function(grunt) {
         },
         standardTarget: {
           files: {
-            'dist/dist/jquery.nanogallery2.min.js': [
-              'dist/dist/jquery.nanogallery2.js'
+            'work/dist/jquery.nanogallery2.min.js': [
+              'work/dist/jquery.nanogallery2.js'
             ]
           }
         }
