@@ -62,62 +62,67 @@
 
       jQuery.ajaxSetup({ cache: false });
       jQuery.support.cors = true;
-      
-      var tId = setTimeout( function() {
-        // workaround to handle JSONP (cross-domain) errors
-        PreloaderDisplay(false);
-        NanoAlert('Could not retrieve AJAX data...');
-      }, 60000 );
-
-      var GI_getJSONfinished = function(data){
-        clearTimeout(tId);
-        PreloaderDisplay(false);
+      try {
         
-        GoogleParseData( albumIdx, kind, data );
-        AlbumPostProcess(albumID);
-        if( fnToCall !== null &&  fnToCall !== undefined) {
-          fnToCall( fnParam1, fnParam2, null );
-        }
-      };
+        var tId = setTimeout( function() {
+          // workaround to handle JSONP (cross-domain) errors
+          PreloaderDisplay(false);
+          NanoAlert('Could not retrieve AJAX data...');
+        }, 60000 );
 
-      var gi_data_loaded = null;
-      // load more than 1000 data -> contributor: Giovanni Chiodi
-
-      var GI_loadJSON = function(url,start_index){
-        
-        jQuery.getJSON(url+"&start-index="+start_index, 'callback=?', function(data) {
-          if (gi_data_loaded===null){
-            gi_data_loaded = data;
-          }else{
-            GI_data_loaded.feed.entry=gi_data_loaded.feed.entry.concat(data.feed.entry);
-          }
-
-          if (data.feed.openSearch$startIndex.$t+data.feed.openSearch$itemsPerPage.$t>=data.feed.openSearch$totalResults.$t){
-            //ok finito
-            GI_getJSONfinished(gi_data_loaded);
-          }else{
-            //ce ne sono ancora da caricare
-            //altra chiamata per il rimanente
-            GI_loadJSON(url,data.feed.openSearch$startIndex.$t+data.feed.openSearch$itemsPerPage.$t);
-          }
-			  })
-			  .fail( function(jqxhr, textStatus, error) {
+        var GI_getJSONfinished = function(data){
           clearTimeout(tId);
           PreloaderDisplay(false);
-
-          //alertObject(jqxhr);
-          var k=''
-          for(var key in jqxhr) {
-            k+= key + '=' + jqxhr[key] +'<br>';
+          
+          GoogleParseData( albumIdx, kind, data );
+          AlbumPostProcess(albumID);
+          if( fnToCall !== null &&  fnToCall !== undefined) {
+            fnToCall( fnParam1, fnParam2, null );
           }
-          var err = textStatus + ', ' + error + ' ' + k + '<br><br>URL:'+url;
-          NanoAlert("Could not retrieve Google data. Error: " + err);
+        };
 
-        });
-      };
+        var gi_data_loaded = null;
+        // load more than 1000 data -> contributor: Giovanni Chiodi
 
-      GI_loadJSON(url,1);
+        var GI_loadJSON = function(url,start_index){
+          
+          jQuery.getJSON(url+"&start-index="+start_index, 'callback=?', function(data) {
+            if (gi_data_loaded===null){
+              gi_data_loaded = data;
+            }else{
+              GI_data_loaded.feed.entry=gi_data_loaded.feed.entry.concat(data.feed.entry);
+            }
 
+            if (data.feed.openSearch$startIndex.$t+data.feed.openSearch$itemsPerPage.$t>=data.feed.openSearch$totalResults.$t){
+              //ok finito
+              GI_getJSONfinished(gi_data_loaded);
+            }else{
+              //ce ne sono ancora da caricare
+              //altra chiamata per il rimanente
+              GI_loadJSON(url,data.feed.openSearch$startIndex.$t+data.feed.openSearch$itemsPerPage.$t);
+            }
+          })
+          .fail( function(jqxhr, textStatus, error) {
+             clearTimeout(tId);
+            PreloaderDisplay(false);
+
+            //alertObject(jqxhr);
+            var k=''
+            for(var key in jqxhr) {
+              k+= key + '=' + jqxhr[key] +'<br>';
+            }
+            var err = textStatus + ', ' + error + ' ' + k + '<br><br>URL:'+url;
+            NanoAlert("Could not retrieve Google data. Error: " + err);
+
+          });
+          
+        };
+
+        GI_loadJSON(url,1);
+      }
+      catch(e) {
+        NanoAlert("Could not retrieve Google data. Error: " + e);
+      }
     }
 
     

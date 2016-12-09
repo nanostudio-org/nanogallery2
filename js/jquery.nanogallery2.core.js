@@ -21,29 +21,6 @@
  */
 
 
- 
-/*
-
-nanoGALLERY2 v0.1.0 release notes.
-
-
-// changes
-
-- Picasa private albums
-Now supports multiple GooglePlus (ex Picasa) private albums.
-  @old: album -> @new: hiddenAlbums
-  album=string | [string]
-  example:
-    hiddenAlbums: '5851968929721015169&authkey=Gv1sRgCJSlhdKSgoiXtgE'
-    hiddenAlbums: ['5851968929721015169&authkey=CJSlhdKSgoiXtgE','6137218671601042145?authkey=CIbGp_iFjfuMkgE'],
-  Support '?authkey' and '&authkey'
-  Hidden albums will be added to the non-hidded albums (cumulative)
-
-  
-**Visit nanogallery2 homepage for usage details: [http://nanogallery2.brisbois.fr](http://www.nanogallery.brisbois.fr/)**
-
-*/
-
 // ###########################################
 // ##### nanogallery2 as a JQUERY PLUGIN #####
 // ###########################################
@@ -412,7 +389,7 @@ Now supports multiple GooglePlus (ex Picasa) private albums.
             return item;
           };
           
-          // function to avoid XSS - Cross Site Scripting
+          // function to avoid XSS issue - Cross Site Scripting
           // original: https://github.com/janl/mustache.js/blob/master/mustache.js#L55
           var entityMap = {
             '&': '&amp;',
@@ -873,152 +850,135 @@ Now supports multiple GooglePlus (ex Picasa) private albums.
   };
  
   jQuery.nanogallery2.defaultOptions = {
-    kind : '',    // kind of the content source
-    userID : '',
-    photoset : '',
-    album: '',
-    blackList : 'scrapbook|profil', whiteList : '', albumList : '',
-    RTL : false,
+    kind :                        '',    // kind of the content source
+    userID :                      '',
+    photoset :                    '',
+    album:                        '',
+    blackList :                   'scrapbook|profil',
+    whiteList :                   '',
+    albumList :                   '',
+    RTL :                         false,
     poogleplusUseUrlCrossDomain : true,
-    flickrSkipOriginal : true,
-    breadcrumbAutoHideTopLevel : true,
-    displayBreadcrumb : true,
-// NEW
-breadcrumbOnlyCurrentLevel : true,
-// NEW
-breadcrumbHideIcons : false,
-    theme : 'nGY2',
-    colorScheme : 'dark', colorSchemeViewer : 'dark',
-    items : null,
-    itemsBaseURL : '',
-// CHANGED from itemsSelectable to :
-thumbnailSelectable : false,
-
-    jsonCharset: 'Latin', jsonProvider: '',
-
-// NEW - steps for the more button (=thumbnails lines)
-galleryDisplayMoreStep : 2,
-// NEW
-galleryDisplayMode : 'fullContent',  // fullContent, pagination (+galleryMaxRows), moreButton (+galleryDisplayMoreStep) , rows (+galleryMaxRows)
-// NEW
-galleryL1DisplayMode : null,  // pagination, fullContent, moreButton*, rows
-
-// NEW
-galleryPaginationMode : 'rectangles',  // 'dots', 'rectangles', 'numbers'
-
-// NEW
-thumbnailCrop: true,
-thumbnailCropScaleFactor: 1.5,
-
-// REMOVE/REPLACED by galleryMaxRows/galleryL1MaxRows
-// paginationMaxLinesPerPage : 1,
-// NEW
-galleryMaxRows : 2,
-galleryL1MaxRows : null,
-// NEW
-galleryLastRowFull: false,
-// galleryL1LastRowFull: null,
-
-//NEW
-galleryLayoutEngine : 'default',
-    paginationSwipe: true,
-    paginationVisiblePages : 10,
-//NEW
-paginationSwipeSensibilityVert : 10,
-
-// NEW
-galleryFilterTags : false,   // possible values: false, true, 'title', 'description'
-galleryL1FilterTags : null,   // possible values: false, true, 'title', 'description'
-// NEW --> only flickr, google+, nanophotosprovider
-galleryMaxItems: 0,   // maximum number of items per album
-galleryL1MaxItems: null,   // maximum number of items per gallery page
-
-// NEW
-gallerySorting: '',
-galleryL1Sorting: null,
-
-
-// NEW
-allowHTMLinData: false,
-
-    viewer : 'internal',
-    viewerFullscreen: false,
-    viewerDisplayLogo : true,
-    fancyBoxOptions : null,
-    imageTransition : 'swipe',
-    viewerZoom : true,
-    openOnStart : '',
-    viewerToolbar : {
-      display:true,
-      // NEW VALUES : bottomOverImage, topOverImage
-      position : 'bottomOverImage',
-      // REMOVE
-      style : 'innerImage', 
-      // NEW
-      fullWidth : true,
-      // NEW
-      align: 'center',
-      autoMinimize:0,
-      standard:'minimizeButton,label',
-      minimized:'minimizeButton,infoButton,downloadButton,linkOriginalButton,label,fullscreenButton,closeButton'
-      // minimized:'minimizeButton,label'
-    },
-// NEW
-    viewerTools : {
-      topLeft: 'pageCounter,playPauseButton', topRight:'zoomButton,shareButton,closeButton' 
-    },
-// NEW
-thumbnailLevelUp : false,
-    thumbnailAlignment : 'center',
-    thumbnailWidth : 300, thumbnailHeight : 200,
-    thumbnailGutterWidth : 2, thumbnailGutterHeight : 2,
-thumbnailBorderVertical : 2, //NEW
-thumbnailBorderHorizontal : 2, //NEW
-// NEW:
-thumbnailFeaturedKeyword : '*featured',
-    thumbnailAlbumDisplayImage : false,
-    thumbnailHoverEffect2 : 'toolsAppear',
-    thumbnailBuildInit2 : '',
-// NEW
-    galleryBuildInit2 : '',
-    
-    thumbnailLabel : { position : 'overImageOnBottom', align: 'center', display : true, displayDescription : false, titleMaxLength : 0, descriptionMaxLength : 0, hideIcons : true, title : '', titleMultiLine: false, descriptionMultiLine: false },
-// NEW
-// thumbnailToolbarImage : { position: 'topRight', content : 'share,socialShare,download,openFlick,openPicasa,likeFacebook,geolocalisation' },
-thumbnailToolbarImage : { topLeft: 'select', topRight : 'share,featured,download' },
-thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,counter' },
-  thumbnailDisplayInterval : 30,
-// CHANGED
-thumbnailDisplayTransition : 'fadeIn',
-// NEW
-thumbnailDisplayTransitionDuration: 240,
-// NEW
-galleryResizeAnimation: true,
-
-
-    thumbnailGlobalImageTitle : '', thumbnailGlobalAlbumTitle : '',
-    //thumbnailSizeSM : 480, thumbnailSizeME : 992, thumbnailSizeLA : 1200, thumbnailSizeXL : 1800,
-    breakpointSizeSM : 480, breakpointSizeME : 992, breakpointSizeLA : 1200, breakpointSizeXL : 1800,
-    fnThumbnailInit : null, fnThumbnailHoverInit : null, fnThumbnailHover : null, fnThumbnailHoverOut : null, fnThumbnailDisplayEffect : null,
-    fnViewerInfo : null,
-    fnImgToolbarCustInit : null, fnImgToolbarCustDisplay : null, fnImgToolbarCustClick : null,
-    fnProcessData : null,
-
-    
-    thumbnailOpenImage: true,
-    
-// called when the selection status of an item changed
-fnThumbnailSelection : null,
-    fnInitGallery : null,
-    touchAnimation : true, touchAutoOpenDelay : 0,
-
-    locationHash : true,
-    slideshowDelay : 3000, slideshowAutoStart : false,
+    flickrSkipOriginal :          true,
+    breadcrumbAutoHideTopLevel :  true,
+    displayBreadcrumb :           true,
+    breadcrumbOnlyCurrentLevel :  true,
+    breadcrumbHideIcons :         false,
+    theme :                       'nGY2',
+    colorScheme :                 'dark',
+    colorSchemeViewer :           'dark',
+    items :                       null,
+    itemsBaseURL :                '',
+    thumbnailSelectable :         false,
+    jsonCharset:                  'Latin',
+    jsonProvider:                 '',
+    allowHTMLinData:              false,
+    locationHash :                true,
+    slideshowDelay :              3000,
+    slideshowAutoStart :          false,
 
     debugMode: false,
-    
 
-// maxWidth : 0, --> NGY2 NO MORE USED
+    galleryDisplayMoreStep :      2,
+    galleryDisplayMode :          'fullContent',     // fullContent, pagination (+galleryMaxRows), moreButton (+galleryDisplayMoreStep) , rows (+galleryMaxRows)
+    galleryL1DisplayMode :        null,            // pagination, fullContent, moreButton*, rows
+    galleryPaginationMode :       'rectangles',   // 'dots', 'rectangles', 'numbers'
+    galleryMaxRows :              2,
+    galleryL1MaxRows :            null,
+    galleryLastRowFull:           false,
+    // galleryL1LastRowFull:      null,
+    galleryLayoutEngine :         'default',
+    paginationSwipe:              true,
+    paginationVisiblePages :      10,
+    paginationSwipeSensibilityVert : 10,
+    galleryFilterTags :           false,    // possible values: false, true, 'title', 'description'
+    galleryL1FilterTags :         null,   // possible values: false, true, 'title', 'description'
+    galleryMaxItems :             0,         // maximum number of items per album  --> only flickr, google+, nanophotosprovider
+    galleryL1MaxItems :           null,    // maximum number of items per gallery page --> only flickr, google+, nanophotosprovider
+    gallerySorting :              '',
+    galleryL1Sorting :            null,
+    galleryResizeAnimation :      true,
+
+    thumbnailCrop :               true,
+    thumbnailCropScaleFactor :    1.5,
+    thumbnailLevelUp :            false,
+    thumbnailAlignment :          'center',
+    thumbnailWidth :              300,
+    thumbnailHeight :             200,
+    thumbnailGutterWidth :        2,
+    thumbnailGutterHeight :       2,
+    thumbnailBorderVertical :     2,
+    thumbnailBorderHorizontal :   2,
+    thumbnailFeaturedKeyword :    '*featured',
+    thumbnailAlbumDisplayImage :  false,
+    thumbnailHoverEffect2 :       'toolsAppear',
+    thumbnailBuildInit2 :         '',
+    galleryBuildInit2 :           '',
+    
+    touchAnimation :              true,
+    touchAutoOpenDelay :          0,
+
+    thumbnailLabel : {
+      position :                  'overImageOnBottom',
+      align:                      'center',
+      display :                   true,
+      displayDescription :        false,
+      titleMaxLength :            0,
+      descriptionMaxLength :      0,
+      hideIcons :                 true,
+      title :                     '',
+      titleMultiLine:             false,
+      descriptionMultiLine:       false
+    },
+
+    // thumbnailToolbarImage : { position: 'topRight', content : 'share,socialShare,download,openFlick,openPicasa,likeFacebook,geolocalisation' },
+    thumbnailToolbarImage :       { topLeft: 'select', topRight : 'share,featured,download' },
+    thumbnailToolbarAlbum :       { topLeft: 'select', topRight : 'share,counter' },
+    thumbnailDisplayInterval :    30,
+    thumbnailDisplayTransition :  'fadeIn',
+    thumbnailDisplayTransitionDuration: 240,
+    thumbnailOpenImage :          true,
+    thumbnailGlobalImageTitle :   '',
+    thumbnailGlobalAlbumTitle :   '',
+    
+    viewer :                      'internal',
+    viewerFullscreen:             false,
+    viewerDisplayLogo :           true,
+    fancyBoxOptions :             null,
+    imageTransition :             'swipe',
+    viewerZoom :                  true,
+    openOnStart :                 '',
+    viewerToolbar : {
+      display :                   true,
+      position :                  'bottomOverImage',
+      fullWidth :                 true,
+      align :                     'center',
+      autoMinimize :              0,
+      standard :                  'minimizeButton,label',
+      minimized :                 'minimizeButton,infoButton,downloadButton,linkOriginalButton,label,fullscreenButton,closeButton'
+    },
+    viewerTools : {
+      topLeft :                   'pageCounter,playPauseButton',
+      topRight :                  'zoomButton,shareButton,closeButton' 
+    },
+    
+    breakpointSizeSM :            480,
+    breakpointSizeME :            992,
+    breakpointSizeLA :            1200,
+    breakpointSizeXL :            1800,
+    
+    fnThumbnailInit :             null,
+    fnThumbnailHoverInit :        null,
+    fnThumbnailHover :            null,
+    fnThumbnailHoverOut :         null,
+    fnThumbnailDisplayEffect :    null,
+    fnViewerInfo :                null,
+    fnImgToolbarCustInit :        null,
+    fnImgToolbarCustDisplay :     null,
+    fnImgToolbarCustClick :       null,
+    fnProcessData :               null,
+    fnThumbnailSelection :        null,
+    fnInitGallery :               null,
 
     i18n : {
       'breadcrumbHome' : 'Galleries', 'breadcrumbHome_FR' : 'Galeries',
@@ -1028,54 +988,54 @@ fnThumbnailSelection : null,
     },
     icons : {
       // sample for font awesome: <i style="color:#eee;" class="fa fa-search-plus"></i>
-      thumbnailAlbum:    '<i class="nGY2Icon icon-folder-empty"></i>',
-      thumbnailImage:    '<i class="nGY2Icon icon-picture"></i>',
-      breadcrumbAlbum:   '<i class="nGY2Icon icon-folder-empty"></i>',
-      breadcrumbHome:    '<i class="nGY2Icon icon-home"></i>',
-      breadcrumbSeparator:    '<i class="nGY2Icon icon-left-open"></i>',
-      breadcrumbSeparatorRtl:    '<i class="nGY2Icon icon-right-open"></i>',
-      navigationFilterSelected:    '<i style="color:#fff;" class="nGY2Icon icon-toggle-on"></i>',
-      navigationFilterUnselected:    '<i style="color:#aaa;" class="nGY2Icon icon-toggle-off"></i>',
-      navigationFilterSelectedAll:    '<i class="nGY2Icon icon-toggle-on"></i><i class="nGY2Icon icon-ok"></i>',
-      thumbnailSelected:    '<i style="color:#bff;" class="nGY2Icon icon-ok-circled"></i>',
-      thumbnailUnselected:    '<i style="color:#bff;" class="nGY2Icon icon-circle-empty"></i>',
-      thumbnailFeatured:    '<i style="color:#dd5;" class="nGY2Icon icon-star"></i>',
-      thumbnailCounter:    '<i class="nGY2Icon icon-picture"></i>',
-      thumbnailShare:    '<i class="nGY2Icon icon-share"></i>',
-      thumbnailDownload:    '<i class="nGY2Icon icon-download"></i>',
-      thumbnailCart:    '<i class="nGY2Icon icon-basket"></i>',
-      thumbnailAlbumUp:    '<i style="font-size: 3em;" class="nGY2Icon icon-level-up"></i>',
-      paginationNext:    '<i class="nGY2Icon icon-right-open"></i>',
-      paginationPrevious:    '<i class="nGY2Icon icon-left-open"></i>',
-      galleryMoreButton:    '<i class="nGY2Icon icon-picture"></i> &nbsp; <i class="nGY2Icon icon-right-open"></i>',
-      buttonClose:    '<i class="nGY2Icon icon-cancel"></i>',
-      viewerPrevious:    '<i class="nGY2Icon icon-left-open"></i>',
-      viewerNext:    '<i class="nGY2Icon icon-right-open"></i>',
-      viewerDownload:    '<i class="nGY2Icon icon-download"></i>',
-      viewerToolbarMin:    '<i class="nGY2Icon icon-ellipsis-vert"></i>',
-      viewerToolbarStd:    '<i class="nGY2Icon icon-menu"></i>',
-      viewerPlay:    '<i class="nGY2Icon icon-play"></i>',
-      viewerPause:    '<i class="nGY2Icon icon-pause"></i>',
-      viewerFullscreenOn:    '<i class="nGY2Icon icon-resize-full"></i>',
-      viewerFullscreenOff:    '<i class="nGY2Icon icon-resize-small"></i>',
-      viewerZoomIn:    '<i class="nGY2Icon icon-zoom-in"></i>',
-      viewerZoomOut:    '<i class="nGY2Icon icon-zoom-out"></i>',
-      viewerLinkOriginal:    '<i class="nGY2Icon icon-link-ext"></i>',
-      viewerInfo:    '<i class="nGY2Icon icon-info"></i>',
-      viewerShare:    '<i class="nGY2Icon icon-share"></i>',
-      user:    '<i class="nGY2Icon icon-user"></i>',
-      location:    '<i class="nGY2Icon icon-location"></i>',
-      config:    '<i class="nGY2Icon icon-wrench"></i>',
-      viewerCustomTool1:    'T1',
-      viewerCustomTool2:    'T2',
-      viewerCustomTool3:    'T3',
-      viewerCustomTool4:    'T4',
-      viewerCustomTool5:    'T5',
-      viewerCustomTool6:    'T6',
-      viewerCustomTool7:    'T7',
-      viewerCustomTool8:    'T8',
-      viewerCustomTool9:    'T9',
-      viewerCustomTool10:    'T10',
+      thumbnailAlbum:               '<i class="nGY2Icon icon-folder-empty"></i>',
+      thumbnailImage:               '<i class="nGY2Icon icon-picture"></i>',
+      breadcrumbAlbum:              '<i class="nGY2Icon icon-folder-empty"></i>',
+      breadcrumbHome:               '<i class="nGY2Icon icon-home"></i>',
+      breadcrumbSeparator:          '<i class="nGY2Icon icon-left-open"></i>',
+      breadcrumbSeparatorRtl:       '<i class="nGY2Icon icon-right-open"></i>',
+      navigationFilterSelected:     '<i style="color:#fff;" class="nGY2Icon icon-toggle-on"></i>',
+      navigationFilterUnselected:   '<i style="color:#aaa;" class="nGY2Icon icon-toggle-off"></i>',
+      navigationFilterSelectedAll:  '<i class="nGY2Icon icon-toggle-on"></i><i class="nGY2Icon icon-ok"></i>',
+      thumbnailSelected:            '<i style="color:#bff;" class="nGY2Icon icon-ok-circled"></i>',
+      thumbnailUnselected:          '<i style="color:#bff;" class="nGY2Icon icon-circle-empty"></i>',
+      thumbnailFeatured:            '<i style="color:#dd5;" class="nGY2Icon icon-star"></i>',
+      thumbnailCounter:             '<i class="nGY2Icon icon-picture"></i>',
+      thumbnailShare:               '<i class="nGY2Icon icon-share"></i>',
+      thumbnailDownload:            '<i class="nGY2Icon icon-download"></i>',
+      thumbnailCart:                '<i class="nGY2Icon icon-basket"></i>',
+      thumbnailAlbumUp:             '<i style="font-size: 3em;" class="nGY2Icon icon-level-up"></i>',
+      paginationNext:               '<i class="nGY2Icon icon-right-open"></i>',
+      paginationPrevious:           '<i class="nGY2Icon icon-left-open"></i>',
+      galleryMoreButton:            '<i class="nGY2Icon icon-picture"></i> &nbsp; <i class="nGY2Icon icon-right-open"></i>',
+      buttonClose:                  '<i class="nGY2Icon icon-cancel"></i>',
+      viewerPrevious:               '<i class="nGY2Icon icon-left-open"></i>',
+      viewerNext:                   '<i class="nGY2Icon icon-right-open"></i>',
+      viewerDownload:               '<i class="nGY2Icon icon-download"></i>',
+      viewerToolbarMin:             '<i class="nGY2Icon icon-ellipsis-vert"></i>',
+      viewerToolbarStd:             '<i class="nGY2Icon icon-menu"></i>',
+      viewerPlay:                   '<i class="nGY2Icon icon-play"></i>',
+      viewerPause:                  '<i class="nGY2Icon icon-pause"></i>',
+      viewerFullscreenOn:           '<i class="nGY2Icon icon-resize-full"></i>',
+      viewerFullscreenOff:          '<i class="nGY2Icon icon-resize-small"></i>',
+      viewerZoomIn:                 '<i class="nGY2Icon icon-zoom-in"></i>',
+      viewerZoomOut:                '<i class="nGY2Icon icon-zoom-out"></i>',
+      viewerLinkOriginal:           '<i class="nGY2Icon icon-link-ext"></i>',
+      viewerInfo:                   '<i class="nGY2Icon icon-info"></i>',
+      viewerShare:                  '<i class="nGY2Icon icon-share"></i>',
+      user:                         '<i class="nGY2Icon icon-user"></i>',
+      location:                     '<i class="nGY2Icon icon-location"></i>',
+      config:                       '<i class="nGY2Icon icon-wrench"></i>',
+      viewerCustomTool1:            'T1',
+      viewerCustomTool2:            'T2',
+      viewerCustomTool3:            'T3',
+      viewerCustomTool4:            'T4',
+      viewerCustomTool5:            'T5',
+      viewerCustomTool6:            'T6',
+      viewerCustomTool7:            'T7',
+      viewerCustomTool8:            'T8',
+      viewerCustomTool9:            'T9',
+      viewerCustomTool10:           'T10'
     }
   };
 
@@ -1325,31 +1285,31 @@ fnThumbnailSelection : null,
     ** Global data for this nanoGALLERY instance
     **/
     var G=this;
-    G.I = [];                   // gallery items
-    G.Id = [];                  // gallery items
-    G.O = null;                 // user options
-    G.baseEltID = null;         // ID of the base element
+    G.I =                       [];           // gallery items
+    G.Id =                      [];           // gallery items
+    G.O =                       null;         // user options
+    G.baseEltID =               null;         // ID of the base element
     G.$E = { 
-      base: null,             // base element
-      conTnParent: null,      // $g_containerThumbnailsParent
-      conLoadingB: null,      // loading bar - nanoGalleryLBarOff
-      conConsole: null,       // console for error messages
-      conNavigationBar: null, // gallery navigation bar
-      conTnBottom: null,      // container on the bottom of the gallery
-      conVwCon: null,         // viewer container
-      conVw: null,            // viewer
-      conVwTb: null,          // viewer toolbar
-      vwContent: null,        // viewer content
-      vwImgP: null,           // viewer - previous image
-      vwImgC: null,           // viewer - current image
-      vwImgN: null            // viewer - next image
+      base:                     null,         // base element
+      conTnParent:              null,         // $g_containerThumbnailsParent
+      conLoadingB:              null,         // loading bar - nanoGalleryLBarOff
+      conConsole:               null,         // console for error messages
+      conNavigationBar:         null,         // gallery navigation bar
+      conTnBottom:              null,         // container on the bottom of the gallery
+      conVwCon:                 null,         // viewer container
+      conVw:                    null,         // viewer
+      conVwTb:                  null,         // viewer toolbar
+      vwContent:                null,         // viewer content
+      vwImgP:                   null,         // viewer - previous image
+      vwImgC:                   null,         // viewer - current image
+      vwImgN:                   null          // viewer - next image
     };
-    G.shoppingCart = [];
-    G.layout = {                           // Layout informations
-      internal : true,
-      engine : '',
-      support : { rows: false },
-      prerequisite : { imageSize: false },
+    G.shoppingCart =            [];
+    G.layout = {                              // Layout informations
+      internal :                true,
+      engine :                  '',
+      support :                 { rows: false },
+      prerequisite :            { imageSize: false },
       SetEngine: function() {
         if( G.layout.internal ) {
           if( G.tn.settings.getW() == 'auto' || G.tn.settings.getW() == '' ) {
@@ -1416,13 +1376,13 @@ fnThumbnailSelection : null,
     G.$currentTouchedThumbnail = null;    
     
     G.tn = {                          // GENERAL THUMBNAILS PROPERTIES -->
-      displayInterval: 10,            // delay between 2 thumbnails display
-      displayTransitionStartVal: 0,
-      displayTransition: 'FADEIN',
-      displayTransitionEasing: '',
-      scale: 1,                       // image scale depending of the hover effect
-      borderWidth: 0,                 // thumbnail container border width
-      borderHeight: 0,                // thumbnail container border height
+      displayInterval:                10,        // delay between 2 thumbnails display
+      displayTransitionStartVal:      0,
+      displayTransition:              'FADEIN',
+      displayTransitionEasing:        '',
+      scale:                          1,         // image scale depending of the hover effect
+      borderWidth:                    0,         // thumbnail container border width
+      borderHeight:                   0,         // thumbnail container border height
       labelHeight: {                  // in case label on bottom, otherwise always=0
         l1:0, lN:0,
         get: function() {
@@ -1460,7 +1420,7 @@ fnThumbnailSelection : null,
       },
       // thumbnail hover effects
       hoverEffects : {
-        std : [],
+        std :   [],
         level1: [],
         get: function() {
           if( G.GOM.curNavLevel == 'l1' && G.tn.hoverEffects.level1.length !== 0 ) {
@@ -1473,7 +1433,7 @@ fnThumbnailSelection : null,
       },
       // thumbnail init
       buildInit : {
-        std : [],
+        std :   [],
         level1: [],
         get: function() {
           if( G.GOM.curNavLevel == 'l1' && G.tn.buildInit.level1.length !== 0 ) {
@@ -1510,111 +1470,111 @@ fnThumbnailSelection : null,
           return s;
         },
         getLabel: function() {
-          // var s = 'style="margin-right:'+G.tn.toolbar.getWidth(item)+'px;';
-          // var s = 'style="margin-right:'+G.tn.toolbar.getWidth(item)+'px;';
           var s='style="'+ G.tn.style[G.GOM.curNavLevel].label + '"';
           return s;
         }
       }
     };
-    G.scrollTimeOut = 0;
-    G.i18nTranslations = {'paginationPrevious':'Previous', 'paginationNext':'Next', 'breadcrumbHome':'List of Albums', 'thumbnailImageTitle':'', 'thumbnailAlbumTitle':'', 'thumbnailImageDescription':'', 'thumbnailAlbumDescription':'' };
-    G.emptyGif = 'data:image/gif;base64,R0lGODlhEAAQAIAAAP///////yH5BAEKAAEALAAAAAAQABAAAAIOjI+py+0Po5y02ouzPgUAOw==';
-    G.CSStransformName = FirstSupportedPropertyName(["transform", "msTransform", "MozTransform", "WebkitTransform", "OTransform"]);
-    // G.CSSfilterName = FirstSupportedPropertyName(["filter", "WebkitFilter"]);
-    G.CSStransformStyle = FirstSupportedPropertyName(["transformStyle", "msTransformStyle", "MozTransformStyle", "WebkitTransformStyle", "OTransformStyle"]);
-    G.CSSperspective = FirstSupportedPropertyName(["perspective", "msPerspective", "MozPerspective", "WebkitPerspective", "OPerspective"]);
+    G.scrollTimeOut =             0;
+    G.i18nTranslations =          {'paginationPrevious':'Previous', 'paginationNext':'Next', 'breadcrumbHome':'List of Albums', 'thumbnailImageTitle':'', 'thumbnailAlbumTitle':'', 'thumbnailImageDescription':'', 'thumbnailAlbumDescription':'' };
+    G.emptyGif =                  'data:image/gif;base64,R0lGODlhEAAQAIAAAP///////yH5BAEKAAEALAAAAAAQABAAAAIOjI+py+0Po5y02ouzPgUAOw==';
+    G.CSStransformName =          FirstSupportedPropertyName(["transform", "msTransform", "MozTransform", "WebkitTransform", "OTransform"]);
+    // G.CSSfilterName =          FirstSupportedPropertyName(["filter", "WebkitFilter"]);
+    G.CSStransformStyle =         FirstSupportedPropertyName(["transformStyle", "msTransformStyle", "MozTransformStyle", "WebkitTransformStyle", "OTransformStyle"]);
+    G.CSSperspective =            FirstSupportedPropertyName(["perspective", "msPerspective", "MozPerspective", "WebkitPerspective", "OPerspective"]);
     G.CSSbackfaceVisibilityName = FirstSupportedPropertyName(["backfaceVisibility", "msBackfaceVisibility", "MozBackfaceVisibility", "WebkitBackfaceVisibility", "OBackfaceVisibility"]);
-    G.CSStransitionName = FirstSupportedPropertyName(["transition", "msTransition", "MozTransition", "WebkitTransition", "OTransition"]);
-    G.CSSanimationName = FirstSupportedPropertyName(["animation", "msAnimation", "MozAnimation", "WebkitAnimation", "OAnimation"]);
-    G.GalleryResizeThrottled = throttle(GalleryResize, 100, {leading: false});
+    G.CSStransitionName =         FirstSupportedPropertyName(["transition", "msTransition", "MozTransition", "WebkitTransition", "OTransition"]);
+    G.CSSanimationName =          FirstSupportedPropertyName(["animation", "msAnimation", "MozAnimation", "WebkitAnimation", "OAnimation"]);
+    G.GalleryResizeThrottled =    throttle(GalleryResize, 100, {leading: false});
     
     
-    G.blackList = null;           // album white list
-    G.whiteList = null;           // album black list
-    G.albumList = [];             // album list
-    G.albumListHidden = [];       // for Google Photos -> hidden albums with private key
-    G.locationHashLastUsed = '';
-    G.custGlobals = {};
+    G.blackList =                 null;     // album white list
+    G.whiteList =                 null;     // album black list
+    G.albumList =                 [];       // album list
+    G.albumListHidden =           [];       // for Google Photos -> hidden albums with private key
+    G.locationHashLastUsed =      '';
+    G.custGlobals =               {};
     G.touchAutoOpenDelayTimerID = 0;
-    G.supportFullscreenAPI = false;
-    G.i18nLang = '';
-    G.timeLastTouchStart = 0;
-    G.custGlobals = {};
+    G.supportFullscreenAPI =      false;
+    G.i18nLang =                  '';
+    G.timeLastTouchStart =        0;
+    G.custGlobals =               {};
     
     //------------------------
     //--- Gallery Object Model
     G.GOM = {
-      albumIdx : -1,                                // index (in G.I) of the currently displayed album
-      clipArea : { top:0, height: 0 },              // area of the GOM to display on screen
-      displayArea : { width: 0 , height: 0 },       // size of the GOM area
-      displayAreaLast : { width: 0 , height: 0 },   // previous size of the GOM area
-      displayedMoreSteps : 0,                       // current number of displayed steps (moreButton mode)
-      items: [],                                    // current items of the GOMS
-      $imgPreloader: [],
-      itemsDisplayed : 0,                           // number of currently displayed thumbnails
-      firstDisplay : true,
-      navigationBar :                               // content of the navigation bar (for breadcrumb and filter tags)
-        { displayed: false, $newContent: '' },
-      cache :                                       // cached data
-        { viewport: null, containerOffset: null },
-      nbSelected : 0,                               // number of selected items
-      pagination : { currentPage: 0 },              // pagination data
-      lastFullRow : -1,                             // number of the last row without holes
-      lastDisplayedIdx: -1,                         // used to display the counter of not displayed items
-      displayInterval : { from: 0, len: 0 },
-      userEvents: null,
-      hammertime: null,
-      curNavLevel: 'l1',                            // current navigation level (l1 or LN)
-      curWidth: 'me',
-      lastZIndex: 0                                 // used to put a thumbnail on top of all others (for exemple for scale hover effect)
+      albumIdx :                  -1, // index (in G.I) of the currently displayed album
+      clipArea :                  { top:0, height: 0 }, // area of the GOM to display on screen
+      displayArea :               { width: 0 , height: 0 }, // size of the GOM area
+      displayAreaLast :           { width: 0 , height: 0 }, // previous size of the GOM area
+      displayedMoreSteps :        0, // current number of displayed steps (moreButton mode)
+      items:                      [], // current items of the GOMS
+      $imgPreloader:              [],
+      itemsDisplayed :            0, // number of currently displayed thumbnails
+      firstDisplay :              true,
+      navigationBar :             // content of the navigation bar (for breadcrumb and filter tags)
+        { displayed:              false,
+        $newContent:              '' },
+      cache :                     // cached data
+        { viewport:               null,
+        containerOffset:          null },
+      nbSelected :                0, // number of selected items
+      pagination :                { currentPage: 0 }, // pagination data
+      lastFullRow :               -1, // number of the last row without holes
+      lastDisplayedIdx:           -1, // used to display the counter of not displayed items
+      displayInterval :           { from: 0, len: 0 },
+      userEvents:                 null,
+      hammertime:                 null,
+      curNavLevel:                'l1', // current navigation level (l1 or LN)
+      curWidth:                   'me',
+      lastZIndex:                 0  // used to put a thumbnail on top of all others (for exemple for scale hover effect)
     };
     
     // One GOM item (thumbnail)
     function GTn(index, width, height) {
       this.thumbnailIdx = index;
-      this.width = 0;                       // thumbnail width
-      this.height = 0;                      // thumbnail height
-      this.top = 0;                         // position: top
-      this.left = 0;                        // position: left
-      this.row = 0;                         // position: row number
-      this.imageWidth = width;              // image width
-      this.imageHeight = height;            // image height
-      this.resizedContentWidth = 0;
+      this.width =                0; // thumbnail width
+      this.height =               0; // thumbnail height
+      this.top =                  0; // position: top
+      this.left =                 0; // position: left
+      this.row =                  0; // position: row number
+      this.imageWidth =           width; // image width
+      this.imageHeight =          height; // image height
+      this.resizedContentWidth =  0;
       this.resizedContentHeight = 0;
-      this.displayed = false;
-      this.neverDisplayed = true;
-      this.inDisplayArea = false;
+      this.displayed =            false;
+      this.neverDisplayed =       true;
+      this.inDisplayArea =        false;
     }
     
     //------------------------
     //--- Viewer Object Model
     G.VOM = {
-      viewerDisplayed: false,     // is the viewer currently displayed
-      viewerIsFullscreen: false,  // viewer in fullscreen mode
-      infoDisplayed: false,       // is the info box displayed
-      currentZoom: 1,
-      isZooming: false,
-      padding: { H:0, V:0 },      // padding for the image
-      window: { lastWidth:0, lastHeight:0 },
-      toolbarMode: 'std',         // current toolbar mode (standard, minimized)
-      playSlideshow : false,      // slide show mode status
-      playSlideshowTimerID: 0,    // slideshow mode time
-      slideshowDelay: 3000,       // slideshow mode - delay before next image
-      albumID: -1,
-      currItemIdx: -1,
-      viewerImageIsChanged: false,  // image display is currently modified
-      items: [],                    // current list of images to be managed by the viewer
+      viewerDisplayed:            false, // is the viewer currently displayed
+      viewerIsFullscreen:         false, // viewer in fullscreen mode
+      infoDisplayed:              false, // is the info box displayed
+      currentZoom:                1,
+      isZooming:                  false,
+      padding:                    { H:0, V:0 }, // padding for the image
+      window:                     { lastWidth:0, lastHeight:0 },
+      toolbarMode:                'std', // current toolbar mode (standard, minimized)
+      playSlideshow :             false, // slide show mode status
+      playSlideshowTimerID:       0, // slideshow mode time
+      slideshowDelay:             3000, // slideshow mode - delay before next image
+      albumID:                    -1,
+      currItemIdx:                -1,
+      viewerImageIsChanged:       false, // image display is currently modified
+      items:                      [], // current list of images to be managed by the viewer
       Item: function(idx) {
         return G.I[this.items[idx].imageIdx];
       },
-      userEvents: null,             // user events management
-      hammertime: null,
-      swipePosX: 0,
-      panPosX: 0,
-      panPosY: 0,
-      colorSchemeLabel: '',
-      timeImgChanged: 0
+      userEvents:                 null, // user events management
+      hammertime:                 null,
+      swipePosX:                  0,
+      panPosX:                    0,
+      panPosY:                    0,
+      colorSchemeLabel:           '',
+      timeImgChanged:             0
     }
     // One VOM item (image)
     function VImg(index) {
@@ -1625,8 +1585,8 @@ fnThumbnailSelection : null,
     //------------------------
     //--- popup
     G.popup = {
-      isDisplayed: false,
-      $elt: null,
+      isDisplayed:  false,
+      $elt:         null,
       close: function() {
         if( this.$elt != null ) {
           var tweenable = new NGTweenable();
@@ -1656,53 +1616,68 @@ fnThumbnailSelection : null,
     
     // Color schemes - Gallery
     G.colorScheme_dark = {
-      navigationBar : { background: 'none', borderTop: '', borderBottom: '', borderRight: '', borderLeft: '' },
-      navigationBreadcrumb : { background: '#111', color: '#fff', colorHover: '#ccc', borderRadius: '6px' },
-      navigationFilter : { color: '#ddd', background: '#111', colorSelected: '#fff', backgroundSelected: '#111', borderRadius: '6px' },
-      thumbnail : { background: '#000', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '' },
-      thumbnailIcon : { padding: '5px', color: '#fff' },
-      pagination : { background: '#111', backgroundSelected: '#666', color: '#fff', borderRadius: '4px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
+      navigationBar :         { background: 'none', borderTop: '', borderBottom: '', borderRight: '', borderLeft: '' },
+      navigationBreadcrumb :  { background: '#111', color: '#fff', colorHover: '#ccc', borderRadius: '6px' },
+      navigationFilter :      { color: '#ddd', background: '#111', colorSelected: '#fff', backgroundSelected: '#111', borderRadius: '6px' },
+      thumbnail :             { background: '#000', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '' },
+      thumbnailIcon :         { padding: '5px', color: '#fff' },
+      pagination :            { background: '#111', backgroundSelected: '#666', color: '#fff', borderRadius: '4px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
     };
 
     G.colorScheme_light = {
-      navigationBar : { background: 'none', borderTop: '', borderBottom: '', borderRight: '', borderLeft: '' },
-      navigationBreadcrumb : { background: '#eee', color: '#000', colorHover: '#333', borderRadius: '6px' },
-      navigationFilter : { background: '#eee', color: '#222', colorSelected: '#000', backgroundSelected: '#eee', borderRadius: '6px' },
-      thumbnail : { background: '#000', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '' },
-      thumbnailIcon : { padding: '5px', color: '#fff' },
-      pagination : { background: '#eee', backgroundSelected: '#aaa', color: '#000', borderRadius: '4px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
+      navigationBar :         { background: 'none', borderTop: '', borderBottom: '', borderRight: '', borderLeft: '' },
+      navigationBreadcrumb :  { background: '#eee', color: '#000', colorHover: '#333', borderRadius: '6px' },
+      navigationFilter :      { background: '#eee', color: '#222', colorSelected: '#000', backgroundSelected: '#eee', borderRadius: '6px' },
+      thumbnail :             { background: '#000', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '' },
+      thumbnailIcon :         { padding: '5px', color: '#fff' },
+      pagination :            { background: '#eee', backgroundSelected: '#aaa', color: '#000', borderRadius: '4px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
     };
 
     // Color schemes - lightbox
     G.colorSchemeViewer_dark = {
-      background: '#000', imageBorder: 'none', imageBoxShadow: 'none',
-      barBackground: 'rgba(4, 4, 4, 0.7)', barBorder: '0px solid #111', barColor: '#eee', barDescriptionColor: '#aaa'
+      background:             '#000',
+      imageBorder:            'none',
+      imageBoxShadow:         'none',
+      barBackground:          'rgba(4, 4, 4, 0.7)',
+      barBorder:              '0px solid #111',
+      barColor:               '#eee',
+      barDescriptionColor:    '#aaa'
     };
     G.colorSchemeViewer_border = {
-      background:'rgba(1, 1, 1, 0.75)', imageBorder:'4px solid #f8f8f8', imageBoxShadow:'#888 0px 0px 20px',
-      barBackground:'rgba(4, 4, 4, 0.7)', barBorder:'0px solid #111', barColor:'#eee', barDescriptionColor:'#aaa'
+      background:             'rgba(1, 1, 1, 0.75)',
+      imageBorder:            '4px solid #f8f8f8',
+      imageBoxShadow:         '#888 0px 0px 20px',
+      barBackground:          'rgba(4, 4, 4, 0.7)',
+      barBorder:              '0px solid #111',
+      barColor:               '#eee',
+      barDescriptionColor:    '#aaa'
     };
     G.colorSchemeViewer_light = {
-      background:'#f8f8f8', imageBorder:'none', imageBoxShadow:'none',
-      barBackground:'rgba(4, 4, 4, 0.7)', barBorder:'0px solid #111', barColor:'#eee', barDescriptionColor:'#aaa'
+      background:             '#f8f8f8',
+      imageBorder:            'none',
+      imageBoxShadow:         'none',
+      barBackground:          'rgba(4, 4, 4, 0.7)',
+      barBorder:              '0px solid #111',
+      barColor:               '#eee',
+      barDescriptionColor:    '#aaa'
     };
 
       
     
     // shortcut with G context to NGY2TOOLS
-    var NanoAlert = NGY2Tools.NanoAlert.bind(G);
-    var NanoConsoleLog = NGY2Tools.NanoConsoleLog.bind(G);
+    var NanoAlert =           NGY2Tools.NanoAlert.bind(G);
+    var NanoConsoleLog =      NGY2Tools.NanoConsoleLog.bind(G);
 
     
     /** @function initiateGallery2 */
     this.initiateGallery2 = function( element, params ) {
 
       // GLOBAL OPTIONS
-      G.O = params;
+      G.O =             params;
       // Base element
-      G.$E.base = jQuery(element);
-      G.baseEltID = G.$E.base.attr('id');
-      G.O.$markup=[];
+      G.$E.base =       jQuery(element);
+      G.baseEltID =     G.$E.base.attr('id');
+      G.O.$markup=      [];
       
       DefineVariables();
       SetPolyFills();
@@ -1965,7 +1940,6 @@ fnThumbnailSelection : null,
       if( G.galleryFilterTags.Get() != false ) {
         var nTags=G.I[albumIdx].albumTagList.length;
         if( nTags > 0 ) {
-//          jQuery('<div class="nGY2NavigationbarItem nGY2NavFilters"></div>').appendTo(G.GOM.navigationBar.$newContent);
           for(var i=0; i <nTags; i++ ) {
             var s=G.I[albumIdx].albumTagList[i];
             var ic=G.O.icons.navigationFilterUnselected;
@@ -1974,7 +1948,6 @@ fnThumbnailSelection : null,
               tagClass='Selected';
               ic=G.O.icons.navigationFilterSelected;
             }
-//            var $newTag=jQuery('<div class="'+tagClass+'">'+s+'</div>').appendTo(G.GOM.navigationBar.$newContent.find('.nGY2NavFilters'));
             var $newTag=jQuery('<div class="nGY2NavigationbarItem nGY2NavFilter'+tagClass+'">'+ic+' '+s+'</div>').appendTo(G.GOM.navigationBar.$newContent);
             $newTag.click(function() {
               var $this=jQuery(this);
@@ -1989,12 +1962,10 @@ fnThumbnailSelection : null,
                   G.I[albumIdx].albumTagListSel.splice(tidx,1);
                 }
               }
-              // $this.toggleClass('oneTagUnselected oneTagSelected');
               $this.toggleClass('nGY2NavFilters-oneTagUnselected nGY2NavFilters-oneTagSelected');
               DisplayAlbum('-1', G.I[albumIdx].GetID());
             });
           }
-//          var $newClearFilter=jQuery('<div class="oneTagSelectAll">&nbsp;&nbsp;&nbsp;&nbsp;</div>').appendTo(G.GOM.navigationBar.$newContent.find('.nGY2NavFilters'));
           var $newClearFilter=jQuery('<div class="nGY2NavigationbarItem nGY2NavFilterSelectAll">'+G.O.icons.navigationFilterSelectedAll+'</div>').appendTo(G.GOM.navigationBar.$newContent);
           $newClearFilter.click(function() {
             var nTags=G.I[albumIdx].albumTagList.length;
@@ -2154,6 +2125,8 @@ fnThumbnailSelection : null,
     function paginationNextPage() {
       var aIdx=G.GOM.albumIdx,
       n1=0;
+
+      ThumbnailHoverOutAll();
       
       // pagination - max lines per page mode
       if( G.galleryMaxRows.Get() > 0 ) {
@@ -2178,6 +2151,8 @@ fnThumbnailSelection : null,
       // var aIdx=G.$E.conTnBottom.data('galleryIdx'),
       var aIdx=G.GOM.albumIdx,
       n1=0;
+
+      ThumbnailHoverOutAll();
       
       // pagination - max lines per page mode
       if( G.galleryMaxRows.Get() > 0 ) {
@@ -2199,7 +2174,7 @@ fnThumbnailSelection : null,
       GalleryDisplay( true );
     }
 
-
+    // retrieve the from/to intervall for gallery thumbnail render
     function GalleryRenderGetInterval() {
       G.GOM.displayInterval.from=0;
       G.GOM.displayInterval.len=G.I.length;
@@ -2681,22 +2656,21 @@ fnThumbnailSelection : null,
     
     //----- JUSTIFIED LAYOUT
     function GallerySetLayoutWidthtAuto( areaWidth, GOMidx ) {
-
-      var curWidth=0,
-      lastPosX=0,
-      curPosY=0,
-      rowLastItem=[],
-      rowNum=0,
-      rowHeight=[],
-      bNewRow=false,
-      cnt=0,
-      gutterWidth=G.O.thumbnailGutterWidth,
-      gutterHeight=G.O.thumbnailGutterHeight;
+      var curWidth=               0,
+      lastPosX=                   0,
+      curPosY=                    0,
+      rowLastItem=                [],
+      rowNum=                     0,
+      rowHeight=                  [],
+      bNewRow=                    false,
+      cnt=                        0,
+      gutterWidth=                G.O.thumbnailGutterWidth,
+      gutterHeight=               G.O.thumbnailGutterHeight;
       // by grief-of-these-days
-      var maxRowHeightVertical=0;     // max height of a row with vertical thumbs
-      var maxRowHeightHorizontal=0;   // max height of a row with horizontal thumbs
-      var rowHasVertical=false;       // current row has vertical thumbs
-      var rowHasHorizontal=false;     // current row has horizontal thumbs
+      var maxRowHeightVertical=   0; // max height of a row with vertical thumbs
+      var maxRowHeightHorizontal= 0; // max height of a row with horizontal thumbs
+      var rowHasVertical=         false; // current row has vertical thumbs
+      var rowHasHorizontal=       false; // current row has horizontal thumbs
 
       var tnHeight=G.tn.defaultSize.getOuterHeight();
       var borderWidth=G.tn.borderWidth*2;
@@ -2878,19 +2852,18 @@ fnThumbnailSelection : null,
 
     //----- GRID LAYOUT
     function GallerySetLayoutGrid( areaWidth ) {
-      var curPosX=0,
-      curPosY=0,   
-      gutterWidth=0,
-      gutterHeight=G.O.thumbnailGutterHeight,
-      maxCol=NbThumbnailsPerRow(areaWidth),
-      w=0,
-      cols=[],
-      curCol=0,
-      newAreaWidth = areaWidth,
-      tnWidth=G.tn.defaultSize.getOuterWidth(),
-      tnHeight=G.tn.defaultSize.getOuterHeight()+G.tn.labelHeight.get();
-
-      var nbTn=G.GOM.items.length;
+      var curPosX=      0,
+      curPosY=          0,   
+      gutterWidth=      0,
+      gutterHeight=     G.O.thumbnailGutterHeight,
+      maxCol=           NbThumbnailsPerRow(areaWidth),
+      w=                0,
+      cols=             [],
+      curCol=           0,
+      newAreaWidth =    areaWidth,
+      tnWidth=          G.tn.defaultSize.getOuterWidth(),
+      tnHeight=         G.tn.defaultSize.getOuterHeight()+G.tn.labelHeight.get();
+      var nbTn=         G.GOM.items.length;
       
       // retrieve gutter width
       if( G.O.thumbnailAlignment == 'justified' ) {
@@ -3110,11 +3083,10 @@ fnThumbnailSelection : null,
     
     // Thumbnail: set the new position
     function ThumbnailSetPosition( GOMidx, cnt ) {
-
-      var newTop=0;
-      var curTn=G.GOM.items[GOMidx];
-      var idx=G.GOM.items[GOMidx].thumbnailIdx;
-      var item=G.I[idx];
+      var newTop= 0;
+      var curTn=  G.GOM.items[GOMidx];
+      var idx=    G.GOM.items[GOMidx].thumbnailIdx;
+      var item=   G.I[idx];
     
       if( curTn.neverDisplayed ) {
         // thumbnail is built but has never been displayed (=first display)
@@ -3218,14 +3190,12 @@ fnThumbnailSelection : null,
       }
 
     }
-
-
    
     
     // Compute the height of the annotation part of a thumbnail (title+description, both single line)
     function ThumbnailGetAnnotationHeight() {
-      var newElt=[],
-      newEltIdx=0;
+      var newElt= [],
+      newEltIdx=  0;
 
       // if( G.O.thumbnailLabel.get('display') == false && G.tn.toolbar.getWidth(item) <= 0 ) {
       if( G.O.thumbnailLabel.get('display') == false  ) {
@@ -3259,8 +3229,8 @@ fnThumbnailSelection : null,
     
     //----- Build one UP thumbnail (=navigation thumbnail)
     function ThumbnailBuildAlbumpUp( item, idx, GOMidx ) {
-      var newElt=[],
-      newEltIdx=0;
+      var newElt= [],
+      newEltIdx=  0;
       
       newElt[newEltIdx++]='<div class="nGY2GThumbnail" style="display:none;opacity:0;" >';
       newElt[newEltIdx++]='  <div class="nGY2GThumbnailSub">';
@@ -3285,11 +3255,10 @@ fnThumbnailSelection : null,
     
     //----- Build one thumbnail
     function ThumbnailBuild( item, idx, GOMidx, lastOne ) {
-      
-      item.eltTransform=[];
-      item.eltFilter=[];
-      item.hoverInitDone=false;
-      item.$Elts=[];
+      item.eltTransform=  [];
+      item.eltFilter=     [];
+      item.hoverInitDone= false;
+      item.$Elts=         [];
 
       if( item.kind == 'albumUp' ) {
         ThumbnailBuildAlbumpUp( item, idx, GOMidx);
@@ -3577,7 +3546,6 @@ fnThumbnailSelection : null,
     
     // Retrieve the maximum number of thumbnails in one row
     function NbThumbnailsPerRow(areaWidth) {
-    
       var tnW=G.tn.defaultSize.getOuterWidth();
       
       var nbMaxTn=0;
@@ -6277,7 +6245,6 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
       // viwer gesture handling
       if( G.VOM.hammertime == null ) {
       
-        // G.VOM.userEvents = new ViewerUserEvents();
         G.VOM.hammertime =  new NGHammer(G.$E.conVwCon[0]);
         G.VOM.hammertime.get('pan').set({ direction: NGHammer.DIRECTION_ALL });        
         G.VOM.hammertime.get('pinch').set({ enable: true });        
@@ -6576,195 +6543,8 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
         }
       }
     }
-    
-    
-    // Viewer user events handling
-    // function ViewerSwipeSupport(element) {
-    function ViewerUserEvents() {
-      var elementToSwipe=G.$E.conVwCon[0],
-      isAnimating=false,
-      initialTouchPos=null,
-      lastTouchPos=null,
-      currentXPosition=0,
-      currentYPosition=0,
-      me=this;
-      
-      
 
-      this.handleGestureStart = function(e) {
-        if( !G.VOM.viewerDisplayed ) { return; }
-        
-        G.timeLastTouchStart=new Date().getTime();
-        e.preventDefault();
-
-        if(e.touches && e.touches.length > 1) { return; }
-
-        initialTouchPos = getGesturePointFromEvent(e);
-
-        // Add the move and end listeners
-        if (window.navigator.msPointerEnabled) {
-          // Pointer events are supported.
-          document.addEventListener('MSPointerMove', this.handleGestureMove, true);
-          document.addEventListener('MSPointerUp', this.handleGestureEnd, true);
-        } else {
-          // Add Touch Listeners
-          document.addEventListener('touchmove', this.handleGestureMove, true);
-          document.addEventListener('touchend', this.handleGestureEnd, true);
-          document.addEventListener('touchcancel', this.handleGestureEnd, true);
-        
-          // Add Mouse Listeners
-          document.addEventListener('mousemove', this.handleGestureMove, true);
-          document.addEventListener('mouseup', this.handleGestureEnd, true);
-        }
-      }.bind(this);
-
-      this.handleGestureMove = function (e) {
-        e.preventDefault();
-
-        lastTouchPos = getGesturePointFromEvent(e);
-        
-        if(isAnimating) { return; }
-        
-        isAnimating = true;
-        
-        // window.requestAnimFrame(onAnimFrame);
-        window.requestAnimationFrame(onAnimFrame);
-      }.bind(this);
-
-      
-      // Handle end gestures
-      this.handleGestureEnd = function(e) {
-        if( e.cancelable ) { e.preventDefault(); }
-        if(e.touches && e.touches.length > 0) { return; }
-
-        isAnimating = false;
-        
-        // Remove Event Listeners
-        if (window.navigator.msPointerEnabled) {
-          // Remove Pointer Event Listeners
-          document.removeEventListener('MSPointerMove', this.handleGestureMove, true);
-          document.removeEventListener('MSPointerUp', this.handleGestureEnd, true);
-        } else {
-        // Remove Touch Listeners
-          document.removeEventListener('touchmove', this.handleGestureMove, true);
-          document.removeEventListener('touchend', this.handleGestureEnd, true);
-          document.removeEventListener('touchcancel', this.handleGestureEnd, true);
-        
-          // Remove Mouse Listeners
-          document.removeEventListener('mousemove', this.handleGestureMove, true);
-          document.removeEventListener('mouseup', this.handleGestureEnd, true);
-        }
-        if( !G.VOM.isZooming ) {
-          UpdateSwipeEndPosition();
-        }
-    }.bind(this);
-
-      // function updateSwipeRestPositionOLD(me) {
-      function UpdateSwipeEndPosition() {
-        if( lastTouchPos == null ) {      // touchend without touchmove
-          currentXPosition=0;
-          initialTouchPos=null;
-          return; 
-        }
-
-        var differenceInX = initialTouchPos.x - lastTouchPos.x;
-        currentXPosition = currentXPosition - differenceInX;
-      
-        if( differenceInX < -50 ) {
-          DisplayPreviousImage();
-        }
-        if( differenceInX > 50 ) {
-          DisplayNextImage();
-        }
-        currentXPosition=0;
-        initialTouchPos=null;
-        lastTouchPos=null;
-          
-        if(Math.abs(differenceInX) < 50) {
-          ImageSwipeTranslateX(currentXPosition);
-        }
-        return;
-      }
-      
-
-      function getGesturePointFromEvent(e) {
-        var point = {};
-
-        if(e.targetTouches) {
-          point.x = e.targetTouches[0].clientX;
-          point.y = e.targetTouches[0].clientY;
-        } else {
-          // Either Mouse event or Pointer Event
-          point.x = e.clientX;
-          point.y = e.clientY;
-        }
-
-        return point;
-      }
-      
-
-      function onAnimFrame() {
-        if(!isAnimating) { return; }
-        
-       
-        var diffX = initialTouchPos.x - lastTouchPos.x;
-        
-        if( G.VOM.isZooming ) {
-          // console.log(diffX +  ' - '+ G.VOM.panPosX);
-           G.VOM.panPosX=(currentXPosition-diffX);
-           if( G.VOM.panPosX > G.VOM.window.lastWidth ) {
-            G.VOM.panPosX = G.VOM.window.lastWidth;
-           }
-           if( G.VOM.panPosX < -G.VOM.window.lastWidth ) {
-            G.VOM.panPosX = -G.VOM.window.lastWidth;
-           }
-           ViewerImageSetPosition();
-        }
-        else {
-          ImageSwipeTranslateX(currentXPosition - diffX);
-        }
-        
-        isAnimating = false;
-      }
-
-      this.removeEventListeners = function() {
-        // we need to remove all the event listeners (becauase of an issue with the close button)
-        if (window.navigator.msPointerEnabled) {
-          elementToSwipe.removeEventListener('MSPointerDown', this.handleGestureStart, true);
-          document.removeEventListener('MSPointerMove', this.handleGestureMove, true);
-          document.removeEventListener('MSPointerUp', this.handleGestureEnd, true);
-        }
-        else {
-          // Remove Touch Listeners
-          elementToSwipe.removeEventListener('touchstart', this.handleGestureStart, true);
-          document.removeEventListener('touchmove', this.handleGestureMove, true);
-          document.removeEventListener('touchend', this.handleGestureEnd, true);
-          document.removeEventListener('touchcancel', this.handleGestureEnd, true);
-        
-          // Remove Mouse Listeners
-          document.removeEventListener('mousemove', this.handleGestureMove, true);
-          document.removeEventListener('mouseup', this.handleGestureEnd, true);
-          //elementToSwipe.removeEventListener('mousedown', this.handleGestureStart, true);
-        }
-      }.bind(this);
-      
-      // Check if pointer events are supported.
-      if (window.navigator.msPointerEnabled) {
-        // Add Pointer Event Listener
-        // elementToSwipe.addEventListener('MSPointerDown', this.handleGestureStart, true);
-        elementToSwipe.addEventListener('MSPointerDown', this.handleGestureStart, true);
-      }
-      else {
-        // Add Touch Listener
-        // elementToSwipe.addEventListener('touchstart', this.handleGestureStart, true);
-        elementToSwipe.addEventListener('touchstart', this.handleGestureStart, true);
-        
-        // Add Mouse Listener
-        //elementToSwipe.addEventListener('mousedown', this.handleGestureStart, true);
-      }
-      
-    }
-
+    // Scroll the image in the lightbox (left/right)
     function ImageSwipeTranslateX( posX ) {
       G.VOM.swipePosX=posX;
       if( G.CSStransformName == null ) {
@@ -6790,8 +6570,6 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
         }
       }
     }
-    
-    
     
     // Display next image
     function DisplayNextImage() {
@@ -7137,6 +6915,7 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
     }
     
     
+    // Close the internal lightbox
     function CloseInternalViewer( vomIdx ) {
 
       if( G.VOM.viewerImageIsChanged ) {
@@ -7419,9 +7198,6 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
     function SetGlobalEvents() {
       // GLOBAL EVENT MANAGEMENT
       
-      // gallery event management
-      //G.GOM.userEvents= new GalleryUserEvents();
-
       G.$E.conTnParent.on({
         mouseenter: GalleryMouseEnter,
         mouseleave: GalleryMouseLeave
@@ -7474,12 +7250,12 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
           if( G.O.touchAutoOpenDelay > 0 ) {
             // one touch scenario
             ThumbnailHoverOutAll();
-            ThumbnailHover(r.GOMidx);
-            window.clearInterval(G.touchAutoOpenDelayTimerID);
-            G.touchAutoOpenDelayTimerID=window.setInterval(function(){
-              window.clearInterval(G.touchAutoOpenDelayTimerID);
-              ThumbnailOpen(G.GOM.items[r.GOMidx].thumbnailIdx);
-            }, G.O.touchAutoOpenDelay);
+            ThumbnailHover( r.GOMidx );
+            window.clearInterval( G.touchAutoOpenDelayTimerID );
+            G.touchAutoOpenDelayTimerID = window.setInterval(function(){
+              window.clearInterval( G.touchAutoOpenDelayTimerID );
+              ThumbnailOpen( G.GOM.items[r.GOMidx].thumbnailIdx );
+            }, G.O.touchAutoOpenDelay );
           }
           else {
             // two touch scenario
@@ -7678,7 +7454,6 @@ console.log('lH: '+lH);
     // author: John Hann - http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
     // execAsap - false means executing at the end of the detection period
     var debounce = function (func, threshold, execAsap) {
-      console.log('debounce');
       var timeout;
       return function debounced () {
           var obj = this, args = arguments;
@@ -7716,345 +7491,6 @@ console.log('lH: '+lH);
       }, 10);
     }
 
-    
-    // ##### GALLERY USER EVENTS HANDLING (click, hover, swipe, drag)
-    // based on article "Implement Custom Gestures" from Google
-    // https://developers.google.com/web/fundamentals/input/touch-input/touchevents/
-    function GalleryUserEvents() {
-      var elementToSwipe=G.$E.conTn[0],
-      initialTouchPos=null,
-      lastTouchPosition=null,
-      currentXPosition=0,
-      initialViewport=null,
-      blockVert=false;
-      
-
-      // Handle the start of gestures -->  click event
-      this.handleGestureStartNoDelay = function(e) {
-console.log('handleGestureStartNoDelay');      
-
-        var r=GalleryEventRetrieveElementl(e, false);
-
-        if( r.action == 'TOGGLESELECT' ) {
-          // ThumbnailSelectionToggle(G.GOM.items[r.GOMidx].thumbnailIdx);
-          // e.stopPropagation();
-          // return false;
-        }
-        
-        // if items are selectable, cannot limit on user speed
-        if( (new Date().getTime()) - G.timeLastTouchStart < 400 && G.O.itemsSelectable !== true ) {
-//          return; 
-        }
-        G.openNoDelay=true;
-        this.handleGestureStart(e);
-      }.bind(this);
-
-
-      // Handle the start of gestures
-      this.handleGestureStart = function(e) {
-console.log('handleGestureStart');      
-
-
-        if( (new Date().getTime()) - G.VOM.timeImgChanged < 400 && G.O.itemsSelectable !== true ) { 
-//          return;
-        }     
-        
-        if( (new Date().getTime()) - G.timeLastTouchStart < 400 && G.O.itemsSelectable !== true ) {
-//          return;
-        }
-        G.timeLastTouchStart=new Date().getTime();
-
-
-console.log('handleGestureStart4');
-      
-        initialViewport=getViewport();
-        
-        //if(e.touches && e.touches.length > 1) { return; }
-        initialTouchPos = getGesturePointFromEvent(e);
-
-        //if( G.gallerySwipeInitDone ) { return; }
-        
-        // Add the move and end listeners
-        if (window.navigator.msPointerEnabled) {
-          // Pointer events are supported.
-          document.addEventListener('MSPointerMove', this.handleGestureMove, true);
-          document.addEventListener('MSPointerUp', this.handleGestureEnd, true);
-        } else {
-          // Add Touch Listeners
-          document.addEventListener('touchmove', this.handleGestureMove, true);
-          document.addEventListener('touchend', this.handleGestureEnd, true);
-          document.addEventListener('touchcancel', this.handleGestureEnd, true);
-        
-          // Add Mouse Listeners
-          document.addEventListener('mousemove', this.handleGestureMove, true);
-          document.addEventListener('mouseup', this.handleGestureEnd, true);
-        }
-        
-        // makes content unselectable --> avoid image drag during 'mouse swipe'
-        G.$E.base.addClass('unselectable').find('*').attr('draggable', 'false').attr('unselectable', 'on');
-        G.gallerySwipeInitDone=true;
-        
-      }.bind(this);
-      
-      // Handle move gestures
-      this.handleGestureMove = function (e) {
-        //e.preventDefault(); // --> uncomment this to avoid viewport scrolling on touchscreen
-        lastTouchPosition = getGesturePointFromEvent(e);
-
-        if( G.O.paginationSwipe && G.layout.support.rows && G.galleryDisplayMode.Get() == 'PAGINATION' ) {
-          // swipe pagination
-        
-//G.galleryMaxRows.Get() a mettre à 0
-        
-          var differenceInY = initialTouchPos.y - lastTouchPosition.y;
-          var differenceInX = initialTouchPos.x - lastTouchPosition.x;
-
-          if( blockVert ) {
-            window.requestAnimationFrame( function() {
-              if( initialTouchPos != null && lastTouchPosition != null ) {
-                var differenceInX = initialTouchPos.x - lastTouchPosition.x;
-                G.$E.conTn.css( G.CSStransformName , 'translateX('+(currentXPosition - differenceInX)+'px)');
-              }
-            });
-          }
-          else {
-            if( Math.abs(differenceInY) > 40 ) {
-              // only vertical scroll
-              G.$E.conTn.css( G.CSStransformName , 'translateX('+0+'px)');
-            }
-            else {
-              if( Math.abs(differenceInX) > 40 ) {
-                blockVert=true;
-              }
-              if( blockVert ) {
-                e.preventDefault(); // if swipe horizontaly the gallery, avoid moving page also
-              }
-              
-              window.requestAnimationFrame( function() {
-                if( initialTouchPos != null && lastTouchPosition != null ) {
-                  var differenceInX = initialTouchPos.x - lastTouchPosition.x;
-                  G.$E.conTn.css( G.CSStransformName , 'translateX('+(currentXPosition - differenceInX)+'px)');
-                }
-              });
-              
-            }
-          }
-        }
-          
-          
-        
-//          e.preventDefault(); // if swipe horizontaly the gallery, avoid moving page also
-          // window.requestAnimationFrame( function() {
-            // if( initialTouchPos != null && lastTouchPosition != null ) {
-              // var differenceInX = initialTouchPos.x - lastTouchPosition.x;
-              // G.$E.conTn.css( G.CSStransformName , 'translateX('+(currentXPosition - differenceInX)+'px)');
-            // }
-          // });
-
-      }.bind(this);
-
-      
-      // Handle end gestures
-      this.handleGestureEnd = function(e) {
-        if( e.cancelable ) { e.preventDefault(); }
-        e.stopPropagation();
-        
-        // if(e.touches && e.touches.length > 0) {
-        //   return;
-        // }
-        
-        // Remove Event Listeners
-        if (window.navigator.msPointerEnabled) {
-          // Remove Pointer Event Listeners
-          document.removeEventListener('MSPointerMove', this.handleGestureMove, true);
-          document.removeEventListener('MSPointerUp', this.handleGestureEnd, true);
-        } else {
-          // Remove Touch Listeners
-          document.removeEventListener('touchmove', this.handleGestureMove, true);
-          document.removeEventListener('touchend', this.handleGestureEnd, true);
-          document.removeEventListener('touchcancel', this.handleGestureEnd, true);
-        
-          // Remove Mouse Listeners
-          document.removeEventListener('mousemove', this.handleGestureMove, true);
-          document.removeEventListener('mouseup', this.handleGestureEnd, true);
-        }
-
-        // allow text + image selection again
-        G.$E.base.addClass('unselectable').find('*').attr('draggable', 'true').attr('unselectable', 'off');
-blockVert=false;
-        GestureEndAction(e);
-
-      }.bind(this);
-
-      this.RemoveEvtListener = function() {
-        
-        // Remove Event Listeners
-        if (window.navigator.msPointerEnabled) {
-          // Remove Pointer Event Listeners
-          document.removeEventListener('MSPointerMove', this.handleGestureMove, true);
-          document.removeEventListener('MSPointerUp', this.handleGestureEnd, true);
-        } else {
-          // Remove Touch Listeners
-          document.removeEventListener('touchmove', this.handleGestureMove, true);
-          document.removeEventListener('touchend', this.handleGestureEnd, true);
-          document.removeEventListener('touchcancel', this.handleGestureEnd, true);
-        
-          // Remove Mouse Listeners
-          document.removeEventListener('mousemove', this.handleGestureMove, true);
-          document.removeEventListener('mouseup', this.handleGestureEnd, true);
-        }
-
-      }.bind(this);
-
-      function GestureEndAction(e) {
-console.log('GestureEndAction');
-
-        if( lastTouchPosition == null || initialTouchPos == null ) {      // touchend without touchmove
-          OpenTouchedThumbnail(e);
-          return;
-        }
-
-        var differenceInX = initialTouchPos.x - lastTouchPosition.x;
-        var differenceInY = initialTouchPos.y - lastTouchPosition.y;
-        currentXPosition = currentXPosition - differenceInX;
-        if( G.O.paginationSwipe && G.layout.support.rows && G.galleryDisplayMode.Get() == 'PAGINATION' ) {
-          // swipe pagination
-          if(  (Math.abs(differenceInX) > 40 && Math.abs(initialViewport.t-getViewport().t) <= G.O.paginationSwipeSensibilityVert ) ) {
-            G.$currentTouchedThumbnail=null;
-            currentXPosition=0;
-            initialTouchPos=null;
-            lastTouchPosition=null;
-            ThumbnailHoverOutAll();
-            if( differenceInX < -40 ) {
-              paginationPreviousPage();
-              return;
-            }
-            else {
-              paginationNextPage();
-              return;
-            }
-          }
-        }
-        
-        // no pagination
-        OpenTouchedThumbnail(e);
-
-        return;
-      }
-
-      
-      function OpenTouchedThumbnail(e) {
-console.log('OpenTouchedThumbnail');
-        currentXPosition=0;
-        initialTouchPos=null;
-        lastTouchPosition=null;
-
-        G.$E.conTn.css( G.CSStransformName , 'translateX('+0+'px)');
-        
-        if( Math.abs(initialViewport.t-getViewport().t) > G.O.paginationSwipeSensibilityVert ) {
-          // viewport has been scrolled vertically (touchscreen)--> action is cancelled
-//          ThumbnailHoverOut(G.$currentTouchedThumbnail);
-          G.$currentTouchedThumbnail=null;
-          G.openNoDelay=false;
-          return;
-        }
-
-        
-        if( GalleryClicked(e) == 'exit' ) { return; }
-        
-        var r=GalleryEventRetrieveElementl(e, false);
-        
-        // if( ( G.GOM.curNavLevel == 'l1' && G.O.touchAnimationL1 !== undefined ? G.O.touchAnimationL1: G.O.touchAnimation) && !G.openNoDelay ) {
-        if( ( G.GOM.curNavLevel == 'l1' && G.O.touchAnimationL1 !== undefined ? G.O.touchAnimationL1: G.O.touchAnimation)  ) {
-        // if( ( true ) {
-          // automatically opens the touched thumbnail (to display an image or to open an album)
-          if( G.O.touchAutoOpenDelay > 0 ) {
-console.log('ThumbnailHoverOutAll0');
-            ThumbnailHoverOutAll();
-            ThumbnailHover(r.GOMidx);
-            window.clearInterval(G.touchAutoOpenDelayTimerID);
-            G.touchAutoOpenDelayTimerID=window.setInterval(function(){
-              window.clearInterval(G.touchAutoOpenDelayTimerID);
-              if( Math.abs(initialViewport.t-getViewport().t) > G.O.paginationSwipeSensibilityVert ) {
-                // viewport has been scrolled after hover effect delay (touchscreen)--> open is cancelled
-                G.openNoDelay=false;
-                G.$currentTouchedThumbnail=null;
-console.log('ThumbnailHoverOut1');                
-                ThumbnailHoverOut(r.GOMidx);
-              }
-              else {
-                ThumbnailOpen(idx);
-              }
-            }, G.O.touchAutoOpenDelay);
-          }
-          else {
-            // 2 touch scenario
-            if( !G.I[idx].hovered ) {
-              // first touch
-console.log('ThumbnailHoverOutAll2');                
-              ThumbnailHoverOutAll();
-              ThumbnailHover(r.GOMidx);
-            }
-            else {
-              // second touch
-              ThumbnailOpen(idx);
-            }
-          }
-        }
-        else {
-          ThumbnailOpen(idx);
-//OpenThumbnail(n);
-        }
-      }
-      
-
-      function getGesturePointFromEvent(e) {
-        var point = {};
-
-        if(e.targetTouches) {
-          point.x = e.targetTouches[0].clientX;
-          point.y = e.targetTouches[0].clientY;
-        } else {
-          // Either Mouse event or Pointer Event
-          point.x = e.clientX;
-          point.y = e.clientY;
-        }
-
-        return point;
-      }
-      
-      // Check if MS pointer events are supported.
-      if (window.navigator.msPointerEnabled) {
-        // Add Pointer Event Listener
-        elementToSwipe.addEventListener('MSPointerDown', this.handleGestureStartNoDelay, true);
-      }
-      else {
-        // Add Touch Listener
-        elementToSwipe.addEventListener('touchstart', this.handleGestureStart, true);
-        
-        // Add Mouse Listener
-        if( !G.isIOS ) {
-          var thatObject = this;
-          elementToSwipe.addEventListener('mousedown', function(e){
-              // filter : if the user uses the right click, 
-              // do not do anything
-//              if(e.button != 2){
-                thatObject.handleGestureStartNoDelay(e);
-//            }
-          }, true);
-        }
-      }
-      
-      // MOUSE OVER
-      elementToSwipe.addEventListener('mouseenter', GalleryMouseEnter, true);
-      elementToSwipe.addEventListener('mouseleave', GalleryMouseLeave, true);
-      // $(elementToSwipe).on({
-        // mouseenter: GalleryMouseEnter,
-        // mouseleave: GalleryMouseLeave
-      // }, ".nGY2GThumbnail"); //pass the element as an argument to .on
-      
-    }    
-    
     
     // I18N : define text translations
     function i18n() {

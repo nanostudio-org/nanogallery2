@@ -43,21 +43,20 @@
         // photos
         if( G.O.photoset.toUpperCase() == 'NONE' || G.O.album.toUpperCase() == 'NONE' ) {
           // get photos from full photostream
-          url = Flickr.url() + "?&method=flickr.people.getPublicPhotos&api_key=" + Flickr.ApiKey + "&user_id="+G.O.userID+"&extras=description,views,tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_z,url_b,url_h,url_k&per_page=500&format=json&jsoncallback=?";
+          url = Flickr.url() + "?&method=flickr.people.getPublicPhotos&api_key=" + Flickr.ApiKey + "&user_id="+G.O.userID+"&extras=description,views,tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_z,url_b,url_h,url_k&per_page=500&format=json";
         }
         else
           if( G.I[albumIdx].GetID() == 0 ) {
           // retrieve the list of albums
-          url = Flickr.url() + "?&method=flickr.photosets.getList&api_key=" + Flickr.ApiKey + "&user_id="+G.O.userID+"&per_page=500&primary_photo_extras=tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_l,url_z,url_b,url_h,url_k&format=json&jsoncallback=?";
+          url = Flickr.url() + "?&method=flickr.photosets.getList&api_key=" + Flickr.ApiKey + "&user_id="+G.O.userID+"&per_page=500&primary_photo_extras=tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_l,url_z,url_b,url_h,url_k&format=json";
           kind='album';
         }
           else {
             // photos from one specific photoset
-            url = Flickr.url() + "?&method=flickr.photosets.getPhotos&api_key=" + Flickr.ApiKey + "&photoset_id="+G.I[albumIdx].GetID()+"&extras=description,views,tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_l,url_z,url_b,url_h,url_k&format=json&jsoncallback=?";
+            url = Flickr.url() + "?&method=flickr.photosets.getPhotos&api_key=" + Flickr.ApiKey + "&photoset_id="+G.I[albumIdx].GetID()+"&extras=description,views,tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_l,url_z,url_b,url_h,url_k&format=json";
           }
 
       PreloaderDisplay(true);
-
       jQuery.ajaxSetup({ cache: false });
       jQuery.support.cors = true;
       
@@ -66,42 +65,90 @@
         PreloaderDisplay(false);
         NanoAlert('Could not retrieve AJAX data...');
       }, 60000 );
-      jQuery.getJSON(url, function(data, status, xhr) {
-       clearTimeout(tId);
-       PreloaderDisplay(false);
+      
+      var sourceData=[];
 
+      // Process the downloaded data
+      var FlickrGetDone = function() {
+        clearTimeout(tId);
+        PreloaderDisplay(false);
+        
         if( kind == 'album' ) {
-          FlickrParsePhotoSets(albumIdx, data);
+          FlickrParsePhotoSets(albumIdx, sourceData);
         }
         else {
-          FlickrParsePhotos(albumIdx, data);
+          FlickrParsePhotos(albumIdx, sourceData);
         }
-
+        
         AlbumPostProcess(albumID);
         if( fnToCall !== null &&  fnToCall !== undefined) {
           fnToCall( fnParam1, fnParam2, null );
         }
+      }
+      
+      // download one page of data (=500 entries)
+      var FlickrGetOnePage = function( url, page ) {
+        jQuery.getJSON(url+'&page='+page+'&jsoncallback=?', function(data, status, xhr) {
 
+          var pages=0;
+          if( kind == 'album' ) {
+            if( data.stat !== undefined && data.stat === 'fail' ) {
+              NanoAlert("Could not retrieve Flickr album list: " + data.message + " (code: "+data.code+").");
+              return false;
+            }
+            sourceData=sourceData.concat(data.photosets.photoset);
+            pages=data.photosets.pages;
+          }
+          else {
+            if( G.O.photoset.toUpperCase() == 'NONE' || G.O.album.toUpperCase() == 'NONE' ) {
+              // content of full photoset
+              sourceData=sourceData.concat(data.photos.photo);
+              pages=data.photos.pages;
+            }
+            else {
+              // content of one album
+              if( data.stat !== undefined && data.stat === 'fail' ) {
+                NanoAlert("Could not retrieve Flickr album: " + data.message + " (code: "+data.code+").");
+                return false;
+              }
+              if( G.I[albumIdx].title == '' ) {
+                G.I[albumIdx].title=data.photoset.title;
+              }
+              sourceData=sourceData.concat(data.photoset.photo);
+              pages=data.photoset.pages;
+            }
+            
+          }
+          
+          if( pages > page ) {
+            FlickrGetOnePage(url, page+1);
+          }
+          else {
+            FlickrGetDone();
+          }
+        })
+        .fail( function(jqxhr, textStatus, error) {
+          clearTimeout(tId);
+          PreloaderDisplay(false);
+          NanoAlert("Could not retrieve Flickr ajax data: " + textStatus + ', ' + error);
+        });
 
-      })
-      .fail( function(jqxhr, textStatus, error) {
-        clearTimeout(tId);
-        PreloaderDisplay(false);
-        NanoAlert("Could not retrieve ajax data (Flickr): " + textStatus + ', ' + error);
-      });
+      }
+      
+      FlickrGetOnePage(url, 1);
       
     }
 
 
     
-    function FlickrParsePhotos( albumIdx, data ) {
-      var source = '';
-      if( G.O.photoset.toUpperCase() == 'NONE' || G.O.album.toUpperCase() == 'NONE' ) {
-        source = data.photos.photo;
-      }
-      else {
-        source = data.photoset.photo;
-      }
+    function FlickrParsePhotos( albumIdx, source ) {
+      // var source = '';
+      // if( G.O.photoset.toUpperCase() == 'NONE' || G.O.album.toUpperCase() == 'NONE' ) {
+        // source = data.photos.photo;
+      // }
+      // else {
+        // source = data.photoset.photo;
+      // }
 
       var albumID=G.I[albumIdx].GetID();
       jQuery.each(source, function(i,item){
@@ -165,17 +212,10 @@
     // -----------
     // Retrieve items from Flickr photosets
     // items can be images or albums
-    function FlickrParsePhotoSets( albumIdx, data ) {
-      if( data.stat !== undefined ) {
-        if( data.stat === 'fail' ) {
-          NanoAlert("Could not retrieve Flickr photoset list: " + data.message + " (code: "+data.code+").");
-          return false;
-        }
-      }
-
+    function FlickrParsePhotoSets( albumIdx, source ) {
       var albumID=G.I[albumIdx].GetID();
       
-      var source = data.photosets.photoset;
+      // var source = data.photosets.photoset;
       jQuery.each(source, function(i,item){
         //Get the title
         itemTitle = item.title._content;
