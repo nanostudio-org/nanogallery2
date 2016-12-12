@@ -491,7 +491,9 @@
         <p>
         Firefox 6+ - Chrome 16+ - Edge 13+ - IE 10+ - Opera 12.1+ - Yandex 14.12+ - iPhone 5+ / iOS 6+ - Safari 6.2+
         <br>(some features may not be available on every platform).
+        <br><br>
         </p>
+        <p>Testing services provided by <a href="https://www.browserstack.com" target="_blank">BrowserStack</a><br><img src="img/browserstack3.png" alt="browserstack"></p>
         <br><br><br>
       </div>
       <div class="col-md-1" ></div>
@@ -505,7 +507,7 @@
         <h2>Licensing</h2>
         <br><br><br><br>
         <p class="lead">nanogallery2 is licensed under a dual-license model: a <a href="https://www.gnu.org/licenses/gpl-3.0.html/" target="_blank">GPLv3 license</a> for non-commercial use and a proprietary commercial license. 
-<font color="#d00"><b>nanogallery2 may be used in commercial projects and applications, or in business environments with the purchase of a commercial license.</b></font></p>
+        <font color="#d00"><b>nanogallery2 may be used in commercial projects and applications, or in business environments with the purchase of a commercial license.</b></font></p>
         <br>
       </div>
       <div class="col-md-1" ></div>
@@ -596,9 +598,9 @@
             <td>Contribution</td>
             <td><a ref="." class="btn btn-primary btn-lg"><i class="fa fa-cart-plus" aria-hidden="true"></i> &nbsp;&nbsp; <i class="fa fa-gift" aria-hidden="true"></i> <i class="fa fa-smile-o" aria-hidden="true"></i></a></td>
             <td>
-              <a href="." class="btn btn-primary btn-lg" ><i class="fa fa-cart-plus" aria-hidden="true"></i> &nbsp; 25€</a>
+              <a href="." class="btn btn-primary btn-lg" ><i class="fa fa-cart-plus" aria-hidden="true"></i> &nbsp; 25â‚¬</a>
             </td>
-            <td><a href="." class="btn btn-primary btn-lg"><i class="fa fa-cart-plus" aria-hidden="true"></i> &nbsp; 90€</a></td>
+            <td><a href="." class="btn btn-primary btn-lg"><i class="fa fa-cart-plus" aria-hidden="true"></i> &nbsp; 90â‚¬</a></td>
           </tr>
         </tbody>
         </table>
@@ -658,7 +660,29 @@
       <div class="col-md-2" ></div>
     </div>
     
-    
+    <div class="row text-center">
+      <div class="col-md-12" >
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+var disqus_config = function () {
+//this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = 'nanogallery2'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//nanogallery2.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                                
+      </div>
+    </div>
 
     <br><br><br><br>
     
@@ -694,6 +718,8 @@
         galleryMaxRows: 3,
         galleryL1MaxRows: 1,
         
+                
+        
 //thumbnailL1HoverEffect2: 'labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear|image_rotateZ_0_10|image_scale_100_130',
 //thumbnailL1HoverEffect2: '.nGY2GThumbnailSub_rotateX_0_50|labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear|image_translateX_-10px_10px',
 //thumbnailL1HoverEffect2: 'thumbnail_rotateX_20deg_0deg|thumbnail_scale_1.00_1.20|labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear|image_translateX_-10px_10px',
@@ -705,14 +731,14 @@ thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.40|l
         //thumbnailL1HoverEffect2: 'labelAppear',
         //thumbnailHoverEffect2: 'label_font-size_1em_2em|title_color_#ffffff_#B2E16A|label_bottom_0px_15px|toolsAppear|image_grayscale_0%_100%|image_scale_100_110_5000',
         //thumbnailHoverEffect2: 'label_font-size_1em_2em|title_backgroundColor_rgba(255,255,255,0.34)_rgba((115,166,35,0.6)|title_color_#000_#fff|label_bottom_0px_15px|toolsAppear|image_grayscale_0%_100%_500|image_scale_100_110_5000',
-        thumbnailHoverEffect2: 'label_font-size_1em_2em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((84,132,12,0.8)|title_color_#000_#fff|toolsAppear|image_grayscale_0%_100%_500|image_scale_1.00_1.10_5000',
+        thumbnailHoverEffect2: 'label_font-size_1em_2em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((84,132,12,0.8)|title_color_#000_#fff|toolsAppear|image_grayscale_0%_100%_500|image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
 
         thumbnailToolbarImage : { topLeft: 'select', topRight : 'share,featured,download' },
 
         //thumbnailToolbarImage:null,
         //thumbnailToolbarAlbum:null,
         thumbnailL1Label: { display: true, position:'overImageOnMiddle', hideIcons: true, titleFontSize: '2em', align: 'center'},
-        thumbnailLabel: { display: true, position:'overImageOnBottom', hideIcons: true, titleFontSize: '1em', align: 'left'},
+        thumbnailLabel: { display: true, position:'overImageOnBottom', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true},
         thumbnailBorderHorizontal: 0,
         thumbnailBorderVertical: 0,
         thumbnailSelectable: false,
@@ -737,7 +763,7 @@ thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.40|l
         var svg='<svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="filters" style="display:hidden;">';
         svg+='<defs>';
         svg+='<filter id="ngy2-hblur'+counter+'">';
-        svg+='<feGaussianBlur in="SourceGraphic" stdDeviation="0,0" />'
+        svg+='<feGaussianBlur in="SourceGraphic" stdDeviation="20,0" />'
         svg+='</filter>';
         svg+='</defs>';
         svg+='<defs>';
@@ -765,9 +791,9 @@ thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.40|l
         var tweenable = new NGTweenable();
         tweenable.tween({
           attachment:   context,
-          from:         { 'v': 0 },
-          to:           { 'v': 20 },
-          duration:     300,
+          from:         { 'v': 20 },
+          to:           { 'v': 0 },
+          duration:     1000,
           delay:        0,
           easing:       'easeOutQuart',
           step: function (state, att) {
@@ -793,9 +819,9 @@ thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.40|l
         var tweenable = new NGTweenable();
         tweenable.tween({
           attachment:   context,
-          from:         { 'v': 20 },
-          to:           { 'v': 0 },
-          duration:     300,
+          from:         { 'v': 0 },
+          to:           { 'v': 20 },
+          duration:     1000,
           delay:        0,
           easing:       'easeOutQuart',
           
