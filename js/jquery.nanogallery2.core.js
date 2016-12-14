@@ -924,7 +924,9 @@
       display :                   true,
       displayDescription :        false,
       titleMaxLength :            0,
+      titleMultiLine :            false,
       descriptionMaxLength :      0,
+      descriptionMultiLine :      false,
       hideIcons :                 true,
       title :                     '',
       titleMultiLine:             false,
@@ -1057,6 +1059,14 @@
 
       var nG2=$(this).data('nanogallery2data').nG2;
       switch(args){
+        case 'data':
+          nG2.data= {
+            items: nG2.I,
+            gallery: nG2.GOM,
+            lightbox: nG2.VOM
+          };
+          return nG2.data;
+          break;
         case 'reload':
           nG2.ReloadAlbum();
           return $(this);
@@ -1724,6 +1734,7 @@
       var itm=NGY2Item.New( G, G.i18nTranslations.breadcrumbHome, '', '0', '-1', 'album' );
 
       processStartOptions();
+      
 
     }
 
@@ -2125,7 +2136,6 @@
     function paginationNextPage() {
       var aIdx=G.GOM.albumIdx,
       n1=0;
-
       ThumbnailHoverOutAll();
       
       // pagination - max lines per page mode
@@ -2143,6 +2153,8 @@
       }
       
       G.GOM.pagination.currentPage = pn;
+      G.$E.base.trigger('pageChanged.nanogallery2', new Event('pageChanged.nanogallery2'));
+
       GalleryDisplay( true );
     }
     
@@ -2171,6 +2183,7 @@
       }
 
       G.GOM.pagination.currentPage = pn;
+      G.$E.base.trigger('pageChanged.nanogallery2', new Event('pageChanged.nanogallery2'));
       GalleryDisplay( true );
     }
 
@@ -2250,6 +2263,9 @@
     
     // RENDER THE GALLERY
     function GalleryRender( albumIdx ) {
+
+      G.$E.base.trigger('galleryRenderStart.nanogallery2', new Event('galleryRenderStart.nanogallery2'));
+
       G.layout.SetEngine();
       G.galleryResizeEventEnabled=false;
       G.GOM.albumIdx = -1;
@@ -2335,6 +2351,10 @@
     
     // Gallery render part 2 -> remove all thumbnails
     function GalleryRenderPart2(albumIdx) {
+      G.GOM.lastZIndex = parseInt(G.$E.base.css('z-index'));
+      if( isNaN(G.GOM.lastZIndex) ) {
+        G.GOM.lastZIndex=0;
+      }
       G.$E.conTnParent.css({'opacity': 0 });
       // G.$E.conTn.hide(0).off().show(0).html('');
       // G.$E.conTn.off().html('');
@@ -2381,6 +2401,8 @@
       }
       G.GOM.albumIdx=albumIdx;
 
+      G.$E.base.trigger('galleryRenderEnd.nanogallery2', new Event('galleryRenderEnd.nanogallery2'));
+      
       // Step 1: populate GOM
       if( GalleryPopulateGOM() ) {
       
@@ -2462,6 +2484,8 @@
         }
       }
 
+      G.$E.base.trigger('galleryObjectModelBuilt.nanogallery2', new Event('galleryObjectModelBuilt.nanogallery2'));
+      
       if( imageSizeRequested ) {
         // preload images to retrieve their size and then resize the gallery (=GallerySetLayout()+ GalleryDisplay())
         var $newImg=jQuery(preloadImages);
@@ -2552,20 +2576,26 @@
     
     //----- Calculate the layout of the thumbnails
     function GallerySetLayout( GOMidx ) {
-
+      var r = true;
       // available area width
       var areaWidth=G.$E.conTnParent.width();
       G.GOM.displayArea={ width:0, height:0 };
 
       switch( G.layout.engine ) {
         case 'JUSTIFIED':
-          return GallerySetLayoutWidthtAuto( areaWidth, GOMidx );
+          r= GallerySetLayoutWidthtAuto( areaWidth, GOMidx );
+          break;
         case 'CASCADING':
-          return GallerySetLayoutHeightAuto( areaWidth, GOMidx );
+          r= GallerySetLayoutHeightAuto( areaWidth, GOMidx );
+          break;
         case 'GRID':
         default:
-          return GallerySetLayoutGrid( areaWidth, GOMidx );
+          r= GallerySetLayoutGrid( areaWidth, GOMidx );
+          break;
       }
+      
+      G.$E.base.trigger('galleryLayoutApplied.nanogallery2', new Event('galleryLayoutApplied.nanogallery2'));
+      return r;
 
     }
     
@@ -3078,6 +3108,8 @@
         }, nbBuild*G.tn.displayInterval);
       }
       
+      G.$E.base.trigger('galleryDisplayed.nanogallery2', new Event('galleryDisplayed.nanogallery2'));
+
     }
     
     
@@ -4681,8 +4713,6 @@ console.log('#DisplayPhoto : '+  imageIdx);
       }
       G.tn.hoverEffects.std=ThumbnailOverEffectsPreset(G.tn.hoverEffects.std);
 
-//pipo
-      
       if( G.tn.hoverEffects.std.length == 0 ) {
         if( G.tn.hoverEffects.level1.length == 0 ) {
           G.O.touchAnimationL1=false;
@@ -5661,6 +5691,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
           if(typeof G.O.fnShoppingCartUpdated === 'function'){
             G.O.fnShoppingCartUpdated(G.shoppingCart);
           }
+          G.$E.base.trigger('shoppingCartUpdated.nanogallery2', new Event('shoppingCartUpdated.nanogallery2'));
           return;
         }
       }
@@ -5671,6 +5702,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
         if(typeof G.O.fnShoppingCartUpdated === 'function'){
           G.O.fnShoppingCartUpdated(G.shoppingCart);
         }
+        G.$E.base.trigger('shoppingCartUpdated.nanogallery2', new Event('shoppingCartUpdated.nanogallery2'));
       }
     }
     
@@ -6019,7 +6051,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
 
 // avoid pinch zoom
 G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});      
-// TODO -> still required?
+// TODO -> check if still required?
 
       
       var sImg='',
@@ -6336,7 +6368,7 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
       }
     }
     
-    // Display phot infos
+    // Display photo infos
     function ViewerInfoSet() {
       var item=G.VOM.Item(G.VOM.currItemIdx);
 
@@ -6576,6 +6608,7 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
       if( G.VOM.viewerImageIsChanged ) { return; }
       if( (new Date().getTime()) - G.VOM.timeImgChanged < 300 ) { return; }
       
+      G.$E.base.trigger('lightboxNextImage.nanogallery2', new Event('lightboxNextImage.nanogallery2'));
       DisplayInternalViewer(GetNextImageIdx(G.VOM.currItemIdx), 'nextImage');
     };
     
@@ -6587,6 +6620,7 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
         SlideshowToggle();
       }
       
+      G.$E.base.trigger('lightboxPreviousImage.nanogallery2', new Event('lightboxPreviousImage.nanogallery2'));
       DisplayInternalViewer(GetPreviousImageIdx(G.VOM.currItemIdx), 'previousImage');
     };
     
@@ -6791,8 +6825,8 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
       if( G.VOM.playSlideshow || item.imageHeight == 0 || item.imageWidth == 0) {
         G.$E.vwImgC.ngimagesLoaded().always( function( instance ) {
           
-      item.imageWidth=G.$E.vwImgC.prop('naturalWidth');
-      item.imageHeight=G.$E.vwImgC.prop('naturalHeight');
+          item.imageWidth=G.$E.vwImgC.prop('naturalWidth');
+          item.imageHeight=G.$E.vwImgC.prop('naturalHeight');
           
           SetZoomDefault();
           if( G.VOM.playSlideshow ) {
@@ -6826,6 +6860,8 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
       //});
 
       G.VOM.viewerImageIsChanged=false;
+      G.$E.base.trigger('lightboxImageDisplayed.nanogallery2', new Event('lightboxImageDisplayed.nanogallery2'));
+      
     }
     
     function SetZoomDefault() {
@@ -7088,10 +7124,6 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
         G.O.$markup=$elements;
       }
       G.$E.base.text('');
-      G.GOM.lastZIndex = parseInt(G.$E.base.css('z-index'));
-      if( isNaN(G.GOM.lastZIndex) ) {
-        G.GOM.lastZIndex=0;
-      }
       
       // RTL or LTR
       var sRTL='';
