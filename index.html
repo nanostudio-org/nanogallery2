@@ -301,422 +301,353 @@
   <!-- ###################### -->
 
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
-<html>
-
-<head>
-  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
-  <title>nanogallery2</title>
-  <link rel="icon" href="logo/favicon.ico" />
-
-  <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
- 
-  <!-- #################################################################################################################### -->
-  <!-- jQuery                                                                                                               -->
-  <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
-  <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>  -->
-  <!-- #################################################################################################################### -->
-
-<!--  
-<script src="../third.party/touch-emulator.js"></script>
-<script> TouchEmulator(); </script>
--->
-
-<!--
-	<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
--->
-
-  <!-- BOOTSTRAP -->
-  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <script src="bootstrap/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css" />
-
-  <!-- #################################################################################################################### -->
-  <!-- nanogallery2 CSS files                                                                                               -->
-	<link href="../css/nanogallery2.css" rel="stylesheet" type="text/css">
-  <!-- #################################################################################################################### -->
-
-  <!-- #################################################################################################################### -->
-	<!-- nanogallery2 javascript                                                                                              -->
-	<script type="text/javascript" src="../jquery.nanogallery2.core.js"></script>
-	<script type="text/javascript" src="../jquery.nanogallery2.data_google.js"></script>
-	<script type="text/javascript" src="../jquery.nanogallery2.data_flickr.js"></script>
-	<!-- 
-  <script type="text/javascript" src="jquery.nanogallery2.builder.js"></script>
-  -->
-  <!-- #################################################################################################################### -->
-
-  <style>
-    * { font-family: 'Roboto Condensed', sans-serif; }
-    h1, h2, h3, h4, h5, h6 { color : #73A623 }
-    .navbar * { font-weight: bold; }
-    .navbar-inverse .navbar-nav>li>a { 
-      color: #fff;
-      padding-bottom: 5px;
-    }
-    h1 {
-      border-left : 25px solid #73A623;
-      padding-left: 10px;
-    }
-    .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
-      color: #B2E16A;
-      border-bottom: 2px solid #B2E16A;
-    }
-    .navbar-inverse .navbar-brand {
-      color: #fff;
-      display: inline-flex;
-      display: -webkit-inline-flex;
-    }
-    
-    .ngy2color1 {
-      color: #54840C;
-    }
-    .ngy2color2 {
-      color: #73A623;
-    }
-    .ngy2color3 {
-      color: #B2E16A;
-    }
-    .ngy2color4  {
-      color: #CFF19A;
-    }
-
-    /* Responsive SVG LOGO */
-    .svg-container {
-      display: inline-block;
-      position: relative;
-      width: 100%;
-      max-width: 450px;
-      /*padding-bottom: 100%;*/
-      vertical-align: middle;
-      overflow: hidden;
-    }
-    svg-content {
-      display: inline-block;
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-
-    </style>
-
-  <!-- Asynchronous Google Analytics snippet -->
-  <script>
-    var _gaq = _gaq || [];
-    var pluginUrl =
-   'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
-    _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
-    _gaq.push(['_setAccount', 'UA-39069349-8']);
-    _gaq.push(['_trackPageview']);
-
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = 'https://stats.g.doubleclick.net/dc.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-    
-
-  </script>
-</head>
-
-
-<body>
-
-  <!-- ############## -->
-  <!-- ### NAVBAR ### -->
-  <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand form-horizontal" href="http://nanogallery2.nanostudio.org/" rel="home" title="nanogallery2">
-          <img src="logo/nanogallery2.svg" alt="nanogallery2" style="width:100px;height:25px;">
-        </a>
-      </div>
-      <div id="navbar" class="collapse navbar-collapse">
-        <ul class="nav navbar-nav navbar-right text-uppercase">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="demonstration.html">Demos</a></li>
-          <li><a href="quickstart.html">Quick Start</a></li>
-          <li><a href="builder.html">Builder</a></li>
-          <li><a href="documentation.html">Docs</a></li>
-          <li><a href="api.html">API</a></li>
-          <li><a href="modules.html">Modules</a></li>
-        </ul>
-      </div><!--/.nav-collapse -->
-    </div>
-  </nav>
-  <script>
-    $(document).ready(function () {
-      var p=location.pathname.substring(location.pathname.lastIndexOf("/") + 1);
-      $('.navbar a[href="'+p+'"]').parent().addClass('active');
-    });
-  </script>
-  <!-- ### NAVBAR ### -->
-  <!-- ############## -->
-
-
-  <!-- ### LOGO ### -->
-  <div class="jumbotron " style="background-color:#222;">
+  
+  
+  <div class="jumbotron ngy2dark">
     <div class="container ">
       <div class="row" >
-        <br><br><br><br>
-        <div class="col-md-12 text-center">
-          <div class="svg-container">
-            <object type="image/svg+xml" data="logo/nanogallery2.svg" width="100%" height="100%" class="svg-content"></object>
-          </div>
-          <h4 style="color:#eee;">beautiful javascript image gallery for your website</h4>
-        </div>
-      </div>
-      <br><br><br><br><br>
-      <div id="nanogallery">gallery made with nanogallery2</div>
-      <br><br><br><br><br><br><br><br><br><br>
+      <div id="nanogallery">gallery_made_with_nanogallery2</div>
+      <br><br><br><br><br><br><br><br>
+    </div>
     </div>
   </div>
-  <!-- ### LOGO ### -->
+  <svg class="svg-diag" style="background-color:#1C2B3B;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10" preserveAspectRatio="none">
+    <polygon points="100 0 100 10 -50 10" style="fill:#fff;"/>
+  </svg>
 
-<h2 class="text-center" style="color:#f00;"><b>ALPHA VERSION - WORK IN PROGRESS - DO NOT USE</b></h2>
+
+  
+  <h2 class="text-center" style="color:#f00;"><b>ALPHA VERSION - WORK IN PROGRESS - DO NOT USE</b></h2>
   
   
   <div class="container">
     <br><br><br><br>
     <div class="row">
       <div class="col-md-12 text-center">
-        <h3>nanogallery2 in 10 key features</h3><br><br><br><br>
+        <h3>nanogallery2 key features</h3><br><br><br><br>
       </div>
     </div>
 
 
 
-    <div class="row">
+    <div class="row" style="font-size:1.2em;">
       <div class="col-md-2" ></div>
-      <div class="col-md-4" style="font-size:1.2em;padding: 0 0 0 60px;">
-        <img src="img/manager.svg" style="height:35px;margin:4px;position: absolute;left: 0;top: 0;"><span>
-        <span class="text-uppercase ngy2color1"><b>great user experience</b></span> - easy and intuitive for all your visitors
+      <div class="col-md-4 text-center">
+        <span class="text-uppercase "><b>great user experience</b></span> - ease of use and visual appeal to capture the attention of your visitors
       </div>
-      <div class="col-md-1" ></div>
-      <div class="col-md-4" style="font-size:1.2em;padding: 0 0 0 60px;">
-        <img src="img/computing-cloud.svg" style="height:35px;margin:4px;position: absolute;left: 0;top: 0;"><span>
-        <span class="text-uppercase ngy2color1"><b>self hosted and cloud storage</b></span> - use your existing photo storage
+      <div class="col-md-4 text-center" >
+        <span class="text-uppercase "><b>easy to implement</b></span> - just HTML markup; scripting is also supported
       </div>
-      <div class="col-md-1" ></div>
-    </div>
-  
-    <div class="row">&nbsp;</div>
-    <div class="row">
       <div class="col-md-2" ></div>
-      <div class="col-md-4" style="font-size:1.2em;padding: 0 0 0 60px;">
-        <img src="img/pages.svg" style="height:35px;margin:4px;position: absolute;left: 0;top: 0;"><span>
-        <span class="text-uppercase ngy2color1"><b>multiple layout image gallery</b></span> - to create beautiful grid, justified or cascading galleries
-      </div>
-      <div class="col-md-1" ></div>
-      <div class="col-md-4" style="font-size:1.2em;padding: 0 0 0 60px;">
-        <img src="img/responsive-design-symbol.svg" style="height:35px;margin:4px;position: absolute;left: 0;top: 0;"><span>
-        natively <span class="text-uppercase ngy2color1"><b>touch enabled and responsive</b></span> - same user experience on all device types
-      </div>
-      <div class="col-md-1" ></div>
     </div>
-
-    <div class="row">&nbsp;</div>
-    <div class="row">
+    <br>
+    <div class="row" style="font-size:1.2em;">
       <div class="col-md-2" ></div>
-      <div class="col-md-4" style="font-size:1.2em;padding: 0 0 0 60px;">
-        <img src="img/images-interface-symbol.svg" style="height:35px;margin:4px;position: absolute;left: 0;top: 0;"><span>
-        integrated <span class="text-uppercase ngy2color1"><b>lightbox</b></span> for great photo display and handy navigation
+      <div class="col-md-4 text-center">
+        <span class="text-uppercase "><b>multiple layout image gallery</b></span> - to create beautiful grid, justified or cascading galleries
       </div>
-      <div class="col-md-1" ></div>
-      <div class="col-md-4" style="font-size:1.2em;padding: 0 0 0 60px;">
-        <img src="img/network.svg" style="height:35px;margin:4px;position: absolute;left: 0;top: 0;"><span>
-        <span class="text-uppercase ngy2color1"><b>social sharing</b></span>
+      <div class="col-md-4 text-center" >
+        even easyer with the <span class="text-uppercase "><b>HTML template generator</b></span>
       </div>
-      <div class="col-md-1" ></div>
-    </div>
-
-    <div class="row">&nbsp;</div>
-    <div class="row">
       <div class="col-md-2" ></div>
-      <div class="col-md-4" style="font-size:1.2em;padding: 0 0 0 60px;">
-        <img src="img/tap.svg" style="height:35px;margin:4px;position: absolute;left: 0;top: 0;"><span>
-        <span class="text-uppercase ngy2color1"><b>easy to implement</b></span> - just HTML markup; scripting is also supported
-      </div>
-      <div class="col-md-1" ></div>
-      <div class="col-md-4" style="font-size:1.2em;padding: 0 0 0 60px;">
-        <img src="img/magic-wand.svg" style="height:35px;margin:4px;position: absolute;left: 0;top: 0;"><span>
-        <span class="text-uppercase ngy2color1"><b>hover effects and transitions</b></span> to capture the attention of your visitors
-      </div>
-      <div class="col-md-1" ></div>
     </div>
-
-    <div class="row">&nbsp;</div>
-    <div class="row">
+    <br>
+    <div class="row" style="font-size:1.2em;">
       <div class="col-md-2" ></div>
-      <div class="col-md-4" style="font-size:1.2em;padding: 0 0 0 60px;">
-        <img src="img/settings.svg" style="height:35px;margin:4px;position: absolute;left: 0;top: 0;"><span>
-        even easyer with the <span class="text-uppercase ngy2color1"><b>HTML template generator</b></span>
+      <div class="col-md-4 text-center">
+        integrated <span class="text-uppercase "><b>lightbox</b></span> for great photo display and handy navigation
       </div>
-      <div class="col-md-1" ></div>
-      <div class="col-md-4" style="font-size:1.2em;padding: 0 0 0 60px;">
-        <img src="img/graphic-design.svg" style="height:35px;margin:4px;position: absolute;left: 0;top: 0;"><span>
-        <span class="text-uppercase ngy2color1"><b>open source</b></span> - everyone can contribute
+      <div class="col-md-4 text-center" >
+        natively <span class="text-uppercase "><b>touch enabled and responsive</b></span> - unique user experience on all device types
       </div>
-      <div class="col-md-1" ></div>
+      <div class="col-md-2" ></div>
     </div>
+    <br>
+    <div class="row" style="font-size:1.2em;">
+      <div class="col-md-2" ></div>
+      <div class="col-md-4 text-center">
+        <span class="text-uppercase "><b>self hosted and cloud storage</b></span> - use your existing photo storage
+      </div>
+      <div class="col-md-4 text-center" >
+        <span class="text-uppercase "><b>open source</b></span> - everyone can look behind the scene and can contribute
+      </div>
+      <div class="col-md-2" ></div>
+    </div>
+    <br>
+      
 
 
-    <br><br><br><br>
+
+    <br><br><br><br><br><br>
 
     <div class="row text-center">
-      <div class="col-md-2" ></div>
-      <div class="col-md-8" >
+      <div class="col-md-1" ></div>
+      <div class="col-md-10" >
         <br><br><br><br><br>
         <h3><b>nanogallery2</b> creates beautiful and high quality photo galleries</h3>
-        <br><br>
-        <span class="lead">nanogallery2 is focused on performance and on providing the best experience to user with any device.</span>
-        Galleries are highly customizable: choose between justified, grid or cascading layout and style it to suit your personnal needs.
-        <br><br>
-        <h3>Content source</h3>
-        nanogallery2 uses the photos from where you already store them: Flickr, Google Photos or your web server.
-        You don't have to change anything on your current photo management. Just point nanogallery2 to your existing content on the web.
-        Naturally, you can also self host your photos on your personal website.
-        Gallery customization is done regardless of your content source.
-
+        <br><br><br><br>
+        <p>
+          <span class="lead text-justify">nanogallery2 is focused on performance and on providing the best experience to user with any device.</span>
+          Galleries are highly customizable: choose between justified, grid or cascading layout and style it to suit your personnal needs.
+        </p><br><br><br>
+      </div>
+      <div class="col-md-1" ></div>
+    </div>
+    <div class="row ">
+      <div class="col-md-1" ></div>
+      <div class="col-md-10 text-justify" >
         <h3>Instant ready</h3>
-        You don't need to read the full documentation to start: use the <a href="builder.html" style="background-color:#eee;">builder</a> to quickly and easily generate HTML templates and publish them on your website in a couple of minutes.
-        
+        <p>
+          You don't need to read the full documentation to start: use the <a href="builder.html" style="background-color:#eee;">builder</a> to quickly and easily generate HTML templates and publish them on your website in a couple of minutes.
+        </p><br><br>
 
         <h3>Eye-catching effects</h3>
-        Hundreds of transitions and effects to capture the attention of your visitors. Use presets or create complex effects very easily.
+        <p>
+          Thousands of transitions and effects combinations to capture the attention of your visitors. Use presets or create complex effects very easily.
+        </p><br><br>
 
-        <h3>What's new since nanoGALLERY?</h3>
-        nanogallery2 is following the popular nanoGALLERY script.
-        The display algorithm has been completly rewritten for a better user experience. New features include: filter by keywords, shopping cart, social sharing, advanced hover effects, styling, tools on thumbnails, more button, thumbnail display transitions, navigation in albums without breadcrumb, ...
+        <h3>Content source</h3>
+        <p>
+          nanogallery2 uses the photos from where you already store them: Flickr, Google Photos or your web server.
+          You don't have to change anything on your current photo management. Just point nanogallery2 to your existing content on the web.
+          Naturally, you can also self host your photos on your personal website.
+          Gallery customization is done regardless of your content source.
+        </p><br><br>
+
+        <h3>Simplify your photo publishing workflow</h3>
+        <p>With nanogallery2, you can publish your photos to your website without any break in your standard way to handle your photos.<br>
+        - Just push your photos from your mobile phone to Google Photos or Flickr, and they are automatically available on your website.
+        No need to push your photos to your website using FTP.
+        <br>
+        - More sophisticated workflow can also be imagined: 
+        import your DSLR photos to Adobe Lightroom and after processing publish them to Google Photos or Flickr.
+        </p><br><br>
+
+        <h3>Why store your photos on Google Photos or Flickr?</h3>
+        <p>Besides simplifying your workflow, there's one unique feature: images are automatically optimized for better performance.
+        Concretely, this means that you don't need to generate the thumbnails of your photos.
+        It's even perfect for responsive design: the best thumbnail size is dynamically and automatically generated, to fit any page layout, on any device.
+        You just have to define thumbnails sizes in the nanogallery2's options.
+        </p><br><br>
         
-        <h3>Features</h3>
-        Image gallery with lightbox, multiple responsive layouts, thumbnail display animation and hover effects, mobile friendly, smart lazy load, deep linking, browser back/forward, Flickr, Google Photos, self hosted images, display location/GPS with Google Maps, gesture (swipe and pinch zoom), album and sub-albums, breadcrumb, filter on tags, social sharing, tools on thumbnail, etc.
+        <h3>What's new since nanoGALLERY?</h3>
+        <p>nanogallery2 is following the popular <a href="http://nanogallery.brisbois.frl" style="background-color:#eee;" >nanoGALLERY</a> script.
+        The display algorithm has been completly rewritten for a better user experience. New features include: filter by keywords, shopping cart, social sharing, advanced hover effects, styling, tools on thumbnails, more button, thumbnail display transitions, navigation in albums without breadcrumb, info page with google maps location...
+        </p><br><br>
         
         <h3>Start now</h3>
-        A demonstration is worth a thousand words: <a href="demonstration.html" style="background-color:#eee;" >&nbsp;just have a look at the feature showcase page to discover nanogallery2 </a>.
+        <p>
+          A demonstration is worth a thousand words: <a href="demonstration.html" style="background-color:#eee;" >&nbsp;just have a look at the feature showcase page to discover nanogallery2 </a>.
+        </p>
       </div>    
-      <div class="col-md-2" ></div>
+      <div class="col-md-1" ></div>
     </div>    
       
     <br><br><br><br><br>
     
     <div class="row">
+      <div class="col-md-4 text-center">
+        <a href="https://github.com/Kris-B/nanoGALLERY/archive/v5.10.0.zip" class="btn btn-primary btn-lg btn-block" ><i class="fa fa-download" aria-hidden="true"></i> download</a>
+      </div>
+      <div class="col-md-4 text-center">
+        <a href="https://medium.com/nanostudio-org" class="btn btn-success btn-lg btn-block" target="_blank"><i class="fa fa-newspaper-o" aria-hidden="true"></i> &nbsp; check the blog for latest news</a>
+      </div>
+      <div class="col-md-4 text-center">
+        <a href="https://github.com/nanostudio-org/nanogallery2" class="btn btn-primary btn-lg btn-block" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> view on github</a>
+      </div>
+    </div>
+    <div class="row">
       <div class="col-md-12 text-center">
-        <a href="https://github.com/Kris-B/nanoGALLERY/archive/v5.10.0.zip" class="btn btn-primary btn-lg" ><i class="fa fa-download fa-2x" aria-hidden="true"></i> download</a>
-        <a href="https://github.com/Kris-B/nanogallery2" class="btn btn-primary btn-lg" target="_blank"><i class="fa fa-github fa-2x" aria-hidden="true"></i> view on github</a>
+        <p class="text-center"><br><b>latest release: nanogallery v0.9 - 10th novembre 2016</b></p>
+        <br><br>
       </div>
     </div>
     
   
     <br><br><br><br><br>
   </div>
-  
+
+
+
+  <svg class="svg-diag" style="background-color:#fff;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10" preserveAspectRatio="none">
+    <polygon points="100 0 100 10 -50 10" style="fill:#eee;"/>
+  </svg>
   <div class="jumbotron " style="font-size:.5em;">
-    <div id="nanogallery2">gallery made with nanogallery2</div>
+    <div id="nanogallery2">gallery_made_with_nanogallery2</div>
   </div>
+  <svg class="svg-diag" style="background-color:#eee;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10" preserveAspectRatio="none">
+    <polygon points="100 0 100 10 -50 10" style="fill:#fff;"/>
+  </svg>
  
   <div class="container">
     
     <br><br><br><br><br><br>
     
     <div class="row text-center">
-      <div class="col-md-2" ></div>
-      <div class="col-md-8" >
-        <h2>User experience</h2>
-        <br>
+      <div class="col-md-1" ></div>
+      <div class="col-md-10" >
+        <h2>Browser support</h2>
+        <br><br><br><br>
         <p>
-        Easy to use on any device, using the mouse, the keyboard or the touch screen.
+        Firefox 6+ - Chrome 16+ - Edge 13+ - IE 10+ - Opera 12.1+ - Yandex 14.12+ - iPhone 5+ / iOS 6+ - Safari 6.2+
+        <br>(some features may not be available on every platform).
+        <br><br>
         </p>
+        <p>Testing services provided by <a href="https://www.browserstack.com" target="_blank">BrowserStack</a><br><img src="img/browserstack3.png" alt="browserstack"></p>
         <br><br><br>
       </div>
-      <div class="col-md-2" ></div>
+      <div class="col-md-1" ></div>
     </div>
 
     <br><br><br><br><br><br>
 
     <div class="row text-center">
-      <div class="col-md-2" ></div>
-      <div class="col-md-8" >
+      <div class="col-md-1" ></div>
+      <div class="col-md-10" >
         <h2>Licensing</h2>
+        <br><br><br><br>
+        <p class="lead">nanogallery2 is licensed under a dual-license model: a <a href="https://www.gnu.org/licenses/gpl-3.0.html/" target="_blank">GPLv3 license</a> for non-commercial use and a proprietary commercial license. 
+        <font color="#d00"><b>nanogallery2 may be used in commercial projects and applications, or in business environments with the purchase of a commercial license.</b></font></p>
         <br>
-        <p class="lead">nanogallery2 is licensed under <a href="https://creativecommons.org/licenses/by-nc/3.0/" target="_blank">CC BY-NC 3.0.</a> <font color="#d00"><b>nanogallery2 may be used in commercial projects and applications, or in business environments with the purchase of a professional license (website license or OEM license).</b></font></p>
-        <br>
+      </div>
+      <div class="col-md-1" ></div>
+    </div>
+
+    
+    <div class="row">
+      <div class="col-md-1" ></div>
+      <div class="col-md-10 text-justify" >
         <h3>Open source license</h3><br>
+        <p>For personal or open source projects, you may use nanogallery2 for free. In this case, nanogallery2 is licensed under <a href="https://www.gnu.org/licenses/gpl-3.0.html/" target="_blank">GPLv3 license</a>, which means that your project must also be licensed under GPLv3. 
+        If this cannot apply to your project, the purchase of a commercial license is required.<br>
+        Donations are appreciated to support the development. Thank you very much for helping bring nanogallery2 to life. 
+        </p>
+        <br><br>
+        
+        <h3>Commercial license</h3><br>
+        <p>
+          If you run a business and are using nanogallery2 in a revenue-generating product, it makes business sense to sponsor this development: <b>it ensures the project that your product relies on stays healthy and actively maintained</b>.<br>
+          Once purchased, you'll receive a Commercial License PDF and you will be able to integrate nanogallery2 legally in your projects.
+          
+          <br>nanogallery2 comes with two commercial licence kind:
+          <br>- website licence: commercial license to use nanogallery2 on ONE of your website
+          <br>- OEM licence: to include nanogallery2 in your own non-free applications and products, or for an unlimited number of websites.
+        </p>
+        <br><br>
+        
       </div>
-      <div class="col-md-2" ></div>
+      <div class="col-md-1" ></div>
     </div>
-
     <div class="row">
-      <div class="col-md-8" >
-        <p>For personal, non-profit organizations, or open source projects (without any kind of fee), you may use nanogallery2 for free. If fees are associated to the use of nanogallery2, your project is not eligible to this license.
-        All other uses are considered professional. The purchase of a license is required.</p>
-      </div>
-      <div class="col-md-4 text-center">
-        <div class = "panel panel-info">
-          <div class = "panel-heading">
-            <h3 class = "panel-title"><b>open source license</b></h3>
-          </div>
-          <div class = "panel-body">
-            donations are appreciated to support future development<br>
-            <a href="." class="btn btn-primary btn-lg"><i class="fa fa-cart-plus" aria-hidden="true"></i> &nbsp;&nbsp; <i class="fa fa-gift" aria-hidden="true"></i> <i class="fa fa-smile-o" aria-hidden="true"></i></a>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="row text-center">
       <div class="col-md-2" ></div>
       <div class="col-md-8" >
-        <h3>Professional license</h3><br>
+        <div class="table-responsive">
+        <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>Use case</th>
+            <th>Open Source<br>Licence</th>
+            <th>Website<br>Licence</th>
+            <th>OEM<br>Licence</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Open source project</td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Personal project</td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>GPLv3 licenced project (website, project, application, theme)</td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>nanogallery2 for non GPLv3 website</td>
+            <td>-</td>
+            <td class="ngy2color1"><b>1 website</b></td>
+            <td class="ngy2color1"><b>unlimited number of websites</b></td>
+          </tr>
+          <tr>
+            <td>To include nanogallery2 in commercial projects (fees are associated to your project)</td>
+            <td>-</td>
+            <td class="ngy2color1"><b>1 website<b></td>
+            <td class="ngy2color1"><b>1 commercial project</b></td>
+          </tr>
+          <tr>
+            <td>To include nanogallery2 in commercial applications</td>
+            <td>-</td>
+            <td>-</td>
+            <td class="ngy2color1"><b>1 application</b></td>
+          </tr>
+          <tr>
+            <td>To include nanogallery2 in commercial themes</td>
+            <td>-</td>
+            <td>-</td>
+            <td class="ngy2color1"><b>1 theme</b></td>
+          </tr>
+          <tr>
+            <td>Contribution</td>
+            <td>
+              <a ref="." class="btn btn-primary btn-lg"><i class="fa fa-gift" aria-hidden="true"></i> <i class="fa fa-smile-o" aria-hidden="true"></i>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="FMTC8CCTUV3ZS">
+<input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/fr_FR/i/scr/pixel.gif" width="1" height="1">
+</form>
+</a>
+            </td>
+            <td>
+              <a href="." class="btn btn-primary btn-lg" >25&euro;
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="K66EEA9DBGL7Y">
+<input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_buynow_SM.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/fr_FR/i/scr/pixel.gif" width="1" height="1">
+</form>
+</a>
+            </td>
+            <td>
+              <a href="." class="btn btn-primary btn-lg">90&euro;
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="RJKZYHHE4VHD2">
+<input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_buynow_SM.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/fr_FR/i/scr/pixel.gif" width="1" height="1">
+</form>
+</a>
+            </td>
+          </tr>
+        </tbody>
+        </table>
+        </div>
       </div>
       <div class="col-md-2" ></div>
     </div>
-
-    <div class="row">
-      <div class="col-md-4" >
-        <p>Purchasing accepts most credit cards and takes seconds. Once purchased, you'll receive a Professional License PDF and you will be able to integrate nanogallery2 legally in your projects.</p>
-        <br><br><br>
-      </div>
-      <div class="col-md-4 text-center">
-        <div class = "panel panel-primary">
-          <div class = "panel-heading">
-            <h3 class = "panel-title"><b>website license</b></h3>
-          </div>
-          <div class = "panel-body">
-            professional license to use nanogallery2 on ONE of your website.
-            <a href="." class="btn btn-primary btn-lg" ><i class="fa fa-cart-plus" aria-hidden="true"></i> &nbsp; 25€</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 text-center">
-        <div class = "panel panel-primary">
-          <div class = "panel-heading">
-            <h3 class = "panel-title"><b>OEM license</b></h3>
-          </div>
-          <div class = "panel-body">
-            to include nanogallery2 in your own non-free applications and products, or for an unlimited number of websites.
-            <a href="." class="btn btn-primary btn-lg"><i class="fa fa-cart-plus" aria-hidden="true"></i> &nbsp; 90€</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    
-    
+  
  
     <br><br><br><br><br>
     
   </div>
   
+  <svg class="svg-diag" style="background-color:#fff;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10" preserveAspectRatio="none">
+    <polygon points="100 0 100 10 -50 10" style="fill:#111;"/>
+  </svg>
   <div class="jumbotron " style="background-color:#111;">
-    <div id="nanogallery3">gallery made with nanogallery2</div>
+    <div id="nanogallery3">gallery_made_with_nanogallery2</div>
   </div>
+  <svg class="svg-diag" style="background-color:#111;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10" preserveAspectRatio="none">
+    <polygon points="100 0 100 10 -50 10" style="fill:#fff;"/>
+  </svg>
   
   <div class="container">
   
@@ -732,35 +663,57 @@
     </div>
     <br><br><br>
     <div class="row">
-      <div class="col-md-1 text-center">
-      </div>
-      <div class="col-md-3 text-center">
+      <div class="col-md-4 text-center">
         <a href="documentation.html" class="lead"><img src="img/documentation.png" style="height:50px;"><br><br>read the documentation</a>
       </div>
-      <div class="col-md-3 text-center">
+      <div class="col-md-4 text-center">
         <a href="https://github.com/nanostudio-org/nanogallery2/issues" class="lead" target="_blank"><img src="img/github.png" style="height:50px;"><br><br>report bugs on GitHub issues</a>
       </div>
-      <div class="col-md-3 text-center">
+      <div class="col-md-4 text-center">
         <a href="http://stackoverflow.com/questions/ask?tags=nanogallery2,javascript,jquery" class="lead" target="_blank"><img src="img/stackoverflow.png" style="height:50px;"><br><br>ask your technical question on StackOverflow</a>
-      </div>
-      <div class="col-md-2 text-center">
       </div>
     </div>
     
-    <br><br><br><br><br>
+    <br><br><br><br><br><br><br>
     
     <div class="row text-center">
       <div class="col-md-2" ></div>
       <div class="col-md-8" >
-        <h2>Comments</h2>
+        <h2><i class="fa fa-comments fa-2x" aria-hidden="true"></i> Comments</h2>
+        <p>Your comments are welcome! Technical questions should be asked on <a href="http://stackoverflow.com/questions/ask?tags=nanogallery2,javascript,jquery" class="lead" target="_blank">StackOverflow</a> and bugs should be reported on <a href="https://github.com/nanostudio-org/nanogallery2/issues" class="lead" target="_blank">Github</a></p>
+        <br><br><br><br>
       </div>
       <div class="col-md-2" ></div>
     </div>
     
-    
+    <div class="row text-center">
+      <div class="col-md-12" >
+        <div id="disqus_thread"></div>
+        <script>
+
+        /**
+        *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+        *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+        var disqus_config = function () {
+        //this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = 'nanogallery2'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+        (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//nanogallery2.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+        })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      </div>
+    </div>
 
     <br><br><br><br>
     
+    <div class="row text-right">
+      <a href="https://github.com/nanostudio-org/nanogallery2/tree/dev-gh-pages/header.html" class="btn btn-default btn-x" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> edit this page in github</a>
+    </div>
   </div>
   
   
@@ -769,10 +722,19 @@
 
 
       jQuery("#nanogallery").nanogallery2({
-        kind: 'google',
-        userID: '111186676244625461692',
+        //kind: 'google',
+        //userID: '111186676244625461692',
+        kind: 'flickr',
+        userID: '149035168@N08',    // nano studio
+        //userID: '143414466@N06',
+        
+//        userID: '68188170@N06',   //--> huge albums+photos collection
+//        photoset: '72157656850365463',
+
+        //photoset: 'NONE',
         blackList: 'forhomepage|scrapbook|profil',
-        thumbnailDisplayTransition: 'slideDown',
+//        thumbnailDisplayTransition: 'slideDown',
+        thumbnailDisplayTransition: 'scaleDown_2',
         thumbnailHeight: '200 XS100 SM150', thumbnailWidth: 'auto',
         thumbnailL1Height: '200 XS100 SM150', thumbnailL1Width: '300 XS150 SM225',
         galleryL1DisplayMode: 'pagination',
@@ -781,29 +743,42 @@
         galleryMaxRows: 3,
         galleryL1MaxRows: 1,
         
-        thumbnailL1HoverEffect2: 'labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear|image_rotateZ_0_10|image_scale_100_130',
+                
+        
+//thumbnailL1HoverEffect2: 'labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear|image_rotateZ_0_10|image_scale_100_130',
+//thumbnailL1HoverEffect2: '.nGY2GThumbnailSub_rotateX_0_50|labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear|image_translateX_-10px_10px',
+//thumbnailL1HoverEffect2: 'thumbnail_rotateX_20deg_0deg|thumbnail_scale_1.00_1.20|labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear|image_translateX_-10px_10px',
+thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.40|labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear',
+
+//thumbnailL1BuildInit2: 'image_scale_1.10',
+//galleryBuildInit2 : 'perspective_900px',
+
         //thumbnailL1HoverEffect2: 'labelAppear',
         //thumbnailHoverEffect2: 'label_font-size_1em_2em|title_color_#ffffff_#B2E16A|label_bottom_0px_15px|toolsAppear|image_grayscale_0%_100%|image_scale_100_110_5000',
         //thumbnailHoverEffect2: 'label_font-size_1em_2em|title_backgroundColor_rgba(255,255,255,0.34)_rgba((115,166,35,0.6)|title_color_#000_#fff|label_bottom_0px_15px|toolsAppear|image_grayscale_0%_100%_500|image_scale_100_110_5000',
-        thumbnailHoverEffect2: 'label_font-size_1em_2em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((84,132,12,0.8)|title_color_#000_#fff|toolsAppear|image_grayscale_0%_100%_500|image_scale_100_110_5000',
+        thumbnailHoverEffect2: 'label_font-size_1em_1.5em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((84,132,12,0.8)|title_color_#000_#fff|toolsAppear|image_grayscale_0%_100%_500|image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
 
         thumbnailToolbarImage : { topLeft: 'select', topRight : 'share,featured,download' },
 
         //thumbnailToolbarImage:null,
         //thumbnailToolbarAlbum:null,
         thumbnailL1Label: { display: true, position:'overImageOnMiddle', hideIcons: true, titleFontSize: '2em', align: 'center'},
-        thumbnailLabel: { display: true, position:'overImageOnBottom', hideIcons: true, titleFontSize: '1em', align: 'left'},
+        thumbnailLabel: { display: true, position:'overImageOnBottom', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true},
         thumbnailBorderHorizontal: 0,
         thumbnailBorderVertical: 0,
         thumbnailSelectable: false,
-        breadcrumbAutoHideTopLevel: true,
-        breadcrumbOnlyCurrentLevel: true,
         breadcrumbHideIcons: true,
         navigationFontSize: '1.2em',
+        gallerySorting: 'random',
 
         colorScheme : { thumbnail: {titleShadow : 'none', descriptionShadow : 'none'} },
         
-        galleryFilterTags: 'title',
+        // hiddenAlbums: ['5851968929721015169&authkey=CJSlhdKSgoiXtgE','6137218671601042145?authkey=CIbGp_iFjfuMkgE'],
+        //albumList2: ['5851968929721015169&authkey=CJSlhdKSgoiXtgE','6137218671601042145?authkey=CIbGp_iFjfuMkgE'],
+        // album: '5851968929721015169&authkey=Gv1sRgCJSlhdKSgoiXtgE',
+        
+        galleryFilterTags: true,
+        galleryL1FilterTags: false,
         locationHash: true
       });
 
@@ -813,7 +788,7 @@
         var svg='<svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="filters" style="display:hidden;">';
         svg+='<defs>';
         svg+='<filter id="ngy2-hblur'+counter+'">';
-        svg+='<feGaussianBlur in="SourceGraphic" stdDeviation="0,0" />'
+        svg+='<feGaussianBlur in="SourceGraphic" stdDeviation="20,0" />'
         svg+='</filter>';
         svg+='</defs>';
         svg+='<defs>';
@@ -841,9 +816,9 @@
         var tweenable = new NGTweenable();
         tweenable.tween({
           attachment:   context,
-          from:         { 'v': 0 },
-          to:           { 'v': 20 },
-          duration:     300,
+          from:         { 'v': 20 },
+          to:           { 'v': 0 },
+          duration:     1000,
           delay:        0,
           easing:       'easeOutQuart',
           step: function (state, att) {
@@ -869,9 +844,9 @@
         var tweenable = new NGTweenable();
         tweenable.tween({
           attachment:   context,
-          from:         { 'v': 20 },
-          to:           { 'v': 0 },
-          duration:     300,
+          from:         { 'v': 0 },
+          to:           { 'v': 20 },
+          duration:     1000,
           delay:        0,
           easing:       'easeOutQuart',
           
@@ -888,12 +863,14 @@
         kind: 'flickr',
         userID: '34858669@N00',
         thumbnailDisplayTransition: 'slideUp',
-        thumbnailHeight: 60, thumbnailWidth: 'auto',
+        thumbnailDisplayInterval: 15,
+        thumbnailHeight: 60, thumbnailWidth: 60,
         album: 'none',
         galleryDisplayMode: 'rows',
         thumbnailToolbarImage:null,
         thumbnailToolbarAlbum:null,
         galleryMaxRows: 2,
+        gallerySorting: 'random',
         thumbnailLabel: { display: false},
         thumbnailBorderHorizontal: 0,
         thumbnailBorderVertical: 0,
@@ -927,7 +904,7 @@
         galleryDisplayMode: 'rows',
         galleryMaxRows: 2,
         thumbnailLabel: { display: false, position: 'onBottom', align: 'left'},
-        thumbnailHoverEffect2 : 'image_brightness_50%_100%|title_color_#888_#fff|thumbnail_scale_100_110_1500',
+        thumbnailHoverEffect2 : 'image_brightness_50%_100%|title_color_#888_#fff|thumbnail_scale_1.00_1.10_1500',
         thumbnailBorderHorizontal: 0,
         thumbnailBorderVertical: 0,
         // colorScheme: 'light',
@@ -940,19 +917,8 @@
       
     });
   </script>
+
   
-</body>
-
-<footer class="footer text-center lead" style="background-color:#54840C;">
-  <div class="container" style="color:#fff;">
-    <br>
-    nanogallery2 by <a style="color:#fff;" href="http://nanostudio.org">nanostudio.org</a>
-    <br><br>
-  </div>
-</footer>
-
-
-</html>
 
   <!-- ######################## -->
   <!-- ##### START FOOTER ##### -->
