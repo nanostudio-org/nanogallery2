@@ -1,0 +1,322 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html>
+
+<head>
+  <title>nanogallery2</title>
+  <meta charset="utf-8">
+  <meta name="description" content="nanogallery2 - beautiful image gallery for your website">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="nanogallery2>
+  <meta property="og:description" content="nanogallery2 - beautiful image gallery for your website">
+  <meta property="og:image" content="http://nanogallery2.nanostudio.org/img/nanogallery2_logo.png">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="nanogallery2">
+  <meta name="twitter:description" content="nanogallery2 - beautiful image gallery for your website">
+  <meta name="twitter:image" content="http://nanogallery2.nanostudio.org/img/nanogallery2_logo.png">
+
+  <link rel="icon" href="img/favicon.ico" />
+
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+ 
+  <!-- #################################################################################################################### -->
+  <!-- jQuery                                                                                                               -->
+  <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+  <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>  -->
+  <!-- #################################################################################################################### -->
+
+  <!--  
+  <script src="third.party/touch-emulator.js"></script>
+  <script> TouchEmulator(); </script>
+  -->
+
+  <!-- BOOTSTRAP -->
+  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css" />
+
+  <!-- #################################################################################################################### -->
+  <!-- nanogallery2 CSS files                                                                                               -->
+	<link href="css/nanogallery2.css" rel="stylesheet" type="text/css">
+  <!-- #################################################################################################################### -->
+
+  <!-- #################################################################################################################### -->
+	<!-- nanogallery2 javascript                                                                                              -->
+	<script type="text/javascript" src="js/jquery.nanogallery2.core.js"></script>
+	<script type="text/javascript" src="js/jquery.nanogallery2.data_google.js"></script>
+	<script type="text/javascript" src="js/jquery.nanogallery2.data_flickr.js"></script>
+	<!-- 
+  <script type="text/javascript" src="js/jquery.nanogallery2.builder.js"></script>
+  -->
+  <!-- #################################################################################################################### -->
+
+  <style>
+    body { font-size:1.3em; }
+    p { font-size:1.3em; }
+    td { font-size:1.2em; }
+    .ngy2documentation p { font-size:1.1em; }
+    .ngy2documentation td { font-size:1.1em; }
+    .ngy2documentation blockquote { font-size:1.1em; }
+   
+    * { font-family: 'Source Sans Pro', sans-serif; }
+    h1, h2, h3, h4, h5, h6 { color : #54840C }
+    h1 {
+      border-left : 5px solid #54840C;
+      padding-left: 10px;
+    }
+    .footer {
+      margin: 0;
+    }
+    
+    .btn-primary {
+      color: #fff;
+      background-color: #3C4B5B;
+      border-color: #1C2B3B;
+    }
+
+    blockquote {
+      color: #000;
+      background-color: #B2E16A;
+      border-color: #54840C;
+    }
+    
+    /***** TOP NAVIGATION BAR *****/
+    .navbar * { font-weight: bold; }
+    .navbar-inverse .navbar-nav>li>a { 
+      color: #fff;
+      padding-bottom: 5px;
+    }
+    .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
+      color: #B2E16A;
+      border-bottom: 2px solid #B2E16A;
+    }
+    .navbar-inverse .navbar-brand {
+      color: #fff;
+      display: inline-flex;
+      display: -webkit-inline-flex;
+    }
+
+    
+    /***** NANOGALLERY2 COLORS *****/
+    .ngy2color1 {
+      color: #54840C;
+    }
+    .ngy2color2 {
+      color: #73A623;
+    }
+    .ngy2color3 {
+      color: #B2E16A;
+    }
+    .ngy2color4  {
+      color: #CFF19A;
+    }
+
+    .ngy2dark {
+      background: #1C2B3B;
+      /* #2C3B4B */
+      margin: 0;
+    }
+    
+    .svg-diag{
+      display: block;
+      width: 100%;
+      height: 90px;
+      index:-1;
+    }    
+    
+    .ngy2version {
+      color: #ddd;
+      font-size:0.6em; 
+      padding: 0 0 0 5px;
+    }
+
+    
+    
+    /***** RESPONSIVE SVG LOGO *****/
+    .svg-container {
+      display: inline-block;
+      position: relative;
+      width: 100%;
+      max-width: 350px;
+      /*padding-bottom: 100%;*/
+      vertical-align: middle;
+      overflow: hidden;
+    }
+    svg-content {
+      display: inline-block;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    
+    /***** TOP CUSTOM JUMBOTRON *****/
+    .jumbotronNGY2 {
+      padding-top:0px;
+    }
+    
+    /***** CUSTOM JUMBOTRON *****/
+    .jumbotron {
+      margin-bottom: 0;
+    }
+    
+    
+    /***** VERTICAL NAVIGATION BAR (documentation) *****/
+    #ngy2_vert_nav_style .nav > li > a {
+        position: relative;
+        display: block;
+        padding: 2px 5px;
+    }    
+    #ngy2_vert_nav_style .nav .active {
+      font-weight: bold;
+          border-left: 4px solid #B2E16A;
+    }
+
+    #ngy2_vert_nav_style .nav .nav {
+      display: none;
+    }
+
+    #ngy2_vert_nav_style .nav .active .nav {
+      display: block;
+    }
+
+    #ngy2_vert_nav_style .nav .nav a {
+      font-weight: normal;
+      font-size: .85em;
+    }
+
+    #ngy2_vert_nav_style .nav .nav span {
+      margin: 0 5px 0 2px;
+    }
+
+    #ngy2_vert_nav_style.nav .nav .active a,
+    #ngy2_vert_nav_style .nav .nav .active:hover a,
+    #ngy2_vert_nav_style .nav .nav .active:focus a {
+      font-weight: bold;
+      padding-left: 30px;
+      border-left: 5px solid black;
+    }
+
+    #ngy2_vert_nav_style .nav .nav .active span,
+    #ngy2_vert_nav_style .nav .nav .active:hover span,
+    #ngy2_vert_nav_style .nav .nav .active:focus span {
+      display: none;
+    }
+
+    .affix {
+      top: 60px;
+      width: 213px;
+    }
+
+    @media (min-width: 1200px) {
+      .affix {
+        width: 263px;
+      }         
+    }    
+
+    </style>
+
+  <!-- Asynchronous Google Analytics snippet -->
+  <script>
+    var _gaq = _gaq || [];
+    var pluginUrl =
+   'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+    _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+    _gaq.push(['_setAccount', 'UA-39069349-8']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = 'https://stats.g.doubleclick.net/dc.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  
+</head>
+
+
+<body data-spy="scroll" data-target=".scrollspy" style="position: relative;">
+
+  <!-- ############## -->
+  <!-- ### NAVBAR ### -->
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand form-horizontal" href="http://nanogallery2.nanostudio.org/" rel="home" title="nanogallery2">
+          <img src="img/nanogallery2.svg" alt="nanogallery2" style="width:100px;height:25px;"> &nbsp; <span class="ngy2version">v0.9</span>
+        </a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav navbar-right text-uppercase">
+          <li><a href="index.html">Intro</a></li>
+          <li><a href="demonstration.html">Examples</a></li>
+          <li><a href="quickstart.html">Quick Start</a></li>
+          <li><a href="builder.html">Builder</a></li>
+          <li><a href="documentation.html">Guide</a></li>
+          <li><a href="datasource.html">Data source</a></li>
+          <li><a href="api.html">API</a></li>
+          <!-- <li><a href="modules.html">Modules</a></li> -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+  <script>
+    $(document).ready(function () {
+      var p=location.pathname.substring(location.pathname.lastIndexOf("/") + 1);
+      $('.navbar a[href="'+p+'"]').parent().addClass('active');
+    });
+  </script>
+  <!-- ### NAVBAR ### -->
+  <!-- ############## -->
+
+
+  <!-- ### LOGO ### -->
+  <div class="jumbotron ngy2dark">
+    <div class="container ">
+      <div class="row" >
+        <br><br><br><br>
+        <div class="col-md-12 text-center">
+          <div class="svg-container">
+            <object type="image/svg+xml" data="img/nanogallery2.svg" width="100%" height="100%" class="svg-content"></object>
+          </div>
+          <h4 style="color:#eee;">beautiful image gallery for your website</h4>
+        </div>
+      </div>
+      <br><br><br><br>
+    </div>
+  </div>
+  <!-- ### LOGO ### -->
+
+  
+  <!-- ###################### -->
+  <!-- ##### END HEADER ##### -->
+  <!-- ###################### -->
+
+
+<h2 class="text-center" style="color:#f00;"><b>this page is only available to beta testers - contact kris@nanostudio.org</b></h2>
+
+  <!-- ######################## -->
+  <!-- ##### START FOOTER ##### -->
+  <!-- ######################## -->
+  <br><br><br><br><br><br><br><br>
+  <svg class="svg-diag" style="background-color:#fff;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10" preserveAspectRatio="none">
+    <polygon points="100 0 100 10 -50 10" style="fill:#54840C;"/>
+  </svg>
+</body>
+
+<footer class="footer text-center lead" style="background-color:#54840C;">
+  <div class="container" style="color:#fff;">
+    <br>
+    nanogallery2 by <a style="color:#fff;" href="http://brisbois.fr">christophe brisbois</a>
+    <br><br>
+  </div>
+</footer>
+</html>
