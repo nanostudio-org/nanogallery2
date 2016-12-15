@@ -17,17 +17,17 @@ module.exports = function(grunt) {
         },
         index: {
           src: [
-            'header.html',
-            'index.html',
-            'footer.html'
+            'template/header.html',
+            'src/index.html',
+            'template/footer.html'
           ],
           dest: 'build/index.html'
         },
         demonstration: {
           src: [
-            'header.html',
-            'demonstration.html',
-            'footer.html'
+            'template/header.html',
+            'src/demonstration.html',
+            'template/footer.html'
           ],
           dest: 'build/demonstration.html'
         }
