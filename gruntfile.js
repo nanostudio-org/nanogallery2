@@ -13,7 +13,7 @@ module.exports = function(grunt) {
       pkg: grunt.file.readJSON('package.json'),
       concat: {
         options: {
-          banner: banner
+          // banner: banner
         },
         index: {
           src: [
