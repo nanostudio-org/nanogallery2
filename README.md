@@ -1,8 +1,9 @@
 ## nanogallery2 homepage
 
 ##### contribution
-Please use the "dev-gh-pages" branch
+- HTML pages: only in the `src` folder of the `dev-gh-pages` branch
+- other files (images, dependencies...): directly in the `gh-page` branch
   
+
   
-  
-[![Build Status](https://travis-ci.org/nanostudio-org/nanogallery2.svg?branch=dev-gh-pages)](https://travis-ci.org/nanostudio-org/nanogallery2)
+
