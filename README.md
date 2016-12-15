@@ -1,4 +1,4 @@
-## nanogallery2 homepage
+## nanogallery2 - website
 
 ##### contribution
 - HTML pages: only in the `src` folder of the `dev-gh-pages` branch
