@@ -6,3 +6,4 @@ before_script:
 branches:
   only:
   - master
+  - dev-gh-pages
