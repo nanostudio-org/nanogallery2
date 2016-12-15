@@ -1,4 +1,4 @@
-/* nanogallery2 - v0.0.2 - 2016-12-08 - http://nanogallery2.nanostudio.org */
+/* nanogallery2 - v0.0.2 - 2016-12-15 - http://nanogallery2.nanostudio.org */
 /**!
  * @preserve nanogallery2 - GOOGLE PHOTOS data provider
  * Homepage: http://nanogallery2.nanostudio.org
