@@ -23,6 +23,46 @@ module.exports = function(grunt) {
           ],
           dest: 'build/index.html'
         },
+        api: {
+          src: [
+            'template/header.html',
+            'src/api.html',
+            'template/footer.html'
+          ],
+          dest: 'build/api.html'
+        },
+        builder: {
+          src: [
+            'template/header.html',
+            'src/builder.html',
+            'template/footer.html'
+          ],
+          dest: 'build/builder.html'
+        },
+        datasource: {
+          src: [
+            'template/header.html',
+            'src/datasource.html',
+            'template/footer.html'
+          ],
+          dest: 'build/datasource.html'
+        },
+        documentation: {
+          src: [
+            'template/header.html',
+            'src/documentation.html',
+            'template/footer.html'
+          ],
+          dest: 'build/documentation.html'
+        },
+        quickstart: {
+          src: [
+            'template/header.html',
+            'src/quickstart.html',
+            'template/footer.html'
+          ],
+          dest: 'build/quickstart.html'
+        },
         demonstration: {
           src: [
             'template/header.html',
