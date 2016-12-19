@@ -11454,6 +11454,7 @@ if (typeof define === 'function' && define.amd) {
   
     var t=document.querySelectorAll('[data-nanogallery2]');
     for( var i=0; i < t.length; i++ ) {
+      console.dir(jQuery(t[i]).data('nanogallery2'));
       jQuery(t[i]).nanogallery2(jQuery(t[i]).data('nanogallery2'));
     }
     
