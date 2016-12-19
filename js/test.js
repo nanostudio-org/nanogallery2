@@ -11451,12 +11451,20 @@ if (typeof define === 'function' && define.amd) {
 (function(){
   'use strict';
   jQuery(document).ready(function () {
-  
+var link = document.createElement('link');
+link.setAttribute("rel", "stylesheet");
+link.setAttribute("type", "text/css");
+link.onload = function(){
     var t=document.querySelectorAll('[data-nanogallery2]');
     for( var i=0; i < t.length; i++ ) {
-      console.dir(t[i]);
       jQuery(t[i]).nanogallery2(jQuery(t[i]).data('nanogallery2'));
     }
+
+}
+link.setAttribute("href", 'http://nanogallery2.nanostudio.org/css/nanogallery2.css');
+document.getElementsByTagName("head")[0].appendChild(link);
+
+  
     
   });
 }).call(null);
