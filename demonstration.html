@@ -300,11 +300,535 @@
   <!-- ##### END HEADER ##### -->
   <!-- ###################### -->
 
-<h2 class="text-center" style="color:#f00;"><b>this page is only available to beta testers - contact kris@nanostudio.org</b></h2>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
+  <div class="container">
+    <br><br>
+    <h1>nanogallery2 demonstrations</h1>
+    <br><br><br>
+    <blockquote>
+      This page will help you understand the capabilities of nanogallery2. The HTML template corresponding to each demonstration is displayed at bottom of this page.
+    </blockquote>
+    <br><br><br><br>
+  
+  
+  
+    <!-- <h3>View a demonstration</h3> -->
+    
+    <div class="row" >
+      <div class="col-md-2 text-right">
+        <p>Select a category:
+      </div>
+      <div class="col-md-8">
+        <!-- <select name="demoCat" class="selectpicker" > -->
+        <select name="demoCat" class="form-control" >
+          <option value="catContentSource">Content source</option>
+          <option value="catLayout">Layouts</option>
+          <option value="catDisplayMode">Gallery display modes</option>
+          <option value="catNavigation">Navigation in albums</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+      </div>
+    </div>
+    <br>
+    <ul id="demos">
+      
+      <li id="catContentSource">
+        <button type="button" class="btn btn-success" id="btnNGY2_source_demo1">Flickr - photostream</button>
+        <button type="button" class="btn btn-primary" id="btnNGY2_source_demo1a">Flickr - albums</button>
+        <button type="button" class="btn btn-primary" id="btnNGY2_source_demo1b">Flickr - one album</button>
+        <button type="button" class="btn btn-primary" id="btnNGY2_source_demo2">Google Photos - albums</button>
+        <button type="button" class="btn btn-primary" id="btnNGY2_source_demo2a">Google Photos - one album</button>
+        <button type="button" class="btn btn-primary" id="btnNGY2_source_demo2b">Google Photos - one private album</button>
+        <button type="button" class="btn btn-primary" disabled id="btnNGY2_source_demo3">Self hosted</button>
+      </li>
+      <li>
+        <!-- <p>Thumbnail components</p> -->
+        <p>
+          <button type="button" class="btn btn-primary" disabled id="btnNGY2_demo1">images</button>
+          <button type="button" class="btn btn-primary" disabled id="btnNGY2_demo2">images + 1 hover effect</button>
+          <button type="button" class="btn btn-primary" disabled id="btnNGY2_demo3">images + title</button>
+          <button type="button" class="btn btn-primary" disabled id="btnNGY2_demo4">images + title + hover effects</button>
+          <button type="button" class="btn btn-primary" disabled id="btnNGY2_demo5">images + title + description</button>
+        </p>
+      </li>
+      <li id="catLayout">
+        <!-- <p>Layouts</p> -->
+        <p>
+          <button type="button" class="btn btn-primary" id="btnNGY2_layout_demo1">justified</button>
+          <button type="button" class="btn btn-primary" id="btnNGY2_layout_demo2">grid</button>
+          <button type="button" class="btn btn-primary" id="btnNGY2_layout_demo3">cascading</button>
+        </p>
+      </li>
+      <li>
+        <!-- <p>Thumbnail hover effects</p> -->
+        <p>
+          <button type="button" class="btn btn-primary" disabled id="btnNGY2_hover_demo1">image: zoom in</button>
+          <button type="button" class="btn btn-primary" disabled id="btnNGY2_hover_demo2">image: zoom in + blur</button>
+          <button type="button" class="btn btn-primary" disabled id="btnNGY2_hover_demo3">image: zoom in + blur + sepia</button>
+          <button type="button" class="btn btn-primary" disabled id="btnNGY2_hover_demo4">image: zoom in | label: appear</button>
+        </p>
+      </li>
+      <li id="catDisplayMode">
+        <!-- <p>Gallery display modes</p> -->
+        <p>
+          <button type="button" class="btn btn-primary" id="btnNGY2_displaymode_demo1">full content</button>
+          <button type="button" class="btn btn-primary" id="btnNGY2_displaymode_demo2">add content with more button</button>
+          <button type="button" class="btn btn-primary" id="btnNGY2_displaymode_demo3">pagination - numbers</button>
+          <button type="button" class="btn btn-primary" id="btnNGY2_displaymode_demo4">pagination - dots</button>
+          <button type="button" class="btn btn-primary" id="btnNGY2_displaymode_demo5">gallery on 2 rows</button>
+        </p>
+      </li>
+      <li id="catNavigation">
+        <button type="button" class="btn btn-primary" id="btnNGY2_nav_demo1">Breadcrumb</button>
+        <button type="button" class="btn btn-primary" id="btnNGY2_nav_demo2">No breadcrumb</button>
+        <button type="button" class="btn btn-primary" id="btnNGY2_nav_demo3">Filter on keywords</button>
+      </li>
+      <li>
+        <p>Touch thumbnail:</p>
+      </li>
+      <li>
+        <p>simple touch / double touch</p>
+      </li>
+      <li>
+        <p>Hover effects:</p>
+      </li>
+    </ul>
+    <br><br>
+    
+    <h3>Result</h3>
+    <blockquote id="ngy2_description"></blockquote>
+  </div>    
+  
+  <div class="jumbotron " style="background-color:#f8f8f8;">
+    <div class="container">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div id="nanogallery2">
+            gallery_made_with_nanogallery2
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    
+    <h3>Corresponding HTML template:</h3>
+    <pre><code id="ngy2_template">
+
+    </code></pre>
+    
+      
+  </div>
+  
+
+
+	<script type="text/javascript">
+  
+		$(document).ready(function () {
+    
+      $('select[name=demoCat]').on("change",function(){
+        //alert(this.value);
+        $('#demos').find('li').css('display','none');
+        $('#'+this.value).css('display','inline');
+      });
+      $('select[name=demoCat]').trigger('change');
+    
+    
+    
+      var html_part1='&lt;html&gt;\n';
+      html_part1+='  &lt;head&gt;\n';
+      html_part1+='    &lt;meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"&gt;\n\n';
+      html_part1+='    &lt;script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"&gt;&lt;/script&gt;\n\n';
+      html_part1+='    &lt;link href="http://nanogallery2.nanostudio.org/css/nanogallery2.css" rel="stylesheet" type="text/css"&gt;\n';
+      html_part1+='    &lt;script type="text/javascript" src="http://nanogallery2.nanostudio.org/js/jquery.nanogallery2.js"&gt;&lt;/script&gt;\n';
+      html_part1+='\n';
+      html_part1+='  &lt;/head&gt;\n';
+      html_part1+='  &lt;body&gt;\n\n';
+      html_part1+='    &lt;h1&gt;gallery made with nanogallery2&lt;/h1&gt;\n';
+      html_part1+='\n';
+      html_part1+="    &lt;div data-nanogallery2='{\n";
+      var html_part2="      }'&gt;\n";
+      html_part2+='    &lt;/div&gt;\n';
+      html_part2+='  &lt;/body&gt;\n';
+      html_part2+='&lt;/html&gt;\n';
+    
+    
+      var mydemos = {
+        
+      
+        // ##################################################
+        // CONTENT SOURCE
+        // ##################################################
+      
+        btnNGY2_source_demo1: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'flickr',
+            userID: '149035168@N08',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            album: 'none',
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind": "flickr",\n';
+          html+='        "userID": "149035168@N08",\n';
+          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
+          html+='        "album": "none"\n';
+          html+=html_part2;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Content source = Flickr. Display the full photostream.');
+        },
+        btnNGY2_source_demo1a: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'flickr',
+            userID: '149035168@N08',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind": "flickr",\n';
+          html+='        "userID": "149035168@N08",\n';
+          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150\n';
+          html+=html_part2;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Content source = Flickr. Display photo albums.');
+        },
+        btnNGY2_source_demo1b: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'flickr',
+            userID: '149035168@N08',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            photoset: '72157675219521270',
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind": "flickr",\n';
+          html+='        "userID": "149035168@N08",\n';
+          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
+          html+='        "photoset": "72157675219521270"\n';
+          html+=html_part2;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Content source = Flickr. Display the photos contained in one specific album.');
+        },
+     
+        btnNGY2_source_demo2: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'google',
+            userID: '111186676244625461692',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind": "google",\n';
+          html+='        "userID": "111186676244625461692",\n';
+          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150\n';
+          html+=html_part2;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Content source = Google Photos. Display the public albums.');
+        },
+        btnNGY2_source_demo2a: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'google',
+            userID: '111186676244625461692',
+            album: '5852572882905112961',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind": "google",\n';
+          html+='        "userID": "111186676244625461692",\n';
+          html+='        "album": "5852572882905112961",\n';
+          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150\n';
+          html+=html_part2;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Content source = Google Photos. Display the photos contained in one specific public album.');
+        },
+        btnNGY2_source_demo2b: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'google',
+            userID: '111186676244625461692',
+            album: '5851968929721015169&authkey=CJSlhdKSgoiXtgE',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind": "google",\n';
+          html+='        "userID": "111186676244625461692",\n';
+          html+='        "album": "5851968929721015169&authkey=CJSlhdKSgoiXtgE",\n';
+          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150\n';
+          html+=html_part2;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Content source = Google Photos. Display the photos contained in one specific private album.');
+        },
+        
+        // ##################################################
+        // THUMBNAIL COMPONENTS
+        // ##################################################
+
+        // ##################################################
+        // DISPLAY MODES
+        // ##################################################
+
+        btnNGY2_displaymode_demo1: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'flickr',
+            userID: '149035168@N08',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            album: 'none',
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind": "flickr",\n';
+          html+='        "userID": "149035168@N08",\n';
+          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
+          html+='        "album": "none"\n';
+          html+=html_part2;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Display all thumbnails.');
+        },
+        
+        btnNGY2_displaymode_demo2: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'flickr',
+            userID: '149035168@N08',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            album: 'none',
+            galleryDisplayMode: 'moreButton',
+            galleryDisplayMoreStep: 2,
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind": "flickr",\n';
+          html+='        "userID": "149035168@N08",\n';
+          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
+          html+='        "album": "none",\n';
+          html+='        "galleryDisplayMode": "moreButton",\n';
+          html+='        "galleryDisplayMoreStep": 2\n';
+          html+=html_part2;
+          //html+=html_part3;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Display 2 rows of thumbnails. Click the "more button" to show 2 more rows.');
+        },
+
+        btnNGY2_displaymode_demo3: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'flickr',
+            userID: '149035168@N08',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            album: 'none',
+            galleryDisplayMode: 'pagination',
+            galleryMaxRows: 2,
+            galleryPaginationMode: 'numbers',
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind": "flickr",\n';
+          html+='        "userID": "149035168@N08",\n';
+          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
+          html+='        "album": "none",\n';
+          html+='        "galleryDisplayMode": "pagination",\n';
+          html+='        "galleryMaxRows": 2,\n';
+          html+='        "galleryPaginationMode": "numbers"\n';
+          html+=html_part2;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Display 2 rows of thumbnails and numbers bellow to paginate.');
+        },
+
+        btnNGY2_displaymode_demo4: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'flickr',
+            userID: '149035168@N08',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            album: 'none',
+            galleryDisplayMode: 'pagination',
+            galleryMaxRows: 2,
+            galleryPaginationMode: 'dots',
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind": "flickr",\n';
+          html+='        "userID": "149035168@N08",\n';
+          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
+          html+='        "album": "none",\n';
+          html+='        "galleryDisplayMode": "pagination",\n';
+          html+='        "galleryMaxRows": 2,\n';
+          html+='        "galleryPaginationMode": "dots"\n';
+          html+=html_part2;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Display 2 rows of thumbnails and dots bellow to paginate.');
+        },
+
+        btnNGY2_displaymode_demo5: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'flickr',
+            userID: '149035168@N08',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            album: 'none',
+            galleryDisplayMode: 'rows',
+            galleryMaxRows: 2,
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind": "flickr",\n';
+          html+='        "userID": "149035168@N08",\n';
+          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
+          html+='        "album": "none",\n';
+          html+='        "galleryDisplayMode": "rows",\n';
+          html+='        "galleryMaxRows": 2\n';
+          html+=html_part2;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Display 2 rows of thumbnails.');
+        },
+
+        
+        // #############################################################
+        // ## LAYOUTS
+        // #############################################################
+
+        btnNGY2_layout_demo1: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'flickr',
+            userID: '149035168@N08',
+            photoset: '72157675219521270',
+            thumbnailHeight: 150, thumbnailWidth:'auto',
+            gallerySorting: 'random',
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind": "flickr",\n';
+          html+='        "userID": "149035168@N08",\n';
+          html+='        "photoset": "72157675219521270",\n';
+          html+='        "thumbnailHeight": 150,\n';
+          html+='        "thumbnailWidth": "auto"\n';
+          html+=html_part2;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Display an album with the justified layout. The thumbnail width is set to "auto".');
+        },
+        
+        btnNGY2_layout_demo2: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'flickr',
+            userID: '149035168@N08',
+            photoset: '72157675219521270',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            gallerySorting: 'random',
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind": "flickr",\n';
+          html+='        "userID": "149035168@N08",\n';
+          html+='        "photoset": "72157675219521270",\n';
+          html+='        "thumbnailHeight": 150,\n';
+          html+='        "thumbnailWidth": 150\n';
+          html+=html_part2;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Display an album the grid layout. Thumbnail width and height are fixed.');
+        },
+        
+        btnNGY2_layout_demo3: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'flickr',
+            userID: '149035168@N08',
+            photoset: '72157675219521270',
+            thumbnailHeight: 'auto', thumbnailWidth:200,
+            thumbnailLabel : { position : 'onBottom' },
+            gallerySorting: 'random',
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind": "flickr",\n';
+          html+='        "userID": "149035168@N08",\n';
+          html+='        "photoset": "72157675219521270",\n';
+          html+='        "thumbnailLabel": { "position" : "onBottom" },\n';
+          html+='        "thumbnailHeight": "auto",\n';
+          html+='        "thumbnailWidth": 200\n';
+          html+=html_part2;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Display an album the cascading layout. Label is positioned under the thumbanil. The thumbnail height is set to "auto".');
+        },
+        
+        // #############################################################
+        // ## NAVIGATION IN ALBUMS
+        // #############################################################
+
+        btnNGY2_nav_demo1: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'google',
+            userID: '111186676244625461692',
+            blackList: 'forhomepage|scrapbook|profil',
+            breadcrumbAutoHideTopLevel: false,
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind": "google",\n';
+          html+='        "userID": "111186676244625461692",\n';
+          html+='        "breadcrumbAutoHideTopLevel": false\n';
+          html+=html_part2;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Display a breadcrumb for navigation in the albums.');
+        },
+        
+        btnNGY2_nav_demo2: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'google',
+            userID: '111186676244625461692',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            blackList: 'forhomepage|scrapbook|profil',
+            thumbnailLevelUp: true,
+            displayBreadcrumb: false,
+            locationHash: false
+            
+          });
+          var html=html_part1;
+          html+='        "kind": "google",\n';
+          html+='        "userID": "111186676244625461692",\n';
+          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
+          html+='        "thumbnailLevelUp": true;\n';
+          html+='        "displayBreadcrumb": false\n';
+          html+=html_part2;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('No breadcrumb for navigation in the albums. User can instead use the first thumbnail to go to upper level.');
+        },
+        
+        btnNGY2_nav_demo3: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'google',
+            userID: '111186676244625461692',
+            album: '5911699288924070209',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            blackList: 'forhomepage|scrapbook|profil',
+            galleryFilterTags: 'title',
+            displayBreadcrumb: false,
+            locationHash: false
+            
+          });
+          var html=html_part1;
+          html+='        "kind": "google",\n';
+          html+='        "userID": "111186676244625461692",\n';
+          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
+          html+='        "galleryFilterTags": "title"\n';
+          html+='        "displayBreadcrumb": false\n';
+          html+=html_part2;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Filter thumbanils by tags. Tags are extracted from the title (words starting with @).');
+        },
+        
+      }
+    
+      jQuery('.btn').on('click', function() {
+        jQuery("#nanogallery2").nanogallery2('destroy');
+        jQuery('.btn').addClass('btn-primary').removeClass('btn-success');
+        jQuery('#'+this.id).removeClass('btn-primary').addClass('btn-success');
+        mydemos[this.id]();
+      });
+      
+      mydemos.btnNGY2_source_demo1();
+   
+    });
+    
+    
+  </script>
 
   <!-- ######################## -->
   <!-- ##### START FOOTER ##### -->
