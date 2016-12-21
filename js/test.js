@@ -1,10 +1,8 @@
-
-
+//
+// nanogallery2 portable - http://nanogallery2.nanostudio.org
+//
 javascript:(function(e,a,g,h,f,c,b,d){if(!(f=e.jQuery)||g>f.fn.jquery||h(f)){c=a.createElement("script");c.type="text/javascript";c.src="http://ajax.googleapis.com/ajax/libs/jquery/"+g+"/jquery.min.js";c.onload=c.onreadystatechange=function(){if(!b&&(!(d=this.readyState)||d=="loaded"||d=="complete")){h((f=e.jQuery).noConflict(1),b=1);f(c).remove()}};a.documentElement.childNodes[0].appendChild(c)}})(window,document,"2.0.2",function($,L){
-  /* YOUR JQUERY CODE GOES HERE */
-
-  var jQuery=$;
-
+var jQuery=$;
 /**!
  * @preserve nanogallery2 - javascript image gallery
  * Homepage: http://nanogallery2.nanostudio.org
@@ -11451,20 +11449,30 @@ if (typeof define === 'function' && define.amd) {
 (function(){
   'use strict';
   jQuery(document).ready(function () {
-var link = document.createElement('link');
-link.setAttribute("rel", "stylesheet");
-link.setAttribute("type", "text/css");
-link.onload = function(){
-    var t=document.querySelectorAll('[data-nanogallery2]');
-    for( var i=0; i < t.length; i++ ) {
-      jQuery(t[i]).nanogallery2(jQuery(t[i]).data('nanogallery2'));
+
+
+    var t=document.querySelectorAll('[data-nanogallery2-portable]');
+    if( t.length > 0 ) {
+      // portable mode
+      var link = document.createElement('link');
+      link.setAttribute("rel", "stylesheet");
+      link.setAttribute("type", "text/css");
+      link.onload = function(){
+        for( var i=0; i < t.length; i++ ) {
+          jQuery(t[i]).nanogallery2(jQuery(t[i]).data('nanogallery2'));
+        }
+      }
+      link.setAttribute("href", 'http://nanogallery2.nanostudio.org/css/nanogallery2.css');
+      document.getElementsByTagName("head")[0].appendChild(link);
+    }
+    else {
+      // standard mode
+      var t=document.querySelectorAll('[data-nanogallery2]');
+      for( var i=0; i < t.length; i++ ) {
+        jQuery(t[i]).nanogallery2(jQuery(t[i]).data('nanogallery2'));
+      }
     }
 
-}
-link.setAttribute("href", 'http://nanogallery2.nanostudio.org/css/nanogallery2.css');
-document.getElementsByTagName("head")[0].appendChild(link);
-
-  
     
   });
 }).call(null);
@@ -12321,30 +12329,9 @@ document.getElementsByTagName("head")[0].appendChild(link);
 // END GOOGLE DATA SOURCE FOR NANOGALLERY2
 }( jQuery ));
   
-  
-  
-  
-  
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  
-  
-  });
+//----------------------------------------------------------------------------
+// nanogallery2 portable - end  
+});
 
 
