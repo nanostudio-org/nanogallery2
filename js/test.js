@@ -11459,7 +11459,7 @@ if (typeof define === 'function' && define.amd) {
       link.setAttribute("type", "text/css");
       link.onload = function(){
         for( var i=0; i < t.length; i++ ) {
-          jQuery(t[i]).nanogallery2(jQuery(t[i]).data('nanogallery2'));
+          jQuery(t[i]).nanogallery2(jQuery(t[i]).data('nanogallery2-portable'));
         }
       }
       link.setAttribute("href", 'http://nanogallery2.nanostudio.org/css/nanogallery2.css');
