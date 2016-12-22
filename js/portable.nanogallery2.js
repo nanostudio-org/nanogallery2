@@ -8494,6 +8494,7 @@ function makeArray( obj ) {
     // $.fn.ngimagesLoaded = function( options, callback ) {
     jQuery.fn.ngimagesLoaded = function( options, callback ) {
       var instance = new ngImagesLoaded( this, options, callback );
+      console.dir(instance);
       return instance.jqDeferred.promise( $(this) );
     };
   // }
