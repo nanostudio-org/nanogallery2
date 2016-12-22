@@ -11476,22 +11476,6 @@ if (typeof define === 'function' && define.amd) {
       link.setAttribute("href", 'http://nanogallery2.nanostudio.org/css/nanogallery2.woff.css');
       document.getElementsByTagName("head")[0].appendChild(link);
       
-      // google analytics
-      <!-- Asynchronous Google Analytics snippet -->
-      var _gaq = window._gaq || windows.[];
-      var pluginUrl = 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
-      _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
-      _gaq.push(['_setAccount', 'UA-39069349-8']);
-      _gaq.push(['_trackPageview']);
-      var u=window.location.href;
-      _gaq.push(['_trackEvent', 'portable', 'URL', 'here']);
-      // _gaq.push(['_trackEvent', 'portable', 'URL', u]);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = 'https://stats.g.doubleclick.net/dc.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
     }
     else {
       // standard mode
@@ -12362,4 +12346,20 @@ if (typeof define === 'function' && define.amd) {
 // nanogallery2 portable - end  
 });
 
+      // google analytics
+      <!-- Asynchronous Google Analytics snippet -->
+      window._gaq = window._gaq || [];
+      var pluginUrl = 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+      window._gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+      window._gaq.push(['_setAccount', 'UA-39069349-8']);
+      _gaq.push(['_trackPageview']);
+      var u=window.location.href;
+      window._gaq.push(['_trackEvent', 'portable', 'URL', 'here']);
+      // _gaq.push(['_trackEvent', 'portable', 'URL', u]);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = 'https://stats.g.doubleclick.net/dc.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
 
