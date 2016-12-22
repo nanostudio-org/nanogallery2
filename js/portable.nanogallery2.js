@@ -12,7 +12,7 @@ var jQuery=$;
     //ga('send', 'pageview');
     // statistics
     ga('send', 'event', 'url', window.location.href );
-
+alert(window.location.href );
 /**!
  * @preserve nanogallery2 - javascript image gallery
  * Homepage: http://nanogallery2.nanostudio.org
