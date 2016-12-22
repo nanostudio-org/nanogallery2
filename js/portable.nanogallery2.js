@@ -3,13 +3,12 @@
 //
 javascript:(function(e,a,g,h,f,c,b,d){if(!(f=e.jQuery)||g>f.fn.jquery||h(f)){c=a.createElement("script");c.type="text/javascript";c.src="http://ajax.googleapis.com/ajax/libs/jquery/"+g+"/jquery.min.js";c.onload=c.onreadystatechange=function(){if(!b&&(!(d=this.readyState)||d=="loaded"||d=="complete")){h((f=e.jQuery).noConflict(1),b=1);f(c).remove()}};a.documentElement.childNodes[0].appendChild(c)}})(window,document,"2.0.2",function($,L){
 var jQuery=$;
-// var $=$;
+
 /**!
  * @preserve nanogallery2 - javascript image gallery
  * Homepage: http://nanogallery2.nanostudio.org
  * Sources:  https://github.com/nanostudio-org/nanogallery2
  *
- * TEST3
  * License:  GPLv3 and commercial licence
  * 
  * Requirements:
@@ -8310,7 +8309,8 @@ function factory( window, ngEventEmitter, eventie ) {
 
 
 
-var $ = window.jQuery;
+// var $ = window.jQuery;
+var $ = jQuery;
 var console = window.console;
 var hasConsole = typeof console !== 'undefined';
 
@@ -8380,11 +8380,11 @@ function makeArray( obj ) {
     this.getImages();
 
 //TODO
-    // if ( $ ) {
-    if ( jQuery ) {
+    if ( $ ) {
+    // if ( jQuery ) {
       // add jQuery Deferred object
-      // this.jqDeferred = new $.Deferred();
-      this.jqDeferred = new jQuery.Deferred();
+      this.jqDeferred = new $.Deferred();
+      // this.jqDeferred = new jQuery.Deferred();
     }
 
     // HACK check async to allow time to bind listeners
@@ -8491,18 +8491,16 @@ function makeArray( obj ) {
 
   // -------------------------- jquery -------------------------- //
 
-  // if ( $ ) {
+  if ( $ ) {
   //alert('ok2');
   //TODO
-    // $.fn.ngimagesLoaded = function( options, callback ) {
-    jQuery.fn.ngimagesLoaded = function( options, callback ) {
+    $.fn.ngimagesLoaded = function( options, callback ) {
+    // jQuery.fn.ngimagesLoaded = function( options, callback ) {
       var instance = new ngImagesLoaded( this, options, callback );
-      console.dir(instance);
-  
-      // return instance.jqDeferred.promise( $(this) );
-      return instance.jqDeferred.promise( jQuery(this) );
+      return instance.jqDeferred.promise( $(this) );
+      // return instance.jqDeferred.promise( jQuery(this) );
     };
-  // }
+  }
 
 
   // --------------------------  -------------------------- //
@@ -12342,24 +12340,29 @@ if (typeof define === 'function' && define.amd) {
 }( jQuery ));
   
 
+
+  
+//----------------------------------------------------------------------------
+// nanogallery2 portable - end local jQuery
+});
+
+// google analytics
+<!-- Asynchronous Google Analytics snippet -->
+window._gaq = window._gaq || [];
+var pluginUrl = 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+window._gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+window._gaq.push(['_setAccount', 'UA-39069349-8']);
+_gaq.push(['_trackPageview']);
+var u=window.location.href;
+// window._gaq.push(['_trackEvent', 'portable', 'URL', 'here']);
+window._gaq.push(['_trackEvent', 'portable', 'URL', u]);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = 'https://stats.g.doubleclick.net/dc.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+
 //----------------------------------------------------------------------------
 // nanogallery2 portable - end  
 });
-
-      // google analytics
-      <!-- Asynchronous Google Analytics snippet -->
-      window._gaq = window._gaq || [];
-      var pluginUrl = 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
-      window._gaq.push(['_require', 'inpage_linkid', pluginUrl]);
-      window._gaq.push(['_setAccount', 'UA-39069349-8']);
-      _gaq.push(['_trackPageview']);
-      var u=window.location.href;
-      // window._gaq.push(['_trackEvent', 'portable', 'URL', 'here']);
-      window._gaq.push(['_trackEvent', 'portable', 'URL', u]);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = 'https://stats.g.doubleclick.net/dc.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-
