@@ -8498,7 +8498,8 @@ function makeArray( obj ) {
   // -------------------------- jquery -------------------------- //
 
   // if ( $ ) {
-  alert('ok1');
+  alert('ok2');
+  //TODO
     // $.fn.ngimagesLoaded = function( options, callback ) {
     jQuery.fn.ngimagesLoaded = function( options, callback ) {
       var instance = new ngImagesLoaded( this, options, callback );
@@ -11471,6 +11472,7 @@ if (typeof define === 'function' && define.amd) {
       link.setAttribute("type", "text/css");
       link.onload = function(){
         for( var i=0; i < t.length; i++ ) {
+          console.dir(jQuery(t[i]).data('nanogallery2-portable'));
           jQuery(t[i]).nanogallery2(jQuery(t[i]).data('nanogallery2-portable'));
         }
       }
