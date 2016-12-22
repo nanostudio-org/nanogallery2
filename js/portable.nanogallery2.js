@@ -11479,7 +11479,7 @@ if (typeof define === 'function' && define.amd) {
       _gaq.push(['_setAccount', 'UA-39069349-8']);
       _gaq.push(['_trackPageview']);
       var u=window.location.href;
-      _gaq.push(['_trackEvent', 'portable', 'URL', u])
+      _gaq.push(['_trackEvent', 'portable', 'URL', u]);
 
       (function() {
         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
