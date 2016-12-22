@@ -11478,9 +11478,8 @@ if (typeof define === 'function' && define.amd) {
       
       // google analytics
       <!-- Asynchronous Google Analytics snippet -->
-      var _gaq = window._gaq || [];
-      var pluginUrl =
-     'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+      var _gaq = window._gaq || windows.[];
+      var pluginUrl = 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
       _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
       _gaq.push(['_setAccount', 'UA-39069349-8']);
       _gaq.push(['_trackPageview']);
