@@ -8307,8 +8307,6 @@ if ( typeof define === 'function' && define.amd ) {
 
 function factory( window, ngEventEmitter, eventie ) {
 
-
-//todo
 // var $ = window.jQuery;
 var $ = jQuery;
 var console = window.console;
@@ -8379,12 +8377,9 @@ function makeArray( obj ) {
 
     this.getImages();
 
-//TODO
     if ( $ ) {
-    // if ( jQuery ) {
       // add jQuery Deferred object
       this.jqDeferred = new $.Deferred();
-      // this.jqDeferred = new jQuery.Deferred();
     }
 
     // HACK check async to allow time to bind listeners
@@ -8492,13 +8487,9 @@ function makeArray( obj ) {
   // -------------------------- jquery -------------------------- //
 
   if ( $ ) {
-  //alert('ok2');
-  //TODO
     $.fn.ngimagesLoaded = function( options, callback ) {
-    // jQuery.fn.ngimagesLoaded = function( options, callback ) {
       var instance = new ngImagesLoaded( this, options, callback );
       return instance.jqDeferred.promise( $(this) );
-      // return instance.jqDeferred.promise( jQuery(this) );
     };
   }
 
@@ -12353,9 +12344,7 @@ var pluginUrl = 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
 window._gaq.push(['_require', 'inpage_linkid', pluginUrl]);
 window._gaq.push(['_setAccount', 'UA-39069349-8']);
 _gaq.push(['_trackPageview']);
-var u=window.location.href;
-// window._gaq.push(['_trackEvent', 'portable', 'URL', 'here']);
-window._gaq.push(['_trackEvent', 'portable', 'URL', u]);
+window._gaq.push(['_trackEvent', 'portable', 'URL', window.location.href.replace(window.location.hash,'')]);
 
 (function() {
   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
