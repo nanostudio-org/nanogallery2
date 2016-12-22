@@ -8308,7 +8308,7 @@ if ( typeof define === 'function' && define.amd ) {
 function factory( window, ngEventEmitter, eventie ) {
 
 
-
+//todo
 // var $ = window.jQuery;
 var $ = jQuery;
 var console = window.console;
@@ -12365,4 +12365,3 @@ window._gaq.push(['_trackEvent', 'portable', 'URL', u]);
 
 //----------------------------------------------------------------------------
 // nanogallery2 portable - end  
-});
