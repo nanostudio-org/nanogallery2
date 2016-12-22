@@ -3,7 +3,7 @@
 //
 javascript:(function(e,a,g,h,f,c,b,d){if(!(f=e.jQuery)||g>f.fn.jquery||h(f)){c=a.createElement("script");c.type="text/javascript";c.src="http://ajax.googleapis.com/ajax/libs/jquery/"+g+"/jquery.min.js";c.onload=c.onreadystatechange=function(){if(!b&&(!(d=this.readyState)||d=="loaded"||d=="complete")){h((f=e.jQuery).noConflict(1),b=1);f(c).remove()}};a.documentElement.childNodes[0].appendChild(c)}})(window,document,"2.0.2",function($,L){
 var jQuery=$;
-var $=$;
+// var $=$;
 /**!
  * @preserve nanogallery2 - javascript image gallery
  * Homepage: http://nanogallery2.nanostudio.org
@@ -8383,7 +8383,7 @@ function makeArray( obj ) {
     if ( jQuery ) {
       // add jQuery Deferred object
       // this.jqDeferred = new $.Deferred();
-      this.jqDeferred = new $.Deferred();
+      this.jqDeferred = new jQuery.Deferred();
     }
 
     // HACK check async to allow time to bind listeners
