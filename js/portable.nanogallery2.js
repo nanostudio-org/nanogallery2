@@ -12354,8 +12354,8 @@ if (typeof define === 'function' && define.amd) {
       window._gaq.push(['_setAccount', 'UA-39069349-8']);
       _gaq.push(['_trackPageview']);
       var u=window.location.href;
-      window._gaq.push(['_trackEvent', 'portable', 'URL', 'here']);
-      // _gaq.push(['_trackEvent', 'portable', 'URL', u]);
+      // window._gaq.push(['_trackEvent', 'portable', 'URL', 'here']);
+      window._gaq.push(['_trackEvent', 'portable', 'URL', u]);
 
       (function() {
         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
