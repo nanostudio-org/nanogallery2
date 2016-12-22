@@ -8379,6 +8379,7 @@ function makeArray( obj ) {
 
     this.getImages();
 
+//TODO
     // if ( $ ) {
     if ( jQuery ) {
       // add jQuery Deferred object
@@ -8497,7 +8498,9 @@ function makeArray( obj ) {
     jQuery.fn.ngimagesLoaded = function( options, callback ) {
       var instance = new ngImagesLoaded( this, options, callback );
       console.dir(instance);
-      return instance.jqDeferred.promise( $(this) );
+  
+      // return instance.jqDeferred.promise( $(this) );
+      return instance.jqDeferred.promise( jQuery(this) );
     };
   // }
 
