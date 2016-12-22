@@ -11478,14 +11478,14 @@ if (typeof define === 'function' && define.amd) {
       
       // google analytics
       <!-- Asynchronous Google Analytics snippet -->
-      var _gaq = _gaq || [];
+      var window._gaq = window._gaq || [];
       var pluginUrl =
      'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
-      _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
-      _gaq.push(['_setAccount', 'UA-39069349-8']);
-      _gaq.push(['_trackPageview']);
+      window._gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+      window._gaq.push(['_setAccount', 'UA-39069349-8']);
+      window._gaq.push(['_trackPageview']);
       var u=window.location.href;
-      _gaq.push(['_trackEvent', 'portable', 'URL', 'here']);
+      window._gaq.push(['_trackEvent', 'portable', 'URL', 'here']);
       // _gaq.push(['_trackEvent', 'portable', 'URL', u]);
 
       (function() {
