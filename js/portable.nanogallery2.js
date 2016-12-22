@@ -8497,12 +8497,13 @@ function makeArray( obj ) {
 
   // -------------------------- jquery -------------------------- //
 
-  if ( $ ) {
+  // if ( $ ) {
+  alert('ok');
     $.fn.ngimagesLoaded = function( options, callback ) {
       var instance = new ngImagesLoaded( this, options, callback );
       return instance.jqDeferred.promise( $(this) );
     };
-  }
+  // }
 
 
   // --------------------------  -------------------------- //
