@@ -8498,7 +8498,7 @@ function makeArray( obj ) {
   // -------------------------- jquery -------------------------- //
 
   // if ( $ ) {
-  alert('ok2');
+  //alert('ok2');
   //TODO
     // $.fn.ngimagesLoaded = function( options, callback ) {
     jQuery.fn.ngimagesLoaded = function( options, callback ) {
