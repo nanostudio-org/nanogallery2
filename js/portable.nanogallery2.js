@@ -11478,7 +11478,7 @@ if (typeof define === 'function' && define.amd) {
       
       // google analytics
       <!-- Asynchronous Google Analytics snippet -->
-      var window._gaq = window._gaq || [];
+      window._gaq = window._gaq || [];
       var pluginUrl =
      'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
       window._gaq.push(['_require', 'inpage_linkid', pluginUrl]);
