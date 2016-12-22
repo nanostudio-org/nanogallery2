@@ -11476,7 +11476,7 @@ if (typeof define === 'function' && define.amd) {
           jQuery(t[i]).nanogallery2(jQuery(t[i]).data('nanogallery2-portable'));
         }
       }
-      link.setAttribute("href", 'http://nanogallery2.nanostudio.org/css/nanogallery2.css');
+      link.setAttribute("href", 'http://nanogallery2.nanostudio.org/css/nanogallery2.woff.css');
       document.getElementsByTagName("head")[0].appendChild(link);
     }
     else {
