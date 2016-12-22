@@ -8379,7 +8379,8 @@ function makeArray( obj ) {
 
     this.getImages();
 
-    if ( $ ) {
+    // if ( $ ) {
+    if ( jQuery ) {
       // add jQuery Deferred object
       this.jqDeferred = new $.Deferred();
     }
