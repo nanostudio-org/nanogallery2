@@ -417,10 +417,13 @@
   <div class="container">
     
     <h3>Corresponding HTML template:</h3>
-    <pre><code id="ngy2_template">
-
-    </code></pre>
-    
+    <div class="row">
+      <button id="copyclipboard" type="button" class="btn-primary pull-right" data-clipboard-target="#ngy2_template">copy to clipboard</button>
+    </div>
+    <div class="row">
+      <pre><code id="ngy2_template">
+      </code></pre>
+    </div>   
       
   </div>
   
@@ -429,6 +432,8 @@
 	<script type="text/javascript">
   
 		$(document).ready(function () {
+    
+      new Clipboard('#copyclipboard');
     
       $('select[name=demoCat]').on("change",function(){
         //alert(this.value);
