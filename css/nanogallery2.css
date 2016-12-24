@@ -6,6 +6,7 @@
 
 .nGY2 {
   width: 100%;
+  min-width: 100px; /* to display something even if parent has display:inline-block */
 	font-size: 1.0em;
 	line-height: normal;
 	padding: 0px;
@@ -969,7 +970,7 @@
   -ms-animation: nanoGalleryLBarAnim 2s -.6s infinite  cubic-bezier(0, 0.6, 0.9, 0.0);
   -o-animation: nanoGalleryLBarAnim 2s -.6s infinite  cubic-bezier(0, 0.6, 0.9, 0.0);
   animation: nanoGalleryLBarAnim 2s -.6s infinite  cubic-bezier(0, 0.6, 0.9, 0.0);
-  background: #999;
+  background: #ccd;
 }
 .nGY2 .nanoGalleryLBar > div:nth-child(4){
   -webkit-animation: nanoGalleryLBarAnim 2s -.8s infinite  cubic-bezier(0, 0.6, 0.9, 0.0);
