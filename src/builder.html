@@ -1,5 +1,1327 @@
-<h2 class="text-center" style="color:#f00;"><b>this page is only available to beta testers - contact kris@nanostudio.org</b></h2>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
+  
+  
+  <div class="container">
+    <br><br>
+    <h1>nanogallery2 builder - <span style="color:#b00;">BETA VERSION</span></h1>
+    <br><br><br>
+    <blockquote>
+      Get a gallery up and running in minutes with the <b>builder</b>.
+      <br>
+      No need to read the documentation.
+      <br>
+      Define the options and generate either a shortcode, to use in your CMS, or a full working HTML page.<br>
+      Note: not all nanogallery2 settings are available here.
+    </blockquote>
+    You can also <button class="btn" disabled>modify a generated</button> gallery.
+    <br><br>
+  </div>
+
+  
+  <div class="container">
+    <br><br><br><br>
+
+    <h3 class="text-left"><span class="circle-singleline" > 1</span> DEFINE THE CONTENT SOURCE</h3>
+    <br><br><br>
+    <!-- ##### GENERAL ##### -->
+    <div class="row ngy2-builder">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="form-group col-md-3">
+            <label for="dataSource" class="control-label">Where are you images stored?</label>
+            <select name="dataSource" class="selectpicker" id="dataSource">
+              <option value="flickr" selected>Flickr</option>
+              <option value="google">Google Photos</option>
+              <option value="markup">Self hosted</option>
+            </select>
+          </div>
+        </div>
+        
+        <!-- GOOGLE -->
+        <div class="row rowGoogle hide">
+          <div class="form-group col-md-3">
+            <label for="googleUserID" class="control-label">Google Photos user ID</label>
+            <input id="googleUserID" name="googleUserID" class="form-control" type="text" value="111186676244625461692">
+          </div>
+          <p>
+            <p id="pleaseSignIn">Please sign-in to Google to retrieve your User ID and the list of your photos albums<br><span style="font-size:0.8em;"><b>(by signing-in you agree that some data can be used for statistical purposes)</b></span>.</p>
+            <a style="display:none; float: left; margin-right: 10px; height: 36px;" class="btn btn-warning" id="google-sign-out" href="#">Sign out from Google</a>
+            <div class="g-signin2" data-onsuccess="onSignIn" ></div>
+          </p>
+        </div>
+
+        <div class="row rowGoogle hide">
+          <div class="form-group col-md-4">
+            <label for="googleAlbum" class="control-label">What do you want to display in your gallery?</label>
+            <select id="googleAlbum" name="googleAlbum" class="selectpicker" multiple data-selected-text-format="count > 1">
+              <option value="lstAlbums" selected="selected" >display album list</option>
+            </select>            
+          </div>
+          <div class="form-group col-md-4">
+            <label for="googleWhiteLst" class="control-label">Filter: album names must contain any these keywords</label>
+            <input id="googleWhiteLst" name="googleWhiteLst" class="form-control" type="text" value="">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="googleBlackLst" class="control-label">Filter: album names must <u>NOT</u> contain any these keywords</label>
+            <input id="googleBlackLst" name="googleBlackLst" class="form-control" type="text" value="scrapbook profil">
+          </div>
+        </div>
+        
+        <div class="row rowGoogle hide ">
+          <div class="form-group col-md-12">
+          <p>
+            Please note that only public or private albums are visible. Use <a href="http://nanogpvisibility.herokuapp.com/index.html" target="_blank"><button class="btn-primary">nanoGPVisibility</button></a> to manage the visibility of your albums.
+           </p>
+          </div>
+        </div>
+        
+        <!-- FLICKR -->
+        <div class="row rowFlickr ">
+          <div class="form-group col-md-4">
+            <label for="flickrUserID" class="control-label">Flickr user ID</label>
+            <div class="input-group">
+              <input id="flickrUserID" name="flickrUserID" class="form-control" type="text" value="149035168@N08">
+              <span class="input-group-btn">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#myFlickr">Retrieve my Flickr user ID</button>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row rowFlickr ">
+          <div class="form-group col-md-4">
+            <label for="flickrAlbum" class="control-label">What do you want to display in your gallery?</label>
+            <div class="input-group">
+              <select id="flickrAlbum" name="flickrAlbum" class="selectpicker" multiple data-selected-text-format="count > 1">
+                <option value="lstAlbums" selected="selected" >display the list of albums</option>
+                <option value="none">display the full photostream</option>
+              </select>            
+              <span class="input-group-btn">
+                <button id="btnFlickrGetList" class="btn btn-primary" >refresh</button>
+              </span>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="flickrWhiteLst" class="control-label">Filter: album names must contain any these keywords</label>
+            <input id="flickrWhiteLst" name="flickrWhiteLst" class="form-control" type="text" value="">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="flickrBlackLst" class="control-label">Filter: album names must <u>NOT</u> contain any these keywords</label>
+            <input id="flickrBlackLst" name="flickrBlackLst" class="form-control" type="text" value="">
+          </div>
+        </div>
+        
+        
+        
+        <!-- SELF HOSTED -->
+        
+        <div class="row rowHtmlMarkup hide">
+          <div class="form-group col-md-12">
+            <p>This feature is not available a this time.</p>
+          </div>
+          
+          <div class="form-group col-md-3 hide">
+            <label for="itemsBaseURL" class="control-label">Images base URL</label>
+            <input id="itemsBaseURL" name="itemsBaseURL" class="form-control" type="text" value="http://nanogallery2.nanostudio.org/samples/">
+            <br>
+            <button type="button" class="btn" id="btnHtmlMarkupExample1">Example 1</button>
+            <button type="button" class="btn" id="btnHtmlMarkupExample2">Example 2</button>
+          </div>
+          <div class="form-group col-md-8 hide">
+            <label for="htmlMarkup" class="control-label">HTML markup</label>
+            <textarea id="htmlMarkup" name="htmlMarkup" class="form-control" type="text" cols="40" rows="5">
+<a href="berlin1.jpg" data-ngThumb="berlin1t.jpg">Berlin 1</a>
+<a href="berlin2.jpg" data-ngThumb="berlin2t.jpg">Berlin 2</a>
+<a href="berlin3.jpg" data-ngThumb="berlin3t.jpg" data-ngDesc="Image 3 description">Berlin 3</a>
+            </textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br><br>
+  
+    <div class="modal fade" id="myFlickr" tabindex="-1" role="dialog" aria-labelledby="myFlickrLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3 class="modal-title" id="myFlickrLabel">nanogallery2 - Flick</h3>
+          </div>
+          <div class="modal-body">
+            <label for="moFlickrUserID" class="control-label">Enter your Flickr username to retrieve your ID</label>
+            <input id="moFlickrUserID" name="moFlickrUserID" class="form-control" type="text" value="nanostudio-org">
+            <button id="btnFlickrGetID" class="btn btn-primary" >Get user ID</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  
+  <div class="jumbotron jumbotronNGY2" style="background-color:#eeeeee;">
+    <div class="container">
+
+      <h3 class="text-left"><span class="circle-singleline" > 2</span> CONFIGURE YOUR GALLERY</h3>
+      <br><br>
+      
+      <div class="row">
+        <div class="col-md-12">
+          <!-- Nav tabs -->
+          <ul id="ngy2-builder-tabs" class="nav nav-pills" role="tablist">
+            <li role="presentation" class="active"><a href="#ngy2_thumbnail" aria-controls="ngy2_thumbnail" role="tab" data-toggle="tab">Thumbnail</a></li>
+            <li role="presentation"><a href="#ngy2_thumbnaillabel" aria-controls="ngy2_thumbnaillabel" role="tab" data-toggle="tab">Thumbnail label</a></li>
+            <li role="presentation"><a href="#ngy2_navigation" aria-controls="ngy2_navigation" role="tab" data-toggle="tab">Navigation / Filters</a></li>
+            <li role="presentation"><a href="#ngy2_gallery" aria-controls="ngy2_gallery" role="tab" data-toggle="tab">Gallery</a></li>
+            <li role="presentation"><a href="#ngy2_thumbnailhover" aria-controls="ngy2_thumbnailhover" role="tab" data-toggle="tab">Hover effects</a></li>
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="tab-content ngy2-builder">
+
+            <!--- ### TAB THUMBNAIL ### -->
+            <div role="tabpanel" class="tab-pane active" id="ngy2_thumbnail">
+              <br>
+              <p>
+                Gallery layout and general thumbnails configuration.
+              </p>
+              <div class="row">
+                <div class="form-group col-md-4">
+                  <label for="layoutEngine" class="control-label">Gallery layout</label>
+                  <select name="layoutEngine" class="form-control" id="layoutEngine">
+                    <option value="grid" selected >Grid</option>
+                    <option value="justified">Justified</option>
+                    <option value="cascading">Cascading</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="thumbnailWidth" class="control-label">Thumbnail width</label>
+                  <input id="thumbnailWidth" name="thumbnailWidth" class="form-control" type="text" value="300">
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="thumbnailHeight" class="control-label">Thumbnail height</label>
+                  <input id="thumbnailHeight" name="thumbnailHeight" class="form-control" type="text" value="200">
+                </div>
+              </div>
+
+              <div class="row ngy2-level2">
+                <div class="form-group col-md-4">
+                  <label for="thumbnailBorderVertical" class="control-label">Vertical border (top and bottom)</label>
+                  <input id="thumbnailBorderVertical" name="thumbnailBorderVertical" class="form-control" type="text" value="2">
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="thumbnailBorderHorizontal" class="control-label">Horizontal border (left and right)</label>
+                  <input id="thumbnailBorderHorizontal" name="thumbnailBorderHorizontal" class="form-control" type="text" value="2">
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="form-group col-md-4">
+                  <label for="thumbnailDisplayTransition" class="control-label">Display transition</label>
+                  <select name="thumbnailDisplayTransition" class="form-control" id="thumbnailDisplayTransition">
+                    <option value="" >none</option>
+                    <option value="fadeIn" selected >fadeIn</option>
+                    <option value="randomScale">randomScale</option>
+                    <option value="slideUp">slideUp</option>
+                    <option value="slideDown">slideDown</option>
+                    <option value="scaleUp">scaleUp</option>
+                    <option value="scaleDown">scaleDown</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="thumbnailDisplayTransitionDuration" class="control-label">Transition display duration (ms)</label>
+                  <input id="thumbnailDisplayTransitionDuration" name="thumbnailDisplayTransitionDuration" class="form-control" type="text" value="240">
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="thumbnailDisplayInterval" class="control-label">Transition interval duration (ms)</label>
+                  <input id="thumbnailDisplayInterval" name="thumbnailDisplayInterval" class="form-control" type="text" value="30">
+                </div>
+              </div>
+              
+            </div>
+            
+            <!--- ### TAB THUMBNAIL LABEL ### -->
+            <div role="tabpanel" class="tab-pane" id="ngy2_thumbnaillabel">
+              <br>
+              <p>
+                Configure the thumbnail's label. The label is composed of a title and a description.
+              </p>
+              <div class="row">
+                <div class="form-group col-md-4">
+                  <label for="thumbnailLabelDisplay" class="control-label">Display label (title + description)</label>
+                  <select name="thumbnailLabelDisplay" class="form-control" id="thumbnailLabelDisplay">
+                    <option value="true" selected >yes</option>
+                    <option value="false">no</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="thumbnailLabelPosition" class="control-label">Label position</label>
+                  <select name="thumbnailLabelPosition" class="form-control" id="thumbnailLabelPosition">
+                    <option value="overImageOnBottom" selected >over image on bottom</option>
+                    <option value="overImageOnMiddle">over image on middle</option>
+                    <option value="overImageOnTop">over image on top</option>
+                    <option value="onBottom">on bottom</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="thumbnailLabelAlignement" class="control-label">Label content alignement</label>
+                  <select name="thumbnailLabelAlignement" class="form-control" id="thumbnailLabelAlignement">
+                    <option value="center" selected >center</option>
+                    <option value="left">left</option>
+                    <option value="right">right</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="row ngy2-level2">
+                <div class="form-group col-md-4">
+                  <label for="thumbnailLabelTitleMultiline" class="control-label">Title multiline</label>
+                  <select name="thumbnailLabelTitleMultiline" class="form-control" id="thumbnailLabelTitleMultiline">
+                    <option value="true">yes</option>
+                    <option value="false" selected>no</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="row ngy2-level2">
+                <div class="form-group col-md-4">
+                  <label for="thumbnailLabelDisplayDescription" class="control-label">Display description</label>
+                  <select name="thumbnailLabelDisplayDescription" class="form-control" id="thumbnailLabelDisplayDescription">
+                    <option value="true" >yes</option>
+                    <option value="false" selected>no</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="thumbnailLabelDescriptionMultiline" class="control-label">Description multiline</label>
+                  <select name="thumbnailLabelDescriptionMultiline" class="form-control" id="thumbnailLabelDescriptionMultiline">
+                    <option value="true" >yes</option>
+                    <option value="false" selected>no</option>
+                  </select>
+                </div>
+              </div>
+              
+              
+            </div>
+
+            <!--- ### TAB HOVER EFFECTS ### -->
+            <div role="tabpanel" class="tab-pane" id="ngy2_thumbnailhover">
+              <br>
+              <p>
+                Configure thumbnails hover effects. The effects are fired on mouse hover or on touch.
+              </p>
+              <div class="row thumbnailHoverEffectStd">
+                <div class="form-group col-md-8">
+                  <label for="thumbnailHoverEffect1" class="control-label">Hover effect</label>
+                  <select name="thumbnailHoverEffect1" class="form-control" id="thumbnailHoverEffect1">
+                    <option value="" ></option>
+                    <option value="toolsAppear" selected>toolsAppear</option>
+                    <option value="toolsSlideDown">toolsSlideDown</option>
+                    <option value="toolsSlideUp">toolsSlideUp</option>
+                    <option value="imageBlurOff">imageBlurOff</option>
+                    <option value="imageBlurOn">imageBlurOn</option>
+                    <option value="imageGrayOff">imageGrayOff</option>
+                    <option value="imageGrayOn">imageGrayOn</option>
+                    <option value="imageSepiaOff">imageSepiaOff</option>
+                    <option value="imageSepiaOn">imageSepiaOn</option>
+                    <option value="borderLighter">borderLighter</option>
+                    <option value="borderDarker">borderDarker</option>
+                    <option value="scale120">scale120</option>
+                    <option value="labelAppear75">labelAppear75</option>
+                    <option value="labelOpacity50">labelOpacity50</option>
+                    <option value="scaleLabelOverImage">scaleLabelOverImage</option>
+                    <option value="overScale">overScale</option>
+                    <option value="overScaleOutside">overScaleOutside</option>
+                    <option value="descriptionAppear">descriptionAppear</option>
+                    <option value="slideUp">slideUp</option>
+                    <option value="slideDown">slideDown</option>
+                    <option value="slideRight">slideRight</option>
+                    <option value="imageScale150">imageScale150</option>
+                    <option value="imageScaleIn80">imageScaleIn80</option>
+                    <option value="imageScale150Outside">imageScale150Outside</option>
+                    <option value="imageSlideUp">imageSlideUp</option>
+                    <option value="imageSlideDown">imageSlideDown</option>
+                    <option value="imageSlideRight">imageSlideRight</option>
+                    <option value="imageSlideLeft">imageSlideLeft</option>
+                    <option value="labelSlideUpTop">labelSlideUpTop</option>
+                    <option value="labelSlideUp">labelSlideUp</option>
+                    <option value="labelSlideDown">labelSlideDown</option>
+                    <option value="descriptionSlideUp">descriptionSlideUp</option>
+                  </select>
+                </div>
+                <!--
+                <div class="form-group col-md-4">
+                  <label for="thumbnailHoverEffectDuration1" class="control-label">Hover effect duration (ms)</label>
+                  <input id="thumbnailHoverEffectDuration1" name="thumbnailHoverEffectDuration1" class="form-control" type="text" value="400">
+                </div>
+                -->
+              </div>
+              
+              <div class="row thumbnailHoverEffectStd">
+                <div class="form-group col-md-8">
+                  <select name="thumbnailHoverEffect2" class="form-control" id="thumbnailHoverEffect2">
+                    <option value="" selected ></option>
+                    <option value="toolsAppear">toolsAppear</option>
+                    <option value="toolsSlideDown">toolsSlideDown</option>
+                    <option value="toolsSlideUp">toolsSlideUp</option>
+                    <option value="imageBlurOff">imageBlurOff</option>
+                    <option value="imageBlurOn">imageBlurOn</option>
+                    <option value="imageGrayOff">imageGrayOff</option>
+                    <option value="imageGrayOn">imageGrayOn</option>
+                    <option value="imageSepiaOff">imageSepiaOff</option>
+                    <option value="imageSepiaOn">imageSepiaOn</option>
+                    <option value="borderLighter">borderLighter</option>
+                    <option value="borderDarker">borderDarker</option>
+                    <option value="scale120">scale120</option>
+                    <option value="labelAppear75">labelAppear75</option>
+                    <option value="labelOpacity50">labelOpacity50</option>
+                    <option value="scaleLabelOverImage">scaleLabelOverImage</option>
+                    <option value="overScale">overScale</option>
+                    <option value="overScaleOutside">overScaleOutside</option>
+                    <option value="descriptionAppear">descriptionAppear</option>
+                    <option value="slideUp">slideUp</option>
+                    <option value="slideDown">slideDown</option>
+                    <option value="slideRight">slideRight</option>
+                    <option value="imageScale150">imageScale150</option>
+                    <option value="imageScaleIn80">imageScaleIn80</option>
+                    <option value="imageScale150Outside">imageScale150Outside</option>
+                    <option value="imageSlideUp">imageSlideUp</option>
+                    <option value="imageSlideDown">imageSlideDown</option>
+                    <option value="imageSlideRight">imageSlideRight</option>
+                    <option value="imageSlideLeft">imageSlideLeft</option>
+                    <option value="labelSlideUpTop">labelSlideUpTop</option>
+                    <option value="labelSlideUp">labelSlideUp</option>
+                    <option value="labelSlideDown">labelSlideDown</option>
+                    <option value="descriptionSlideUp">descriptionSlideUp</option>
+                  </select>
+                </div>
+                <!--
+                <div class="form-group col-md-4">
+                  <input id="thumbnailHoverEffectDuration2" name="thumbnailHoverEffectDuration2" class="form-control" type="text" value="">
+                </div>
+                -->
+              </div>
+              
+              <div class="row thumbnailHoverEffectStd">
+                <div class="form-group col-md-8">
+                  <select name="thumbnailHoverEffect3" class="form-control" id="thumbnailHoverEffect3">
+                    <option value="" selected ></option>
+                    <option value="toolsAppear">toolsAppear</option>
+                    <option value="toolsSlideDown">toolsSlideDown</option>
+                    <option value="toolsSlideUp">toolsSlideUp</option>
+                    <option value="imageBlurOff">imageBlurOff</option>
+                    <option value="imageBlurOn">imageBlurOn</option>
+                    <option value="imageGrayOff">imageGrayOff</option>
+                    <option value="imageGrayOn">imageGrayOn</option>
+                    <option value="imageSepiaOff">imageSepiaOff</option>
+                    <option value="imageSepiaOn">imageSepiaOn</option>
+                    <option value="borderLighter">borderLighter</option>
+                    <option value="borderDarker">borderDarker</option>
+                    <option value="scale120">scale120</option>
+                    <option value="labelAppear75">labelAppear75</option>
+                    <option value="labelOpacity50">labelOpacity50</option>
+                    <option value="scaleLabelOverImage">scaleLabelOverImage</option>
+                    <option value="overScale">overScale</option>
+                    <option value="overScaleOutside">overScaleOutside</option>
+                    <option value="descriptionAppear">descriptionAppear</option>
+                    <option value="slideUp">slideUp</option>
+                    <option value="slideDown">slideDown</option>
+                    <option value="slideRight">slideRight</option>
+                    <option value="imageScale150">imageScale150</option>
+                    <option value="imageScaleIn80">imageScaleIn80</option>
+                    <option value="imageScale150Outside">imageScale150Outside</option>
+                    <option value="imageSlideUp">imageSlideUp</option>
+                    <option value="imageSlideDown">imageSlideDown</option>
+                    <option value="imageSlideRight">imageSlideRight</option>
+                    <option value="imageSlideLeft">imageSlideLeft</option>
+                    <option value="labelSlideUpTop">labelSlideUpTop</option>
+                    <option value="labelSlideUp">labelSlideUp</option>
+                    <option value="labelSlideDown">labelSlideDown</option>
+                    <option value="descriptionSlideUp">descriptionSlideUp</option>
+                  </select>
+                </div>
+                <!--
+                <div class="form-group col-md-4">
+                  <input id="thumbnailHoverEffectDuration3" name="thumbnailHoverEffectDuration3" class="form-control" type="text" value="">
+                </div>
+                -->
+              </div>
+              
+              <div class="row thumbnailHoverEffectStd">
+                <div class="form-group col-md-8">
+                  <button type="button" class="btn btn-info" id="btnThumbnailHoverEffectStdPreset1">preset 1</button>
+                  <button type="button" class="btn btn-info" id="btnThumbnailHoverEffectStdPreset2">preset 2</button>
+                  <button type="button" class="btn btn-info" id="btnThumbnailHoverEffectStdPreset3">preset 3</button>
+                  <button type="button" class="btn btn-info" id="btnThumbnailHoverEffectStdPreset4">preset 4</button>
+                  <button type="button" class="btn btn-info" id="btnThumbnailHoverEffectStdPreset5">preset 5</button>
+                </div>
+              </div>
+              
+              <div class="row ngy2-level3">
+                <div class="checkbox col-md-12">
+                  <label>
+                    <input name="cbHoverAdv" type="checkbox"> Advanced hover effects definition
+                  </label>
+                </div> 
+              </div>
+              
+              
+              <div class="row thumbnailHoverEffectAdv ngy2-level3">
+                <div class="form-group col-md-2">
+                  <label for="thumbnailHoverEffectAdv1Element" class="control-label">Element</label>
+                  <select name="thumbnailHoverEffectAdv1Element" class="form-control" id="thumbnailHoverEffectAdv1Element">
+                    <option value="" ></option>
+                    <option value="label" >label</option>
+                    <option value="image" selected>image</option>
+                    <option value="thumbnail">thumbnail</option>
+                    <option value="title">title</option>
+                    <option value="description">description</option>
+                    <option value="tools">tools</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-2">
+                  <label for="thumbnailHoverEffectAdv1" class="control-label">Effect (list)</label>
+                  <select name="thumbnailHoverEffectAdv1" class="form-control" id="thumbnailHoverEffectAdv1">
+                    <option value=""  ></option>
+                    <option value="translateX" >translateX</option>
+                    <option value="translateY" >translateY</option>
+                    <option value="scale">scale</option>
+                    <option value="rotateX">rotateX</option>
+                    <option value="rotateY">rotateY</option>
+                    <option value="rotateZ">rotateZ</option>
+                    <option value="blur">blur (only for image)</option>
+                    <option value="grayscale" selected>grayscale (only for image)</option>
+                    <option value="sepia">sepia (only for image)</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-2">
+                  <label for="thumbnailHoverEffectAdv1Cust" class="control-label">or custom effect</label>
+                  <input id="thumbnailHoverEffectAdv1Cust" name="thumbnailHoverEffectAdv1Cust" class="form-control" type="text" value="">
+                </div>
+                <div class="form-group col-md-2">
+                  <label for="thumbnailHoverEffectAdv1From" class="control-label">From</label>
+                  <input id="thumbnailHoverEffectAdv1From" name="thumbnailHoverEffectAdv1From" class="form-control" type="text" value="100%">
+                </div>
+                <div class="form-group col-md-2">
+                  <label for="thumbnailHoverEffectAdv1To" class="control-label">To</label>
+                  <input id="thumbnailHoverEffectAdv1To" name="thumbnailHoverEffectAdv1To" class="form-control" type="text" value="0%">
+                </div>
+                <div class="form-group col-md-2">
+                  <label for="thumbnailHoverEffectAdv1Duration" class="control-label">Duration (ms)</label>
+                  <input id="thumbnailHoverEffectAdv1Duration" name="thumbnailHoverEffectAdv1Duration" class="form-control" type="text" value="400">
+                </div>
+              </div>
+
+              <div class="row thumbnailHoverEffectAdv">
+                <div class="form-group col-md-2">
+                  <select name="thumbnailHoverEffectAdv2Element" class="form-control" id="thumbnailHoverEffectAdv2Element">
+                    <option value="" selected ></option>
+                    <option value="label" >label</option>
+                    <option value="image">image</option>
+                    <option value="thumbnail">thumbnail</option>
+                    <option value="title">title</option>
+                    <option value="description">description</option>
+                    <option value="tools">tools</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-2">
+                  <select name="thumbnailHoverEffectAdv2" class="form-control" id="thumbnailHoverEffectAdv2">
+                    <option value="" selected ></option>
+                    <option value="translateX" >translateX</option>
+                    <option value="translateY" >translateY</option>
+                    <option value="scale">scale</option>
+                    <option value="rotateX">rotateX</option>
+                    <option value="rotateY">rotateY</option>
+                    <option value="rotateZ">rotateZ</option>
+                    <option value="blur">blur (only for image)</option>
+                    <option value="grayscale">grayscale (only for image)</option>
+                    <option value="sepia">sepia (only for image)</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-2">
+                  <input id="thumbnailHoverEffectAdv2Cust" name="thumbnailHoverEffectAdv2Cust" class="form-control" type="text" value="">
+                </div>
+                <div class="form-group col-md-2">
+                  <input id="thumbnailHoverEffectAdv2From" name="thumbnailHoverEffectAdv2From" class="form-control" type="text" value="">
+                </div>
+                <div class="form-group col-md-2">
+                  <input id="thumbnailHoverEffectAdv2To" name="thumbnailHoverEffectAdv2To" class="form-control" type="text" value="">
+                </div>
+                <div class="form-group col-md-2">
+                  <input id="thumbnailHoverEffectAdv2Duration" name="thumbnailHoverEffectAdv2Duration" class="form-control" type="text" value="400">
+                </div>
+              </div>
+
+              <div class="row thumbnailHoverEffectAdv">
+                <div class="form-group col-md-2">
+                  <select name="thumbnailHoverEffectAdv3Element" class="form-control" id="thumbnailHoverEffectAdv3Element">
+                    <option value="" selected ></option>
+                    <option value="label" >label</option>
+                    <option value="image">image</option>
+                    <option value="thumbnail">thumbnail</option>
+                    <option value="title">title</option>
+                    <option value="description">description</option>
+                    <option value="tools">tools</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-2">
+                  <select name="thumbnailHoverEffectAdv3" class="form-control" id="thumbnailHoverEffectAdv3">
+                    <option value="" selected ></option>
+                    <option value="translateX" >translateX</option>
+                    <option value="translateY" >translateY</option>
+                    <option value="scale">scale</option>
+                    <option value="rotateX">rotateX</option>
+                    <option value="rotateY">rotateY</option>
+                    <option value="rotateZ">rotateZ</option>
+                    <option value="blur">blur (only for image)</option>
+                    <option value="grayscale">grayscale (only for image)</option>
+                    <option value="sepia">sepia (only for image)</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-2">
+                  <input id="thumbnailHoverEffectAdv3Cust" name="thumbnailHoverEffectAdv3Cust" class="form-control" type="text" value="">
+                </div>
+                <div class="form-group col-md-2">
+                  <input id="thumbnailHoverEffectAdv3From" name="thumbnailHoverEffectAdv3From" class="form-control" type="text" value="">
+                </div>
+                <div class="form-group col-md-2">
+                  <input id="thumbnailHoverEffectAdv3To" name="thumbnailHoverEffectAdv3To" class="form-control" type="text" value="">
+                </div>
+                <div class="form-group col-md-2">
+                  <input id="thumbnailHoverEffectAdv3Duration" name="thumbnailHoverEffectAdv3Duration" class="form-control" type="text" value="400">
+                </div>
+              </div>
+
+              <div class="row thumbnailHoverEffectAdv">
+                <div class="form-group col-md-8">
+                  <button type="button" class="btn btn-info" id="btnThumbnailHoverEffectAdvPreset1">preset 1</button>
+                  <button type="button" class="btn btn-info" id="btnThumbnailHoverEffectAdvPreset2">preset 2</button>
+                  <button type="button" class="btn btn-info" id="btnThumbnailHoverEffectAdvPreset3">preset 3</button>
+                  <button type="button" class="btn btn-info" id="btnThumbnailHoverEffectAdvPreset4">preset 4</button>
+                  <button type="button" class="btn btn-info" id="btnThumbnailHoverEffectAdvPreset5">preset 5</button>
+                </div>
+              </div>
+            </div>
+            
+            
+            <!--- ### TAB GALLERY ### -->
+            <div role="tabpanel" class="tab-pane" id="ngy2_gallery">
+              <br>
+              <p>
+                Gallery general settings.
+              </p>
+              <div class="row">
+                <div class="form-group col-md-3">
+                  <label for="galleryDisplayMode" class="control-label">Gallery display mode</label>
+                  <select name="galleryDisplayMode" class="form-control" id="galleryDisplayMode">
+                    <option value="fullContent" selected >full content</option>
+                    <option value="rows">with a max number of rows</option>
+                    <option value="moreButton">more button</option>
+                    <option value="pagination">with pagination</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="galleryMaxRows" class="control-label">Max number of rows</label>
+                  <input id="galleryMaxRows" name="galleryMaxRows" class="form-control" type="text" value="2" disabled>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="galleryDisplayMoreStep" class="control-label">Number of rows to add</label>
+                  <input id="galleryDisplayMoreStep" name="galleryDisplayMoreStep" class="form-control" type="text" value="2" disabled>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="galleryLastRowFull" class="control-label">Display last row only if full</label>
+                  <select name="galleryLastRowFull" class="form-control" id="galleryLastRowFull">
+                    <option value="true" >yes</option>
+                    <option value="false" selected >no</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="form-group col-md-3">
+                  <label for="galleryPaginationMode" class="control-label">Pagination mode</label>
+                  <select name="galleryPaginationMode" class="form-control" id="galleryPaginationMode" disabled>
+                    <option value="rectangles" selected >rectangles</option>
+                    <option value="dots">dots</option>
+                    <option value="numbers">numbers</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="form-group col-md-3">
+                  <label for="thumbnailAlignment" class="control-label">Thumbnail alignement</label>
+                  <select name="thumbnailAlignment" class="form-control" id="thumbnailAlignment">
+                    <option value="center" selected >center</option>
+                    <option value="left">left</option>
+                    <option value="right">right</option>
+                    <option value="justified">justified</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-3 ngy2-level2">
+                  <label for="gallerySorting" class="control-label">Sort order</label>
+                  <select name="gallerySorting" class="form-control" id="gallerySorting">
+                    <option value="" selected ></option>
+                    <option value="random">random</option>
+                    <option value="reversed">reversed</option>
+                    <option value="titleasc">by title ascending</option>
+                    <option value="titledesc">by title descending</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-3 ngy2-level3">
+                  <label for="galleryMaxItems" class="control-label">Maximum number of items</label>
+                  <input id="galleryMaxItems" name="galleryMaxItems" class="form-control" type="text" value="0">
+                </div>
+              </div>
+              
+              <div class="row ngy2-level2">
+                <div class="form-group col-md-3">
+                  <label for="thumbnailGutterWidth" class="control-label">Thumbnail gutter space - width</label>
+                  <input id="thumbnailGutterWidth" name="thumbnailGutterWidth" class="form-control" type="text" value="2">
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="thumbnailGutterHeight" class="control-label">Thumbnail gutter space - height</label>
+                  <input id="thumbnailGutterHeight" name="thumbnailGutterHeight" class="form-control" type="text" value="2">
+                </div>
+              </div>
+              
+            </div>
+            
+            <!--- ### TAB NAVIGATION ### -->
+            <div role="tabpanel" class="tab-pane" id="ngy2_navigation">
+              <br>
+              <p>
+                Configure the navigation in albums and the filters.
+              </p>
+              <div class="row">
+                <div class="form-group col-md-4">
+                  <label for="displayBreadcrumb" class="control-label">Breadcrumb for navigation in albums</label>
+                  <select name="displayBreadcrumb" class="form-control" id="displayBreadcrumb">
+                    <option value="true" selected>yes</option>
+                    <option value="false">no</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-4 ngy2-level">
+                  <label for="breadcrumbAutoHideTopLevel" class="control-label">Hide breadcrumb on top navigation level</label>
+                  <select name="breadcrumbAutoHideTopLevel" class="form-control" id="breadcrumbAutoHideTopLevel">
+                    <option value="true" selected>yes</option>
+                    <option value="false" >no</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="breadcrumbOnlyCurrentLevel" class="control-label">Breadcrumb: only current album name</label>
+                  <select name="breadcrumbOnlyCurrentLevel" class="form-control" id="breadcrumbOnlyCurrentLevel">
+                    <option value="true" selected>yes</option>
+                    <option value="false">no</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row ngy2-level2">
+                <div class="form-group col-md-4">
+                  <label for="galleryFilterTags" class="control-label">Display tag filter</label>
+                  <select name="galleryFilterTags" class="form-control" id="galleryFilterTags">
+                    <option value="false" selected >off</option>
+                    <option value="true">on</option>
+                    <option value="title">based on title content</option>
+                    <option value="description">based on description content</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="form-group col-md-4">
+                  <label for="thumbnailLevelUp" class="control-label">Display thumbnail to navigate up</label>
+                  <select name="thumbnailLevelUp" class="form-control" id="thumbnailLevelUp">
+                    <option value="true" >yes</option>
+                    <option value="false" selected >no</option>
+                  </select>
+                </div>
+              </div>
+              
+            </div>
+            
+            <!--- ### TAB LIGHTBOX ### -->
+            <div role="tabpanel" class="tab-pane" id="ngy2_lightbox">
+              ...
+            </div>
+    
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="container">
+    
+    <br><br>
+
+    
+    <h3 class="text-left"><span class="circle-singleline" > 3</span> GENERATE YOUR CUSTOM GALLERY</h3>
+    <div class="text-center">
+      <button type="button" class="btn btn-info btn-lg" id="btnNGY2Builder"><i class="fa fa-cog fa-spin"></i> &nbsp; build gallery</button>
+    </div>
+    <br><br>
+    
+
+    <br><br>
+    
+    <div class="row">
+      <div class="col-md-12">
+      <div id="nanoGalleryBuilder"></div>
+        <div id="nanoGallery3">nanogallery2</div>
+      </div>
+    </div>
+
+    <br><br>
+    <div>
+      <!-- TABS - SHORTCODE / HTML -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active lead"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">portable shortcode</a></li>
+        <li role="presentation" class="lead"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">HTML template</a></li>
+      </ul>
+      <br>
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="home">
+          <p>note: beta version. Max. 10 images will be displayed.</p>
+          <div class="row">
+            <button id="copyclipboard2" type="button" class="btn-primary pull-right" data-clipboard-target="#ngy2_portable">copy to clipboard</button>
+          </div>
+          <div class="row">
+            <pre id="ngy2_portable">
+            </pre>
+          </div>   
+        </div>
+        <div role="tabpanel" class="tab-pane" id="profile">
+          <p>you shoud adapt the pathes to point to your web server.</p>
+          <div class="row">
+            <button id="copyclipboard" type="button" class="btn-primary pull-right" data-clipboard-target="#ngy2_template">copy to clipboard</button>
+          </div>
+          <div class="row">
+            <pre><code id="ngy2_template">
+            </code></pre>
+          </div>   
+        </div>
+      </div>
+    </div>
+
+    
+  </div>
+    
+    
+  </div>
+  
+  <!-- GOOGLE+ API -->
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  
+	<script>
+  
+    // GOOGLE PLUS SIGN IN
+    function onSignIn(googleUser) {
+      // Useful data for client-side script
+      var profile = googleUser.getBasicProfile(),
+      id_token = googleUser.getAuthResponse().id_token,
+      access_token = googleUser.getAuthResponse().access_token;
+          
+      jQuery('#google-sign-out').show();
+      jQuery('#pleaseSignIn').hide();
+      $('#googleUserID').val(profile.getId());
+      // alert(profile.getName());
+      //jQuery('#userID').text('hello, ' + profile.getName() + '. Your userID is: '+ profile.getId());
+
+      $('#googleAlbum').empty();
+      $('#googleAlbum').append('<option selected="selected" value="lstAlbums">display the list of albums</option>');
+      
+      // retrieve the list of public albums
+      jQuery.ajax( {
+          url:        'https://picasaweb.google.com/data/feed/api/user/' + profile.getId() + '?alt=json&access=all&access_token=' + access_token,
+          dataType:   'json',
+          method:     'GET',
+          success: function(data){
+
+          var i, j;
+            tableEntries = [];
+            $('#googleAlbum').append('<optgroup label="albums">');
+            for(var i=0; i<data.feed.entry.length; i++) {
+            
+              var entry = data.feed.entry[i];
+              var title=entry.title.$t;
+              var rights=entry.rights.$t;
+              var albumid = entry.gphoto$id.$t;
+              var link;
+              for(var j=0; j<entry.link.length; j++) {
+                if (entry.link[j].rel === "alternate") {
+                  link = entry.link[j].href;
+                  break;
+                }
+              }
+              var authKey='';
+              var authKeyMatchResult = link.match(/authkey=([^&]*)/);
+              
+              if (null !== authKeyMatchResult && authKeyMatchResult.length > 1) {
+                authKey = authKeyMatchResult[1];
+              }
+
+              if( rights == 'private' ) {
+                $('#googleAlbum').append('<option value="'+albumid+'&authkey='+authKey+'" style="background: #eaa;">'+title+' (private album)</option>');
+              }
+              if( rights == 'public' ) {
+                $('#googleAlbum').append('<option value="'+albumid+'">'+title+' (public album)</option>');
+              }
+            
+            }
+            $('#googleAlbum').append('</optgroup>');
+            $('#googleAlbum').selectpicker('refresh');
+            
+            // manage filters visibility
+            var v=$('#googleAlbum').selectpicker('val');
+            if( v.length == 1 && v[0] == 'lstAlbums' ) {
+              $('#googleWhiteLst').prop('disabled', false);
+              $('#googleBlackLst').prop('disabled', false);
+            }
+            else {
+              $('#googleWhiteLst').prop('disabled', true);
+              $('#googleBlackLst').prop('disabled', true);
+            }
+          }
+        });
+
+
+
+
+
+
+    }
+        
+    $(document).ready(function () {
+    
+      new Clipboard('#copyclipboard');
+      new Clipboard('#copyclipboard2');
+
+      // meta tags for google+
+      //$('head').append('<meta name="google-signin-scope" content="https://picasaweb.google.com/data/">');
+      //$('head').append('google-signin-client_id" content="992551522822-7nstfoq17gn0u27kmcfcgnnfbp13ndl3.apps.googleusercontent.com"');
+ 
+      jQuery('#btnNGY2Builder').on('click', function() {
+        jQuery('#nanoGalleryBuilder').nanogallery2builder();
+      });
+  
+  
+  // ############################################################################
+  // BUILDER - FORM MANAGEMENT
+        var $f=jQuery('.ngy2-builder');
+        var flickrURL='https://api.flickr.com/services/rest/';
+        var flickrApiKey = "2f0e634b471fdb47446abcb9c5afebdc";
+
+        
+        // FLICKR
+        jQuery('#btnFlickrGetID').on('click', function() {
+          // retrieve FLICKR USER ID
+          $('#moFlickrUserID').val($('#moFlickrUserID').val().trim());
+          var u=$('#moFlickrUserID').val();
+
+          jQuery.ajaxSetup({ cache: false });
+          jQuery.support.cors = true;          
+          var url=flickrURL + "?&method=flickr.people.findByUsername&api_key=" + flickrApiKey + "&username="+u+"&format=json";
+          jQuery.getJSON(url+'&jsoncallback=?', function(data, status, xhr) {
+            console.dir(data);
+            if( data.stat == 'ok' ) {
+              $('#flickrUserID').val(data.user.nsid);
+              alert('Ok, user ID retrieved succesfully.');
+            }
+            else {
+              alert('Error: ' + data.message);
+            }
+            $('#myFlickr').modal('hide')          
+          })
+          .fail( function(jqxhr, textStatus, error) {
+            alert("Could not retrieve your Flickr user: " + textStatus + ', ' + error);
+          });
+        });
+        
+        jQuery('#btnFlickrGetList').on('click', function() {
+          FlickrAlbumList();
+        });
+        function FlickrAlbumList () {
+          $('#flickrUserID').val($('#flickrUserID').val().trim());
+          var uID=$('#flickrUserID').val();
+          if( uID == '' ) {
+            alert('Please enter you Flickr user ID.');
+            return;
+          }
+          jQuery.ajaxSetup({ cache: false });
+          jQuery.support.cors = true;
+          var url = flickrURL + "?&method=flickr.photosets.getList&api_key=" + flickrApiKey + "&user_id="+uID+"&per_page=500&primary_photo_extras=tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_l,url_z,url_b,url_h,url_k&format=json";
+          jQuery.getJSON(url+'&jsoncallback=?', function(data, status, xhr) {
+            $('#flickrAlbum').empty();
+            $('#flickrAlbum').append('<option selected="selected" value="lstAlbums">display the list of albums</option>');
+            $('#flickrAlbum').append('<option value="none">display the full photostream</option>');
+            if( data.stat == 'ok' ) {
+              $('#flickrAlbum').append('<optgroup label="albums">');
+              jQuery.each(data.photosets.photoset, function(i,item){
+                $('#flickrAlbum').append('<option value="'+item.id+'">'+item.title._content+' (album)</option>');
+              });
+              $('#flickrAlbum').append('</optgroup">');
+              $('#flickrAlbum').selectpicker('refresh');
+              alert('Ok, list of albums retrieved succesfully.');
+            }
+            else {
+              alert('Error: ' + data.message);
+            }
+            FlickrFilters();
+          })
+          .fail( function(jqxhr, textStatus, error) {
+            alert("Could not retrieve your Flickr user: " + textStatus + ', ' + error);
+          });
+        }
+        
+        $('#flickrAlbum').on("changed.bs.select",function(e, clickedIndex, newValue, oldValue){
+          switch( clickedIndex ) {
+            case 0:
+              $('#flickrAlbum').selectpicker('deselectAll');
+              $('#flickrAlbum').selectpicker('val', 'lstAlbums');
+              break;
+            case 1:
+              $('#flickrAlbum').selectpicker('deselectAll');
+              $('#flickrAlbum').selectpicker('val', 'none');
+              break;
+            default:
+              var v=$('#flickrAlbum').selectpicker('val');
+              if( v !== null ) {
+                var s=[];
+                for( var i=0; i<v.length; i++ ) {
+                  if( v[i] != 'lstAlbums' && v[i] != 'none' ) {
+                    s.push(v[i]);
+                  }
+                }
+                $('#flickrAlbum').selectpicker('val', s);
+              }
+              break;
+          }
+          var v=$('#flickrAlbum').selectpicker('val');
+          if( v == null ) {
+            $('#flickrAlbum').selectpicker('val', 'lstAlbums');
+          }
+          FlickrFilters();
+        });
+
+        function FlickrFilters() {
+          var v=$('#flickrAlbum').selectpicker('val');
+          if( v.length == 1 && v[0] == 'lstAlbums' ) {
+            $('#flickrWhiteLst').prop('disabled', false);
+            $('#flickrBlackLst').prop('disabled', false);
+          }
+          else {
+            $('#flickrWhiteLst').prop('disabled', true);
+            $('#flickrBlackLst').prop('disabled', true);
+          }
+        }
+
+        
+        // GOOGLE
+        jQuery(document).on('click', '#google-sign-out', function(e){
+          // Google+ sign out
+          var auth2 = gapi.auth2.getAuthInstance();
+          auth2.signOut().then(function () {
+            location.reload();
+          });
+        });
+        $('#googleAlbum').on("changed.bs.select",function(e, clickedIndex, newValue, oldValue){
+          switch( clickedIndex ) {
+            case 0:
+              $('#googleAlbum').selectpicker('deselectAll');
+              $('#googleAlbum').selectpicker('val', 'lstAlbums');
+              break;
+            default:
+              var v=$('#googleAlbum').selectpicker('val');
+              if( v !== null ) {
+                var s=[];
+                for( var i=0; i<v.length; i++ ) {
+                  if( v[i] != 'lstAlbums' && v[i] != 'none' ) {
+                    s.push(v[i]);
+                  }
+                }
+                $('#googleAlbum').selectpicker('val', s);
+              }
+              break;
+          }
+          var v=$('#googleAlbum').selectpicker('val');
+          if( v == null ) {
+            $('#googleAlbum').selectpicker('val', 'lstAlbums');
+          }
+          
+          // manage filters visibility
+          var v=$('#googleAlbum').selectpicker('val');
+          if( v.length == 1 && v[0] == 'lstAlbums' ) {
+            $('#googleWhiteLst').prop('disabled', false);
+            $('#googleBlackLst').prop('disabled', false);
+          }
+          else {
+            $('#googleWhiteLst').prop('disabled', true);
+            $('#googleBlackLst').prop('disabled', true);
+          }
+        });
+
+        
+
+        // DATA SOURCE
+        $f.find('select[name=dataSource]').on("change",function(){
+          var v=$f.find('select[name=dataSource]').val();
+          switch( v ) {
+            case 'google':
+              $f.find('.rowGoogle').removeClass('hide');
+              $f.find('.rowFlickr').addClass('hide');
+              $f.find('.rowHtmlMarkup').addClass('hide');
+              $('#btnNGY2Builder').prop('disabled', false);
+              //$f.find('[name=userID]').val('111186676244625461692');
+              break;
+            case 'flickr':
+              $f.find('.rowGoogle').addClass('hide');
+              $f.find('.rowFlickr').removeClass('hide');
+              $f.find('.rowHtmlMarkup').addClass('hide');
+              $('#btnNGY2Builder').prop('disabled', false);
+              //$f.find('[name=userID]').val('149035168@N08');
+              break;
+            default:
+              $f.find('.rowGoogle').addClass('hide');
+              $f.find('.rowFlickr').addClass('hide');
+              $f.find('.rowHtmlMarkup').removeClass('hide');
+              $('#btnNGY2Builder').prop('disabled', true);
+              break;
+          }
+        });
+        $('#btnHtmlMarkupExample1').on("click",function(){
+          var sm='<a href="berlin1.jpg" data-ngThumb="berlin1t.jpg">Berlin 1</a>\n';
+          sm+='<a href="berlin2.jpg" data-ngThumb="berlin2t.jpg">Berlin 2</a>\n';
+          sm+='<a href="berlin3.jpg" data-ngThumb="berlin3t.jpg" data-ngDesc="Image 3 description">Berlin 3</a>';
+          $f.find('[name=htmlMarkup]').val(sm);
+        });
+        $('#btnHtmlMarkupExample2').on("click",function(){
+          var sm='<!-- root level -->\n';
+          sm+=' <a href="berlin1.jpg" data-ngThumb="berlin1t.jpg" data-ngid="1" >Image 1</a>\n';
+          sm+=' <a href="berlin2.jpg" data-ngThumb="berlin2t.jpg" data-ngid="2" >Image 2</a>\n';
+          sm+=' <a href="berlin3.jpg" data-ngThumb="berlin3t.jpg" data-ngid="10" data-ngkind="album" >Album A</a>\n';
+          sm+=' <a href="berlin3.jpg" data-ngThumb="berlin3t.jpg" data-ngid="20" data-ngkind="album" >Album B</a>\n';
+          sm+='<!-- level 1 - album A -->\n';
+          sm+=' <a href="berlin3.jpg" data-ngThumb="berlin3t.jpg" data-ngid="11" data-ngalbumid="10" >Image A-1</a>\n';
+          sm+=' <a href="berlin3.jpg" data-ngThumb="berlin3t.jpg" data-ngid="12" data-ngalbumid="10" >Image A-2</a>\n';
+          sm+=' <a href="berlin3.jpg" data-ngThumb="berlin3t.jpg" data-ngid="13" data-ngalbumid="10" >Image A-3</a>\n';
+          sm+='<!-- level 1 - album B -->\n';
+          sm+='<a href="berlin3.jpg" data-ngThumb="berlin3t.jpg" data-ngid="21" data-ngalbumid="20" >Image B-1</a>\n';
+          sm+='<a href="berlin3.jpg" data-ngThumb="berlin3t.jpg" data-ngid="22" data-ngalbumid="20" >Image B-2</a>\n';
+          sm+='<a href="berlin3.jpg" data-ngThumb="berlin3t.jpg" data-ngid="25" data-ngalbumid="20" data-ngkind="album" >Album B-A</a>\n';
+          sm+='<!-- level 2 - album B-A -->\n';
+          sm+='<a href="berlin3.jpg" data-ngThumb="berlin3t.jpg" data-ngid="30" data-ngalbumid="25" >Image B-A-1</a>\n';
+          sm+='<a href="berlin3.jpg" data-ngThumb="berlin3t.jpg" data-ngid="31" data-ngalbumid="25" >Image B-A-2</a>\n';
+          $f.find('[name=htmlMarkup]').val(sm);
+        });
+
+        
+        
+        $f.find('select[name=layoutEngine]').on("change",function(){
+          var v=$f.find('select[name=layoutEngine]').val();
+          switch( v ) {
+            case 'justified':
+              $f.find('[name=thumbnailWidth]').prop('disabled', true);
+              $f.find('[name=thumbnailHeight]').prop('disabled', false);
+              break;
+            case 'cascading':
+              $f.find('[name=thumbnailWidth]').prop('disabled', false);
+              $f.find('[name=thumbnailHeight]').prop('disabled', true);
+              break;
+            default:
+              $f.find('[name=thumbnailWidth]').prop('disabled', false);
+              $f.find('[name=thumbnailHeight]').prop('disabled', false);
+              break;
+          }
+        });
+
+        $f.find('select[name=thumbnailDisplayTransition]').on("change",function(){
+          switch( $f.find('[name=thumbnailDisplayTransition]').val() ) {
+            case 'none':
+              $f.find('[name=thumbnailDisplayTransitionDuration]').prop('disabled', true);
+              $f.find('[name=thumbnailDisplayInterval]').prop('disabled', true);
+              break;
+            default:
+              $f.find('[name=thumbnailDisplayTransitionDuration]').prop('disabled', false);
+              $f.find('[name=thumbnailDisplayInterval]').prop('disabled', false);
+              break;
+          }
+        });
+        
+        $f.find('select[name=galleryDisplayMode]').on("change",function(){
+          switch( $f.find('[name=galleryDisplayMode]').val() ) {
+            case 'rows':
+              $f.find('[name=galleryMaxRows]').prop('disabled', false);
+              $f.find('[name=galleryDisplayMoreStep]').prop('disabled', true);
+              $f.find('[name=galleryLastRowFull]').prop('disabled', false);
+              $f.find('[name=galleryPaginationMode]').prop('disabled', true);
+              break;
+            case 'moreButton':
+              $f.find('[name=galleryMaxRows]').prop('disabled', true);
+              $f.find('[name=galleryDisplayMoreStep]').prop('disabled', false);
+              $f.find('[name=galleryLastRowFull]').prop('disabled', true);
+              $f.find('[name=galleryPaginationMode]').prop('disabled', true);
+              break;
+            case 'pagination':
+              $f.find('[name=galleryMaxRows]').prop('disabled', false);
+              $f.find('[name=galleryDisplayMoreStep]').prop('disabled', true);
+              $f.find('[name=galleryLastRowFull]').prop('disabled', true);
+              $f.find('[name=galleryPaginationMode]').prop('disabled', false);
+              break;
+            default:
+              $f.find('[name=galleryMaxRows]').prop('disabled', true);
+              $f.find('[name=galleryDisplayMoreStep]').prop('disabled', true);
+              $f.find('[name=galleryLastRowFull]').prop('disabled', false);
+              $f.find('[name=galleryLastRowFull]').prop('disabled', false);
+              $f.find('[name=galleryPaginationMode]').prop('disabled', true);
+              break;
+          }
+        });
+        
+        $f.find('[name=cbHoverAdv]').on("change",function(){ 
+          SetVisibilityHoverEffects();
+        });
+        SetVisibilityHoverEffects();
+        
+        $('#btnThumbnailHoverEffectStdPreset1').on("click",function(){ 
+          // $('#thumbnailHoverEffect2').val([]);   // clear selection
+          $("#thumbnailHoverEffect1").val("imageScaleIn80");
+          $("#thumbnailHoverEffect2").val("imageSepiaOff");
+          $("#thumbnailHoverEffect3").val("labelAppear75");
+        });
+        $('#btnThumbnailHoverEffectStdPreset2').on("click",function(){ 
+          $("#thumbnailHoverEffect1").val("imageBlurOn");
+          $("#thumbnailHoverEffect2").val("labelSlideUp");
+          $("#thumbnailHoverEffect3").val("imageScale150");
+        });
+        $('#btnThumbnailHoverEffectStdPreset3').on("click",function(){ 
+          $("#thumbnailHoverEffect1").val("imageSepiaOff");
+          $("#thumbnailHoverEffect2").val("imageGrayOff");
+          $("#thumbnailHoverEffect3").val("toolsAppear");
+        });
+
+        $('#btnThumbnailHoverEffectAdvPreset1').on("click",function(){ 
+          $('#thumbnailHoverEffectAdv1Element').val('image');
+          $('#thumbnailHoverEffectAdv1').val('rotateZ');
+          $('#thumbnailHoverEffectAdv1Cust').val('');
+          $('#thumbnailHoverEffectAdv1From').val('0deg');
+          $('#thumbnailHoverEffectAdv1To').val('10deg');
+          $('#thumbnailHoverEffectAdv1Duration').val('1000');
+
+          $('#thumbnailHoverEffectAdv2Element').val('image');
+          $('#thumbnailHoverEffectAdv2').val('scale');
+          $('#thumbnailHoverEffectAdv2Cust').val('');
+          $('#thumbnailHoverEffectAdv2From').val('1');
+          $('#thumbnailHoverEffectAdv2To').val('1.3');
+          $('#thumbnailHoverEffectAdv2Duration').val('1000');
+          
+          $('#thumbnailHoverEffectAdv3Element').val('');
+          $('#thumbnailHoverEffectAdv3').val('');
+          $('#thumbnailHoverEffectAdv3Cust').val('');
+          $('#thumbnailHoverEffectAdv3From').val('');
+          $('#thumbnailHoverEffectAdv3To').val('');
+          $('#thumbnailHoverEffectAdv3Duration').val('');
+        });
+        $('#btnThumbnailHoverEffectAdvPreset2').on("click",function(){ 
+          $('#thumbnailHoverEffectAdv1Element').val('title');
+          $('#thumbnailHoverEffectAdv1').val('');
+          $('#thumbnailHoverEffectAdv1Cust').val('font-size');
+          $('#thumbnailHoverEffectAdv1From').val('1em');
+          $('#thumbnailHoverEffectAdv1To').val('2.5em');
+          $('#thumbnailHoverEffectAdv1Duration').val('1000');
+
+          $('#thumbnailHoverEffectAdv2Element').val('title');
+          $('#thumbnailHoverEffectAdv2').val('');
+          $('#thumbnailHoverEffectAdv2Cust').val('background-color');
+          $('#thumbnailHoverEffectAdv2From').val('rgba(255,0,0,0.5)');
+          $('#thumbnailHoverEffectAdv2To').val('rgba(255,0,0,1.0)');
+          $('#thumbnailHoverEffectAdv2Duration').val('1000');
+          
+          $('#thumbnailHoverEffectAdv3Element').val('tools');
+          $('#thumbnailHoverEffectAdv3').val('translateX');
+          $('#thumbnailHoverEffectAdv3Cust').val('');
+          $('#thumbnailHoverEffectAdv3From').val('100%');
+          $('#thumbnailHoverEffectAdv3To').val('0%');
+          $('#thumbnailHoverEffectAdv3Duration').val('2000');
+        });
+        $('#btnThumbnailHoverEffectAdvPreset3').on("click",function(){ 
+          $('#thumbnailHoverEffectAdv1Element').val('image');
+          $('#thumbnailHoverEffectAdv1').val('blur');
+          $('#thumbnailHoverEffectAdv1Cust').val('');
+          $('#thumbnailHoverEffectAdv1From').val('0px');
+          $('#thumbnailHoverEffectAdv1To').val('10px');
+          $('#thumbnailHoverEffectAdv1Duration').val('1000');
+
+          $('#thumbnailHoverEffectAdv2Element').val('label');
+          $('#thumbnailHoverEffectAdv2').val('');
+          $('#thumbnailHoverEffectAdv2Cust').val('opacity');
+          $('#thumbnailHoverEffectAdv2From').val('0');
+          $('#thumbnailHoverEffectAdv2To').val('1');
+          $('#thumbnailHoverEffectAdv2Duration').val('1000');
+          
+          $('#thumbnailHoverEffectAdv3Element').val('label');
+          $('#thumbnailHoverEffectAdv3').val('');
+          $('#thumbnailHoverEffectAdv3Cust').val('font-size');
+          $('#thumbnailHoverEffectAdv3From').val('1.5em');
+          $('#thumbnailHoverEffectAdv3To').val('3em');
+          $('#thumbnailHoverEffectAdv3Duration').val('2000');
+        });
+        $('#btnThumbnailHoverEffectAdvPreset4').on("click",function(){ 
+          $('#thumbnailHoverEffectAdv1Element').val('image');
+          $('#thumbnailHoverEffectAdv1').val('translateY');
+          $('#thumbnailHoverEffectAdv1Cust').val('');
+          $('#thumbnailHoverEffectAdv1From').val('0%');
+          $('#thumbnailHoverEffectAdv1To').val('-100%');
+          $('#thumbnailHoverEffectAdv1Duration').val('1000');
+
+          $('#thumbnailHoverEffectAdv2Element').val('label');
+          $('#thumbnailHoverEffectAdv2').val('');
+          $('#thumbnailHoverEffectAdv2Cust').val('translateX');
+          $('#thumbnailHoverEffectAdv2From').val('-100%');
+          $('#thumbnailHoverEffectAdv2To').val('0%');
+          $('#thumbnailHoverEffectAdv2Duration').val('1000');
+          
+          $('#thumbnailHoverEffectAdv3Element').val('label');
+          $('#thumbnailHoverEffectAdv3').val('');
+          $('#thumbnailHoverEffectAdv3Cust').val('font-size');
+          $('#thumbnailHoverEffectAdv3From').val('1.5em');
+          $('#thumbnailHoverEffectAdv3To').val('3em');
+          $('#thumbnailHoverEffectAdv3Duration').val('2000');
+        });
+        $('#btnThumbnailHoverEffectAdvPreset5').on("click",function(){ 
+          $('#thumbnailHoverEffectAdv1Element').val('image');
+          $('#thumbnailHoverEffectAdv1').val('rotateX');
+          $('#thumbnailHoverEffectAdv1Cust').val('');
+          $('#thumbnailHoverEffectAdv1From').val('0deg');
+          $('#thumbnailHoverEffectAdv1To').val('360deg');
+          $('#thumbnailHoverEffectAdv1Duration').val('1000');
+
+          $('#thumbnailHoverEffectAdv2Element').val('image');
+          $('#thumbnailHoverEffectAdv2').val('');
+          $('#thumbnailHoverEffectAdv2Cust').val('grayscale');
+          $('#thumbnailHoverEffectAdv2From').val('0%');
+          $('#thumbnailHoverEffectAdv2To').val('100%');
+          $('#thumbnailHoverEffectAdv2Duration').val('1000');
+          
+          $('#thumbnailHoverEffectAdv3Element').val('label');
+          $('#thumbnailHoverEffectAdv3').val('');
+          $('#thumbnailHoverEffectAdv3Cust').val('opacity');
+          $('#thumbnailHoverEffectAdv3From').val('0');
+          $('#thumbnailHoverEffectAdv3To').val('1');
+          $('#thumbnailHoverEffectAdv3Duration').val('1000');
+        });
+        
+    function SetVisibilityHoverEffects() {
+      if( $f.find('[name=cbHoverAdv]').prop('checked') ) {
+        $f.find('.thumbnailHoverEffectStd').css('display','none');
+        $f.find('.thumbnailHoverEffectAdv').css('display','');
+      }
+      else {
+        $f.find('.thumbnailHoverEffectAdv').css('display','none');
+        $f.find('.thumbnailHoverEffectStd').css('display','');
+      }
+    }
+    
+		});
+	</script>
+  <script type="text/javascript" src="js/jquery.nanogallery2.builder.js"></script>
