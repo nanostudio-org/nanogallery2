@@ -320,11 +320,1585 @@
 
  
 
-<h2 class="text-center" style="color:#f00;"><b>this page is only available to beta testers - contact kris@nanostudio.org</b></h2>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
+  
+  
+  <div class="container ngy2documentation">
+  <div class="row" >
+  <div class="col-md-10">
+
+    <br><br>
+    <h1 id="ngy2_intro">nanogallery2 options - reference guide</h1>
+    <br><br><br>
+    <br><br><br>
+    <br><br><br>
+    <blockquote>
+      nanogallery2 is highly customizable and fully adjustable to suit your needs.<br>
+      This page lists the options accepted by nanogallery2 (<b>everything is CaSe sEnSiTiVe</b>).
+    </blockquote>
+    <p>
+      Settings are passed to the gallery on initialization:
+    </p>
+    <div class="row" >
+      <div class="col-md-6">
+        <h3>with HTML:</h3>
+        <p>Options are configured with the <code>data-nanogallery2</code> attribute.</p>
+    <pre>
+      &lt;div data-nanogallery2='{
+          "userID": "34858669@N00",
+          "kind": "flickr",
+          "thumbnailHeight": 200,
+          "thumbnailWidth": "auto",
+          galleryDisplayMode: "rows",
+          ...
+        }'&gt;
+      &lt;/div&gt;
+    </pre>
+      </div>
+      <div class="col-md-6">
+        <h3>or, with javascript:</h3>
+        <p>Options are passed to the <code>nanogallery2()</code> function.</p>
+    <pre>
+      $("#myNanoGallery").nanogallery2({
+        userID: '34858669@N00',
+        kind: 'flickr',
+        thumbnailHeight: 200,
+        thumbnailWidth: 'auto',
+        galleryDisplayMode: 'rows',
+        ...
+      });
+      
+    </pre>
+      </div>
+    </div>
+    <br><br>
+
+  
+  
+    
+    
+    <div id="ngy2_gallery"></div>
+    <br><br><br><br><br><br><br>
+    <h3 >Gallery</h3>
+    <hr>
+    <blockquote>
+      Configure the layout of the gallery.
+    </blockquote>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>property</th>
+            <th>type</th>
+            <th>default</th>
+            <th>description</th>
+            <th>min<br>version</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>colorScheme</td>
+            <td>string<br>object</td>
+            <td>'dark'</td>
+            <td>Gallery color scheme (thumbnails, navigation...).
+            <br>Possible values: 'dark', 'light'
+            <br>Custom color schemes are supported.</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>galleryDisplayMode</td>
+            <td>string</td>
+            <td>'fullContent'</td>
+            <td>
+              Possible values:
+              <br>- 'fullContent': display all thumbnails at once
+              <br>- 'moreButton': display N rows and a button to show N more rows (see <code>galleryDisplayMoreStep</code>)
+              <br>- 'pagination': display N rows and numbers/dots to paginate the gallery (see <code>galleryMaxRows</code>)
+              <br>- 'rows': display max N rows (see <code>galleryMaxRows</code>)
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>galleryDisplayMoreStep</td>
+            <td>integer</td>
+            <td>2</td>
+            <td>
+              Set the number of rows to display each time the "more button" is hit.
+              <br>only for <code>galleryDisplayMode: 'moreButton'</code>
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>galleryPaginationMode</td>
+            <td>string</td>
+            <td>'rectangles'</td>
+            <td>
+              Display type in pagination mode:
+              <br>- 'rectangles'
+              <br>- 'dots'
+              <br>- 'numbers'
+              <br>only for <code>galleryDisplayMode: 'pagination'</code>
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>galleryMaxRows</td>
+            <td>integer</td>
+            <td>2</td>
+            <td>
+              Maximum number of rows to display
+              <br>only for <code>galleryDisplayMode: 'rows'</code> or <code>galleryDisplayMode: 'pagination'</code>
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>paginationVisiblePages</td>
+            <td>integer</td>
+            <td>10</td>
+            <td>
+              Maximum number of pagination items displayed
+              <br>only for <code>galleryDisplayMode: 'pagination'</code> and <code>galleryPaginationMode: 'numbers'</code>
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>galleryLastRowFull</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>When enabled, the last thumbnail's row will not be displayed if it doesn't fill the full width.</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>gallerySorting</td>
+            <td>string</td>
+            <td>''</td>
+            <td>Sort order. Possible values: 'titlesasc', 'titledesc', 'reversed', 'random' (=shuffle). </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>galleryMaxItems</td>
+            <td>integer</td>
+            <td>0</td>
+            <td>Maximum number of items per album. 0 = disabled.</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>galleryResizeAnimation</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td>Moves the thumbnails when the gallery is resized.</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>thumbnailOpenImage</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td>Pure gallery: lightbox is disabled. No image will be displayed.</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>openOnStart</td>
+            <td>string</td>
+            <td></td>
+            <td>
+              Opens the specified album or display the specified image on library start.
+              <br>Syntax: 'albumID' or 'albumID/imageID'
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>thumbnailSelectable</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Enable/disable the selection mode. Allows the user to select multiple thumbnails.</td>
+            <td>1.0</td>
+          </tr>
+        </tbody>
+        </table>
+      </div>
+
+    <div id="ngy2_gallery_layout"></div>
+    <br><br><br><br><br><br><br>
+    <h3>Gallery layout style</h3>
+    <hr>
+    <blockquote>
+      3 layout styles are available: <b>'grid'</b>, <b>'justified'</b> and <b>'cascading'</b>
+      <br>You don't need to specify the layout style, it is automatically set based on the size of the thumbnails.
+      <br>&nbsp;
+      <ul>
+        <li>
+          <b>grid layout</b>
+          <div class="row" >
+            <div class="col-md-6">
+              Height and width is fixed for all thumbnails.
+              <br>&nbsp;&nbsp;Define the height and the width.
+              <br>&nbsp;&nbsp;example: <code>thumbnailWidth: 300, thumbnailHeight: 200</code>
+            </div>
+            <div class="col-md-6">
+              <img src="img/ngy2_layout_grid2.png" >
+            </div>
+          </div>
+        </li>
+        <li><b>justified layout</b>
+          <div class="row" >
+            <div class="col-md-6">
+              Width is automaticaly calculated to respect the image ratio.
+              <br>&nbsp;&nbsp;set the special value <code>'auto'</code> to <code>thumbnailWidth</code>
+              <br>&nbsp;&nbsp;example: <code>thumbnailWidth: <b>'auto'</b>, thumbnailHeight: 200</code>
+            </div>
+            <div class="col-md-6">
+              <img src="img/ngy2_layout_justified.png" >
+            </div>
+          </div>
+        </li>
+        <li><b>cascading layout</b>
+          <div class="row" >
+            <div class="col-md-6">
+              Height is automaticaly calculated to respect the image ratio.
+              <br>&nbsp;&nbsp;set the special value <code>'auto'</code> to <code>thumbnailHeight</code>
+              <br>&nbsp;&nbsp;example: <code>thumbnailWidth: 300, thumbnailHeight: <b>'auto'</b></code>
+            </div>
+            <div class="col-md-6">
+              <img src="img/ngy2_layout_cascading.png" >
+            </div>
+          </div>
+        </li>
+      </ul>
+    </blockquote>
+
+    <div id="ngy2_gallery_thumbnails"></div>
+    <br><br><br><br><br><br><br>
+    <h3>Thumbnails</h3>
+    <hr>
+    <blockquote>
+      Configure the layout and the content of the thumbnails.
+      <br><br>
+      <img src="img/ngy2_gallery2.png" class="img-responsive center-block">
+    </blockquote>
+
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>property</th>
+          <th>type</th>
+          <th>default</th>
+          <th>description</th>
+          <th>min<br>version</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>thumbnailWidth</td>
+          <td>integer<br>string</td>
+          <td>300</td>
+          <td>
+            Thumbnails image width in pixels, or 'auto'.
+            <br>Use 'auto' for justified layout.
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>thumbnailHeight</td>
+          <td>integer<br>string</td>
+          <td>200</td>
+          <td>
+            Thumbnails image height in pixels, or 'auto'.
+            <br>Use 'auto' for cascading grid layout.
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>thumbnailCrop</td>
+          <td>boolean</td>
+          <td>true</td>
+          <td>
+            Thumbnail image will be cropped to avoid black borders (only for grid layout).<br>
+            Note: it is mandatory to set the thumbnail size.
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>thumbnailCropScaleFactor</td>
+          <td>decimal</td>
+          <td>1.5</td>
+          <td>
+            <b>This option is only for Google Photos and Flickr.</b><br>
+            Activating the crop option to avoid black image borders may scale the thumbnail image up.<br>
+            For this case and to avoid quality loss, the <code>thumbnailCropScaleFactor</code> will be applied to the thumbnail size to get a better image quality.
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>thumbnailAlignment</td>
+          <td>string</td>
+          <td>'center'</td>
+          <td>
+            Sets the thumbnail alignment.
+            <br>Possible values: 'left', 'right', 'justified', 'center'.
+            <br>Note: the parameter 'thumbnailGutterWidth' is ignored when <code>thumbnailAlignment: 'justified'</code>.
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>thumbnailGutterWidth</td>
+          <td>integer</td>
+          <td>2</td>
+          <td>Sets the horizontal gutter space between thumbnails.</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>thumbnailGutterHeight</td>
+          <td>integer</td>
+          <td>2</td>
+          <td>Sets the vertical gutter space between thumbnails.</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>thumbnailBorderHorizontal</td>
+          <td>integer</td>
+          <td>2</td>
+          <td>Set the left and right thumbnail border size.</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>thumbnailBorderVertical</td>
+          <td>integer</td>
+          <td>2</td>
+          <td>Set the top and bottom thumbnail border size.</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>thumbnailFeaturedKeyword</td>
+          <td>string</td>
+          <td>'*featured'</td>
+          <td>Keyword to set the feature status of a thumbnail. The keyword is searched in the title and the description.</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>thumbnailToolbarImage</td>
+          <td>object</td>
+          <td>{ topLeft: 'select', topRight : 'share,featured'}</td>
+          <td>
+            Icons on thumbnail of images.
+            <br>Possible values : 'share', 'select', 'featured', 'download', 'cart'
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>thumbnailToolbarAlbum</td>
+          <td>object</td>
+          <td>{ topLeft: 'select', topRight : 'share,counter' }</td>
+          <td>
+            Icons on thumbnail of albums.
+            <br>Possible values : 'counter', 'counter2', 'share', 'select', 'featured', 'download', 'cart'
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>thumbnailDisplayInterval</td>
+          <td>integer</td>
+          <td>30</td>
+          <td>Interval in ms between the display of 2 thumbnails.</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>thumbnailDisplayTransition</td>
+          <td>string</td>
+          <td>'fadeIn'</td>
+          <td>
+            Transition used to display each thumbnail.
+            <br>Possible values: 'slideUp', 'slideDown', 'scaleUp', 'scaleDown', 'fadeIn', 'randomScale', 'custom'
+            <br>
+            <br>note:
+            <br><b>scaleDown</b> accept also the syntax <code>scaleDown_SF_EASING</code>
+            <br>where: <code>SF</code> is the start scale factor and <code>EASING</code> is an easing formula name.
+            <br>Example: <code>scaleDown_2_bounce</code>
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>thumbnailDisplayTransitionDuration</td>
+          <td>integer</td>
+          <td>240</td>
+          <td>Duration of the display transition.</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>1.0</td>
+        </tr>
+      </tbody>
+      </table>
+    </div>
+
+    <div id="ngy2_gallery_thumbnails_resp"></div>
+    <br><br><br><br><br><br><br>
+    <h3>Thumbnail responsive sizes</h3>
+    <hr>
+    <blockquote>
+      Define multiple thumbnail sizes for a fully responsive gallery.
+      <br>The used sized is dependant of the screen resolution.
+      <br>5 screen resolutions are supported: <b>XS</b> (extra-small), <b>SM</b> (small), <b>ME</b> (medium), <b>LA</b> (large), <b>XL</b> (extra-large)
+      <br>&nbsp;
+      <ul>
+        <li>
+          Use the following syntax to assign multiple values to <code>thumbnailWidth</code>:
+          <br><code>'defaultWidth XS<b>w1</b> SM<b>w2</b> ME<b>w3</b> LA<b>w4</b> XL<b>w5</b>'</code> where <b>w1</b> to <b>w5</b> are the thumbnails widths for resolutions XS to XL.
+          <br>&nbsp;
+        </li>
+        <li>
+          and for <code>thumbnailHeight</code>
+          <br><code>'defaultHeight XS<b>h1</b> SM<b>h2</b> ME<b>h3</b> LA<b>h4</b> XL<b>h5</b>'</code> where <b>h1</b> to <b>h5</b> are the heights for resolutions XS to XL.
+          <br>&nbsp;
+        </li>
+        <li>Not all values are mandatory. The default value will be used instead.
+        </li>
+        <li>The value <b>auto</b> is supported.
+        </li>
+      </ul>
+      <br>
+      <br>Examples:
+      <ul>
+        <li>
+          Grid layout:
+          <br><code>thumbnailWidth: '300 XS100 LA400 XL500', thumbnailHeight: '200 XS80 LA250 XL350'</code>
+        </li>
+        <li>
+          Grid and justified layout depending on the resolution:
+          <br><code>thumbnailWidth: 'auto XS80 SM120', thumbnailHeight: '200 XS80 SM120'</code>
+        </li>
+        <li>
+          Justified and cascading layout depending on the resolution:
+          <br><code>thumbnailWidth: 'auto XS80 SM120', thumbnailHeight: '200 XSauto SMauto'</code>
+        </li>
+      </ul>
+    </blockquote>
+    
+    
+    <div id="ngy2_gallery_thumbnails_label"></div>
+    <br><br><br><br><br><br><br>
+    <h3>Thumbnail label</h3>
+    <hr>
+    <blockquote>
+      The <b>label</b> is composed by a <b>title</b> and a <b>description</b>. Set these settings to the <b><code>thumbnailLabel</code></b> parameter.
+      <br><br>
+      <img src="img/ngy2_thumbnail3.png" class="img-responsive center-block">
+    </blockquote>
+    <p>Exemple:<br>
+      <pre>
+      $("#myNanoGallery").nanogallery2({
+        ...
+        thumbnailHeight: 200,
+        thumbnailWidth: 300,
+        thumbnailAlignment: 'center',
+        thumbnailLabel: { position: 'overImageOnBottom', hideIcons: true },
+        ...
+      });
+      </pre>
+    </p>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>property</th>
+          <th>type</th>
+          <th>default</th>
+          <th>description</th>
+          <th>min<br>version</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>position</td>
+          <td>string</td>
+          <td>'overImageOnBottom'</td>
+          <td>
+            Position of the label on the thumbnail.
+            <br>Possible values: 'overImageOnBottom', 'overImageOnTop', 'overImageOnMiddle', 'onBottom'
+            <br><br>
+            <img src="img/ngy2_thumbnail_position.png">
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>align</td>
+          <td>string</td>
+          <td>'center'</td>
+          <td>
+            Horizontal text alignment.
+            <br>Possible values: 'right', 'center', 'left'
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>display</td>
+          <td>boolean</td>
+          <td>true</td>
+          <td>Displays or hides the label (title and description).</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>displayDescription</td>
+          <td>boolean</td>
+          <td>false</td>
+          <td>Displays or hides the description.</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>align</td>
+          <td>string</td>
+          <td>'center'</td>
+          <td>
+            Horizontal text alignment.
+            <br>Possible values: 'right', 'center', 'left'
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>hideIcons</td>
+          <td>boolean</td>
+          <td>true</td>
+          <td>Hides or displays the icons beside the title.</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>titleMaxLength</td>
+          <td>integer</td>
+          <td>0</td>
+          <td>Title maximum length to display.</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>titleMultiLine</td>
+          <td>boolean</td>
+          <td>false</td>
+          <td>Title can be multiline (not supported with <code>position:'onBottom'</code>).</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>title</td>
+          <td>string</td>
+          <td></td>
+          <td>
+            Variable to set the image title (undescores are replaced by spaces).
+            <br>Possible values: '%filename', '%filenameNoExt'
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>titleFontSize</td>
+          <td>string</td>
+          <td></td>
+          <td>
+            Set the title font size.<br>
+            Example: <code>titleFontSize: '2em'</code>
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>descriptionMaxLength</td>
+          <td>integer</td>
+          <td>0</td>
+          <td>Description maximum length to display.</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>descriptionMultiLine</td>
+          <td>boolean</td>
+          <td>false</td>
+          <td>Description can be multiline (not supported with <code>position:'onBottom'</code>).</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>descriptionFontSize</td>
+          <td>string</td>
+          <td></td>
+          <td>
+            Set the description font size.<br>
+            Example: <code>descriptionFontSize: '0.8em'</code>
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>1.0</td>
+        </tr>
+      </tbody>
+      </table>
+    </div>
+
+    
+    <div id="ngy2_gallery_thumbnails_hover"></div>
+    <br><br><br><br><br><br><br>
+    <h3>Thumbnail touch and hover effects</h3>
+    <hr>
+    <blockquote>
+    These effects are triggered on mouse over or on touch-tap. They are defined with the <code><b>thumbnailHoverEffect2</b></code> parameter.
+    <br><br>
+      <img src="img/ngy2_thumbnail_hover.png" class="img-responsive center-block">
+    </blockquote>
+    <h4><i class="fa fa-circle-o"></i> Presets:</h4>
+    <p>
+      You can set one or multiple presets to the <code>thumbnailHoverEffect2</code> with the syntax <code><b>thumbnailHoverEffect2: 'preset1|preset2|...'</b></code>
+    </p>
+    <p>
+      <u>Possible presets:</u>
+      <ul>
+        <li>
+          <b>Image:</b> 'imageBlurOn', 'imageBlurOff', 'imageGrayOn', 'imageGrayOff', imageSepiaOn', 'imageSepiaOff', 'imageScale150', 'imageScaleIn80', 'imageScale150Outside', 'imageSlideUp', 'imageSlideDown', 'imageSlideRight', 'imageSlideLeft'
+        </li>
+        <li>
+          <b>Tools:</b> 'toolsAppear', 'toolsSlideDown', 'toolsSlideUp'
+        </li>
+        <li>
+          <b>Label:</b> 'labelAppear', 'labelAppear75', 'labelOpacity50', 'scaleLabelOverImage', 'descriptionAppear', 'labelSlideUpTop', 'labelSlideUp', 'labelSlideDown', 'descriptionSlideUp'
+        </li>
+        <li>
+          <b>Thumbnail:</b> 'scale120'
+        </li>
+        <li>
+          <b>Border:</b> 'borderLighter', 'borderDarker'
+        </li>
+        <li>
+          <b>Misc:</b> 'overScale', 'overScaleOutside', 'slideUp', 'slideDown', 'slideRight', 'slideLeft'
+        </li>
+      </ul>
+    </p>
+    <p>
+      Usage example: <code>thumbnailHoverEffect2: 'borderDarker|labelAppear75'</code>
+    </p>
+    <br>
+    <h4><i class="fa fa-circle-o"></i> Advanced usage</h4>
+    <p>
+      For a full control of the effects, use the syntax <code>thumbnailHoverEffect2: 'effect1|effect2|...'</code>
+      where <b>effectN</b> has the syntax <code> [element]_[property]_[fromValue]_[toValue]</code>
+    </p>
+    <ul>
+      <li><b>[element]</b>: element to apply the transformation. Possible values: thumbnail, image, label, description, title, tools, customlayer</li>
+      <li><b>[property]</b>: any css proprety to transform</li>
+      <ul>
+        <li>for CSS transform property, just use the <code>transform-function</code>. Limited to: translateX, translateY, rotateX, rotateY, rotateZ, scale
+          <br>Example: <code>image_rotateZ_0deg_15deg</code>
+        </li>
+        <li>for CSS filters, just use the <code>visual effect</code>. Limited to: blur, brightness, grayscale, sepia, contrast, opacity, saturate
+          <br>Example: <code>'image_grayscale_0%_100%</code>
+        </li>
+      </ul>
+      <li><b>[fromValue]</b>: initial value</li>
+      <li><b>[toValue]</b>: value at the end of the transformation</li>
+    </ul>
+    <p>Some examples:</p>
+    <ul>
+      <li>One hover effect:</li>
+      <ul>
+        <li>Remove the sepia filter on the image: <b><code>thumbnailHoverEffect2: 'image_sepia_100%_1%'</code></b></li>
+        <li>Apply a blur filter on the image: <b><code>'image_blur_0.00px_2.00px'</code></b></li>
+        <li>Rotate the image from 0degre to 15degre: <b><code>'image_rotateZ_0deg_15deg'</code></b></li>
+        <li>Apply a grayscale filter the image: <b><code>'image_grayscale_0%_100%'</code></b></li>
+        <li>Zoom the image in: <b><code>image_scale_1.00_1.20</code></b></li>
+        <li>Zoom the image out: <b><code>image_scale_1.20_1.00</code></b></li>
+        <li>Change the transparency of label background: <b><code>'label_backgroundColor_rgba(255,255,255,0.80)_rgba(255,255,255,0.01)'</code></b></li>
+        <li>Apply a red colorization on the image: <b><code>customlayer_backgroundColor_rgba(160,0,0,0.0)_rgba(160,0,0,0.5)</code></b></li>
+        <li>Change the transparency of the icons: <b><code>tools_opacity_1_0.5</code></b></li>
+      </ul>
+      <li>Two hover effects:</li>
+      <ul>
+        <li>Apply a grayscale filter and rotate the image: <b><code>thumbnailHoverEffect2:'image_grayscale_0%_100%|image_rotateZ_0deg_15deg'</code></b></li>
+      </ul>
+    </ul>
+    <br><br>
+    <b>Initialization</b>
+      In some case, it's interesting to set CSS properties but without any animation.<br>
+      For this, use the option <code>thumbnailBuildInit2: : 'init1|init2|...'</code> where <b>initN</b> has the syntax: <code>[element]_[property]_[Value]</code>.
+      <br>Example : <code>thumbnailBuildInit2: 'image_scale_1.20'</code>
+    </p>
+    <br>
+    <h4><i class="fa fa-circle-o"></i> Additional tuning</h4>
+    <p>
+      Fine tuning settings: duration, delay, easing, back duration, back delay, beack easing
+      <br>syntax: <code>thumbnailHoverEffect2: { name: '[effectName]', delay: 0, duration: 400, easing: 'easeOutQuart', delayBack: 0, durationBack: 300, easingBack: 'easeOutQuart' }</code>
+      <br>where:
+      <ul>
+        <li><b>duration</b>: the duration of the effect in ms</li>
+        <li><b>delay</b>: the delay in ms before the transformation is started</li>
+        <li><b>easing</b>: specify the rate of change of the transformation over time (see <a href="http://easings.net/" target="_blank">easings.net</a>)</li>
+        <ul>
+          <li class="well"><u>Possible values:</u><br> easeInQuad, easeOutQuad, easeInOutQuad, easeInCubic, easeOutCubic, easeInOutCubic, easeInQuart, easeOutQuart, easeInOutQuart, easeInQuint, easeOutQuint, easeInOutQuint, easeInSine, easeOutSine, easeInOutSine, easeInExpo, easeOutExpo, easeInOutExpo, easeInCirc, easeOutCirc, easeInOutCirc, easeOutBounce, easeInBack, easeOutBack, easeInOutBack, elastic, bounce</li>
+        </ul>
+        <li><b>durationBack</b>: duration of the effect to initial state, in ms</li>
+        <li><b>delayBack</b>: start delay back transformation in ms</li>
+        <li><b>easingBack</b>: easing used for the back transformation</li>
+      </ul>
+      <u>Note:</u> <b>name</b> is the only mandatory proprety.
+      <br>Some examples:
+      <ul>
+        <li><code>thumbnailHoverEffect2: { name: 'imageBlurOn', duration: 800, easing: 'easeInCubic', delayBack: 0, durationBack: 300, easingBack: 'easeOutQuart' }</code></li>
+        <li><code>thumbnailHoverEffect2: { name: 'image_rotateZ_0deg_15deg', duration: 800, durationBack: 500}</code></li>
+        <li>combination of 2 effects: <code>thumbnailHoverEffect2: [{ name: 'image_scale_1.00_1.20', duration: 500}, { name: 'image_rotateZ_0deg_15deg', delay: 500}]</code></li>
+      </ul>
+    </p>
+
+    
+    
+    <div id="ngy2_thumbnail_tools"></div>
+    <br><br><br><br><br><br><br>
+    <h3>Thumbnail tools</h3>
+    <hr>
+    <blockquote>
+      Each corner of one thumbnail has a toolbar. You can customize each of these toolbars.
+      Customization is specific for albums and for images.
+      <br><br>
+    </blockquote>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>property</th>
+          <th>type</th>
+          <th>default</th>
+          <th>description</th>
+          <th>min<br>version</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>thumbnailToolbarImage</td>
+          <td>object</td>
+          <td></td>
+          <td>
+            Image toolbars<br>
+            Syntax: <code>thumbnailToolbarImage: { topLeft:'', topRight: '', bottomLeft: '', bottomRight: ''}</code><br>
+            Possible tools: 'select', 'share', 'featured', 'download', 'cart'<br>
+            Default:<br>
+            <code>thumbnailToolbarImage : { topLeft: 'select', topRight : 'share,featured,download' }</code>
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>thumbnailToolbarAlbum</td>
+          <td>object</td>
+          <td></td>
+          <td>
+            Album toolbars<br>
+            Syntax: <code>thumbnailToolbarAlbum: { topLeft:'', topRight: '', bottomLeft: '', bottomRight: ''}</code><br>
+            Possible tools: 'select', 'share', 'counter'<br>
+            Default:<br>
+            <code>thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,counter' }</code>
+          </td>
+          <td>1.0</td>
+        </tr>
+      </tbody>
+      </table>
+    </div>
+    
+    
+    <div id="ngy2_navigation"></div>
+    <br><br><br><br><br><br><br>
+    <h3>Navigation</h3>
+    <hr>
+    <blockquote>
+      Configure how the user can navigate in albums, filter the thumbnails based on tags, and the touch/tap handling.
+      <br><br>
+      <img src="img/ngy2_navigation.png" class="img-responsive center-block">
+    </blockquote>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>property</th>
+          <th>type</th>
+          <th>default</th>
+          <th>description</th>
+          <th>min<br>version</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>displayBreadcrumb</td>
+          <td>boolean</td>
+          <td>true</td>
+          <td>Display the breadcrumb for navigation in albums.</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>breadcrumbOnlyCurrentLevel</td>
+          <td>boolean</td>
+          <td>true</td>
+          <td>Display only the name of the current album.</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>breadcrumbAutoHideTopLevel</td>
+          <td>boolean</td>
+          <td>true</td>
+          <td>No breadcrumb on albums first navigation level.</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>breadcrumbHideIcons</td>
+          <td>true</td>
+          <td></td>
+          <td>Hide or display breadcrumb's icons.</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>galleryFilterTags</td>
+          <td>boolean<br>string</td>
+          <td>false</td>
+          <td>
+            Display tags to filter the thumbnails.
+            <br>Possible values:
+            <br>- false: disabled
+            <br>- true: enabled
+            <br>- 'title': extract the tags from the title (string starting with @)
+            <br>- 'description': extract the tags from the description (string starting with @)
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>thumbnailLevelUp</td>
+          <td>boolean</td>
+          <td>false</td>
+          <td>Display one thumbnail to navigate in the parent album.</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>locationHash</td>
+          <td>boolean</td>
+          <td>true</td>
+          <td>
+            Enables hash tracking.
+            <br>This will activate browser Back/Forward navigation (browser history support) and Deep Linking of images and photo albums.
+            <br>Must be enabled to allow sharing of images/albums.
+            <br>Note: only one gallery per page should use this feature.
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>touchAnimation</td>
+          <td>boolean</td>
+          <td>true</td>
+          <td>
+            Enables thumbnail hover animation on touch event.
+            <br>The user must tap a thumbnail twice to show the image or open a album.
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>touchAutoOpenDelay</td>
+          <td>integer</td>
+          <td>0</td>
+          <td>
+            When a user touch a thumbnail, delay in ms before opening the touched thumbnail.
+            <br>Particular values:
+            <br>-1= disabled (user needs to tap twice to open the thumbnail),
+            <br>0= automatic (the library will calculate automatically the delay).
+            <br>Note: the parameter is ignored when <code>touchAnimation=false</code>.
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>navigationFontSize</td>
+          <td>string</td>
+          <td></td>
+          <td>
+            Define the font size for the navigation (breadcrumb and filters).<br>
+            Example: <code>navigationFontSize: '1.2em'</code>
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>1.0</td>
+        </tr>
+      </tbody>
+      </table>
+    </div>
+
+    <div id="ngy2_navigation_first"></div>
+    <br><br><br><br><br><br><br>
+    <h3>Gallery - first album level specific options</h3>
+    <hr>
+    <blockquote>
+      Settings can be defined specificaly for the first album level (root level) and for the other ones.<br>
+      Default settings are used for all album levels (including the first one).<br>
+      Example:<br>
+      To use a grid layout for the first level, and a justified layout for all other levels<br>
+      <code>
+      thumbnailHeight: 200, thumbnailWidth: 'auto',<br>
+      thumbnailL1Height: 300, thumbnailL1Width: 300
+      </code>
+    </blockquote>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>property</th>
+            <th>min<br>version</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>thumbnailL1Height</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>thumbnailL1Width</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>thumbnailL1Crop</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>thumbnailL1Label</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>thumbnailL1HoverEffect2</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>galleryL1DisplayMode</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>galleryL1MaxRows</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>galleryL1LastRowFull</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>galleryL1FilterTags</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>galleryL1MaxItems</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>galleryL1Sorting</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+   
+    <div id="ngy2_lightbox"></div>
+    <br><br><br><br><br><br><br>
+    <h3>Image display - Lightbox</h3>
+    <hr>
+    <blockquote>
+      The lightbox is used to display images in full size.
+    </blockquote>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>property</th>
+            <th>type</th>
+            <th>default</th>
+            <th>description</th>
+            <th>min<br>version</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>imageTransition</td>
+            <td>string</td>
+            <td>'swipe'</td>
+            <td>Animation from one image to the next one. Possible values: 'slideAppear', 'swipe'.</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>viewerFullscreen</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Displays images in fullscreen (on supported browser).</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td><b>viewerToolbar</b></td>
+            <td>object</td>
+            <td></td>
+            <td>Display options for the light main toolbar.</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;viewerToolbar.display</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td>Displays/hides the main toolbar.</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;viewerToolbar.position</td>
+            <td>string</td>
+            <td>'bottomOverImage'</td>
+            <td>Vertical position.<br>
+            Possible values: 'top', 'topOverImage', 'bottom', 'bottomOverImage'</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;viewerToolbar.align</td>
+            <td>string</td>
+            <td>'center'</td>
+            <td>Horizontal alignement.<br>
+            Possible values: 'left', 'right', 'center'</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;viewerToolbar.fullWidth</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Toolbar is as width as the screen.</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;viewerToolbar.autoMinimize</td>
+            <td>integer</td>
+            <td>800</td>
+            <td>Breakpoint for switching between minimized and standard toolbar.<br>If the width is lower than this value, the toolbar is switched to minimized.</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;viewerToolbar.standard</td>
+            <td>string</td>
+            <td></td>
+            <td>
+              List of items to display in the standard toolbar (comma separated).<br>
+              Default value: <code>'minimizeButton, previousButton, pageCounter, nextButton, playPauseButton, fullscreenButton, infoButton, linkOriginalButton, closeButton, label'</code><br>
+              Possible values: minimizeButton, previousButton, pageCounter, nextButton, playPauseButton, fullscreenButton, infoButton, linkOriginalButton, closeButton, downloadButton, label, customN
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;viewerToolbar.minimized</td>
+            <td>string</td>
+            <td></td>
+            <td>
+              List of items to display in the minimized toolbar (comma separated).<br>
+              Default value: <code>'minimizeButton,label'</code><br>
+              Possible values: minimizeButton, previousButton, pageCounter, nextButton, playPauseButton, fullscreenButton, infoButton, linkOriginalButton, closeButton, downloadButton, zoomButton, label, customN
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td><b>viewerTools</b></td>
+            <td>object</td>
+            <td></td>
+            <td>Tools positionned in the corners.</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;viewerTools.topLeft</td>
+            <td>string</td>
+            <td>'pageCounter'</td>
+            <td>
+              Toolbar positioned in the top left corner.<br>
+              Default value: <code>'pageCounter'</code><br>
+              Possible values: previousButton, pageCounter, nextButton, playPauseButton, fullscreenButton, infoButton, linkOriginalButton, closeButton, downloadButton, zoomButton, label, customN
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;viewerTools.topRight</td>
+            <td>string</td>
+            <td></td>
+            <td>
+              Toolbar positioned in the top right corner.<br>
+              Default value: <code>'fullscreenButton,closeButton'</code><br>
+              Possible values: previousButton, pageCounter, nextButton, playPauseButton, fullscreenButton, infoButton, linkOriginalButton, closeButton, downloadButton, zoomButton, label, customN
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>colorSchemeViewer</td>
+            <td>string<br>object</td>
+            <td>'dark'</td>
+            <td>Image display color scheme.
+            <br>Possible values: 'dark', 'light', 'border'.
+            <br>Custom color schemes are supported.</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>slideshowAutoStart</td>
+            <td>boolean<br>object</td>
+            <td>false</td>
+            <td>
+              Starts automatically the slideshow when an image is displayed.
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="ngy2_icons"></div>
+    <br><br><br><br><br><br><br>
+    <h3>Custom icons</h3>
+    <hr>
+    <blockquote>
+      All icons used in the gallery can be customized. By default, an icon font is used.<br>
+      Example: replace the default album icon with a red one from Font Awesome:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; <code>icons.thumbnailAlbum: '&lt;i style="color:#e00;" class="fa fa-search-plus"&gt;&lt;/i&gt;'</code>
+    </blockquote>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>property</th>
+          <th>type</th>
+          <th>default</th>
+          <th>description</th>
+          <th>min<br>version</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>icons.thumbnailAlbum</td>
+          <td>string</td>
+          <td>'&lt;i class="nGY2Icon icon-folder-empty"&gt;&lt;/i&gt;'</td>
+          <td>Thumbnail album icon</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>icons.thumbnailImage</td>
+          <td>string</td>
+          <td>'&lt;i class="nGY2Icon icon-picture"&gt;&lt;/i&gt;'</td>
+          <td>Thumbnail image icon</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>icons.breadcrumbAlbum</td>
+          <td>string</td>
+          <td>'&lt;i class="nGY2Icon icon-folder-empty"&gt;&lt;/i&gt;'</td>
+          <td>Breadcrum album icon</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>icons.breadcrumbHome</td>
+          <td>string</td>
+          <td>'&lt;i class="nGY2Icon icon-home"&gt;&lt;/i&gt;'</td>
+          <td>Breadcrumb home icon</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>icons.breadcrumbSeparator</td>
+          <td>string</td>
+          <td>'&lt;i class="nGY2Icon icon-left-open"&gt;&lt;/i&gt;'</td>
+          <td>Breadcrumb separator icon</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>icons.breadcrumbSeparatorRtl</td>
+          <td>string</td>
+          <td>'&lt;i class="nGY2Icon icon-right-open"&gt;&lt;/i&gt;'</td>
+          <td>Breadcrumb separator RTL icon</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>icons.navigationFilterSelected</td>
+          <td>string</td>
+          <td>'&lt;i style="color:#bff;" class="nGY2Icon icon-toggle-on"&gt;&lt;/i&gt;'</td>
+          <td>Navigation - thumbnail filter - selected icon</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>icons.navigationFilterUnselected</td>
+          <td>string</td>
+          <td>'&lt;i class="nGY2Icon icon-toggle-off"&gt;&lt;/i&gt;'</td>
+          <td>Navigation - thumbnail filter - unselected icon</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>icons.navigationFilterSelectedAll</td>
+          <td>string</td>
+          <td>'&lt;i class="nGY2Icon icon-toggle-off"&gt;&lt;/i&gt;'</td>
+          <td>Navigation - thumbnail filter - unselect all icon</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>icons.thumbnailSelected</td>
+          <td>string</td>
+          <td>'&lt;i class="nGY2Icon icon-ok-circled"&gt;&lt;/i&gt;'</td>
+          <td>Thumbnail selection - selected icon</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>icons.thumbnailUnselected</td>
+          <td>string</td>
+          <td>'&lt;i class="nGY2Icon icon-circle-empty"&gt;&lt;/i&gt;'</td>
+          <td>Thumbnail selection - unselected icon</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>icons.thumbnailFeatured</td>
+          <td>string</td>
+          <td>'&lt;i style="color:#ffa;" class="nGY2Icon icon-star"&gt;&lt;/i&gt;'</td>
+          <td>Thumbnail - featured icon</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>icons.thumbnailCounter</td>
+          <td>string</td>
+          <td>'&lt;i class="nGY2Icon icon-picture"&gt;&lt;/i&gt;'</td>
+          <td>Thumbnail - image icon</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>icons.thumbnailShare</td>
+          <td>string</td>
+          <td>'&lt;i class="nGY2Icon icon-share"&gt;&lt;/i&gt;'</td>
+          <td>Thumbnail - share icon</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>icons.thumbnailDownload</td>
+          <td>string</td>
+          <td>'&lt;i class="nGY2Icon icon-download"&gt;&lt;/i&gt;'</td>
+          <td>Thumbnail - download icon</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>icons.thumbnailCart</td>
+          <td>string</td>
+          <td>'&lt;i class="nGY2Icon icon-basket"&gt;&lt;/i&gt;'</td>
+          <td>Thumbnail - add to shopping cart icon</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>icons.thumbnailAlbumUp</td>
+          <td>string</td>
+          <td>'&lt;i style="font-size: 3em;" class="nGY2Icon icon-level-up"&gt;&lt;/i&gt;'</td>
+          <td>Thumbnail navigation - album up icon</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>icons.paginationNext</td>
+          <td>string</td>
+          <td>'&lt;i class="nGY2Icon icon-right-open"&gt;&lt;/i&gt;'</td>
+          <td>Gallery pagination - next page icon</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>icons.paginationPrevious</td>
+          <td>string</td>
+          <td>'&lt;i class="nGY2Icon icon-left-open"&gt;&lt;/i&gt;'</td>
+          <td>Gallery pagination - previous page icon</td>
+          <td>1.0</td>
+        </tr>
+        <tr>
+          <td>icons.buttonClose</td>
+          <td>string</td>
+          <td>'&lt;i class="nGY2Icon icon-cancel"&gt;&lt;/i&gt;'</td>
+          <td>close button icon</td>
+          <td>1.0</td>
+        </tr>
+      </tbody>
+      </table>
+    </div>
+    
+    
+    <div id="ngy2_colorschemes"></div>
+    <br><br><br><br><br><br><br>
+    <h3>Color schemes</h3>
+    <hr>
+    <blockquote>
+      Color schemes allow you to customize some elements without changing the CSS file.<br>
+      Two separated color schemes can be set: one for the gallery (<code>colorScheme</code>), and one for the lightbox (<code>colorSchemeViewer</code>).<br>
+      For each one, 2 templates can be used: <code>dark</code> (default valude) and <code>light</code>.
+      You can create your own color scheme.<br><br>
+      Example:<br>
+      To change the backrgound and the boder color of the thumbnails<br>
+      1. define one color scheme: <code>var myCS= { thumbnail : { background: '#F00', borderColor: '#F00' } };</code><br>
+      2. assign it to the gallery: <code>colorScheme: myCS</code>
+    </blockquote>
+    <p>
+      Gallery color scheme format (with default values):
+    </p>
+    <pre>
+{
+  navigationBar : { background: 'none', borderTop: '', borderBottom: '', borderRight: '', borderLeft: '' },
+  navigationBreadcrumb : { background: '#111', color: '#fff', colorHover: '#ccc', borderRadius: '6px' },
+  navigationFilter : { color: '#ddd', background: '#111', colorSelected: '#fff', backgroundSelected: '#111', borderRadius: '6px' },
+  thumbnail : { background: '#000', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#eee', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '' },
+  thumbnailIcon : { padding: '5px', color: '#fff' },
+  pagination : { background: '#111', backgroundSelected: '#666', color: '#fff', borderRadius: '4px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
+}
+    </pre>
+
+    <br>
+    <p>
+      Lightbox color scheme format (with default values):
+    </p>
+    <pre>
+{
+  background: '#000', imageBorder: 'none', imageBoxShadow: 'none',
+  barBackground: 'rgba(4, 4, 4, 0.7)', barBorder: '0px solid #111', barColor: '#eee', barDescriptionColor: '#aaa'
+}
+    </pre>
+    
+
+    
+    <div id="ngy2_upgrade"></div>
+    <br><br><br><br><br><br><br>
+    <h3>Upgrading from nanoGALLERY</h3>
+    <hr>
+    <blockquote>
+      Due to many enhancements, nanogallery2 is not 100% compatible with nanoGALLERY.
+      <br>In particular, the thumbnail hover effects engine has been rewritten: the option <code>thumbnailHoverEffect</code> is now replaced by <code>thumbnailHoverEffect<b>2</b></code>.
+      <br>Here's the list of depreciated and no more supported options.
+    </blockquote>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>property</th>
+          <th>comment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>thumbnailHoverEffect</td>
+          <td>replaced by <code>thumbnailHoverEffect2</code></td>
+        </tr>
+        <tr>
+          <td>picasaUseUrlCrossDomain</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>albumList</td>
+          <td>replaced by <code>albumList</code></td>
+        </tr>
+        <tr>
+          <td>galleryToolbarWidthAligned</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>galleryToolbarHideIcons</td>
+          <td>Replaced by <code>breadcrumbHideIcons</code>. Each icon can now be customized with the <code>icons<code> option.</td>
+        </tr>
+        <tr>
+          <td>galleryFullpageButton</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>galleryFullpageBgColor</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>galleryRenderStep</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>itemsSelectable<br>keepSelection<br>showCheckboxes<br>checkboxStyle<br>selectMode</td>
+          <td>thumbnail selection is now managed by the <code>thumbnailSelectable</code> option.</td>
+        </tr>
+        <tr>
+          <td>paginationMaxLinesPerPage</td>
+          <td>replaced by <code>galleryMaxRows</code> and <code>galleryL1MaxRows</code></td>
+        </tr>
+        <tr>
+          <td>paginationDots</td>
+          <td>replaced by <code>galleryPaginationMode</code></td>
+        </tr>
+        <tr>
+          <td>albumMax</td>
+          <td>replaced by <code>galleryMaxItems</code> and <code>galleryL1MaxItems</code> - ignored for self hosted images.</td>
+        </tr>
+        <tr>
+          <td>photoSorting<br>albumSorting<br>dataSorting</td>
+          <td>replaced by <code>gallerySorting</code> and <code>galleryL1Sorting</code></td>
+        </tr>
+        <tr>
+          <td>thumbnailLazyLoad<br>thumbnailLazyLoadTreshold<br>lazyBuild<br>lazyBuildTreshold</td>
+          <td>managed automatically</td>
+        </tr>
+        <tr>
+          <td>maxWidth</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>thumbnailAdjustLastRowHeight</td>
+          <td>standard behaviour</td>
+        </tr>
+        <tr>
+          <td>fnChangeSelectMode</td>
+          <td>use <code>fnThumbnailSelection</code> instead.</td>
+        </tr>
+        <tr>
+          <td>fnThumbnailHoverResize</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>setUnselectedItems<br>setSelectedItems</td>
+          <td>use <code>itemsSetSelectedValue</code> instead.</td>
+        </tr>
+        <tr>
+          <td>getSelectedItems</td>
+          <td>use <code>itemsSelectedGet</code> instead.</td>
+        </tr>
+        <tr>
+          <td>paginationPreviousPage<br>paginationNextPage<br>paginationCountPages<br>paginationGotoPage</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>refreshSize</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>galleryCountImages<br>moveToNextAlbum<br>moveToPreviousAlbum</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>viewerToolbar.style</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>fnViewerInfo</td>
+          <td>No more used. Please replace with toolbar custom buttons (fnImgToolbarCustInit, fnImgToolbarCustClick)</td>
+        </tr>
+      </tbody>
+      </table>
+    </div>
+    
+
+    <div id="ngy2_faq"></div>
+    <br><br><br><br><br><br><br>
+    <h3>Tips and tricks</h3>
+    <hr>
+    <blockquote>
+      Recommandations / Performances / FAQ
+    </blockquote>
+
+
+
+    <div id="ngy2_security"></div>
+    <br><br><br><br><br><br><br>
+    <h3>Security</h3>
+    <hr>
+    <blockquote>
+      By default, HTML tags cannot be used in titles and descriptions of images.<br>
+      To enable HTML tags, set the option <code>allowHTMLinData: true</code>.<br>
+      <b>Be aware that this could lead to XSS (cross site scripting) vulnerability.</b>
+    </blockquote>
+    
+
+
+
+
+
+  </div>
+  <div id="ngy2_vert_nav_style" class="col-md-2 scrollspy">
+    <ul id="ngy2_vert_nav" class="nav hidden-xs hidden-sm" data-spy="affix">
+      <li>
+        <a href="#ngy2_intro">Reference guide</a>
+      </li>
+      <li>
+        <a href="#ngy2_gallery">Gallery</a>
+      </li>
+      <li>
+        <a href="#ngy2_gallery_layout">Gallery layout</a>
+      </li>
+      <li>
+        <a href="#ngy2_gallery_thumbnails">Thumbnails</a>
+      </li>
+      <li>
+        <a href="#ngy2_gallery_thumbnails_resp">Responsive thumbnails</a>
+      </li>
+      <li>
+        <a href="#ngy2_gallery_thumbnails_label">Thumbnail label</a>
+      </li>
+      <li>
+        <a href="#ngy2_gallery_thumbnails_hover">Thumbnail effects</a>
+      </li>
+      <li>
+        <a href="#ngy2_thumbnail_tools">Thumbnail tools</a>
+      </li>
+      <li>
+        <a href="#ngy2_navigation">Navigation</a>
+      </li>
+      <li>
+        <a href="#ngy2_navigation_first">First album level</a>
+      </li>
+      <li>
+        <a href="#ngy2_lightbox">Lightbox</a>
+      </li>
+      <li>
+        <a href="#ngy2_icons">Custom icons</a>
+      </li>
+      <li>
+        <a href="#ngy2_colorschemes">Color schemes</a>
+      </li>
+      <li>
+        <a href="#ngy2_upgrade">Upgrading nanoGALLERY</a>
+      </li>
+      <li>
+        <a href="#ngy2_faq">Tips and tricks</a>
+      </li>
+      <li>
+        <a href="#ngy2_security">Security</a>
+      </li>
+      <!-- 
+      <li>
+        <a href="#test">test</a>
+        <ul class="nav">
+          <li>
+            <a href="#ruby">
+              <span class="fa fa-angle-double-right"></span>Ruby
+            </a>
+          </li>
+          <li>
+            <a href="#python">
+              <span class="fa fa-angle-double-right"></span>Python
+            </a>
+          </li>
+
+        </ul>
+      </li> 
+      -->
+
+    </ul><!-- end of main navigation -->
+  </div>
+  </div>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      $('#ngy2_vert_nav').affix({
+        offset: {
+            top: $('#ngy2_vert_nav').offset().top,
+            bottom: ($('footer').outerHeight(true)) + 40
+          }
+      });
+    });
+
+
+  </script>
+  
 
   <!-- ######################## -->
   <!-- ##### START FOOTER ##### -->
