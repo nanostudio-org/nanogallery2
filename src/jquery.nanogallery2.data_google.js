@@ -90,7 +90,7 @@
             if (gi_data_loaded===null){
               gi_data_loaded = data;
             }else{
-              GI_data_loaded.feed.entry=gi_data_loaded.feed.entry.concat(data.feed.entry);
+              gi_data_loaded.feed.entry=gi_data_loaded.feed.entry.concat(data.feed.entry);
             }
 
             if (data.feed.openSearch$startIndex.$t+data.feed.openSearch$itemsPerPage.$t>=data.feed.openSearch$totalResults.$t){
@@ -103,7 +103,7 @@
             }
           })
           .fail( function(jqxhr, textStatus, error) {
-             clearTimeout(tId);
+            clearTimeout(tId);
             PreloaderDisplay(false);
 
             //alertObject(jqxhr);
