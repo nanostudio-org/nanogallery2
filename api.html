@@ -320,11 +320,441 @@
 
  
 
-<h2 class="text-center" style="color:#f00;"><b>this page is only available to beta testers - contact kris@nanostudio.org</b></h2>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
+
+  
+  
+  <div class="container ngy2documentation">
+    <br><br>
+    <h1>nanogallery2 API - reference guide</h1>
+    <br><br><br>
+    <blockquote>
+      Need more customzing possibilities? Here's the section for the experts. Javascript knowledge required.
+    </blockquote>
+    <br><br>
+
+
+    <br><br><br>
+    <h3>Events</h3>
+    <hr>
+    <blockquote>
+      <div id="nanogallery2" data-nanogallery2='{
+        "kind": "flickr",
+        "userID": "149035168@N08",
+        "thumbnailHeight": 100, "thumbnailWidth": 100,
+        "thumbnailLabel": { "display": false },
+        "galleryDisplayMode": "pagination",
+        "galleryMaxRows": 1,
+        "locationHash": false
+      }'>
+      </div>
+      Events (also available in your browser debug console):
+      <div id="eventsDisplay" style="height:150px;background-color:#ddd;padding:0px 5px;overflow-y:scroll;">
+      </div>
+    </blockquote>
+    <div class="row">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>event</th>
+              <th>description</th>
+              <th>min<br>version</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>pageChanged.nanogallery2</td>
+              <td>
+                Fired on gallery pagination.
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>galleryRenderStart.nanogallery2</td>
+              <td>
+                The rendering of the gallery is started.
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>galleryRenderEnd.nanogallery2</td>
+              <td>
+                The galelry has been rendered.
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>galleryObjectModelBuilt.nanogallery2</td>
+              <td>
+                The Gallery Object Model(GOM) has been populated with all the items.
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>galleryLayoutApplied.nanogallery2</td>
+              <td>
+                The layout has been applied to the gallery/thumbnails.
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>galleryDisplayed.nanogallery2</td>
+              <td>
+                The thumbnails have been displayed.
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>lightboxNextImage.nanogallery2</td>
+              <td>
+                Lightbox - display next image.
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>lightboxPreviousImage.nanogallery2</td>
+              <td>
+                Lightbox - display previous image.
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>lightboxImageDisplayed.nanogallery2</td>
+              <td>
+                Lightbox - image displayed.
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>shoppingCartUpdated</td>
+              <td>
+                Called when the shopping cart is updated (new item or item updated).<br>
+                <a href="http://codepen.io/Kris-B/pen/NbEWbe" target="_blank">view demo</a>
+              </td>
+              <td>1.0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+                
+    
+    
+
+    <br><br><br>
+    <h3>Callbacks</h3>
+    <hr>
+    <blockquote>
+      Callbacks provide a simple mechanism to extend the capabilities of nanogallery2 with your own javascript functions.
+    </blockquote>
+    <div class="row">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>callback</th>
+              <th>description</th>
+              <th>min<br>version</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>fnShoppingCartUpdated</td>
+              <td>
+                Called when the shopping cart is updated (new item or item updated).
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>fnInitGallery</td>
+              <td>Called after each gallery construction.
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>fnThumbnailInit</td>
+              <td>Called once after one thumbnail's build. Called for each thumbnail.
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>fnThumbnailHoverInit</td>
+              <td>Called once to initialize the thumbnail hover effect. Called for each thumbnail.
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>fnThumbnailHover</td>
+              <td>Called on thumbnail hover.
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>fnThumbnailHoverOut</td>
+              <td>Called on thumbnail hover out.
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>fnThumbnailDisplayEffect</td>
+              <td>Called to display one thumbnail.
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>fnThumbnailOpen</td>
+              <td>
+                Called when a thumbnail is clicked/touched to display the image.<br>
+                Can be used to replace the standard viewer/lightbox with an external lightbox.
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>fnImgToolbarCustInit</td>
+              <td>
+                To customize the toolbar (custom icons and elements) on image display.<br>
+                Called once on toolbar building to define the specified custom elements.
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>fnImgToolbarCustDisplay</td>
+              <td>Called on each image display. Called once for all image toolbar custom icons and elements.
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>fnImgToolbarCustClick</td>
+              <td>Fired on click event on image toolbar custom icon or element.
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>fnProcessData</td>
+              <td>
+                Used to extend data associated to thumbnails/images.<br>
+                Called each time a new element (image or album) is added.
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+              </td>
+              <td>1.0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+
+    
+    <br><br><br>
+    <h3>API methods</h3>
+    <hr>
+    <blockquote>
+      Call nanogallery2 function directly in your javascript functions.<br>
+      Usage: <code>$('#your_nanogallery2').nanogallery2('method', options);</code>
+    </blockquote>
+    <div class="row">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>method</th>
+              <th>option(s)</th>
+              <th>description</th>
+              <th>min<br>version</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>shoppingCartGet</td>
+              <td></td>
+              <td>
+                Returns an array containing all the items in the shopping cart.<br>
+                One item content: idx=internal index, ID=your image ID, cnt=counter<br>
+                Usage: <code>var basket=$('#your_nanogallery2').nanogallery2('shoppingCartGet');</code>
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>shoppingCartUpdate</td>
+              <td>image ID, counter</td>
+              <td>
+                Update the counter of one image in the shopping cart. Returns the shopping cart.<br>
+                Usage: <code>$('#your_nanogallery2').nanogallery2('shoppingCartUpdate', imageID, newCounter);</code>
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>shoppingCartRemove</td>
+              <td>image ID</td>
+              <td>
+                Removes one image from the shopping cart. Returns the shopping cart.<br>
+                Usage: <code>$('#your_nanogallery2').nanogallery2('shoppingCartRemove', imageID);</code>
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>destroy</td>
+              <td></td>
+              <td>
+                Removes the gallery.<br>
+                Usage: <code>$('#your_nanogallery2').nanogallery2('destroy');</code>
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>displayItem</td>
+              <td>itemID</td>
+              <td>
+                Displays an item (album or image).<br>
+                Usage: <code>$('#your_nanogallery2').nanogallery2('displayItem', 'itemID');</code><br>
+                - to display an album: <code>$('#your_nanogallery2').nanogallery2('displayItem', 'albumID');</code><br>
+                - to display an image: <code>$('#your_nanogallery2').nanogallery2('displayItem', 'albumID/imageID');</code>
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>reload</td>
+              <td></td>
+              <td>
+                Reloads the current album.<br>
+                Usage: <code>$('#your_nanogallery2').nanogallery2('reload');</code>
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>option</td>
+              <td>option_name</td>
+              <td>
+                Returns the value of an option.<br>
+                Usage: <code>var optionValue=$('#your_nanogallery2').nanogallery2('option', option_name);</code>
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>option</td>
+              <td>option_name,<br> new_value</td>
+              <td>
+                Sets the value of an option (note: only some options are supported).<br>
+                Usage: <code>$('#your_nanogallery2').nanogallery2('option', option_name, new_value);</code>
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>getItem</td>
+              <td>item_index</td>
+              <td>
+                Returns one item (object) - can be one image or one album.</br>
+                Usage: <code>var oneItem=$('#your_nanogallery2').nanogallery2('getItem', item_index);</code>
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>getItems</td>
+              <td></td>
+              <td>
+                Returns an array with all the items (array of objects).<br>
+                Usage: <code>var lstItems=$('#your_nanogallery2').nanogallery2('getItems');</code>
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>getItemsIndex</td>
+              <td>[item1, item2, ...]</td>
+              <td>
+                Returns an array containing the indexes of the items.<br>
+                Usage: <code>var lstIdx=$('#your_nanogallery2').nanogallery2('getItemsIndex', [item1, item2, item3, ...]);</code>
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>itemsSelectedGet</td>
+              <td></td>
+              <td>
+                Returns an array with all the selected items (array of objects).<br>
+                Usage: <code>var lstItems=$('#your_nanogallery2').nanogallery2('itemsSelectedGet');</code>
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>itemsSetSelectedValue</td>
+              <td>[item1, item2, ...]</td>
+              <td>
+                Sets/unsets selection value (true/false) of an array of items.<br>
+                Usage: <code>$('#your_nanogallery2').nanogallery2('itemsSetSelectedValue', [item1, item2, item3, ...], new_value);</code>
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>closeViewer</td>
+              <td></td>
+              <td>
+                Close the image viewer.<br>
+                Usage: <code>$('#your_nanogallery2').nanogallery2('closeViewer');</code>
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>minimizeToolbar</td>
+              <td></td>
+              <td>
+                Minimize image viewer toolbar.<br>
+                Usage: <code>$('#your_nanogallery2').nanogallery2('minimizeToolbar');</code>
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>maximizeToolbar</td>
+              <td></td>
+              <td>
+                Maximize image viewer toolbar.<br>
+                Usage: <code>$('#your_nanogallery2').nanogallery2('maximizeToolbar');</code>
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td>
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td>
+              </td>
+              <td>1.0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>    
+  
+  <script type="text/javascript">
+		$(document).ready(function () {
+
+      var ngy2data=$("#nanogallery2").nanogallery2('data');
+      var $eD=$("#eventsDisplay");
+      function mylistener(e) {
+        $eD.append(new Date().toLocaleTimeString() + ' - ' + e.type + '<br>').scrollTop($eD[0].scrollHeight);
+        console.log(e.type);
+        //console.dir(ngy2data);
+      }
+      
+      
+      $("#nanogallery2").on( 'pageChanged.nanogallery2 galleryRenderStart.nanogallery2 galleryRenderEnd.nanogallery2 galleryObjectModelBuilt.nanogallery2 galleryLayoutApplied.nanogallery2 galleryDisplayed.nanogallery2 lightboxNextImage.nanogallery2 lightboxPreviousImage.nanogallery2 lightboxImageDisplayed.nanogallery2', mylistener );
+      
+    });
+  
+  </script>
+ 
 
   <!-- ######################## -->
   <!-- ##### START FOOTER ##### -->
