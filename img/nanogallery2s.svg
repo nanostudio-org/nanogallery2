@@ -1,1 +1,69 @@
-<?xml version="1.0" standalone="no"?><!-- Generator: Gravit.io --><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="isolation:isolate" viewBox="701 1300.9882121807468 465.59090486469904 249.0117878192532" width="465.59090486469904" height="249.0117878192532"><rect x="1020.7952270650923" y="1340.652481019667" width="135.79567779960678" height="199.347518980333" transform="matrix(1,0,0,1,0,0)" fill="rgb(23,23,23)" stroke-width="20" stroke="rgb(178,225,106)" stroke-linejoin="miter" stroke-linecap="square"/><defs><filter id="9e4QhKDxFcI9DRJ5gTwO3F9Meddw0BmD" x="-200%" y="-200%" width="400%" height="400%"><feOffset xmlns="http://www.w3.org/2000/svg" in="SourceAlpha" result="offOut" dx="5" dy="5"/><feGaussianBlur xmlns="http://www.w3.org/2000/svg" in="offOut" result="blurOut" stdDeviation="2.5"/><feComponentTransfer xmlns="http://www.w3.org/2000/svg" in="blurOut" result="opacOut"><feFuncA xmlns="http://www.w3.org/2000/svg" type="table" tableValues="0 0.5"/></feComponentTransfer><feBlend xmlns="http://www.w3.org/2000/svg" in="SourceGraphic" in2="opacOut" mode="normal"/></filter></defs><g filter="url(#9e4QhKDxFcI9DRJ5gTwO3F9Meddw0BmD)"><rect x="984.1276144623126" y="1310.9882121807468" width="135.79567779960678" height="199.347518980333" transform="matrix(1,0,0,1,0,0)" fill="rgb(23,23,23)" stroke-width="20" stroke="rgb(178,225,106)" stroke-linejoin="miter" stroke-linecap="square"/></g><path d=" M 735.81640625 1380.95703125 L 736.51953125 1390.361328125 Q 744.95703125 1379.19921875 758.580078125 1379.19921875 Q 783.1015625 1379.19921875 783.8046875 1413.564453125 L 783.8046875 1476.0546875 L 758.84375 1476.0546875 L 758.84375 1415.41015625 Q 758.84375 1407.32421875 756.4267578125 1403.6767578125 Q 754.009765625 1400.029296875 747.9453125 1400.029296875 Q 741.177734375 1400.029296875 737.3984375 1406.97265625 L 737.3984375 1476.0546875 L 712.4375 1476.0546875 L 712.4375 1380.95703125 L 735.81640625 1380.95703125 Z  M 798.658203125 1425.60546875 Q 798.658203125 1402.2265625 807.095703125 1390.712890625 Q 815.533203125 1379.19921875 830.73828125 1379.19921875 Q 843.658203125 1379.19921875 850.689453125 1389.39453125 L 851.65625 1380.95703125 L 874.068359375 1380.95703125 L 874.068359375 1476.0546875 Q 874.068359375 1494.248046875 863.873046875 1503.8720703125 Q 853.677734375 1513.49609375 834.60546875 1513.49609375 Q 826.783203125 1513.49609375 818.169921875 1510.3759765625 Q 809.556640625 1507.255859375 805.337890625 1502.421875 L 813.6875 1485.1953125 Q 817.203125 1488.88671875 822.828125 1491.2158203125 Q 828.453125 1493.544921875 833.462890625 1493.544921875 Q 841.8125 1493.544921875 845.4599609375 1489.5458984375 Q 849.107421875 1485.546875 849.1953125 1476.669921875 L 849.1953125 1468.49609375 Q 842.076171875 1477.8125 830.650390625 1477.8125 Q 815.4453125 1477.8125 807.1396484375 1465.9912109375 Q 798.833984375 1454.169921875 798.658203125 1432.63671875 L 798.658203125 1425.60546875 Z  M 823.53125 1431.845703125 Q 823.53125 1445.029296875 826.958984375 1451.0498046875 Q 830.38671875 1457.0703125 837.857421875 1457.0703125 Q 845.50390625 1457.0703125 849.1953125 1451.533203125 L 849.1953125 1406.09375 Q 845.328125 1400.029296875 838.033203125 1400.029296875 Q 830.650390625 1400.029296875 827.0908203125 1406.09375 Q 823.53125 1412.158203125 823.53125 1425.60546875 L 823.53125 1431.845703125 Z  M 922.671875 1434.658203125 L 935.328125 1380.95703125 L 961.87109375 1380.95703125 L 930.58203125 1490.29296875 Q 923.55078125 1514.462890625 904.126953125 1514.462890625 Q 899.64453125 1514.462890625 893.931640625 1512.79296875 L 893.931640625 1493.369140625 L 896.83203125 1493.45703125 Q 902.6328125 1493.45703125 905.5771484375 1491.2158203125 Q 908.521484375 1488.974609375 910.015625 1483.4375 L 911.94921875 1477.021484375 L 884.52734375 1380.95703125 L 911.24609375 1380.95703125 L 922.671875 1434.658203125 Z  M 1088.697265625 1476.0546875 L 1013.287109375 1476.0546875 L 1013.287109375 1458.4765625 L 1047.916015625 1414.443359375 Q 1054.5078125 1405.302734375 1057.6279296875 1398.4033203125 Q 1060.748046875 1391.50390625 1060.748046875 1385.17578125 Q 1060.748046875 1376.650390625 1057.8037109375 1371.81640625 Q 1054.859375 1366.982421875 1049.322265625 1366.982421875 Q 1043.2578125 1366.982421875 1039.6982421875 1372.607421875 Q 1036.138671875 1378.232421875 1036.138671875 1388.427734375 L 1011.177734375 1388.427734375 Q 1011.177734375 1376.650390625 1016.0556640625 1366.89453125 Q 1020.93359375 1357.138671875 1029.7666015625 1351.7333984375 Q 1038.599609375 1346.328125 1049.76171875 1346.328125 Q 1066.900390625 1346.328125 1076.3486328125 1355.7763671875 Q 1085.796875 1365.224609375 1085.796875 1382.626953125 Q 1085.796875 1393.4375 1080.5673828125 1404.5556640625 Q 1075.337890625 1415.673828125 1061.626953125 1431.93359375 L 1045.19140625 1455.400390625 L 1088.697265625 1455.400390625 L 1088.697265625 1476.0546875 Z " fill-rule="evenodd" fill="rgb(255,255,255)" stroke-width="2" stroke="rgb(0,0,0)" stroke-linejoin="miter" stroke-linecap="square"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Gravit.io -->
+<svg style="isolation:isolate" xmlns="http://www.w3.org/2000/svg" height="146.23" width="133.3" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="421.7044622449228 475 133.2955377550773 146.23362766263176">
+ <defs>
+  <filter id="x7Vcayo3xpHxS4bUu1xWqyzvj4CBncV6" y="-200%" x="-200%" height="400%" width="400%">
+   <feOffset dy="5" xmlns="http://www.w3.org/2000/svg" result="offOut" dx="5" in="SourceAlpha"/>
+   <feGaussianBlur xmlns="http://www.w3.org/2000/svg" stdDeviation="2.5" result="blurOut" in="offOut"/>
+   <feComponentTransfer xmlns="http://www.w3.org/2000/svg" result="opacOut" in="blurOut">
+    <feFuncA xmlns="http://www.w3.org/2000/svg" type="table" tableValues="0 0.5"/>
+   </feComponentTransfer>
+   <feBlend xmlns="http://www.w3.org/2000/svg" mode="normal" in2="opacOut" in="SourceGraphic"/>
+  </filter>
+ </defs>
+ <g filter="url(#x7Vcayo3xpHxS4bUu1xWqyzvj4CBncV6)">
+  <rect transform="matrix(.96593 .25882 -.25882 .96593 157.04 -106.59)" height="105.35" width="70" stroke="#b2e16a" stroke-linecap="square" y="490.44" x="448.35" stroke-width="10" fill="none"/>
+ </g>
+ <defs>
+  <filter id="ksqFKVRKWMp5G5gJFYjdtsZP4ntccPaW" y="-200%" x="-200%" height="400%" width="400%">
+   <feOffset dy="5" xmlns="http://www.w3.org/2000/svg" result="offOut" dx="5" in="SourceAlpha"/>
+   <feGaussianBlur xmlns="http://www.w3.org/2000/svg" stdDeviation="2.5" result="blurOut" in="offOut"/>
+   <feComponentTransfer xmlns="http://www.w3.org/2000/svg" result="opacOut" in="blurOut">
+    <feFuncA xmlns="http://www.w3.org/2000/svg" type="table" tableValues="0 0.5"/>
+   </feComponentTransfer>
+   <feBlend xmlns="http://www.w3.org/2000/svg" mode="normal" in2="opacOut" in="SourceGraphic"/>
+  </filter>
+ </defs>
+ <g filter="url(#ksqFKVRKWMp5G5gJFYjdtsZP4ntccPaW)">
+  <rect transform="matrix(.96593 -.25882 .25882 .96593 -124.1 143.61)" height="105.35" width="70" stroke="#b2e16a" stroke-linecap="square" y="490.44" x="448.35" stroke-width="10" fill="none"/>
+ </g>
+ <defs>
+  <filter id="Pc1sS1lR3wpzAvlM2K3GodOBcWH9FOIn" y="-200%" x="-200%" height="400%" width="400%">
+   <feOffset dy="5" xmlns="http://www.w3.org/2000/svg" result="offOut" dx="5" in="SourceAlpha"/>
+   <feGaussianBlur xmlns="http://www.w3.org/2000/svg" stdDeviation="2.5" result="blurOut" in="offOut"/>
+   <feComponentTransfer xmlns="http://www.w3.org/2000/svg" result="opacOut" in="blurOut">
+    <feFuncA xmlns="http://www.w3.org/2000/svg" type="table" tableValues="0 0.5"/>
+   </feComponentTransfer>
+   <feBlend xmlns="http://www.w3.org/2000/svg" mode="normal" in2="opacOut" in="SourceGraphic"/>
+  </filter>
+ </defs>
+ <g filter="url(#Pc1sS1lR3wpzAvlM2K3GodOBcWH9FOIn)">
+  <rect transform="matrix(.86603 .5 -.5 .86603 336.32 -168.91)" height="105.35" width="70" stroke="#b2e16a" stroke-linecap="square" y="490.44" x="448.35" stroke-width="10" fill="none"/>
+ </g>
+ <defs>
+  <filter id="BzXhEzfEczQ80YCrsZKhpYzxub48fSOb" y="-200%" x="-200%" height="400%" width="400%">
+   <feOffset dy="5" xmlns="http://www.w3.org/2000/svg" result="offOut" dx="5" in="SourceAlpha"/>
+   <feGaussianBlur xmlns="http://www.w3.org/2000/svg" stdDeviation="2.5" result="blurOut" in="offOut"/>
+   <feComponentTransfer xmlns="http://www.w3.org/2000/svg" result="opacOut" in="blurOut">
+    <feFuncA xmlns="http://www.w3.org/2000/svg" type="table" tableValues="0 0.5"/>
+   </feComponentTransfer>
+   <feBlend xmlns="http://www.w3.org/2000/svg" mode="normal" in2="opacOut" in="SourceGraphic"/>
+  </filter>
+ </defs>
+ <g filter="url(#BzXhEzfEczQ80YCrsZKhpYzxub48fSOb)">
+  <rect transform="matrix(1 3.0312e-16 -4.5172e-17 1 0 -1.1369e-13)" height="43.674" width="5.8141" stroke="#f7fcf0" stroke-linecap="square" y="521.28" x="473.35" stroke-width="5" fill="none"/>
+ </g>
+ <defs>
+  <filter id="2NAbKiolOUm54mKnKSdbTOr9rmT4JRa5" y="-200%" x="-200%" height="400%" width="400%">
+   <feOffset dy="5" xmlns="http://www.w3.org/2000/svg" result="offOut" dx="5" in="SourceAlpha"/>
+   <feGaussianBlur xmlns="http://www.w3.org/2000/svg" stdDeviation="2.5" result="blurOut" in="offOut"/>
+   <feComponentTransfer xmlns="http://www.w3.org/2000/svg" result="opacOut" in="blurOut">
+    <feFuncA xmlns="http://www.w3.org/2000/svg" type="table" tableValues="0 0.5"/>
+   </feComponentTransfer>
+   <feBlend xmlns="http://www.w3.org/2000/svg" mode="normal" in2="opacOut" in="SourceGraphic"/>
+  </filter>
+ </defs>
+ <g filter="url(#2NAbKiolOUm54mKnKSdbTOr9rmT4JRa5)">
+  <rect transform="matrix(1 3.0312e-16 -4.5172e-17 1 0 -1.1369e-13)" height="43.674" width="5.8141" stroke="#f7fcf0" stroke-linecap="square" y="521.28" x="487.54" stroke-width="5" fill="none"/>
+ </g>
+</svg>
