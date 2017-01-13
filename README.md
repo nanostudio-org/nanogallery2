@@ -1,12 +1,9 @@
-# :red_circle: :red_circle: :red_circle: ALPHA VERSION - DO NOT USE, EVEN FOR TESTING PURPOSES!!!
-
 
 # nanogallery2  
-
-
-## Introduction
+  
+  
 nanogallery2 is a javascript library for building beautiful image gallery for your website.
-
+  
 ## Documentation, Demonstrations and Tutorials
 Visit the [nanogallery2 homepage](http://nanogallery2.nanostudio.org)   
 
