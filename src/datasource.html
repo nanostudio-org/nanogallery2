@@ -1,5 +1,693 @@
-<h2 class="text-center" style="color:#f00;"><b>this page is only available to beta testers - contact kris@nanostudio.org</b></h2>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br>
+  
+  <div class="container ngy2documentation">
+  <div class="row" >
+  <div class="col-md-10">
+
+    <br><br>
+    <h1 id="ngy2_intro">nanogallery2 - gallery content sources</h1>
+    <br><br><br>
+    <br><br><br>
+    <br><br><br>
+    <blockquote>
+      On this page we'll see how the data sources can be defined.<br>
+      A data source is a place where your images and albums are stored. As for nanogallery2's settings, definition can be made with HTML markup or can be passed to the <code>nanogallery2()</code> function.<br>
+    </blockquote>
+    <p>
+      Data source is defined on gallery initialization:
+    </p>
+    <div class="row" >
+      <div class="col-md-6">
+        <h3>with HTML:</h3>
+        <p>use the <code>data-nanogallery2</code> attribute.</p>
+    <pre>
+      &lt;div data-nanogallery2='{
+          "kind": "flickr",
+          "userID": "34858669@N00",
+          ...
+        }'&gt;
+      &lt;/div&gt;
+    </pre>
+      </div>
+      <div class="col-md-6">
+        <h3>or, with javascript:</h3>
+        <p>settings are passed to the <code>nanogallery2()</code> function.</p>
+    <pre>
+      $("#myNanoGallery").nanogallery2({
+        kind: 'flickr',
+        userID: '34858669@N00',
+        ...
+      });
+      
+    </pre>
+      </div>
+    </div>
+    <br><br>
+
+  
+    
+    <div id="ngy2_comparison"></div>
+    <br><br><br>
+    <h3>Content source comparison</h3>
+    <hr>
+    <blockquote>
+    </blockquote>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>feature</th>
+            <th>cloud<br>Google Photos</th>
+            <th>cloud<br>Flickr</th>
+            <th>self hosted<br>markup or inline</th>
+            <th>self hosted<br>nanoPhotosProvider</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>title</td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+          </tr>
+          <tr>
+            <td>description</td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+          </tr>
+          <tr>
+            <td>auto thumbnails generation</td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td>*(1)</td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+          </tr>
+          <tr>
+            <td>auto responsive thumbnails</td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td>*(1)</td>
+            <td>limited</td>
+          </tr>
+          <tr>
+            <td>Custom links</td>
+            <td>-</td>
+            <td>-</td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+          </tr>
+          <tr>
+            <td>filter on tags</td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+          </tr>
+          <tr>
+            <td>breadcrumb</td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+          </tr>
+          <tr>
+            <td>max images</td>
+            <td>unlimited *(2)</td>
+            <td>unlimited *(2)</td>
+            <td>unlimited *(2)</td>
+            <td>unlimited *(2)</td>
+          </tr>
+          <tr>
+            <td>private content</td>
+            <td>public and private albums</td>
+            <td>public content</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>max album levels</td>
+            <td>2</td>
+            <td>2</td>
+            <td>unlimited</td>
+            <td>unlimited</td>
+          </tr>
+          <tr>
+            <td>auto mobile sync</td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>link to original image</td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>min nanogallery2 version</td>
+            <td>1.0</td>
+            <td>1.0</td>
+            <td>1.0</td>
+            <td>not supported<br>at this time</td>
+          </tr>
+        </tbody>
+      </table>
+      *(1): thumbnail generation is out of the scope of nanogallery2.<br>
+      *(2): large number of images or albums can have negative impact on performances.
+    </div>
+    
+    
+    
+    
+    <div id="ngy2_define_markup"></div>
+    <br><br><br><br><br><br><br>
+    <h3>Self hosted data - HTML markup method</h3>
+    <hr>
+    <blockquote>
+      Elements (images and albums) are defined using the <b>&lt;A&gt;</b> tag and <b>data-</b> attributs.<br>
+      Example:<br>
+      <pre>
+&lt;div id="myNanoGallery" data-nanogallery2&gt;
+  &lt;a href="img_01.jpg" data-ngthumb="img_01t.jpg" data-ngdesc="Description1"&gt;Title Image1&lt;/a&gt;
+  &lt;a href="img_02.jpg" data-ngthumb="img_02ts.jpg" data-ngdesc="Image 2 description"&gt;Title Image2&lt;/a&gt;
+  &lt;a href="img_03.jpg" data-ngthumb="img_03t.jpg"&gt;Title Image3&lt;/a&gt;
+&lt;/div&gt;
+      </pre>
+      <br>
+      For albums, you need to define the element kind and an ID for each element.<br>
+      Default kind is 'photo'. Use the attribut <code>data-ngid</code> for an element ID, and <code>data-ngalbumid</code> for an album ID.<br>
+      Example:
+      <pre>
+&lt;div id="myNanoGallery" data-nanogallery2&gt;
+  &lt;!-- first album --&gt;
+  &lt;a href="img01a.jpg" <b>data-ngkind="album" data-ngid="1"</b> data-ngthumb="img01Ta.jpg"&gt;Album A&lt;/a&gt;
+  &lt;a href="img02a.jpg" <b>data-ngid="10" data-ngalbumid="1"</b> data-ngthumb="img02Ta.jpg"&gt;Image 1 / album A&lt;/a&gt;
+  &lt;a href="img03a.jpg" <b>data-ngid="11" data-ngalbumid="1"</b> data-ngthumb="img03Ta.jpg"&gt;Image 2 / album A&lt;/a&gt;
+
+  &lt;!-- second album --&gt;
+  &lt;a href="img02.jpg" <b>data-ngkind="album" data-ngid="2"</b> data-ngthumb="image_02t.jpg"&gt;Album B&lt;/a&gt;
+  &lt;a href="img02.jpg" <b>data-ngthumb="img02T.jpg" data-ngid="20"</b> data-ngalbumid="2"&gt;Image1&lt;/a&gt;
+  &lt;a href="img03.jpg" <b>data-ngthumb="img03T.jpg" data-ngid="21"</b> data-ngalbumid="2"&gt;Image2&lt;/a&gt;
+  &lt;a href="img04.jpg" <b>data-ngthumb="img04T.jpg" data-ngid="22"</b> data-ngalbumid="2"&gt;Image3&lt;/a&gt;
+&lt;/div&gt;    
+      </pre>
+      <br>
+      <b>Note</b>: use the attribut <code>itemsBaseURL</code> to define the base URL where images are stored.<br>
+      Example:<br>
+      <pre>
+&lt;div id="myNanoGallery" data-nanogallery2 <b>= { "itemsBaseURL": "http://mywebserver/gallery/myimages/"}</b> &gt;
+  &lt;a href="img_01.jpg" data-ngthumb="img_01t.jpg"&gt;Title Image1&lt;/a&gt;
+  ...
+&lt;/div&gt;
+      </pre>
+    </blockquote>
+    
+    <p>
+      This is the list of supported attributes (case-sensitive). All values must be defined between double-quotes, even if the content is not a string.
+    </p>
+    
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>property</th>
+            <th>type</th>
+            <th>default</th>
+            <th>description</th>
+            <th>min<br>version</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>data-ngdesc</td>
+            <td>string</td>
+            <td></td>
+            <td>Element description.</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>data-ngid</td>
+            <td>integer</td>
+            <td></td>
+            <td>Item ID.<br><b>MANDATORY if albums used: please set a value to each item (image and album).</b></td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>data-ngalbumid</td>
+            <td>integer</td>
+            <td></td>
+            <td>ID of the album containing the item.<br><b>MANDATORY if albums used.</b></td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>data-ngkind</td>
+            <td>string</td>
+            <td>'image'</td>
+            <td>Item's kind. Possible values: 'image', 'album'.</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>data-ngthumb</td>
+            <td>string</td>
+            <td></td>
+            <td>URL of the thumbnail image.</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>data-ngthumbImgHeight</td>
+            <td>integer</td>
+            <td>0</td>
+            <td>Height of the thumbnail image (in pixels). <b>Not mandatory, but should be defined to improve overall performances.</b></td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>data-ngthumbImgWidth</td>
+            <td>integer</td>
+            <td>0</td>
+            <td>Width of the thumbnail image (in pixels). <b>Not mandatory, but should be defined to improve overall performances.</b></td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>data-ngdest</td>
+            <td>string</td>
+            <td></td>
+            <td>Destination URL on thumbnail click (instead of displaying an image, the user is redirected to the defined URL).</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>data-ngtags</td>
+            <td>string</td>
+            <td></td>
+            <td>Image tags</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>data-ngexifmodel</td>
+            <td>string</td>
+            <td></td>
+            <td>Exif model</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>data-ngexifflash</td>
+            <td>string</td>
+            <td></td>
+            <td>Exif flash</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>data-ngexiffocallength</td>
+            <td>string</td>
+            <td></td>
+            <td>Exif focal length</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>data-ngexiffstop</td>
+            <td>string</td>
+            <td></td>
+            <td>Exif fstop</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>data-ngexifexposure</td>
+            <td>string</td>
+            <td></td>
+            <td>Exif exposure</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>data-ngexifiso</td>
+            <td>string</td>
+            <td></td>
+            <td>Exif ISO</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>data-ngexiftime</td>
+            <td>string</td>
+            <td></td>
+            <td>Exif date/time</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>data-ngexiflocation</td>
+            <td>string</td>
+            <td></td>
+            <td>Exif location - this value is used to display the image location with Google Maps on the image info window.</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+   
+    
+    <div id="ngy2_define_inline"></div>
+    <br><br><br><br><br><br><br>
+    <h3>Self hosted data - inline method</h3>
+    <hr>
+    <blockquote>
+      Define the elements on gallery initialization.<br>
+      Example:<br>
+      <pre>
+&lt;div id="myNanoGallery" data-nanogallery2&gt;
+  &lt;a href="img_01.jpg" data-ngthumb="img_01t.jpg" data-ngdesc="Description1"&gt;Title Image1&lt;/a&gt;
+  &lt;a href="img_02.jpg" data-ngthumb="img_02ts.jpg" data-ngdesc="Image 2 description"&gt;Title Image2&lt;/a&gt;
+  &lt;a href="img_03.jpg" data-ngthumb="img_03t.jpg"&gt;Title Image3&lt;/a&gt;
+&lt;/div&gt;
+&lt;script>
+$(document).ready(function () {
+  $("#myNanoGallery").nanoGallery({
+    items: [
+    ]
+  )};
+)};
+&lt;/script>
+      </pre>
+    </blockquote>
+
+
+
+
+    <div id="ngy2_google"></div>
+    <br><br><br><br><br><br><br>
+    <h3>Google Photos / Google+ storage</h3>
+    <hr>
+    <blockquote>
+      nanogallery2 can display the content of the albums you have created on Google Photos.<br>
+      <br>
+      <ul>
+        <li>Step 1: create albums in Google Photos</li>
+        <li>Step 2: add images to your albums</li>
+        <li>Step 3: make your albums public.</li>
+      </ul>
+      <br>
+      <span class="lead">
+       To retrieve your Google user ID and to manage the visibility of your Google Photos albums, you can use the tool <a href="http://nanogpvisibility.herokuapp.com/index.html" target="_blank" style="background-color:#eee;"> &nbsp; <b>nanoGPVisibility</b> &nbsp; </a> <br>
+      </span>
+      <br>
+      By default, all your public albums are displayed.
+    </blockquote>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>property</th>
+            <th>type</th>
+            <th>default</th>
+            <th>description</th>
+            <th>min<br>version</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>kind</td>
+            <td>string</td>
+            <td></td>
+            <td>
+              <b>MANDATORY</b><br>
+              Storage type. Must be set to 'google' to access Google Photos data.
+              </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>userID</td>
+            <td>string</td>
+            <td></td>
+            <td>
+              <b>MANDATORY</b><br>
+              The Google Photos / Google+ user account ID.
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>album</td>
+            <td>string</td>
+            <td></td>
+            <td>
+              To display the content (= the photos) of one single album.<br>
+              Set the Album ID.<br>
+              Example: <code>album: '5851968929721015169'</code>
+              <br><br>
+              <b>Private albums</b><br>
+              To display the images contained in a private album, you'll need the authKey. It can be found in the tool <a href="http://nanogpvisibility.herokuapp.com/index.html" target="_blank" style="background-color:#eee;"> &nbsp; <b>nanoGPVisibility</b> &nbsp; </a>.
+              <br>
+              Usage example:<br>
+              <code>album: '5851968929721015169<b>&</b>authkey=CJSlhdKSgoiXtgE'</code> : this will display only the content of the specified private album.<br>
+              <br>                                              
+              Note: locationHash is automatically disabled when using private albums.
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>albumList2</td>
+            <td>string<br>array</td>
+            <td></td>
+            <td>
+              The list of albums to display. You can specify an album name or it's ID.<br>
+              Use a string to set a single album, or an array for multiple.<br>
+              <b>Example:</b><br>
+              One album: <code>albumList2: 'architecture'</code><br>
+              Three albums: <code>albumList2: ['architecture', 'friends', '5851968929721015169']</code><br>
+              <br>
+              <b>Private albums</b><br>
+              Google Photos private album can also be displayed with nanogallery2.<br>
+              The authKey of the private albums is required. It can be found in the tool <a href="http://nanogpvisibility.herokuapp.com/index.html" target="_blank" style="background-color:#eee;"> &nbsp; <b>nanoGPVisibility</b> &nbsp; </a>.
+              <br>
+              Usage example:<br>
+              <code>albumList2: '5851968929721015169<b>&</b>authkey=CJSlhdKSgoiXtgE'</code><br>
+              <br>                                              
+              Note: locationHash is automatically disabled when using private albums.
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>blackList</td>
+            <td>string</td>
+            <td>'scrapbook|profil'</td>
+            <td>
+              List of keywords to ignore - album's name containing one of the keywords in the title will be ignored.<br>
+              Keyword separator is <b>|</b>
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>whiteList</td>
+            <td>string</td>
+            <td></td>
+            <td>
+              List of keywords to authorize - album's name must contain one of the keywords to be displayed.<br>
+              Keyword separator is <b>|</b>
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>1.0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+    
+    <div id="ngy2_flickr"></div>
+    <br><br><br><br><br><br><br>
+    <h3>Flickr storage</h3>
+    <hr>
+    <blockquote>
+      nanogallery2 can display your Flickr albums, or the content of a specific album, or your full photostream.
+    </blockquote>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>property</th>
+            <th>type</th>
+            <th>default</th>
+            <th>description</th>
+            <th>min<br>version</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>kind</td>
+            <td>string</td>
+            <td></td>
+            <td>
+              <b>MANDATORY</b><br>
+              Storage type. Must be set to 'flickr' to access Flickr data.
+              </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>userID</td>
+            <td>string</td>
+            <td></td>
+            <td>
+              <b>MANDATORY</b><br>
+              The Flickr user account ID.
+              <br><br>
+              To retrieve your Flickr user ID: <a href="http://www.flickr.com/services/api/explore/flickr.people.findByUsername" target="_blank" style="background-color:#eee;"><b>use this page</b></a>
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>photoset</td>
+            <td>string</td>
+            <td></td>
+            <td>
+              Photoset ID - to display only one specific photoset.<br>
+              If set to <code>'none'</code>, all pictures of the photostream are displayed.
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>blackList</td>
+            <td>string</td>
+            <td></td>
+            <td>
+              List of keywords to ignore - albums containing one of the keywords in the title will be ignored.
+              <br>
+              Keyword separator is <b><code>|</code></b>
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>whiteList</td>
+            <td>string</td>
+            <td></td>
+            <td>
+              List of keywords to authorize - albums must contain one of the keywords to be displayed.
+              <br>
+              Keyword separator is <b><code>|</code></b>
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>albumList2</td>
+            <td>string<br>array</td>
+            <td></td>
+            <td>
+              The list of albums to display. You can specify an album name or it's ID.<br>
+              Use a string to set a single album, or an array for multiple.<br>
+              <b>Example:</b><br>
+              One album: <code>albumList2: 'architecture'</code><br>
+              Three albums: <code>albumList2: ['architecture', 'friends', '5851968929721015169']</code><br>
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>flickrSkipOriginal</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td>Do not display the original uploaded image (e.g. to avoid rotation issue).</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>1.0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+        
+    
+
+    <br><br><br><br><br><br><br>
+    <h3>nanoPhotosProvider</h3>
+    <hr>
+    <blockquote>
+      not supported at this time.
+    </blockquote>
+
+
+
+
+
+    
+
+  </div>
+  <div id="ngy2_vert_nav_style" class="col-md-2 scrollspy">
+    <ul id="ngy2_vert_nav" class="nav hidden-xs hidden-sm" data-spy="affix">
+      <li>
+        <a href="#ngy2_intro">Content sources</a>
+      </li>
+      <li>
+        <a href="#ngy2_comparison">Sources comparison</a>
+      </li>
+      <li>
+        <a href="#ngy2_define_markup">Self hosted - markup</a>
+      </li>
+      <li>
+        <a href="#ngy2_define_inline">Self hosted - inline</a>
+      </li>
+      <li>
+        <a href="#ngy2_google">Google Photos</a>
+      </li>
+      <li>
+        <a href="#ngy2_flickr">Flickr</a>
+      </li>
+      <!-- 
+      <li>
+        <a href="#test">test</a>
+        <ul class="nav">
+          <li>
+            <a href="#ruby">
+              <span class="fa fa-angle-double-right"></span>Ruby
+            </a>
+          </li>
+          <li>
+            <a href="#python">
+              <span class="fa fa-angle-double-right"></span>Python
+            </a>
+          </li>
+
+        </ul>
+      </li> 
+      -->
+
+    </ul><!-- end of main navigation -->
+  </div>
+  </div>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      $('#ngy2_vert_nav').affix({
+        offset: {
+            top: $('#ngy2_vert_nav').offset().top,
+            bottom: ($('footer').outerHeight(true)) + 40
+          }
+      });
+    });
+
+
+  </script>
+
