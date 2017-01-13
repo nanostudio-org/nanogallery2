@@ -4,17 +4,17 @@
 <head>
   <title>nanogallery2</title>
   <meta charset="utf-8">
-  <meta name="description" content="nanogallery2 - beautiful image gallery for your website">
+  <meta name="description" content="nanogallery2 creates beautiful and high quality image galleries for your website">
   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
 
   <meta property="og:type" content="article">
   <meta property="og:title" content="nanogallery2>
-  <meta property="og:description" content="nanogallery2 - beautiful image gallery for your website">
+  <meta property="og:description" content="nanogallery2 creates beautiful and high quality image galleries for your website">
   <meta property="og:image" content="http://nanogallery2.nanostudio.org/img/nanogallery2_logo.png">
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="nanogallery2">
-  <meta name="twitter:description" content="nanogallery2 - beautiful image gallery for your website">
+  <meta name="twitter:description" content="nanogallery2 creates beautiful and high quality image galleries for your website">
   <meta name="twitter:image" content="http://nanogallery2.nanostudio.org/img/nanogallery2_logo.png">
 
   <link rel="icon" href="img/favicon.ico" />
@@ -36,6 +36,10 @@
   <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <script src="bootstrap/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css" />
+
+  <!-- BOOTSTRAP SELECT -->
+  <link rel="stylesheet" href="bootstrap-select/css/bootstrap-select.min.css">
+  <script src="bootstrap-select/js/bootstrap-select.min.js"></script>
 
   <!-- #################################################################################################################### -->
   <!-- nanogallery2 CSS files                                                                                               -->
@@ -134,6 +138,17 @@
       padding: 0 0 0 5px;
     }
 
+    .circle-singleline {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      font-size: 1.5em;
+      line-height: 60px;
+      text-align: center;
+      background: #73A623;
+      color: white;
+      display: inline-block;
+  }    
     
     
     /***** RESPONSIVE SVG LOGO *****/
@@ -253,14 +268,14 @@
           <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand form-horizontal" href="http://nanogallery2.nanostudio.org/" rel="home" title="nanogallery2">
-          <img src="img/nanogallery2s.svg" alt="nanogallery2" style="height:25px;"> &nbsp; <span class="ngy2version">v0.9</span>
+          <img src="img/nanogallery2s.svg" alt="nanogallery2" style="height:30px;"> &nbsp; <span class="ngy2version">v0.9</span>
         </a>
       </div>
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav navbar-right text-uppercase">
           <li><a href="index.html">Intro</a></li>
-          <li><a href="demonstration.html">Examples</a></li>
           <li><a href="quickstart.html">Quick Start</a></li>
+          <li><a href="demonstration.html">Examples</a></li>
           <li><a href="builder.html">Builder</a></li>
           <li><a href="documentation.html">Guide</a></li>
           <li><a href="datasource.html">Data source</a></li>
@@ -287,9 +302,9 @@
         <br><br><br><br>
         <div class="col-md-12 text-center">
           <div class="svg-container">
-            <object type="image/svg+xml" data="img/nanogallery2.svg" width="100%" height="100%" class="svg-content"></object>
+            <object type="image/svg+xml" data="img/nanogallery2.svg" width="70%" height="70%" class="svg-content"></object>
           </div>
-          <h4 style="color:#eee;">beautiful image gallery for your website</h4>
+          <h4 style="color:#eee;">nanogallery2 creates beautiful and high quality image galleries for your website</h4>
         </div>
       </div>
       <br><br><br><br>
@@ -303,6 +318,7 @@
   <!-- ###################### -->
 
 
+ 
 
 <h2 class="text-center" style="color:#f00;"><b>this page is only available to beta testers - contact kris@nanostudio.org</b></h2>
 <br><br><br><br><br><br><br><br><br>
