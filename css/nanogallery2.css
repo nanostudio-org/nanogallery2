@@ -31,12 +31,12 @@
 
 @font-face {
   font-family: 'ngy2_icon_font';
-  src: url('font/ngy2_icon_font.eot?60750294');
-  src: url('font/ngy2_icon_font.eot?60750294#iefix') format('embedded-opentype'),
-       url('font/ngy2_icon_font.woff2?60750294') format('woff2'),
-       url('font/ngy2_icon_font.woff?60750294') format('woff'),
-       url('font/ngy2_icon_font.ttf?60750294') format('truetype'),
-       url('font/ngy2_icon_font.svg?60750294#ngy2_icon_font') format('svg');
+  src: url('font/ngy2_icon_font.eot?74466767');
+  src: url('font/ngy2_icon_font.eot?74466767#iefix') format('embedded-opentype'),
+       url('font/ngy2_icon_font.woff2?74466767') format('woff2'),
+       url('font/ngy2_icon_font.woff?74466767') format('woff'),
+       url('font/ngy2_icon_font.ttf?74466767') format('truetype'),
+       url('font/ngy2_icon_font.svg?74466767#ngy2_icon_font') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -100,8 +100,10 @@
 .icon-basket:before { content: '\e839'; } /* '?' */
 .icon-ok-circled:before { content: '\e83a'; } /* '?' */
 .icon-user:before { content: '\e83b'; } /* '?' */
+.icon-mail-alt:before { content: '\f0e0'; } /* '?' */
 .icon-circle-empty:before { content: '\f10c'; } /* '?' */
-
+.icon-tumblr-squared:before { content: '\f174'; } /* '?' */
+.icon-twitter-squared:before { content: '\f304'; } /* '?' */
 
 .nGY2Icon {
   margin-left: .2em;
@@ -306,7 +308,7 @@
 .nGY2 .nGY2GThumbnailAlbumTitle {
 	color:#fff;
 	margin: 3px 1px 1px 1px;
-  padding: 0px 5px;
+  padding: 0px 4px;
   left: 0; right: 0;
   white-space: nowrap;
 	overflow:hidden;
@@ -321,6 +323,7 @@
 .nGY2 .nGY2GThumbnailDescription {
 	clear:both;
 	margin: 1px 1px 3px 1px;
+  padding: 0px 4px;
 	color:#aaa;
   white-space: nowrap;
   left: 0; right: 0;
@@ -572,8 +575,12 @@
   background: rgba(0,0,0,0.5);
 /*  z-index: 2000;*/
 }
-.nGY2PopupContent {
+.nGY2PopupContent,
+.nGY2PopupContentCenter,
+.nGY2PopupContentLeft,
+.nGY2PopupContentRight {
   position: fixed;
+  text-align: left;
   top: 50%;
   left: 50%;
   width: 50%;
@@ -591,6 +598,10 @@
   transform: translateX(-50%) translateY(-50%);
 }
 
+.nGY2PopupContentCenter {
+  text-align: center;
+}
+
 .nGY2PopupTitle {
   font-size: 1.5em;
   border-bottom: 4px solid #888;
@@ -605,9 +616,44 @@
 
 .nGY2PopupOneItem {
   padding : 10px 10px;
+  font-size: 2em;
+	cursor: pointer;
+  display:inline-block;
+}
+.nGY2PopupOneItemText{
+  padding : 10px 10px;
   font-size: 1.2em;
 	cursor: pointer;
+  display:block;
 }
+@media only screen and (max-device-width : 480px) {
+  .nGY2PopupContent {
+    width: 85% !important;
+    padding: 5px 10px !important;
+  }
+}
+
+/**************************************/
+/* INFO                               */
+/**************************************/
+.nGY2PortInfo {
+  padding: 3px;
+  font-size: 9px;
+  color: #888;
+  text-align: center;
+  z-index:0;
+  cursor:pointer;
+}
+
+.nGY2PortInfo a, 
+.nGY2PortInfo > a:link, 
+.nGY2PortInfo > a:visited,
+.nGY2PortInfo a:hover,
+.nGY2PortInfo a:active {
+  color: #888;
+  text-decoration: none;
+}
+
 
 /**************************************/
 /* IMAGE VIEWER                       */
@@ -646,8 +692,8 @@
   left: 0px;
   background: url(nanogallery2_logo.png) RGBA(0,0,0,0.5) no-repeat center;
   display: block;
-  height: 40px;
-  width: 140px;
+  height: 55px;
+  width: 55px;
 }
 
 .nGY2 .nGY2ViewerContent {
