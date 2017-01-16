@@ -323,7 +323,6 @@
 
  
 
-  
   <div class="container">
     <br><br>
     <h1>nanogallery2 - quick start</h1>
@@ -346,7 +345,7 @@
       <div class="col-md-4 text-center">
         <button type="button" class="btn btn-primary btn-lg" id="btn_portable"><i id="fa_portable" class="fa fa-sun-o" aria-hidden="true"></i> &nbsp; PORTABLE</button>
         <br><br>
-        <b>This is the NO-install version.</b><br>
+        <b>This is the NO-install version. You can embed your gallery anywhere.</b><br>
         Can be used directly in your CMS (<i class="fa fa-wordpress" aria-hidden="true"></i> WordPress,
         <i class="fa fa-drupal" aria-hidden="true"></i> Drupal, <i class="fa fa-github" aria-hidden="true"></i> Github Pages, Get Simple, openElement...).
         
@@ -447,7 +446,7 @@
       </blockquote>
       <pre>
         &lt;!-- jQuery --&gt;
-        &lt;script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"&gt;&lt;/script&gt;
+        &lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"&gt;&lt;/script&gt;
       
         &lt;!-- nanogallery2 --&gt;
         &lt;link href="css/nanogallery2.min.css" rel="stylesheet" type="text/css"&gt;
@@ -534,6 +533,8 @@
         $('#fa_html').removeClass('fa-spin');
         $('#btn_portable').addClass('btn-lg');
         $('#btn_html').removeClass('btn-lg');
+        $('#btn_portable').addClass('btn-primary');
+        $('#btn_html').removeClass('btn-primary');
       });
 
       jQuery('#btn_html').on('click', function() {
@@ -543,12 +544,13 @@
         $('#fa_html').addClass('fa-spin');
         $('#btn_portable').removeClass('btn-lg');
         $('#btn_html').addClass('btn-lg');
+        $('#btn_portable').removeClass('btn-primary');
+        $('#btn_html').addClass('btn-primary');
       });
 
     
     });
   </script>
-  
 
   <!-- ######################## -->
   <!-- ##### START FOOTER ##### -->
