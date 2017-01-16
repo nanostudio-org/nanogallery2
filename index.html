@@ -360,21 +360,21 @@
       <div class="col-md-4 text-center">
         <span class="text-uppercase" style="font-size:1.5em;"><b><span class="ngy2color1" style="font-size:1.2em;">B</span>eautiful <span class="ngy2color1" style="font-size:1.2em;">I</span>mage <span class="ngy2color1" style="font-size:1.2em;">G</span>allery</b></span>
         <br>
-          <hr style="width:60%;border-top: 3px solid #8c8b8b">
+          <hr style="width:60%;border-top: 3px solid #54840C">
         <br>
         Choose between justified, grid or cascading layout. And style the layout to suit your personal needs.
       </div>
       <div class="col-md-4 text-center">
         <span class="text-uppercase" style="font-size:1.5em;"><b><span class="ngy2color1" style="font-size:1.2em;">G</span>reat <span class="ngy2color1" style="font-size:1.2em;">l</span>ightbox</b></span>
         <br>
-          <hr style="width:60%;border-top: 3px solid #8c8b8b">
+          <hr style="width:60%;border-top: 3px solid #54840C">
         <br>
         For great photo display and handy navigation. Fully configurable.
       </div>
       <div class="col-md-4 text-center" >
         <span class="text-uppercase" style="font-size:1.5em;"><b><span class="ngy2color1" style="font-size:1.2em;">E</span>asy <span class="ngy2color1" style="font-size:1.2em;">B</span>uilder</b></span>
         <br>
-          <hr style="width:60%;border-top: 3px solid #8c8b8b">
+          <hr style="width:60%;border-top: 3px solid #54840C">
         <br>
         To generate your galleries without coding. You can also use HTML markup or scripting.
       </div>
@@ -982,13 +982,16 @@ thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.30|l
       
       //  RANDOM DEMO
       var lastRnd=-1;
-      var rnd=randomIntFromInterval(0,4);
+      var demos=[0, 1, 2, 3, 4]
+      var rnd=randomIntFromInterval(0,demos.length-1);
       jQuery('#btn_random_demo').on('click', function() {
+        //rnd++;
         jQuery("#nanogallery").nanogallery2('destroy');
-        while( rnd == lastRnd ) {
-          rnd=randomIntFromInterval(0,4);
-        }
-        lastRnd=rnd;
+        
+        // while( rnd == lastRnd ) {
+        //  rnd=randomIntFromInterval(0,4);
+        // }
+        // lastRnd=rnd;
         switch ( rnd ) {
           case 0:
             jQuery("#nanogallery").nanogallery2({
@@ -1100,6 +1103,10 @@ thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.30|l
             break;
           default:
             break;
+        }
+        rnd++;
+        if( rnd >= demos.length ) {
+          rnd=0;
         }
       });
 
