@@ -1,3 +1,4 @@
+
   
   <div class="container ngy2documentation">
   <div class="row" >
@@ -32,7 +33,7 @@
         <h3>or, with javascript:</h3>
         <p>settings are passed to the <code>nanogallery2()</code> function.</p>
     <pre>
-      $("#myNanoGallery").nanogallery2({
+      $("#my_nanogallery2").nanogallery2({
         kind: 'flickr',
         userID: '34858669@N00',
         ...
@@ -171,35 +172,35 @@
       Elements (images and albums) are defined using the <b>&lt;A&gt;</b> tag and <b>data-</b> attributs.<br>
       Example:<br>
       <pre>
-&lt;div id="myNanoGallery" data-nanogallery2&gt;
-  &lt;a href="img_01.jpg" data-ngthumb="img_01t.jpg" data-ngdesc="Description1"&gt;Title Image1&lt;/a&gt;
-  &lt;a href="img_02.jpg" data-ngthumb="img_02ts.jpg" data-ngdesc="Image 2 description"&gt;Title Image2&lt;/a&gt;
-  &lt;a href="img_03.jpg" data-ngthumb="img_03t.jpg"&gt;Title Image3&lt;/a&gt;
+&lt;div id="my_nanogallery2" data-nanogallery2&gt;
+  &lt;a href="img_01.jpg" data-ngthumb="img_01t.jpg"  data-ngdesc="Description1"        &gt;Title Image1&lt;/a&gt;
+  &lt;a href="img_02.jpg" data-ngthumb="img_02ts.jpg" data-ngdesc="Image 2 description" &gt;Title Image2&lt;/a&gt;
+  &lt;a href="img_03.jpg" data-ngthumb="img_03t.jpg"                                    &gt;Title Image3&lt;/a&gt;
 &lt;/div&gt;
       </pre>
       <br>
-      For albums, you need to define the element kind and an ID for each element.<br>
+      For albums, you need to define a kind and an ID for each element.<br>
       Default kind is 'photo'. Use the attribut <code>data-ngid</code> for an element ID, and <code>data-ngalbumid</code> for an album ID.<br>
       Example:
       <pre>
-&lt;div id="myNanoGallery" data-nanogallery2&gt;
+&lt;div id="my_nanogallery2" data-nanogallery2&gt;
   &lt;!-- first album --&gt;
-  &lt;a href="img01a.jpg" <b>data-ngkind="album" data-ngid="1"</b> data-ngthumb="img01Ta.jpg"&gt;Album A&lt;/a&gt;
-  &lt;a href="img02a.jpg" <b>data-ngid="10" data-ngalbumid="1"</b> data-ngthumb="img02Ta.jpg"&gt;Image 1 / album A&lt;/a&gt;
-  &lt;a href="img03a.jpg" <b>data-ngid="11" data-ngalbumid="1"</b> data-ngthumb="img03Ta.jpg"&gt;Image 2 / album A&lt;/a&gt;
+  &lt;a href="img01a.jpg" data-ngkind="album" data-ngid="1"                     data-ngthumb="img01Ta.jpg"&gt;Album A&lt;/a&gt;
+  &lt;a href="img02a.jpg"                     data-ngid="10" data-ngalbumid="1" data-ngthumb="img02Ta.jpg"&gt;Image 1 / album A&lt;/a&gt;
+  &lt;a href="img03a.jpg"                     data-ngid="11" data-ngalbumid="1" data-ngthumb="img03Ta.jpg"&gt;Image 2 / album A&lt;/a&gt;
 
   &lt;!-- second album --&gt;
-  &lt;a href="img02.jpg" <b>data-ngkind="album" data-ngid="2"</b> data-ngthumb="image_02t.jpg"&gt;Album B&lt;/a&gt;
-  &lt;a href="img02.jpg" <b>data-ngthumb="img02T.jpg" data-ngid="20"</b> data-ngalbumid="2"&gt;Image1&lt;/a&gt;
-  &lt;a href="img03.jpg" <b>data-ngthumb="img03T.jpg" data-ngid="21"</b> data-ngalbumid="2"&gt;Image2&lt;/a&gt;
-  &lt;a href="img04.jpg" <b>data-ngthumb="img04T.jpg" data-ngid="22"</b> data-ngalbumid="2"&gt;Image3&lt;/a&gt;
+  &lt;a href="img02.jpg" data-ngkind="album" data-ngid="2"                     data-ngthumb="image_02t.jpg"&gt;Album B&lt;/a&gt;
+  &lt;a href="img02.jpg"                     data-ngid="20" data-ngalbumid="2" data-ngthumb="img02T.jpg"   &gt;Image1&lt;/a&gt;
+  &lt;a href="img03.jpg"                     data-ngid="21" data-ngalbumid="2" data-ngthumb="img03T.jpg"   &gt;Image2&lt;/a&gt;
+  &lt;a href="img04.jpg"                     data-ngid="22" data-ngalbumid="2" data-ngthumb="img04T.jpg"   &gt;Image3&lt;/a&gt;
 &lt;/div&gt;    
       </pre>
       <br>
       <b>Note</b>: use the attribut <code>itemsBaseURL</code> to define the base URL where images are stored.<br>
       Example:<br>
       <pre>
-&lt;div id="myNanoGallery" data-nanogallery2 <b>= { "itemsBaseURL": "http://mywebserver/gallery/myimages/"}</b> &gt;
+&lt;div id="my_nanogallery2" data-nanogallery2 <b>= { "itemsBaseURL": "http://mywebserver/gallery/myimages/"}</b> &gt;
   &lt;a href="img_01.jpg" data-ngthumb="img_01t.jpg"&gt;Title Image1&lt;/a&gt;
   ...
 &lt;/div&gt;
@@ -354,28 +355,68 @@
     
    
     
-    <div id="ngy2_define_inline"></div>
+    <div id="ngy2_define_javascript"></div>
     <br><br><br><br><br><br><br>
-    <h3>Self hosted data - inline method</h3>
+    <h3>Self hosted data - javascript method</h3>
     <hr>
     <blockquote>
       Define the elements on gallery initialization.<br>
       Example:<br>
       <pre>
-&lt;div id="myNanoGallery" data-nanogallery2&gt;
-  &lt;a href="img_01.jpg" data-ngthumb="img_01t.jpg" data-ngdesc="Description1"&gt;Title Image1&lt;/a&gt;
-  &lt;a href="img_02.jpg" data-ngthumb="img_02ts.jpg" data-ngdesc="Image 2 description"&gt;Title Image2&lt;/a&gt;
-  &lt;a href="img_03.jpg" data-ngthumb="img_03t.jpg"&gt;Title Image3&lt;/a&gt;
-&lt;/div&gt;
+&lt;div id="my_nanogallery2" data-nanogallery2&gt;&lt;/div&gt;
+
 &lt;script>
 $(document).ready(function () {
-  $("#myNanoGallery").nanoGallery({
+  $("#my_nanogallery2").nanoGallery({
     items: [
+      {
+        src:          'image_01.jpg',    // image url
+        srct:         'image_01ts.jpg',  // thumbnail url
+        title:        'Title Image1',    // element title
+        description:  'Description1'     // element description
+      },
+      { src: 'image_02.jpg', srct: 'image_02t.jpg',  title: 'Title Image2' },
+      { src: 'image_03.jpg', srct: 'image_03ts.jpg', title: 'Title Image3' }
     ]
   )};
 )};
 &lt;/script>
       </pre>
+      <br>
+      <br>
+      For albums, you need to define a <code>kind</code> and an <code>ID</code> for each element.<br>
+      Default kind is 'photo'. Use the option <code>ID</code> for an element ID, and <code>albumID</code> for an album ID.
+      <br>
+      Example:
+      <pre>
+&lt;div id="my_nanogallery2" data-nanogallery2&gt;&lt;/div&gt;
+
+&lt;script>
+$(document).ready(function () {
+  $("#my_nanogallery2 ").nanoGallery({
+    items: [
+      // album 1
+      { src: 'image_01.jpg', srct: 'image_01ts.jpg', title: 'album A',  ID: 1,	kind:'album' },
+      { src: 'image_01.jpg', srct: 'image_01ts.jpg', title: 'image A1', ID: 10, albumID: 1 },
+      { src: 'image_02.jpg', srct: 'image_02ts.jpg', title: 'image A2', ID: 11, albumID: 1 },
+      { src: 'image_03.jpg', srct: 'image_03ts.jpg', title: 'image A3', ID: 12, albumID: 1 },
+      
+      // album 2
+      {	src: 'image_02.jpg', srct: 'image_02ts.jpg', title: 'album B',  ID: 2,  kind:'album' },
+      { src: 'image_01.jpg', srct: 'image_01ts.jpg', title: 'image B1', ID: 20, albumID: 2 },
+      { src: 'image_02.jpg', srct: 'image_02ts.jpg', title: 'image B2', ID: 21, albumID: 2 },
+      { src: 'image_03.jpg', srct: 'image_03ts.jpg', title: 'image B3', ID: 22, albumID: 2 }
+    ]
+  )};
+)};
+&lt;/script>
+      </pre>
+      <br>
+      Note: use the option <code>itemsBaseURL</code> to define the base URL where images are stored.
+      <br><br>
+      Demonstrations: 
+        <a href="http://codepen.io/Kris-B/pen/mROmKM" type="button" class="btn btn-primary" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> demo images</a>
+        <a href="http://codepen.io/Kris-B/pen/GrNmxv" type="button" class="btn btn-primary" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> demo albums</a>
     </blockquote>
 
 
@@ -646,7 +687,7 @@ $(document).ready(function () {
         <a href="#ngy2_define_markup">Self hosted - markup</a>
       </li>
       <li>
-        <a href="#ngy2_define_inline">Self hosted - inline</a>
+        <a href="#ngy2_define_javascript">Self hosted - javascript</a>
       </li>
       <li>
         <a href="#ngy2_google">Google Photos</a>
@@ -690,4 +731,3 @@ $(document).ready(function () {
 
 
   </script>
-
