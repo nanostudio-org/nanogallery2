@@ -2,7 +2,8 @@
 # nanogallery2  
   
   
-nanogallery2 is a javascript library for building beautiful image gallery for your website or your blog.
+nanogallery2 is a javascript library for building beautiful image galleries for your website or your blog.
+  
   
 ## Documentation, Demonstrations and Tutorials
 Visit the [nanogallery2 homepage](http://nanogallery2.nanostudio.org)   
