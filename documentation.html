@@ -250,18 +250,30 @@
 
   <!-- Asynchronous Google Analytics snippet -->
   <script>
-    var _gaq = _gaq || [];
-    var pluginUrl =
-   'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
-    _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
-    _gaq.push(['_setAccount', 'UA-39069349-8']);
-    _gaq.push(['_trackPageview']);
+//    var _gaq = _gaq || [];
+//    var pluginUrl = 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
+//    _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+//    _gaq.push(['_setAccount', 'UA-39069349-8']);
+//    _gaq.push(['_trackPageview']);
 
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = 'https://stats.g.doubleclick.net/dc.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
+//    (function() {
+//      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+//      ga.src = 'https://stats.g.doubleclick.net/dc.js';
+//      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+//    })();
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    // ga('create', 'UA-39069349-8', 'auto');
+    ga('create', 'UA-39069349-8', 'auto', {'allowLinker': true});
+    ga('require', 'linker');
+    ga('linker:autoLink', ['nano.gallery'] );
+
+    ga('send', 'pageview');
+
   </script>
   
 </head>
@@ -327,6 +339,64 @@
   <!-- ###################### -->
   <!-- ##### END HEADER ##### -->
   <!-- ###################### -->
+
+
+  <!-- ### LOGO ### -->
+  <div class="jumbotron ngy2dark">
+    <div class="container ">
+      <div class="row" >
+        <br><br><br><br>
+        <div class="col-md-12 text-center">
+          <div class="svg-container">
+            <object type="image/svg+xml" data="img/nanogallery2.svg" width="70%" height="70%" class="svg-content"></object>
+          </div>
+          <h4 style="color:#eee;">nanogallery2 creates beautiful and high quality image galleries for your website</h4>
+        </div>
+      </div>
+      <br><br><br><br>
+    </div>
+  </div>
+  <!-- ### LOGO ### -->
+
+  
+  <!-- ###################### -->
+  <!-- ##### END HEADER ##### -->
+  <!-- ###################### -->
+
+
+  
+  
+
+
+  <div class="container">
+    <h1>nanogallery2 - page title</h1>
+    <hr>
+    <blockquote>
+      Learn the basics to build a quickly a gallery from scratch. Just follow these simple steps.
+    </blockquote>
+  </div>
+
+
+
+  
+  <!-- ######################## -->
+  <!-- ##### START FOOTER ##### -->
+  <!-- ######################## -->
+  <br><br><br><br><br><br><br><br>
+  <svg class="svg-diag" style="background-color:#fff;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10" preserveAspectRatio="none">
+    <polygon points="100 0 100 10 -50 10" style="fill:#54840C;"/>
+  </svg>
+</body>
+
+<footer class="footer text-center lead" style="background-color:#54840C;">
+  <div class="container" style="color:#fff;">
+    <br>
+    nanogallery2 by <a style="color:#fff;" href="http://brisbois.fr">christophe brisbois</a>
+    <br><br>
+  </div>
+</footer>
+</html>
+
 
   
   
