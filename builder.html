@@ -146,6 +146,7 @@
       height: 60px;
       border-radius: 50%;
       font-size: 1.5em;
+      font-weight: bold;
       line-height: 60px;
       text-align: center;
       background: #73A623;
@@ -283,6 +284,7 @@
 
   <!-- ############## -->
   <!-- ### NAVBAR ### -->
+  <span itemscope itemtype="http://schema.org/SoftwareApplication">
   <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
       <div class="navbar-header">
@@ -292,7 +294,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand form-horizontal" href="http://nanogallery2.nanostudio.org/" rel="home" title="nanogallery2">
+        <a itemprop="url" class="navbar-brand form-horizontal" href="http://nanogallery2.nanostudio.org/" rel="home" title="nanogallery2">
           <img src="img/nanogallery2s.png" alt="nanogallery2" style="height:30px;"> &nbsp; <span class="ngy2version">v0.9.1</span>
         </a>
       </div>
@@ -326,8 +328,8 @@
       <div class="row" >
         <br><br><br><br>
         <div class="col-md-12 text-center">
-          <img src="img/nanogallery2.png" alt="nanogallery2">
-          <h4 style="color:#eee;">nanogallery2 creates beautiful and high quality image galleries for your website</h4>
+          <img itemprop="image" src="img/nanogallery2.png" alt="nanogallery2">
+          <h4 style="color:#eee;"><span itemprop="name">nanogallery2</span> creates beautiful and high quality image galleries for your website</h4>
         </div>
       </div>
       <br><br><br><br>
