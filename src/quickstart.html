@@ -10,27 +10,30 @@
     
     <div class="row" style="font-size:1.2em;">
       <div class="col-md-12 text-center">
-        please select the version:
+        Select the version most suitable for your use:
         <br><br><br>
       </div>
     </div>
-    <div class="row" style="font-size:1.2em;">
-      <div class="col-md-2 text-center">
+    <div class="row text-center match-my-cols" style="font-size:1.2em;">
+      <div class="col-md-2 text-center">&nbsp;
       </div>
-      <div class="col-md-4 text-center">
+      <div class="col-md-4 text-center" id="bg_portable" style="background-color:#eee;border: 1px solid #fff">
+        <br><br>
         <button type="button" class="btn btn-primary btn-lg" id="btn_portable"><i id="fa_portable" class="fa fa-sun-o" aria-hidden="true"></i> &nbsp; PORTABLE</button>
         <br><br>
-        <b>This is the NO-install version. You can embed your gallery anywhere.</b><br>
+        <b>This is the NO-install version. Just embed your gallery anywhere.</b><br><br>
         Can be used directly in your CMS (<i class="fa fa-wordpress" aria-hidden="true"></i> WordPress,
         <i class="fa fa-drupal" aria-hidden="true"></i> Drupal, <i class="fa fa-github" aria-hidden="true"></i> Github Pages, Get Simple, openElement...).
-        
+        <br><br><br>
       </div>
-      <div class="col-md-4 text-center">
+      <div class="col-md-4 text-center" id="bg_html" style="background-color:#eee;border: 1px solid #fff">
+        <br><br>
         <button type="button" class="btn btn-primary btn-lg" id="btn_html"><i id="fa_html" class="fa fa-sun-o" aria-hidden="true"></i> &nbsp; HTML</button>
         <br><br>
         <b>To integrate nanogallery2 in your HTML pages.</b><br>
+        <br>
       </div>
-      <div class="col-md-2 text-center">
+      <div class="col-md-2 text-center">&nbsp;
       </div>
     </div>
 
@@ -210,6 +213,8 @@
         $('#btn_html').removeClass('btn-lg');
         $('#btn_portable').addClass('btn-primary');
         $('#btn_html').removeClass('btn-primary');
+        $('#bg_portable').css({ 'background-color': '#CFF19A', 'color': '#000'  });
+        $('#bg_html').css({ 'background-color': '#eee', 'color': '#888' });
       });
 
       jQuery('#btn_html').on('click', function() {
@@ -221,6 +226,8 @@
         $('#btn_html').addClass('btn-lg');
         $('#btn_portable').removeClass('btn-primary');
         $('#btn_html').addClass('btn-primary');
+        $('#bg_html').css({ 'background-color': '#CFF19A', 'color': '#000' });
+        $('#bg_portable').css({ 'background-color': '#eee', 'color': '#888' });
       });
 
     
