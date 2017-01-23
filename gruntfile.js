@@ -17,7 +17,7 @@ module.exports = function(grunt) {
         },
         index: {
           src: [
-            'template/header.html',
+            'template/header_index.html',
             'src/index.html',
             'template/footer.html'
           ],
