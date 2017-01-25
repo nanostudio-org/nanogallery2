@@ -31,6 +31,8 @@
 
   $.nanogallery2 = function (elt, options) {
   
+  $("#debug").text("ok1");
+  
     // To avoid scope issues, use '_this' instead of 'this'
     // to reference this class from internal events and functions.
     var _this = this;
@@ -43,7 +45,7 @@
     _this.$e.data('nanogallery2data', _this);
 
     _this.init = function () {
-  
+  $("#debug").text("ok2");
       // define these global objects only once per HTML page
       if (typeof window.NGY2Item === 'undefined') {
   
@@ -829,7 +831,7 @@
           
       }
 
-    
+    $("#debug").text("ok3");
       _this.options = jQuery.extend(true, {}, jQuery.nanogallery2.defaultOptions, options);
       // Initialization code
       _this.nG2=null;
