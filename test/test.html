@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html>
+
+<head>
+  <title>nanogallery2 - beautiful image galleries for your website</title>
+  <meta charset="utf-8">
+  <meta name="description" content="nanogallery2 creates beautiful and high quality image galleries for your website">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="nanogallery2">
+  <meta property="og:description" content="nanogallery2 creates beautiful and high quality image galleries for your website">
+  <meta property="og:image" content="http://nanogallery2.nanostudio.org/img/nanogallery2.png">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="nanogallery2">
+  <meta name="twitter:description" content="nanogallery2 creates beautiful and high quality image galleries for your website">
+  <meta name="twitter:image" content="http://nanogallery2.nanostudio.org/img/nanogallery2.png">
+
+  <link rel="icon" href="img/favicon.ico" />
+
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+ 
+  <!-- #################################################################################################################### -->
+  <!-- jQuery                                                                                                               -->
+  <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+  <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>  -->
+  <!-- #################################################################################################################### -->
+
+  <!--  
+  <script src="third.party/touch-emulator.js"></script>
+  <script> TouchEmulator(); </script>
+  -->
+
+
+  <!-- #################################################################################################################### -->
+  <!-- nanogallery2 CSS files                                                                                               -->
+	<link href="css/nanogallery2.css" rel="stylesheet" type="text/css">
+  <!-- #################################################################################################################### -->
+
+  <!-- #################################################################################################################### -->
+	<!-- nanogallery2 javascript                                                                                              -->
+	<!-- <script type="text/javascript" src="js/jquery.nanogallery2.js"></script> -->
+ <script type="text/javascript" src="js/jquery.nanogallery2.core.js"></script>
+	<script type="text/javascript" src="js/jquery.nanogallery2.data_google.js"></script>
+	<script type="text/javascript" src="js/jquery.nanogallery2.data_flickr.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+
+
+      jQuery("#nanogallery").nanogallery2({
+        //kind: 'google',
+        //userID: '111186676244625461692',
+        kind: 'flickr',
+        userID: '149035168@N08',    // nano studio
+        //userID: '143414466@N06',
+        
+//        userID: '68188170@N06',   //--> huge albums+photos collection
+//        photoset: '72157656850365463',
+
+        //photoset: 'NONE',
+        blackList: 'forhomepage|scrapbook|profil',
+//        thumbnailDisplayTransition: 'slideDown',
+        thumbnailDisplayTransition: 'scaleDown_2',
+        thumbnailHeight: '200 XS150 SM150', thumbnailWidth: 'auto',
+        thumbnailL1Height: '200 XS100 SM150', thumbnailL1Width: '300 XS100 SM225',
+        galleryL1DisplayMode: 'pagination',
+        galleryDisplayMode: 'rows',
+        galleryPaginationMode: 'rectangles',
+        galleryMaxRows: 3,
+        galleryL1MaxRows: 1,
+        
+                
+        
+//thumbnailL1HoverEffect2: 'labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear|image_rotateZ_0_10|image_scale_100_130',
+//thumbnailL1HoverEffect2: '.nGY2GThumbnailSub_rotateX_0_50|labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear|image_translateX_-10px_10px',
+//thumbnailL1HoverEffect2: 'thumbnail_rotateX_20deg_0deg|thumbnail_scale_1.00_1.20|labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear|image_translateX_-10px_10px',
+thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.30|labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear',
+
+//thumbnailL1BuildInit2: 'image_scale_1.10',
+//galleryBuildInit2 : 'perspective_900px',
+
+        //thumbnailL1HoverEffect2: 'labelAppear',
+        //thumbnailHoverEffect2: 'label_font-size_1em_2em|title_color_#ffffff_#B2E16A|label_bottom_0px_15px|toolsAppear|image_grayscale_0%_100%|image_scale_100_110_5000',
+        //thumbnailHoverEffect2: 'label_font-size_1em_2em|title_backgroundColor_rgba(255,255,255,0.34)_rgba((115,166,35,0.6)|title_color_#000_#fff|label_bottom_0px_15px|toolsAppear|image_grayscale_0%_100%_500|image_scale_100_110_5000',
+        thumbnailHoverEffect2: 'label_font-size_1em_1.5em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((84,132,12,0.8)|title_color_#000_#fff|toolsAppear|image_grayscale_0%_100%_500|image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
+
+       // thumbnailToolbarImage : { topLeft: 'select', topRight : 'share,featured,download' },
+
+        //thumbnailToolbarImage:null,
+        //thumbnailToolbarAlbum:null,
+        thumbnailL1Label: { display: true, position:'overImageOnMiddle', hideIcons: true, titleFontSize: '1.2em', align: 'center'},
+        thumbnailLabel: { display: true, position:'overImageOnBottom', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true},
+        thumbnailBorderHorizontal: 0,
+        thumbnailBorderVertical: 0,
+        thumbnailSelectable: false,
+        breadcrumbHideIcons: true,
+        navigationFontSize: '1.2em',
+        gallerySorting: 'random',
+
+        colorScheme : { thumbnail: { titleShadow : 'none', descriptionShadow : 'none'} },
+        
+        // hiddenAlbums: ['5851968929721015169&authkey=CJSlhdKSgoiXtgE','6137218671601042145?authkey=CIbGp_iFjfuMkgE'],
+        //albumList2: ['5851968929721015169&authkey=CJSlhdKSgoiXtgE','6137218671601042145?authkey=CIbGp_iFjfuMkgE'],
+        // album: '5851968929721015169&authkey=Gv1sRgCJSlhdKSgoiXtgE',
+        
+        galleryFilterTags: true,
+        galleryL1FilterTags: false,
+        locationHash: true
+      });
+     });
+     
+     </script>
+
+
+  
+</head>
+<body>
+
+<h4>nanogallery2 - test page </h4>
+
+<div id="nanogallery">gallery_made_with_nanogallery2</div>
+
+</body>
