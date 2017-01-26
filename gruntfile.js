@@ -63,6 +63,17 @@ module.exports = function(grunt) {
           }
         }
       },      
+      csswoffmin: {
+        options: {
+          shorthandCompacting: false,
+          roundingPrecision: -1
+        },
+        target: {
+          files: {
+            'build/dist/css/nanogallery2.woff.min.css': ['src/css/nanogallery2.woff.css']
+          }
+        }
+      },      
       'gh-pages': {
         options: {
           base: 'build',
