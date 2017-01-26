@@ -54,13 +54,14 @@ module.exports = function(grunt) {
       },
       cssmin: {
         target: {
-        files: [{
-          expand: true,
-          cwd: 'src/css',
-          src: ['*.css', '!*.min.css'],
-          dest: 'dest/css',
-          ext: '.min.css'
-        }]
+          files: [{
+            expand: true,
+            cwd: 'src/css',
+            src: ['*.css', '!*.min.css'],
+            dest: 'dest/css',
+            ext: '.min.css'
+          }]
+        }
       },      
       'gh-pages': {
         options: {
@@ -84,7 +85,6 @@ module.exports = function(grunt) {
       'concat:package',
       'uglify:standardTarget',
       'cssmin',
-      'csswoffmin',
       'gh-pages'
       /* 'uglify:standardTarget',
       'concat:minimalDebug',
