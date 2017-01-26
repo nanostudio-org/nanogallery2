@@ -59,8 +59,8 @@ module.exports = function(grunt) {
         },
         target: {
           files: {
-            'dest/css/nanogallery2.min.css': ['src/css/nanogallery2.css'],
-            'dest/css/nanogallery2.woff.min.css': ['src/css/nanogallery2.woff.css']
+            'dist/css/nanogallery2.min.css': ['src/css/nanogallery2.css'],
+            'dist/css/nanogallery2.woff.min.css': ['src/css/nanogallery2.woff.css']
           }
         }
       },      
