@@ -1,4 +1,4 @@
- 
+
 
  <div class="jumbotron ngy2dark">
     <div class="container ">
@@ -249,19 +249,27 @@
 
     <br><br><br><br><br><br>
 
-    <div class="row text-center">
+    <div class="row text-center" >
       <div class="col-md-1" ></div>
       <div class="col-md-10" >
         <h2>Licensing - clear and simple</h2>
         <br><br><br><br>
+      </div>
+      <div class="col-md-1" ></div>
+    </div>
+    <div class="row text-center" style="background-color:#eee;">
+      <div class="col-md-1" ></div>
+      <div class="col-md-10" >
+        <br>
+        <h2><b>nanogallery2 for HTML</b></h2>
+        <br>
         <p class="lead">nanogallery2 is licensed under a dual-license model: a <a href="https://www.gnu.org/licenses/gpl-3.0.html/" target="_blank">GPLv3 license</a> for non-commercial use and a proprietary commercial license. 
         <font color="#d00"><b>nanogallery2 may be used in commercial projects and applications, or in business environments with the purchase of a commercial license.</b></font></p>
         <br>
       </div>
       <div class="col-md-1" ></div>
     </div>
-
-    <div class="row">
+    <div class="row" style="background-color:#eee;">
       <div class="col-md-2" ></div>
       <div class="col-md-8 text-center" >
       
@@ -272,9 +280,7 @@
       <div class="col-md-2" ></div>
     </div>
     
-    <br><br><br><br>
-    
-    <div class="row">
+    <div class="row" style="background-color:#eee;"><br><br><br><br>
       <div class="col-md-1" ></div>
       <div class="col-md-5 text-justify" >
         <h3>Open source license</h3><br>
@@ -294,6 +300,23 @@
         </p>
         <br><br>
         
+      </div>
+      <div class="col-md-1" ></div>
+    </div>
+
+    <br><br><br>
+    <div class="row text-center" style="background-color:#eee;">
+      <div class="col-md-1" ></div>
+      <div class="col-md-10" >
+        <br>
+        <h2><b>nanogallery2 portable</b></h2>
+        <br>
+        <p class="lead">
+          This version is completly free. Registration is required to display more than 10 images.<br>
+          Some restrictions may apply depending on your website or blog content.<br><br>
+          <a href="https://nano.gallery" class="btn btn-primary btn-lg" target="_blank">more infos &nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i> &nbsp; https://nano.gallery</a>
+        </p>
+        <br>
       </div>
       <div class="col-md-1" ></div>
     </div>
@@ -555,7 +578,7 @@ thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.30|l
         //thumbnailHoverEffect2: 'label_font-size_1em_2em|title_backgroundColor_rgba(255,255,255,0.34)_rgba((115,166,35,0.6)|title_color_#000_#fff|label_bottom_0px_15px|toolsAppear|image_grayscale_0%_100%_500|image_scale_100_110_5000',
         thumbnailHoverEffect2: 'label_font-size_1em_1.5em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((84,132,12,0.8)|title_color_#000_#fff|toolsAppear|image_grayscale_0%_100%_500|image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
 
-        thumbnailToolbarImage : { topLeft: 'select', topRight : 'share,featured,download' },
+       // thumbnailToolbarImage : { topLeft: 'select', topRight : 'share,featured,download' },
 
         //thumbnailToolbarImage:null,
         //thumbnailToolbarAlbum:null,
@@ -706,15 +729,13 @@ thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.30|l
 
 
       // OWL CAROUSEL
-$(document).ready(function(){
-  $(".owl-carousel").owlCarousel({
-loop:true,
-    margin:10,
-    nav:true,
-    navText: ['<i class="fa fa-chevron-left" aria-hidden="true"></i> &nbsp', '&nbsp<i class="fa fa-chevron-right" aria-hidden="true"></i>'],
-    items: 1
-  });
-});      
+      $(".owl-carousel").owlCarousel({
+        loop:true,
+            margin:10,
+            nav:true,
+            navText: ['<i class="fa fa-chevron-left" aria-hidden="true"></i> &nbsp', '&nbsp<i class="fa fa-chevron-right" aria-hidden="true"></i>'],
+            items: 1
+        });
 
       
       //  RANDOM DEMO
@@ -759,8 +780,8 @@ loop:true,
               blackList: 'forhomepage|scrapbook|profil',
               thumbnailDisplayTransition: 'slideUp',
               thumbnailHeight: '150', thumbnailWidth: 'auto',
-              thumbnailGutterWidth: 1,
-              thumbnailGutterHeight: 1,
+              thumbnailGutterWidth: 0,
+              thumbnailGutterHeight: 0,
               thumbnailBorderHorizontal: 0,
               thumbnailBorderVertical: 0,
               //galleryLastRowFull: true,
@@ -829,12 +850,16 @@ loop:true,
               thumbnailHeight: '200', thumbnailWidth: '200',
               galleryDisplayMode: 'moreButton',
               galleryDisplayMoreStep: 2,
+              thumbnailBorderVertical: 5,
+              thumbnailBorderHorizontal: 5,
+              thumbnailGutterWidth: 10,
+              thumbnailGutterHeight: 10,
               thumbnailHoverEffect2 : 'title_backgroundColor_rgba(255,255,255,0.34)_rgba(((84,84,84,0.8)|image_saturate_200%_100%|image_blur_1px_0px|labelAppear',
               thumbnailToolbarImage : { topRight : '', bottomRight : '' },
               //thumbnailLabel: { display: true, position:'overImageOnMiddle', titleFontSize: '1.5em', align: 'left', titleMultiLine:true},
               thumbnailLabel: { display: true, position:'overImageOnTop', hideIcons: false, titleFontSize: '1.2em', align: 'left', titleMultiLine:true},
               gallerySorting: 'random',
-              colorScheme : { thumbnail: { labelBackground: 'rgba(34, 34, 34, .0)', titleShadow : 'none'} },
+              colorScheme : { thumbnail: { labelBackground: 'rgba(34, 34, 34, .0)', titleShadow : 'none', borderColor: '#fff'} },
               locationHash: true
             });
             break;
