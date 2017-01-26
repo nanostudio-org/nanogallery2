@@ -112,7 +112,7 @@
               k+= key + '=' + jqxhr[key] +'<br>';
             }
             var err = textStatus + ', ' + error + ' ' + k + '<br><br>URL:'+url;
-            NanoAlert("Could not retrieve Google data. Error: " + err);
+            NanoAlert(G, "Could not retrieve Google data. Error: " + err);
 
           });
           
@@ -121,7 +121,7 @@
         GI_loadJSON(url,1);
       }
       catch(e) {
-        NanoAlert("Could not retrieve Google data. Error: " + e);
+        NanoAlert(G, "Could not retrieve Google data. Error: " + e);
       }
     }
 
@@ -272,7 +272,7 @@
         var tId = setTimeout( function() {
           // workaround to handle JSONP (cross-domain) errors
           PreloaderDisplay(false);
-          NanoAlert('Could not retrieve AJAX data...');
+          NanoAlert(G, 'Could not retrieve AJAX data...');
         }, 60000 );
         jQuery.getJSON(url, function(data, status, xhr) {
           clearTimeout(tId);
@@ -307,7 +307,7 @@
         .fail( function(jqxhr, textStatus, error) {
           clearTimeout(tId);
           PreloaderDisplay(false);
-          NanoAlert("Could not retrieve ajax data (google): " + textStatus + ', ' + error);
+          NanoAlert(G, "Could not retrieve ajax data (google): " + textStatus + ', ' + error);
           jQuery(document).dequeue('GoogleAlbumWithAuthkey');
         });      
       });      
@@ -427,7 +427,8 @@
 
     // shortcuts to NGY2Tools functions (with context)
     var PreloaderDisplay = NGY2Tools.PreloaderDisplay.bind(G);
-    var NanoAlert = NGY2Tools.NanoAlert.bind(G);
+    // var NanoAlert = NGY2Tools.NanoAlert.bind(G);
+    var NanoAlert = NGY2Tools.NanoAlert;
     var GetImageTitleFromURL = NGY2Tools.GetImageTitleFromURL.bind(G);
     var FilterAlbumName = NGY2Tools.FilterAlbumName.bind(G);
     var AlbumPostProcess = NGY2Tools.AlbumPostProcess.bind(G);
