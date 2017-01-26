@@ -53,8 +53,8 @@ module.exports = function(grunt) {
         }
       },
       cssmin: {
-        'dist/css/nanogallery2.min.css': 'src/css/nanogallery2.css',
-        'dist/css/nanogallery2.woff.min.css': 'src/css/nanogallery2.woff.css'
+        'build/dist/css/nanogallery2.min.css': 'src/css/nanogallery2.css',
+        'build/dist/css/nanogallery2.woff.min.css': 'src/css/nanogallery2.woff.css'
       },      
       'gh-pages': {
         options: {
