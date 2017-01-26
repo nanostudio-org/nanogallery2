@@ -31,8 +31,6 @@
 
   $.nanogallery2 = function (elt, options) {
   
-  $("#debug").text("ok1");
-  
     // To avoid scope issues, use '_this' instead of 'this'
     // to reference this class from internal events and functions.
     var _this = this;
@@ -45,7 +43,7 @@
     _this.$e.data('nanogallery2data', _this);
 
     _this.init = function () {
-  $("#debug").text("ok2");
+  
       // define these global objects only once per HTML page
       if (typeof window.NGY2Item === 'undefined') {
   
@@ -831,7 +829,7 @@
           
       }
 
-    $("#debug").text("ok3");
+    
       _this.options = jQuery.extend(true, {}, jQuery.nanogallery2.defaultOptions, options);
       // Initialization code
       _this.nG2=null;
@@ -933,13 +931,11 @@
       descriptionMaxLength :      0,
       descriptionMultiLine :      false,
       hideIcons :                 true,
-      title :                     '',
-      titleMultiLine:             false,
-      descriptionMultiLine:       false
+      title :                     ''
     },
 
     // thumbnailToolbarImage : { position: 'topRight', content : 'share,socialShare,download,openFlick,openPicasa,likeFacebook,geolocalisation' },
-    thumbnailToolbarImage :       { topLeft: 'select', topRight : 'share,featured,download,info' },
+    thumbnailToolbarImage :       { topLeft: 'select', topRight : 'share,featured,download' },
     thumbnailToolbarAlbum :       { topLeft: 'select', topRight : 'share,counter' },
     thumbnailDisplayInterval :    30,
     thumbnailDisplayTransition :  'fadeIn',
@@ -1719,8 +1715,6 @@
       BuildSkeleton();
       SetGlobalEvents();
       
-NGY2Tools.NanoAlert(G, 'C1');      
-
       // check if only one specific album will be used
       var albumToDisplay=G.O.album;
       if( albumToDisplay == '' && G.O.photoset != '' ) {
@@ -1754,8 +1748,6 @@ NGY2Tools.NanoAlert(G, 'C1');
           return;
         }
       }
-
-NGY2Tools.NanoAlert(G, 'C2');      
       
       // use full content
       
@@ -2196,7 +2188,8 @@ NGY2Tools.NanoAlert(G, 'C2');
       }
       
       G.GOM.pagination.currentPage = pn;
-      G.$E.base.trigger('pageChanged.nanogallery2', new Event('pageChanged.nanogallery2'));
+      // G.$E.base.trigger('pageChanged.nanogallery2', new Event('pageChanged.nanogallery2'));
+      TriggerCustomEvent('pageChanged');
 
       GalleryDisplay( true );
     }
@@ -2226,7 +2219,8 @@ NGY2Tools.NanoAlert(G, 'C2');
       }
 
       G.GOM.pagination.currentPage = pn;
-      G.$E.base.trigger('pageChanged.nanogallery2', new Event('pageChanged.nanogallery2'));
+      // G.$E.base.trigger('pageChanged.nanogallery2', new Event('pageChanged.nanogallery2'));
+      TriggerCustomEvent('pageChanged');
       GalleryDisplay( true );
     }
 
@@ -2307,7 +2301,8 @@ NGY2Tools.NanoAlert(G, 'C2');
     // RENDER THE GALLERY
     function GalleryRender( albumIdx ) {
 
-      G.$E.base.trigger('galleryRenderStart.nanogallery2', new Event('galleryRenderStart.nanogallery2'));
+      // G.$E.base.trigger('galleryRenderStart.nanogallery2', new Event('galleryRenderStart.nanogallery2'));
+      TriggerCustomEvent('galleryRenderStart');
 
       G.layout.SetEngine();
       G.galleryResizeEventEnabled=false;
@@ -2444,7 +2439,8 @@ NGY2Tools.NanoAlert(G, 'C2');
       }
       G.GOM.albumIdx=albumIdx;
 
-      G.$E.base.trigger('galleryRenderEnd.nanogallery2', new Event('galleryRenderEnd.nanogallery2'));
+      // G.$E.base.trigger('galleryRenderEnd.nanogallery2', new Event('galleryRenderEnd.nanogallery2'));
+      TriggerCustomEvent('galleryRenderEnd');
       
       // Step 1: populate GOM
       if( GalleryPopulateGOM() ) {
@@ -2454,11 +2450,12 @@ NGY2Tools.NanoAlert(G, 'C2');
 
         // step 3: display gallery
         GalleryDisplay( false );
+        G.galleryResizeEventEnabled=true;
+      }
+      else {
+        G.galleryResizeEventEnabled=true;
       }
       
-      //      G.containerThumbnailsDisplayed=true;
-      
-      G.galleryResizeEventEnabled=true;
       if( G.O.debugMode ) {
         console.log('GalleryRenderPart3: '+ (new Date()-d));
       }
@@ -2527,7 +2524,8 @@ NGY2Tools.NanoAlert(G, 'C2');
         }
       }
 
-      G.$E.base.trigger('galleryObjectModelBuilt.nanogallery2', new Event('galleryObjectModelBuilt.nanogallery2'));
+      // G.$E.base.trigger('galleryObjectModelBuilt.nanogallery2', new Event('galleryObjectModelBuilt.nanogallery2'));
+      TriggerCustomEvent('galleryObjectModelBuilt');
       
       if( imageSizeRequested ) {
         // preload images to retrieve their size and then resize the gallery (=GallerySetLayout()+ GalleryDisplay())
@@ -2637,7 +2635,8 @@ NGY2Tools.NanoAlert(G, 'C2');
           break;
       }
       
-      G.$E.base.trigger('galleryLayoutApplied.nanogallery2', new Event('galleryLayoutApplied.nanogallery2'));
+      // G.$E.base.trigger('galleryLayoutApplied.nanogallery2', new Event('galleryLayoutApplied.nanogallery2'));
+      TriggerCustomEvent('galleryLayoutApplied');
       return r;
 
     }
@@ -3151,8 +3150,8 @@ NGY2Tools.NanoAlert(G, 'C2');
         }, nbBuild*G.tn.displayInterval);
       }
       
-      G.$E.base.trigger('galleryDisplayed.nanogallery2', new Event('galleryDisplayed.nanogallery2'));
-
+      // G.$E.base.trigger('galleryDisplayed.nanogallery2', new Event('galleryDisplayed.nanogallery2'));
+      TriggerCustomEvent('galleryDisplayed');
     }
     
     
@@ -5799,7 +5798,8 @@ console.log('#DisplayPhoto : '+  imageIdx);
           if(typeof G.O.fnShoppingCartUpdated === 'function'){
             G.O.fnShoppingCartUpdated(G.shoppingCart);
           }
-          G.$E.base.trigger('shoppingCartUpdated.nanogallery2', new Event('shoppingCartUpdated.nanogallery2'));
+          // G.$E.base.trigger('shoppingCartUpdated.nanogallery2', new Event('shoppingCartUpdated.nanogallery2'));
+          TriggerCustomEvent('shoppingCartUpdated');
           return;
         }
       }
@@ -5810,7 +5810,8 @@ console.log('#DisplayPhoto : '+  imageIdx);
         if(typeof G.O.fnShoppingCartUpdated === 'function'){
           G.O.fnShoppingCartUpdated(G.shoppingCart);
         }
-        G.$E.base.trigger('shoppingCartUpdated.nanogallery2', new Event('shoppingCartUpdated.nanogallery2'));
+        // G.$E.base.trigger('shoppingCartUpdated.nanogallery2', new Event('shoppingCartUpdated.nanogallery2'));
+        TriggerCustomEvent('shoppingCartUpdated');
       }
     }
     
@@ -6746,7 +6747,8 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
       if( G.VOM.viewerImageIsChanged ) { return; }
       if( (new Date().getTime()) - G.VOM.timeImgChanged < 300 ) { return; }
       
-      G.$E.base.trigger('lightboxNextImage.nanogallery2', new Event('lightboxNextImage.nanogallery2'));
+      // G.$E.base.trigger('lightboxNextImage.nanogallery2', new Event('lightboxNextImage.nanogallery2'));
+      TriggerCustomEvent('lightboxNextImage');
       DisplayInternalViewer(GetNextImageIdx(G.VOM.currItemIdx), 'nextImage');
     };
     
@@ -6758,7 +6760,8 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
         SlideshowToggle();
       }
       
-      G.$E.base.trigger('lightboxPreviousImage.nanogallery2', new Event('lightboxPreviousImage.nanogallery2'));
+      // G.$E.base.trigger('lightboxPreviousImage.nanogallery2', new Event('lightboxPreviousImage.nanogallery2'));
+      TriggerCustomEvent('lightboxPreviousImage');
       DisplayInternalViewer(GetPreviousImageIdx(G.VOM.currItemIdx), 'previousImage');
     };
     
@@ -6998,7 +7001,8 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
       //});
 
       G.VOM.viewerImageIsChanged=false;
-      G.$E.base.trigger('lightboxImageDisplayed.nanogallery2', new Event('lightboxImageDisplayed.nanogallery2'));
+      // G.$E.base.trigger('lightboxImageDisplayed.nanogallery2', new Event('lightboxImageDisplayed.nanogallery2'));
+      TriggerCustomEvent('lightboxImageDisplayed');
       
     }
     
@@ -7369,6 +7373,18 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
       }
       
     }
+    
+    function TriggerCustomEvent ( eventName ) {
+      // G.$E.base.trigger('pageChanged.nanogallery2', new Event('pageChanged.nanogallery2'));
+      var eN = eventName + '.nanogallery2';
+      try {
+          event = new Event( eN );
+        } catch(e) {
+          event = document.createEvent('Event');
+          event.initEvent(eN, false, false);
+        }      
+    }
+    
     
     /** @function SetGlobalEvents */
     function SetGlobalEvents() {
