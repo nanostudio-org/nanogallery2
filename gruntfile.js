@@ -53,26 +53,14 @@ module.exports = function(grunt) {
         }
       },
       cssmin: {
-        options: {
-          shorthandCompacting: false,
-          roundingPrecision: -1
-        },
         target: {
-          files: {
-            'build/dist/css/nanogallery2.min.css': ['src/css/nanogallery2.css']
-          }
-        }
-      },      
-      csswoffmin: {
-        options: {
-          shorthandCompacting: false,
-          roundingPrecision: -1
-        },
-        target: {
-          files: {
-            'build/dist/css/nanogallery2.woff.min.css': ['src/css/nanogallery2.woff.css']
-          }
-        }
+        files: [{
+          expand: true,
+          cwd: 'src/css',
+          src: ['*.css', '!*.min.css'],
+          dest: 'dest/css',
+          ext: '.min.css'
+        }]
       },      
       'gh-pages': {
         options: {
@@ -96,6 +84,7 @@ module.exports = function(grunt) {
       'concat:package',
       'uglify:standardTarget',
       'cssmin',
+      'csswoffmin',
       'gh-pages'
       /* 'uglify:standardTarget',
       'concat:minimalDebug',
