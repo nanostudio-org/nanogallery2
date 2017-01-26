@@ -1,7 +1,7 @@
 {
   "name": "nanogallery2",
-  "version": "0.9.1",
-  "homepage": "http://nanogallery.brisbois.fr",
+  "version": "0.9.2",
+  "homepage": "http://nanogallery2.nanostudio.org",
   "authors": [
     "Christophe Brisbois"
   ],
@@ -17,7 +17,6 @@
     "slideshow",
     "flickr",
     "google photos",
-    "googleplus",
     "picasa",
     "swipe",
     "responsive",
