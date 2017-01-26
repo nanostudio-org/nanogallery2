@@ -7377,12 +7377,14 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
     function TriggerCustomEvent ( eventName ) {
       // G.$E.base.trigger('pageChanged.nanogallery2', new Event('pageChanged.nanogallery2'));
       var eN = eventName + '.nanogallery2';
+      var event=null;
       try {
           event = new Event( eN );
         } catch(e) {
           event = document.createEvent('Event');
           event.initEvent(eN, false, false);
-        }      
+        }
+        G.$E.base.trigger(eN, event);
     }
     
     
