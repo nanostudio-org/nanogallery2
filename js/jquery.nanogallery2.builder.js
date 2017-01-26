@@ -80,6 +80,8 @@
       jQuery("#nanoGallery3").nanogallery2('destroy');
       
       var markupSource='';
+      var colorScheme = {};
+      var colorSchemeChanged=false;
       
       var ds=$f.find('select[name=dataSource]').val();
       switch( ds ) {
@@ -109,6 +111,9 @@
               addSetting(settings2, 'albumList2', v);
             }
           }
+          if( $f.find('[name=googleOpenOriginal]').prop('checked') ) {
+            addSetting(settings2, 'thumbnailOpenOriginal', true); 
+          }
           break;
         case 'flickr':
           addSetting(settings2, 'userID', $('#flickrUserID').val());
@@ -134,6 +139,9 @@
             else {
               addSetting(settings2, 'albumList2', v);
             }
+          }
+          if( $f.find('[name=flickrOpenOriginal]').prop('checked') ) {
+            addSetting(settings2, 'thumbnailOpenOriginal', true); 
           }
           break;
         default:
@@ -166,6 +174,12 @@
       // Thumbnail border
       addSetting(settings2, 'thumbnailBorderVertical', parseInt($f.find('[name=thumbnailBorderVertical]').val()));
       addSetting(settings2, 'thumbnailBorderHorizontal', parseInt($f.find('[name=thumbnailBorderHorizontal]').val()));
+
+      var thumbnailBorderColor= $('#thumbnailBorderColor').colorpicker('getValue');
+      if( thumbnailBorderColor != 'rgba(0,0,0,1)' ) {
+        settings2.colorScheme = { thumbnail: { borderColor: thumbnailBorderColor } };
+      }
+      
       // Thumbnail display transition
       addSetting(settings2, 'thumbnailDisplayTransition', $f.find('select[name=thumbnailDisplayTransition]').val());
       addSetting(settings2, 'thumbnailDisplayTransitionDuration', parseInt($f.find('[name=thumbnailDisplayTransitionDuration]').val()));
@@ -205,6 +219,10 @@
         settings.thumbnailLabel.descriptionMultiLine=false;
         addSettingThumbnailLabel(settings2, 'descriptionMultiLine', false );
       }
+      if( $f.find('[name=allowHTMLinData]').prop('checked') ) {
+        addSetting(settings2, 'allowHTMLinData', true); 
+      }
+
 
 
       // thumbnail hover effect
@@ -338,20 +356,22 @@
         addSetting(settings2, 'thumbnailLevelUp', false);
       }
 
+
       
       var defSettings=cloneJSObject(jQuery.nanogallery2.defaultOptions);
 
       settingsWithoutDefault=GetSettingsWithoutDefaultValues(settings,defSettings );
       
+            
       var html_part1='&lt;html&gt;\n';
       html_part1+='  &lt;head&gt;\n';
       html_part1+='    &lt;meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"&gt;\n\n';
-      html_part1+='    &lt;script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"&gt;&lt;/script&gt;\n\n';
-      html_part1+='    &lt;link href="http://nanogallery2.nanostudio.org/css/nanogallery2.css" rel="stylesheet" type="text/css"&gt;\n';
+      html_part1+='    &lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"&gt;&lt;/script&gt;\n\n';
+      html_part1+='    &lt;link href="https://unpkg.com/nanogallery2/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css"&gt;\n';
       // html_part1+='    &lt;script type="text/javascript" src="jquery.nanogallery2.core.js"&gt;&lt;/script&gt;\n';
       // html_part1+='    &lt;script type="text/javascript" src="jquery.nanogallery2.data.google.js"&gt;&lt;/script&gt;\n';
       // html_part1+='    &lt;script type="text/javascript" src="jquery.nanogallery2.data.flickr.js"&gt;&lt;/script&gt;\n';
-      html_part1+='    &lt;script type="text/javascript" src="http://nanogallery2.nanostudio.org/js/jquery.nanogallery2.js"&gt;&lt;/script&gt;\n';
+      html_part1+='    &lt;script type="text/javascript" src="https://unpkg.com/nanogallery2/dist/jquery.nanogallery2.min.js"&gt;&lt;/script&gt;\n';
       html_part1+='\n';
       var html_part2='  &lt;/head&gt;\n';
       html_part2+='  &lt;body&gt;\n\n';

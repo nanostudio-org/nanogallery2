@@ -63,7 +63,7 @@
       var tId = setTimeout( function() {
         // workaround to handle JSONP (cross-domain) errors
         PreloaderDisplay(false);
-        NanoAlert('Could not retrieve AJAX data...');
+        NanoAlert(G, 'Could not retrieve AJAX data...');
       }, 60000 );
       
       var sourceData=[];
@@ -93,7 +93,7 @@
           var pages=0;
           if( kind == 'album' ) {
             if( data.stat !== undefined && data.stat === 'fail' ) {
-              NanoAlert("Could not retrieve Flickr album list: " + data.message + " (code: "+data.code+").");
+              NanoAlert(G, "Could not retrieve Flickr album list: " + data.message + " (code: "+data.code+").");
               return false;
             }
             sourceData=sourceData.concat(data.photosets.photoset);
@@ -108,7 +108,7 @@
             else {
               // content of one album
               if( data.stat !== undefined && data.stat === 'fail' ) {
-                NanoAlert("Could not retrieve Flickr album: " + data.message + " (code: "+data.code+").");
+                NanoAlert(G, "Could not retrieve Flickr album: " + data.message + " (code: "+data.code+").");
                 return false;
               }
               if( G.I[albumIdx].title == '' ) {
@@ -130,7 +130,7 @@
         .fail( function(jqxhr, textStatus, error) {
           clearTimeout(tId);
           PreloaderDisplay(false);
-          NanoAlert("Could not retrieve Flickr ajax data: " + textStatus + ', ' + error);
+          NanoAlert(G, "Could not retrieve Flickr ajax data: " + textStatus + ', ' + error);
         });
 
       }
@@ -336,7 +336,7 @@
 
     // shortcuts to NGY2Tools functions (with context)
     var PreloaderDisplay = NGY2Tools.PreloaderDisplay.bind(G);
-    var NanoAlert = NGY2Tools.NanoAlert.bind(G);
+    var NanoAlert = NGY2Tools.NanoAlert;
     var GetImageTitleFromURL = NGY2Tools.GetImageTitleFromURL.bind(G);
     var FilterAlbumName = NGY2Tools.FilterAlbumName.bind(G);
     var AlbumPostProcess = NGY2Tools.AlbumPostProcess.bind(G);

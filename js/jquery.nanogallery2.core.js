@@ -18,14 +18,6 @@
  */
 
 
-// share -> icons + mail
-// thumbnailDisplayTransition :  'randomScale'
-// thumbnailHoverEffect2 : 'toolsSlideDown', 'toolsSlideUp'
-// no ID --> set ID to 'my_nanogallery' (ID is required to manage correctly the location hash)
-// pagination with numbers -> bug fixed
-// thumbnailHoverEffect2: new supported CSS filters (contrast, opacity, saturate)
-// documentation: some corrections
-
 // ###########################################
 // ##### nanogallery2 as a JQUERY PLUGIN #####
 // ###########################################
@@ -102,15 +94,15 @@
 
           /** @function nanoAlert */
           /* Display an alert message in a specific element */
-          NGY2Tools.NanoAlert = function(msg, verbose) {
-            NGY2Tools.NanoConsoleLog.call(this, msg);
-            if( this.$E.conConsole != null ) {
-              this.$E.conConsole.css({visibility:'visible', minHeight:'100px'});
+          NGY2Tools.NanoAlert = function(context, msg, verbose) {
+            NGY2Tools.NanoConsoleLog.call(context, msg);
+            if( context.$E.conConsole != null ) {
+              context.$E.conConsole.css({visibility:'visible', minHeight:'100px'});
               if( verbose == false ) {
-                this.$E.conConsole.append('<p>'+ msg + '</p>');
+                context.$E.conConsole.append('<p>'+ msg + '</p>');
               }
               else {
-                this.$E.conConsole.append('<p>nanoGALLERY2: '+msg+ ' ['+this.baseEltID+']</p>');
+                context.$E.conConsole.append('<p>nanogallery2: '+msg+ ' ['+context.baseEltID+']</p>');
               }
               //alert('nanoGALLERY: ' + msg);
             }
@@ -119,8 +111,8 @@
   
           /** @function NanoConsoleLog */
           /* write message to the browser console */
-          NGY2Tools.NanoConsoleLog = function(msg) {
-            if (window.console) { console.log('nanoGALLERY2: ' + msg + ' ['+this.baseEltID+']'); }
+          NGY2Tools.NanoConsoleLog = function(context, msg) {
+            if (window.console) { console.log('nanogallery2: ' + msg + ' ['+context.baseEltID+']'); }
           };
           
 
@@ -934,9 +926,7 @@
       descriptionMaxLength :      0,
       descriptionMultiLine :      false,
       hideIcons :                 true,
-      title :                     '',
-      titleMultiLine:             false,
-      descriptionMultiLine:       false
+      title :                     ''
     },
 
     // thumbnailToolbarImage : { position: 'topRight', content : 'share,socialShare,download,openFlick,openPicasa,likeFacebook,geolocalisation' },
@@ -946,6 +936,7 @@
     thumbnailDisplayTransition :  'fadeIn',
     thumbnailDisplayTransitionDuration: 240,
     thumbnailOpenImage :          true,
+    thumbnailOpenOriginal :       false,
     thumbnailGlobalImageTitle :   '',
     thumbnailGlobalAlbumTitle :   '',
     
@@ -1009,28 +1000,31 @@
       thumbnailUnselected:          '<i style="color:#bff;" class="nGY2Icon icon-circle-empty"></i>',
       thumbnailFeatured:            '<i style="color:#dd5;" class="nGY2Icon icon-star"></i>',
       thumbnailCounter:             '<i class="nGY2Icon icon-picture"></i>',
-      thumbnailShare:               '<i class="nGY2Icon icon-share"></i>',
-      thumbnailDownload:            '<i class="nGY2Icon icon-download"></i>',
+      thumbnailShare:               '<i class="nGY2Icon icon-ngy2_share2"></i>',
+      thumbnailDownload:            '<i class="nGY2Icon icon-ngy2_download2"></i>',
+      thumbnailInfo:                '<i class="nGY2Icon icon-ngy2_info2"></i>',
       thumbnailCart:                '<i class="nGY2Icon icon-basket"></i>',
-      thumbnailAlbumUp:             '<i style="font-size: 3em;" class="nGY2Icon icon-level-up"></i>',
+      thumbnailAlbumUp:             '<i style="font-size: 3em;" class="nGY2Icon icon-ngy2_chevron_up2"></i>',
       paginationNext:               '<i class="nGY2Icon icon-right-open"></i>',
       paginationPrevious:           '<i class="nGY2Icon icon-left-open"></i>',
       galleryMoreButton:            '<i class="nGY2Icon icon-picture"></i> &nbsp; <i class="nGY2Icon icon-right-open"></i>',
-      buttonClose:                  '<i class="nGY2Icon icon-cancel"></i>',
-      viewerPrevious:               '<i class="nGY2Icon icon-left-open"></i>',
-      viewerNext:                   '<i class="nGY2Icon icon-right-open"></i>',
-      viewerDownload:               '<i class="nGY2Icon icon-download"></i>',
+      buttonClose:                  '<i class="nGY2Icon icon-ngy2_close2"></i>',
+      viewerPrevious:               '<i class="nGY2Icon icon-ngy2_chevron-left"></i>',
+      viewerNext:                   '<i class="nGY2Icon icon-ngy2_chevron-right"></i>',
+      viewerImgPrevious:            '<i class="nGY2Icon icon-ngy2_chevron_left3"></i>',
+      viewerImgNext:                '<i class="nGY2Icon icon-ngy2_chevron_right3"></i>',
+      viewerDownload:               '<i class="nGY2Icon icon-ngy2_download2"></i>',
       viewerToolbarMin:             '<i class="nGY2Icon icon-ellipsis-vert"></i>',
       viewerToolbarStd:             '<i class="nGY2Icon icon-menu"></i>',
       viewerPlay:                   '<i class="nGY2Icon icon-play"></i>',
       viewerPause:                  '<i class="nGY2Icon icon-pause"></i>',
       viewerFullscreenOn:           '<i class="nGY2Icon icon-resize-full"></i>',
       viewerFullscreenOff:          '<i class="nGY2Icon icon-resize-small"></i>',
-      viewerZoomIn:                 '<i class="nGY2Icon icon-zoom-in"></i>',
-      viewerZoomOut:                '<i class="nGY2Icon icon-zoom-out"></i>',
-      viewerLinkOriginal:           '<i class="nGY2Icon icon-link-ext"></i>',
-      viewerInfo:                   '<i class="nGY2Icon icon-info"></i>',
-      viewerShare:                  '<i class="nGY2Icon icon-share"></i>',
+      viewerZoomIn:                 '<i class="nGY2Icon icon-ngy2_zoom_in2"></i>',
+      viewerZoomOut:                '<i class="nGY2Icon icon-ngy2_zoom_out2"></i>',
+      viewerLinkOriginal:           '<i class="nGY2Icon icon-ngy2_external2"></i>',
+      viewerInfo:                   '<i class="nGY2Icon icon-ngy2_info2"></i>',
+      viewerShare:                  '<i class="nGY2Icon icon-ngy2_share2"></i>',
       user:                         '<i class="nGY2Icon icon-user"></i>',
       location:                     '<i class="nGY2Icon icon-location"></i>',
       config:                       '<i class="nGY2Icon icon-wrench"></i>',
@@ -1692,8 +1686,8 @@
       
     
     // shortcut with G context to NGY2TOOLS
-    var NanoAlert =           NGY2Tools.NanoAlert.bind(G);
-    var NanoConsoleLog =      NGY2Tools.NanoConsoleLog.bind(G);
+    // var NanoAlert =           NGY2Tools.NanoAlert.bind(G);
+    // var NanoConsoleLog =      NGY2Tools.NanoConsoleLog.bind(G);
 
     
     /** @function initiateGallery2 */
@@ -2189,7 +2183,8 @@
       }
       
       G.GOM.pagination.currentPage = pn;
-      G.$E.base.trigger('pageChanged.nanogallery2', new Event('pageChanged.nanogallery2'));
+      // G.$E.base.trigger('pageChanged.nanogallery2', new Event('pageChanged.nanogallery2'));
+      TriggerCustomEvent('pageChanged');
 
       GalleryDisplay( true );
     }
@@ -2219,7 +2214,8 @@
       }
 
       G.GOM.pagination.currentPage = pn;
-      G.$E.base.trigger('pageChanged.nanogallery2', new Event('pageChanged.nanogallery2'));
+      // G.$E.base.trigger('pageChanged.nanogallery2', new Event('pageChanged.nanogallery2'));
+      TriggerCustomEvent('pageChanged');
       GalleryDisplay( true );
     }
 
@@ -2300,7 +2296,8 @@
     // RENDER THE GALLERY
     function GalleryRender( albumIdx ) {
 
-      G.$E.base.trigger('galleryRenderStart.nanogallery2', new Event('galleryRenderStart.nanogallery2'));
+      // G.$E.base.trigger('galleryRenderStart.nanogallery2', new Event('galleryRenderStart.nanogallery2'));
+      TriggerCustomEvent('galleryRenderStart');
 
       G.layout.SetEngine();
       G.galleryResizeEventEnabled=false;
@@ -2437,7 +2434,8 @@
       }
       G.GOM.albumIdx=albumIdx;
 
-      G.$E.base.trigger('galleryRenderEnd.nanogallery2', new Event('galleryRenderEnd.nanogallery2'));
+      // G.$E.base.trigger('galleryRenderEnd.nanogallery2', new Event('galleryRenderEnd.nanogallery2'));
+      TriggerCustomEvent('galleryRenderEnd');
       
       // Step 1: populate GOM
       if( GalleryPopulateGOM() ) {
@@ -2447,11 +2445,12 @@
 
         // step 3: display gallery
         GalleryDisplay( false );
+        G.galleryResizeEventEnabled=true;
+      }
+      else {
+        G.galleryResizeEventEnabled=true;
       }
       
-      //      G.containerThumbnailsDisplayed=true;
-      
-      G.galleryResizeEventEnabled=true;
       if( G.O.debugMode ) {
         console.log('GalleryRenderPart3: '+ (new Date()-d));
       }
@@ -2520,7 +2519,8 @@
         }
       }
 
-      G.$E.base.trigger('galleryObjectModelBuilt.nanogallery2', new Event('galleryObjectModelBuilt.nanogallery2'));
+      // G.$E.base.trigger('galleryObjectModelBuilt.nanogallery2', new Event('galleryObjectModelBuilt.nanogallery2'));
+      TriggerCustomEvent('galleryObjectModelBuilt');
       
       if( imageSizeRequested ) {
         // preload images to retrieve their size and then resize the gallery (=GallerySetLayout()+ GalleryDisplay())
@@ -2630,7 +2630,8 @@
           break;
       }
       
-      G.$E.base.trigger('galleryLayoutApplied.nanogallery2', new Event('galleryLayoutApplied.nanogallery2'));
+      // G.$E.base.trigger('galleryLayoutApplied.nanogallery2', new Event('galleryLayoutApplied.nanogallery2'));
+      TriggerCustomEvent('galleryLayoutApplied');
       return r;
 
     }
@@ -3144,8 +3145,8 @@
         }, nbBuild*G.tn.displayInterval);
       }
       
-      G.$E.base.trigger('galleryDisplayed.nanogallery2', new Event('galleryDisplayed.nanogallery2'));
-
+      // G.$E.base.trigger('galleryDisplayed.nanogallery2', new Event('galleryDisplayed.nanogallery2'));
+      TriggerCustomEvent('galleryDisplayed');
     }
     
     
@@ -3517,6 +3518,12 @@
               case 'DOWNLOAD':
                 toolbar+= '    <li class="nGY2GThumbnailIcon" data-action="'+tIcon+'">';
                 toolbar+= '      <div class="nGY2GThumbnailIconImageShare">'+G.O.icons.thumbnailDownload+'</div>';
+                toolbar+= '    </li>';
+                cnt++;
+                break;
+              case 'INFO':
+                toolbar+= '    <li class="nGY2GThumbnailIcon" data-action="'+tIcon+'">';
+                toolbar+= '      <div class="nGY2GThumbnailIconImageShare">'+G.O.icons.thumbnailInfo+'</div>';
                 toolbar+= '    </li>';
                 cnt++;
                 break;
@@ -3954,7 +3961,7 @@
         // GalleryResize( GOMidx );
       }
       catch (e) { 
-        NanoAlert('error on hover: ' +e.message );
+        NanoAlert(G, 'error on hover: ' +e.message );
       }
 
     }
@@ -3997,7 +4004,7 @@
         // GalleryResize( );
       }
       catch (e) { 
-        NanoAlert('error on hoverOut: ' +e.message );
+        NanoAlert(G, 'error on hoverOut: ' +e.message );
       }
       
     }
@@ -4036,6 +4043,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
     }
 
 
+    // BETA -> NOT finished
     // Retrieve the title+description of ONE album
     function albumGetInfo( albumIdx, fnToCall ) {
       var url='';
@@ -4044,7 +4052,9 @@ console.log('#DisplayPhoto : '+  imageIdx);
       
       switch( G.O.kind ) {
         case 'json':
+          // TODO
         case 'flickr':
+          // TODO
         case 'picasa':
         case 'google':
         default:
@@ -4058,7 +4068,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
       var tId = setTimeout( function() {
         // workaround to handle JSONP (cross-domain) errors
         //PreloaderHide();
-        NanoAlert('Could not retrieve AJAX data...');
+        NanoAlert(G, 'Could not retrieve AJAX data...');
       }, 60000 );
       jQuery.getJSON(url, function(data, status, xhr) {
         clearTimeout(tId);
@@ -4110,7 +4120,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
           G.O.$markup=[]  ;
         }
         else {
-          NanoAlert('error: no image to process.');
+          NanoAlert(G, 'error: no image to process.');
           return;
         }
       }
@@ -4586,7 +4596,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
         G.galleryMaxRows.l1=G.O.galleryMaxRows;
       }
       else {
-        NanoConsoleLog('Parameter "galleryMaxRows" must be an integer.');
+        NanoConsoleLog(G, 'Parameter "galleryMaxRows" must be an integer.');
       }
       if( toType(G.O.galleryL1MaxRows) == 'number' && G.O.galleryL1MaxRows >= 0 ) {
         G.galleryMaxRows.l1=G.O.galleryL1MaxRows;
@@ -4635,7 +4645,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
         G.VOM.slideshowDelay=G.O.slideshowDelay;
       }
       else {
-        NanoConsoleLog('Parameter "slideshowDelay" must be an integer >= 2000 ms.');
+        NanoConsoleLog(G, 'Parameter "slideshowDelay" must be an integer >= 2000 ms.');
       }
 
       // thumbnail display interval
@@ -4643,7 +4653,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
         G.tn.displayInterval=G.O.thumbnailDisplayInterval;
       }
       else {
-        NanoConsoleLog('Parameter "thumbnailDisplayInterval" must be an integer.');
+        NanoConsoleLog(G, 'Parameter "thumbnailDisplayInterval" must be an integer.');
       }
       
       // gallery display transition
@@ -4752,7 +4762,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
           case 'null':
             break;
           default:
-            NanoAlert('incorrect parameter for "thumbnailL1HoverEffect2".');
+            NanoAlert(G, 'incorrect parameter for "thumbnailL1HoverEffect2".');
         }
       }
       G.tn.hoverEffects.level1=ThumbnailOverEffectsPreset(G.tn.hoverEffects.level1);
@@ -4791,7 +4801,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
         case 'null':
           break;
         default:
-          NanoAlert('incorrect parameter for "thumbnailHoverEffect2".');
+          NanoAlert(G, 'incorrect parameter for "thumbnailHoverEffect2".');
       }
       G.tn.hoverEffects.std=ThumbnailOverEffectsPreset(G.tn.hoverEffects.std);
 
@@ -4960,7 +4970,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
       }
       else {
         effect.name=name;
-        // NanoAlert('incorrect parameter for "thumbnailHoverEffect": ' + name);
+        // NanoAlert(G, 'incorrect parameter for "thumbnailHoverEffect": ' + name);
         // return null;
       }
       return effect;
@@ -5495,7 +5505,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
           }
           break;
         default:
-          NanoAlert('Error in colorScheme parameter.');
+          NanoAlert(G, 'Error in colorScheme parameter.');
           return;
       }
 
@@ -5594,7 +5604,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
           }
           break;
         default:
-          NanoAlert('Error in colorSchemeViewer parameter.');
+          NanoAlert(G, 'Error in colorSchemeViewer parameter.');
           return;
       }
 
@@ -5748,6 +5758,10 @@ console.log('#DisplayPhoto : '+  imageIdx);
           DownloadImage(idx);
           return 'exit';
           break;
+        case 'INFO':
+          ItemDisplayInfo(G.I[idx]);
+          return 'exit';
+          break;
         case 'CART':
           AddToCart(idx);
           return 'exit';
@@ -5779,7 +5793,8 @@ console.log('#DisplayPhoto : '+  imageIdx);
           if(typeof G.O.fnShoppingCartUpdated === 'function'){
             G.O.fnShoppingCartUpdated(G.shoppingCart);
           }
-          G.$E.base.trigger('shoppingCartUpdated.nanogallery2', new Event('shoppingCartUpdated.nanogallery2'));
+          // G.$E.base.trigger('shoppingCartUpdated.nanogallery2', new Event('shoppingCartUpdated.nanogallery2'));
+          TriggerCustomEvent('shoppingCartUpdated');
           return;
         }
       }
@@ -5790,7 +5805,8 @@ console.log('#DisplayPhoto : '+  imageIdx);
         if(typeof G.O.fnShoppingCartUpdated === 'function'){
           G.O.fnShoppingCartUpdated(G.shoppingCart);
         }
-        G.$E.base.trigger('shoppingCartUpdated.nanogallery2', new Event('shoppingCartUpdated.nanogallery2'));
+        // G.$E.base.trigger('shoppingCartUpdated.nanogallery2', new Event('shoppingCartUpdated.nanogallery2'));
+        TriggerCustomEvent('shoppingCartUpdated');
       }
     }
     
@@ -6068,11 +6084,35 @@ console.log('#DisplayPhoto : '+  imageIdx);
     }
     
 
+    // Open link to original image (new window)
+    function OpenOriginal( item ) {
+      switch( G.O.kind ) {
+        case 'json':
+        case 'flickr':
+          var sU='https://www.flickr.com/photos/'+G.O.userID+'/'+item.GetID();
+          window.open(sU,'_blank');
+          break;
+        case 'picasa':
+        case 'google':
+          var sU='https://plus.google.com/photos/'+G.O.userID+'/albums/'+item.albumID+'/'+item.GetID();
+          window.open(sU,'_blank');
+          break;
+        default:
+          break;
+      }
+    }
+    
     // Display one photo (with internal or external viewer)
     function DisplayPhotoIdx( imageIdx ) {
 
       if( !G.O.thumbnailOpenImage ) { return; }
 
+      if( G.O.thumbnailOpenOriginal ) {
+        // Open link to original image
+        OpenOriginal( G.I[imageIdx] );
+        return;
+      }
+        
       var items=[];
       
       G.VOM.currItemIdx=imageIdx;
@@ -6082,7 +6122,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
       var vimg=new VImg(imageIdx);
       G.VOM.items.push(vimg);
       items.push(G.I[imageIdx]);
-//pipo -> danger -> pourquoi reconstruire la liste si déjà ouvert (back/forward)     
+//TODO -> danger -> pourquoi reconstruire la liste si déjà ouvert (back/forward)     
       var l=G.I.length;
       for( var idx=imageIdx+1; idx<l ; idx++) {
         var item=G.I[idx];
@@ -6151,11 +6191,11 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
       sImg+='<img class="nGY2ViewerImage" src="'+G.VOM.Item(vomIdx).responsiveURL()+'" alt=" " itemprop="contentURL">';
       sImg+='<img class="nGY2ViewerImage" src="'+G.VOM.Item(GetNextImageIdx(vomIdx)).responsiveURL()+'" alt=" " itemprop="contentURL">';
       var sNav='';
-      if( G.O.icons.viewerPrevious != undefined && G.O.icons.viewerPrevious != '') {
-        sNav+='<div class="nGY2ViewerAreaPrevious ngy2viewerToolAction" data-ngy2action="previous">'+G.O.icons.viewerPrevious+'</div>';
+      if( G.O.icons.viewerImgPrevious != undefined && G.O.icons.viewerImgPrevious != '') {
+        sNav+='<div class="nGY2ViewerAreaPrevious ngy2viewerToolAction" data-ngy2action="previous">'+G.O.icons.viewerImgPrevious+'</div>';
       }
-      if( G.O.icons.viewerNext != undefined && G.O.icons.viewerNext != '') {
-        sNav+='<div class="nGY2ViewerAreaNext ngy2viewerToolAction" data-ngy2action="next">'+G.O.icons.viewerNext+'</div>';
+      if( G.O.icons.viewerImgNext != undefined && G.O.icons.viewerImgNext != '') {
+        sNav+='<div class="nGY2ViewerAreaNext ngy2viewerToolAction" data-ngy2action="next">'+G.O.icons.viewerImgNext+'</div>';
       }
       G.$E.vwContent=jQuery('<div class="nGY2ViewerContent">'+sImg+sNav+'</div>').appendTo(G.$E.conVw);
       G.$E.vwImgP=G.$E.vwContent.find('.nGY2ViewerImage').eq(0);
@@ -6305,7 +6345,7 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
             // if( typeof G.O.fnViewerInfo == 'function' ) {
               // G.O.fnViewerInfo(G.VOM.Item(G.VOM.currItemIdx), ExposedObjects());
             // }
-            ViewerInfoSet();
+            ViewerInfoSet(G.VOM.Item(G.VOM.currItemIdx));
             break;
           case 'close':
             e.stopPropagation();
@@ -6332,6 +6372,7 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
             // $closeB.on( (G.isIOS ? "touchstart" : "click") ,function(e){     // IPAD
             e.stopPropagation();
             e.preventDefault();
+            OpenOriginal( G.VOM.Item(G.VOM.currItemIdx) );
             if( G.O.kind == 'google') {
               var sU='https://plus.google.com/photos/'+G.O.userID+'/albums/'+G.VOM.Item(G.VOM.currItemIdx).albumID+'/'+G.VOM.Item(G.VOM.currItemIdx).GetID();
               window.open(sU,'_blank');
@@ -6460,8 +6501,8 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
     }
     
     // Display photo infos
-    function ViewerInfoSet() {
-      var item=G.VOM.Item(G.VOM.currItemIdx);
+    //function ViewerInfoSet() {
+    function ItemDisplayInfo( item) {
 
       var content='<div class="nGY2PopupOneItemText">'+item.title+'</div>';
       content+='<div class="nGY2PopupOneItemText">'+item.description+'</div>';
@@ -6701,7 +6742,8 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
       if( G.VOM.viewerImageIsChanged ) { return; }
       if( (new Date().getTime()) - G.VOM.timeImgChanged < 300 ) { return; }
       
-      G.$E.base.trigger('lightboxNextImage.nanogallery2', new Event('lightboxNextImage.nanogallery2'));
+      // G.$E.base.trigger('lightboxNextImage.nanogallery2', new Event('lightboxNextImage.nanogallery2'));
+      TriggerCustomEvent('lightboxNextImage');
       DisplayInternalViewer(GetNextImageIdx(G.VOM.currItemIdx), 'nextImage');
     };
     
@@ -6713,7 +6755,8 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
         SlideshowToggle();
       }
       
-      G.$E.base.trigger('lightboxPreviousImage.nanogallery2', new Event('lightboxPreviousImage.nanogallery2'));
+      // G.$E.base.trigger('lightboxPreviousImage.nanogallery2', new Event('lightboxPreviousImage.nanogallery2'));
+      TriggerCustomEvent('lightboxPreviousImage');
       DisplayInternalViewer(GetPreviousImageIdx(G.VOM.currItemIdx), 'previousImage');
     };
     
@@ -6953,7 +6996,8 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
       //});
 
       G.VOM.viewerImageIsChanged=false;
-      G.$E.base.trigger('lightboxImageDisplayed.nanogallery2', new Event('lightboxImageDisplayed.nanogallery2'));
+      // G.$E.base.trigger('lightboxImageDisplayed.nanogallery2', new Event('lightboxImageDisplayed.nanogallery2'));
+      TriggerCustomEvent('lightboxImageDisplayed');
       
     }
     
@@ -7293,7 +7337,7 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
       
       // portable
       if( G.O.portable ) {
-        G.$E.ngy2i=jQuery('<div class="nGY2PortInfo"><a href="http://nano.gallery" target="_blank">powered by nanogallery2</a></div>').appendTo(G.$E.base);
+        G.$E.ngy2i=jQuery('<div class="nGY2PortInfo"><a href="http://nano.gallery" target="_blank" title="NANOGALLERY2 | easy photo gallery for your website">nanogallery2</a></div>').appendTo(G.$E.base);
       }
       
       // Error console
@@ -7306,7 +7350,7 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
       if( document.fullscreenEnabled || document.webkitFullscreenEnabled || document.msFullscreenEnabled || document.mozFullScreenEnabled) {
         G.supportFullscreenAPI=true;
       } else {
-        NGY2Tools.NanoConsoleLog('Your browser does not support the fullscreen API. Fullscreen button will not be displayed.');
+        NGY2Tools.NanoConsoleLog(G, 'Your browser does not support the fullscreen API. Fullscreen button will not be displayed.');
       }
 
       // cache some thumbnails data (sizes, styles...)
@@ -7324,6 +7368,20 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
       }
       
     }
+    
+    function TriggerCustomEvent ( eventName ) {
+      // G.$E.base.trigger('pageChanged.nanogallery2', new Event('pageChanged.nanogallery2'));
+      var eN = eventName + '.nanogallery2';
+      var event=null;
+      try {
+          event = new Event( eN );
+        } catch(e) {
+          event = document.createEvent('Event');
+          event.initEvent(eN, false, false);
+        }
+        G.$E.base.trigger(eN, event);
+    }
+    
     
     /** @function SetGlobalEvents */
     function SetGlobalEvents() {
@@ -7679,7 +7737,7 @@ console.log('lH: '+lH);
       m+='&nbsp;&nbsp;&nbsp; <a href="http://www.mozilla.com/firefox/)">Firefox</a><br>';
       m+='&nbsp;&nbsp;&nbsp; <a href="http://www.microsoft.com/windows/internet-explorer/default.aspx">Internet Explorer</a><br>';
       m+='&nbsp;&nbsp;&nbsp; <a href="http://www.apple.com/safari/download/">Safari</a>';
-      NanoAlert( m, false);
+      NanoAlert(G,  m, false);
     }
 
     // Original author : John Hrvatin, Lead Program Manager, Internet Explorer - http://blogs.msdn.com/b/ie/archive/2011/10/28/a-best-practice-for-programming-with-vendor-prefixes.aspx
