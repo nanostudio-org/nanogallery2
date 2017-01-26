@@ -53,14 +53,15 @@ module.exports = function(grunt) {
         }
       },
       cssmin: {
+        options: {
+          shorthandCompacting: false,
+          roundingPrecision: -1
+        },
         target: {
-          files: [{
-            expand: true,
-            cwd: 'src/css',
-            src: ['*.css', '*.woff.css', '!*.min.css'],
-            dest: 'dest/css',
-            ext: '.min.css'
-          }]
+          files: {
+            'dest/css/nanogallery2.min.css': ['src/css/nanogallery2.css'],
+            'dest/css/nanogallery2.woff.min.css': ['src/css/nanogallery2.woff.css']
+          }
         }
       },      
       'gh-pages': {
