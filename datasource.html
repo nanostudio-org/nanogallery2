@@ -41,6 +41,10 @@
   <link rel="stylesheet" href="bootstrap-select/css/bootstrap-select.min.css">
   <script src="bootstrap-select/js/bootstrap-select.min.js"></script>
 
+  <!-- bootstrap-colorpicker -->
+  <link rel="stylesheet" href="bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
+  <script src="bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+  
   <!-- #################################################################################################################### -->
   <!-- nanogallery2 CSS files                                                                                               -->
 	<link href="css/nanogallery2.min.css" rel="stylesheet" type="text/css">
@@ -258,6 +262,40 @@
       display: inline-block;
     }
 
+    
+    /*****************/
+    /* BUILDER PANEL */
+    /*****************/
+    #ngy2tools .ngy2_vert_toolbar {
+      font-size: 0.8em;
+      color: #eee;
+      background-color: #222;
+    }
+    #ngy2tools .panel-default {
+      border-color: #555;
+    }
+
+    #ngy2tools .form-control{
+      height: 20px;
+      padding: 0px 5px;
+    }
+    
+
+    #ngy2tools .panel-heading,
+    #ngy2tools .ngy2toolbar {
+      background-color: #222;
+      color: #eee;
+    }
+
+    #ngy2tools .panel-body {
+      background-color: #555;
+    }
+
+    /* color picker */
+    #ngy2tools  .colorpicker-component .input-group-addon {
+      padding : 0px;
+    }    
+    
     </style>
 
   <!-- Asynchronous Google Analytics snippet -->
@@ -306,7 +344,7 @@
           <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand form-horizontal" href="http://nanogallery2.nanostudio.org/" rel="home" title="nanogallery2">
-          <img src="img/nanogallery2s.png" alt="nanogallery2" style="height:30px;"> &nbsp; <span class="ngy2version">v0.9.2</span>
+          <img src="img/nanogallery2s.png" alt="nanogallery2" style="height:30px;"> &nbsp; <span class="ngy2version">v0.9.1</span>
         </a>
       </div>
       <div id="navbar" class="collapse navbar-collapse">
