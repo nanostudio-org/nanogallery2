@@ -12047,10 +12047,10 @@ if (typeof define === 'function' && define.amd) {
     
     function GoogleAddOneThumbSize(thumbSizes, v1, v2, c1, c2 ) {
       var v = Math.ceil( v2 * G.tn.scale ) + c2;
-      if( v1 == 'auto' ) {
+      if( isNaN(v1) ) {
         v = Math.ceil( v2 * G.tn.scale ) + c2;
       }
-      else if( v2 == 'auto' ) {
+      else if( isNaN(v2) ) {
           v = Math.ceil( v1 * G.tn.scale ) + c1;
         }
         else if( v1 > v2 ) {
