@@ -418,7 +418,11 @@
 
     <br><br><br><br>
   
-  <div class="container ngy2-builder" style="background-color:#eee;">
+    <!-- ###################### -->
+  <!-- #####   BUILDER  ##### -->
+  <!-- ###################### -->
+<div class="jumbotron ngy2_background_cell">
+  <div class="container ngy2-builder ">
 
     <!-- <h3 class="text-left"><span class="circle-singleline" > 1</span> DEFINE THE CONTENT SOURCE</h3> -->
     <h3 class="text-left">CONTENT SOURCE</h3>
@@ -500,8 +504,11 @@
             <label for="flickrAlbum" class="control-label">What do you want to display in your gallery?</label>
             <div class="input-group">
               <select id="flickrAlbum" name="flickrAlbum" class="selectpicker" multiple data-selected-text-format="count > 1">
-                <option value="lstAlbums" selected="selected" >display the list of albums</option>
+                <option value="lstAlbums"  >display the list of albums</option>
                 <option value="none">display the full photostream</option>
+                <optgroup label="albums">'
+                <option value="72157673359560333" selected="selected">fun (album)</option>
+                </optgroup>
               </select>            
               <span class="input-group-btn">
                 <button id="btnFlickrGetList" class="btn btn-primary" >refresh</button>
@@ -572,6 +579,10 @@
     </div>
 
 
+    
+    
+  </div>  
+    
   <div class="jumbotron jumbotronNGY2 ngy2-builder" style="background-color:#222;">
     <div class="container">
 
@@ -956,10 +967,10 @@
         <div class="col-md-9 ngy2toolbar" style="font-size: 100%;" >
           <br>
           <div class="text-center ">
-            <button type="button" class="btn btn-info btn-lg" id="btnNGY2Builder"><i class="fa fa-cog fa-spin"></i> &nbsp; build gallery</button>
+            <button type="button" class="btn btn-info btn-lg" id="btnNGY2Builder"><i class="fa fa-cog fa-spin"></i> &nbsp; apply settings - build gallery</button>
           </div>
           <br>
-          <div id="nanoGalleryBuilder" style="background-color:#fff;">
+          <div id="nanoGalleryBuilder" style="background-color:#fff;padding:5px;">
             <div id="nanoGallery3">nanogallery2</div>
           </div>
           <br>
@@ -978,8 +989,8 @@
 
     
   
-  <div class="jumbotron jumbotronNGY2" style="background-color:#eeeeee;">
-    <div class="container">
+  <div class="jumbotron jumbotronNGY2" style="background-color:#222;">
+    <div class="container" style="color:#fff;">
 
                   <div class="row ngy2-level3">
                 <div class="checkbox col-md-12">
@@ -1759,13 +1770,13 @@
     <div>
       <!-- TABS - SHORTCODE / HTML -->
       <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active lead"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">portable shortcode</a></li>
-        <li role="presentation" class="lead"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">HTML template</a></li>
+        <li role="presentation" class="active lead builder_mode_js_library" style="display:none;"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">portable shortcode</a></li>
+        <li role="presentation" class="lead builder_mode_portable" style="display:none;"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">HTML template</a></li>
       </ul>
       <br>
       <!-- Tab panes -->
       <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="home">
+        <div role="tabpanel" class="tab-pane active builder_mode_js_library" id="home"  style="display:none;">
           <p>note: beta version. Max. 10 images will be displayed.</p>
           <div class="row">
             <button id="copyclipboard2" type="button" class="btn-primary pull-right" data-clipboard-target="#ngy2_portable">copy to clipboard</button>
@@ -1775,7 +1786,7 @@
             </pre>
           </div>   
         </div>
-        <div role="tabpanel" class="tab-pane" id="profile">
+        <div role="tabpanel" class="tab-pane builder_mode_portable" id="profile"  style="display:none;">
           <p>you shoud adapt the pathes to point to your web server.</p>
           <div class="row">
             <button id="copyclipboard" type="button" class="btn-primary pull-right" data-clipboard-target="#ngy2_template">copy to clipboard</button>
@@ -1877,6 +1888,17 @@
     }
         
     $(document).ready(function () {
+    
+      // Display shortcode or html template - depending on the used homepage
+      var p=location.pathname.substring(location.pathname.lastIndexOf("/") + 1);
+      if( p == 'builder.html' ) {
+        // javascript library homepage
+        $('.builder_mode_portable').css('display','inline');
+      }
+      else {
+        // portable homepage
+        $('.builder_mode_js_library').css('display','inline');
+      }
     
       new Clipboard('#copyclipboard');
       new Clipboard('#copyclipboard2');
