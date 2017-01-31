@@ -5,16 +5,19 @@
 /**************************************/
 
 .nGY2 {
+	box-sizing: content-box;
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	-o-box-sizing: content-box;
+}
+
+.nGY2 .ngy2_container {
   width: 100%;
   min-width: 100px; /* to display something even if parent has display:inline-block */
 	font-size: 1.0em;
 	line-height: normal;
 	padding: 0px;
 	margin: 0 auto;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
 	overflow: hidden;
   visibility: visible;
   -webkit-user-select: none;
@@ -22,9 +25,6 @@
   -webkit-touch-callout: none;
 }
 
-.nGY2 *{
-  min-width: 0;
-}
 
 /*******************************************/
 /* NGY2 ICON FONT                          */
@@ -451,10 +451,6 @@
 	padding: 0px;
 	text-align:center;
 	position: relative;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
 	overflow:hidden;
 	white-space: nowrap;
 }
@@ -470,10 +466,6 @@
 	text-align: center;
 	position: relative;
   display:inline-block;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
 	overflow:hidden;
 	white-space: nowrap;
   cursor:pointer;
@@ -486,10 +478,6 @@
 	text-align: center;
 	position: relative;
   display:inline-block;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
 	overflow:hidden;
 	white-space: nowrap;
 }
@@ -505,10 +493,6 @@
 	padding: 4px;
 	text-align:center;
 	position: relative;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
 	overflow:hidden;
 	white-space: nowrap;
 }
@@ -688,10 +672,6 @@
 	/*font-size:1em;*/
 	background-color: rgba(1, 1, 1, 0.85);
 	text-align: center;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
   clear: both;
 }
 .nGY2 .nGY2ViewerLogo {
@@ -699,11 +679,12 @@
   float: left;
   position: relative;
   top: 50px;
-  left: 0px;
+  left: 5px;
+  padding: 2px;
   background: url(nanogallery2_logo.png) RGBA(0,0,0,0.5) no-repeat center;
   display: block;
-  height: 60px;
-  width: 55px;
+  height: 25px;
+  width: 87px;
 }
 
 .nGY2 .nGY2ViewerContent {
@@ -785,10 +766,6 @@
 	-webkit-transition: all 0.2s ease;
 	-moz-transition: all 0.2s ease;
 	-o-transition: all 0.2s ease;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
 }
 .nGY2 .nGY2ViewerAreaPrevious > i {
   margin-left:0px;
@@ -815,10 +792,6 @@
 	-webkit-transition: all 0.2s ease;
 	-moz-transition: all 0.2s ease;
 	-o-transition: all 0.2s ease;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
 }
 .nGY2 .nGY2ViewerAreaNext > i {
   margin-right: 0px;
@@ -840,10 +813,6 @@
 	overflow: hidden;
   padding: 2px 0px;
 	margin: 1px;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
 }
 .nGY2 .toolbarBackground {
 	background:rgba(4,4,4,0.7);
@@ -884,10 +853,6 @@
 	cursor:pointer;
 	padding: 2px 5px;
 	vertical-align:middle;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
 }
 
 .nGY2 .ngy2viewerToolAction {
@@ -903,10 +868,6 @@
 	margin:auto;
 	vertical-align:middle;
 	overflow: hidden;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
 }
 
 .nGY2 .toolbar .label{
@@ -917,10 +878,6 @@
 	text-align: left;
 	vertical-align:middle;
 	font-size:1em;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
   background-color:initial;
 }
 
@@ -929,10 +886,6 @@
 	margin:auto;
 	vertical-align:middle;
 	overflow: hidden;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
 }
 .nGY2 .toolbar .label .description{
 	font-size:.8em;
@@ -940,10 +893,6 @@
 	vertical-align:middle;
 	overflow: hidden;
 	color:#aaa;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
 }
 
 
