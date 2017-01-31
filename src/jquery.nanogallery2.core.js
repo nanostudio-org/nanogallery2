@@ -17,7 +17,7 @@
  *  - webfont generated with http://fontello.com - based on Font Awesome Copyright (C) 2012 by Dave Gandy (http://fortawesome.github.com/Font-Awesome/)
  */
 
-
+ 
 // ###########################################
 // ##### nanogallery2 as a JQUERY PLUGIN #####
 // ###########################################
@@ -1688,6 +1688,8 @@
     // shortcut with G context to NGY2TOOLS
     // var NanoAlert =           NGY2Tools.NanoAlert.bind(G);
     // var NanoConsoleLog =      NGY2Tools.NanoConsoleLog.bind(G);
+    var NanoAlert =           NGY2Tools.NanoAlert;
+    var NanoConsoleLog =      NGY2Tools.NanoConsoleLog;
 
     
     /** @function initiateGallery2 */
@@ -5564,7 +5566,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
       s+=s1+'.nGY2GalleryMoreButtonAnnotation  { color:'+cs.thumbnail.titleColor+'; '+(cs.thumbnail.titleShadow =='' ? '': 'Text-Shadow:'+cs.thumbnail.titleShadow)+'; }\n';
       
       jQuery('head').append('<style id="ngycs_'+G.baseEltID+'">'+s+'</style>');
-      jQuery(G.$E.base).addClass(colorSchemeLabel);
+      G.$E.base.addClass(colorSchemeLabel);
 
     };
     
@@ -6345,7 +6347,7 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
             // if( typeof G.O.fnViewerInfo == 'function' ) {
               // G.O.fnViewerInfo(G.VOM.Item(G.VOM.currItemIdx), ExposedObjects());
             // }
-            ViewerInfoSet(G.VOM.Item(G.VOM.currItemIdx));
+            ItemDisplayInfo(G.VOM.Item(G.VOM.currItemIdx));
             break;
           case 'close':
             e.stopPropagation();
@@ -7261,6 +7263,7 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
         G.O.$markup=$elements;
       }
       G.$E.base.text('');
+      G.$E.base.addClass('ngy2_container');
       
       // RTL or LTR
       var sRTL='';
