@@ -1,6 +1,17 @@
-nanoGgallery2 - ChangeLog
+nanogallery2 - ChangeLog
 ===========
   
+  
+  
+ 
+v0.9.2a
+------
+- fixed: infobox not displayed in lightbox
+- fixed: incorrect thumbnail height/widths calc for google (thanks to alexanderhowell - https://github.com/alexanderhowell)
+- fixed: incorrect min-width in CSS
+
+
+
   
 v0.9.2
 ------
