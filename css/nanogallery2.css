@@ -5,16 +5,19 @@
 /**************************************/
 
 .nGY2 {
+	box-sizing: content-box;
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	-o-box-sizing: content-box;
+}
+
+.nGY2 .ngy2_container {
   width: 100%;
   min-width: 100px; /* to display something even if parent has display:inline-block */
 	font-size: 1.0em;
 	line-height: normal;
 	padding: 0px;
 	margin: 0 auto;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
 	overflow: hidden;
   visibility: visible;
   -webkit-user-select: none;
@@ -26,24 +29,23 @@
 /*******************************************/
 /* NGY2 ICON FONT                          */
 /* generated with http://fontello.com      */
-/* BASED ON FONT AWESOME                   */
+/* PARTIALLY BASED ON FONT AWESOME         */
 /*******************************************/
 
 @font-face {
   font-family: 'ngy2_icon_font';
-  src: url('font/ngy2_icon_font.eot?74466767');
-  src: url('font/ngy2_icon_font.eot?74466767#iefix') format('embedded-opentype'),
-       url('font/ngy2_icon_font.woff2?74466767') format('woff2'),
-       url('font/ngy2_icon_font.woff?74466767') format('woff'),
-       url('font/ngy2_icon_font.ttf?74466767') format('truetype'),
-       url('font/ngy2_icon_font.svg?74466767#ngy2_icon_font') format('svg');
+  src: url('font/ngy2_icon_font.eot?68476359');
+  src: url('font/ngy2_icon_font.eot?68476359#iefix') format('embedded-opentype'),
+       url('font/ngy2_icon_font.woff2?68476359') format('woff2'),
+       url('font/ngy2_icon_font.woff?68476359') format('woff'),
+       url('font/ngy2_icon_font.ttf?68476359') format('truetype'),
+       url('font/ngy2_icon_font.svg?68476359#ngy2_icon_font') format('svg');
   font-weight: normal;
   font-style: normal;
 }
-
-
-.icon-search:before { content: '\e800'; } /* '?' */
+  
 .icon-star:before { content: '\e801'; } /* '?' */
+.icon-search:before { content: '\e800'; } /* '?' */
 .icon-star-empty:before { content: '\e802'; } /* '?' */
 .icon-video:before { content: '\e803'; } /* '?' */
 .icon-videocam:before { content: '\e804'; } /* '?' */
@@ -51,20 +53,16 @@
 .icon-camera:before { content: '\e806'; } /* '?' */
 .icon-camera-alt:before { content: '\e807'; } /* '?' */
 .icon-ok:before { content: '\e808'; } /* '?' */
-.icon-cancel:before { content: '\e809'; } /* '?' */
 .icon-help:before { content: '\e80a'; } /* '?' */
 .icon-help-circled:before { content: '\e80b'; } /* '?' */
-.icon-info-circled:before { content: '\e80c'; } /* '?' */
-.icon-info:before { content: '\e80d'; } /* '?' */
 .icon-home:before { content: '\e80e'; } /* '?' */
 .icon-link:before { content: '\e80f'; } /* '?' */
 .icon-link-ext:before { content: '\e810'; } /* '?' */
 .icon-heart:before { content: '\e811'; } /* '?' */
-.icon-download:before { content: '\e813'; } /* '?' */
+.icon-ngy2_chevron-right:before { content: '\e812'; } /* '?' */
 .icon-upload:before { content: '\e814'; } /* '?' */
 .icon-reply-all:before { content: '\e815'; } /* '?' */
 .icon-export:before { content: '\e816'; } /* '?' */
-.icon-share:before { content: '\e817'; } /* '?' */
 .icon-chat:before { content: '\e818'; } /* '?' */
 .icon-attention:before { content: '\e819'; } /* '?' */
 .icon-location:before { content: '\e81a'; } /* '?' */
@@ -78,14 +76,13 @@
 .icon-lightbulb:before { content: '\e822'; } /* '?' */
 .icon-resize-full:before { content: '\e823'; } /* '?' */
 .icon-resize-small:before { content: '\e824'; } /* '?' */
-.icon-zoom-in:before { content: '\e825'; } /* '?' */
-.icon-zoom-out:before { content: '\e826'; } /* '?' */
 .icon-left-open:before { content: '\e827'; } /* '?' */
 .icon-right-open:before { content: '\e828'; } /* '?' */
 .icon-arrows-cw:before { content: '\e829'; } /* '?' */
 .icon-level-up:before { content: '\e82a'; } /* '?' */
 .icon-play:before { content: '\e82b'; } /* '?' */
 .icon-pause:before { content: '\e82c'; } /* '?' */
+.icon-ngy2_chevron-left:before { content: '\e82d'; } /* '?' */
 .icon-ellipsis-vert:before { content: '\e82e'; } /* '?' */
 .icon-toggle-off:before { content: '\e82f'; } /* '?' */
 .icon-toggle-on:before { content: '\e830'; } /* '?' */
@@ -100,6 +97,17 @@
 .icon-basket:before { content: '\e839'; } /* '?' */
 .icon-ok-circled:before { content: '\e83a'; } /* '?' */
 .icon-user:before { content: '\e83b'; } /* '?' */
+.icon-ngy2_chevron_left3:before { content: '\e83c'; } /* '?' */
+.icon-ngy2_chevron_right3:before { content: '\e83d'; } /* '?' */
+.icon-zoom-out-1:before { content: '\e83e'; } /* '?' */
+.icon-ngy2_zoom_out2:before { content: '\e83f'; } /* '?' */
+.icon-ngy2_zoom_in2:before { content: '\e840'; } /* '?' */
+.icon-ngy2_share2:before { content: '\e841'; } /* '?' */
+.icon-ngy2_external2:before { content: '\e842'; } /* '?' */
+.icon-ngy2_close2:before { content: '\e843'; } /* '?' */
+.icon-ngy2_info2:before { content: '\e844'; } /* '?' */
+.icon-ngy2_chevron_up2:before { content: '\e845'; } /* '?' */
+.icon-ngy2_download2:before { content: '\e846'; } /* '?' */
 .icon-mail-alt:before { content: '\f0e0'; } /* '?' */
 .icon-circle-empty:before { content: '\f10c'; } /* '?' */
 .icon-tumblr-squared:before { content: '\f174'; } /* '?' */
@@ -442,10 +450,6 @@
 	padding: 0px;
 	text-align:center;
 	position: relative;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
 	overflow:hidden;
 	white-space: nowrap;
 }
@@ -461,10 +465,6 @@
 	text-align: center;
 	position: relative;
   display:inline-block;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
 	overflow:hidden;
 	white-space: nowrap;
   cursor:pointer;
@@ -477,10 +477,6 @@
 	text-align: center;
 	position: relative;
   display:inline-block;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
 	overflow:hidden;
 	white-space: nowrap;
 }
@@ -496,10 +492,6 @@
 	padding: 4px;
 	text-align:center;
 	position: relative;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
 	overflow:hidden;
 	white-space: nowrap;
 }
@@ -638,10 +630,11 @@
 /**************************************/
 .nGY2PortInfo {
   padding: 3px;
-  font-size: 9px;
+  font-size: 11px;
   color: #888;
   text-align: center;
   z-index:0;
+  text-transform: uppercase;
   cursor:pointer;
 }
 
@@ -678,10 +671,6 @@
 	/*font-size:1em;*/
 	background-color: rgba(1, 1, 1, 0.85);
 	text-align: center;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
   clear: both;
 }
 .nGY2 .nGY2ViewerLogo {
@@ -689,11 +678,12 @@
   float: left;
   position: relative;
   top: 50px;
-  left: 0px;
+  left: 5px;
+  padding: 2px;
   background: url(nanogallery2_logo.png) RGBA(0,0,0,0.5) no-repeat center;
   display: block;
-  height: 55px;
-  width: 55px;
+  height: 25px;
+  width: 87px;
 }
 
 .nGY2 .nGY2ViewerContent {
@@ -705,10 +695,10 @@
   position:absolute;
 	/*height:100%;*/
   clear:both;
-	padding-top:5px;
+	/* padding-top:5px;
 	padding-left:5px;
 	padding-right:5px;
-	padding-bottom:5px;
+	padding-bottom:5px; */
 	cursor: -webkit-zoom-out;
 	cursor: -moz-zoom-out;
 	cursor: zoom-out;
@@ -755,86 +745,73 @@
 }
 
 .nGY2 .nGY2ViewerAreaPrevious {
-  transform: scaleY(2);
+  transform: scaleY(1.5); 
 	color: #fff; 
-	display:block;
-	position:absolute;
+	display: block;
+	position: absolute;
 	Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px; 
 	/*background: rgba(0,0,0,0.2);*/
-	font-size:1.5em;
+	font-size: 2em;
 	top: 50%;
 	/*height:20px;*/
 	/*width:20px;*/
 	padding:10px 0px 10px 1px;
-	margin-top:-25px;
-	left:0px;
+	margin-top: -25px;
+	left: 0px;
 	text-align: left;
-	cursor:pointer;
-	opacity:1;
+	cursor: pointer;
+	opacity: 1;
 	transition: all 0.2s ease;
 	-webkit-transition: all 0.2s ease;
 	-moz-transition: all 0.2s ease;
 	-o-transition: all 0.2s ease;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
 }
 .nGY2 .nGY2ViewerAreaPrevious > i {
   margin-left:0px;
 }
 
 .nGY2 .nGY2ViewerAreaNext {
-  transform: scaleY(2);
+  transform: scaleY(1.5);
 	color: #fff; 
-	display:block;
-	position:absolute;
+	display: block;
+	position: absolute;
 	Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px;
 	/*background: rgba(0,0,0,0.2);*/
-	font-size:1.5em;
+	font-size: 2em;
 	top: 50%;
 	/*height:20px;*/
 	/*width:20px;*/
-	padding:10px 1px 10px 0px;
-	margin-top:-25px;
-	right:0px;
+	padding: 10px 1px 10px 0px;
+	margin-top: -25px;
+	right: 0px;
 	text-align: right;
-	cursor:pointer;
-	opacity:1;
+	cursor: pointer;
+	opacity: 1;
 	transition: all 0.2s ease;
 	-webkit-transition: all 0.2s ease;
 	-moz-transition: all 0.2s ease;
 	-o-transition: all 0.2s ease;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
 }
 .nGY2 .nGY2ViewerAreaNext > i {
-  margin-right:0px;
+  margin-right: 0px;
 }
 
 .nGY2 .toolbarContainer {
 	/*bottom:0px;*/
-  left:0px;
-  right:0px;
+  left: 0px;
+  right: 0px;
   text-align: center;
-  display:inline-block;
-  position:absolute;
-  width:100%;
+  display: inline-block;
+  position: absolute;
+  width: 100%;
 }
 
 .nGY2 .toolbar {
-  display:inline-block;
-	vertical-align:middle;
-	overflow:hidden;
-  color:#;
-  padding:2px 0px;
+  display: inline-block;
+	vertical-align: middle;
+	overflow: hidden;
+  padding: 2px 0px;
 	margin: 1px;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
 }
 .nGY2 .toolbarBackground {
 	background:rgba(4,4,4,0.7);
@@ -844,8 +821,8 @@
 	cursor:pointer;
 	color: #ddd; 
 	background: rgba(0,0,0,0.2);
-	left:0px;
-	top:0px;
+	left: 5px;
+	top: 5px;
 	position:absolute;
 	/*Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px;*/
 	opacity:1;
@@ -855,11 +832,11 @@
 	-o-transition: all 0.2s ease;
 }
 .nGY2 .nGY2ViewerToolsTopRight {
-	cursor:pointer;
+	cursor: pointer;
 	color: #ddd; 
 	background: rgba(0,0,0,0.2);
-	right:0px;
-	top:0px;
+	right: 5px;
+	top: 5px;
 	position:absolute;
 	/* Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px;*/
 	opacity:1;
@@ -875,10 +852,6 @@
 	cursor:pointer;
 	padding: 2px 5px;
 	vertical-align:middle;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
 }
 
 .nGY2 .ngy2viewerToolAction {
@@ -894,10 +867,6 @@
 	margin:auto;
 	vertical-align:middle;
 	overflow: hidden;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
 }
 
 .nGY2 .toolbar .label{
@@ -908,10 +877,6 @@
 	text-align: left;
 	vertical-align:middle;
 	font-size:1em;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
   background-color:initial;
 }
 
@@ -920,10 +885,6 @@
 	margin:auto;
 	vertical-align:middle;
 	overflow: hidden;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
 }
 .nGY2 .toolbar .label .description{
 	font-size:.8em;
@@ -931,10 +892,6 @@
 	vertical-align:middle;
 	overflow: hidden;
 	color:#aaa;
-	box-sizing: content-box;
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	-o-box-sizing: content-box;
 }
 
 
