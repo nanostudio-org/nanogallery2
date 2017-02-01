@@ -405,7 +405,7 @@
     <h1>nanogallery2 demonstrations</h1>
     <br><br><br>
     <blockquote>
-      This page will help you understand the capabilities of nanogallery2. The HTML template corresponding to each demonstration is displayed at bottom of this page.
+      This page will help you understand the capabilities of nanogallery2. The HTML template corresponding to each demonstration is displayed at the bottom of this page.
     </blockquote>
     <br><br><br><br>
   
@@ -519,13 +519,26 @@
 
     <div>
       <!-- TABS - SHORTCODE / HTML -->
+<!--
       <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active lead"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">portable shortcode</a></li>
-        <li role="presentation" class="lead"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">HTML template</a></li>
+        <li role="presentation" class="active lead"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">HTML template</a></li>
       </ul>
       <br>
+-->
       <!-- Tab panes -->
       <div class="tab-content">
+        <h3>Corresponding HTML template</h3>
+        <div role="tabpanel" class="tab-pane active" id="profile">
+          <div class="row">
+            <button id="copyclipboard" type="button" class="btn-primary pull-right" data-clipboard-target="#ngy2_template">copy to clipboard</button>
+          </div>
+          <div class="row">
+            <pre><code id="ngy2_template">
+            </code></pre>
+          </div>   
+        </div>
+        <!-- 
         <div role="tabpanel" class="tab-pane active" id="home">
           <div class="row">
             <button id="copyclipboard2" type="button" class="btn-primary pull-right" data-clipboard-target="#ngy2_portable">copy to clipboard</button>
@@ -535,15 +548,7 @@
             </pre>
           </div>   
         </div>
-        <div role="tabpanel" class="tab-pane" id="profile">
-          <div class="row">
-            <button id="copyclipboard" type="button" class="btn-primary pull-right" data-clipboard-target="#ngy2_template">copy to clipboard</button>
-          </div>
-          <div class="row">
-            <pre><code id="ngy2_template">
-            </code></pre>
-          </div>   
-        </div>
+        -->
       </div>
     </div>
 
@@ -571,9 +576,9 @@
       var html_part1='&lt;html&gt;\n';
       html_part1+='  &lt;head&gt;\n';
       html_part1+='    &lt;meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"&gt;\n\n';
-      html_part1+='    &lt;script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"&gt;&lt;/script&gt;\n\n';
-      html_part1+='    &lt;link href="http://nanogallery2.nanostudio.org/css/nanogallery2.css" rel="stylesheet" type="text/css"&gt;\n';
-      html_part1+='    &lt;script type="text/javascript" src="http://nanogallery2.nanostudio.org/js/jquery.nanogallery2.js"&gt;&lt;/script&gt;\n';
+      html_part1+='    &lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"&gt;&lt;/script&gt;\n\n';
+      html_part1+='    &lt;link href="https://unpkg.com/nanogallery2/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css"&gt;\n';
+      html_part1+='    &lt;script type="text/javascript" src="https://unpkg.com/nanogallery2/dist/jquery.nanogallery2.min.js"&gt;&lt;/script&gt;\n';
       html_part1+='\n';
       html_part1+='  &lt;/head&gt;\n';
       html_part1+='  &lt;body&gt;\n\n';
