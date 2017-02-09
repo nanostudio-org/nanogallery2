@@ -1,7 +1,3 @@
-
- 
-
-  
   
   <div class="container ngy2documentation">
   <div class="row" >
@@ -138,6 +134,15 @@
             <td>
               Maximum number of pagination items displayed
               <br>only for <code>galleryDisplayMode: 'pagination'</code> and <code>galleryPaginationMode: 'numbers'</code>
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>paginationSwipe</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td>
+              Enables swipe gesture to go to next/previous gallery page.
             </td>
             <td>1.0</td>
           </tr>
@@ -359,7 +364,10 @@
           <td>thumbnailFeaturedKeyword</td>
           <td>string</td>
           <td>'*featured'</td>
-          <td>Keyword to set the feature status of a thumbnail. The keyword is searched in the title and the description.</td>
+          <td>
+            Keyword to set the feature status of a thumbnail. The keyword is searched in the title and the description.<br>
+            If the keyword is found, the featured icon will be displayed over the thumbnail.
+          </td>
           <td>1.0</td>
         </tr>
         <tr>
