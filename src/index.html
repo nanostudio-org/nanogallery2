@@ -1,5 +1,4 @@
-
- <div class="jumbotron ngy2dark ">
+<div class="jumbotron ngy2dark">
     <div class="container ">
       <div class="row text-right" >
         <div class="col-md-10" ></div>
@@ -627,7 +626,7 @@ thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.30|l
         
         galleryFilterTags: true,
         galleryL1FilterTags: false,
-	paginationSwipe: false,
+        paginationSwipe: false,
         locationHash: true
       });
 
@@ -769,16 +768,17 @@ thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.30|l
       
       //  RANDOM DEMO
       var lastRnd=-1;
-      var demos=[0, 1, 2, 3, 4]
+      var demos=[0, 1, 2, 3, 4, 5]
       var rnd=randomIntFromInterval(0,demos.length-1);
       jQuery('#btn_random_demo').on('click', function() {
         //rnd++;
         jQuery("#nanogallery").nanogallery2('destroy');
-        
+        window.location.hash = "_";
         // while( rnd == lastRnd ) {
         //  rnd=randomIntFromInterval(0,4);
         // }
         // lastRnd=rnd;
+        //rnd=5;
         switch ( rnd ) {
           case 0:
             jQuery("#nanogallery").nanogallery2({
@@ -889,6 +889,30 @@ thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.30|l
               thumbnailLabel: { display: true, position:'overImageOnTop', hideIcons: false, titleFontSize: '1.2em', align: 'left', titleMultiLine:true},
               gallerySorting: 'random',
               colorScheme : { thumbnail: { labelBackground: 'rgba(34, 34, 34, .0)', titleShadow : 'none', borderColor: '#fff'} },
+              locationHash: true
+            });
+            break;
+            
+          case 5:
+            jQuery("#nanogallery").nanogallery2({
+              kind: 'flickr',
+              userID: '149035168@N08',    // nano studio
+              photoset: '72157675219521270',
+              blackList: 'forhomepage|scrapbook|profil',
+              thumbnailDisplayTransition: 'scaleUp',
+              thumbnailHeight: '200', thumbnailWidth: '200',
+              galleryDisplayMode: 'fullContent',
+              galleryDisplayMoreStep: 2,
+              thumbnailBorderVertical: 0,
+              thumbnailBorderHorizontal: 0,
+              thumbnailGutterWidth: 0,
+              thumbnailGutterHeight: 0,
+              thumbnailHoverEffect2 : 'image_scale_1.00_1.10_5000|title_color_rgba(0,0,0,1)_rgba(0,0,0,0)|customlayer_backgroundColor_rgba(207,241,154,0.90)_rgba(((207,241,154,0.0)',
+              thumbnailToolbarImage : { topRight : '', bottomRight : '' },
+              //thumbnailLabel: { display: true, position:'overImageOnMiddle', titleFontSize: '1.5em', align: 'left', titleMultiLine:true},
+              thumbnailLabel: { display: true, position:'overImageOnMiddle', hideIcons: true, titleFontSize: '1.2em', align: 'center', titleMultiLine:true},
+              gallerySorting: 'random',
+              colorScheme : { thumbnail: { labelBackground: 'rgba(34, 34, 34, .0)', titleShadow : 'none', borderColor: '#54840C'} },
               locationHash: true
             });
             break;
