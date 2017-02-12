@@ -4,9 +4,6 @@
 <head>
   <title>nanogallery2 - beautiful image galleries for your website</title>
   <meta charset="utf-8">
-  <meta name="google-signin-scope" content="https://picasaweb.google.com/data/">
-  <meta name="google-signin-client_id" content="992551522822-7nstfoq17gn0u27kmcfcgnnfbp13ndl3.apps.googleusercontent.com">
-
   <meta name="description" content="nanogallery2 creates beautiful and high quality image galleries for your website">
   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -19,8 +16,10 @@
   <meta name="twitter:title" content="nanogallery2">
   <meta name="twitter:description" content="nanogallery2 creates beautiful and high quality image galleries for your website">
   <meta name="twitter:image" content="http://nanogallery2.nanostudio.org/img/nanogallery2.png">
-	
-	
+
+  <meta name="google-signin-scope" content="https://picasaweb.google.com/data/">
+  <meta name="google-signin-client_id" content="992551522822-7nstfoq17gn0u27kmcfcgnnfbp13ndl3.apps.googleusercontent.com">
+
   <link rel="icon" href="img/favicon.ico" />
 
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
@@ -48,6 +47,11 @@
   <!-- bootstrap-colorpicker -->
   <link rel="stylesheet" href="bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
   <script src="bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+
+  <!-- bootstrap-switch -->
+  <link rel="stylesheet" href="bootstrap-switch/bootstrap-switch.min.css">
+  <script src="bootstrap-switch/bootstrap-switch.min.js"></script>
+
   
   <!-- #################################################################################################################### -->
   <!-- nanogallery2 CSS files                                                                                               -->
@@ -286,6 +290,7 @@
     #ngy2tools .form-control{
       height: 20px;
       padding: 0px 5px;
+      border-radius: 0px;
     }
     
 
@@ -298,11 +303,26 @@
     #ngy2tools .panel-body {
       background-color: #555;
     }
-
+    #ngy2tools .panel {
+      border-radius:0px;
+      background-color:#222;
+    }
+    #ngy2tools .form-horizontal .control-label {
+      padding-top:0px;
+    }
+    
     /* color picker */
     #ngy2tools  .colorpicker-component .input-group-addon {
       padding : 0px;
-    }    
+      border-radius: 0px;
+    }
+
+    /* switch */
+    .bootstrap-switch.bootstrap-switch-focused {
+      border-color: #000;
+      box-shadow: none;
+    }
+    
     
     </style>
 
