@@ -188,14 +188,15 @@
       // Thumbnail label
       addSettingThumbnailLabel(settings2, 'position', $f.find('select[name=thumbnailLabelPosition]').val());
       addSettingThumbnailLabel(settings2, 'align', $f.find('select[name=thumbnailLabelAlignement]').val());
-      if( $f.find('select[name=thumbnailLabelDisplay]').val() == 'true' ) {
+      if( $f.find('[name=thumbnailLabelDisplay]').prop('checked') ) {
+        settings.thumbnailLabel.display=true;
         addSettingThumbnailLabel(settings2, 'display', true );
       }
       else {
         settings.thumbnailLabel.display=false;
         addSettingThumbnailLabel(settings2, 'display', false );
       }
-      if( $f.find('select[name=thumbnailLabelTitleMultiline]').val() == 'true' ) {
+      if( $f.find('[name=thumbnailLabelTitleMultiline]').prop('checked') ) {
         settings.thumbnailLabel.titleMultiLine=true;
         addSettingThumbnailLabel(settings2, 'titleMultiLine', true );
       }
@@ -203,7 +204,7 @@
         settings.thumbnailLabel.titleMultiLine=false;
         addSettingThumbnailLabel(settings2, 'titleMultiLine', false );
       }
-      if( $f.find('select[name=thumbnailLabelDisplayDescription]').val() == 'true' ) {
+      if( $f.find('[name=thumbnailLabelDisplayDescription]').prop('checked') ) {
         settings.thumbnailLabel.displayDescription=true;
         addSettingThumbnailLabel(settings2, 'displayDescription', true );
       }
@@ -211,7 +212,7 @@
         settings.thumbnailLabel.displayDescription=false;
         addSettingThumbnailLabel(settings2, 'displayDescription', false );
       }
-      if( $f.find('select[name=thumbnailLabelDescriptionMultiline]').val() == 'true' ) {
+      if( $f.find('[name=thumbnailLabelDescriptionMultiline]').prop('checked') ) {
         settings.thumbnailLabel.descriptionMultiLine=true;
         addSettingThumbnailLabel(settings2, 'descriptionMultiLine', true );
       }
@@ -302,12 +303,13 @@
       addSetting(settings2, 'galleryDisplayMode', $f.find('select[name=galleryDisplayMode]').val());
       addSetting(settings2, 'galleryMaxRows', parseInt($f.find('[name=galleryMaxRows]').val()));
       addSetting(settings2, 'galleryDisplayMoreStep', parseInt($f.find('[name=galleryDisplayMoreStep]').val()));
-      if( $f.find('select[name=galleryLastRowFull]').val() == 'true' ) {
+      if( $f.find('[name=galleryLastRowFull]').prop('checked') ) {
         addSetting(settings2, 'galleryLastRowFull', true);
       }
       else {
         addSetting(settings2, 'galleryLastRowFull', false);
       }
+
       addSetting(settings2, 'galleryPaginationMode', $f.find('select[name=galleryPaginationMode]').val());
       addSetting(settings2, 'thumbnailAlignment', $f.find('select[name=thumbnailAlignment]').val());
       addSetting(settings2, 'galleryMaxItems', parseInt($f.find('[name=galleryMaxItems]').val()));
@@ -316,19 +318,19 @@
       addSetting(settings2, 'gallerySorting', $f.find('select[name=gallerySorting]').val());
 
       // Navigation
-      if( $f.find('select[name=displayBreadcrumb]').val() == 'true' ) {
+      if( $f.find('[name=displayBreadcrumb]').prop('checked') ) {
         addSetting(settings2, 'displayBreadcrumb', true);
       }
       else {
         addSetting(settings2, 'displayBreadcrumb', false);
       }
-      if( $f.find('select[name=breadcrumbAutoHideTopLevel]').val() == 'true' ) {
+      if( $f.find('[name=breadcrumbAutoHideTopLevel]').prop('checked') ) {
         addSetting(settings2, 'breadcrumbAutoHideTopLevel', true);
       }
       else {
         addSetting(settings2, 'breadcrumbAutoHideTopLevel', false);
       }
-      if( $f.find('select[name=breadcrumbOnlyCurrentLevel]').val() == 'true' ) {
+      if( $f.find('[name=breadcrumbOnlyCurrentLevel]').prop('checked') ) {
         addSetting(settings2, 'breadcrumbOnlyCurrentLevel', true);
       }
       else {
@@ -348,14 +350,21 @@
           break;
       }
       
-      if( $f.find('select[name=thumbnailLevelUp]').val() == 'true' ) {
-        settings.thumbnailLevelUp=true;
+      if( $f.find('[name=thumbnailLevelUp]').prop('checked') ) {
         addSetting(settings2, 'thumbnailLevelUp', true);
       }
       else {
         addSetting(settings2, 'thumbnailLevelUp', false);
       }
 
+
+      // LIGHTBOX
+      if( $f.find('[name=thumbnailOpenImage]').prop('checked') ) {
+        addSetting(settings2, 'thumbnailOpenImage', true); 
+      }
+      else {
+        addSetting(settings2, 'thumbnailOpenImage', false); 
+      }
 
       
       var defSettings=cloneJSObject(jQuery.nanogallery2.defaultOptions);
