@@ -1,23 +1,3 @@
-
-  
-  
-  <div class="container">
-    <br><br>
-    <h1>nanogallery2 builder <span style="color:#b00;">[BETA VERSION]</span></h1>
-    <br><br><br>
-    <blockquote>
-      Get a gallery up and running in minutes with the <b>builder</b>.
-      <br>
-      No need to read the documentation.
-      Define the options and generate a full working HTML page.<br>
-      Note: only a subset of all nanogallery2 settings are available here.
-    </blockquote>
-    You can also <button class="btn" disabled>modify a generated</button> gallery.
-    <br><br>
-  </div>
-
-    <br><br><br><br>
-  
   <!-- ###################### -->
   <!-- #####   BUILDER  ##### -->
   <!-- ###################### -->
@@ -107,7 +87,7 @@
                 <option value="lstAlbums"  >display the list of albums</option>
                 <option value="none">display the full photostream</option>
                 <optgroup label="albums">'
-                <option value="72157673359560333" selected="selected">fun (album)</option>
+                <option value="72157675715292251" selected="selected">into the wild (album)</option>
                 </optgroup>
               </select>            
               <span class="input-group-btn">
@@ -128,7 +108,7 @@
         <div class="row rowFlickr ">
           <div class="form-group col-md-4">
             <label>
-              <input name="flickrOpenOriginal" type="checkbox"> Display images in Flickr
+              Display images in Flickr &nbsp; <input name="flickrOpenOriginal" type="checkbox" class="switchbutton"> 
             </label>
           </div>
         </div>
@@ -206,15 +186,16 @@
               </div>
               <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                 <div class="panel-body">
+                
                   <label for="layoutEngine" class="control-label">Gallery layout</label>
                   <select name="layoutEngine" class="form-control" id="layoutEngine">
-                    <option value="grid" selected >Grid</option>
-                    <option value="justified">Justified</option>
+                    <option value="grid" >Grid</option>
+                    <option value="justified" selected>Justified</option>
                     <option value="cascading">Cascading</option>
                   </select>
                   <br>
                   <label for="thumbnailWidth" class="control-label">Thumbnail width</label>
-                  <input id="thumbnailWidth" name="thumbnailWidth" class="form-control" type="text" value="300">
+                  <input id="thumbnailWidth" name="thumbnailWidth" class="form-control" type="text" value="200">
                   <br>
                   <label for="thumbnailHeight" class="control-label">Thumbnail height</label>
                   <input id="thumbnailHeight" name="thumbnailHeight" class="form-control" type="text" value="200">
@@ -263,12 +244,18 @@
               </div>
               <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                 <div class="panel-body">
-                  <label for="thumbnailLabelDisplay" class="control-label">Display label (title + description)</label>
-                  <select name="thumbnailLabelDisplay" class="form-control" id="thumbnailLabelDisplay">
-                    <option value="true" selected >yes</option>
-                    <option value="false">no</option>
-                  </select>
+                  <label>The label is composed by a title and a description</label>
                   <br>
+                  <br>
+                  <form class="form-horizontal">
+                    <div class="form-group">
+                      <label class="col-sm-6 control-label text-right">Display label</label>
+                      <div class="col-sm-6">
+                        <input name="thumbnailLabelDisplay" type="checkbox" checked class="switchbutton">
+                      </div>
+                    </div>
+                  </form>
+
                   <label for="thumbnailLabelPosition" class="control-label">Label position</label>
                   <select name="thumbnailLabelPosition" class="form-control" id="thumbnailLabelPosition">
                     <option value="overImageOnBottom" selected >over image on bottom</option>
@@ -284,27 +271,42 @@
                     <option value="right">right</option>
                   </select>
                   <br>
-                  <label for="thumbnailLabelTitleMultiline" class="control-label">Title multiline</label>
-                  <select name="thumbnailLabelTitleMultiline" class="form-control" id="thumbnailLabelTitleMultiline">
-                    <option value="true">yes</option>
-                    <option value="false" selected>no</option>
-                  </select>
-                  <br>
-                  <label for="thumbnailLabelDisplayDescription" class="control-label">Display description</label>
-                  <select name="thumbnailLabelDisplayDescription" class="form-control" id="thumbnailLabelDisplayDescription">
-                    <option value="true" >yes</option>
-                    <option value="false" selected>no</option>
-                  </select>
-                  <br>
-                  <label for="thumbnailLabelDescriptionMultiline" class="control-label">Description multiline</label>
-                  <select name="thumbnailLabelDescriptionMultiline" class="form-control" id="thumbnailLabelDescriptionMultiline">
-                    <option value="true" >yes</option>
-                    <option value="false" selected>no</option>
-                  </select>
-                  <br>
-                  <label>
-                    <input name="allowHTMLinData" type="checkbox"> Allow HTML markup in title and description.
-                  </label>
+                  
+                  <form class="form-horizontal">
+                    <div class="form-group">
+                      <label class="col-sm-6 control-label text-right">Title multiline</label>
+                      <div class="col-sm-6">
+                        <input name="thumbnailLabelTitleMultiline" type="checkbox" class="switchbutton">
+                      </div>
+                    </div>
+                  </form>
+                  
+                  <form class="form-horizontal">
+                    <div class="form-group">
+                      <label class="col-sm-6 control-label text-right">Display description</label>
+                      <div class="col-sm-6">
+                        <input name="thumbnailLabelDisplayDescription" type="checkbox" class="switchbutton">
+                      </div>
+                    </div>
+                  </form>
+                  
+                  <form class="form-horizontal">
+                    <div class="form-group">
+                      <label class="col-sm-6 control-label text-right">Description multiline</label>
+                      <div class="col-sm-6">
+                        <input name="thumbnailLabelDescriptionMultiline" type="checkbox" class="switchbutton">
+                      </div>
+                    </div>
+                  </form>
+                  
+                  <form class="form-horizontal">
+                    <div class="form-group">
+                      <label class="col-sm-6 control-label text-right">Allow HTML markup</label>
+                      <div class="col-sm-6">
+                        <input name="allowHTMLinData" type="checkbox" class="switchbutton">
+                      </div>
+                    </div>
+                  </form>
                   
                 </div>
               </div>
@@ -322,24 +324,33 @@
               </div>
               <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
                 <div class="panel-body">
-                  <label for="displayBreadcrumb" class="control-label">Breadcrumb for navigation in albums</label>
-                  <select name="displayBreadcrumb" class="form-control" id="displayBreadcrumb">
-                    <option value="true" selected>yes</option>
-                    <option value="false">no</option>
-                  </select>
-                  <br>
-                  <label for="breadcrumbAutoHideTopLevel" class="control-label">Hide breadcrumb on top navigation level</label>
-                  <select name="breadcrumbAutoHideTopLevel" class="form-control" id="breadcrumbAutoHideTopLevel">
-                    <option value="true" selected>yes</option>
-                    <option value="false" >no</option>
-                  </select>
-                  <br>
-                  <label for="breadcrumbOnlyCurrentLevel" class="control-label">Breadcrumb: only current album name</label>
-                  <select name="breadcrumbOnlyCurrentLevel" class="form-control" id="breadcrumbOnlyCurrentLevel">
-                    <option value="true" selected>yes</option>
-                    <option value="false">no</option>
-                  </select>
-                  <br>
+                  <form class="form-horizontal">
+                    <div class="form-group">
+                      <label class="col-sm-6 control-label text-right">Breadcrumb for navigation in albums</label>
+                      <div class="col-sm-6">
+                        <input name="displayBreadcrumb" type="checkbox" checked class="switchbutton">
+                      </div>
+                    </div>
+                  </form>
+
+                  <form class="form-horizontal">
+                    <div class="form-group">
+                      <label class="col-sm-6 control-label text-right">Hide breadcrumb on top navigation level</label>
+                      <div class="col-sm-6">
+                        <input name="breadcrumbAutoHideTopLevel" type="checkbox" checked class="switchbutton">
+                      </div>
+                    </div>
+                  </form>
+
+                  <form class="form-horizontal">
+                    <div class="form-group">
+                      <label class="col-sm-6 control-label text-right">Breadcrumb: only current album name</label>
+                      <div class="col-sm-6">
+                        <input name="breadcrumbOnlyCurrentLevel" type="checkbox" checked class="switchbutton">
+                      </div>
+                    </div>
+                  </form>
+
                   <label for="galleryFilterTags" class="control-label">Display tag filter</label>
                   <select name="galleryFilterTags" class="form-control" id="galleryFilterTags">
                     <option value="false" selected >off</option>
@@ -347,13 +358,17 @@
                     <option value="title">based on title content</option>
                     <option value="description">based on description content</option>
                   </select>
-                  <br>
-                  <label for="thumbnailLevelUp" class="control-label">Display thumbnail to navigate up</label>
-                  <select name="thumbnailLevelUp" class="form-control" id="thumbnailLevelUp">
-                    <option value="true" >yes</option>
-                    <option value="false" selected >no</option>
-                  </select>
-                  <br>
+
+                  <br><br>
+                  
+                  <form class="form-horizontal">
+                    <div class="form-group">
+                      <label class="col-sm-6 control-label text-right">Display thumbnail to navigate up</label>
+                      <div class="col-sm-6">
+                        <input name="thumbnailLevelUp" type="checkbox" class="switchbutton">
+                      </div>
+                    </div>
+                  </form>
                   
                 </div>
               </div>
@@ -385,12 +400,16 @@
                   <label for="galleryDisplayMoreStep" class="control-label">Number of rows to add</label>
                   <input id="galleryDisplayMoreStep" name="galleryDisplayMoreStep" class="form-control" type="text" value="2" disabled>
                   <br>
-                  <label for="galleryLastRowFull" class="control-label">Display last row only if full</label>
-                  <select name="galleryLastRowFull" class="form-control" id="galleryLastRowFull">
-                    <option value="true" >yes</option>
-                    <option value="false" selected >no</option>
-                  </select>
-                  <br>
+
+                  <form class="form-horizontal">
+                    <div class="form-group">
+                      <label class="col-sm-6 control-label text-right">Display last row only if full</label>
+                      <div class="col-sm-6">
+                        <input name="galleryLastRowFull" type="checkbox" class="switchbutton">
+                      </div>
+                    </div>
+                  </form>
+
                   <label for="galleryPaginationMode" class="control-label">Pagination mode</label>
                   <select name="galleryPaginationMode" class="form-control" id="galleryPaginationMode" disabled>
                     <option value="rectangles" selected >rectangles</option>
@@ -433,7 +452,7 @@
               <div class="panel-heading" role="tab" id="headingFour">
                 <h4 class="panel-title">
                   <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    Hover effects
+                    Thumbnails hover effects
                   </a>
                 </h4>
               </div>
@@ -557,6 +576,40 @@
                 </div>
               </div>
             </div>
+            
+            
+            <!-- #################################################################### -->
+            <!-- #################################################################### -->
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="headingSix">
+                <h4 class="panel-title">
+                  <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                    Image display
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
+                <div class="panel-body">
+
+                  <form class="form-horizontal">
+                    <div class="form-group">
+                      <label class="col-sm-6 control-label text-right">Use lightbox to display images</label>
+                      <div class="col-sm-6">
+                        <input name="thumbnailOpenImage" type="checkbox" checked class="switchbutton">
+                      </div>
+                    </div>
+                  </form>
+
+                
+                </div>
+              </div>
+            </div>
+            
+            
+            
+            
+            
+            
             
           </div>
         </div>
@@ -1377,7 +1430,7 @@
       <!-- Tab panes -->
       <div class="tab-content">
         <div role="tabpanel" class="tab-pane active builder_mode_js_library" id="home"  style="display:none;">
-          <p>note: beta version. Max. 10 images will be displayed.</p>
+          <p>note: to remove the max. 10 images limit, <a href="http://nano.gallery/register.html" target="_blank">please register your website</a></p>
           <div class="row">
             <button id="copyclipboard2" type="button" class="btn-primary pull-right" data-clipboard-target="#ngy2_portable">copy to clipboard</button>
           </div>
@@ -1503,6 +1556,9 @@
       new Clipboard('#copyclipboard');
       new Clipboard('#copyclipboard2');
 
+      // turn checkboxes in switch buttons
+      $('.switchbutton').bootstrapSwitch( {size: 'mini', onText: 'yes', offText: 'no'} );
+      
       
       // color picker - thumbnail border color
       $('#thumbnailBorderColor').colorpicker({ 
@@ -1574,6 +1630,7 @@
             if( data.stat == 'ok' ) {
               $('#flickrAlbum').append('<optgroup label="albums">');
               jQuery.each(data.photosets.photoset, function(i,item){
+                console.log( item.id + '-'+ item.title._content);
                 $('#flickrAlbum').append('<option value="'+item.id+'">'+item.title._content+' (album)</option>');
               });
               $('#flickrAlbum').append('</optgroup">');
