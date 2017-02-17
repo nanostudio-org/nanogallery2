@@ -13,20 +13,12 @@
 // jQuery plugin - nanoGALLERY DEMO PANEL
 (function( $ ) {
     var settingsWithoutDefault= {};
-    jQuery.fn.nanogallery2builder = function(options) {
+    jQuery.fn.nanogallery2builder = function(portable) {
       var g_containerDemo=null,
       g_containerDemoPanel=null,
       g_containerNew=null,
       g_save=null;
 
-      if( options == 'code' ) {
-        // alert(JSON.stringify(settingsWithoutDefault, null, 4));
-        alert(JSON.stringify(settingsWithoutDefault));
-        // console.dir(settingsWithoutDefault);
-        // alert(settingsWithoutDefault);
-        return;
-      }
-    
 
       return this.each(function(index) {
         g_save=jQuery(this)[0].outerHTML;
@@ -87,7 +79,10 @@
       switch( ds ) {
         case 'google':
           addSetting(settings2, 'userID', $('#googleUserID').val());
-          addSetting(settings2, 'kind', 'google');
+          addSetting(settings2, 'kind', 'google2');
+          if( !portable ) {
+            addSetting(settings2, 'google2URL', 'http://YOUR_WEB_SERVER/nanogp/nanogp.php');
+          }
 
           var v=$('#googleAlbum').selectpicker('val');
           if( v.length == 1 && v[0] == 'lstAlbums' ) {
