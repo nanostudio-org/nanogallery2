@@ -1,4 +1,4 @@
-/* nanogallery2 - v0.9.2a - 2017-01-31 - http://nanogallery2.nanostudio.org */
+/* nanogallery2 - v0.9.2a - 2017-02-17 - http://nanogallery2.nanostudio.org */
 /**!
  * @preserve nanogallery2 - javascript image gallery
  * Homepage: http://nanogallery2.nanostudio.org
@@ -18,6 +18,15 @@
  *  - webfont generated with http://fontello.com - based on Font Awesome Copyright (C) 2012 by Dave Gandy (http://fortawesome.github.com/Font-Awesome/)
  */
 
+ // v0.9.3
+ // fixed: incorrect image size with Fickr storage
+ // fixed: double tap fired on zoom-in/out icons
+ // fixed: image next/previous scrolled 2 images on iPhone
+ // fixed: incorrect image display
+ // fixed: error on Google Photos albums with more then 1000 photos
+ // fixed: Google Photos data added after february 9, 2017 not accessible (module nanogp:https://github.com/nanostudio-org/nanogp)
+ // improved: image zoom management
+ 
  
 // ###########################################
 // ##### nanogallery2 as a JQUERY PLUGIN #####
@@ -1593,8 +1602,10 @@
       userEvents:                 null, // user events management
       hammertime:                 null,
       swipePosX:                  0,
-      panPosX:                    0,
+      panPosX:                    0,  // manual pan position
       panPosY:                    0,
+      zoomPosX:                   0,  // position to center zoom in/out
+      zoomPosY:                   0,
       colorSchemeLabel:           '',
       timeImgChanged:             0
     }
@@ -4496,10 +4507,12 @@ console.log('#DisplayPhoto : '+  imageIdx);
       }
       return temp;
     }
-   
+
+    
+    
     
     // ################################
-    // #####                      #####
+    // ##### DEFINE VARIABLES     #####
     // ################################
 
     
@@ -6118,7 +6131,8 @@ console.log('#DisplayPhoto : '+  imageIdx);
         
       var items=[];
       
-      G.VOM.currItemIdx=imageIdx;
+      // G.VOM.currItemIdx=imageIdx;
+      G.VOM.currItemIdx=0;
       G.VOM.items=[];
       G.VOM.albumID=G.I[imageIdx].albumID;
       
@@ -6166,7 +6180,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
         // display
         // DisplayInternalViewer(imageIdx, '');
         G.$E.vwImgC.css({ opacity:0, left:0, visibility:'hidden' }).attr('src','');
-        G.$E.vwImgC.attr('src',G.emptyGif).attr('src',G.VOM.Item(0).responsiveURL());
+        G.$E.vwImgC.children().eq(0).attr('src',G.emptyGif).attr('src',G.VOM.Item(0).responsiveURL());
         DisplayInternalViewer(0, '');
       }
     }
@@ -6190,9 +6204,9 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
       
       var sImg='',
       l=G.I.length;
-      sImg+='<img class="nGY2ViewerImage" src="'+G.VOM.Item(GetPreviousImageIdx(vomIdx)).responsiveURL()+'" alt=" " itemprop="contentURL">';
-      sImg+='<img class="nGY2ViewerImage" src="'+G.VOM.Item(vomIdx).responsiveURL()+'" alt=" " itemprop="contentURL">';
-      sImg+='<img class="nGY2ViewerImage" src="'+G.VOM.Item(GetNextImageIdx(vomIdx)).responsiveURL()+'" alt=" " itemprop="contentURL">';
+      sImg+='<div class="nGY2ViewerImagePan"><img class="nGY2ViewerImage" src="'+G.VOM.Item(GetPreviousImageIdx(vomIdx)).responsiveURL()+'" alt=" " itemprop="contentURL"></div>';
+      sImg+='<div class="nGY2ViewerImagePan"><img class="nGY2ViewerImage" src="'+G.VOM.Item(vomIdx).responsiveURL()+'" alt=" " itemprop="contentURL"></div>';
+      sImg+='<div class="nGY2ViewerImagePan"><img class="nGY2ViewerImage" src="'+G.VOM.Item(GetNextImageIdx(vomIdx)).responsiveURL()+'" alt=" " itemprop="contentURL"></div>';
       var sNav='';
       if( G.O.icons.viewerImgPrevious != undefined && G.O.icons.viewerImgPrevious != '') {
         sNav+='<div class="nGY2ViewerAreaPrevious ngy2viewerToolAction" data-ngy2action="previous">'+G.O.icons.viewerImgPrevious+'</div>';
@@ -6201,9 +6215,10 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
         sNav+='<div class="nGY2ViewerAreaNext ngy2viewerToolAction" data-ngy2action="next">'+G.O.icons.viewerImgNext+'</div>';
       }
       G.$E.vwContent=jQuery('<div class="nGY2ViewerContent">'+sImg+sNav+'</div>').appendTo(G.$E.conVw);
-      G.$E.vwImgP=G.$E.vwContent.find('.nGY2ViewerImage').eq(0);
-      G.$E.vwImgC=G.$E.vwContent.find('.nGY2ViewerImage').eq(1);
-      G.$E.vwImgN=G.$E.vwContent.find('.nGY2ViewerImage').eq(2);
+      // G.$E.vwImgP=G.$E.vwContent.find('.nGY2ViewerImage').eq(0);
+      G.$E.vwImgP=G.$E.vwContent.find('.nGY2ViewerImagePan').eq(0);
+      G.$E.vwImgC=G.$E.vwContent.find('.nGY2ViewerImagePan').eq(1);
+      G.$E.vwImgN=G.$E.vwContent.find('.nGY2ViewerImagePan').eq(2);
       
       // makes content unselectable --> avoid image drag effect during 'mouse swipe'
       G.$E.conVwCon.find('*').attr('draggable', 'false').attr('unselectable', 'on');
@@ -6297,10 +6312,12 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
         switch( ngy2action ) {
           case 'next':
             e.stopPropagation();
+            e.preventDefault();
             DisplayNextImage();
             break;
           case 'previous':
             e.stopPropagation();
+            e.preventDefault();
             DisplayPreviousImage();
             break;
           case 'playPause':
@@ -6309,11 +6326,17 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
             break;
           case 'zoomIn':
             e.stopPropagation();
-            ViewerZoom( true );
+            e.preventDefault();
+            if( ViewerZoomStart() ) {
+              ViewerZoomIn( true );
+            }
             break;
           case 'zoomOut':
             e.stopPropagation();
-            ViewerZoom( false );
+            e.preventDefault();
+            if( ViewerZoomStart() ) {
+              ViewerZoomIn( false );
+            }
             break;
           case 'minimize':
             // toggle toolbar visibility
@@ -6396,32 +6419,28 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
         
       });
       
-      
-      
-      G.$E.vwContent.on("click",function(e){
-        if( (new Date().getTime()) - G.VOM.timeImgChanged < 400 ) { return; }
+
+      // stop click propagation on image ==> if the user clicks outside of an image, the viewer is closed
+      G.$E.conVw.find('img').on('click', function (e) {
         e.stopPropagation();
-        e.preventDefault();
-        CloseInternalViewer(vomIdx);
-        return false;
       });
+      
       
       ImageSwipeTranslateX(G.VOM.swipePosX);
       DisplayInternalViewer(vomIdx, '');
 
-      // viwer gesture handling
+      // viewer gesture handling
       if( G.VOM.hammertime == null ) {
       
         G.VOM.hammertime =  new NGHammer(G.$E.conVwCon[0]);
+        
         G.VOM.hammertime.get('pan').set({ direction: NGHammer.DIRECTION_ALL });        
         G.VOM.hammertime.get('pinch').set({ enable: true });        
 
         G.VOM.hammertime.on('pan', function(ev) {
           if( !G.VOM.viewerDisplayed ) { return; }
           if( G.VOM.isZooming ) {
-            var posX=G.VOM.panPosX+(ev.deltaX/G.VOM.currentZoom);
-            var posY=G.VOM.panPosY+(ev.deltaY/G.VOM.currentZoom);
-            ViewerImageSetPosition(posX, posY,false);
+            ViewerImageSetPosition(G.VOM.panPosX+ev.deltaX, G.VOM.panPosY+ev.deltaY, false);
           }
           else {
             ImageSwipeTranslateX( ev.deltaX );
@@ -6431,10 +6450,8 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
         G.VOM.hammertime.on('panend', function(ev) {
           if( !G.VOM.viewerDisplayed ) { return; }
           if( G.VOM.isZooming ) {
-            var posX=G.VOM.panPosX+(ev.deltaX/G.VOM.currentZoom);
-            var posY=G.VOM.panPosY+(ev.deltaY/G.VOM.currentZoom);
             G.VOM.timeImgChanged=new Date().getTime();
-            ViewerImageSetPosition(posX, posY, true);
+            ViewerImageSetPosition(G.VOM.panPosX+ev.deltaX, G.VOM.panPosY+ev.deltaY, true);
           }
           else {
             // next/previous image
@@ -6446,24 +6463,30 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
               DisplayNextImage();
               return;
             }
+            ImageSwipeTranslateX(0);
           }
-          ImageSwipeTranslateX(0);
         });
         
         if( G.O.viewerZoom ) {
+          // double tap event only if zoom-feature is activated
           G.VOM.hammertime.on('doubletap', function(ev) {
             if( !G.VOM.viewerDisplayed ) { return; }
             ev.srcEvent.stopPropagation();
             ev.srcEvent.preventDefault();
             
-            if( G.VOM.isZooming ) {
-              G.VOM.isZooming=false;
-              G.VOM.currentZoom=1;
-              ResizeInternalViewer(true);
-            }
-            else {
-              G.VOM.currentZoom=1.2;
-              ViewerZoom(true);
+            if( ev.target.className.indexOf('nGY2ViewerImage') !== -1 ) {
+              // double tap only one image
+              if( G.VOM.isZooming ) {
+                G.VOM.isZooming=false;
+                G.VOM.currentZoom=1;
+                ResizeInternalViewer(true);
+              }
+              else {
+                G.VOM.currentZoom=1.^5;
+                if( ViewerZoomStart() ) {
+                  ViewerZoomIn(true);
+                }
+              }
             }
           });
         
@@ -6475,23 +6498,19 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
           G.VOM.hammertime.on('pinch', function(ev) {
             ev.srcEvent.stopPropagation();
             ev.srcEvent.preventDefault();  // cancel  mouseenter event
-            var item=G.VOM.Item(G.VOM.currItemIdx);
-            var curZ=G.VOM.currentZoom;
-            G.VOM.currentZoom=ev.scale;
+            
+            if( ViewerZoomStart() ) {
+              G.VOM.currentZoom=ev.scale;
               if( G.VOM.currentZoom > 2 ) {
                 G.VOM.currentZoom=2;
               }
               if( G.VOM.currentZoom < 0.2 ) {
                 G.VOM.currentZoom=0.2;
               }
-            G.VOM.isZooming=true;
 
-            // center image
-            G.VOM.panPosX= G.VOM.panPosX-(item.imageWidth*G.VOM.currentZoom-item.imageWidth*curZ) /2;
-            G.VOM.panPosY= G.VOM.panPosY-(item.imageHeight*G.VOM.currentZoom-item.imageHeight*curZ) /2;
-            ViewerImageSetPosition(G.VOM.panPosX, G.VOM.panPosY, true);
-
-            ResizeInternalViewer(true);
+              // center image
+              ViewerZoomApply();
+            }
           });
         }
       }
@@ -6618,38 +6637,70 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
       return r;
     }
     
-    function ViewerZoom( zoomIn ) {
+    function ViewerZoomStart() {
       if( G.O.viewerZoom && !G.VOM.viewerImageIsChanged ) {
         var item=G.VOM.Item(G.VOM.currItemIdx);
         if( item.imageHeight > 0 && item.imageWidth > 0 ) {
-          var curZ=G.VOM.currentZoom;
-          if( zoomIn ) {
-            // zoom in
-            G.VOM.currentZoom+=.1;
-            if( G.VOM.currentZoom > 2 ) {
-              G.VOM.currentZoom=2;
-            }
+          if( G.VOM.isZooming === false ) {
+            // default zoom
+            var h=G.$E.conVw.height()-G.VOM.padding.H;
+            G.VOM.currentZoom=h/item.imageHeight;
+            G.VOM.isZooming=true;
           }
-          else {
-            // zoom out
-            G.VOM.currentZoom-=.1;
-            if( G.VOM.currentZoom < 0.2 ) {
-              G.VOM.currentZoom=0.2;
-            }
-          }
-
-          G.VOM.isZooming=true;
-
-          // center image
-          G.VOM.panPosX= G.VOM.panPosX-(item.imageWidth*G.VOM.currentZoom-item.imageWidth*curZ) /2;
-          G.VOM.panPosY= G.VOM.panPosY-(item.imageHeight*G.VOM.currentZoom-item.imageHeight*curZ) /2;
-          ViewerImageSetPosition(G.VOM.panPosX, G.VOM.panPosY, true);
-
-          ResizeInternalViewer(true);
+          return true;
         }
       }
     }
+          
+    function ViewerZoomIn( zoomIn ) {
+      if( zoomIn ) {
+        // zoom in
+        G.VOM.currentZoom+=.1;
+        if( G.VOM.currentZoom > 2 ) {
+          G.VOM.currentZoom=2;
+        }
+      }
+      else {
+        // zoom out
+        G.VOM.currentZoom-=.1;
+        if( G.VOM.currentZoom < 0.2 ) {
+          G.VOM.currentZoom=0.2;
+        }
+      }
+      ViewerZoomApply();
+    }
 
+
+    function ViewerZoomApply() {
+          
+      // var curZ=G.VOM.currentZoom;
+        var item=G.VOM.Item(G.VOM.currItemIdx);
+        // if( item.imageHeight > 0 && item.imageWidth > 0 ) {
+
+      
+      var imageCurrentHeight=(item.imageHeight/window.devicePixelRatio) * G.VOM.currentZoom;
+      var imageCurrentWidth=(item.imageWidth/window.devicePixelRatio) * G.VOM.currentZoom;
+      G.$E.vwImgC.children().eq(0).css( {'height': imageCurrentHeight, 'max-height': 'none' });
+      G.$E.vwImgC.children().eq(0).css( {'width': imageCurrentWidth, 'max-width': 'none' });
+
+      // center image
+      var posX=0;
+      if( imageCurrentWidth > G.VOM.window.lastWidth ) {
+        posX=-(imageCurrentWidth-G.VOM.window.lastWidth)/2;
+      }
+      var h=G.$E.conVw.height()-G.VOM.padding.H;
+      var posY=0;
+      if( imageCurrentHeight > G.VOM.window.lastHeight ) {
+        posY=(imageCurrentHeight-G.VOM.window.lastHeight)/2;
+      }
+      posY=0;   // actually it seems that the image is always centered vertically -> so no need to to anything
+      G.VOM.zoomPosX=posX;
+      G.VOM.zoomPosY=posY;
+
+      ResizeInternalViewer(true);
+    }
+
+    
     // toggle slideshow mode on/off
     function SlideshowToggle(){
       if( G.VOM.playSlideshow ) {
@@ -6724,14 +6775,16 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
         if(  G.O.imageTransition == 'swipe' ) {
           if( posX > 0 ) {
             var $new=G.$E.vwImgP;
-            var dir=getViewport().w;
+            // var dir=getViewport().w;
+            var dir=G.$E.conVw.width();
             G.$E.vwImgP.css({visibility:'visible', left:0, opacity:1});
             G.$E.vwImgP[0].style[G.CSStransformName]= 'translateX('+(-dir+posX)+'px) '
             G.$E.vwImgN[0].style[G.CSStransformName]= 'translateX('+(-dir)+'px) '
           }
           else {
             var $new=G.$E.vwImgN;
-            var dir=-getViewport().w;
+            // var dir=-getViewport().w;
+            var dir=-G.$E.conVw.width();
             G.$E.vwImgN.css({visibility:'visible', left:0, opacity:1});
             G.$E.vwImgN[0].style[G.CSStransformName]= 'translateX('+(-dir+posX)+'px) '
             G.$E.vwImgP[0].style[G.CSStransformName]= 'translateX('+(-dir)+'px) '
@@ -6766,7 +6819,7 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
     // Display image (and run animation)
     function DisplayInternalViewer( vomIdx, displayType ) {
       
-      G.$E.vwImgC.unbind('.imagesLoaded');
+      G.$E.vwImgC.children().eq(0).unbind('.imagesLoaded');
       if( G.VOM.playSlideshow ) {
         window.clearTimeout(G.VOM.playSlideshowTimerID);
       }
@@ -6955,39 +7008,38 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
       G.$E.vwImgC.addClass('imgCurrent');
       
       G.$E.vwImgN.css({ opacity:0, left:0, visibility:'hidden' }).attr('src','');
-      G.$E.vwImgN.attr('src',G.emptyGif).attr('src',G.VOM.Item(GetNextImageIdx(vomIdx)).responsiveURL());
+      G.$E.vwImgN.children().eq(0).attr('src',G.emptyGif).attr('src',G.VOM.Item(GetNextImageIdx(vomIdx)).responsiveURL());
       G.$E.vwImgP.css({ opacity:0, left:0, visibility:'hidden'}).attr('src','');
-      G.$E.vwImgP.attr('src',G.emptyGif).attr('src',G.VOM.Item(GetPreviousImageIdx(vomIdx)).responsiveURL());
+      G.$E.vwImgP.children().eq(0).attr('src',G.emptyGif).attr('src',G.VOM.Item(GetPreviousImageIdx(vomIdx)).responsiveURL());
 
       // slideshow mode - wait until image is loaded to start the delay for next image
       var item=G.VOM.Item(G.VOM.currItemIdx);
       if( G.VOM.playSlideshow || item.imageHeight == 0 || item.imageWidth == 0) {
-        G.$E.vwImgC.ngimagesLoaded().always( function( instance ) {
+        
+        G.$E.vwImgC.children().eq(0).ngimagesLoaded().always( function( instance ) {
           
-          item.imageWidth=G.$E.vwImgC.prop('naturalWidth');
-          item.imageHeight=G.$E.vwImgC.prop('naturalHeight');
-          
-          SetZoomDefault();
+          if( item.imageWidth == 0 ) {
+            item.imageWidth=G.$E.vwImgC.children().eq(0).prop('naturalWidth');
+          }
+          if( item.imageWHeight == 0 ) {
+            item.imageHeight=G.$E.vwImgC.children().eq(0).prop('naturalHeight');
+          }
+
           if( G.VOM.playSlideshow ) {
             // in the meantime the user could have stopped the slideshow
             G.VOM.playSlideshowTimerID=window.setTimeout( function(){DisplayNextImage(); }, G.VOM.slideshowDelay);
           }
         });
       }
-      else {
-        var h=G.$E.conVw.height()-G.VOM.padding.H;
-          G.VOM.currentZoom=h/item.imageHeight;
-        // G.VOM.currentZoom=.5;
-      }
       
+      // close viewer when user clicks outside of the image
       G.$E.vwImgC.on("click",function(e){
         e.stopPropagation();
-        // if( e.pageX < (jQuery(window).width()/2) ) {
-          // DisplayPreviousImage();
-        // }
-        // else {
-          // DisplayNextImage();
-        // }
+        if( (new Date().getTime()) - G.VOM.timeImgChanged < 400 ) { return; }
+        e.stopPropagation();
+        e.preventDefault();
+        CloseInternalViewer(vomIdx);
+        return false;
       });
 
       ResizeInternalViewer();
@@ -7004,15 +7056,6 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
       
     }
     
-    function SetZoomDefault() {
-      var item=G.VOM.Item(G.VOM.currItemIdx);
-      if( item.imageHeight > 0 ) {
-        var h=G.$E.conVw.height()-G.VOM.padding.H;
-        G.VOM.currentZoom=h/item.imageHeight;
-      }
-      ResizeInternalViewer(true);
-    
-    }
 
     function GetNextImageIdx( vomIdx ) {
     
@@ -7151,7 +7194,7 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
       // window.requestAnimationFrame( function() {    // synchronize with screen
       var windowsW=G.$E.conVw.width();
       var windowsH=G.$E.conVw.height();
-      var $elt=G.$E.vwImgC;
+      var $elt=G.$E.vwImgC.children().eq(0);
       if( $elt == null || G.VOM.currItemIdx == -1 ) { return; }
       
       if( !forceUpdate && G.VOM.window.lastWidth == windowsW  && G.VOM.window.lastHeight == windowsH ) { return; }
@@ -7195,61 +7238,45 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
           break;
       }
 
-      if( !G.VOM.viewerImageIsChanged && G.O.viewerZoom && G.VOM.isZooming ) {
+      if( !G.VOM.viewerImageIsChanged && G.VOM.isZooming ) {
         ViewerImageSetPosition(G.VOM.panPosX, G.VOM.panPosY, false);
-        //G.VOM.isZooming=true;
-        // G.$E.vwContent.children('img').css({'max-width':(windowsW-G.VOM.padding.H), 'max-height':(windowsH-G.VOM.padding.V) });
       }
       else {
         G.VOM.isZooming=false;
-        G.$E.vwContent.children('img').css({'max-width':(windowsW-G.VOM.padding.H), 'max-height':(windowsH-G.VOM.padding.V), 'height':'auto', 'width':'auto', 'top':0, 'left':0, 'bottom': '' });
+        G.VOM.panPosX=0;
+        G.VOM.panPosY=0;
+        G.VOM.zoomPosX=0;
+        G.VOM.zoomPosY=0;
+        G.$E.vwImgC[0].style[G.CSStransformName]= 'translate3D(0,0,0) ';
+
+        
+        var maxW=windowsW-G.VOM.padding.H;
+        var item=G.VOM.Item(G.VOM.currItemIdx);
+        if( item.imageWidth > 0 &&  window.devicePixelRatio > 1 ) {
+          var w=item.imageWidth/window.devicePixelRatio;
+          if( maxW > w ) {
+            maxW=w;
+          }
+        }
+        
+        // G.$E.vwContent.find('img').css({'max-width':(windowsW-G.VOM.padding.H), 'max-height':(windowsH-G.VOM.padding.V), 'height':'auto', 'width':'auto' });
+        G.$E.vwContent.find('img').css({'max-width':(maxW), 'max-height':(windowsH-G.VOM.padding.V), 'height':'auto', 'width':'auto' });
       }
       
     }
     
     // position the image depending on the zoom factor and the pan X/Y position
     function ViewerImageSetPosition(posX, posY, savePosition ) {
-      var item=G.VOM.Item(G.VOM.currItemIdx);
-      var imageCurrentHeight=item.imageHeight*G.VOM.currentZoom;
-      var imageCurrentWidth=item.imageWidth*G.VOM.currentZoom;
 
-      if( posX < (G.VOM.window.lastWidth-imageCurrentWidth) ) {
-        posX=G.VOM.window.lastWidth-imageCurrentWidth;
-      }
-      if( posX > 0 ) {
-        posX=0;
-      }
-      if( posY < (G.VOM.window.lastHeight-imageCurrentHeight) ) {
-        posY=G.VOM.window.lastHeight-imageCurrentHeight;
-      }
-      if( posY > 0 ) {
-        posY=0;
-      }
-      
-      if( imageCurrentWidth > G.VOM.window.lastWidth ) {
-          // var posX=(imageCurrentWidth-G.VOM.window.lastWidth)/2;
-          // G.$E.vwImgC.css('left', -posX - G.VOM.panPosX);
-          G.$E.vwImgC.css('left', posX).css('bottom', posX);
-        }
-        else {
-          G.$E.vwImgC.css('left', 0).css('bottom', 'auto');
-        }
-        if( imageCurrentHeight > G.VOM.window.lastHeight ) {
-          // var posY=(imageCurrentHeight-G.VOM.window.lastHeight)/2;
-          // G.$E.vwImgC.css('top', -posY + G.VOM.panPosY);
-          G.$E.vwImgC.css('top', posY).css('bottom', 'auto');
-        }
-        else {
-          G.$E.vwImgC.css('top', 0).css('bottom', 0);
-        }
-        G.$E.vwImgC.css( {'height': imageCurrentHeight, 'max-height': 'none' });
-        G.$E.vwImgC.css( {'width': imageCurrentWidth, 'max-width': 'none' });
-        // console.log('w:'+newW+' h:'+imageCurrentHeight);
-            
       if( savePosition ) {
-           G.VOM.panPosX=posX;
-           G.VOM.panPosY=posY;
+        G.VOM.panPosX=posX;
+        G.VOM.panPosY=posY;
       }
+
+      posX+=G.VOM.zoomPosX;
+      posY+=G.VOM.zoomPosY;
+    
+      G.$E.vwImgC[0].style[G.CSStransformName]= 'translate3D('+ posX+'px, '+ posY+'px, 0) ';
     }
 
     
@@ -7396,10 +7423,13 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
         mouseleave: GalleryMouseLeave
       }, ".nGY2GThumbnail"); //pass the element as an argument to .on
       
+      // G.GOM.hammertime = new NGHammer(G.$E.conTn[0], { touchAction: 'none' });
       G.GOM.hammertime = new NGHammer(G.$E.conTn[0]);
       // G.GOM.hammertime.domEvents = true;
+      
       G.GOM.hammertime.on('pan', function(ev) {
         if( G.O.paginationSwipe && G.layout.support.rows && G.galleryDisplayMode.Get() == 'PAGINATION' ) {
+        // console.dir(ev);
           G.$E.conTn.css( G.CSStransformName , 'translateX('+(ev.deltaX)+'px)');
         }
       });
@@ -7420,6 +7450,7 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
             return;
           }
           G.$E.conTn.css( G.CSStransformName , 'translateX(0px)');
+          pX=0;
         }
       });
       G.GOM.hammertime.on('tap', function(ev) {
@@ -7527,12 +7558,14 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
           var deltaY = 0;
           e.preventDefault();
 
-          if (e.originalEvent.deltaY) { // FireFox 17+ (IE9+, Chrome 31+?)
-            deltaY = e.originalEvent.deltaY;
-          } else if (e.originalEvent.wheelDelta) {
-            deltaY = -e.originalEvent.wheelDelta;
+          if( ViewerZoomStart() ) {
+            if (e.originalEvent.deltaY) { // FireFox 17+ (IE9+, Chrome 31+?)
+              deltaY = e.originalEvent.deltaY;
+            } else if (e.originalEvent.wheelDelta) {
+              deltaY = -e.originalEvent.wheelDelta;
+            }
+            ViewerZoomIn( deltaY <= 0 ? true : false );
           }
-          ViewerZoom( deltaY <= 0 ? true : false );
         }
       });
 
@@ -7673,7 +7706,7 @@ console.log('lH: '+lH);
       
       G.scrollTimeOut = setTimeout(function () {
       
-        console.log('OnScrollEvent');
+        //console.log('OnScrollEvent');
       
         if( !G.VOM.viewerDisplayed ) {
           if( G.galleryResizeEventEnabled ) {
@@ -11688,7 +11721,8 @@ if (typeof define === 'function' && define.amd) {
       
       if( G.I[albumIdx].GetID() == 0 ) {
         // retrieve the list of albums
-        url += '?alt=json&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime());
+        // url += '?alt=json&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime());
+        url += '?alt=json&v=3&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime());
         kind='album';
       }
       else {
@@ -12296,12 +12330,12 @@ if (typeof define === 'function' && define.amd) {
         var newItem=NGY2Item.New( G, itemTitle, itemDescription, itemID, albumID, 'image', tags );
         newItem.src=imgUrl;
         if( item.url_o !== undefined ) {
-          newItem.width=item.width_o;
-          newItem.height=item.height_o;
+          newItem.imageWidth=item.width_o;
+          newItem.imageHeight=item.height_o;
         }
         else {
-          newItem.width=item.width_z;
-          newItem.height=item.height_z;
+          newItem.imageWidth=item.width_z;
+          newItem.imageHeight=item.height_z;
         }
 
         var tn = {
