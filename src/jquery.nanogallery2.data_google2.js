@@ -9,12 +9,13 @@
  
 // ###################################################
 // ##### nanogallery2 - module for GOOGLE PHOTOS #####
+// ##### requires nanogp                         #####
 // ###################################################
 
 
 ;(function ($) {
   
-  jQuery.nanogallery2.data_google = function (instance, fnName){
+  jQuery.nanogallery2.data_google2 = function (instance, fnName){
     var G=instance;      // current nanogallery2 instance
 
     // ### Picasa/Google+
@@ -43,10 +44,20 @@
         maxResults='&max-results='+G.galleryMaxItems.Get();
       }
       
+      var gat='';
+      if( typeof ngy2_pwa_at !== 'undefined' ) {
+        gat=ngy2_pwa_at;
+      }
+      
       if( G.I[albumIdx].GetID() == 0 ) {
         // retrieve the list of albums
-        // url += '?alt=json&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime());
-        url += '?alt=json&v=3&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime());
+        if( gat != '' ) {
+          url += '?alt=json&v=3&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime()) + '&access_token=' + gat;
+        }
+        else {
+          // nanogp
+          url=G.O.google2URL + '?nguserid='+G.O.userID+'&alt=json&v=3&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime());
+        }
         kind='album';
       }
       else {
@@ -56,7 +67,13 @@
           // private album
           auth=G.I[albumIdx].authkey;
         }
-        url += '/albumid/'+albumID+'?alt=json&kind=photo&thumbsize='+G.picasa.thumbSizes+maxResults+auth+'&imgmax=d';
+        if( gat != '' ) {
+          url += '/albumid/'+albumID+'?alt=json&kind=photo&thumbsize='+G.picasa.thumbSizes+maxResults+auth+'&imgmax=d&access_token=' + gat;
+        }
+        else {
+          // nanogp
+          url=G.O.google2URL + '?nguserid='+G.O.userID+'&ngalbumid='+albumID+'&alt=json&v=3&kind=photo&thumbsize='+G.picasa.thumbSizes+maxResults+auth+'&imgmax=d';
+        }
       }
 
       PreloaderDisplay(true);
@@ -74,7 +91,6 @@
         var GI_getJSONfinished = function(data){
           clearTimeout(tId);
           PreloaderDisplay(false);
-          
           GoogleParseData( albumIdx, kind, data );
           AlbumPostProcess(albumID);
           if( fnToCall !== null &&  fnToCall !== undefined) {
@@ -83,24 +99,43 @@
         };
 
         var gi_data_loaded = null;
-        // load more than 1000 data -> contributor: Giovanni Chiodi
+        // load more than 1000 data (contributor: Giovanni Chiodi)
 
         var GI_loadJSON = function(url,start_index){
+          jQuery.getJSON( url + '&start-index=' + start_index + '&callback=?', function(data) {
           
-          jQuery.getJSON(url+"&start-index="+start_index, 'callback=?', function(data) {
-            if (gi_data_loaded===null){
+            if( data.nano_status == 'error' ) {
+              clearTimeout(tId);
+              PreloaderDisplay(false);
+              NanoAlert(G, "Could not retrieve Google data. Error: " + data.nano_message);
+              return;
+            }
+          
+            if (gi_data_loaded===null) {
               gi_data_loaded = data;
-            }else{
+            }
+            else {
               gi_data_loaded.feed.entry=gi_data_loaded.feed.entry.concat(data.feed.entry);
             }
 
-            if (data.feed.openSearch$startIndex.$t+data.feed.openSearch$itemsPerPage.$t>=data.feed.openSearch$totalResults.$t){
+            var cnt=data.feed.openSearch$startIndex.$t+data.feed.openSearch$itemsPerPage.$t;
+            var numItems=0;
+            if( kind == 'image' ) {
+              numItems=data.feed.gphoto$numphotos.$t;
+            }
+            else {
+              numItems=data.feed.openSearch$totalResults.$t;
+            }
+            
+            // if (data.feed.openSearch$startIndex.$t+data.feed.openSearch$itemsPerPage.$t>=data.feed.openSearch$totalResults.$t){
+            if( cnt >= numItems ) {
               //ok finito
               GI_getJSONfinished(gi_data_loaded);
-            }else{
+            }
+            else {
               //ce ne sono ancora da caricare
               //altra chiamata per il rimanente
-              GI_loadJSON(url,data.feed.openSearch$startIndex.$t+data.feed.openSearch$itemsPerPage.$t);
+              GI_loadJSON(url, cnt);
             }
           })
           .fail( function(jqxhr, textStatus, error) {
@@ -140,11 +175,12 @@
       
       // iterate and parse each item
       jQuery.each(data.feed.entry, function(i,data){
-        
-        //Get the title 
+
+      //Get the title 
         var imgUrl=data.media$group.media$content[0].url;
         var itemTitle = data.title.$t;
 
+        
         //Get the description
         var filename='';
         var itemDescription = data.media$group.media$description.$t;
@@ -166,8 +202,8 @@
 
         var newItem=NGY2Item.New( G, itemTitle, itemDescription, itemID, albumID, kind, '' );
           // set the image src
+          var src='';
           if( kind == 'image' ) {
-            var src='';
             src=imgUrl;
             if( !G.O.viewerZoom && G.O.viewerZoom != undefined ) {
               var s=imgUrl.substring(0, imgUrl.lastIndexOf('/'));

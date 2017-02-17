@@ -185,12 +185,12 @@
         var newItem=NGY2Item.New( G, itemTitle, itemDescription, itemID, albumID, 'image', tags );
         newItem.src=imgUrl;
         if( item.url_o !== undefined ) {
-          newItem.width=item.width_o;
-          newItem.height=item.height_o;
+          newItem.imageWidth=item.width_o;
+          newItem.imageHeight=item.height_o;
         }
         else {
-          newItem.width=item.width_z;
-          newItem.height=item.height_z;
+          newItem.imageWidth=item.width_z;
+          newItem.imageHeight=item.height_z;
         }
 
         var tn = {
