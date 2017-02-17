@@ -23,15 +23,17 @@
         
         <!-- GOOGLE -->
         <div class="row rowGoogle hide">
-          <div class="form-group col-md-3">
+          <div class="form-group col-md-3 hidden">
             <label for="googleUserID" class="control-label">Google Photos user ID</label>
             <input id="googleUserID" name="googleUserID" class="form-control" type="text" value="111186676244625461692">
           </div>
-          <p>
-            <p id="pleaseSignIn">Please sign-in to Google to retrieve your User ID and the list of your photos albums<br><span style="font-size:0.8em;"><b>(by signing-in you agree that some data can be used for statistical purposes)</b></span>.</p>
-            <a style="display:none; float: left; margin-right: 10px; height: 36px;" class="btn btn-warning" id="google-sign-out" href="#">Sign out from Google</a>
-            <div class="g-signin2" data-onsuccess="onSignIn" ></div>
-          </p>
+          <div class="col-md-12">
+            <p>
+              <p id="pleaseSignIn">Please sign-in to Google to retrieve your User ID and your data on Google Photos<br><span style="font-size:0.8em;"></span></p>
+              <a style="display:none; float: left; margin-right: 10px; height: 36px;" class="btn btn-warning" id="google-sign-out" href="#">Sign out from Google</a>
+              <div class="g-signin2" data-onsuccess="onSignIn" ></div>
+            </p>
+          </div>
         </div>
 
         <div class="row rowGoogle hide">
@@ -58,6 +60,7 @@
             </label>
           </div>
         </div>
+        <!-- 
         <div class="row rowGoogle hide ">
           <div class="form-group col-md-12">
           <p>
@@ -65,6 +68,7 @@
            </p>
           </div>
         </div>
+        -->
         
         <!-- FLICKR -->
         <div class="row rowFlickr ">
@@ -1428,7 +1432,7 @@
       </ul>
       <br>
       <!-- Tab panes -->
-      <div class="tab-content">
+      <div class="tab-content ngy2-builder">
         <div role="tabpanel" class="tab-pane active builder_mode_js_library" id="home"  style="display:none;">
           <p>note: to remove the max. 10 images limit, <a href="http://nano.gallery/register.html" target="_blank">please register your website</a></p>
           <div class="row">
@@ -1441,6 +1445,7 @@
         </div>
         <div role="tabpanel" class="tab-pane builder_mode_portable" id="profile"  style="display:none;">
           <p>you shoud adapt the pathes to point to your web server.</p>
+          <p class="rowGoogle hide">Note: you <u>must</u> install the application <a href="https://github.com/nanostudio-org/nanogp" target="_blank"><b>nanogp</b></a> on your web server in order to display data from Google Photos.</p>
           <div class="row">
             <button id="copyclipboard" type="button" class="btn-primary pull-right" data-clipboard-target="#ngy2_template">copy to clipboard</button>
           </div>
@@ -1465,11 +1470,14 @@
   
     // GOOGLE PLUS SIGN IN
     function onSignIn(googleUser) {
+
       // Useful data for client-side script
       var profile = googleUser.getBasicProfile(),
       id_token = googleUser.getAuthResponse().id_token,
       access_token = googleUser.getAuthResponse().access_token;
-          
+      
+      ngy2_pwa_at=access_token;
+      
       jQuery('#google-sign-out').show();
       jQuery('#pleaseSignIn').hide();
       $('#googleUserID').val(profile.getId());
@@ -1481,7 +1489,7 @@
       
       // retrieve the list of public albums
       jQuery.ajax( {
-          url:        'https://picasaweb.google.com/data/feed/api/user/' + profile.getId() + '?alt=json&access=all&access_token=' + access_token,
+          url:        'https://picasaweb.google.com/data/feed/api/user/' + profile.getId() + '?alt=json&v=3&access=all&access_token=' + access_token,
           dataType:   'json',
           method:     'GET',
           success: function(data){
@@ -1489,33 +1497,39 @@
           var i, j;
             tableEntries = [];
             $('#googleAlbum').append('<optgroup label="albums">');
-            for(var i=0; i<data.feed.entry.length; i++) {
-            
-              var entry = data.feed.entry[i];
-              var title=entry.title.$t;
-              var rights=entry.rights.$t;
-              var albumid = entry.gphoto$id.$t;
-              var link;
-              for(var j=0; j<entry.link.length; j++) {
-                if (entry.link[j].rel === "alternate") {
-                  link = entry.link[j].href;
-                  break;
-                }
-              }
-              var authKey='';
-              var authKeyMatchResult = link.match(/authkey=([^&]*)/);
-              
-              if (null !== authKeyMatchResult && authKeyMatchResult.length > 1) {
-                authKey = authKeyMatchResult[1];
-              }
 
-              if( rights == 'private' ) {
-                $('#googleAlbum').append('<option value="'+albumid+'&authkey='+authKey+'" style="background: #eaa;">'+title+' (private album)</option>');
+            if( data.feed.openSearch$totalResults.$t == 0 ) {
+              $('#googleAlbum').append('<option disabled value="">This account has no album in Google Photos.</option>');
+            }
+            else {
+              for(var i=0; i<data.feed.entry.length; i++) {
+              
+                var entry = data.feed.entry[i];
+                var title=entry.title.$t;
+                var rights=entry.rights.$t;
+                var albumid = entry.gphoto$id.$t;
+                var link;
+                for(var j=0; j<entry.link.length; j++) {
+                  if (entry.link[j].rel === "alternate") {
+                    link = entry.link[j].href;
+                    break;
+                  }
+                }
+                var authKey='';
+                var authKeyMatchResult = link.match(/authkey=([^&]*)/);
+                
+                if (null !== authKeyMatchResult && authKeyMatchResult.length > 1) {
+                  authKey = authKeyMatchResult[1];
+                }
+
+                if( rights == 'private' ) {
+                  // $('#googleAlbum').append('<option value="'+albumid+'&authkey='+authKey+'" style="background: #eaa;">'+title+' (private album)</option>');
+                }
+                if( rights == 'public' ) {
+                  // $('#googleAlbum').append('<option value="'+albumid+'">'+title+' (public album)</option>');
+                }
+                $('#googleAlbum').append('<option value="'+albumid+'">'+title+'</option>');
               }
-              if( rights == 'public' ) {
-                $('#googleAlbum').append('<option value="'+albumid+'">'+title+' (public album)</option>');
-              }
-            
             }
             $('#googleAlbum').append('</optgroup>');
             $('#googleAlbum').selectpicker('refresh');
@@ -1544,6 +1558,7 @@
     
       // Display shortcode or html template - depending on the used homepage
       var p=location.pathname.substring(location.pathname.lastIndexOf("/") + 1);
+      var portable=false;
       if( p == 'builder.html' ) {
         // javascript library homepage
         $('.builder_mode_portable').css('display','inline');
@@ -1551,6 +1566,7 @@
       else {
         // portable homepage
         $('.builder_mode_js_library').css('display','inline');
+        portable=true;
       }
     
       new Clipboard('#copyclipboard');
@@ -1573,9 +1589,15 @@
       //$('head').append('google-signin-client_id" content="992551522822-7nstfoq17gn0u27kmcfcgnnfbp13ndl3.apps.googleusercontent.com"');
  
       jQuery('#btnNGY2Builder').on('click', function() {
-        jQuery('#nanoGalleryBuilder').nanogallery2builder();
+        var v=$f.find('select[name=dataSource]').val();
+        if( v == 'google' && typeof ngy2_pwa_at === 'undefined' ) {
+          alert('Please sign-in to Google to access Google Photos.');
+        }
+        else {
+          jQuery('#nanoGalleryBuilder').nanogallery2builder(portable);
+        }
       });
-          jQuery('#nanoGalleryBuilder').nanogallery2builder();
+      jQuery('#nanoGalleryBuilder').nanogallery2builder(portable);
 
   
   // ############################################################################
