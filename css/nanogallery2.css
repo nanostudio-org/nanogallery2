@@ -197,12 +197,17 @@
   height: 100%;
 	overflow: hidden;
 	display: inline-block;
+  /* touch-action: none !important; */
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-o-box-sizing: border-box;
 }
-
+/*
+.nGY2 .nGY2GallerySub  *{
+  touch-action: auto !important;
+}
+*/
 /**************************************/
 /* THUMBNAILS                         */
 /**************************************/
@@ -707,9 +712,33 @@
 	-moz-box-sizing: border-box;
 	-o-box-sizing: border-box;
 }
-.nGY2 .nGY2ViewerImage{
+.nGY2 .nGY2ViewerImagePan{
   visibility: visible;
   opacity: 0;
+  position: absolute;
+  display: inline-block;
+	padding:0px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;   /* never change this value */
+  zoom: 1;
+  draggable: false;
+  unselectable: on;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+}
+.nGY2 .nGY2ViewerImage{
+  visibility: visible;
+  opacity: 1;
   will-change: transform;
   transform: translateZ(0);
   position: absolute;
@@ -730,10 +759,8 @@
   background-repeat: no-repeat;
   background-position: center;
   background-color: #000;
-	border:4px solid #f8f8f8;
 	/*display:block;*/
 	padding:0px;
-	box-shadow: #888 0px 0px 20px;
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
