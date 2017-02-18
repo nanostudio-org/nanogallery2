@@ -656,14 +656,14 @@
             <td>data-ngid</td>
             <td>integer</td>
             <td></td>
-            <td>Item ID.<br><b>MANDATORY if albums used: please set a value to each item (image and album).</b></td>
+            <td>Item ID.<br><b>MANDATORY if your gallery contains albums: assign an ID to each item (image and album).</b></td>
             <td>1.0</td>
           </tr>
           <tr>
             <td>data-ngalbumid</td>
             <td>integer</td>
             <td></td>
-            <td>ID of the album containing the item.<br><b>MANDATORY if albums used.</b></td>
+            <td>ID of the album containing the item.<br><b>MANDATORY if your gallery contains albums.</b></td>
             <td>1.0</td>
           </tr>
           <tr>
@@ -841,7 +841,126 @@ $(document).ready(function () {
         <a href="http://codepen.io/Kris-B/pen/GrNmxv" type="button" class="btn btn-primary" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> demo albums</a>
     </blockquote>
 
-
+    <p>
+      This is the list of supported properties for the items object (case-sensitive). An item object is an image or an album.
+    </p>
+    
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>property</th>
+            <th>type</th>
+            <th>default</th>
+            <th>description</th>
+            <th>min<br>version</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>title</td>
+            <td>string</td>
+            <td></td>
+            <td>Title of the element.</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>description</td>
+            <td>string</td>
+            <td></td>
+            <td>Description of the element</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>kind</td>
+            <td>string</td>
+            <td>'image'</td>
+            <td>Type of the item. Possible values: 'image', 'album'.</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>ID</td>
+            <td>integer</td>
+            <td></td>
+            <td>Item ID.<br><b>MANDATORY if your gallery contains albums: assign an ID to each item (image and album).</b></td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>albumID</td>
+            <td>integer</td>
+            <td></td>
+            <td>ID of the album containing the item.<br><b>MANDATORY if your gallery contains albums.</b></td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>tags</td>
+            <td>string</td>
+            <td></td>
+            <td>Tags of the element.</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>destURL</td>
+            <td>string</td>
+            <td></td>
+            <td>Destination URL on thumbnail click (instead of displaying an image, the user is redirected to the defined URL).</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>src</td>
+            <td>string</td>
+            <td></td>
+            <td>URL of the image.</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>srct</td>
+            <td>string</td>
+            <td></td>
+            <td>URL of the thumbnail image.</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>imgtHeight</td>
+            <td>integer</td>
+            <td>0</td>
+            <td>
+              Height of the thumbnail image (in pixels).
+              <b>Not mandatory, but should be defined to improve overall performances.</b>
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>imgtWidth</td>
+            <td>integer</td>
+            <td>0</td>
+            <td>
+              Width of the thumbnail image (in pixels).
+              <b>Not mandatory, but should be defined to improve overall performances.</b>
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>customData</td>
+            <td>object</td>
+            <td></td>
+            <td>
+              Property to store custom data.
+              <br>
+              Usage example: '{src: 'img.jpg', srct: 'imgt.jpg', title: 'image01', albumID:0, customData:{v1:1, v2:2} }'
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>1.0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
 
     <div id="ngy2_google"></div>
