@@ -422,8 +422,6 @@
   <!-- ##### END LOGO INDEX  ##### -->
   <!-- ########################### -->
 
-
-  
   <div class="container ngy2documentation">
   <div class="row" >
   <div class="col-md-10">
@@ -853,17 +851,27 @@ $(document).ready(function () {
     <blockquote>
       nanogallery2 can display the content of the albums you have created on Google Photos.<br>
       <br>
+      <!--
       <ul>
         <li>Step 1: create albums in Google Photos</li>
         <li>Step 2: add images to your albums</li>
         <li>Step 3: make your albums public.</li>
       </ul>
-      <br>
-      <span class="lead">
-       To retrieve your Google user ID and to manage the visibility of your Google Photos albums, you can use the tool <a href="http://nanogpvisibility.herokuapp.com/index.html" target="_blank" style="background-color:#eee;"> &nbsp; <b>nanoGPVisibility</b> &nbsp; </a> <br>
+      -->
+      <span style="color:#d00;">
+        <!--
+          To retrieve your Google user ID and to manage the visibility of your Google Photos albums, you can use the tool <a href="http://nanogpvisibility.herokuapp.com/index.html" target="_blank" style="background-color:#eee;"> &nbsp; <b>nanoGPVisibility</b> &nbsp; </a> <br>
+        -->
+        <b>Note: since <u>february 9, 2017</u>, Google Photos can no more be accessed without account owner's explicit authorization.
+        <br>
+        nanogallery2 requires a permanant authorization, which is only possible for server side applications.
+        <br>
+        To solve this issue, you need to use the server module <b>nanogp</b> (<a href="https://github.com/nanostudio-org/nanogp" target="_blank">more here</a>) .
+        </b>
       </span>
+      <br><br>
+      By default, all your non shared albums are displayed.
       <br>
-      By default, all your public albums are displayed.
     </blockquote>
     <div class="table-responsive">
       <table class="table table-striped table-hover">
@@ -883,7 +891,7 @@ $(document).ready(function () {
             <td></td>
             <td>
               <b>MANDATORY</b><br>
-              Storage type. Must be set to 'google' to access Google Photos data.
+              Storage type. Must be set to '<b>google2</b>' to access Google Photos data.
               </td>
             <td>1.0</td>
           </tr>
@@ -898,6 +906,20 @@ $(document).ready(function () {
             <td>1.0</td>
           </tr>
           <tr>
+            <td>google2URL</td>
+            <td>string</td>
+            <td></td>
+            <td>
+              <b>MANDATORY</b><br>
+              The URL pointing to your <b>nanogp</b> installation.
+              <br>
+              Example:
+              <br>
+              <code>nanogp: 'https://mydomain/nanogp/nanogp.php'</code>
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
             <td>album</td>
             <td>string</td>
             <td></td>
@@ -906,6 +928,7 @@ $(document).ready(function () {
               Set the Album ID.<br>
               Example: <code>album: '5851968929721015169'</code>
               <br><br>
+              <strike>
               <b>Private albums</b><br>
               To display the images contained in a private album, you'll need the authKey. It can be found in the tool <a href="http://nanogpvisibility.herokuapp.com/index.html" target="_blank" style="background-color:#eee;"> &nbsp; <b>nanoGPVisibility</b> &nbsp; </a>.
               <br>
@@ -913,6 +936,7 @@ $(document).ready(function () {
               <code>album: '5851968929721015169<b>&</b>authkey=CJSlhdKSgoiXtgE'</code> : this will display only the content of the specified private album.<br>
               <br>                                              
               Note: locationHash is automatically disabled when using private albums.
+              </strike>
             </td>
             <td>1.0</td>
           </tr>
@@ -927,6 +951,7 @@ $(document).ready(function () {
               One album: <code>albumList2: 'architecture'</code><br>
               Three albums: <code>albumList2: ['architecture', 'friends', '5851968929721015169']</code><br>
               <br>
+              <strike>
               <b>Private albums</b><br>
               Google Photos private album can also be displayed with nanogallery2.<br>
               The authKey of the private albums is required. It can be found in the tool <a href="http://nanogpvisibility.herokuapp.com/index.html" target="_blank" style="background-color:#eee;"> &nbsp; <b>nanoGPVisibility</b> &nbsp; </a>.
@@ -935,6 +960,7 @@ $(document).ready(function () {
               <code>albumList2: '5851968929721015169<b>&</b>authkey=CJSlhdKSgoiXtgE'</code><br>
               <br>                                              
               Note: locationHash is automatically disabled when using private albums.
+              </strike>
             </td>
             <td>1.0</td>
           </tr>
