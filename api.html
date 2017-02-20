@@ -2,24 +2,24 @@
 <html>
 
 <head>
-  <title>nanogallery2 - beautiful image galleries for your website</title>
+  <title>nanogallery2 portable</title>
   <meta charset="utf-8">
-  <meta name="description" content="nanogallery2 creates beautiful and high quality image galleries for your website">
+  <meta name="description" content="nanogallery2 portable creates beautiful and high quality image galleries for your website">
   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
 
   <meta property="og:type" content="article">
-  <meta property="og:title" content="nanogallery2">
-  <meta property="og:description" content="nanogallery2 creates beautiful and high quality image galleries for your website">
-  <meta property="og:image" content="http://nanogallery2.nanostudio.org/img/nanogallery2.png">
+  <meta property="og:title" content="nanogallery2>
+  <meta property="og:description" content="nanogallery2 portable creates beautiful and high quality image galleries for your website">
+  <meta property="og:image" content="http://nanogallery2.nanostudio.org/img/nanogallery2_logo.png">
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="nanogallery2">
-  <meta name="twitter:description" content="nanogallery2 creates beautiful and high quality image galleries for your website">
-  <meta name="twitter:image" content="http://nanogallery2.nanostudio.org/img/nanogallery2.png">
+  <meta name="twitter:description" content="nanogallery2 portable creates beautiful and high quality image galleries for your website">
+  <meta name="twitter:image" content="http://nanogallery2.nanostudio.org/img/nanogallery2_logo.png">
 
   <meta name="google-signin-scope" content="https://picasaweb.google.com/data/">
-  <meta name="google-signin-client_id" content="992551522822-7nstfoq17gn0u27kmcfcgnnfbp13ndl3.apps.googleusercontent.com">
-
+  <meta name="google-signin-client_id" content="1084160391582-v6htikq4lrrr032k4qatmsb244bi6ati.apps.googleusercontent.com">
+  
   <link rel="icon" href="img/favicon.ico" />
 
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
@@ -30,42 +30,35 @@
   <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>  -->
   <!-- #################################################################################################################### -->
 
-  <!--  
-  <script src="third.party/touch-emulator.js"></script>
-  <script> TouchEmulator(); </script>
-  -->
 
   <!-- BOOTSTRAP -->
   <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <script src="bootstrap/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css" />
 
-  <!-- BOOTSTRAP SELECT -->
-  <link rel="stylesheet" href="bootstrap-select/css/bootstrap-select.min.css">
-  <script src="bootstrap-select/js/bootstrap-select.min.js"></script>
 
-  <!-- bootstrap-colorpicker -->
-  <link rel="stylesheet" href="bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
-  <script src="bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+  <!-- ######################## -->
+  <!-- ##### END HEADER-1 ##### -->
+  <!-- ######################## -->
 
-  <!-- bootstrap-switch -->
-  <link rel="stylesheet" href="bootstrap-switch/bootstrap-switch.min.css">
-  <script src="bootstrap-switch/bootstrap-switch.min.js"></script>
-
-  
   <!-- #################################################################################################################### -->
   <!-- nanogallery2 CSS files                                                                                               -->
-	<link href="css/nanogallery2.min.css" rel="stylesheet" type="text/css">
+	<!--
+  <link href="https://unpkg.com/nanogallery2/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css">
+  -->
+	<link href="css/nanogallery2.css" rel="stylesheet" type="text/css">
   <!-- #################################################################################################################### -->
 
   <!-- #################################################################################################################### -->
 	<!-- nanogallery2 javascript                                                                                              -->
-	<script type="text/javascript" src="js/jquery.nanogallery2.min.js"></script>
-  <!--
-  <script type="text/javascript" src="js/jquery.nanogallery2.core.js"></script>
+<!--
+	<script type="text/javascript" src="https://unpkg.com/nanogallery2/dist/jquery.nanogallery2.min.js"></script>
+-->
+	<script type="text/javascript" src="js/jquery.nanogallery2.core.js"></script>
 	<script type="text/javascript" src="js/jquery.nanogallery2.data_google.js"></script>
+	<script type="text/javascript" src="js/jquery.nanogallery2.data_google2.js"></script>
 	<script type="text/javascript" src="js/jquery.nanogallery2.data_flickr.js"></script>
-  -->
+			
 	<!-- 
   <script type="text/javascript" src="js/jquery.nanogallery2.builder.js"></script>
   -->
@@ -73,10 +66,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js"></script>
 
-  <link rel="stylesheet" href="owlcarousel2/owl.carousel.min.css">
-  <link rel="stylesheet" href="owlcarousel2/owl.theme.default.min.css">  
-  <script src="owlcarousel2/owl.carousel.min.js"></script>
-  
+
   <style>
     body { font-size:1.3em; color:#111; }
     p { font-size:1.3em; }
@@ -86,9 +76,9 @@
     .ngy2documentation blockquote { font-size:1.1em; }
    
     * { font-family: 'Source Sans Pro', sans-serif; }
-    h1, h2, h3, h4, h5, h6 { color : #54840C }
+    h1, h2, h3, h4, h5, h6 { color : #FF0075 }
     h1 {
-      border-left : 5px solid #54840C;
+      border-left : 5px solid #FF0075;
       padding-left: 10px;
     }
     .footer {
@@ -104,7 +94,7 @@
     blockquote {
       color: #000;
       background-color: #B2E16A;
-      border-color: #54840C;
+      border-color: #FF0075;
     }
     
     /***** TOP NAVIGATION BAR *****/
@@ -114,13 +104,18 @@
       padding-bottom: 5px;
     }
     .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
-      color: #B2E16A;
-      border-bottom: 2px solid #B2E16A;
+      color: #fff;
+      background-color: #FF8BAD;
+      border-bottom: 3px solid #fff;
     }
     .navbar-inverse .navbar-brand {
       color: #fff;
       display: inline-flex;
       display: -webkit-inline-flex;
+    }
+    .navbar-inverse {
+      background-color: #FF0075;
+      border-color: #FF0075;
     }
 
     
@@ -137,17 +132,21 @@
     .ngy2color4  {
       color: #CFF19A;
     }
+    .ngy2color1p  {
+      color: #FF0075;
+    }
 
     .ngy2dark {
-      background: #1C2B3B;
+      background: #FF0075;
       /* #2C3B4B */
       margin: 0;
     }
-    
-    .ngy2_background_cell {
-      background: #eee;
-    }
 
+    .ngy2_background_cell {
+      background: #FF8BAD;
+      
+    }
+    
     .svg-diag{
       display: block;
       width: 100%;
@@ -158,7 +157,7 @@
     .ngy2version {
       color: #ddd;
       font-size:0.6em; 
-      padding: 0px;
+      padding: 0 0 0 5px;
     }
 
     .circle-singleline {
@@ -168,7 +167,7 @@
       font-size: 1.5em;
       line-height: 60px;
       text-align: center;
-      background: #73A623;
+      background: #FF0075;
       color: white;
       display: inline-block;
   }    
@@ -255,24 +254,7 @@
         width: 263px;
       }         
     }    
-    
 
-    /* makes columns same height on one row */
-    .row.match-my-cols {
-      overflow: hidden; 
-    }
-
-    .row.match-my-cols [class*="col-"]{
-      margin-bottom: -99999px;
-      padding-bottom: 99999px;
-    }
-    
-    /* OWN CAROUSEL - NAVIGATION ONE ROW */
-    .owl-carousel .owl-nav .owl-next,
-    .owl-carousel .owl-nav .owl-prev
-    {
-      display: inline-block;
-    }
 
     
     /*****************/
@@ -324,36 +306,21 @@
     }
     
     
+
     </style>
 
   <!-- Asynchronous Google Analytics snippet -->
   <script>
-//    var _gaq = _gaq || [];
-//    var pluginUrl = 'https://www.google-analytics.com/plugins/ga/inpage_linkid.js';
-//    _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
-//    _gaq.push(['_setAccount', 'UA-39069349-8']);
-//    _gaq.push(['_trackPageview']);
-
-//    (function() {
-//      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-//      ga.src = 'https://stats.g.doubleclick.net/dc.js';
-//      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-//    })();
-
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-39069349-8', 'auto');
-      // ga('create', 'UA-39069349-8', 'auto', {'allowLinker': true});
-      // ga('require', 'linker');
-      // ga('linker:autoLink', ['nano.gallery'] );
-  
+      ga('create', 'UA-39069349-10', 'auto');
       ga('send', 'pageview');
-
-    </script>
-
+      ga('send', 'event', 'portable', 'registration');
+      
+  </script>
   
 </head>
 
@@ -371,20 +338,19 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand form-horizontal" href="http://nanogallery2.nanostudio.org/" rel="home" title="nanogallery2">
-          <img src="img/nanogallery2s.png" alt="nanogallery2" style="height:30px;"> &nbsp; <span class="ngy2version">v0.9.3</span>
+        <a class="navbar-brand form-horizontal" href="http://nano.gallery/" rel="home" title="nanogallery2 portable">
+          nanogallery2 portable
+          <!-- 
+          <img src="img/nanogallery2s.png" alt="nanogallery2" style="height:30px;"> &nbsp; <span class="ngy2version">v0.9.2</span>
+          -->
         </a>
       </div>
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav navbar-right text-uppercase">
           <li><a href="index.html">Intro</a></li>
           <li><a href="quickstart.html">Quick Start</a></li>
-          <li><a href="demonstration.html">Examples</a></li>
-          <li><a href="builder.html">Builder</a></li>
-          <li><a href="documentation.html">Guide</a></li>
-          <li><a href="datasource.html">Data source</a></li>
-          <li><a href="api.html">API</a></li>
-          <!-- <li><a href="modules.html">Modules</a></li> -->
+          <li><a href="builder2.html">Builder</a></li>
+          <li><a href="register.html">Register</a></li>
         </ul>
       </div><!--/.nav-collapse -->
     </div>
@@ -398,9 +364,9 @@
   <!-- ### NAVBAR ### -->
   <!-- ############## -->
 
-  <!-- ###################### -->
-  <!-- ##### END HEADER ##### -->
-  <!-- ###################### -->
+  <!-- ######################## -->
+  <!-- ##### END HEADER-2 ##### -->
+  <!-- ######################## -->
 
   <!-- ### LOGO ### -->
   <div class="jumbotron ngy2dark">
