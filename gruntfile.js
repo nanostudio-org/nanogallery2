@@ -17,7 +17,8 @@ module.exports = function(grunt) {
         },
         index: {
           src: [
-            'template/header.html',
+            'template/header-1.html',
+            'template/header-2.html',
             'template/logo_index.html',
             'src/index.html',
             'template/footer.html'
@@ -26,7 +27,8 @@ module.exports = function(grunt) {
         },
         api: {
           src: [
-            'template/header.html',
+            'template/header-1.html',
+            'template/header-2.html',
             'template/logo.html',
             'src/api.html',
             'template/footer.html'
@@ -35,7 +37,9 @@ module.exports = function(grunt) {
         },
         builder: {
           src: [
-            'template/header.html',
+            'template/header-1.html',
+            'template/header-builder.html',
+            'template/header-2.html',
             'template/logo.html',
             'src/builder.html',
             'template/footer.html'
@@ -44,7 +48,8 @@ module.exports = function(grunt) {
         },
         datasource: {
           src: [
-            'template/header.html',
+            'template/header-1.html',
+            'template/header-2.html',
             'template/logo.html',
             'src/datasource.html',
             'template/footer.html'
@@ -53,7 +58,8 @@ module.exports = function(grunt) {
         },
         documentation: {
           src: [
-            'template/header.html',
+            'template/header-1.html',
+            'template/header-2.html',
             'template/logo.html',
             'src/documentation.html',
             'template/footer.html'
@@ -62,7 +68,8 @@ module.exports = function(grunt) {
         },
         quickstart: {
           src: [
-            'template/header.html',
+            'template/header-1.html',
+            'template/header-2.html',
             'template/logo.html',
             'src/quickstart.html',
             'template/footer.html'
@@ -71,7 +78,8 @@ module.exports = function(grunt) {
         },
         demonstration: {
           src: [
-            'template/header.html',
+            'template/header-1.html',
+            'template/header-2.html',
             'template/logo.html',
             'src/demonstration.html',
             'template/footer.html'
