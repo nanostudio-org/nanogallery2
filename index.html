@@ -397,6 +397,7 @@
   <!-- ##### END LOGO INDEX  ##### -->
   <!-- ########################### -->
 
+
  <div class="jumbotron ngy2dark">
     <div class="container ">
       <div class="row text-right" >
@@ -529,19 +530,21 @@
     
     <div class="row ">
       <div class="col-md-6 text-justify" >
-        <h3>Instant ready with the BUILDER</h3>
-        <p>
-          Just apply settings in the <a href="builder.html" style="background-color:#eee;">editor</a> and see the result directly on screen. No coding.
-          You can then generate a <i class="fa fa-html5" aria-hidden="true"></i> HTML template.<br>
-          Designers and developpers can of course do more fine tuning by writing their own gallery in HTML. Full detailed <a href="documentation.html" style="background-color:#eee;">documentation</a> is provided.
-        </p>
-      </div>
-      <div class="col-md-6 text-justify" >
         <h3>Highly customizable and eye-catching effects</h3>
         <p>
+          nanogallery2 is fully configurable to suit your personal needs.
+          <br>
           Thousands of transitions and effects combinations to capture the attention of your visitors. Use a preset or create complex effects very easily.
           <br>
           Natively touch enabled and responsive - unique user experience on all device types.
+        </p>
+      </div>
+      <div class="col-md-6 text-justify" >
+        <h3>Instant ready with the BUILDER</h3>
+        <p>
+          Just apply settings in the <a href="builder.html" style="background-color:#eee;">builder</a> and see the result directly on screen. No coding.
+          You can then generate a <i class="fa fa-html5" aria-hidden="true"></i> HTML template.<br>
+          <b>Designers and developpers can of course do more fine tuning</b> by writing their own gallery in HTML. Full detailed <a href="documentation.html" style="background-color:#eee;">documentation</a> is provided.
         </p>
       </div>
     </div>
@@ -677,9 +680,9 @@
         <p>
         Firefox 6+ - Chrome 16+ - Edge 13+ - IE 10+ - Opera 12.1+ - Yandex 14.12+ - iPhone 5+ / iOS 6+ - Safari 6.2+
         <br>(some features may not be available on every platform).
-        <br><br>
+        <br>
         </p>
-        <p>Testing services provided by <a href="https://www.browserstack.com" target="_blank">BrowserStack</a><br><img src="img/browserstack3.png" alt="browserstack"></p>
+        <p>Testing services provided by <a href="https://www.browserstack.com" target="_blank">BrowserStack</a><img src="img/browserstack3.png" alt="browserstack"></p>
         <br><br><br>
       </div>
       <div class="col-md-1" ></div>
@@ -687,7 +690,7 @@
 
     <br><br><br><br><br><br>
 
-    <div class="row text-center" >
+    <div class="row text-center" style="background-color:#eee;">
       <div class="col-md-1" ></div>
       <div class="col-md-10" >
         <h2>nanogallery2 licensing - clear and simple</h2>
@@ -732,6 +735,7 @@
         <h3>Commercial license</h3><br>
         <p>
           If you run a business and are using nanogallery2 in a revenue-generating product, it makes business sense to sponsor this development: <b>it ensures the project that your product relies on stays healthy and actively maintained</b>.<br>
+          Note: there's no upgrade fee for users of nanoGALLERY.
           <div class="text-center">
 
             <a href="https://nano.gallery/lic/lic.php" type="button" class="btn btn-primary btn-lg" >website license<br>25&euro;</a>
@@ -974,10 +978,10 @@
         //userID: '111186676244625461692',
         kind: 'flickr',
         userID: '149035168@N08',    // nano studio
-// kind : 'google2', 
-// userID : '111186676244625461692', 
+ //kind : 'google2', 
+ //userID : '111186676244625461692', 
 // google2URL : 'http://lvh.me:12345/nanogp/nanogp.php',
-// google2URL : 'http://nano.gallery/nanogp/nanogp.php',
+ //google2URL : 'http://nano.gallery/nanogp/nanogp.php',
         
         //userID: '143414466@N06',
         
@@ -1001,7 +1005,7 @@
 //thumbnailL1HoverEffect2: 'labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear|image_rotateZ_0_10|image_scale_100_130',
 //thumbnailL1HoverEffect2: '.nGY2GThumbnailSub_rotateX_0_50|labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear|image_translateX_-10px_10px',
 //thumbnailL1HoverEffect2: 'thumbnail_rotateX_20deg_0deg|thumbnail_scale_1.00_1.20|labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear|image_translateX_-10px_10px',
-thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.10|labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear',
+thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.10|labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)',
 
 //thumbnailL1BuildInit2: 'image_scale_1.10',
 //galleryBuildInit2 : 'perspective_900px',
@@ -1162,19 +1166,10 @@ thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.10|l
       });
 
 
-      // OWL CAROUSEL
-      $(".owl-carousel").owlCarousel({
-        loop:true,
-            margin:10,
-            nav:true,
-            navText: ['<i class="fa fa-chevron-left" aria-hidden="true"></i> &nbsp', '&nbsp<i class="fa fa-chevron-right" aria-hidden="true"></i>'],
-            items: 1
-        });
-
       
       //  RANDOM DEMO
       var lastRnd=-1;
-      var demos=[0, 1, 2, 3, 4, 5]
+      var demos=[0, 1, 2, 3, 4, 5, 6]
       var rnd=randomIntFromInterval(0,demos.length-1);
       jQuery('#btn_random_demo').on('click', function() {
         //rnd++;
@@ -1184,7 +1179,7 @@ thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.10|l
         //  rnd=randomIntFromInterval(0,4);
         // }
         // lastRnd=rnd;
-        //rnd=5;
+        //rnd=0;
         switch ( rnd ) {
           case 0:
             jQuery("#nanogallery").nanogallery2({
@@ -1196,7 +1191,8 @@ thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.10|l
               galleryDisplayMode: 'rows',
               galleryPaginationMode: 'rectangles',
               galleryMaxRows: 10,
-
+              thumbnailHoverEffect2 : 'image_scale_1.0_1.1_1500',
+              thumbnailToolbarImage : { topRight : '', bottomRight : '' },
               thumbnailLabel: { display: false, position:'overImageOnBottom', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true},
               thumbnailBorderHorizontal: 5,
               thumbnailBorderVertical: 5,
@@ -1322,6 +1318,30 @@ thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.10|l
               locationHash: true
             });
             break;
+          
+          case 6:
+            jQuery("#nanogallery").nanogallery2({
+              kind: 'flickr',
+              userID: '149035168@N08',    // nano studio
+              photoset: '72157675219521270',
+              blackList: 'forhomepage|scrapbook|profil',
+              thumbnailDisplayTransition: 'scaleUp',
+              thumbnailHeight: '200', thumbnailWidth: '250',
+              galleryDisplayMode: 'fullContent',
+              galleryDisplayMoreStep: 2,
+              thumbnailBorderVertical: 2,
+              thumbnailBorderHorizontal: 2,
+              thumbnailGutterWidth: 10,
+              thumbnailGutterHeight: 10,
+              thumbnailHoverEffect2 : '.ngy2plusbutton_opacity_0_1|image_opacity_100%_60%|label_background_#000000_#2C3B4B',
+              thumbnailToolbarImage : { topRight : '', bottomRight : '' },
+              thumbnailLabel: { display: true, position:'onBottom', hideIcons: true, titleFontSize: '1.2em', align: 'center', titleMultiLine:true},
+              gallerySorting: 'random',
+              //colorScheme : { thumbnail: { labelBackground: 'rgba(34, 34, 34, .0)', titleShadow : 'none'} },
+              locationHash: true,
+              fnThumbnailInit: myTnInit
+            });
+            break;
           default:
             break;
         }
@@ -1330,7 +1350,13 @@ thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.10|l
           rnd=0;
         }
       });
+      
+      function myTnInit( $e, item, GOMidx ) {
+        var st='position:absolute;top:50%;left:50%;-webkit-transform: translateX(-50%) translateY(-50%);-ms-transform: translateX(-50%) translateY(-50%);transform: translateX(-50%) translateY(-50%);'
+        $e.find('.nGY2GThumbnailSub').append('<div class="ngy2plusbutton" style="'+st+'"><button type="button" class="btn btn-primary btn-lg" ><i class="fa fa-refresh fa-spin" aria-hidden="true"></i> &nbsp; display</button></div>');
+      }
 
+      
       function randomIntFromInterval(min,max) {
         return Math.floor(Math.random()*(max-min+1)+min);
       }
