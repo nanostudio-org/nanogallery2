@@ -397,8 +397,7 @@
   <!-- ##### END LOGO INDEX  ##### -->
   <!-- ########################### -->
 
-
- <div class="jumbotron ngy2dark">
+<div class="jumbotron ngy2dark">
     <div class="container ">
       <div class="row text-right" >
         <div class="col-md-10" ></div>
@@ -406,7 +405,11 @@
           <!-- <a href="https://github.com/nanostudio-org/nanogallery2" type="button" class="btn btn-primary btn-xs btn-block" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> &nbsp; view on Github</a> -->
           
           <button type="button" class="btn btn-primary btn-xs btn-block" style="margin-bottom:15px;" id="btn_random_demo"><i class="fa fa-refresh fa-spin" aria-hidden="true"></i> &nbsp; random demo</button>
-        </div>
+          <!--
+          <input id="ngy2search" type="text" value="fun">
+          <button type="button" class="btn btn-primary btn-xs btn-block" id="btnsearch">search</button>
+          -->
+       </div>
       </div>
       <div class="row" >
         <div id="nanogallery">gallery_made_with_nanogallery2</div>
@@ -543,8 +546,8 @@
         <h3>Instant ready with the BUILDER</h3>
         <p>
           Just apply settings in the <a href="builder.html" style="background-color:#eee;">builder</a> and see the result directly on screen. No coding.
-          You can then generate a <i class="fa fa-html5" aria-hidden="true"></i> HTML template.<br>
-          <b>Designers and developpers can of course do more fine tuning</b> by writing their own gallery in HTML. Full detailed <a href="documentation.html" style="background-color:#eee;">documentation</a> is provided.
+          You can then generate <i class="fa fa-html5" aria-hidden="true"></i> HTML templates.<br>
+          <b>Designers and developpers can of course do much more fine tuning</b> by writing their own gallery in HTML. Full detailed <a href="documentation.html" style="background-color:#eee;">documentation</a> is provided.
         </p>
       </div>
     </div>
@@ -978,10 +981,12 @@
         //userID: '111186676244625461692',
         kind: 'flickr',
         userID: '149035168@N08',    // nano studio
- //kind : 'google2', 
- //userID : '111186676244625461692', 
-// google2URL : 'http://lvh.me:12345/nanogp/nanogp.php',
- //google2URL : 'http://nano.gallery/nanogp/nanogp.php',
+        // kind : 'google2', 
+        // userID : '111186676244625461692', 
+        //google2URL : 'http://lvh.me:12345/nanogp/nanogp.php',
+        // google2URL : 'https://nano.gallery/nanogp/nanogp.php',
+        //album: '6325352440922789105',
+        //albumList2:['6137218671601042145','5851968929721015169','5851895073106049313'],
         
         //userID: '143414466@N06',
         
@@ -1005,7 +1010,7 @@
 //thumbnailL1HoverEffect2: 'labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear|image_rotateZ_0_10|image_scale_100_130',
 //thumbnailL1HoverEffect2: '.nGY2GThumbnailSub_rotateX_0_50|labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear|image_translateX_-10px_10px',
 //thumbnailL1HoverEffect2: 'thumbnail_rotateX_20deg_0deg|thumbnail_scale_1.00_1.20|labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear|image_translateX_-10px_10px',
-thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.10|labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)',
+thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.10|labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear',
 
 //thumbnailL1BuildInit2: 'image_scale_1.10',
 //galleryBuildInit2 : 'perspective_900px',
@@ -1013,7 +1018,7 @@ thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.10|l
         //thumbnailL1HoverEffect2: 'labelAppear',
         //thumbnailHoverEffect2: 'label_font-size_1em_2em|title_color_#ffffff_#B2E16A|label_bottom_0px_15px|toolsAppear|image_grayscale_0%_100%|image_scale_100_110_5000',
         //thumbnailHoverEffect2: 'label_font-size_1em_2em|title_backgroundColor_rgba(255,255,255,0.34)_rgba((115,166,35,0.6)|title_color_#000_#fff|label_bottom_0px_15px|toolsAppear|image_grayscale_0%_100%_500|image_scale_100_110_5000',
-        thumbnailHoverEffect2: 'label_font-size_1em_1.5em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((84,132,12,0.8)|title_color_#000_#fff|toolsAppear|image_grayscale_0%_100%_500|image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
+        thumbnailHoverEffect2: 'label_font-size_1em_1.5em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((84,132,12,0.8)|title_color_#000_#fff|image_grayscale_0%_100%_500|image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
 
        // thumbnailToolbarImage : { topLeft: 'select', topRight : 'share,featured,download' },
 
@@ -1036,7 +1041,7 @@ thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.10|l
         
         galleryFilterTags: true,
         galleryL1FilterTags: false,
-        paginationSwipe: false,
+        // paginationSwipe: false,
         locationHash: true
       });
 
@@ -1203,7 +1208,7 @@ thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.10|l
             });
             break;
             
-          case 1:
+          case 6:
             jQuery("#nanogallery").nanogallery2({
               kind: 'flickr',
               userID: '149035168@N08',    // nano studio
@@ -1319,7 +1324,7 @@ thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.10|l
             });
             break;
           
-          case 6:
+          case 1:
             jQuery("#nanogallery").nanogallery2({
               kind: 'flickr',
               userID: '149035168@N08',    // nano studio
@@ -1350,6 +1355,12 @@ thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.10|l
           rnd=0;
         }
       });
+      
+      jQuery('#btnsearch').on('click', function() {
+        //rnd++;
+        // jQuery("#nanogallery").nanogallery2('destroy');
+         jQuery("#nanogallery").nanogallery2('search', jQuery('#ngy2search').val() );
+       });
       
       function myTnInit( $e, item, GOMidx ) {
         var st='position:absolute;top:50%;left:50%;-webkit-transform: translateX(-50%) translateY(-50%);-ms-transform: translateX(-50%) translateY(-50%);transform: translateX(-50%) translateY(-50%);'
