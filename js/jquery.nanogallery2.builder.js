@@ -217,7 +217,7 @@
           var v=$('#googleAlbum').selectpicker('val');
           if( v.length == 1 && v[0] == 'lstAlbums' ) {
             // list of albums
-            var wl=$('#googleWhiteLst').val().trim;
+            var wl=$('#googleWhiteLst').val().trim();
             wl=wl.split(' ').join('|');   //replaceall;
             if( wl != '' ) {
               addSetting(settings2, 'whiteList', wl);
