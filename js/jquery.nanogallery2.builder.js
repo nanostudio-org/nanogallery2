@@ -1,7 +1,7 @@
 /**!
  * @preserve nanogallery2 - code builder
  * Javascript image gallery by Christophe Brisbois
- * Demo: http://nanogallery.brisbois.fr
+ * Demo: http://nanogallery2.nanostudio.org
  */
 
  
@@ -9,8 +9,138 @@
 // ##### nanogallery2 - configuration builder #####
 // ################################################
  
+ 
+ (function( $ ) {
+    var settingsWithoutDefault= {};
+    jQuery.fn.nanogallery2builderModify = function() {
+      var g_containerDemo=null,
+      g_containerDemoPanel=null,
+      g_containerNew=null,
+      g_save=null;
 
-// jQuery plugin - nanoGALLERY DEMO PANEL
+
+      return this.each(function(index) {
+        // g_save=jQuery(this)[0].outerHTML;
+        runBuilderEdit(jQuery(this).val());
+        return;
+      });
+    
+    function runBuilderEdit( gallery ) {
+
+      $html = jQuery(jQuery.parseHTML( gallery ));
+      
+      // retrieve the element containing
+      for( var i=0; i< $html.length; i++ ) {
+        var $o=$html[i];
+        if( $o.dataset !== undefined ) {
+          if( $o.dataset.nanogallery2 !== undefined ) {
+            ParseGallery(jQuery($o), jQuery($o).data('nanogallery2'));
+            return;
+          }
+          if( $o.dataset.nanogallery2Portable !== undefined ) {
+            ParseGallery(jQuery($o), jQuery($o).data('nanogallery2Portable'));
+            return;
+          }
+        }
+      }
+      alert('Error: could not find any gallery definition.');
+      
+    }
+    
+    // copy the settings in the builders fields
+    function ParseGallery( $def, options ) {
+      // add default options to ensure that all the fields are set
+      options = jQuery.extend(true, {}, jQuery.nanogallery2.defaultOptions, options);
+      
+      var $a=$def.children('a');
+      if( $a.length > 0 ) {
+        jQuery("#dataSource option[value=markup]").attr('selected','selected').change();
+        FormTextSetValue( options.itemsBaseURL, 'itemsBaseURL');
+      }
+      else {
+        switch ( options.kind ) {
+          case 'flickr':
+            jQuery("#dataSource option[value=flickr]").attr('selected','selected').change();
+            FormTextSetValue( options.userID, 'flickrUserID');
+            FormTextSetValue( options.whiteList, 'flickrWhiteLst');
+            FormTextSetValue( options.blackList, 'flickrBlackLst');
+            FormCheckboxSetValue(options.thumbnailOpenOriginal, 'flickrOpenOriginal');
+            
+            
+            jQuery('#flickrAlbum').empty();
+            var lstDone=false;
+            if( options.photoset == 'none' ) {
+              jQuery('#flickrAlbum').append('<option value="lstAlbums">display the list of albums</option>');
+              jQuery('#flickrAlbum').append('<option selected="selected" value="none">display the full photostream</option>');
+              lstDone=true;
+            }
+            if( options.albumList2 != undefined && options.albumList2.length > 0  ) {
+              jQuery('#flickrAlbum').append('<option value="lstAlbums">display the list of albums</option>');
+              jQuery('#flickrAlbum').append('<option value="none">display the full photostream</option>');
+              jQuery('#flickrAlbum').append('<optgroup label="albums">');
+              for( var i=0; i< options.albumList2.length; i++ ) {
+                jQuery('#flickrAlbum').append('<option selected="selected" value="'+options.albumList2[i]+'">'+options.albumList2[i]+' (album)</option>');
+              }
+              jQuery('#flickrAlbum').append('</optgroup">');
+              lstDone=true;
+            }
+            if( !lstDone ) {
+              jQuery('#flickrAlbum').append('<option selected="selected" value="lstAlbums">display the list of albums</option>');
+            }
+
+            jQuery('#flickrAlbum').selectpicker('refresh');
+            break;
+          case 'google':
+          case 'google2':
+          default:
+            jQuery("#dataSource option[value=google]").attr('selected','selected').change();
+            FormTextSetValue( options.userID, 'googleUserID');
+            FormTextSetValue( options.whiteList, 'googleWhiteLst');
+            FormTextSetValue( options.blackList, 'googleBlackLst');
+            FormCheckboxSetValue(options.thumbnailOpenOriginal, 'googleOpenOriginal');
+
+            jQuery('#googleAlbum').empty();
+            var lstDone=false;
+            if( options.album != '' ) {
+              jQuery('#googleAlbum').append('<option value="lstAlbums">display the list of albums</option>');
+              jQuery('#googleAlbum').append('<option selected="selected" value="'+options.album+'">'+options.album+' (album)</option>');
+              lstDone=true;
+            }
+            if( options.albumList2 != undefined && options.albumList2.length > 0  ) {
+              jQuery('#googleAlbum').append('<optgroup label="albums">');
+              for( var i=0; i< options.albumList2.length; i++ ) {
+                jQuery('#googleAlbum').append('<option selected="selected" value="'+options.albumList2[i]+'">'+options.albumList2[i]+' (album)</option>');
+              }
+              jQuery('#googleAlbum').append('</optgroup">');
+              lstDone=true;
+            }
+            if( !lstDone ) {
+              jQuery('#googleAlbum').append('<option value="lstAlbums">display the list of albums</option>');
+            }
+            
+            break;
+        }
+      }
+
+      
+
+    }
+    
+    function FormTextSetValue( o, eID ) {
+      if( o !== undefined ) {
+        jQuery('#'+eID).val(o);
+      }
+    }
+    
+    function FormCheckboxSetValue( o, eID ) {
+      if( o !== undefined ) {
+        jQuery('#'+eID).bootstrapSwitch('state', o, true);;
+      }
+    }
+  }
+})
+
+
 (function( $ ) {
     var settingsWithoutDefault= {};
     jQuery.fn.nanogallery2builder = function(portable) {
@@ -87,13 +217,13 @@
           var v=$('#googleAlbum').selectpicker('val');
           if( v.length == 1 && v[0] == 'lstAlbums' ) {
             // list of albums
-            var wl=$('#googleWhiteLst').val();
-            wl=wl.replace(' ', '|');
+            var wl=$('#googleWhiteLst').val().trim;
+            wl=wl.split(' ').join('|');   //replaceall;
             if( wl != '' ) {
               addSetting(settings2, 'whiteList', wl);
             }
-            var bl=$('#googleBlackLst').val();
-            bl=bl.replace(' ', '|');
+            var bl=$('#googleBlackLst').val().trim();
+            bl=bl.split(' ').join('|');   //replaceall;
             if( bl != '' ) {
               addSetting(settings2, 'blackList', bl);
             }
@@ -116,13 +246,13 @@
           var v=$('#flickrAlbum').selectpicker('val');
           if( v.length == 1 && v[0] == 'lstAlbums' ) {
             // list of albums
-            var wl=$('#flickrWhiteLst').val();
-            wl=wl.replace(' ', '|');
+            var wl=$('#flickrWhiteLst').val().trim();
+            wl=wl.split(' ').join('|');   //replaceall;
             if( wl != '' ) {
               addSetting(settings2, 'whiteList', wl);
             }
-            var bl=$('#flickrBlackLst').val();
-            bl=bl.replace(' ', '|');
+            var bl=$('#flickrBlackLst').val().trim();
+            bl=bl.split(' ').join('|');   //replaceall;
             if( bl != '' ) {
               addSetting(settings2, 'blackList', bl);
             }
@@ -142,8 +272,8 @@
         default:
           addSetting(settings2, 'kind', '');
           addSetting(settings2, 'itemsBaseURL', $f.find('[name=itemsBaseURL]').val());
-          jQuery("#nanoGallery3").html($f.find('[name=htmlMarkup]').val());
-          markupSource=$f.find('[name=htmlMarkup]').val();
+          // jQuery("#nanoGallery3").html($f.find('[name=htmlMarkup]').val());
+          // markupSource=$f.find('[name=htmlMarkup]').val();
           break;
       }
 
@@ -395,16 +525,30 @@
       html+=html_part2;
       html+=json;
       html+=html_part3;
-      if( markupSource != '' ) {
-        html+=htmlEntities(markupSource);
+      // if( markupSource != '' ) {
+        // html+=htmlEntities(markupSource);
+      // }
+      
+      if( $f.find('select[name=dataSource]').val() == 'markup' ) {
+        portable_part2+='\n';
+        var data = $("#table-images").tabulator("getData", true);
+        var content='';
+        for( var nd=0; nd< parseInt(data.length); nd++ ) {
+          if( data[nd].src != '' && data[nd].srct != '' ) {
+            html+=htmlEntities('      <a href="'+data[nd].src+'" data-ngthumb="'+data[nd].srct+'" data-ngdesc="'+data[nd].description+'">'+data[nd].title+'</a>\n');
+            content+='<a href="'+data[nd].src+'" data-ngthumb="'+data[nd].srct+'" data-ngdesc="'+data[nd].description+'">'+data[nd].title+'</a>\n';
+          }
+        }
+        jQuery("#nanoGallery3").html(content);
       }
+      
       html+=html_part4;
       jQuery('#ngy2_template').html(html);
       
       var portable_part1='&lt;!-- nanogallery2 portable - http://nano.gallery -->\n';
       portable_part1+='&lt;div id="ngy2p" data-nanogallery2-portable=\'';
       
-      var k='';
+      var k='?k=m';
       switch ( settings2.kind ) {
         case 'flickr':
           k='?k=f';
@@ -413,7 +557,17 @@
           k='?k=g';
           break;
       }
-      var portable_part2='\'>nanogallery2&lt;/div>\n';
+      var portable_part2='\'>nanogallery2';
+      if( $f.find('select[name=dataSource]').val() == 'markup' ) {
+        portable_part2+='\n';
+        var data = $("#table-images").tabulator("getData");
+        for( var nd=0; nd< parseInt(data.length); nd++ ) {
+          if( data[nd].src != '' && data[nd].srct != '' ) {
+            portable_part2+=htmlEntities('  <a href="'+data[nd].src+'" data-ngthumb="'+data[nd].srct+'" data-ngdesc="'+data[nd].description+'">'+data[nd].title+'</a>\n');
+          }
+        }
+      }
+      portable_part2+="&lt;/div>\n";
       portable_part2+="&lt;script> var st = document.createElement('script'); st.type = 'text/javascript'; st.src = '//nano.gallery/portable.php"+k+"&u='+encodeURI(window.location.href); document.getElementsByTagName('head')[0].appendChild(st); &lt;/script>\n";
       portable_part2+='&lt;noscript>Please enable javascript to view the &lt;a href="//nano.gallery">gallery powered by nanogallery2.&lt;/a>&lt;/noscript>\n';
       portable_part2+='&lt;!-- end nanogallery2 -->';
