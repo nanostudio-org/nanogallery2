@@ -4,6 +4,12 @@
 <div class="jumbotron ngy2_background_cell">
   <div class="container ngy2-builder ">
 
+
+    <label class="hide">Modify existing gallery</label><br>
+    <textarea id="taGalleryModify" class="span12 hide" rows="20" placeholder="Paste a previous generated gallery here" style="min-width: 100%"></textarea>
+    <button id="btnModify" class="btn btn-primary hide" >Edit</button>
+
+  
     <!-- <h3 class="text-left"><span class="circle-singleline" > 1</span> DEFINE THE CONTENT SOURCE</h3> -->
     <h3 class="text-left">CONTENT SOURCE</h3>
     <br>
@@ -14,9 +20,9 @@
           <div class="form-group col-md-3">
             <label for="dataSource" class="control-label">Where are you images stored?</label>
             <select name="dataSource" class="selectpicker" id="dataSource">
-              <option value="flickr" selected>Flickr</option>
+              <option value="markup" selected>Self hosted</option>
+              <option value="flickr">Flickr</option>
               <option value="google">Google Photos</option>
-              <option value="markup">Self hosted</option>
             </select>
           </div>
         </div>
@@ -56,10 +62,12 @@
         <div class="row rowGoogle hide ">
           <div class="form-group col-md-4">
             <label>
-              <input name="googleOpenOriginal" type="checkbox"> Display images in Google Photos
+              <input id="googleOpenOriginal" name="googleOpenOriginal" type="checkbox"> Open Google Photos to display images.
             </label>
           </div>
         </div>
+
+
         <!-- 
         <div class="row rowGoogle hide ">
           <div class="form-group col-md-12">
@@ -71,7 +79,7 @@
         -->
         
         <!-- FLICKR -->
-        <div class="row rowFlickr ">
+        <div class="row rowFlickr hide">
           <div class="form-group col-md-4">
             <label for="flickrUserID" class="control-label">Flickr user ID</label>
             <div class="input-group">
@@ -83,7 +91,7 @@
           </div>
         </div>
 
-        <div class="row rowFlickr ">
+        <div class="row rowFlickr hide">
           <div class="form-group col-md-4">
             <label for="flickrAlbum" class="control-label">What do you want to display in your gallery?</label>
             <div class="input-group">
@@ -109,26 +117,41 @@
           </div>
         </div>
         
-        <div class="row rowFlickr ">
+        <div class="row rowFlickr hide">
           <div class="form-group col-md-4">
             <label>
-              Display images in Flickr &nbsp; <input name="flickrOpenOriginal" type="checkbox" class="switchbutton"> 
+              Open Flickr to display images &nbsp; <input name="flickrOpenOriginal" id="flickrOpenOriginal" type="checkbox" class="switchbutton"> 
             </label>
           </div>
         </div>
         
         
         <!-- SELF HOSTED -->
+        <div class="row rowHtmlMarkup">
+          <div class="form-group col-md-6">
+            <label for="itemsBaseURL" class="control-label">Base URL where you data are stored</label>
+            <input id="itemsBaseURL" name="itemsBaseURL" class="form-control" type="text" value="http://nanogallery2.nanostudio.org/samples/">
+          </div>
+        </div>
+          
+        <div class="row rowHtmlMarkup rowHtmlMarkup_fields">
+          <div class="form-group col-md-12">
+            <label>List of images to display in the gallery</label>
+            <div id="table-images"></div>
+            <button type="button" class="btn" id="tableImagesAdd"><i class="fa fa-plus"></i> add image</button>
+            <!-- <button type="button" class="btn" id="tableImagesRemove">Delete row</button> -->
+            <button type="button" class="btn" id="tableImagesClear"><i class="fa fa-trash"></i> clear table</button>
+          </div>
+          
+        </div>
         
-        <div class="row rowHtmlMarkup hide">
+        
+        <div class="row rowHtmlMarkupXXX hide">
           <div class="form-group col-md-12">
             <p>This feature is not available a this time.</p>
           </div>
           
           <div class="form-group col-md-3 hide">
-            <label for="itemsBaseURL" class="control-label">Images base URL</label>
-            <input id="itemsBaseURL" name="itemsBaseURL" class="form-control" type="text" value="http://nanogallery2.nanostudio.org/samples/">
-            <br>
             <button type="button" class="btn" id="btnHtmlMarkupExample1">Example 1</button>
             <button type="button" class="btn" id="btnHtmlMarkupExample2">Example 2</button>
           </div>
@@ -170,12 +193,6 @@
   <div class="jumbotron jumbotronNGY2 ngy2-builder" style="background-color:#222;">
     <div class="container">
 
-      <!-- <h3 class="text-left"><span class="circle-singleline" > 2</span> CONFIGURE YOUR GALLERY</h3> -->
-      <!-- 
-      <h3 class="text-left">YOUR GALLERY</h3>
-      <br><br>
-      -->
-      
       <div class="row" id="ngy2tools" >
         <div class="col-md-3 ngy2_vert_toolbar"  >
           <br>
@@ -198,18 +215,22 @@
                     <option value="cascading">Cascading</option>
                   </select>
                   <br>
-                  <label for="thumbnailWidth" class="control-label">Thumbnail width</label>
-                  <input id="thumbnailWidth" name="thumbnailWidth" class="form-control" type="text" value="200">
-                  <br>
-                  <label for="thumbnailHeight" class="control-label">Thumbnail height</label>
-                  <input id="thumbnailHeight" name="thumbnailHeight" class="form-control" type="text" value="200">
-                  <br>
-                  <label for="thumbnailBorderVertical" class="control-label">Vertical border (top and bottom)</label>
-                  <input id="thumbnailBorderVertical" name="thumbnailBorderVertical" class="form-control" type="text" value="2">
-                  <br>
-                  <label for="thumbnailBorderHorizontal" class="control-label">Horizontal border (left and right)</label>
-                  <input id="thumbnailBorderHorizontal" name="thumbnailBorderHorizontal" class="form-control" type="text" value="2">
-                  <br>
+                  <div class="form-group col-sm-6">
+                    <label for="thumbnailHeight" class="control-label">Thumbnail height</label>
+                    <input id="thumbnailHeight" name="thumbnailHeight" class="form-control" type="text" value="200">
+                  </div>
+                  <div class="form-group col-sm-6">
+                    <label for="thumbnailWidth" class="control-label">Thumbnail width</label>
+                    <input id="thumbnailWidth" name="thumbnailWidth" class="form-control" type="text" value="200">
+                  </div>
+                  <div class="form-group col-sm-6">
+                    <label for="thumbnailBorderVertical" class="control-label">Border height</label>
+                    <input id="thumbnailBorderVertical" name="thumbnailBorderVertical" class="form-control" type="text" value="2">
+                  </div>
+                  <div class="form-group col-sm-6">
+                    <label for="thumbnailBorderHorizontal" class="control-label">Border width</label>
+                    <input id="thumbnailBorderHorizontal" name="thumbnailBorderHorizontal" class="form-control" type="text" value="2">
+                  </div>
                   <label for="thumbnailBorderColor" class="control-label">Border color</label>
                   <div id="thumbnailBorderColor" class="input-group colorpicker-component">
                       <input  type="text" value="#000000" class="form-control" />
@@ -227,10 +248,10 @@
                     <option value="scaleDown">scaleDown</option>
                   </select>
                   <br>
-                  <label for="thumbnailDisplayTransitionDuration" class="control-label">Transition display duration (ms)</label>
+                  <label for="thumbnailDisplayTransitionDuration" class="control-label">Display transition duration (ms)</label>
                   <input id="thumbnailDisplayTransitionDuration" name="thumbnailDisplayTransitionDuration" class="form-control" type="text" value="240">
                   <br>
-                  <label for="thumbnailDisplayInterval" class="control-label">Transition interval duration (ms)</label>
+                  <label for="thumbnailDisplayInterval" class="control-label">Transition inte rval duration (ms)</label>
                   <input id="thumbnailDisplayInterval" name="thumbnailDisplayInterval" class="form-control" type="text" value="30">
                 </div>
               </div>
@@ -794,613 +815,7 @@
                 </div>
               </div>
             </div>
-    
-    
-    
-    <!--
-      <h3 class="text-left"><span class="circle-singleline" > 2</span> CONFIGURE YOUR GALLERY</h3>
-      <br><br>
-      
-      <div class="row">
-        <div class="col-md-12">
-        
-        
-        -->
-          <!-- Nav tabs -->
-    
-<!--          
-          <ul id="ngy2-builder-tabs" class="nav nav-pills" role="tablist">
-            <li role="presentation" class="active"><a href="#ngy2_thumbnail" aria-controls="ngy2_thumbnail" role="tab" data-toggle="tab">Thumbnail</a></li>
-            <li role="presentation"><a href="#ngy2_thumbnaillabel" aria-controls="ngy2_thumbnaillabel" role="tab" data-toggle="tab">Thumbnail label</a></li>
-            <li role="presentation"><a href="#ngy2_navigation" aria-controls="ngy2_navigation" role="tab" data-toggle="tab">Navigation / Filters</a></li>
-            <li role="presentation"><a href="#ngy2_gallery" aria-controls="ngy2_gallery" role="tab" data-toggle="tab">Gallery</a></li>
-            <li role="presentation"><a href="#ngy2_thumbnailhover" aria-controls="ngy2_thumbnailhover" role="tab" data-toggle="tab">Hover effects</a></li>
-          </ul>
--->
-          <!-- Tab panes -->
-<!--
-          <div class="tab-content ngy2-builder">
--->
-            <!--- ### TAB THUMBNAIL ### -->
-<!--
-            <div role="tabpanel" class="tab-pane active" id="ngy2_thumbnail">
-              <br>
-              <p>
-                Gallery layout and general thumbnails configuration.
-              </p>
-              <div class="row">
-                <div class="form-group col-md-4">
-                  <label for="layoutEngine" class="control-label">Gallery layout</label>
-                  <select name="layoutEngine" class="form-control" id="layoutEngine">
-                    <option value="grid" selected >Grid</option>
-                    <option value="justified">Justified</option>
-                    <option value="cascading">Cascading</option>
-                  </select>
-                </div>
-                <div class="form-group col-md-4">
-                  <label for="thumbnailWidth" class="control-label">Thumbnail width</label>
-                  <input id="thumbnailWidth" name="thumbnailWidth" class="form-control" type="text" value="300">
-                </div>
-                <div class="form-group col-md-4">
-                  <label for="thumbnailHeight" class="control-label">Thumbnail height</label>
-                  <input id="thumbnailHeight" name="thumbnailHeight" class="form-control" type="text" value="200">
-                </div>
-              </div>
 
-              <div class="row ngy2-level2">
-                <div class="form-group col-md-4">
-                  <label for="thumbnailBorderVertical" class="control-label">Vertical border (top and bottom)</label>
-                  <input id="thumbnailBorderVertical" name="thumbnailBorderVertical" class="form-control" type="text" value="2">
-                </div>
-                <div class="form-group col-md-4">
-                  <label for="thumbnailBorderHorizontal" class="control-label">Horizontal border (left and right)</label>
-                  <input id="thumbnailBorderHorizontal" name="thumbnailBorderHorizontal" class="form-control" type="text" value="2">
-                </div>
-                <div class="form-group col-md-4">
-                  <label for="thumbnailBorderColor" class="control-label">Border color</label>
-                  <div id="thumbnailBorderColor" class="input-group colorpicker-component">
-                      <input type="text" value="#000000" class="form-control" />
-                      <span class="input-group-addon"><i></i></span>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="row">
-                <div class="form-group col-md-4">
-                  <label for="thumbnailDisplayTransition" class="control-label">Display transition</label>
-                  <select name="thumbnailDisplayTransition" class="form-control" id="thumbnailDisplayTransition">
-                    <option value="" >none</option>
-                    <option value="fadeIn" selected >fadeIn</option>
-                    <option value="randomScale">randomScale</option>
-                    <option value="slideUp">slideUp</option>
-                    <option value="slideDown">slideDown</option>
-                    <option value="scaleUp">scaleUp</option>
-                    <option value="scaleDown">scaleDown</option>
-                  </select>
-                </div>
-                <div class="form-group col-md-4">
-                  <label for="thumbnailDisplayTransitionDuration" class="control-label">Transition display duration (ms)</label>
-                  <input id="thumbnailDisplayTransitionDuration" name="thumbnailDisplayTransitionDuration" class="form-control" type="text" value="240">
-                </div>
-                <div class="form-group col-md-4">
-                  <label for="thumbnailDisplayInterval" class="control-label">Transition interval duration (ms)</label>
-                  <input id="thumbnailDisplayInterval" name="thumbnailDisplayInterval" class="form-control" type="text" value="30">
-                </div>
-              </div>
-              
-            </div>
--->            
-            <!--- ### TAB THUMBNAIL LABEL ### -->
-<!--            
-            <div role="tabpanel" class="tab-pane" id="ngy2_thumbnaillabel">
-              <br>
-              <p>
-                Configure the thumbnail's label. The label is composed of a title and a description.
-              </p>
-              <div class="row">
-                <div class="form-group col-md-4">
-                  <label for="thumbnailLabelDisplay" class="control-label">Display label (title + description)</label>
-                  <select name="thumbnailLabelDisplay" class="form-control" id="thumbnailLabelDisplay">
-                    <option value="true" selected >yes</option>
-                    <option value="false">no</option>
-                  </select>
-                </div>
-                <div class="form-group col-md-4">
-                  <label for="thumbnailLabelPosition" class="control-label">Label position</label>
-                  <select name="thumbnailLabelPosition" class="form-control" id="thumbnailLabelPosition">
-                    <option value="overImageOnBottom" selected >over image on bottom</option>
-                    <option value="overImageOnMiddle">over image on middle</option>
-                    <option value="overImageOnTop">over image on top</option>
-                    <option value="onBottom">on bottom</option>
-                  </select>
-                </div>
-                <div class="form-group col-md-4">
-                  <label for="thumbnailLabelAlignement" class="control-label">Label content alignement</label>
-                  <select name="thumbnailLabelAlignement" class="form-control" id="thumbnailLabelAlignement">
-                    <option value="center" selected >center</option>
-                    <option value="left">left</option>
-                    <option value="right">right</option>
-                  </select>
-                </div>
-              </div>
-              
-              <div class="row ngy2-level2">
-                <div class="form-group col-md-4">
-                  <label for="thumbnailLabelTitleMultiline" class="control-label">Title multiline</label>
-                  <select name="thumbnailLabelTitleMultiline" class="form-control" id="thumbnailLabelTitleMultiline">
-                    <option value="true">yes</option>
-                    <option value="false" selected>no</option>
-                  </select>
-                </div>
-              </div>
-              
-              <div class="row ngy2-level2">
-                <div class="form-group col-md-4">
-                  <label for="thumbnailLabelDisplayDescription" class="control-label">Display description</label>
-                  <select name="thumbnailLabelDisplayDescription" class="form-control" id="thumbnailLabelDisplayDescription">
-                    <option value="true" >yes</option>
-                    <option value="false" selected>no</option>
-                  </select>
-                </div>
-                <div class="form-group col-md-4">
-                  <label for="thumbnailLabelDescriptionMultiline" class="control-label">Description multiline</label>
-                  <select name="thumbnailLabelDescriptionMultiline" class="form-control" id="thumbnailLabelDescriptionMultiline">
-                    <option value="true" >yes</option>
-                    <option value="false" selected>no</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="row ngy2-level2">
-                <div class="form-group col-md-4">
-                  <label>
-                    <input name="allowHTMLinData" type="checkbox"> Allow HTML markup in title and description.
-                  </label>
-                </div>
-              </div>
-              
-            </div>
--->
-            <!--- ### TAB HOVER EFFECTS ### -->
-<!--
-            <div role="tabpanel" class="tab-pane" id="ngy2_thumbnailhover">
- 
-            <br>
-              <p>
-                Configure thumbnails hover effects. The effects are fired on mouse hover or on touch.
-              </p>
-              <div class="row thumbnailHoverEffectStd">
-                <div class="form-group col-md-8">
-                  <label for="thumbnailHoverEffect1" class="control-label">Hover effect</label>
-                  <select name="thumbnailHoverEffect1" class="form-control" id="thumbnailHoverEffect1">
-                    <option value="" ></option>
-                    <option value="toolsAppear" selected>toolsAppear</option>
-                    <option value="toolsSlideDown">toolsSlideDown</option>
-                    <option value="toolsSlideUp">toolsSlideUp</option>
-                    <option value="imageBlurOff">imageBlurOff</option>
-                    <option value="imageBlurOn">imageBlurOn</option>
-                    <option value="imageGrayOff">imageGrayOff</option>
-                    <option value="imageGrayOn">imageGrayOn</option>
-                    <option value="imageSepiaOff">imageSepiaOff</option>
-                    <option value="imageSepiaOn">imageSepiaOn</option>
-                    <option value="borderLighter">borderLighter</option>
-                    <option value="borderDarker">borderDarker</option>
-                    <option value="scale120">scale120</option>
-                    <option value="labelAppear75">labelAppear75</option>
-                    <option value="labelOpacity50">labelOpacity50</option>
-                    <option value="scaleLabelOverImage">scaleLabelOverImage</option>
-                    <option value="overScale">overScale</option>
-                    <option value="overScaleOutside">overScaleOutside</option>
-                    <option value="descriptionAppear">descriptionAppear</option>
-                    <option value="slideUp">slideUp</option>
-                    <option value="slideDown">slideDown</option>
-                    <option value="slideRight">slideRight</option>
-                    <option value="imageScale150">imageScale150</option>
-                    <option value="imageScaleIn80">imageScaleIn80</option>
-                    <option value="imageScale150Outside">imageScale150Outside</option>
-                    <option value="imageSlideUp">imageSlideUp</option>
-                    <option value="imageSlideDown">imageSlideDown</option>
-                    <option value="imageSlideRight">imageSlideRight</option>
-                    <option value="imageSlideLeft">imageSlideLeft</option>
-                    <option value="labelSlideUpTop">labelSlideUpTop</option>
-                    <option value="labelSlideUp">labelSlideUp</option>
-                    <option value="labelSlideDown">labelSlideDown</option>
-                    <option value="descriptionSlideUp">descriptionSlideUp</option>
-                  </select>
-                </div>
-              </div>
-              
-              <div class="row thumbnailHoverEffectStd">
-                <div class="form-group col-md-8">
-                  <select name="thumbnailHoverEffect2" class="form-control" id="thumbnailHoverEffect2">
-                    <option value="" selected ></option>
-                    <option value="toolsAppear">toolsAppear</option>
-                    <option value="toolsSlideDown">toolsSlideDown</option>
-                    <option value="toolsSlideUp">toolsSlideUp</option>
-                    <option value="imageBlurOff">imageBlurOff</option>
-                    <option value="imageBlurOn">imageBlurOn</option>
-                    <option value="imageGrayOff">imageGrayOff</option>
-                    <option value="imageGrayOn">imageGrayOn</option>
-                    <option value="imageSepiaOff">imageSepiaOff</option>
-                    <option value="imageSepiaOn">imageSepiaOn</option>
-                    <option value="borderLighter">borderLighter</option>
-                    <option value="borderDarker">borderDarker</option>
-                    <option value="scale120">scale120</option>
-                    <option value="labelAppear75">labelAppear75</option>
-                    <option value="labelOpacity50">labelOpacity50</option>
-                    <option value="scaleLabelOverImage">scaleLabelOverImage</option>
-                    <option value="overScale">overScale</option>
-                    <option value="overScaleOutside">overScaleOutside</option>
-                    <option value="descriptionAppear">descriptionAppear</option>
-                    <option value="slideUp">slideUp</option>
-                    <option value="slideDown">slideDown</option>
-                    <option value="slideRight">slideRight</option>
-                    <option value="imageScale150">imageScale150</option>
-                    <option value="imageScaleIn80">imageScaleIn80</option>
-                    <option value="imageScale150Outside">imageScale150Outside</option>
-                    <option value="imageSlideUp">imageSlideUp</option>
-                    <option value="imageSlideDown">imageSlideDown</option>
-                    <option value="imageSlideRight">imageSlideRight</option>
-                    <option value="imageSlideLeft">imageSlideLeft</option>
-                    <option value="labelSlideUpTop">labelSlideUpTop</option>
-                    <option value="labelSlideUp">labelSlideUp</option>
-                    <option value="labelSlideDown">labelSlideDown</option>
-                    <option value="descriptionSlideUp">descriptionSlideUp</option>
-                  </select>
-                </div>
-              </div>
-              
-              <div class="row thumbnailHoverEffectStd">
-                <div class="form-group col-md-8">
-                  <select name="thumbnailHoverEffect3" class="form-control" id="thumbnailHoverEffect3">
-                    <option value="" selected ></option>
-                    <option value="toolsAppear">toolsAppear</option>
-                    <option value="toolsSlideDown">toolsSlideDown</option>
-                    <option value="toolsSlideUp">toolsSlideUp</option>
-                    <option value="imageBlurOff">imageBlurOff</option>
-                    <option value="imageBlurOn">imageBlurOn</option>
-                    <option value="imageGrayOff">imageGrayOff</option>
-                    <option value="imageGrayOn">imageGrayOn</option>
-                    <option value="imageSepiaOff">imageSepiaOff</option>
-                    <option value="imageSepiaOn">imageSepiaOn</option>
-                    <option value="borderLighter">borderLighter</option>
-                    <option value="borderDarker">borderDarker</option>
-                    <option value="scale120">scale120</option>
-                    <option value="labelAppear75">labelAppear75</option>
-                    <option value="labelOpacity50">labelOpacity50</option>
-                    <option value="scaleLabelOverImage">scaleLabelOverImage</option>
-                    <option value="overScale">overScale</option>
-                    <option value="overScaleOutside">overScaleOutside</option>
-                    <option value="descriptionAppear">descriptionAppear</option>
-                    <option value="slideUp">slideUp</option>
-                    <option value="slideDown">slideDown</option>
-                    <option value="slideRight">slideRight</option>
-                    <option value="imageScale150">imageScale150</option>
-                    <option value="imageScaleIn80">imageScaleIn80</option>
-                    <option value="imageScale150Outside">imageScale150Outside</option>
-                    <option value="imageSlideUp">imageSlideUp</option>
-                    <option value="imageSlideDown">imageSlideDown</option>
-                    <option value="imageSlideRight">imageSlideRight</option>
-                    <option value="imageSlideLeft">imageSlideLeft</option>
-                    <option value="labelSlideUpTop">labelSlideUpTop</option>
-                    <option value="labelSlideUp">labelSlideUp</option>
-                    <option value="labelSlideDown">labelSlideDown</option>
-                    <option value="descriptionSlideUp">descriptionSlideUp</option>
-                  </select>
-                </div>
-              </div>
-              
-              <div class="row thumbnailHoverEffectStd">
-                <div class="form-group col-md-8">
-                  <button type="button" class="btn btn-info" id="btnThumbnailHoverEffectStdPreset1">preset 1</button>
-                  <button type="button" class="btn btn-info" id="btnThumbnailHoverEffectStdPreset2">preset 2</button>
-                  <button type="button" class="btn btn-info" id="btnThumbnailHoverEffectStdPreset3">preset 3</button>
-                  <button type="button" class="btn btn-info" id="btnThumbnailHoverEffectStdPreset4">preset 4</button>
-                  <button type="button" class="btn btn-info" id="btnThumbnailHoverEffectStdPreset5">preset 5</button>
-                </div>
-              </div>
--->              
-<!--
-              <div class="row ngy2-level3">
-                <div class="checkbox col-md-12">
-                  <label>
-                    <input name="cbHoverAdv" type="checkbox"> Advanced hover effects definition
-                  </label>
-                </div> 
-              </div>
-              
-              
-              <div class="row thumbnailHoverEffectAdv ngy2-level3">
-                <div class="form-group col-md-2">
-                  <label for="thumbnailHoverEffectAdv1Element" class="control-label">Element</label>
-                  <select name="thumbnailHoverEffectAdv1Element" class="form-control" id="thumbnailHoverEffectAdv1Element">
-                    <option value="" ></option>
-                    <option value="label" >label</option>
-                    <option value="image" selected>image</option>
-                    <option value="thumbnail">thumbnail</option>
-                    <option value="title">title</option>
-                    <option value="description">description</option>
-                    <option value="tools">tools</option>
-                  </select>
-                </div>
-                <div class="form-group col-md-2">
-                  <label for="thumbnailHoverEffectAdv1" class="control-label">Effect (list)</label>
-                  <select name="thumbnailHoverEffectAdv1" class="form-control" id="thumbnailHoverEffectAdv1">
-                    <option value=""  ></option>
-                    <option value="translateX" >translateX</option>
-                    <option value="translateY" >translateY</option>
-                    <option value="scale">scale</option>
-                    <option value="rotateX">rotateX</option>
-                    <option value="rotateY">rotateY</option>
-                    <option value="rotateZ">rotateZ</option>
-                    <option value="blur">blur (only for image)</option>
-                    <option value="grayscale" selected>grayscale (only for image)</option>
-                    <option value="sepia">sepia (only for image)</option>
-                  </select>
-                </div>
-                <div class="form-group col-md-2">
-                  <label for="thumbnailHoverEffectAdv1Cust" class="control-label">or custom effect</label>
-                  <input id="thumbnailHoverEffectAdv1Cust" name="thumbnailHoverEffectAdv1Cust" class="form-control" type="text" value="">
-                </div>
-                <div class="form-group col-md-2">
-                  <label for="thumbnailHoverEffectAdv1From" class="control-label">From</label>
-                  <input id="thumbnailHoverEffectAdv1From" name="thumbnailHoverEffectAdv1From" class="form-control" type="text" value="100%">
-                </div>
-                <div class="form-group col-md-2">
-                  <label for="thumbnailHoverEffectAdv1To" class="control-label">To</label>
-                  <input id="thumbnailHoverEffectAdv1To" name="thumbnailHoverEffectAdv1To" class="form-control" type="text" value="0%">
-                </div>
-                <div class="form-group col-md-2">
-                  <label for="thumbnailHoverEffectAdv1Duration" class="control-label">Duration (ms)</label>
-                  <input id="thumbnailHoverEffectAdv1Duration" name="thumbnailHoverEffectAdv1Duration" class="form-control" type="text" value="400">
-                </div>
-              </div>
-
-              <div class="row thumbnailHoverEffectAdv">
-                <div class="form-group col-md-2">
-                  <select name="thumbnailHoverEffectAdv2Element" class="form-control" id="thumbnailHoverEffectAdv2Element">
-                    <option value="" selected ></option>
-                    <option value="label" >label</option>
-                    <option value="image">image</option>
-                    <option value="thumbnail">thumbnail</option>
-                    <option value="title">title</option>
-                    <option value="description">description</option>
-                    <option value="tools">tools</option>
-                  </select>
-                </div>
-                <div class="form-group col-md-2">
-                  <select name="thumbnailHoverEffectAdv2" class="form-control" id="thumbnailHoverEffectAdv2">
-                    <option value="" selected ></option>
-                    <option value="translateX" >translateX</option>
-                    <option value="translateY" >translateY</option>
-                    <option value="scale">scale</option>
-                    <option value="rotateX">rotateX</option>
-                    <option value="rotateY">rotateY</option>
-                    <option value="rotateZ">rotateZ</option>
-                    <option value="blur">blur (only for image)</option>
-                    <option value="grayscale">grayscale (only for image)</option>
-                    <option value="sepia">sepia (only for image)</option>
-                  </select>
-                </div>
-                <div class="form-group col-md-2">
-                  <input id="thumbnailHoverEffectAdv2Cust" name="thumbnailHoverEffectAdv2Cust" class="form-control" type="text" value="">
-                </div>
-                <div class="form-group col-md-2">
-                  <input id="thumbnailHoverEffectAdv2From" name="thumbnailHoverEffectAdv2From" class="form-control" type="text" value="">
-                </div>
-                <div class="form-group col-md-2">
-                  <input id="thumbnailHoverEffectAdv2To" name="thumbnailHoverEffectAdv2To" class="form-control" type="text" value="">
-                </div>
-                <div class="form-group col-md-2">
-                  <input id="thumbnailHoverEffectAdv2Duration" name="thumbnailHoverEffectAdv2Duration" class="form-control" type="text" value="400">
-                </div>
-              </div>
-
-              <div class="row thumbnailHoverEffectAdv">
-                <div class="form-group col-md-2">
-                  <select name="thumbnailHoverEffectAdv3Element" class="form-control" id="thumbnailHoverEffectAdv3Element">
-                    <option value="" selected ></option>
-                    <option value="label" >label</option>
-                    <option value="image">image</option>
-                    <option value="thumbnail">thumbnail</option>
-                    <option value="title">title</option>
-                    <option value="description">description</option>
-                    <option value="tools">tools</option>
-                  </select>
-                </div>
-                <div class="form-group col-md-2">
-                  <select name="thumbnailHoverEffectAdv3" class="form-control" id="thumbnailHoverEffectAdv3">
-                    <option value="" selected ></option>
-                    <option value="translateX" >translateX</option>
-                    <option value="translateY" >translateY</option>
-                    <option value="scale">scale</option>
-                    <option value="rotateX">rotateX</option>
-                    <option value="rotateY">rotateY</option>
-                    <option value="rotateZ">rotateZ</option>
-                    <option value="blur">blur (only for image)</option>
-                    <option value="grayscale">grayscale (only for image)</option>
-                    <option value="sepia">sepia (only for image)</option>
-                  </select>
-                </div>
-                <div class="form-group col-md-2">
-                  <input id="thumbnailHoverEffectAdv3Cust" name="thumbnailHoverEffectAdv3Cust" class="form-control" type="text" value="">
-                </div>
-                <div class="form-group col-md-2">
-                  <input id="thumbnailHoverEffectAdv3From" name="thumbnailHoverEffectAdv3From" class="form-control" type="text" value="">
-                </div>
-                <div class="form-group col-md-2">
-                  <input id="thumbnailHoverEffectAdv3To" name="thumbnailHoverEffectAdv3To" class="form-control" type="text" value="">
-                </div>
-                <div class="form-group col-md-2">
-                  <input id="thumbnailHoverEffectAdv3Duration" name="thumbnailHoverEffectAdv3Duration" class="form-control" type="text" value="400">
-                </div>
-              </div>
-
-              <div class="row thumbnailHoverEffectAdv">
-                <div class="form-group col-md-8">
-                  <button type="button" class="btn btn-info" id="btnThumbnailHoverEffectAdvPreset1">preset 1</button>
-                  <button type="button" class="btn btn-info" id="btnThumbnailHoverEffectAdvPreset2">preset 2</button>
-                  <button type="button" class="btn btn-info" id="btnThumbnailHoverEffectAdvPreset3">preset 3</button>
-                  <button type="button" class="btn btn-info" id="btnThumbnailHoverEffectAdvPreset4">preset 4</button>
-                  <button type="button" class="btn btn-info" id="btnThumbnailHoverEffectAdvPreset5">preset 5</button>
-                </div>
-              </div>
-            </div>
--->            
-            
-            <!--- ### TAB GALLERY ### -->
-<!--
-            <div role="tabpanel" class="tab-pane" id="ngy2_gallery">
-              <br>
-              <p>
-                Gallery general settings.
-              </p>
-              <div class="row">
-                <div class="form-group col-md-3">
-                  <label for="galleryDisplayMode" class="control-label">Gallery display mode</label>
-                  <select name="galleryDisplayMode" class="form-control" id="galleryDisplayMode">
-                    <option value="fullContent" selected >full content</option>
-                    <option value="rows">with a max number of rows</option>
-                    <option value="moreButton">more button</option>
-                    <option value="pagination">with pagination</option>
-                  </select>
-                </div>
-                <div class="form-group col-md-3">
-                  <label for="galleryMaxRows" class="control-label">Max number of rows</label>
-                  <input id="galleryMaxRows" name="galleryMaxRows" class="form-control" type="text" value="2" disabled>
-                </div>
-                <div class="form-group col-md-3">
-                  <label for="galleryDisplayMoreStep" class="control-label">Number of rows to add</label>
-                  <input id="galleryDisplayMoreStep" name="galleryDisplayMoreStep" class="form-control" type="text" value="2" disabled>
-                </div>
-                <div class="form-group col-md-3">
-                  <label for="galleryLastRowFull" class="control-label">Display last row only if full</label>
-                  <select name="galleryLastRowFull" class="form-control" id="galleryLastRowFull">
-                    <option value="true" >yes</option>
-                    <option value="false" selected >no</option>
-                  </select>
-                </div>
-              </div>
-              
-              <div class="row">
-                <div class="form-group col-md-3">
-                  <label for="galleryPaginationMode" class="control-label">Pagination mode</label>
-                  <select name="galleryPaginationMode" class="form-control" id="galleryPaginationMode" disabled>
-                    <option value="rectangles" selected >rectangles</option>
-                    <option value="dots">dots</option>
-                    <option value="numbers">numbers</option>
-                  </select>
-                </div>
-              </div>
-              
-              <div class="row">
-                <div class="form-group col-md-3">
-                  <label for="thumbnailAlignment" class="control-label">Thumbnail alignement</label>
-                  <select name="thumbnailAlignment" class="form-control" id="thumbnailAlignment">
-                    <option value="center" selected >center</option>
-                    <option value="left">left</option>
-                    <option value="right">right</option>
-                    <option value="justified">justified</option>
-                  </select>
-                </div>
-                <div class="form-group col-md-3 ngy2-level2">
-                  <label for="gallerySorting" class="control-label">Sort order</label>
-                  <select name="gallerySorting" class="form-control" id="gallerySorting">
-                    <option value="" selected ></option>
-                    <option value="random">random</option>
-                    <option value="reversed">reversed</option>
-                    <option value="titleasc">by title ascending</option>
-                    <option value="titledesc">by title descending</option>
-                  </select>
-                </div>
-                <div class="form-group col-md-3 ngy2-level3">
-                  <label for="galleryMaxItems" class="control-label">Maximum number of items</label>
-                  <input id="galleryMaxItems" name="galleryMaxItems" class="form-control" type="text" value="0">
-                </div>
-              </div>
-              
-              <div class="row ngy2-level2">
-                <div class="form-group col-md-3">
-                  <label for="thumbnailGutterWidth" class="control-label">Thumbnail gutter space - width</label>
-                  <input id="thumbnailGutterWidth" name="thumbnailGutterWidth" class="form-control" type="text" value="2">
-                </div>
-                <div class="form-group col-md-3">
-                  <label for="thumbnailGutterHeight" class="control-label">Thumbnail gutter space - height</label>
-                  <input id="thumbnailGutterHeight" name="thumbnailGutterHeight" class="form-control" type="text" value="2">
-                </div>
-              </div>
-              
-            </div>
--->
-            
-            <!--- ### TAB NAVIGATION ### -->
-<!--
-            <div role="tabpanel" class="tab-pane" id="ngy2_navigation">
-              <br>
-              <p>
-                Configure the navigation in albums and the filters.
-              </p>
-              <div class="row">
-                <div class="form-group col-md-4">
-                  <label for="displayBreadcrumb" class="control-label">Breadcrumb for navigation in albums</label>
-                  <select name="displayBreadcrumb" class="form-control" id="displayBreadcrumb">
-                    <option value="true" selected>yes</option>
-                    <option value="false">no</option>
-                  </select>
-                </div>
-                <div class="form-group col-md-4 ngy2-level">
-                  <label for="breadcrumbAutoHideTopLevel" class="control-label">Hide breadcrumb on top navigation level</label>
-                  <select name="breadcrumbAutoHideTopLevel" class="form-control" id="breadcrumbAutoHideTopLevel">
-                    <option value="true" selected>yes</option>
-                    <option value="false" >no</option>
-                  </select>
-                </div>
-                <div class="form-group col-md-4">
-                  <label for="breadcrumbOnlyCurrentLevel" class="control-label">Breadcrumb: only current album name</label>
-                  <select name="breadcrumbOnlyCurrentLevel" class="form-control" id="breadcrumbOnlyCurrentLevel">
-                    <option value="true" selected>yes</option>
-                    <option value="false">no</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="row ngy2-level2">
-                <div class="form-group col-md-4">
-                  <label for="galleryFilterTags" class="control-label">Display tag filter</label>
-                  <select name="galleryFilterTags" class="form-control" id="galleryFilterTags">
-                    <option value="false" selected >off</option>
-                    <option value="true">on</option>
-                    <option value="title">based on title content</option>
-                    <option value="description">based on description content</option>
-                  </select>
-                </div>
-              </div>
-              
-              <div class="row">
-                <div class="form-group col-md-4">
-                  <label for="thumbnailLevelUp" class="control-label">Display thumbnail to navigate up</label>
-                  <select name="thumbnailLevelUp" class="form-control" id="thumbnailLevelUp">
-                    <option value="true" >yes</option>
-                    <option value="false" selected >no</option>
-                  </select>
-                </div>
-              </div>
-              
-            </div>
--->
-
-            
-            <!--- ### TAB LIGHTBOX ### -->
-<!--            
-            <div role="tabpanel" class="tab-pane" id="ngy2_lightbox">
-              ...
-            </div>
--->    
-<!--
-          </div>
-        </div>
-      </div>
-      -->
     </div>
   </div>
 
@@ -1435,6 +850,42 @@
       <div class="tab-content ngy2-builder">
         <div role="tabpanel" class="tab-pane active builder_mode_js_library" id="home"  style="display:none;">
           <p>note: to remove the max. 10 images limit, <a href="http://nano.gallery/register.html" target="_blank">please register your website</a></p>
+
+          <div class="row rowGoogleXXX rowGoogleOAuthGrant hide">
+            <div class="col-md-12">
+              <label>To embed a gallery in your website, you need to authorize nanogallery2 portable:</label>
+              <button class="btn btn-primary" data-toggle="modal" data-target="#myGoogleGrant">authorize nanogallery2 to access my Google Photos content</button>
+            </div>
+          </div>
+          <div class="row rowGoogleXXX rowGoogleOAuthRevoke hide">
+            <div class="col-md-12">
+              <label>You have authorized <b>nanogallery2 portable</b> to access your Google Photos content.
+              <br>
+              To stop using it in your web pages, you can revoke it:</label>
+              <button id="btnGoogleOAuthRevoke" class="btn btn-primary" >stop using nanogallery2 on my web pages</button>
+            </div>
+          </div>
+
+          <div class="modal fade" id="myGoogleGrant" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h3 class="modal-title" >nanogallery2 portable - grant access to Google Photos</h3>
+                </div>
+                <div class="modal-body">
+                  <p>
+                    After authorizing nanogallery2 portable to access your Google Photos content, you must <b>refresh this page (F5)</b> for activation.
+                  </p>
+                  
+                  <button id="btnGoogleOAuthGrant" class="btn btn-primary" >authorize nanogallery2 to access my Google Photos content</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          
+          
           <div class="row">
             <button id="copyclipboard2" type="button" class="btn-primary pull-right" data-clipboard-target="#ngy2_portable">copy to clipboard</button>
           </div>
@@ -1532,6 +983,10 @@
               }
             }
             $('#googleAlbum').append('</optgroup>');
+            // $('#googleAlbum').selectpicker('refresh');
+
+            $('#btnNGY2Builder').prop('disabled', false);
+            $('#googleAlbum').prop('disabled', false);
             $('#googleAlbum').selectpicker('refresh');
             
             // manage filters visibility
@@ -1578,16 +1033,46 @@
       
       // color picker - thumbnail border color
       $('#thumbnailBorderColor').colorpicker({ 
-      // $('#thumbnailBorderColor').minicolors( {
         format: 'rgba'
         //opacity: true
-        
       });
       
-      // meta tags for google+
-      //$('head').append('<meta name="google-signin-scope" content="https://picasaweb.google.com/data/">');
-      //$('head').append('google-signin-client_id" content="992551522822-7nstfoq17gn0u27kmcfcgnnfbp13ndl3.apps.googleusercontent.com"');
- 
+      
+      // BUILD THE TABLE FOR IMAGES
+      $("#table-images").tabulator({
+          // height:"320px", // set height of table (optional)
+          fitColumns:true, //fit columns to width of table (optional)
+          sortable:false,
+          columns:[ //Define Table Columns
+              {title:"Title", field:"title", width:150, editable: true},
+              {title:"Description", field:"description", width:200, editable: true},
+              {title:"Path to thumbnail", field:"srct", width:200, editable: true},
+              {title:"Path to image", field:"src", width:200, editable: true}
+          ],
+          movableRows: true
+      });
+      // add sample data
+      var tabledata = [
+        {id: 1, title:"Berlin 1", description:"", srct:"berlin1t.jpg", src:"berlin1.jpg"},
+        {id: 2, title:"Berlin 2", description:"", srct:"berlin2t.jpg", src:"berlin2.jpg"},
+        {id: 3, title:"Berlin 3", description:"", srct:"berlin3t.jpg", src:"berlin3.jpg"}
+      ];
+      //load sample data into the table
+      $("#table-images").tabulator("setData", tabledata);
+      
+      jQuery('#tableImagesAdd').on('click', function() {
+        $("#table-images").tabulator("addRow", {}, false);
+      });
+      jQuery('#tableImagesClear').on('click', function() {
+        $("#table-images").tabulator("clear");
+      });
+      jQuery('#tableImagesRemove').on('click', function() {
+        var selectedData = $("#table-images").tabulator("getSelectedData");
+        console.dir(selectedData);
+      });
+
+      
+      // BUILD THE GALLERY
       jQuery('#btnNGY2Builder').on('click', function() {
         var v=$f.find('select[name=dataSource]').val();
         if( v == 'google' && typeof ngy2_pwa_at === 'undefined' ) {
@@ -1599,9 +1084,15 @@
       });
       jQuery('#nanoGalleryBuilder').nanogallery2builder(portable);
 
+      // EDIT GALLERY
+      jQuery('#btnModify').on('click', function() {
+        
+        jQuery('#taGalleryModify').nanogallery2builderModify();
+      });
+      
   
-  // ############################################################################
-  // BUILDER - FORM MANAGEMENT
+      // ############################################################################
+      // BUILDER - FORM MANAGEMENT
         var $f=jQuery('.ngy2-builder');
         var flickrURL='https://api.flickr.com/services/rest/';
         var flickrApiKey = "2f0e634b471fdb47446abcb9c5afebdc";
@@ -1652,7 +1143,7 @@
             if( data.stat == 'ok' ) {
               $('#flickrAlbum').append('<optgroup label="albums">');
               jQuery.each(data.photosets.photoset, function(i,item){
-                console.log( item.id + '-'+ item.title._content);
+                // console.log( item.id + '-'+ item.title._content);
                 $('#flickrAlbum').append('<option value="'+item.id+'">'+item.title._content+' (album)</option>');
               });
               $('#flickrAlbum').append('</optgroup">');
@@ -1756,18 +1247,82 @@
           }
         });
 
+        // grant access to Google Photos
+        jQuery('#btnGoogleOAuthGrant').on('click', function(e){
+          jQuery.ajaxSetup({ cache: false });
+          jQuery.support.cors = true;
+          window.open('https://nano.gallery/nanogp/authorize.php')  //,"_self")
+          // var url = 'https://nano.gallery/nanogp/authorize.php?jsoncallback=?';
+        });
+
+        // revoke access to Google Photos
+        jQuery('#btnGoogleOAuthRevoke').on('click', function(e){
+          if( typeof ngy2_pwa_at === 'undefined' ) {
+            alert('Please, first sign-in to Google.');
+            return;
+          }
+
+        
+          jQuery.ajaxSetup({ cache: false });
+          jQuery.support.cors = true;
+          var url = 'https://nano.gallery/nanogp/authorize.php?revoke='+$('#googleUserID').val();
+          jQuery.getJSON(url+'&callback=?', function(data, status, xhr) {
+            console.dir(data);
+            alert(data.nano_status + ' - ' + data.nano_message);
+            window.location.reload(false); 
+          })
+          .fail( function(jqxhr, textStatus, error) {
+            alert("Could not revoke your authorization: " + textStatus + ', ' + error);
+          });
+        });
+
+        function GooglePhotosCheckAuthorization() {
+          jQuery.ajaxSetup({ cache: false });
+          jQuery.support.cors = true;
+          var url = 'https://nano.gallery/nanogp/authorize.php?user_info='+$('#googleUserID').val();
+          jQuery.getJSON(url+'&callback=?', function(data, status, xhr) {
+            console.dir(data);
+            // alert(data.nano_status + ' - ' + nano_message);
+            if( data.nano_status == 'ok' ) {
+              $f.find('.rowGoogleOAuthRevoke').removeClass('hide');
+              return;
+            }
+            $f.find('.rowGoogleOAuthGrant').removeClass('hide');
+            
+          })
+          .fail( function(jqxhr, textStatus, error) {
+            alert("Could not get user's authorization info: " + textStatus + ', ' + error);
+            $f.find('.rowGoogleOAuthGrant').removeClass('hide');
+          });
+        }
         
 
         // DATA SOURCE
         $f.find('select[name=dataSource]').on("change",function(){
+        
           var v=$f.find('select[name=dataSource]').val();
           switch( v ) {
             case 'google':
               $f.find('.rowGoogle').removeClass('hide');
               $f.find('.rowFlickr').addClass('hide');
               $f.find('.rowHtmlMarkup').addClass('hide');
-              $('#btnNGY2Builder').prop('disabled', false);
               //$f.find('[name=userID]').val('111186676244625461692');
+
+              $f.find('.rowGoogleOAuthGrant').addClass('hide');
+              $f.find('.rowGoogleOAuthRevoke').addClass('hide');
+              if( typeof ngy2_pwa_at === 'undefined' ) {
+                // not connected to google
+                $('#btnNGY2Builder').prop('disabled', true);
+                $('#googleAlbum').prop('disabled', true);
+                $('#googleAlbum').selectpicker('refresh');
+                $('#googleWhiteLst').prop('disabled', true);
+                $('#googleBlackLst').prop('disabled', true);
+                $('#googleOpenOriginal').prop('disabled', true);
+              }
+              else {
+                GooglePhotosCheckAuthorization();
+              }
+
               break;
             case 'flickr':
               $f.find('.rowGoogle').addClass('hide');
@@ -1780,10 +1335,13 @@
               $f.find('.rowGoogle').addClass('hide');
               $f.find('.rowFlickr').addClass('hide');
               $f.find('.rowHtmlMarkup').removeClass('hide');
-              $('#btnNGY2Builder').prop('disabled', true);
+              // $('#btnNGY2Builder').prop('disabled', true);
               break;
           }
         });
+        
+        
+        
         $('#btnHtmlMarkupExample1').on("click",function(){
           var sm='<a href="berlin1.jpg" data-ngThumb="berlin1t.jpg">Berlin 1</a>\n';
           sm+='<a href="berlin2.jpg" data-ngThumb="berlin2t.jpg">Berlin 2</a>\n';
@@ -1829,6 +1387,7 @@
               break;
           }
         });
+        $f.find('select[name=layoutEngine]').trigger("change");
 
         $f.find('select[name=thumbnailDisplayTransition]').on("change",function(){
           switch( $f.find('[name=thumbnailDisplayTransition]').val() ) {
