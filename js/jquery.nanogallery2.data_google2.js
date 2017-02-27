@@ -100,8 +100,8 @@
 
         var gi_data_loaded = null;
         // load more than 1000 data (contributor: Giovanni Chiodi)
-
         var GI_loadJSON = function(url,start_index){
+console.dir(url + '&start-index=' + start_index + '&callback=?');
           jQuery.getJSON( url + '&start-index=' + start_index + '&callback=?', function(data) {
           
             if( data.nano_status == 'error' ) {
