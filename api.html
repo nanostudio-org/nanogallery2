@@ -390,9 +390,6 @@
   <!-- ##### END LOGO INDEX  ##### -->
   <!-- ########################### -->
 
-
-  
-  
   <div class="container ngy2documentation">
     <br><br>
     <h1>nanogallery2 API - reference guide</h1>
@@ -407,7 +404,7 @@
     <h3>Events</h3>
     <hr>
     <blockquote>
-      <div id="nanogallery2" data-nanogallery2='{
+      <div id="nanogallery2" data-nanogallery2X='{
         "kind": "flickr",
         "userID": "149035168@N08",
         "thumbnailHeight": 100, "thumbnailWidth": 100,
@@ -420,6 +417,9 @@
       Events (also available in your browser debug console):
       <div id="eventsDisplay" style="height:150px;background-color:#ddd;padding:0px 5px;overflow-y:scroll;">
       </div>
+      <!-- 
+        <button type="button" class="btn btn-primary btn-xs" id="btn_add"><i class="fa fa-refresh fa-spin" aria-hidden="true"></i> &nbsp; add</button>
+      -->
     </blockquote>
     <div class="row">
       <div class="table-responsive">
@@ -449,14 +449,14 @@
             <tr>
               <td>galleryRenderEnd.nanogallery2</td>
               <td>
-                The galelry has been rendered.
+                The galery has been rendered.
               </td>
               <td>1.0</td>
             </tr>
             <tr>
               <td>galleryObjectModelBuilt.nanogallery2</td>
               <td>
-                The Gallery Object Model(GOM) has been populated with all the items.
+                The <b>G</b>allery <b>O</b>bject <b>M</b>odel(<b>GOM</b>) has been populated with all the items.
               </td>
               <td>1.0</td>
             </tr>
@@ -464,6 +464,8 @@
               <td>galleryLayoutApplied.nanogallery2</td>
               <td>
                 The layout has been applied to the gallery/thumbnails.
+                <br>
+                This can be called several times, for example when thumbnails image sizes are not defined.
               </td>
               <td>1.0</td>
             </tr>
@@ -499,7 +501,7 @@
               <td>shoppingCartUpdated</td>
               <td>
                 Called when the shopping cart is updated (new item or item updated).<br>
-                <a href="http://codepen.io/Kris-B/pen/NbEWbe" target="_blank">view demo</a>
+                <a href="http://codepen.io/Kris-B/pen/NbEWbe" type="button" class="btn btn-primary" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo</a>
               </td>
               <td>1.0</td>
             </tr>
@@ -536,38 +538,81 @@
               <td>1.0</td>
             </tr>
             <tr>
-              <td>fnInitGallery</td>
-              <td>Called after each gallery construction.
+              <td>fnGalleryRenderStart</td>
+              <td>
+                Called before rendering the gallery.
+                <br>
+                Parameter: <code>albumIndex</code>
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>fnGalleryRenderEnd</td>
+              <td>
+                Called after the gallery has been rendered.
+                <br>
+                Parameter: <code>albumIndex</code>
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>fnGalleryObjectModelBuilt</td>
+              <td>
+                Called after the GOM has been built.
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>fnGalleryLayoutApplied</td>
+              <td>
+                Called after the layout has been applied to the gallery/thumbnails.
+                <br>
+                This can be called several times, for example when thumbnails image sizes are not defined.
               </td>
               <td>1.0</td>
             </tr>
             <tr>
               <td>fnThumbnailInit</td>
-              <td>Called once after one thumbnail's build. Called for each thumbnail.
+              <td>
+                Called once after one thumbnail's build. Called for each thumbnail.
+                <br>
+                Parameters: <code>$thumbnail, item, GOMidx</code>
               </td>
               <td>1.0</td>
             </tr>
             <tr>
               <td>fnThumbnailHoverInit</td>
-              <td>Called once to initialize the thumbnail hover effect. Called for each thumbnail.
+              <td>
+                Called once to initialize the thumbnail hover effect. Called for each thumbnail.
+                <br>
+                Parameters: <code>$thumbnail, item, GOMidx</code>
               </td>
               <td>1.0</td>
             </tr>
             <tr>
               <td>fnThumbnailHover</td>
-              <td>Called on thumbnail hover.
+              <td>
+                Called on thumbnail hover.
+                <br>
+                Parameters: <code>$thumbnail, item, GOMidx</code>
               </td>
               <td>1.0</td>
             </tr>
             <tr>
               <td>fnThumbnailHoverOut</td>
-              <td>Called on thumbnail hover out.
+              <td>
+                Called on thumbnail hover out.
+                <br>
+                Parameters: <code>$thumbnail, item, GOMidx</code>
               </td>
               <td>1.0</td>
             </tr>
             <tr>
               <td>fnThumbnailDisplayEffect</td>
-              <td>Called to display one thumbnail.
+              <td>
+                Called to display one thumbnail, after it was built.
+                <br>
+                Parameters: <code>$thumbnail, item, GOMidx, delay</code>
               </td>
               <td>1.0</td>
             </tr>
@@ -576,6 +621,8 @@
               <td>
                 Called when a thumbnail is clicked/touched to display the image.<br>
                 Can be used to replace the standard viewer/lightbox with an external lightbox.
+                <br>
+                Parameter: <code>items</code>, array containing the list of items to display, the first one is the first to display.
               </td>
               <td>1.0</td>
             </tr>
@@ -584,18 +631,26 @@
               <td>
                 To customize the toolbar (custom icons and elements) on image display.<br>
                 Called once on toolbar building to define the specified custom elements.
+                <br>
+                Parameter: <code>customIconName</code>
               </td>
               <td>1.0</td>
             </tr>
             <tr>
               <td>fnImgToolbarCustDisplay</td>
-              <td>Called on each image display. Called once for all image toolbar custom icons and elements.
+              <td>
+                Called on each image display. Called once for all image toolbar custom icons and elements.
+                <br>
+                Parameters: <code>$customToolbarIcons, item</code>
               </td>
               <td>1.0</td>
             </tr>
             <tr>
               <td>fnImgToolbarCustClick</td>
-              <td>Fired on click event on image toolbar custom icon or element.
+              <td>
+                Fired on click event on image toolbar custom icon or element.
+                <br>
+                Parameters: <code>customIconName, $customIcon, item</code>
               </td>
               <td>1.0</td>
             </tr>
@@ -604,6 +659,8 @@
               <td>
                 Used to extend data associated to thumbnails/images.<br>
                 Called each time a new element (image or album) is added.
+                <br>
+                Parameters: <code>item, kind, sourceData</code>
               </td>
               <td>1.0</td>
             </tr>
@@ -641,30 +698,41 @@
           </thead>
           <tbody>
             <tr>
-              <td>shoppingCartGet</td>
+              <td>refresh</td>
               <td></td>
               <td>
-                Returns an array containing all the items in the shopping cart.<br>
-                One item content: idx=internal index, ID=your image ID, cnt=counter<br>
-                Usage: <code>var basket=$('#your_nanogallery2').nanogallery2('shoppingCartGet');</code>
+                Re-desplay the current gallery.<br>
+                Usage: <code>$('#your_nanogallery2').nanogallery2('refresh');</code>
               </td>
               <td>1.0</td>
             </tr>
             <tr>
-              <td>shoppingCartUpdate</td>
-              <td>image ID, counter</td>
+              <td>search</td>
+              <td>search_string</td>
               <td>
-                Update the counter of one image in the shopping cart. Returns the shopping cart.<br>
-                Usage: <code>$('#your_nanogallery2').nanogallery2('shoppingCartUpdate', imageID, newCounter);</code>
+                Filter the displayed thumbnails based on a search string. Search is done in titles.<br>
+                Usage: <code>$('#your_nanogallery2').nanogallery2('search', search_string);</code>
               </td>
               <td>1.0</td>
             </tr>
             <tr>
-              <td>shoppingCartRemove</td>
-              <td>image ID</td>
+              <td>instance</td>
+              <td></td>
               <td>
-                Removes one image from the shopping cart. Returns the shopping cart.<br>
-                Usage: <code>$('#your_nanogallery2').nanogallery2('shoppingCartRemove', imageID);</code>
+                Returns a pointer to the data of the gallery instance.<br>
+                Usage: <code>$('#your_nanogallery2').nanogallery2('instance');</code>
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>data</td>
+              <td></td>
+              <td>
+                Returns an object pointing to:<br>
+                &nbsp;&nbsp;- items: array with all the gallery items (albums and images)<br>
+                &nbsp;&nbsp;- gallery: the <b>GOM</b> - <b>G</b>allery <b>O</b>bject <b>M</b>odel of the currently displayed gallery<br>
+                &nbsp;&nbsp;- viewer: the <b>VOM</b> - <b>V</b>iewer <b>O</b>bject <b>M</b>odel of the currently displayed lightbox<br>
+                Usage: <code>$('#your_nanogallery2').nanogallery2('data');</code>
               </td>
               <td>1.0</td>
             </tr>
@@ -788,6 +856,34 @@
               <td>1.0</td>
             </tr>
             <tr>
+              <td>shoppingCartGet</td>
+              <td></td>
+              <td>
+                Returns an array containing all the items in the shopping cart.<br>
+                One item content: idx=internal index, ID=your image ID, cnt=counter<br>
+                Usage: <code>var basket=$('#your_nanogallery2').nanogallery2('shoppingCartGet');</code>
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>shoppingCartUpdate</td>
+              <td>image ID, counter</td>
+              <td>
+                Update the counter of one image in the shopping cart. Returns the shopping cart.<br>
+                Usage: <code>$('#your_nanogallery2').nanogallery2('shoppingCartUpdate', imageID, newCounter);</code>
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
+              <td>shoppingCartRemove</td>
+              <td>image ID</td>
+              <td>
+                Removes one image from the shopping cart. Returns the shopping cart.<br>
+                Usage: <code>$('#your_nanogallery2').nanogallery2('shoppingCartRemove', imageID);</code>
+              </td>
+              <td>1.0</td>
+            </tr>
+            <tr>
               <td></td>
               <td></td>
               <td>
@@ -810,21 +906,40 @@
   <script type="text/javascript">
 		$(document).ready(function () {
 
-      var ngy2data=$("#nanogallery2").nanogallery2('data');
+      // console.dir(ngy2data);
       var $eD=$("#eventsDisplay");
       function mylistener(e) {
         $eD.append(new Date().toLocaleTimeString() + ' - ' + e.type + '<br>').scrollTop($eD[0].scrollHeight);
         console.log(e.type);
-        //console.dir(ngy2data);
       }
       
-      
+      $('#nanogallery2').nanogallery2({
+        kind: 'flickr',
+        userID: '149035168@N08',
+        thumbnailHeight: 100, thumbnailWidth: 100,
+        thumbnailLabel: { display: false },
+        galleryDisplayMode: 'pagination',
+        galleryMaxRows: 1,
+        locationHash: false
+      });
+
+      // add one item
+      jQuery('#btn_add').on('click', function() {
+        var ngy2data=$("#nanogallery2").nanogallery2('data');
+        var instance=$("#nanogallery2").nanogallery2('instance');
+        var newItem=NGY2Item.New(instance, 'title', 'description', 5, 0, 'image', '' );
+        // define thumbnail
+        newItem.thumbSet('samples/berlin1t.jpg', 200,200); // w,h
+        // define URL to image
+        newItem.src='samples/berlin1.jpg';
+        $("#nanogallery2").nanogallery2('refresh');
+      });
+
       $("#nanogallery2").on( 'pageChanged.nanogallery2 galleryRenderStart.nanogallery2 galleryRenderEnd.nanogallery2 galleryObjectModelBuilt.nanogallery2 galleryLayoutApplied.nanogallery2 galleryDisplayed.nanogallery2 lightboxNextImage.nanogallery2 lightboxPreviousImage.nanogallery2 lightboxImageDisplayed.nanogallery2', mylistener );
       
     });
   
   </script>
- 
 
   <!-- ######################## -->
   <!-- ##### START FOOTER ##### -->
