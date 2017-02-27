@@ -18,16 +18,7 @@
  *  - webfont generated with http://fontello.com - based on Font Awesome Copyright (C) 2012 by Dave Gandy (http://fortawesome.github.com/Font-Awesome/)
  */
 
- // v0.9.3
- // fixed: incorrect image size with Fickr storage
- // fixed: double tap fired on zoom-in/out icons
- // fixed: image next/previous scrolled 2 images on iPhone
- // fixed: incorrect image display
- // fixed: error on Google Photos albums with more then 1000 photos
- // fixed: Google Photos data added after february 9, 2017 not accessible (module nanogp:https://github.com/nanostudio-org/nanogp)
- // improved: image zoom management
- 
- 
+
 // ###########################################
 // ##### nanogallery2 as a JQUERY PLUGIN #####
 // ###########################################
@@ -274,7 +265,7 @@
             this.$Elts = [];                // cached pointers to the thumbnail content -> to avoid jQuery().find()
             this.tags = [];                 // list of tags of the current item
             this.albumTagList = [];         // list of all the tags of the items contained in the current album
-            this.albumTagListSel = [];      // list of currently selected tags
+            this.albumTagListSel = [];      // list of currently selected tags (only for albums)
             this.exif= {exposure:'', flash:'', focallength:'', fstop:'', iso: '', model: '', time:'', location:''};
           }
 
@@ -532,7 +523,7 @@
             }
           };
         
-          //--- Returns Thumbnail image
+          //--- Returns Thumbnail image (depending of the screen resolution)
           NGY2Item.prototype.thumbImg = function () {   
             var tnImg = { src:'', width:0, height:0 };
 
@@ -601,13 +592,23 @@
               var albumID=this.GetID();
               for( var idx=0; idx<l; idx++ ) {
                 var item=this.G.I[idx];
-                if( item.albumID == albumID && item.checkTagFilter() ) {
+                if( item.albumID == albumID && item.checkTagFilter() && item.isSearchFound() ) {
                   cnt++;
                 }
               }
               return cnt;
             }
           };
+          
+          NGY2Item.prototype.isSearchFound = function() {
+            if( this.G.GOM.albumSearch != '' ) {
+              if( this.title.toUpperCase().indexOf( this.G.GOM.albumSearch ) == -1 ) {
+                return false;
+              }
+            }
+            // alert('ok');
+            return true;
+          }
           
           
           //--- for future use...
@@ -622,6 +623,7 @@
                 break;
               case 'picasa':
               case 'google':
+              case 'google2':
               default:
                 url = this.src;
                 break;
@@ -864,6 +866,7 @@
     blackList :                   'scrapbook|profil',
     whiteList :                   '',
     albumList :                   '',
+    albumList2 :                  null,
     RTL :                         false,
     poogleplusUseUrlCrossDomain : true,
     flickrSkipOriginal :          true,
@@ -940,9 +943,9 @@
     },
 
     // thumbnailToolbarImage : { position: 'topRight', content : 'share,socialShare,download,openFlick,openPicasa,likeFacebook,geolocalisation' },
-    thumbnailToolbarImage :       { topLeft: 'select', topRight : 'share,featured,download' },
-    thumbnailToolbarAlbum :       { topLeft: 'select', topRight : 'share,counter' },
-    thumbnailDisplayInterval :    30,
+    thumbnailToolbarImage :       { topLeft: 'select', topRight : 'featured' },
+    thumbnailToolbarAlbum :       { topLeft: 'select', topRight : 'counter' },
+    thumbnailDisplayInterval :    15,
     thumbnailDisplayTransition :  'fadeIn',
     thumbnailDisplayTransitionDuration: 240,
     thumbnailOpenImage :          true,
@@ -987,7 +990,11 @@
     fnImgToolbarCustClick :       null,
     fnProcessData :               null,
     fnThumbnailSelection :        null,
-    fnInitGallery :               null,
+    fnGalleryRenderStart :        null,
+    fnGalleryRenderEnd :          null,
+    fnGalleryObjectModelBuilt :   null,
+    fnGalleryLayoutApplied :      null,
+    
 
     i18n : {
       'breadcrumbHome' : 'Galleries', 'breadcrumbHome_FR' : 'Galeries',
@@ -1075,6 +1082,15 @@
 
       var nG2=$(this).data('nanogallery2data').nG2;
       switch(args){
+        case 'search':
+          nG2.Search(option);
+          break;
+        case 'refresh':
+          nG2.Refresh();
+          break;
+        case 'instance':
+          return nG2;
+          break;
         case 'data':
           nG2.data= {
             items: nG2.I,
@@ -1151,7 +1167,7 @@
   
 
   // ###############################
-  // ##### nanoGALLERY2 script #####
+  // ##### nanogallery2 script #####
   // ###############################
 
   /** @function nanoGALLERY2 */
@@ -1235,6 +1251,22 @@
             GalleryRender( G.GOM.albumIdx );
             break;
         }
+    };
+    
+    /**
+     * refresh the current gallery
+     */
+    this.Refresh = function() {
+      // refresh the displayed gallery
+      GalleryRender( G.GOM.albumIdx );
+    };
+    
+    /**
+     * Search in the displayed gallery (in thumbnails title)
+     */
+    this.Search = function( search) {
+      G.GOM.albumSearch=search.toUpperCase();
+      GalleryRender( G.GOM.albumIdx );
     };
     
     /**
@@ -1555,9 +1587,10 @@
       displayInterval :           { from: 0, len: 0 },
       userEvents:                 null,
       hammertime:                 null,
-      curNavLevel:                'l1', // current navigation level (l1 or LN)
+      curNavLevel:                'l1',   // current navigation level (l1 or LN)
       curWidth:                   'me',
-      lastZIndex:                 0,  // used to put a thumbnail on top of all others (for exemple for scale hover effect)
+      albumSearch:                '',     // current search string (used to filter the thumbnails on screen)
+      lastZIndex:                 0,      // used to put a thumbnail on top of all others (for exemple for scale hover effect)
       lastRandomValue:            0
     };
     
@@ -1717,7 +1750,7 @@
         G.baseEltID='my_nanogallery';
         G.$E.base.attr('id', G.baseEltID)
       }
-      G.O.$markup=      [];
+      G.O.$markup =      [];
       
       DefineVariables();
       SetPolyFills();
@@ -2310,8 +2343,11 @@
     // RENDER THE GALLERY
     function GalleryRender( albumIdx ) {
 
-      // G.$E.base.trigger('galleryRenderStart.nanogallery2', new Event('galleryRenderStart.nanogallery2'));
       TriggerCustomEvent('galleryRenderStart');
+      if( typeof G.O.fnGalleryRenderStart == 'function' ) {
+        G.O.fnGalleryRenderStart(albumIdx);
+      }
+      
 
       G.layout.SetEngine();
       G.galleryResizeEventEnabled=false;
@@ -2448,8 +2484,10 @@
       }
       G.GOM.albumIdx=albumIdx;
 
-      // G.$E.base.trigger('galleryRenderEnd.nanogallery2', new Event('galleryRenderEnd.nanogallery2'));
       TriggerCustomEvent('galleryRenderEnd');
+      if( typeof G.O.fnGalleryRenderEnd == 'function' ) {
+        G.O.fnGalleryRenderEnd(albumIdx);
+      }
       
       // Step 1: populate GOM
       if( GalleryPopulateGOM() ) {
@@ -2511,7 +2549,7 @@
       for( var idx=0; idx<l; idx++ ) {
         var item=G.I[idx];
         // check album
-        if( item.albumID == albumID && item.checkTagFilter() ) {
+        if( item.albumID == albumID && item.checkTagFilter() && item.isSearchFound() ) {
         var w=item.thumbImg().width;
           var h=item.thumbImg().height;
           // if unknown image size and layout is not grid --> we need to retrieve the size of the images
@@ -2535,6 +2573,9 @@
 
       // G.$E.base.trigger('galleryObjectModelBuilt.nanogallery2', new Event('galleryObjectModelBuilt.nanogallery2'));
       TriggerCustomEvent('galleryObjectModelBuilt');
+      if( typeof G.O.fnGalleryObjectModelBuilt == 'function' ) {
+        G.O.fnGalleryObjectModelBuilt();
+      }
       
       if( imageSizeRequested ) {
         // preload images to retrieve their size and then resize the gallery (=GallerySetLayout()+ GalleryDisplay())
@@ -2644,8 +2685,10 @@
           break;
       }
       
-      // G.$E.base.trigger('galleryLayoutApplied.nanogallery2', new Event('galleryLayoutApplied.nanogallery2'));
       TriggerCustomEvent('galleryLayoutApplied');
+      if( typeof G.O.fnGalleryLayoutApplied == 'function' ) {
+        G.O.fnGalleryLayoutApplied();
+      }
       return r;
 
     }
@@ -3673,7 +3716,7 @@
           var delay=cnt*G.tn.displayInterval;
           switch( G.tn.displayTransition ) {
             case 'CUSTOM':
-              G.O.fnThumbnailDisplayEffect(item.$elt, item, 0, delay);
+              G.O.fnThumbnailDisplayEffect(item.$elt, item, n, delay);
               break;
             case 'SLIDEUP':
               ThumbnailAppearSlideUp(item, delay);
@@ -3874,7 +3917,8 @@
       if( item.$elt == null ) { return; } // zombie
       
       if( typeof G.O.fnThumbnailHoverInit == 'function' ) {
-        G.O.fnThumbnailHoverInit($e, item, ExposedObjects() );
+        // G.O.fnThumbnailHoverInit($e, item, ExposedObjects() );
+        G.O.fnThumbnailHoverInit($e, item, GOMidx );
       }
 
       // build init
@@ -4071,6 +4115,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
           // TODO
         case 'picasa':
         case 'google':
+        case 'google2':
         default:
           url = G.Google.url() + 'user/'+G.O.userID+'/albumid/'+G.I[albumIdx].GetID()+'?alt=json&&max-results=1&fields=title';
           break;
@@ -4240,6 +4285,29 @@ console.log('#DisplayPhoto : '+  imageIdx);
           height: { l1 : { xs:th, sm:th, me:th, la:th, xl:th }, lN : { xs:th, sm:th, me:th, la:th, xl:th } }
         };
 
+        // image size
+        if( item.imageWidth !== undefined ) { newItem.imageWidth=item.width; }
+        if( item.imageHeight !== undefined ) { newItem.imageHeight=item.height; }
+        
+        
+        // Exif - model
+        if( item.exifModel !== undefined ) { newItem.exif.model=item.exifModel; }
+        // Exif - flash
+        if( item.exifFlash !== undefined ) { newItem.exif.flash=item.exifFlash; }
+        // Exif - focallength
+        if( item.exifFocalLength !== undefined ) { newItem.exif.focallength=item.exifFocalLength; }
+        // Exif - fstop
+        if( item.exifFStop !== undefined ) { newItem.exif.fstop=item.exifFStop; }
+        // Exif - exposure
+        if( item.exifExposure !== undefined ) { newItem.exif.exposure=item.exifExposure; }
+        // Exif - time
+        if( item.exifIso !== undefined ) { newItem.exif.iso=item.exifIso; }
+        // Exif - iso
+        if( item.exifTime !== undefined ) { newItem.exif.time=item.exifTime; }
+        // Exif - location
+        if( item.exifLocation !== undefined ) { newItem.exif.exifLocation=item.exifTime; }
+        
+        
         // custom data
         if( item.customData !== null ) {
           newItem.customData=cloneJSObject(item.customData);
@@ -4248,32 +4316,13 @@ console.log('#DisplayPhoto : '+  imageIdx);
         newItem.contentIsLoaded=true;
         
         if( typeof G.O.fnProcessData == 'function' ) {
-          G.O.fnProcessData(newItem, 'api', null);
+          G.O.fnProcessData(newItem, 'api', item);
         }
       });
       
       if( foundAlbumID ) {
         G.O.displayBreadcrumb=true;
       }
-
-
-      // get the number of images per album for all the items
-      // var l=G.I.length,
-      // nb=0,
-      // nbImages=0;
-      // for( var i=0; i<l; i++ ){
-        // nb=0;
-        // nbImages=0;
-        // for( var j=0; j<l; j++ ){
-          // if( i!=j && G.I[i].GetID() == G.I[j].albumID ) {
-            // nb++;
-            // if( G.I[j].kind == 'image' ) {
-              // G.I[j].imageNumber=nbImages++;
-            // }
-          // }
-        // }
-        // G.I[i].contentLength=nb;
-      // }
 
     }
     
@@ -4365,7 +4414,6 @@ console.log('#DisplayPhoto : '+  imageIdx);
           nbTitles++;
         }
         
-        
         // image source url
         newItem.src=src;
         
@@ -4394,6 +4442,16 @@ console.log('#DisplayPhoto : '+  imageIdx);
           width: { l1 : { xs:tw, sm:tw, me:tw, la:tw, xl:tw }, lN : { xs:tw, sm:tw, me:tw, la:tw, xl:tw } },
           height: { l1 : { xs:th, sm:th, me:th, la:th, xl:th }, lN : { xs:th, sm:th, me:th, la:th, xl:th } }
         };
+
+        // image size
+        var iw=jQuery(item).attr('data-ngimageWidth');
+        if( iw !== undefined && iw.length > 0 ) {
+          newItem.imageWidth=parseInt(iw);
+        }
+        var ih=jQuery(item).attr('data-ngimageHeight');
+        if( ih !== undefined && ih.length > 0 ) {
+          newItem.imageHeight=parseInt(ih);
+        }
 
         // Exif - model
         if( jQuery(item).attr('data-ngexifmodel') !== undefined ) {
@@ -4446,10 +4504,10 @@ console.log('#DisplayPhoto : '+  imageIdx);
         }
         // Exif - location
         if( jQuery(item).attr('data-ngexiflocation') !== undefined ) {
-          newItem.exif.time=jQuery(item).attr('data-ngexiflocation');
+          newItem.exif.location=jQuery(item).attr('data-ngexiflocation');
         }
         if( jQuery(item).attr('data-ngExifLocation') !== undefined ) {
-          newItem.exif.time=jQuery(item).attr('data-ngExifLocation');
+          newItem.exif.location=jQuery(item).attr('data-ngExifLocation');
         }
 
         
@@ -4462,7 +4520,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
 
         
         if( typeof G.O.fnProcessData == 'function' ) {
-          G.O.fnProcessData(newItem, 'markup', null);
+          G.O.fnProcessData(newItem, 'markup', item);
         }
 
       });
@@ -4521,7 +4579,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
 
       // change 'picasa' to 'google' for compatibility reason
       if( G.O.kind.toUpperCase() == 'PICASA' ) {
-        G.O.kind='google';
+        G.O.kind='google2';
       }
     
       // management of screen width
@@ -4561,7 +4619,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
       if( G.O.blackList != '' ) { G.blackList=G.O.blackList.toUpperCase().split('|'); }
       if( G.O.whiteList != '' ) { G.whiteList=G.O.whiteList.toUpperCase().split('|'); }
 
-      if( G.O.albumList2 !== undefined && G.O.albumList2.constructor === Array  ) {
+      if( G.O.albumList2 !== undefined && G.O.albumList2 !== null && G.O.albumList2.constructor === Array  ) {
         var l=G.O.albumList2.length;
         for(var i=0; i< l; i++ ) {
           if( G.O.albumList2[i].indexOf('&authkey') !== -1 || G.O.albumList2[i].indexOf('?authkey') !== -1 ) {
@@ -6110,6 +6168,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
           break;
         case 'picasa':
         case 'google':
+        case 'google2':
           var sU='https://plus.google.com/photos/'+G.O.userID+'/albums/'+item.albumID+'/'+item.GetID();
           window.open(sU,'_blank');
           break;
@@ -6143,7 +6202,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
       var l=G.I.length;
       for( var idx=imageIdx+1; idx<l ; idx++) {
         var item=G.I[idx];
-        if( item.kind == 'image' && item.albumID == G.VOM.albumID && item.checkTagFilter() && item.destinationURL == '' ) {
+        if( item.kind == 'image' && item.albumID == G.VOM.albumID && item.checkTagFilter() && item.isSearchFound() && item.destinationURL == '' ) {
           var vimg=new VImg(idx);
           G.VOM.items.push(vimg);
           items.push(item);
@@ -6153,7 +6212,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
       var cnt=1;
       for( var idx=0; idx<imageIdx ; idx++) {
         var item=G.I[idx];
-        if( item.kind == 'image' && item.albumID == G.VOM.albumID && item.checkTagFilter() && item.destinationURL == '' ) {
+        if( item.kind == 'image' && item.albumID == G.VOM.albumID && item.checkTagFilter() && item.isSearchFound() && item.destinationURL == '' ) {
           var vimg=new VImg(idx);
           vimg.imageNumber=cnt;
           G.VOM.items.push(vimg);
@@ -6399,7 +6458,7 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
             e.stopPropagation();
             e.preventDefault();
             OpenOriginal( G.VOM.Item(G.VOM.currItemIdx) );
-            if( G.O.kind == 'google') {
+            if( G.O.kind == 'google' || G.O.kind == 'google2') {
               var sU='https://plus.google.com/photos/'+G.O.userID+'/albums/'+G.VOM.Item(G.VOM.currItemIdx).albumID+'/'+G.VOM.Item(G.VOM.currItemIdx).GetID();
               window.open(sU,'_blank');
             }
@@ -6413,7 +6472,7 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
         
         // custom button
         if( ngy2action.indexOf('custom') == 0  && typeof G.O.fnImgToolbarCustClick == 'function') {
-          var n=ngy2action.substring(6);
+          // var n=ngy2action.substring(6);
           G.O.fnImgToolbarCustClick(ngy2action, $this, G.VOM.Item(G.VOM.currItemIdx));
         }
         
@@ -6604,7 +6663,7 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
           // }
           break;
         case 'linkOriginalButton':
-          if( G.O.kind == 'flickr' || G.O.kind == 'google' ) {
+          if( G.O.kind == 'flickr' || G.O.kind == 'google' || G.O.kind == 'google2' ) {
             r='<div class="ngbt ngy2viewerToolAction linkOriginalButton nGEvent" data-ngy2action="linkOriginal">'+G.O.icons.viewerLinkOriginal+'</div>';
           }
           break;
@@ -6639,7 +6698,7 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
     
     function ViewerZoomStart() {
       if( G.O.viewerZoom && !G.VOM.viewerImageIsChanged ) {
-        var item=G.VOM.Item(G.VOM.currItemIdx);
+      var item=G.VOM.Item(G.VOM.currItemIdx);
         if( item.imageHeight > 0 && item.imageWidth > 0 ) {
           if( G.VOM.isZooming === false ) {
             // default zoom
@@ -7021,7 +7080,7 @@ G.$E.conVw.css({msTouchAction:'none', touchAction:'none'});
           if( item.imageWidth == 0 ) {
             item.imageWidth=G.$E.vwImgC.children().eq(0).prop('naturalWidth');
           }
-          if( item.imageWHeight == 0 ) {
+          if( item.imageHeight == 0 ) {
             item.imageHeight=G.$E.vwImgC.children().eq(0).prop('naturalHeight');
           }
 
@@ -12245,8 +12304,8 @@ if (typeof define === 'function' && define.amd) {
 
         var gi_data_loaded = null;
         // load more than 1000 data (contributor: Giovanni Chiodi)
-
         var GI_loadJSON = function(url,start_index){
+console.dir(url + '&start-index=' + start_index + '&callback=?');
           jQuery.getJSON( url + '&start-index=' + start_index + '&callback=?', function(data) {
           
             if( data.nano_status == 'error' ) {
