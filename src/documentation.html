@@ -1,4 +1,3 @@
-  
   <div class="container ngy2documentation">
   <div class="row" >
   <div class="col-md-10">
@@ -702,6 +701,9 @@
         <li>Change the transparency of label background: <b><code>'label_backgroundColor_rgba(255,255,255,0.80)_rgba(255,255,255,0.01)'</code></b></li>
         <li>Apply a red colorization on the image: <b><code>customlayer_backgroundColor_rgba(160,0,0,0.0)_rgba(160,0,0,0.5)</code></b></li>
         <li>Change the transparency of the icons: <b><code>tools_opacity_1_0.5</code></b></li>
+        <li>Change the image contrast: <b><code>image_contrast_1_4</code></b></li>
+        <li>Change the image brightness: <b><code>image_brightness_1_2</code></b></li>
+      </ul>
       </ul>
       <li>Two hover effects:</li>
       <ul>
@@ -772,7 +774,7 @@
             Syntax: <code>thumbnailToolbarImage: { topLeft:'', topRight: '', bottomLeft: '', bottomRight: ''}</code><br>
             Possible tools: 'select', 'share', 'featured', 'download', 'cart'<br>
             Default:<br>
-            <code>thumbnailToolbarImage : { topLeft: 'select', topRight : 'share,featured,download' }</code>
+            <code>thumbnailToolbarImage : { topLeft: 'select', topRight : 'featured' }</code>
           </td>
           <td>1.0</td>
         </tr>
@@ -783,9 +785,9 @@
           <td>
             Album toolbars<br>
             Syntax: <code>thumbnailToolbarAlbum: { topLeft:'', topRight: '', bottomLeft: '', bottomRight: ''}</code><br>
-            Possible tools: 'select', 'share', 'counter'<br>
+            Possible tools: 'select', 'share', 'counter', 'counter2'<br>
             Default:<br>
-            <code>thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,counter' }</code>
+            <code>thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'counter' }</code>
           </td>
           <td>1.0</td>
         </tr>
@@ -1476,6 +1478,10 @@
         <tr>
           <td>fnViewerInfo</td>
           <td>No more used. Please replace with toolbar custom buttons (fnImgToolbarCustInit, fnImgToolbarCustClick)</td>
+        </tr>
+        <tr>
+          <td>fnInitGallery</td>
+          <td>replaced and enhanced by fnGalleryRenderStart and fnGalleryRenderEnd</td>
         </tr>
       </tbody>
       </table>
