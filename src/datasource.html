@@ -63,6 +63,13 @@
         </thead>
         <tbody>
           <tr>
+            <td>no dependency to any external service</td>
+            <td>-</td>
+            <td>-</td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+          </tr>
+          <tr>
             <td>title</td>
             <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
             <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
@@ -206,7 +213,7 @@
     </blockquote>
     
     <p>
-      This is the list of supported attributes (case-sensitive). All values must be defined between double-quotes, even if the content is not a string.
+      This is the list of supported attributes (case-sensitive) to define one item (image or album). All values must be defined between double-quotes, even if the content is not a string.
     </p>
     
     <div class="table-responsive">
@@ -260,14 +267,40 @@
             <td>data-ngthumbImgHeight</td>
             <td>integer</td>
             <td>0</td>
-            <td>Height of the thumbnail image (in pixels). <b>Not mandatory, but should be defined to improve overall performances.</b></td>
+            <td>
+              Height of the thumbnail image (in pixels). <b>
+              <br>
+              Not mandatory, but should be defined to improve overall performances.</b></td>
             <td>1.0</td>
           </tr>
           <tr>
             <td>data-ngthumbImgWidth</td>
             <td>integer</td>
             <td>0</td>
-            <td>Width of the thumbnail image (in pixels). <b>Not mandatory, but should be defined to improve overall performances.</b></td>
+            <td>
+              Width of the thumbnail image (in pixels).<b>
+              <br>
+              Not mandatory, but should be defined to improve overall performances.</b></td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>data-ngimageWidth</td>
+            <td>integer</td>
+            <td>0</td>
+            <td>
+              Width of the image (in pixels). <b>
+              <br>
+              Not mandatory, but should be defined to improve overall performances.</b></td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>data-ngimageHeight</td>
+            <td>integer</td>
+            <td>0</td>
+            <td>
+              Height of the image (in pixels). <b>
+              <br>
+              Not mandatory, but should be defined to improve overall performances.</b></td>
             <td>1.0</td>
           </tr>
           <tr>
@@ -418,7 +451,7 @@ $(document).ready(function () {
     </blockquote>
 
     <p>
-      This is the list of supported properties for the items object (case-sensitive). An item object is an image or an album.
+      This is the list of supported properties to define one item (image or album). The properties are case-sensitive. An item object is an image or an album.
     </p>
     
     <div class="table-responsive">
@@ -490,6 +523,28 @@ $(document).ready(function () {
             <td>1.0</td>
           </tr>
           <tr>
+            <td>imageHeight</td>
+            <td>integer</td>
+            <td>0</td>
+            <td>
+              Height of the image (in pixels).
+              <br>
+              <b>Not mandatory, but should be defined to improve overall performances.</b>
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>imageWidth</td>
+            <td>integer</td>
+            <td>0</td>
+            <td>
+              Width of the image (in pixels).
+              <br>
+              <b>Not mandatory, but should be defined to improve overall performances.</b>
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
             <td>srct</td>
             <td>string</td>
             <td></td>
@@ -502,6 +557,7 @@ $(document).ready(function () {
             <td>0</td>
             <td>
               Height of the thumbnail image (in pixels).
+              <br>
               <b>Not mandatory, but should be defined to improve overall performances.</b>
             </td>
             <td>1.0</td>
@@ -512,6 +568,7 @@ $(document).ready(function () {
             <td>0</td>
             <td>
               Width of the thumbnail image (in pixels).
+              <br>
               <b>Not mandatory, but should be defined to improve overall performances.</b>
             </td>
             <td>1.0</td>
@@ -528,6 +585,61 @@ $(document).ready(function () {
             <td>1.0</td>
           </tr>
           <tr>
+            <td>exifModel</td>
+            <td>string</td>
+            <td></td>
+            <td>Exif model</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>exifFlash</td>
+            <td>string</td>
+            <td></td>
+            <td>Exif flash</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>exifFocalLength</td>
+            <td>string</td>
+            <td></td>
+            <td>Exif focal length</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>exifFStop</td>
+            <td>string</td>
+            <td></td>
+            <td>Exif fstop</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>exifExposure</td>
+            <td>string</td>
+            <td></td>
+            <td>Exif exposure</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>exifIso</td>
+            <td>string</td>
+            <td></td>
+            <td>Exif ISO</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>exifTime</td>
+            <td>string</td>
+            <td></td>
+            <td>Exif date/time</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
+            <td>exifLocation</td>
+            <td>string</td>
+            <td></td>
+            <td>Exif location - this value is used to display the image location with Google Maps on the image info window.</td>
+            <td>1.0</td>
+          </tr>          <tr>
             <td></td>
             <td></td>
             <td></td>
@@ -557,6 +669,8 @@ $(document).ready(function () {
         <!--
           To retrieve your Google user ID and to manage the visibility of your Google Photos albums, you can use the tool <a href="http://nanogpvisibility.herokuapp.com/index.html" target="_blank" style="background-color:#eee;"> &nbsp; <b>nanoGPVisibility</b> &nbsp; </a> <br>
         -->
+        This feature is provided "as-is". nanogallery2 is not affiliated to Google. Changes by Google may affect your galleries. nanogallery2 can not be held responsible for any issue caused by any change on Google Photos.
+        <br><br>
         <b>Note: since <u>february 9, 2017</u>, Google Photos can no more be accessed without account owner's explicit authorization.
         <br>
         nanogallery2 requires a permanent authorization, which is only possible for server side applications.
@@ -606,11 +720,11 @@ $(document).ready(function () {
             <td></td>
             <td>
               <b>MANDATORY</b><br>
-              The URL pointing to your <b>nanogp</b> installation.
+              The URL pointing to <u>your</u> <b>nanogp</b> installation.
               <br>
               Example:
               <br>
-              <code>nanogp: 'https://mydomain/nanogp/nanogp.php'</code>
+              <code>google2URL: 'https://mydomain/nanogp/nanogp.php'</code>
             </td>
             <td>1.0</td>
           </tr>
@@ -641,7 +755,7 @@ $(document).ready(function () {
             <td></td>
             <td>
               The list of albums to display. You can specify an album name or it's ID.<br>
-              Use a string to set a single album, or an array for multiple.<br>
+              Use a string to set a single album, or an array for multiple albums.<br>
               <b>Example:</b><br>
               One album: <code>albumList2: 'architecture'</code><br>
               Three albums: <code>albumList2: ['architecture', 'friends', '5851968929721015169']</code><br>
@@ -698,6 +812,10 @@ $(document).ready(function () {
     <hr>
     <blockquote>
       nanogallery2 can display your Flickr albums, or the content of a specific album, or your full photostream.
+      <br><br>
+      <span style="color:#d00;">
+        This feature is provided "as-is". nanogallery2 is not affiliated to Flickr. Changes by Flickr may affect your galleries. nanogallery2 can not be held responsible for any issue caused by any change on Flickr.
+      </span>
     </blockquote>
     <div class="table-responsive">
       <table class="table table-striped table-hover">
@@ -734,12 +852,14 @@ $(document).ready(function () {
             <td>1.0</td>
           </tr>
           <tr>
-            <td>photoset</td>
+            <td>album<br>photoset</td>
             <td>string</td>
             <td></td>
             <td>
-              Photoset ID - to display only one specific photoset.<br>
+              Photoset ID - to display only the content (=the images) of one specific photoset.<br>
               If set to <code>'none'</code>, all pictures of the photostream are displayed.
+              <br>
+              note: 'photoset' is an alias of 'album'
             </td>
             <td>1.0</td>
           </tr>
@@ -771,7 +891,7 @@ $(document).ready(function () {
             <td></td>
             <td>
               The list of albums to display. You can specify an album name or it's ID.<br>
-              Use a string to set a single album, or an array for multiple.<br>
+              Use a string to set a single album, or an array for multiple albums.<br>
               <b>Example:</b><br>
               One album: <code>albumList2: 'architecture'</code><br>
               Three albums: <code>albumList2: ['architecture', 'friends', '5851968929721015169']</code><br>
