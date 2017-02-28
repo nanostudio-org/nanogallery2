@@ -535,8 +535,21 @@
         var content='';
         for( var nd=0; nd< parseInt(data.length); nd++ ) {
           if( data[nd].src != '' && data[nd].srct != '' ) {
-            html+=htmlEntities('      <a href="'+data[nd].src+'" data-ngthumb="'+data[nd].srct+'" data-ngdesc="'+data[nd].description+'">'+data[nd].title+'</a>\n');
-            content+='<a href="'+data[nd].src+'" data-ngthumb="'+data[nd].srct+'" data-ngdesc="'+data[nd].description+'">'+data[nd].title+'</a>\n';
+            var s='      <a href="'+data[nd].src+'" data-ngthumb="'+data[nd].srct+'" data-ngdesc="'+data[nd].description+'"';
+            content+='<a href="'+data[nd].src+'" data-ngthumb="'+data[nd].srct+'" data-ngdesc="'+data[nd].description+'"';
+            var iw=data[nd].width.trim();
+            if( iw != '') {
+              s+=' data-ngimageWidth="'+iw+'"';
+              content+=' data-ngimageWidth="'+iw+'"';
+            }
+            var ih=data[nd].height.trim();
+            if( ih != '') {
+              s+=' data-ngimageHeight="'+ih+'"';
+              content+=' data-ngimageHeight="'+ih+'"';
+            }
+            s+='>'+data[nd].title+'</a>\n';
+            html+=htmlEntities(s);
+            content+='>'+data[nd].title+'</a>\n';
           }
         }
         jQuery("#nanoGallery3").html(content);
