@@ -13,7 +13,6 @@
 
     <br><br><br><br>
 
-
   <!-- ###################### -->
   <!-- #####   BUILDER  ##### -->
   <!-- ###################### -->
@@ -22,7 +21,7 @@
 
     <div class="row ">
       <div class="col-md-12 text-right">
-        <label>[nanogallery builder v1.1 - february 27, 2017]</label>
+        <label>[nanogallery builder v1.1.1 - february 27, 2017]</label>
       </div>
     </div>
     <label class="hide">Modify existing gallery</label><br>
@@ -70,11 +69,11 @@
             </select>            
           </div>
           <div class="form-group col-md-4">
-            <label for="googleWhiteLst" class="control-label">Filter: album names must contain any these keywords</label>
+            <label for="googleWhiteLst" class="control-label">Authorize filter: album names must contain any these keywords</label>
             <input id="googleWhiteLst" name="googleWhiteLst" class="form-control" type="text" value="">
           </div>
           <div class="form-group col-md-4">
-            <label for="googleBlackLst" class="control-label">Filter: album names must <u>NOT</u> contain any these keywords</label>
+            <label for="googleBlackLst" class="control-label">Block filter: album names must <u>NOT</u> contain any these keywords</label>
             <input id="googleBlackLst" name="googleBlackLst" class="form-control" type="text" value="scrapbook profil">
           </div>
         </div>
@@ -128,11 +127,11 @@
             </div>
           </div>
           <div class="form-group col-md-4">
-            <label for="flickrWhiteLst" class="control-label">Filter: album names must contain any these keywords</label>
+            <label for="flickrWhiteLst" class="control-label">Authorize filter: album names must contain any these keywords</label>
             <input id="flickrWhiteLst" name="flickrWhiteLst" class="form-control" type="text" value="">
           </div>
           <div class="form-group col-md-4">
-            <label for="flickrBlackLst" class="control-label">Filter: album names must <u>NOT</u> contain any these keywords</label>
+            <label for="flickrBlackLst" class="control-label">Block filter: album names must <u>NOT</u> contain any these keywords</label>
             <input id="flickrBlackLst" name="flickrBlackLst" class="form-control" type="text" value="">
           </div>
         </div>
@@ -1067,15 +1066,17 @@
               {title:"Title", field:"title", width:150, editable: true},
               {title:"Description", field:"description", width:200, editable: true},
               {title:"Path to thumbnail", field:"srct", width:200, editable: true},
-              {title:"Path to image", field:"src", width:200, editable: true}
+              {title:"Path to image", field:"src", width:200, editable: true},
+              {title:"Image width", field:"width", width:100, editable: true},
+              {title:"Image height", field:"height", width:100, editable: true}
           ],
           movableRows: true
       });
       // add sample data
       var tabledata = [
-        {id: 1, title:"Berlin 1", description:"", srct:"berlin1t.jpg", src:"berlin1.jpg"},
-        {id: 2, title:"Berlin 2", description:"", srct:"berlin2t.jpg", src:"berlin2.jpg"},
-        {id: 3, title:"Berlin 3", description:"", srct:"berlin3t.jpg", src:"berlin3.jpg"}
+        {id: 1, title:"Berlin 1", description:"", srct:"berlin1t.jpg", src:"berlin1.jpg", width:"1280", height:"848"},
+        {id: 2, title:"Berlin 2", description:"", srct:"berlin2t.jpg", src:"berlin2.jpg", width:"847", height:"1280"},
+        {id: 3, title:"Berlin 3", description:"", srct:"berlin3t.jpg", src:"berlin3.jpg", width:"1260", height:"860"}
       ];
       //load sample data into the table
       $("#table-images").tabulator("setData", tabledata);
@@ -1599,3 +1600,5 @@
 		});
 	</script>
   <script type="text/javascript" src="js/jquery.nanogallery2.builder.js"></script>
+
+  
