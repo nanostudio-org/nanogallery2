@@ -1,3 +1,4 @@
+
  <div class="jumbotron ngy2dark">
     <div class="container ">
       <div class="row text-right" >
@@ -294,7 +295,7 @@
 
     <br><br><br><br><br><br>
 
-    <div class="row text-center" style="background-color:#eee;">
+    <div class="row text-center">
       <div class="col-md-1" ></div>
       <div class="col-md-10" >
         <h2>nanogallery2 licensing - clear and simple</h2>
@@ -302,17 +303,19 @@
       </div>
       <div class="col-md-1" ></div>
     </div>
-    <div class="row text-center" style="background-color:#eee;">
+    <div class="row text-center" >
       <div class="col-md-1" ></div>
       <div class="col-md-10" >
         <br>
         <p class="lead">nanogallery2 is licensed under a dual-license model: a <a href="https://www.gnu.org/licenses/gpl-3.0.html/" target="_blank">GPLv3 license</a> for non-commercial use and a proprietary commercial license. 
+        <!--
         <font color="#d00"><b>nanogallery2 may be used in commercial projects and applications, or in business environments with the purchase of a commercial license.</b></font></p>
+        -->
         <br>
       </div>
       <div class="col-md-1" ></div>
     </div>
-    <div class="row" style="background-color:#eee;">
+    <div class="row">
       <div class="col-md-2" ></div>
       <div class="col-md-8 text-center" >
 
@@ -326,31 +329,34 @@
       <div class="col-md-2" ></div>
     </div>
     
-    <div class="row" style="background-color:#eee;"><br><br><br><br>
-      <div class="col-md-1" ></div>
-      <div class="col-md-5 text-justify" >
+    <div class="row match-my-cols" ><br><br><br><br>
+      <div class="col-md-1" >&nbsp;</div>
+      <div class="col-md-5 text-justify" style="background-color:#eee;border: 1px solid #fff;">
         <h3>Open source license</h3><br>
-        <p>For personal or open source projects, you may use nanogallery2 for free. In this case, nanogallery2 is licensed under <a href="https://www.gnu.org/licenses/gpl-3.0.html/" target="_blank"><b>GPLv3 license</b></a>, which means that <b>your project must also be licensed under GPLv3</b>. 
+        <p><b>For personal or open source projects, you may use nanogallery2 for free</b>. In this case, nanogallery2 is licensed under <a href="https://www.gnu.org/licenses/gpl-3.0.html/" target="_blank"><b>GPLv3 license</b></a>, which means that <b>your project must also be licensed under GPLv3</b>. 
         If this cannot apply to your project, the purchase of a commercial license is required.
         </p>
         <br><br>
       </div>
-      <div class="col-md-5 text-justify" >
+      <div class="col-md-5 text-justify" style="background-color:#eee;border: 1px solid #fff;">
         <h3>Commercial license</h3><br>
         <p>
           If you run a business and are using nanogallery2 in a revenue-generating product, it makes business sense to sponsor this development: <b>it ensures the project that your product relies on stays healthy and actively maintained</b>.<br>
-          Note: there's no upgrade fee for users of nanoGALLERY.
+          Note: if you have a nanoGALLERY license, there's no upgrade fee.
           <div class="text-center">
 
+            <a href="https://nano.gallery/lic/lic.php" type="button" class="btn btn-primary btn-lg" >get your license</a>
+            <!--
             <a href="https://nano.gallery/lic/lic.php" type="button" class="btn btn-primary btn-lg" >website license<br>25&euro;</a>
             <a href="https://nano.gallery/lic/lic.php" type="button" class="btn btn-primary btn-lg" >OEM license<br>90&euro;</a>
+            -->
             <!--
             <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">website license<br>25&euro;</button>
             <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">OEM license<br>90&euro;</button>
             -->
           </div>
         </p>
-        <br><br>
+        <br>
         
       </div>
       <div class="col-md-1" ></div>
@@ -785,7 +791,7 @@ thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.10|l
         //  rnd=randomIntFromInterval(0,4);
         // }
         // lastRnd=rnd;
-        //rnd=0;
+        //rnd=1;
         switch ( rnd ) {
           case 0:
             jQuery("#nanogallery").nanogallery2({
@@ -939,7 +945,8 @@ thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.10|l
               thumbnailBorderHorizontal: 2,
               thumbnailGutterWidth: 10,
               thumbnailGutterHeight: 10,
-              thumbnailHoverEffect2 : '.ngy2plusbutton_opacity_0_1|image_opacity_100%_60%|label_background_#000000_#2C3B4B',
+              thumbnailHoverEffect2 : '.ngy2plusbutton_opacity_0_1|.ngy2plusbutton_scale_5_1|image_opacity_100%_60%|label_background_#000000_#2C3B4B|image_scale_1.10_1.00',
+              thumbnailBuildInit2: '.ngy2plusbutton_translateY_-50%|.ngy2plusbutton_translateX_-50%',
               thumbnailToolbarImage : { topRight : '', bottomRight : '' },
               thumbnailLabel: { display: true, position:'onBottom', hideIcons: true, titleFontSize: '1.2em', align: 'center', titleMultiLine:true},
               gallerySorting: 'random',
@@ -964,7 +971,7 @@ thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.10|l
        });
       
       function myTnInit( $e, item, GOMidx ) {
-        var st='position:absolute;top:50%;left:50%;-webkit-transform: translateX(-50%) translateY(-50%);-ms-transform: translateX(-50%) translateY(-50%);transform: translateX(-50%) translateY(-50%);'
+        var st='position:absolute;top:50%;left:50%;'
         $e.find('.nGY2GThumbnailSub').append('<div class="ngy2plusbutton" style="'+st+'"><button type="button" class="btn btn-primary btn-lg" ><i class="fa fa-refresh fa-spin" aria-hidden="true"></i> &nbsp; display</button></div>');
       }
 
