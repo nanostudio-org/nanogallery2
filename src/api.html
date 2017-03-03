@@ -1,5 +1,3 @@
-  
-  
   <div class="container ngy2documentation">
     <br><br>
     <h1>nanogallery2 API - reference guide</h1>
@@ -17,11 +15,12 @@
       <div id="nanogallery2" data-nanogallery2X='{
         "kind": "flickr",
         "userID": "149035168@N08",
-        "thumbnailHeight": 100, "thumbnailWidth": 100,
+        "thumbnailHeight": 150, "thumbnailWidth": 150,
         "thumbnailLabel": { "display": false },
         "galleryDisplayMode": "pagination",
         "galleryMaxRows": 1,
-        "locationHash": false
+        "locationHash": false,
+        "thumbnailToolbarImage": { "topLeft": "select", "topRight" : "featured,cart" }
       }'>
       </div>
       Events (also available in your browser debug console):
@@ -108,12 +107,26 @@
               <td>1.0</td>
             </tr>
             <tr>
-              <td>shoppingCartUpdated</td>
+              <td>shoppingCartUpdated.nanogallery2</td>
               <td>
                 Called when the shopping cart is updated (new item or item updated).<br>
                 <a href="http://codepen.io/Kris-B/pen/NbEWbe" type="button" class="btn btn-primary" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo</a>
               </td>
               <td>1.0</td>
+            </tr>
+            <tr>
+              <td>itemSelected.nanogallery2</td>
+              <td>
+                One thumbnail has been selecetd.
+              </td>
+              <td>1.1</td>
+            </tr>
+            <tr>
+              <td>itemUnSelected.nanogallery2</td>
+              <td>
+                One thumbnail has been un-selecetd.
+              </td>
+              <td>1.1</td>
             </tr>
           </tbody>
         </table>
@@ -535,11 +548,15 @@
       $('#nanogallery2').nanogallery2({
         kind: 'flickr',
         userID: '149035168@N08',
-        thumbnailHeight: 100, thumbnailWidth: 100,
+        thumbnailHeight: 150, thumbnailWidth: 150,
         thumbnailLabel: { display: false },
         galleryDisplayMode: 'pagination',
         galleryMaxRows: 1,
-        locationHash: false
+        locationHash: false,
+        thumbnailHoverEffect2: null,
+        thumbnailToolbarImage: { topLeft: 'select', topRight : 'featured,cart' },
+        thumbnailToolbarAlbum: { topLeft: 'select', topRight : 'counter' },
+        thumbnailSelectable : true
       });
 
       // add one item
@@ -554,7 +571,7 @@
         $("#nanogallery2").nanogallery2('refresh');
       });
 
-      $("#nanogallery2").on( 'pageChanged.nanogallery2 galleryRenderStart.nanogallery2 galleryRenderEnd.nanogallery2 galleryObjectModelBuilt.nanogallery2 galleryLayoutApplied.nanogallery2 galleryDisplayed.nanogallery2 lightboxNextImage.nanogallery2 lightboxPreviousImage.nanogallery2 lightboxImageDisplayed.nanogallery2', mylistener );
+      $("#nanogallery2").on( 'pageChanged.nanogallery2 galleryRenderStart.nanogallery2 galleryRenderEnd.nanogallery2 galleryObjectModelBuilt.nanogallery2 galleryLayoutApplied.nanogallery2 galleryDisplayed.nanogallery2 lightboxNextImage.nanogallery2 lightboxPreviousImage.nanogallery2 lightboxImageDisplayed.nanogallery2 shoppingCartUpdated.nanogallery2 itemSelected.nanogallery2 itemUnSelected.nanogallery2', mylistener );
       
     });
   
