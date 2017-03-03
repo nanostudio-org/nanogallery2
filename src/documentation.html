@@ -1,4 +1,4 @@
- <div class="container ngy2documentation">
+  <div class="container ngy2documentation">
   <div class="row" >
   <div class="col-md-10">
 
@@ -431,26 +431,6 @@
           <td>1.0</td>
         </tr>
         <tr>
-          <td>thumbnailToolbarImage</td>
-          <td>object</td>
-          <td>{ topLeft: 'select', topRight : 'share,featured'}</td>
-          <td>
-            Icons on thumbnail of images.
-            <br>Possible values : 'share', 'select', 'featured', 'download', 'cart', 'info'
-          </td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>thumbnailToolbarAlbum</td>
-          <td>object</td>
-          <td>{ topLeft: 'select', topRight : 'share,counter' }</td>
-          <td>
-            Icons on thumbnail of albums.
-            <br>Possible values : 'counter', 'counter2', 'share', 'select', 'featured', 'download', 'cart'
-          </td>
-          <td>1.0</td>
-        </tr>
-        <tr>
           <td>thumbnailDisplayInterval</td>
           <td>integer</td>
           <td>30</td>
@@ -734,6 +714,8 @@
     <p>
       For a full control of the effects, use the syntax <code>thumbnailHoverEffect2: 'effect1|effect2|...'</code>
       where <b>effectN</b> has the syntax <code> [element]_[property]_[fromValue]_[toValue]</code>
+      <br>
+      <a href="http://codepen.io/Kris-B/pen/zZBxwB" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
     </p>
     <ul>
       <li><b>[element]</b>: element to apply the transformation. Possible values: thumbnail, image, label, description, title, tools, customlayer</li>
@@ -833,7 +815,8 @@
           <td>
             Image toolbars<br>
             Syntax: <code>thumbnailToolbarImage: { topLeft:'', topRight: '', bottomLeft: '', bottomRight: ''}</code><br>
-            Possible tools: 'select', 'share', 'featured', 'download', 'cart'<br>
+            Possible tools: 'select', 'share', 'featured', 'download', 'cart', 'info'<br>
+            <br>
             Default:<br>
             <code>thumbnailToolbarImage : { topLeft: 'select', topRight : 'featured' }</code>
           </td>
@@ -846,7 +829,8 @@
           <td>
             Album toolbars<br>
             Syntax: <code>thumbnailToolbarAlbum: { topLeft:'', topRight: '', bottomLeft: '', bottomRight: ''}</code><br>
-            Possible tools: 'select', 'share', 'counter', 'counter2'<br>
+            Possible tools: 'select', 'share', 'counter', 'counter2', 'cart'<br>
+            <br>
             Default:<br>
             <code>thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'counter' }</code>
           </td>
@@ -993,9 +977,11 @@
       Example:<br>
       To use a grid layout for the first level, and a justified layout for all other levels<br>
       <code>
-      thumbnailHeight: 200, thumbnailWidth: 'auto',<br>
-      thumbnailL1Height: 300, thumbnailL1Width: 300
+        thumbnailHeight: 200, thumbnailWidth: 'auto',<br>
+        thumbnailL1Height: 300, thumbnailL1Width: 300
       </code>
+      <br><br>
+      <a href="http://codepen.io/Kris-B/pen/ryLaRy" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
     </blockquote>
     <div class="table-responsive">
       <table class="table table-striped table-hover">
