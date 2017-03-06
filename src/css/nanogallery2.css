@@ -685,10 +685,10 @@
   top: 50px;
   left: 5px;
   padding: 2px;
-  background: url(nanogallery2_logo.png) RGBA(0,0,0,0.5) no-repeat center;
+  background: url(nanogallery2_logo.png) RGBA(0,0,0,0) no-repeat center;
   display: block;
-  height: 25px;
-  width: 87px;
+  height: 74px;
+  width: 147px;
 }
 
 .nGY2 .nGY2ViewerContent {
@@ -704,9 +704,11 @@
 	padding-left:5px;
 	padding-right:5px;
 	padding-bottom:5px; */
+  /*
 	cursor: -webkit-zoom-out;
 	cursor: -moz-zoom-out;
 	cursor: zoom-out;
+  */
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
