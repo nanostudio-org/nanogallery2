@@ -668,7 +668,7 @@
     
     <div class="row">
       <div class="col-md-4 text-center">
-        <a itemprop="downloadUrl" href="https://github.com/nanostudio-org/nanogallery2/archive/v1.0.0.zip" class="btn btn-primary btn-lg btn-block" ><i class="fa fa-download" aria-hidden="true"></i> download nanogallery2</a>
+        <a itemprop="downloadUrl" href="https://github.com/nanostudio-org/nanogallery2/archive/v1.1.0.zip" class="btn btn-primary btn-lg btn-block" ><i class="fa fa-download" aria-hidden="true"></i> download nanogallery2</a>
       </div>
       <div class="col-md-4 text-center">
         <a href="https://medium.com/nanostudio-org" class="btn btn-success btn-lg btn-block disabled" target="_blank"><i class="fa fa-newspaper-o" aria-hidden="true"></i> &nbsp; check the blog for latest news</a>
@@ -679,7 +679,7 @@
     </div>
     <div class="row">
       <div class="col-md-12 text-center">
-        <p class="text-center"><br><b>latest release: nanogallery <span itemprop="softwareVersion">v1.0.0</span> - <span itemprop="datePublished" content="2017-02-18">february 27 2017</span></b></p>
+        <p class="text-center"><br><b>latest release: nanogallery <span itemprop="softwareVersion">v1.1.0</span> - <span itemprop="datePublished" content="2017-02-18">march 6 2017</span></b></p>
         <br><br>
       </div>
     </div>
@@ -1025,12 +1025,11 @@
         
         //userID: '143414466@N06',
         
-//        userID: '68188170@N06',   //--> huge albums+photos collection
-//        photoset: '72157656850365463',
+        //        userID: '68188170@N06',   //--> huge albums+photos collection
+        //        photoset: '72157656850365463',
 
         //photoset: 'NONE',
         blackList: 'forhomepage|scrapbook|profil',
-//        thumbnailDisplayTransition: 'slideDown',
         thumbnailDisplayTransition: 'scaleDown_2',
         thumbnailHeight: '200 XS150 SM150', thumbnailWidth: 'auto',
         thumbnailL1Height: '200 XS100 SM150', thumbnailL1Width: '300 XS100 SM225',
@@ -1047,10 +1046,8 @@
 
         thumbnailHoverEffect2: 'label_font-size_1em_1.5em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((84,132,12,0.8)|title_color_#000_#fff|image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
 
-        // thumbnailToolbarImage : { topLeft: 'select', topRight : 'share,featured,download' },
+       // thumbnailToolbarImage : { topLeft: 'select', topRight : 'share,featured,download' },
 
-        //thumbnailToolbarImage:null,
-        //thumbnailToolbarAlbum:null,
         thumbnailL1Label: { display: true, position:'overImageOnMiddle', hideIcons: true, titleFontSize: '1.2em', align: 'center'},
         thumbnailLabel: { display: true, position:'overImageOnBottom', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true},
         thumbnailBorderHorizontal: 0,
@@ -1062,16 +1059,29 @@
 
         colorScheme : { thumbnail: { titleShadow : 'none', descriptionShadow : 'none'} },
         
-        // hiddenAlbums: ['5851968929721015169&authkey=CJSlhdKSgoiXtgE','6137218671601042145?authkey=CIbGp_iFjfuMkgE'],
-        //albumList2: ['5851968929721015169&authkey=CJSlhdKSgoiXtgE','6137218671601042145?authkey=CIbGp_iFjfuMkgE'],
-        // album: '5851968929721015169&authkey=Gv1sRgCJSlhdKSgoiXtgE',
-        
         galleryFilterTags: true,
         galleryL1FilterTags: false,
-        // paginationSwipe: false,
+        paginationSwipe: false,
+        // fnImgToolbarCustInit: fnImgToolbarCustClick,
+        // fnImgToolbarCustDisplay: myImgToolbarCustDisplay,
+        // fnImgToolbarCustClick: myImgToolbarCustClick,
+        
         locationHash: true
       });
 
+      function fnImgToolbarCustClick(e) {
+        console.dir(e);
+      }
+      
+      function myImgToolbarCustDisplay( $cu, item ) {
+        console.dir($cu);
+      }
+      
+      function myImgToolbarCustClick(action, $elt , item) {
+        console.log(action);
+        console.dir($elt);
+      
+      }
     
       function myTnEffectHBlurInit( $thumbnail, item, counter ) {
         // add an SVG element to each thumbnail with a unique ID
@@ -1211,7 +1221,7 @@
         //  rnd=randomIntFromInterval(0,4);
         // }
         // lastRnd=rnd;
-        //rnd=1;
+        // rnd=1;
         switch ( rnd ) {
           case 0:
             jQuery("#nanogallery").nanogallery2({
@@ -1392,7 +1402,7 @@
       
       function myTnInit( $e, item, GOMidx ) {
         var st='position:absolute;top:50%;left:50%;'
-        $e.find('.nGY2GThumbnailSub').append('<div class="ngy2plusbutton" style="'+st+'"><button type="button" class="btn btn-primary btn-lg" ><i class="fa fa-refresh fa-spin" aria-hidden="true"></i> &nbsp; display</button></div>');
+        $e.find('.nGY2GThumbnailSub').append('<div class="ngy2plusbutton" style="'+st+'"><button data-ngy2action="myButton" type="button" class="btn btn-primary btn-lg" ><i class="fa fa-refresh fa-spin" aria-hidden="true"></i> &nbsp; display</button></div>');
       }
 
       
