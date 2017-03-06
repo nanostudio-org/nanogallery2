@@ -1,6 +1,17 @@
 nanogallery2 - ChangeLog
 ===========
   
+v1.1.0
+------
+// new: custom tools for thumbnails ('custom1..10' and the associated icons (icons.thumbnailCustomTool1..10))
+// new: support for custom buttons on thumbnails
+// new: callback on click on thumbnail's custom tool - fnThumbnailToolCustAction(action, G.I[idx])
+// new: events 'itemSelected.nanogallery2', 'itemUnSelected.nanogallery2'
+// new: data attribute case insensitive for items definition
+// enhanced: image display toolbars handling (custom buttons, custom elements, definition order...)
+// fixed: small bugs
+  
+  
 v1.0.0
 ------
 - new: options to set the size of images and thumbnails
@@ -16,7 +27,7 @@ v1.0.0
 - fixed: misc issues with kind 'google2'
 - fixed: zoom image in/out for self hosted content  
   
- 
+  
 v0.9.3
 ------
 - fixed: incorrect image size with Flickr storage
@@ -26,8 +37,8 @@ v0.9.3
 - fixed: error on Google Photos albums with more then 1000 photos
 - fixed: Google Photos data added after february 9, 2017 not accessible (module nanogp:https://github.com/nanostudio-org/nanogp)
 - improved: image zoom management
-
- 
+  
+  
 v0.9.2a
 ------
 - fixed: infobox not displayed in lightbox
