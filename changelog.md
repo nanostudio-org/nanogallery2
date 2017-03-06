@@ -3,13 +3,13 @@ nanogallery2 - ChangeLog
   
 v1.1.0
 ------
-// new: custom tools for thumbnails ('custom1..10' and the associated icons (icons.thumbnailCustomTool1..10))
-// new: support for custom buttons on thumbnails
-// new: callback on click on thumbnail's custom tool - fnThumbnailToolCustAction(action, G.I[idx])
-// new: events 'itemSelected.nanogallery2', 'itemUnSelected.nanogallery2'
-// new: data attribute case insensitive for items definition
-// enhanced: image display toolbars handling (custom buttons, custom elements, definition order...)
-// fixed: small bugs
+- new: custom tools for thumbnails ('custom1..10' and the associated icons (icons.thumbnailCustomTool1..10))
+- new: support for custom buttons on thumbnails
+- new: callback on click on thumbnail's custom tool - fnThumbnailToolCustAction(action, G.I[idx])
+- new: events 'itemSelected.nanogallery2', 'itemUnSelected.nanogallery2'
+- new: data attribute case insensitive for items definition
+- enhanced: image display toolbars handling (custom buttons, custom elements, definition order...)
+- fixed: small bugs
   
   
 v1.0.0
