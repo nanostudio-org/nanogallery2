@@ -252,28 +252,33 @@
             <tr>
               <td>fnImgToolbarCustInit</td>
               <td>
+                Lightbox toolbar custom element.<br>
                 To customize the toolbar (custom icons and elements) on image display.<br>
-                Called once on toolbar building to define the specified custom elements.
+                Called once when the toolbar is build to define the specified custom elements.<br>
+                The called function should return the HTML content to display.
                 <br>
-                Parameter: <code>customIconName</code>
+                Parameter: <code>customElemntName</code>
               </td>
               <td>1.0</td>
             </tr>
             <tr>
               <td>fnImgToolbarCustDisplay</td>
               <td>
-                Called on each image display. Called once for all image toolbar custom icons and elements.
+                Lightbox toolbar custom element.<br>
+                Called each time after an image has been displayed.<br>
+                Called once for all toolbar custom icons and elements.
                 <br>
-                Parameters: <code>$customToolbarIcons, item</code>
+                Parameters: <code>$customToolbarElements, item</code>
               </td>
               <td>1.0</td>
             </tr>
             <tr>
               <td>fnImgToolbarCustClick</td>
               <td>
-                Fired on click event on image toolbar custom icon or element.
+                Lightbox toolbar custom element.<br>
+                Fired on click event on image toolbar custom element.
                 <br>
-                Parameters: <code>customIconName, $customIcon, item</code>
+                Parameters: <code>customElementName, $customIcon, item</code>
               </td>
               <td>1.0</td>
             </tr>
