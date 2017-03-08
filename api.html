@@ -41,6 +41,365 @@
   <!-- ##### END HEADER-1 ##### -->
   <!-- ######################## -->
 
+  <!-- #################################################################################################################### -->
+  <!-- nanogallery2 CSS files                                                                                               -->
+	<link href="css/nanogallery2.min.css" rel="stylesheet" type="text/css">
+  <!-- #################################################################################################################### -->
+
+  <!-- #################################################################################################################### -->
+	<!-- nanogallery2 javascript                                                                                              -->
+	<script type="text/javascript" src="js/jquery.nanogallery2.min.js"></script>
+  <!--
+  <script type="text/javascript" src="js/jquery.nanogallery2.core.js"></script>
+	<script type="text/javascript" src="js/jquery.nanogallery2.data_google.js"></script>
+	<script type="text/javascript" src="js/jquery.nanogallery2.data_flickr.js"></script>
+  -->
+	<!-- 
+  <script type="text/javascript" src="js/jquery.nanogallery2.builder.js"></script>
+  -->
+  <!-- #################################################################################################################### -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js"></script>
+
+  <style>
+    body { font-size:1.3em; color:#111; }
+    p { font-size:1.3em; }
+    td { font-size:1.2em; }
+    .ngy2documentation p { font-size:1.1em; }
+    .ngy2documentation td { font-size:1.1em; }
+    .ngy2documentation blockquote { font-size:1.1em; }
+   
+    * { font-family: 'Source Sans Pro', sans-serif; }
+    h1, h2, h3, h4, h5, h6 { color : #54840C }
+    h1 {
+      border-left : 5px solid #54840C;
+      padding-left: 10px;
+    }
+    .footer {
+      margin: 0;
+    }
+    
+    .btn-primary {
+      color: #fff;
+      background-color: #3C4B5B;
+      border-color: #1C2B3B;
+    }
+
+    blockquote {
+      color: #000;
+      background-color: #B2E16A;
+      border-color: #54840C;
+    }
+    
+    /***** TOP NAVIGATION BAR *****/
+    .navbar * { font-weight: bold; }
+    .navbar-inverse .navbar-nav>li>a { 
+      color: #fff;
+      padding-bottom: 5px;
+    }
+    .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
+      color: #B2E16A;
+      border-bottom: 2px solid #B2E16A;
+    }
+    .navbar-inverse .navbar-brand {
+      color: #fff;
+      display: inline-flex;
+      display: -webkit-inline-flex;
+    }
+
+    
+    /***** NANOGALLERY2 COLORS *****/
+    .ngy2color1 {
+      color: #54840C;
+    }
+    .ngy2color2 {
+      color: #73A623;
+    }
+    .ngy2color3 {
+      color: #B2E16A;
+    }
+    .ngy2color4  {
+      color: #CFF19A;
+    }
+
+    .ngy2dark {
+      background: #1C2B3B;
+      /* #2C3B4B */
+      margin: 0;
+    }
+    
+    .ngy2_background_cell {
+      background: #eee;
+    }
+
+    .svg-diag{
+      display: block;
+      width: 100%;
+      height: 90px;
+      index:-1;
+    }    
+    
+    .ngy2version {
+      color: #ddd;
+      font-size:0.6em; 
+      padding: 0px;
+    }
+
+    .circle-singleline {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      font-size: 1.5em;
+      line-height: 60px;
+      text-align: center;
+      background: #73A623;
+      color: white;
+      display: inline-block;
+  }    
+    
+    
+    /***** RESPONSIVE SVG LOGO *****/
+    .svg-container {
+      display: inline-block;
+      position: relative;
+      width: 100%;
+      max-width: 350px;
+      /*padding-bottom: 100%;*/
+      vertical-align: middle;
+      overflow: hidden;
+    }
+    svg-content {
+      display: inline-block;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    
+    /***** TOP CUSTOM JUMBOTRON *****/
+    .jumbotronNGY2 {
+      padding-top:0px;
+    }
+    
+    /***** CUSTOM JUMBOTRON *****/
+    .jumbotron {
+      margin-bottom: 0;
+    }
+    
+    
+    /***** VERTICAL NAVIGATION BAR (documentation) *****/
+    #ngy2_vert_nav_style .nav > li > a {
+        position: relative;
+        display: block;
+        padding: 2px 5px;
+    }    
+    #ngy2_vert_nav_style .nav .active {
+      font-weight: bold;
+          border-left: 4px solid #B2E16A;
+    }
+
+    #ngy2_vert_nav_style .nav .nav {
+      display: none;
+    }
+
+    #ngy2_vert_nav_style .nav .active .nav {
+      display: block;
+    }
+
+    #ngy2_vert_nav_style .nav .nav a {
+      font-weight: normal;
+      font-size: .85em;
+    }
+
+    #ngy2_vert_nav_style .nav .nav span {
+      margin: 0 5px 0 2px;
+    }
+
+    #ngy2_vert_nav_style.nav .nav .active a,
+    #ngy2_vert_nav_style .nav .nav .active:hover a,
+    #ngy2_vert_nav_style .nav .nav .active:focus a {
+      font-weight: bold;
+      padding-left: 30px;
+      border-left: 5px solid black;
+    }
+
+    #ngy2_vert_nav_style .nav .nav .active span,
+    #ngy2_vert_nav_style .nav .nav .active:hover span,
+    #ngy2_vert_nav_style .nav .nav .active:focus span {
+      display: none;
+    }
+
+    .affix {
+      top: 60px;
+      width: 213px;
+    }
+
+    @media (min-width: 1200px) {
+      .affix {
+        width: 263px;
+      }         
+    }    
+    
+
+    /* makes columns same height on one row */
+    .row.match-my-cols {
+      overflow: hidden; 
+    }
+
+    .row.match-my-cols [class*="col-"]{
+      margin-bottom: -99999px;
+      padding-bottom: 99999px;
+    }
+    
+    /* OWN CAROUSEL - NAVIGATION ONE ROW */
+    .owl-carousel .owl-nav .owl-next,
+    .owl-carousel .owl-nav .owl-prev
+    {
+      display: inline-block;
+    }
+
+    
+    /*****************/
+    /* BUILDER PANEL */
+    /*****************/
+    #ngy2tools .ngy2_vert_toolbar {
+      font-size: 0.8em;
+      color: #eee;
+      background-color: #222;
+    }
+    #ngy2tools .panel-default {
+      border-color: #555;
+    }
+
+    #ngy2tools .form-control{
+      height: 20px;
+      padding: 0px 5px;
+      border-radius: 0px;
+    }
+    #ngy2tools .ngy2_vert_toolbar {
+      font-size: 0.8em;
+      color: #eee;
+      background-color: #222;
+    }
+    #ngy2tools .panel-default {
+      border-color: #444;
+    }
+
+    #ngy2tools .form-control{
+      height: 20px;
+      padding: 0px 5px;
+      border-radius: 0px;
+      color: #eee;
+      background-color: #000;
+      border: 0px solid #111;
+    }
+    #ngy2tools .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+      background-color: #333;
+      color: #888;
+    }
+
+    #ngy2tools .panel-heading,
+    #ngy2tools .ngy2toolbar {
+      background-color: #222;
+      color: #eee;
+    }
+
+    #ngy2tools .panel-body {
+      background-color: #333;
+    }
+    #ngy2tools .panel {
+      border-radius:0px;
+      background-color:#222;
+    }
+    #ngy2tools .form-horizontal .control-label {
+      padding-top:0px;
+    }
+    
+    
+    
+    /* color picker */
+    #ngy2tools  .colorpicker-component .input-group-addon {
+      padding : 0px;
+      border-radius: 0px;
+      border: 1px solid #aaa;
+    }
+
+    /* switch */
+    .bootstrap-switch {
+      border: none;
+    }
+    .bootstrap-switch .bootstrap-switch-label{
+      background-color: #000;
+    }
+    .bootstrap-switch.bootstrap-switch-focused {
+      border-color: #000;
+      box-shadow: none;
+    }
+
+    
+    
+    </style>
+
+  <!-- Asynchronous Google Analytics snippet -->
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-39069349-8', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+
+  
+</head>
+
+
+<body data-spy="scroll" data-target=".scrollspy" style="position: relative;">
+
+  <!-- ############## -->
+  <!-- ### NAVBAR ### -->
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand form-horizontal" href="http://nanogallery2.nanostudio.org/" rel="home" title="nanogallery2">
+          <img src="img/nanogallery2s.png" alt="nanogallery2" style="height:30px;"> &nbsp; <span class="ngy2version">v1.1.0</span>
+        </a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav navbar-right text-uppercase">
+          <li><a href="index.html">Intro</a></li>
+          <li><a href="quickstart.html">Quick Start</a></li>
+          <li><a href="demonstration.html">Examples</a></li>
+          <li><a href="builder.html">Builder</a></li>
+          <li><a href="documentation.html">Guide</a></li>
+          <li><a href="datasource.html">Data source</a></li>
+          <li><a href="api.html">API</a></li>
+          <!-- <li><a href="modules.html">Modules</a></li> -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+  <script>
+    $(document).ready(function () {
+      var p=location.pathname.substring(location.pathname.lastIndexOf("/") + 1);
+      $('.navbar a[href="'+p+'"]').parent().addClass('active');
+    });
+  </script>
+  <!-- ### NAVBAR ### -->
+  <!-- ############## -->
+
+  <!-- ######################## -->
+  <!-- ##### END HEADER-2 ##### -->
+  <!-- ######################## -->
+
   <!-- ### LOGO ### -->
   <div class="jumbotron ngy2dark">
     <div class="container ">
