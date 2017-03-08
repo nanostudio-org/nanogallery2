@@ -18,7 +18,9 @@ module.exports = function(grunt) {
         index: {
           src: [
             'template/header-1.html',
+            'src/index_meta.html',
             'template/header-2.html',
+            'template/header-3.html',
             'template/logo_index.html',
             'src/index.html',
             'template/footer.html'
@@ -28,7 +30,9 @@ module.exports = function(grunt) {
         api: {
           src: [
             'template/header-1.html',
+            'src/api_meta.html',
             'template/header-2.html',
+            'template/header-3.html',
             'template/logo.html',
             'src/api.html',
             'template/footer.html'
@@ -38,8 +42,10 @@ module.exports = function(grunt) {
         builder: {
           src: [
             'template/header-1.html',
-            'template/header-builder.html',
+            'src/builder_meta.html',
             'template/header-2.html',
+            'template/header-builder.html',
+            'template/header-3.html',
             'template/logo.html',
             'src/builder.html',
             'template/footer.html'
@@ -49,7 +55,9 @@ module.exports = function(grunt) {
         datasource: {
           src: [
             'template/header-1.html',
+            'src/datasource_meta.html',
             'template/header-2.html',
+            'template/header-3.html',
             'template/logo.html',
             'src/datasource.html',
             'template/footer.html'
@@ -59,7 +67,9 @@ module.exports = function(grunt) {
         documentation: {
           src: [
             'template/header-1.html',
+            'src/documentation_meta.html',
             'template/header-2.html',
+            'template/header-3.html',
             'template/logo.html',
             'src/documentation.html',
             'template/footer.html'
@@ -69,7 +79,9 @@ module.exports = function(grunt) {
         quickstart: {
           src: [
             'template/header-1.html',
+            'src/quickstart_meta.html',
             'template/header-2.html',
+            'template/header-3.html',
             'template/logo.html',
             'src/quickstart.html',
             'template/footer.html'
@@ -79,7 +91,9 @@ module.exports = function(grunt) {
         demonstration: {
           src: [
             'template/header-1.html',
+            'src/demonstration_meta.html',
             'template/header-2.html',
+            'template/header-3.html',
             'template/logo.html',
             'src/demonstration.html',
             'template/footer.html'
