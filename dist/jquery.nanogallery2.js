@@ -19,6 +19,42 @@
  *  - ICO online converter: https://iconverticons.com/online/
  */
 
+// v1.2.0beta
+// new: thumbnails hover effects can now be chained and syntax has been enhanced with new options
+// new: options 'thumbnailStacks' and 'thumbnailL1Stacks' to add N stacks behind the thumbnails
+// new: options 'thumbnailStacksTranslateX', 'thumbnailStacksTranslateY', 'thumbnailStacksTranslateZ', 'thumbnailStacksRotateX', 'thumbnailStacksRotateY', 'thumbnailStacksRotateZ', 'thumbnailStacksScale'
+// new: color scheme option 'stackBackground'
+// new: options 'thumbnailL1GutterWidth' and 'thumbnailL1GutterHeight'
+// new: #23 define a specific image for download (options 'downloadURL' or 'ngdownloadurl')
+// new: #21 option 'thumbnailDisplayOutsideScreen' to let the thumbnails always displayed even if not visible on screen (may impact performances)
+// fixed: parameter 'galleryMaxItems' not working with data source 'google2'
+// changed: 'viewerDisplayLogo' default value set to false
+// changed: access to Picasa content now included in module google2
+// new: parameter 'itemsBaseURL' ignored when source of an image is an full URL
+// fixed: #28 - Setting navigationBreadcrumb borderRadius does not have impact
+// new: #20 option 'data-ngcustomdata' (additionaly to 'ngcustomdata')
+// new: hammer.js v2.0.8
+
+// TODO: demo avec bandeau 'favori'
+// TODO: google - message d'erreur compr�hensible quand album/user n'existe pas
+// TODO: thumbnail image source optional, default is image source
+// TODO: support video (thumbail + lightbox) 
+//    -> Youtube: href="https://www.youtube.com/watch?v=_sI_Ps7JSEk"
+//        thumbnail image: http://img.youtube.com/vi/_sI_Ps7JSEk/0.jpg - /hqdefault.jpg
+//        https://ctrlq.org/code/19452-embed-youtube-with-javascript
+//    -> vimeo: href="https://vimeo.com/191947042"
+// TODO: image zoom : animate in/out
+// TODO: data-srcset
+// TODO: demarrer gallerie sans images
+// TODO: ajout d'�l�ments sans r�afficher les thumbnails d�j� affich�s
+// TODO: zoom with mouse on firefox
+// TODO: play slideshow on IOS/Android
+// TODO: destroy bloque hammer (?) sur le viewer
+// TODO: thumbnail image crop when size undefined and not in cache
+// TODO: #22 specify number of images to preload
+// TODO: custom share button
+// TODO: translation module
+
  
 // ###########################################
 // ##### nanogallery2 as a JQUERY PLUGIN #####
@@ -222,52 +258,54 @@
             this.GetID = function () { return ID; };
             
             // public
-            this.kind = '';                 // 'image', 'album' or 'albumUp'
-            this.G = null;                  // pointer to global instance
-            this.title = '';                // image title
-            this.description = '';          // image description
-            this.albumID = 0;               // ID of the parent album
-            this.src = '';                  // full sized image URL
-            this.width = 0;                 // image width
-            this.height = 0;                // image height
-            this.destinationURL = '';       // thumbnail destination URL --> open URL instead of displaying image
-            this.author = '';               // image/album author
-            this.left=0;                    // store position to animate from old to new
-            this.top=0;
-            this.width=0;                   // store size to avoid setting width/height if not required
-            this.height=0;
-            this.resizedContentWidth=0;     // store size of content (image) to avoid setting width/height if not required
-            this.resizedContentHeight=0;
-            this.thumbs = {                 // URLs and sizes for user defined
-              url: { l1 : { xs:'', sm:'', me:'', la:'', xl:'' }, lN : { xs:'', sm:'', me:'', la:'', xl:'' } },
-              width: { l1 : { xs:0, sm:0, me:0, la:0, xl:0 }, lN : { xs:0, sm:0, me:0, la:0, xl:0 } },
-              height: { l1 : { xs:0, sm:0, me:0, la:0, xl:0 }, lN : { xs:0, sm:0, me:0, la:0, xl:0 } }
+            this.kind =                 '';       // 'image', 'album' or 'albumUp'
+            this.G =                    null;     // pointer to global instance
+            this.title =                '';       // image title
+            this.description =          '';       // image description
+            this.albumID =              0;        // ID of the parent album
+            this.src =                  '';       // full sized image URL
+            this.width =                0;        // image width
+            this.height =               0;        // image height
+            this.destinationURL =       '';       // thumbnail destination URL --> open URL instead of displaying image
+            this.downloadURL =          '';       // thumbnail download URL --> specify the image for download button
+            this.author =               '';       // image/album author
+            this.left=                  0;        // store position to animate from old to new
+            this.top=                   0;
+            this.width=                 0;        // store size to avoid setting width/height if not required
+            this.height=                0;
+            this.resizedContentWidth=   0;        // store size of content (image) to avoid setting width/height if not required
+            this.resizedContentHeight=  0;
+            this.thumbs = {                       // URLs and sizes for user defined
+              url:    { l1: { xs: '', sm:'', me: '', la: '', xl: '' }, lN: { xs: '', sm: '', me: '', la:'', xl: '' } },
+              width:  { l1: { xs: 0,  sm: 0, me: 0,  la: 0 , xl: 0  }, lN: { xs: 0 , sm: 0,  me: 0,  la: 0, xl: 0  } },
+              height: { l1: { xs: 0,  sm: 0, me: 0,  la: 0 , xl: 0  }, lN: { xs: 0,  sm: 0,  me: 0,  la: 0, xl: 0  } }
             }
-            this.featured = false;          // featured element
-            this.flickrThumbSizes = {};     // store URLs for all available thumbnail sizes (flickr)
-            this.picasaThumbs = null;       // store URLs and sizes
-            this.hovered = false;           // is the thumbnail currently hovered?
-            this.hoverInitDone = false;
-            this.contentIsLoaded = false;   // album: are items already loaded?
-            this.contentLength = 0;         // album: number of items (real number of items in memory)
-            this.numberItems = 0;           // album: number of items (value returned by data source)
-            this.imageNumber = 0;           // image number in the album
-            this.imageCounter = 0;          // number of images in an album
-            this.eltTransform = [];
-            this.authkey = '';              // for Google Photos private (hidden) albums
-            this.eltFilter = [];
-            this.paginationLastPage = 0;    // for albums
-            this.paginationLastWidth = 0;   // for albums
-            this.customData = {};
-            this.selected = false;
-            this.imageWidth = 0;            // image natural width
-            this.imageHeight = 0;           // image natural height
-            this.$elt = null;               // pointer to the corresponding DOM element
-            this.$Elts = [];                // cached pointers to the thumbnail content -> to avoid jQuery().find()
-            this.tags = [];                 // list of tags of the current item
-            this.albumTagList = [];         // list of all the tags of the items contained in the current album
-            this.albumTagListSel = [];      // list of currently selected tags (only for albums)
-            this.exif= {exposure:'', flash:'', focallength:'', fstop:'', iso: '', model: '', time:'', location:''};
+            this.featured =             false;    // featured element
+            this.flickrThumbSizes =     {};       // store URLs for all available thumbnail sizes (flickr)
+            this.picasaThumbs =         null;     // store URLs and sizes
+            this.hovered =              false;    // is the thumbnail currently hovered?
+            this.hoverInitDone =        false;
+            this.contentIsLoaded =      false;    // album: are items already loaded?
+            this.contentLength =        0;        // album: number of items (real number of items in memory)
+            this.numberItems =          0;        // album: number of items (value returned by data source)
+            this.imageNumber =          0;        // image number in the album
+            this.imageCounter =         0;        // number of images in an album
+            this.eltTransform =         [];       // store the CSS transformations
+            this.eltFilter =            [];       // store the CSS filters
+            this.eltEffect =            [];       // store data about hover effects animations
+            this.authkey =              '';       // for Google Photos private (hidden) albums
+            this.paginationLastPage =   0;        // for albums
+            this.paginationLastWidth =  0;        // for albums
+            this.customData =           {};
+            this.selected =             false;
+            this.imageWidth =           0;        // image natural (real) width
+            this.imageHeight =          0;        // image natural (real) height
+            this.$elt =                 null;     // pointer to the corresponding DOM element
+            this.$Elts =                [];       // cached pointers to the thumbnail content -> to avoid jQuery().find()
+            this.tags =                 [];       // list of tags of the current item
+            this.albumTagList =         [];       // list of all the tags of the items contained in the current album
+            this.albumTagListSel =      [];       // list of currently selected tags (only for albums)
+            this.exif= { exposure: '', flash: '', focallength: '', fstop: '', iso: '', model: '', time: '', location: ''};
           }
 
           // public static
@@ -631,8 +669,79 @@
             return url;
           };
           
+          
+          // In case of thumbnails with stacks - apply a percent to a value which include a unit
+          function ValueApplyPercent( str, percent ) {
+            str=String(str);
+            if( str === '0' || percent == 1 ) { return str; }
+            var n=Number(str.replace(/[a-zA-Z]/g, ''));
+            var ar= str.match(/([^\-0-9\.]+)/g);
+            var a='';
+            if( ar != null && ar.length > 0 ) {
+              a=ar.join();
+            }
+             
+            if( isNaN(n) || n == 0 ) {
+              return str;
+            }
+
+            n=n*percent;
+            return n+a;
+          } 
+          
           //--- 2D/3D css transform - apply the cached value to element
           NGY2Item.prototype.CSSTransformApply = function ( eltClass ) {
+            var obj=this.eltTransform[eltClass];
+
+            if( eltClass == '.nGY2GThumbnail' ) {
+              // thumbnail
+              var nbStacks=obj.$elt.length-1;
+              var pTranslateX=1;
+              var pTranslateY=1;
+              var pTranslateZ=1;
+              var pRotateX=1;
+              var pRotateY=1;
+              var pRotateZ=1;
+              var pScale=1;
+              for( var n=nbStacks; n>=0; n-- ) {
+                // units must be given with
+                var v = 'translateX('+ValueApplyPercent(obj.translateX,pTranslateX)+') translateY('+ValueApplyPercent(obj.translateY,pTranslateY)+') translateZ('+ValueApplyPercent(obj.translateZ,pTranslateZ)+') scale('+ValueApplyPercent(obj.scale,pScale)+')';
+                if( !(this.G.IE <= 9) && !this.G.isGingerbread ) {
+                  v += ' rotateX('+ValueApplyPercent(obj.rotateX,pRotateX)+') rotateY('+ValueApplyPercent(obj.rotateY,pRotateY)+') rotateZ('+ValueApplyPercent(obj.rotateZ,pRotateZ)+')';
+                }
+                else {
+                  v += ' rotate('+ValueApplyPercent(obj.rotateZ,pRotateZ)+')';
+                }
+                obj.$elt[n].style[this.G.CSStransformName]= v;
+                
+                if( nbStacks > 0 ) {
+                  // apply a percent to the stack elements
+                  pTranslateX-=this.G.thumbnailStacksTranslateX.Get();
+                  pTranslateY-=this.G.thumbnailStacksTranslateY.Get();
+                  pTranslateZ-=this.G.thumbnailStacksTranslateZ.Get();
+                  pRotateX-=this.G.thumbnailStacksRotateX.Get();
+                  pRotateY-=this.G.thumbnailStacksRotateY.Get();
+                  pRotateZ-=this.G.thumbnailStacksRotateZ.Get();
+                  pScale-=this.G.thumbnailStacksScale.Get();
+                }
+              }
+            }
+            else {
+              // thumbnail sub element
+              if( obj.$elt[0] != undefined ) {
+                // units must be given with
+                var v = 'translateX('+obj.translateX+') translateY('+obj.translateY+') translateZ('+obj.translateY+') scale('+obj.scale+')';
+                if( !(this.G.IE <= 9) && !this.G.isGingerbread ) {
+                  v += ' rotateX('+obj.rotateX+') rotateY('+obj.rotateY+') rotateZ('+obj.rotateZ+')';
+                }
+                else {
+                  v += ' rotate('+obj.rotateZ+')';
+                }
+                obj.$elt[0].style[this.G.CSStransformName]= v;
+              }
+            }
+          };
+          NGY2Item.prototype.CSSTransformApplyOLD = function ( eltClass ) {
             var obj=this.eltTransform[eltClass];
             // units must be given with
             var v = 'translateX('+obj.translateX+') translateY('+obj.translateY+') scale('+obj.scale+')';
@@ -642,15 +751,25 @@
             else {
               v += ' rotate('+obj.rotateZ+')';
             }
-            if( obj.$elt[0] != undefined ) {
-              obj.$elt[0].style[this.G.CSStransformName]= v;
+            if( eltClass == '.nGY2GThumbnail' ) {
+              var nbStack=obj.$elt.length-1;
+              console.dir(nbStack);
+              for( var n=nbStack; n>=0; n-- ) {
+                obj.$elt[n].style[this.G.CSStransformName]= v;
+                // console.dir(n);
+              }
+            }
+            else {
+              if( obj.$elt[0] != undefined ) {
+                obj.$elt[0].style[this.G.CSStransformName]= v;
+              }
             }
           };
 
           //--- 2D/3D css transform - set a value in cache
           NGY2Item.prototype.CSSTransformSet = function ( eltClass, transform, value ) {
             if( this.eltTransform[eltClass] == undefined ) {
-              this.eltTransform[eltClass]={ translateX:0, translateY:0, rotateX:0, rotateY:0, rotateZ:0, scale:1 };
+              this.eltTransform[eltClass]={ translateX: 0, translateY: 0, translateZ: 0, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1 };
               this.eltTransform[eltClass].$elt=this.$getElt(eltClass);
             }
             this.eltTransform[eltClass][transform]=value;
@@ -687,28 +806,47 @@
             context.hoverIn=hoverIn;
             context.cssKind='';
             if( hoverIn ) {
+              // HOVER IN
+              
+              if( this.eltEffect[effect.element] == undefined ) {
+                this.eltEffect[effect.element]=[];
+              }
+              if( this.eltEffect[effect.element][effect.type] == undefined ) {
+                this.eltEffect[effect.element][effect.type]= { initialValue: 0, lastValue: 0 };
+              }
+              if( effect.firstKeyframe ) {
+                // store initial and current value -> for use in the back animation
+                this.eltEffect[effect.element][effect.type]= { initialValue: effect.from, lastValue: effect.from};
+              }
+              
               context.animeFrom=effect.from;
               context.animeTo=effect.to;
               context.animeDuration=parseInt(effect.duration);
               context.animeDelay=30+parseInt(effect.delay+delay);  // 30ms is a default delay to avoid conflict with other initializations
               context.animeEasing=effect.easing;
-              effect.lastValue=null;
             }
             else {
-              if( effect.lastValue == null ) {
-                context.animeFrom=effect.to;
+              // HOVER OUT
+              if( effect.firstKeyframe ) {
+                context.animeFrom=this.eltEffect[effect.element][effect.type].lastValue;
+                context.animeTo=this.eltEffect[effect.element][effect.type].initialValue;
+                // context.animeTo=effect.from;
               }
               else {
-                context.animeFrom=effect.lastValue;
+                // context.animeFrom=effect.from;
+                context.animeFrom=this.eltEffect[effect.element][effect.type].lastValue;
+                context.animeTo=this.eltEffect[effect.element][effect.type].initialValue;
+                // context.animeTo=effect.to;
+                
               }
-              context.animeTo=effect.from;
+              
               context.animeDuration=parseInt(effect.durationBack);
               context.animeDelay=30+parseInt(effect.delayBack+delay);   // 30ms is a default delay to avoid conflict with other initializations
               context.animeEasing=effect.easingBack;
             }
 
             // detect if animation on CSS transform
-            var transform=['translateX', 'translateY', 'scale', 'rotateX', 'rotateY', 'rotateZ'];
+            var transform=['translateX', 'translateY', 'translateZ', 'scale', 'rotateX', 'rotateY', 'rotateZ'];
             for( var i=0; i<transform.length; i++ ) {
               if( effect.type == transform[i] ) {
                 context.cssKind='transform';
@@ -747,18 +885,24 @@
                 if( att.item.$getElt() == null ) {
                   // the thumbnail may be destroyed since the start of the animation
                   att.tweenable.stop(false);
+                  // att.tweenable.dispose();
                   return;
                 }
                 if( att.hoverIn && !att.item.hovered ) {
                   // thumbnail no more hovered
                   att.tweenable.stop(false);
+                  // att.tweenable.dispose();
                   return;
                 }
 
                 if( att.G.VOM.viewerDisplayed ) {
                   att.tweenable.stop(false);
+                  // att.tweenable.dispose();
                   return;
                 }
+                
+                // test if in delay phase
+                if( state.v == att.animeFrom ) { return; }
                 
                 switch( att.cssKind ) {
                   case 'transform':
@@ -779,13 +923,15 @@
                     break;
                 }
                 if( hoverIn ) {
-                  att.effect.lastValue=state.v;
+                  // store value for back animation
+                  att.item.eltEffect[att.effect.element][att.effect.type].lastValue= state.v;
                 }
               },
               
               finish: function (state, att) {
                 if( hoverIn ) {
-                  att.effect.lastValue=state.v;
+                  // store value for back animation
+                  att.item.eltEffect[att.effect.element][att.effect.type].lastValue= state.v;
                 }
 
                 if( att.item.$getElt() == null ) {
@@ -859,7 +1005,7 @@
   };
  
   jQuery.nanogallery2.defaultOptions = {
-    kind :                        '',    // kind of the content source
+    kind :                        '',
     userID :                      '',
     photoset :                    '',
     album:                        '',
@@ -890,21 +1036,20 @@
     debugMode: false,
 
     galleryDisplayMoreStep :      2,
-    galleryDisplayMode :          'fullContent',     // fullContent, pagination (+galleryMaxRows), moreButton (+galleryDisplayMoreStep) , rows (+galleryMaxRows)
-    galleryL1DisplayMode :        null,            // pagination, fullContent, moreButton*, rows
+    galleryDisplayMode :          'fullContent',
+    galleryL1DisplayMode :        null,
     galleryPaginationMode :       'rectangles',   // 'dots', 'rectangles', 'numbers'
     galleryMaxRows :              2,
     galleryL1MaxRows :            null,
     galleryLastRowFull:           false,
-    // galleryL1LastRowFull:      null,
     galleryLayoutEngine :         'default',
     paginationSwipe:              true,
     paginationVisiblePages :      10,
     paginationSwipeSensibilityVert : 10,
     galleryFilterTags :           false,    // possible values: false, true, 'title', 'description'
-    galleryL1FilterTags :         null,   // possible values: false, true, 'title', 'description'
-    galleryMaxItems :             0,         // maximum number of items per album  --> only flickr, google+, nanophotosprovider
-    galleryL1MaxItems :           null,    // maximum number of items per gallery page --> only flickr, google+, nanophotosprovider
+    galleryL1FilterTags :         null,     // possible values: false, true, 'title', 'description'
+    galleryMaxItems :             0,        // maximum number of items per album  --> only flickr, google+, nanophotosprovider
+    galleryL1MaxItems :           null,     // maximum number of items per gallery page --> only flickr, google+, nanophotosprovider
     gallerySorting :              '',
     galleryL1Sorting :            null,
     galleryResizeAnimation :      true,
@@ -923,6 +1068,15 @@
     thumbnailAlbumDisplayImage :  false,
     thumbnailHoverEffect2 :       'toolsAppear',
     thumbnailBuildInit2 :         '',
+    thumbnailStacks :             0,
+    thumbnailStacksTranslateX :   0,
+    thumbnailStacksTranslateY :   0,
+    thumbnailStacksTranslateZ :   0,
+    thumbnailStacksRotateX :      0,
+    thumbnailStacksRotateY :      0,
+    thumbnailStacksRotateZ :      0,
+    thumbnailStacksScale :        0,
+    thumbnailDisplayOutsideScreen: false,
     galleryBuildInit2 :           '',
     portable :                    false,
     
@@ -942,7 +1096,6 @@
       title :                     ''
     },
 
-    // thumbnailToolbarImage : { position: 'topRight', content : 'share,socialShare,download,openFlick,openPicasa,likeFacebook,geolocalisation' },
     thumbnailToolbarImage :       { topLeft: 'select', topRight : 'featured' },
     thumbnailToolbarAlbum :       { topLeft: 'select', topRight : 'counter' },
     thumbnailDisplayInterval :    15,
@@ -955,8 +1108,7 @@
     
     viewer :                      'internal',
     viewerFullscreen:             false,
-    viewerDisplayLogo :           true,
-    fancyBoxOptions :             null,
+    viewerDisplayLogo :           false,
     imageTransition :             'swipe',
     viewerZoom :                  true,
     openOnStart :                 '',
@@ -1437,7 +1589,56 @@
         return G.thumbnailCrop[G.GOM.curNavLevel];
       }
     };
-
+    G.thumbnailStacks = { l1: 0, lN: 0,
+      Get: function() {
+        return G.thumbnailStacks[G.GOM.curNavLevel];
+      }
+    };
+    G.thumbnailStacksTranslateX = { l1: 0, lN: 0,
+      Get: function() {
+        return G.thumbnailStacksTranslateX[G.GOM.curNavLevel];
+      }
+    };
+    G.thumbnailStacksTranslateY = { l1: 0, lN: 0,
+      Get: function() {
+        return G.thumbnailStacksTranslateY[G.GOM.curNavLevel];
+      }
+    };
+    G.thumbnailStacksTranslateZ = { l1: 0, lN: 0,
+      Get: function() {
+        return G.thumbnailStacksTranslateZ[G.GOM.curNavLevel];
+      }
+    };
+    G.thumbnailStacksRotateX = { l1: 0, lN: 0,
+      Get: function() {
+        return G.thumbnailStacksRotateX[G.GOM.curNavLevel];
+      }
+    };
+    G.thumbnailStacksRotateY = { l1: 0, lN: 0,
+      Get: function() {
+        return G.thumbnailStacksRotateY[G.GOM.curNavLevel];
+      }
+    };
+    G.thumbnailStacksRotateZ = { l1: 0, lN: 0,
+      Get: function() {
+        return G.thumbnailStacksRotateZ[G.GOM.curNavLevel];
+      }
+    };
+    G.thumbnailStacksScale = { l1: 0, lN: 0,
+      Get: function() {
+        return G.thumbnailStacksScale[G.GOM.curNavLevel];
+      }
+    };
+    G.thumbnailGutterWidth = { l1: 0, lN: 0,
+      Get: function() {
+        return G.thumbnailGutterWidth[G.GOM.curNavLevel];
+      }
+    };
+    G.thumbnailGutterHeight = { l1: 0, lN: 0,
+      Get: function() {
+        return G.thumbnailGutterHeight[G.GOM.curNavLevel];
+      }
+    };
     G.$currentTouchedThumbnail = null;    
     
     G.tn = {                          // GENERAL THUMBNAILS PROPERTIES -->
@@ -1697,7 +1898,7 @@
       navigationBar :         { background: 'none', borderTop: '', borderBottom: '', borderRight: '', borderLeft: '' },
       navigationBreadcrumb :  { background: '#111', color: '#fff', colorHover: '#ccc', borderRadius: '6px' },
       navigationFilter :      { color: '#ddd', background: '#111', colorSelected: '#fff', backgroundSelected: '#111', borderRadius: '6px' },
-      thumbnail :             { background: '#000', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '' },
+      thumbnail :             { background: '#000', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#aaa' },
       thumbnailIcon :         { padding: '5px', color: '#fff' },
       pagination :            { background: '#111', backgroundSelected: '#666', color: '#fff', borderRadius: '4px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
     };
@@ -1706,7 +1907,7 @@
       navigationBar :         { background: 'none', borderTop: '', borderBottom: '', borderRight: '', borderLeft: '' },
       navigationBreadcrumb :  { background: '#eee', color: '#000', colorHover: '#333', borderRadius: '6px' },
       navigationFilter :      { background: '#eee', color: '#222', colorSelected: '#000', backgroundSelected: '#eee', borderRadius: '6px' },
-      thumbnail :             { background: '#000', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '' },
+      thumbnail :             { background: '#000', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#888' },
       thumbnailIcon :         { padding: '5px', color: '#fff' },
       pagination :            { background: '#eee', backgroundSelected: '#aaa', color: '#000', borderRadius: '4px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
     };
@@ -2427,10 +2628,10 @@
         G.$E.conNavigationBar.css({ 'opacity': 0, 'display': 'block' });
         var tweenable = new NGTweenable();
         tweenable.tween({
-          from: { 'opacity': 0 },
-          to: { 'opacity': 1 },
+          from:     { 'opacity': 0 },
+          to:       { 'opacity': 1 },
           duration: 200,
-          easing: 'easeInQuart',
+          easing:   'easeInQuart',
           step: function (state, att) {
             G.$E.conNavigationBar.css({ 'opacity': state.opacity });
           },
@@ -2472,7 +2673,7 @@
       }
 
       G.$E.conTn.css( G.CSStransformName , 'translateX('+0+'px)');
-      G.$E.conTnParent.css({ left:0, opacity:1 });
+      G.$E.conTnParent.css({ left: 0, opacity: 1 });
 
       GalleryRenderPart3(albumIdx);
 
@@ -2714,7 +2915,7 @@
       colHeight=[],
       maxCol=NbThumbnailsPerRow(areaWidth),      //parseInt(areaW/G.tn.defaultFullWidth);
       gutterWidth=0,
-      gutterHeight=G.O.thumbnailGutterHeight;
+      gutterHeight=G.thumbnailGutterHeight.Get();
 
       var tnWidth=G.tn.defaultSize.getOuterWidth();
       var nbTn=G.GOM.items.length;
@@ -2724,7 +2925,7 @@
         gutterWidth=(maxCol==1?0:(areaWidth-(maxCol*tnWidth))/(maxCol-1));
       }
       else {
-        gutterWidth=G.O.thumbnailGutterWidth;
+        gutterWidth=G.thumbnailGutterWidth.Get();
       }
 
       curRow=0;
@@ -2800,8 +3001,8 @@
       rowHeight=                  [],
       bNewRow=                    false,
       cnt=                        0,
-      gutterWidth=                G.O.thumbnailGutterWidth,
-      gutterHeight=               G.O.thumbnailGutterHeight;
+      gutterWidth=                G.thumbnailGutterWidth.Get(),
+      gutterHeight=               G.thumbnailGutterHeight.Get();
       // by grief-of-these-days
       var maxRowHeightVertical=   0; // max height of a row with vertical thumbs
       var maxRowHeightHorizontal= 0; // max height of a row with horizontal thumbs
@@ -2991,7 +3192,7 @@
       var curPosX=      0,
       curPosY=          0,   
       gutterWidth=      0,
-      gutterHeight=     G.O.thumbnailGutterHeight,
+      gutterHeight=     G.thumbnailGutterHeight.Get(),
       maxCol=           NbThumbnailsPerRow(areaWidth),
       w=                0,
       cols=             [],
@@ -3007,7 +3208,7 @@
         gutterWidth=(maxCol==1?0:(areaWidth-(maxCol*tnWidth))/(maxCol-1));
       }
       else {
-        gutterWidth=G.O.thumbnailGutterWidth;
+        gutterWidth=G.thumbnailGutterWidth.Get();
       }
 
       if( G.O.RTL ) {
@@ -3229,7 +3430,14 @@
       if( curTn.neverDisplayed ) {
         // thumbnail is built but has never been displayed (=first display)
         var top=curTn.top-G.GOM.clipArea.top;
-        item.$elt.css({ display: 'block', top: top , left: curTn.left });
+        if( G.thumbnailStacks.Get() > 0 ) {
+          // we have stacks -> do not display them here. They will be displayed at the end of the display animation
+          item.$elt.last().css({ display: 'block'});
+          item.$elt.css({ top: top , left: curTn.left });
+        }
+        else {
+          item.$elt.css({ display: 'block', top: top , left: curTn.left });
+        }
         newTop=top;
         ThumbnailAppear(GOMidx, cnt);
 
@@ -3241,8 +3449,8 @@
         var top=G.GOM.cache.containerOffset.top+(curTn.top-G.GOM.clipArea.top);
         newTop=curTn.top-G.GOM.clipArea.top;
         var vp=G.GOM.cache.viewport;
-        if( ( (topOld+curTn.height) >= (vp.t-vp.h) && topOld <= (vp.t+vp.h*2) ) ||
-              ( (top+curTn.height) >= (vp.t-vp.h) && top <= (vp.t+vp.h*2) )  ) {
+        if( G.O.thumbnailDisplayOutsideScreen || ( ( (topOld+curTn.height) >= (vp.t-vp.h) && topOld <= (vp.t+vp.h*2) ) ||
+              ( (top+curTn.height) >= (vp.t-vp.h) && top <= (vp.t+vp.h*2) ) )  ) {
           // thumbnail positioned in enlarged viewport (viewport + 2 x viewport height)
           if( curTn.displayed ) {
             // thumbnail is displayed
@@ -3252,13 +3460,13 @@
                 // with transition
                 var tweenable = new NGTweenable();
                 tweenable.tween({
-                  from:     { top: item.top, left: item.left, height: item.height, width: item.width },
-                  to:       { top: newTop, left: curTn.left, height: curTn.height, width: curTn.width },
+                  from:       { top: item.top, left: item.left, height: item.height, width: item.width },
+                  to:         { top: newTop, left: curTn.left, height: curTn.height, width: curTn.width },
                   attachment: { $e: item.$elt },
-                  duration: 300,
-                  delay: cnt*G.tn.displayInterval,
-                  easing: 'easeOutQuart',
-                  step: function (state, att) {
+                  duration:   300,
+                  delay:      cnt*G.tn.displayInterval,
+                  easing:     'easeOutQuart',
+                  step:   function (state, att) {
                     att.$e.css(state);
                   },
                   finish: function (state, att) {
@@ -3278,11 +3486,12 @@
             // re-display thumbnail
             curTn.displayed=true;
             // item.$elt.css({ display: 'block', top: curTn.top , left: curTn.left, opacity:1 });
-            item.$elt.css({ display: 'block', top: newTop , left: curTn.left, opacity:1 });
+            item.$elt.css({ display: 'block', top: newTop, left: curTn.left, opacity: 1 });
+            ThumbnailAppearFinish(item);
           }
         }
         else {
-          // undisplay thumbnail --> performance gain
+          // undisplay thumbnail if not in viewport+margin --> performance gain
           curTn.displayed=false;
           item.$elt.css({ display: 'none'});
         }
@@ -3365,12 +3574,25 @@
       return h;
     }
     
+    function ThumbnailBuildStacks () {
+      var ns=G.thumbnailStacks.Get();
+      if( ns == 0 ) {
+        return '';
+      }
+     
+      var s='';
+      for( var i=0; i<ns; i++ ) {
+        s='<div class="nGY2GThumbnailStack " style="display:none;"></div>'+s;
+      }
+      return s;
+    }
+    
     //----- Build one UP thumbnail (=navigation thumbnail)
     function ThumbnailBuildAlbumpUp( item, idx, GOMidx ) {
       var newElt= [],
       newEltIdx=  0;
       
-      newElt[newEltIdx++]='<div class="nGY2GThumbnail" style="display:none;opacity:0;" >';
+      newElt[newEltIdx++]=ThumbnailBuildStacks()+'<div class="nGY2GThumbnail" style="display:none;opacity:0;" >';
       newElt[newEltIdx++]='  <div class="nGY2GThumbnailSub">';
 
       var h=G.tn.defaultSize.getHeight(),
@@ -3406,7 +3628,7 @@
       var newElt=[],
       newEltIdx=0;
 
-      newElt[newEltIdx++]='<div class="nGY2GThumbnail" style="display:none;opacity:0;" ><div class="nGY2GThumbnailSub '+(G.O.thumbnailSelectable && item.selected?"nGY2GThumbnailSubSelected":"")+'">';
+      newElt[newEltIdx++]=ThumbnailBuildStacks()+'<div class="nGY2GThumbnail" style="display:none;opacity:0;"><div class="nGY2GThumbnailSub '+(G.O.thumbnailSelectable && item.selected?"nGY2GThumbnailSubSelected":"")+'">';
       
       var src=item.thumbImg().src,
       sTitle=getThumbnailTitle(item),
@@ -3713,7 +3935,7 @@
         nbMaxTn=Math.floor((areaWidth)/(tnW));
       }
       else {
-        nbMaxTn=Math.floor((areaWidth+G.O.thumbnailGutterWidth)/(tnW+G.O.thumbnailGutterWidth));
+        nbMaxTn=Math.floor((areaWidth+G.thumbnailGutterWidth.Get())/(tnW+G.thumbnailGutterWidth.Get()));
       }
       
       if(  G.O.maxItemsPerLine >0 && nbMaxTn >  G.O.maxItemsPerLine ) {
@@ -3731,11 +3953,10 @@
 
     
       if( G.tn.displayTransition == 'NONE' ) {
-        item.$elt.css({opacity:1});
+        item.$elt.css({ opacity: 1 });
+        ThumbnailAppearFinish(item);
       }
       else {
-        // setTimeout(function() {
-          // window.requestAnimationFrame( function() {
         if( item.$elt == null ) { return; }
         var top=G.GOM.cache.containerOffset.top+(curTn.top-G.GOM.clipArea.top);
         var vp=G.GOM.cache.viewport;
@@ -3766,14 +3987,29 @@
               ThumbnailAppearFadeIn(item, delay);
               break;
           }
-        } else {
-          item.$elt.css({opacity:1});
         }
-          // });
-        // }, cnt*G.tn.displayInterval);
+        else {
+          item.$elt.css({ opacity: 1 });
+          ThumbnailAppearFinish(item);
+        }
       }
     }
     
+    // display thumbnail stacks at the end of the display animation
+    function ThumbnailAppearFinish( item ) {
+      var ns=G.thumbnailStacks.Get();
+      if( ns > 0 ) {
+        // display stacks
+        item.$elt.css({ display: 'block'});
+        var o=0.9;
+        // set stack opacity
+        for( var i=ns-1; i>=0; i-- ) {
+          item.$elt.eq(i).css('opacity', o);
+          o=o-0.2;
+        }
+
+      }
+    }
     
     function ThumbnailAppearRandomScale( item, delay ) {
       var scales=[0.95, 1, 1.05, 1.1];
@@ -3793,18 +4029,19 @@
       
       var tweenable = new NGTweenable();
       tweenable.tween({
-        from:     { scale: 0.5, opacity:0  },
-        to:       { scale: f, opacity:1 },
-        attachment: { $e:item.$elt },
-        delay: delay,
-        duration: G.O.thumbnailDisplayTransitionDuration,
-        easing: { opacity: 'easeOutQuint', scale: e},
+        from:         { scale: 0.5, opacity:0  },
+        to:           { scale: f, opacity:1 },
+        attachment:   { $e:item.$elt, item: item },
+        delay:        delay,
+        duration:     G.O.thumbnailDisplayTransitionDuration,
+        easing:       { opacity: 'easeOutQuint', scale: e},
         step: function (state, att) {
           att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity',state.opacity);
         },
         finish: function (state, att) {
           att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity','');
           //att.$e.css( G.CSStransformName , '').css('opacity', '');
+          ThumbnailAppearFinish(att.item);
         }
       });
     }
@@ -3820,17 +4057,18 @@
 
       var tweenable = new NGTweenable();
       tweenable.tween({
-        from:     { scale: f, opacity:0  },
-        to:       { scale: 1, opacity:1 },
-        attachment: { $e:item.$elt },
-        delay: delay,
-        duration: G.O.thumbnailDisplayTransitionDuration,
-        easing: { opacity: 'easeOutQuint', scale: e},
+        from:         { scale: f, opacity:0  },
+        to:           { scale: 1, opacity:1 },
+        attachment:   { $e:item.$elt, item: item },
+        delay:        delay,
+        duration:     G.O.thumbnailDisplayTransitionDuration,
+        easing:       { opacity: 'easeOutQuint', scale: e},
         step: function (state, att) {
           att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity',state.opacity);
         },
         finish: function (state, att) {
           att.$e.css( G.CSStransformName , '').css('opacity', '');
+          ThumbnailAppearFinish(att.item);
         }
       });
     }
@@ -3849,14 +4087,15 @@
         duration:     G.O.thumbnailDisplayTransitionDuration,
         easing:       { opacity: 'easeOutQuint', scale: e},
         step: function (state, att) {
-          att.item.$elt.css('opacity', state.opacity);
+          att.item.$elt.last().css('opacity', state.opacity);
           att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
           att.item.CSSTransformApply('.nGY2GThumbnail');
         },
         finish: function (state, att) {
-          att.item.$elt.css('opacity', '');
+          att.item.$elt.last().css('opacity', '');
           att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
           att.item.CSSTransformApply('.nGY2GThumbnail');
+          ThumbnailAppearFinish(att.item);
         }
       });
     }
@@ -3881,6 +4120,7 @@
           att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
           att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
           att.item.CSSTransformApply('.nGY2GThumbnail');
+          ThumbnailAppearFinish(att.item);
         }
       });
     }
@@ -3905,6 +4145,7 @@
           att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
           att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
           att.item.CSSTransformApply('.nGY2GThumbnail');
+          ThumbnailAppearFinish(att.item);
         }
       });
     }
@@ -3914,7 +4155,7 @@
       tweenable.tween({
         from:         { 'opacity': 0 },
         to:           { 'opacity': 1 },
-        attachment:   { $e:item.$elt },
+        attachment:   { $e:item.$elt, item: item },
         delay:        delay,
         duration:     G.O.thumbnailDisplayTransitionDuration,
         easing:       'easeInOutSine',
@@ -3924,6 +4165,7 @@
         finish: function (state, att) {
           att.$e.css('opacity', '');
           // att.$e.css({'opacity':1 });
+          ThumbnailAppearFinish(att.item);
         }
       });
     }
@@ -3960,6 +4202,7 @@
           case 'rotateZ':
           case 'translateX':
           case 'translateY':
+          case 'translateZ':
             item.CSSTransformSet(inits[j].element, inits[j].property, inits[j].value);
             item.CSSTransformApply(inits[j].element);
             break;
@@ -3983,32 +4226,34 @@
       // hover
       var effects=G.tn.hoverEffects.get();
       for( var j=0; j<effects.length; j++) {
-        effects[j].lastValue=null;
-        switch( effects[j].type ) {
-          case 'scale':
-          case 'rotateX':
-          case 'rotateY':
-          case 'rotateZ':
-          case 'translateX':
-          case 'translateY':
-            item.CSSTransformSet(effects[j].element, effects[j].type, effects[j].from);
-            item.CSSTransformApply(effects[j].element);
-            break;
-          case 'blur':
-          case 'brightness':
-          case 'grayscale':
-          case 'sepia':
-          case 'contrast':
-          case 'opacity':
-          case 'saturate':
-            item.CSSFilterSet(effects[j].element, effects[j].type, effects[j].from);
-            item.CSSFilterApply(effects[j].element);
-            break;
-          default:
-            var $t=item.$getElt(effects[j].element);
-            $t.css( effects[j].type, effects[j].from );
-            break;
-            
+        if( effects[j].firstKeyframe === true ) {
+          switch( effects[j].type ) {
+            case 'scale':
+            case 'rotateX':
+            case 'rotateY':
+            case 'rotateZ':
+            case 'translateX':
+            case 'translateY':
+            case 'translateZ':
+              item.CSSTransformSet(effects[j].element, effects[j].type, effects[j].from);
+              item.CSSTransformApply(effects[j].element);
+              break;
+            case 'blur':
+            case 'brightness':
+            case 'grayscale':
+            case 'sepia':
+            case 'contrast':
+            case 'opacity':
+            case 'saturate':
+              item.CSSFilterSet(effects[j].element, effects[j].type, effects[j].from);
+              item.CSSFilterApply(effects[j].element);
+              break;
+            default:
+              var $t=item.$getElt(effects[j].element);
+              $t.css( effects[j].type, effects[j].from );
+              break;
+              
+          }
         }
       }
       item.hoverInitDone=true;
@@ -4041,7 +4286,9 @@
 
       try {
         for( var j=0; j<effects.length; j++) {
-          item.animate( effects[j], j*10,  true );
+          if( effects[j].hoverin === true ) {
+            item.animate( effects[j], j*10,  true );
+          }
         }
         // effects on whole layout
         // GalleryResize( GOMidx );
@@ -4084,7 +4331,9 @@
       var effects=G.tn.hoverEffects.get();
       try {
         for( var j=0; j<effects.length; j++) {
-          item.animate( effects[j], j*10, false );
+          if( effects[j].hoverout === true ) {
+            item.animate( effects[j], j*10, false );
+          }
         }
         // effects on whole layout
         // GalleryResize( );
@@ -4217,6 +4466,18 @@ console.log('#DisplayPhoto : '+  imageIdx);
       }
     }
     
+    function StartsWithProtocol ( path ) {
+      path=path.toLowerCase();
+      switch( path ) {
+        case 'http://':
+        case 'https://':
+        case 'file://':
+          return true;
+          break;
+      }
+      return false;
+    }
+    
     function GetContentApiObject() {
       var foundAlbumID=false;
       
@@ -4228,25 +4489,31 @@ console.log('#DisplayPhoto : '+  imageIdx);
         title=GetI18nItem(item,'title');
         if( title === undefined ) { title=''; }
         
-        var src=G.O.itemsBaseURL;
+        var src='';
         if( item['src'+RetrieveCurWidth().toUpperCase()] !== undefined ) {
           src+=item['src'+RetrieveCurWidth().toUpperCase()];
         }
         else {
           src+=item.src;
         }
+        if( !StartsWithProtocol(src) ) {
+          src=G.O.itemsBaseURL + src;
+        }
 
         var thumbsrc='';
         if( item.srct !== undefined && item.srct.length>0 ) {
-          thumbsrc=G.O.itemsBaseURL+item.srct;
+          thumbsrc=item.srct;
         }
         else {
           thumbsrc=src;
         }
+        if( !StartsWithProtocol(thumbsrc) ) {
+          thumbsrc=G.O.itemsBaseURL + thumbsrc;
+        }
         
         var thumbsrcX2='';
         if( item.srct2x !== undefined && item.srct2x.length>0 ) {
-          thumbsrcX2=G.O.itemsBaseURL+item.srct2x;
+          thumbsrcX2=item.srct2x;
         }
         else {
           if( thumbsrc != '' ) {
@@ -4255,6 +4522,9 @@ console.log('#DisplayPhoto : '+  imageIdx);
           else {
             thumbsrcX2=src;
           }
+        }
+        if( !StartsWithProtocol(thumbsrcX2) ) {
+          thumbsrcX2=G.O.itemsBaseURL + thumbsrcX2;
         }
 
         if( G.O.thumbnailLabel.get('title') != '' ) {
@@ -4293,6 +4563,11 @@ console.log('#DisplayPhoto : '+  imageIdx);
         // dest url
         if( item.destURL !== undefined && item.destURL.length>0 ) {
           newItem.destinationURL=item.destURL;
+        }
+        
+        // download image url
+        if( item.downloadURL !== undefined && item.downloadURL.length>0 ) {
+          newItem.downloadURL=item.downloadURL;
         }
         
         // thumbnail image size
@@ -4389,21 +4664,30 @@ console.log('#DisplayPhoto : '+  imageIdx);
 
         var thumbsrc='';
         if( data.hasOwnProperty('data-ngthumb') ) {
-          thumbsrc=G.O.itemsBaseURL+data['data-ngthumb'];
+          thumbsrc=data['data-ngthumb'];
+          if( !StartsWithProtocol(thumbsrc) ) {
+            thumbsrc=G.O.itemsBaseURL + thumbsrc;
+          }
         }
         var thumbsrcX2='';
         if( data.hasOwnProperty('data-ngthumb2x') ) {
-          thumbsrcX2=G.O.itemsBaseURL+data['data-ngthumb2x'];
+          thumbsrcX2=data['data-ngthumb2x'];
+          if( !StartsWithProtocol(thumbsrcX2) ) {
+            thumbsrcX2=G.O.itemsBaseURL + thumbsrcX2;
+          }
         }
 
         // responsive image source
         var src='',
         st=RetrieveCurWidth().toUpperCase();
         if( data.hasOwnProperty('data-ngsrc'+st) ) {
-          src=G.O.itemsBaseURL+data['data-ngsrc'+st];
+          src=data['data-ngsrc'+st];
         }
         if( src == '' ) {
-          src=G.O.itemsBaseURL+data['href'];
+          src=data['href'];
+        }
+        if( !StartsWithProtocol(src) ) {
+          src=G.O.itemsBaseURL + src;
         }
         
         //newObj.description=jQuery(item).attr('data-ngdesc');
@@ -4433,6 +4717,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
         newItem.src=src;
         
         newItem.destinationURL=data['data-ngdest'];
+        newItem.downloadURL=data['data-ngdownloadurl'];
 
         // thumbnail image size
         var tw=parseInt(data['data-ngthumbimgwidth']);
@@ -4469,6 +4754,10 @@ console.log('#DisplayPhoto : '+  imageIdx);
         // custom data
         if( jQuery(item).data('customdata') !== undefined ) {
           newItem.customData=cloneJSObject(jQuery(item).data('customdata'));
+        }
+        // custom data
+        if( jQuery(item).data('ngcustomdata') !== undefined ) {
+          newItem.customData=cloneJSObject(jQuery(item).data('ngcustomdata'));
         }
 
         if( typeof G.O.fnProcessData == 'function' ) {
@@ -4512,6 +4801,9 @@ console.log('#DisplayPhoto : '+  imageIdx);
 
       // change 'picasa' to 'google' for compatibility reason
       if( G.O.kind.toUpperCase() == 'PICASA' ) {
+        G.O.kind='google2';
+      }
+      if( G.O.kind.toUpperCase() == 'GOOGLE' ) {
         G.O.kind='google2';
       }
     
@@ -4588,6 +4880,90 @@ console.log('#DisplayPhoto : '+  imageIdx);
         G.thumbnailCrop.l1=G.O.thumbnailL1Crop;
       }
 
+      // thumbnail stacks
+      if( toType(G.O.thumbnailStacks) == 'number' && G.O.thumbnailStacks > 0 ) {
+        G.thumbnailStacks.lN=G.O.thumbnailStacks;
+        G.thumbnailStacks.l1=G.O.thumbnailStacks;
+      }
+      if( toType(G.O.thumbnailL1Stacks) == 'number' && G.O.thumbnailL1Stacks > 0 ) {
+        G.thumbnailStacks.l1=G.O.thumbnailL1Stacks;
+      }
+      // thumbnail stacks translate X
+      if( toType(G.O.thumbnailStacksTranslateX) == 'number' ) {
+        G.thumbnailStacksTranslateX.lN=G.O.thumbnailStacksTranslateX;
+        G.thumbnailStacksTranslateX.l1=G.O.thumbnailStacksTranslateX;
+      }
+      if( toType(G.O.thumbnailL1StacksTranslateX) == 'number' ) {
+        G.thumbnailStacksTranslateX.l1=G.O.thumbnailL1StacksTranslateX;
+      }
+      // thumbnail stacks translate Y
+      if( toType(G.O.thumbnailStacksTranslateY) == 'number' ) {
+        G.thumbnailStacksTranslateY.lN=G.O.thumbnailStacksTranslateY;
+        G.thumbnailStacksTranslateY.l1=G.O.thumbnailStacksTranslateY;
+      }
+      if( toType(G.O.thumbnailL1StacksTranslateY) == 'number'  ) {
+        G.thumbnailStacksTranslateY.l1=G.O.thumbnailL1StacksTranslateY;
+      }
+      // thumbnail stacks translate Z
+      if( toType(G.O.thumbnailStacksTranslateZ) == 'number' ) {
+        G.thumbnailStacksTranslateZ.lN=G.O.thumbnailStacksTranslateZ;
+        G.thumbnailStacksTranslateZ.l1=G.O.thumbnailStacksTranslateZ;
+      }
+      if( toType(G.O.thumbnailL1StacksTranslateZ) == 'number'  ) {
+        G.thumbnailStacksTranslateZ.l1=G.O.thumbnailL1StacksTranslateZ;
+      }
+      // thumbnail stacks rotate X
+      if( toType(G.O.thumbnailStacksRotateX) == 'number'  ) {
+        G.thumbnailStacksRotateX.lN=G.O.thumbnailStacksRotateX;
+        G.thumbnailStacksRotateX.l1=G.O.thumbnailStacksRotateX;
+      }
+      if( toType(G.O.thumbnailL1StacksRotateX) == 'number' ) {
+        G.thumbnailStacksRotateX.l1=G.O.thumbnailL1StacksRotateX;
+      }
+      // thumbnail stacks rotate Y
+      if( toType(G.O.thumbnailStacksRotateY) == 'number' ) {
+        G.thumbnailStacksRotateY.lN=G.O.thumbnailStacksRotateY;
+        G.thumbnailStacksRotateY.l1=G.O.thumbnailStacksRotateY;
+      }
+      if( toType(G.O.thumbnailL1StacksRotateY) == 'number' ) {
+        G.thumbnailStacksRotateY.l1=G.O.thumbnailL1StacksRotateY;
+      }
+      // thumbnail stacks rotate Z
+      if( toType(G.O.thumbnailStacksRotateZ) == 'number' ) {
+        G.thumbnailStacksRotateZ.lN=G.O.thumbnailStacksRotateZ;
+        G.thumbnailStacksRotateZ.l1=G.O.thumbnailStacksRotateZ;
+      }
+      if( toType(G.O.thumbnailL1StacksRotateZ) == 'number' ) {
+        G.thumbnailStacksRotateZ.l1=G.O.thumbnailL1StacksRotateZ;
+      }
+      // thumbnail stacks scale
+      if( toType(G.O.thumbnailStacksScale) == 'number' ) {
+        G.thumbnailStacksScale.lN=G.O.thumbnailStacksScale;
+        G.thumbnailStacksScale.l1=G.O.thumbnailStacksScale;
+      }
+      if( toType(G.O.thumbnailL1StacksScale) == 'number' ) {
+        G.thumbnailStacksScale.l1=G.O.thumbnailL1StacksScale;
+      }
+      
+      // thumbnail gutter width
+      if( toType(G.O.thumbnailGutterWidth) == 'number' && G.O.thumbnailGutterWidth > 0 ) {
+        G.thumbnailGutterWidth.lN=G.O.thumbnailGutterWidth;
+        G.thumbnailGutterWidth.l1=G.O.thumbnailGutterWidth;
+      }
+      if( toType(G.O.thumbnailL1GutterWidth) == 'number' && G.O.thumbnailL1GutterWidth > 0 ) {
+        G.thumbnailGutterWidth.l1=G.O.thumbnailL1GutterWidth;
+      }
+      
+      // thumbnail gutter height
+      if( toType(G.O.thumbnailGutterHeight) == 'number' && G.O.thumbnailGutterHeight > 0 ) {
+        G.thumbnailGutterHeight.lN=G.O.thumbnailGutterHeight;
+        G.thumbnailGutterHeight.l1=G.O.thumbnailGutterHeight;
+      }
+      if( toType(G.O.thumbnailL1GutterHeight) == 'number' && G.O.thumbnailL1GutterHeight > 0 ) {
+        G.thumbnailGutterHeight.l1=G.O.thumbnailL1GutterHeight;
+      }
+      
+      
       // gallery display mode
       if( G.O.galleryDisplayMode !== undefined && G.O.galleryDisplayMode != '' ) {
         G.galleryDisplayMode.lN=G.O.galleryDisplayMode.toUpperCase();
@@ -4742,7 +5118,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
             var tmp=tL1HE.split('|');
             for(var i=0; i<tmp.length; i++) {
               var oDef=NewTHoverEffect();
-              oDef=ThumbnailHoverEffectExtract( tmp[i], oDef );
+              oDef=ThumbnailHoverEffectExtract( tmp[i].trim(), oDef );
               if(  oDef!= null ) {
                 G.tn.hoverEffects.level1.push(oDef);
               }
@@ -4781,7 +5157,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
           var tmp=tHE.split('|');
           for(var i=0; i<tmp.length; i++) {
             var oDef=NewTHoverEffect();
-            oDef=ThumbnailHoverEffectExtract( tmp[i], oDef );
+            oDef=ThumbnailHoverEffectExtract( tmp[i].trim(), oDef );
             if(  oDef!= null ) {
               G.tn.hoverEffects.std.push(oDef);
             }
@@ -4961,6 +5337,8 @@ console.log('#DisplayPhoto : '+  imageIdx);
 
     // HOVER EFFECTS
     function ThumbnailHoverEffectExtract( name, effect) {
+      var easings=[ 'easeInQuad', 'easeOutQuad', 'easeInOutQuad', 'easeInCubic', 'easeOutCubic', 'easeInOutCubic', 'easeInQuart', 'easeOutQuart', 'easeInOutQuart', 'easeInQuint', 'easeOutQuint', 'easeInOutQuint', 'easeInSine', 'easeOutSine', 'easeInOutSine', 'easeInExpo', 'easeOutExpo', 'easeInOutExpo', 'easeInCirc', 'easeOutCirc', 'easeInOutCirc', 'easeOutBounce', 'easeInBack', 'easeOutBack', 'easeInOutBack', 'elastic', 'bounce'];
+    
     
       var sp=name.split('_');
       if( sp.length >= 4 ) {
@@ -4970,7 +5348,69 @@ console.log('#DisplayPhoto : '+  imageIdx);
         effect.from=sp[2];
         effect.to=sp[3];
         if( sp.length >= 5 ) {
-          effect.duration=sp[4];
+          // effect.duration=sp[4];
+
+          for( var n=4; n<sp.length; n++ ) {
+            var v=sp[n];
+            
+            // check if an easing name
+            var foundEasing=false;
+            for( var e=0; e<easings.length; e++) {
+              if( v == easings[e] ) {
+                foundEasing=true;
+                effect.easing=v;
+                break;
+              }
+            }
+            if( foundEasing === true ) {
+              continue;
+            }
+            
+            v=v.toUpperCase();
+            
+            if( v == 'HOVERIN' ) {
+              effect.hoverout=false;
+              continue;
+            }
+            if( v == 'HOVEROUT' ) {
+              effect.hoverin=false;
+              continue;
+            }
+            
+            if( v == 'KEYFRAME' ) {
+              effect.firstKeyframe=false;
+              continue;
+            }
+            
+            var num = parseInt(v.replace(/[^0-9\.]/g, ''), 10);   // extract a number if on exists
+
+            if( num > 0 ) {
+              // the string contains a numbers > 0
+              if( v.indexOf('DURATION') >= 0 ) {
+                effect.duration=num;
+                continue;
+              }
+              if( v.indexOf('DURATIONBACK') >= 0 ) {
+                effect.durationBack=num;
+                continue;
+              }
+              if( v.indexOf('DELAY') >= 0 ) {
+                effect.delay=num;
+                continue;
+              }
+              if( v.indexOf('DELAYBACK') >= 0 ) {
+                effect.delayBack=num;
+                continue;
+              }
+              
+              // no parameter name found -> default is duration
+              effect.duration=num;
+            }
+            
+
+          }
+          
+          
         }        
         effect.element=ThumbnailOverEffectsGetCSSElement(sp[0], effect.type);
         
@@ -4982,6 +5422,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
       }
       return effect;
     }
+    
     
     function ThumbnailOverEffectsGetCSSElement( element, property ) {
         var r=element;
@@ -5175,7 +5616,23 @@ console.log('#DisplayPhoto : '+  imageIdx);
     
     function NewTHoverEffect() {
       // easing : jQuery supports only 'swing' and 'linear'
-      var oDef={ name: '', element: '', type: '', from: '', to: '', delay:0, delayBack:0, duration:400, durationBack:300, easing:'easeOutQuart', easingBack: 'easeOutQuart', animParam:null, lastValue: null };
+      var oDef={ 
+          name:           '',
+          element:        '',
+          type:           '',
+          from:           '',
+          to:             '',
+          hoverin:        true,
+          hoverout:       true,
+          firstKeyframe:  true,
+          delay:          0,
+          delayBack:      0,
+          duration:       400,
+          durationBack:   300,
+          easing:         'easeOutQuart',
+          easingBack:     'easeOutQuart',
+          animParam:      null
+        };
       return oDef;
     }
 
@@ -5186,7 +5643,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
     }
 
     
-        // build a dummy thumbnail to get different sizes and to cache them
+    // build a dummy thumbnail to get different sizes and to cache them
     function ThumbnailDefCaches() {
       
         // thumbnail content CSS styles
@@ -5528,7 +5985,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
       if( cs.navigationBar.borderLeft !== undefined && cs.navigationBar.borderLeft !== '' ) { s+=s1+'.nGY2Navigationbar { border-left:'+cs.navigationBar.borderLeft+'; }'+'\n'; }
       
       // navigation bar - breadcrumb
-      s+=s1+'.nGY2Breadcrumb { background:'+cs.navigationBreadcrumb.background+'; border-radius:'+cs.navigationFilter.borderRadius+'; }'+'\n';
+      s+=s1+'.nGY2Breadcrumb { background:'+cs.navigationBreadcrumb.background+'; border-radius:'+cs.navigationBreadcrumb.borderRadius+'; }'+'\n';
       s+=s1+'.nGY2Breadcrumb .oneItem  { color:'+cs.navigationBreadcrumb.color+'; }'+'\n';
       s+=s1+'.nGY2Breadcrumb .oneItem:hover { color:'+cs.navigationBreadcrumb.colorHover+'; }'+'\n';
 
@@ -5539,6 +5996,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
       
       // thumbnails
       s+=s1+'.nGY2GThumbnail { background:'+cs.thumbnail.background+'; border-color:'+cs.thumbnail.borderColor+'; border-top-width:'+G.O.thumbnailBorderVertical+'px; border-right-width:'+G.O.thumbnailBorderHorizontal+'px; border-bottom-width:'+G.O.thumbnailBorderVertical+'px; border-left-width:'+G.O.thumbnailBorderHorizontal+'px;}'+'\n';
+      s+=s1+'.nGY2GThumbnailStack { background:'+cs.thumbnail.stackBackground+'; }'+'\n';
       s+=s1+'.nGY2GThumbnailImage { background:'+cs.thumbnail.background+'; }'+'\n';
       s+=s1+'.nGY2GThumbnailAlbumUp { background:'+cs.thumbnail.background+'; color:'+cs.thumbnail.titleColor+'; }'+'\n';
       s+=s1+'.nGY2GThumbnailIconsFullThumbnail { color:'+cs.thumbnail.titleColor+'; }\n';
@@ -5786,8 +6244,12 @@ console.log('#DisplayPhoto : '+  imageIdx);
     function DownloadImage(idx) {
       var url=G.I[idx].src;
 
+      if( G.I[idx].downloadURL != undefined && G.I[idx].downloadURL != '' ) {
+        url=G.I[idx].downloadURL;
+      }
+      
       var a = document.createElement('a');
-      a.href = url;;
+      a.href = url;
       a.download = url.split('.').pop();
       document.body.appendChild(a);
       a.click();
@@ -6297,16 +6759,10 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
 
       G.VOM.timeImgChanged=new Date().getTime();
 
-
-
-      
-      
-
       // stop click propagation on image ==> if the user clicks outside of an image, the viewer is closed
       G.VOM.$viewer.find('img').on('click', function (e) {
         e.stopPropagation();
       });
-      
       
       ImageSwipeTranslateX(G.VOM.swipePosX);
       DisplayInternalViewer(vomIdx, '');
@@ -6315,7 +6771,7 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
       if( G.VOM.hammertime == null ) {
       
         G.VOM.hammertime =  new NGHammer(G.VOM.$cont[0]);
-        
+     
         G.VOM.hammertime.get('pan').set({ direction: NGHammer.DIRECTION_ALL });        
         G.VOM.hammertime.get('pinch').set({ enable: true });        
 
@@ -7251,6 +7707,44 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
     }
 
     
+
+    function ImageGetSize( item ) {
+    }
+    
+    function ImageGetSize2( item ) {
+      // inspired by code from Dmitry Semenov
+        var counter = 0,
+				img = item.img[0],
+        
+				mfpSetInterval = function(delay) {
+
+					if(_imgInterval) {
+						clearInterval(_imgInterval);
+					}
+					// decelerating interval that checks for size of an image
+					_imgInterval = setInterval(function() {
+						if(img.naturalWidth > 0) {
+							mfp._onImageHasSize(item);
+							return;
+						}
+
+						if(counter > 200) {
+							clearInterval(_imgInterval);
+						}
+
+						counter++;
+						if(counter === 3) {
+							mfpSetInterval(10);
+						} else if(counter === 40) {
+							mfpSetInterval(50);
+						} else if(counter === 100) {
+							mfpSetInterval(500);
+						}
+					}, delay);
+				};
+
+        mfpSetInterval(1);
+    }
     
     /** @function BuildSkeleton */
     /** Build the gallery structure **/
@@ -7323,6 +7817,12 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
       for( var j=0; j<effects.length; j++) {
         switch( effects[j].type ) {
           case 'scale':
+          case 'rotateZ':
+          case 'rotateX':
+          case 'rotateY':
+          case 'translateX':
+          case 'translateY':
+          case 'translateY':
             // handle some special cases
             if( effects[j].element == '.nGY2GThumbnail' ) {
               // allow thumbnail upscale over the gallery's aera
@@ -7339,8 +7839,19 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
       
       // portable
       if( G.O.portable ) {
-        var logo='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAUCAMAAACpgK3LAAABcVBMVEUAAAAoKChgYGBeXl6enp41NTUAAABvb2+4uLgAAAABAQAAAAAAAACXlZqmpqafn58YGBgDAwMBAQAAAAAAAAAAAADPz8/Hx8fd3d1iYmJVVVUuLi4sLCwTExMAAAAAAAAAAAAAAADJ/3g/Ux6ZmZm4uLh1lEUoNxFra2tQUFBdXV07OzstLS0mJiYhISEjIyMbGxsYGBgWFhYAAAAICAgBAQEAAAAAAAAAAACzs7O0tLTT09Nogz62traLsFOFqU+Dpk6UlJSHh4cuPxWRkZF7e3u4uLiWlpaIiIh7nEm2tralpaWkpKR4eHggLQxycnJaWlpDQ0OAgICAgIA0NDREREQpKSkxMTFXV1cAAABOTk4AAAAUFBQpKSkAAAAAAAD////j4+OwsLCnp6f39/f6+vr7+/vq6uqXwFm4uLiUkZi+8XGq12WPtlTz8/Py8vLx8fHR0dHKysq9vb2srKzB9XPB9HOfyV6GqU9/oUt1lEbIL0ErAAAAYHRSTlMAn5/W/YEJ4fhXUyAW/fv3m29fPQ8E/v382M61o5ImHBoR/vPy7Ozp4NnLvrCtmZGRjHpqZVpOQDT+/fr5+PT09PPx8e/v7e3t7Ovo6OPi4dbMxMO7sq6emJaTk4V/Rg54TbQmAAABQklEQVQoz23Q1W4CURCA4aGyZQVbwaFYoThF6+7uLkO7WKHuffoeNiV7sXw5F5P8OclkgBAyOo1UQYK20bjpVsO4yyttCbtqWCS4jiPaDPcG8kx9qnHEeQYyc2i/iAQj28GFIuenblhWpPwcVzKh/Qp0d7ieqwem1wJfNFDp/Y3Ng7QPQBrGcn87DlkemrPhZp0R92Qkqg4OqAE1fs6EP+pFt4y1UKiGFZcal3M/rd/J1veZHm0elvXY8K0Enaj3MjxN84y5gi4gjquVETX6QOFGOQuEpYZuNQ6C4lLGQyBc6k81CmP4YvZ6zVZsCJoIyUd8MhqfUU6q205x/1E8eUXCeiQCpRwhZUKrAB1MwuFI0GTwrbZjwYm42NsRc0ajzhgZtmQ05oGi37GrstkPAPzORFnDvuKRgKDy5z0ap1kW4A+N+GeB1ikjJAAAAABJRU5ErkJggg==';
-        G.$E.ngy2i=jQuery('<div class="nGY2PortInfo"><a href="http://nano.gallery" target="_blank" title="NANOGALLERY2 | easy photo gallery for your website"><img src="'+logo+'" style="height:14px;"/> &nbsp; nanogallery2</a></div>').appendTo(G.$E.base);
+        // http://www.picresize.com/
+        // http://base64encode.net/base64-image-encoder
+        var logo='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAWCAYAAAA4oUfxAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH4QMPBwY6mxZgsAAABTFJREFUSMe1ll9oVGcaxn/fd86ZSWbSkEBMiWNdTTfRxiVbXFiU1bjKGqNexlURKys0tHqXpQZ64Sq4FxKqFy4qFSm9kA1FHNhFISgJqFCd6lL/YC7M3jhrJv5JmGSSMzPnzDnfuxdpZtP4b1vaF154P3gPD+/zPC/nVSKiAQOsBj7O5XK/nZiYeEtELH6iUEqFNTU1U9XV1d8AnwNfA1qJCMCfHz169NcjR45UXL16VWWzWQnD0PxU4JZl6draWtXW1iYHDx4sLlmy5C/AZwRB0JVOpyWRSHhACMjPmOHChQuL6XRagiDoUiIyumvXrpq+vr6obduqs7OTjRvbsbSFUgqUgKjyFG5+mlKpVH6LCMYYRAQRQSmF1hqtNd+xijGGVCpFMpkkCALZuXOn19fXN6Gmp6dNc3NzMDo66nR2dnL+/Hm+Ov933PwUAPHKagqei4gBFNs7dxGPx38U/du2bSOZTNLQ0FB6+PChbWez2WI+n3dEhI3tf+Det0N8de0Imz9YQWHa48u/3afjgxbqEpUM/es/uF8W+fijffi+TywWQ0S4fv06t2/fJpfLsXjxYtauXUtTUxNBECAihGFIJBJh1apVXLhwgXw+r7LZbNGeYU7MLD1BEPCLxkWs+HUT+SmPJY0TvPerd6l/J05YcLCGHWzbxrZtHjx4wP79+7l27dr3Jqyurqarq4ujR49i2zYAWmvCMJyVygCiZ7dh9kOtNb5XopD3KBQ8fL9EseBRyHsUCz6zS3Dnzh3WrVtXBq6oqGDBggUA5HI5jh07xo4dOzDmf0ujVBlGAWjmhTGC41hEow6RiI3j2DgRh0jUxonYWJaFGGHPnj2Mj49jWRYHDhzg7t27DA0NMTAwwOrVqwFIJpOcOHECx3Fe6oEXwG3bYux5ltHHz3mSGePpk+c8yczUI+knVFVVcePmDe7fvw9AT08Pvb29NDc3U1dXx4YNG7h8+TItLS1orTl58iT5fL68Ga8En55yWb6iifff/iPD/0iQGfglG3/zJ6a+beHf/3yH6Mjv+P269Vy5cgWlFDU1NXR3dxOGYdlcnudRVVXFvn37MMaQTqcZHh5+Kbg99zHjSodPuj997cqMjY0hItTW1hKPx9FalzW1LIswDFm0aBEAQRDguu6bJ581hOd5GBNiTEgYhuXa8z1EhIaGBgAymQzpdBqlFKVSiTCc6bcsi5s3bwJQWVlJfX39fMO9XHMAy7LQeibn1o7toJSio6MDAN/36e7uxvd9IpEIlmURjUZJpVKcOXMGpRStra0sXbr0peDfo30+LS+4U2uMMaxcuZLdu3dz7tw5+vv7aWtrY+/evdTX13Pr1i1OnTrF5OQkAIcPH8ayrNeCvx51njTGGE6fPk0mk2FwcJBUKkUqlXqh9/jx42zatKnMzJzhBEArpZT+zjGWZSEiBEHwypzVtbKykosXL3Lo0CEaGxvLpovFYqxZs4ZLly6VJQnDEBEpM6C11kopheu6JpFI+Fpr2bJli/zYGBkZkeHhYZmcnHxlz9atW0VrLYlEwndd19ixWOzx5s2b3z579qzp7+/X7e3ttLa2Yox5QaP5MfenEY1G0VoTBAHFYhFjTJlJrTX37t1jYGAAY4zp6OiQWCz2mCAItj979kyWL1/uAwE/7zERLFu2zH/69KkEQbB99ozaOz4+fqy3t7d2cHAwdF1XKaXe6P7/16AiQjwel/Xr1+uenp6Jurq6T4Av1JwD8j3gQ2BVsVh8S72J8x8QIiIVFRVTQAo4CwwB+r93qCLI9wKZ8AAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxNy0wMy0xNVQwNzowNjo1OC0wNDowMBNQsyUAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTctMDMtMTVUMDc6MDY6NTgtMDQ6MDBiDQuZAAAAAElFTkSuQmCC';
+        G.$E.ngy2i=jQuery('<div class="nGY2PortInfo"><a href="http://nano.gallery" target="_blank" title="nanogallery2 | easy photo gallery for your website" style="font-weight: bold !important;color: #888 !important;font-size: 11px !important;"><img src="'+logo+'" style="height:16px !important;box-shadow: none !important;vertical-align: middle !important;"/> &nbsp; nanogallery2</a></div>').appendTo(G.$E.base);
+        
+        G.$E.ngy2i.find('a').on({
+          mouseenter: function () {
+            jQuery(this).attr('style', 'color: #73A623 !important');
+          },
+          mouseleave: function () {
+            jQuery(this).attr('style', 'color: #888 !important');
+          }
+        });
       }
       
       // Error console
@@ -7422,7 +7933,7 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
             return;
           }
           G.$E.conTn.css( G.CSStransformName , 'translateX(0px)');
-          pX=0;
+          // pX=0;
         }
       });
       G.GOM.hammertime.on('tap', function(ev) {
@@ -8959,9 +9470,11 @@ function makeArray( obj ) {
 
 // NGY BUILD:
 // replace "Hammer" with "NGHammer" (case sensitive)
+// replace "var SUPPORT_POINTER_EVENTS = prefixed(window, 'PointerEvent') !== undefined;" with "var SUPPORT_POINTER_EVENTS = false;"
 
 
-/*! Hammer.JS - v2.0.7 - 2016-04-22
+
+/*! NGHammer.JS - v2.0.7 - 2016-04-22
  * http://hammerjs.github.io/
  *
  * Copyright (c) 2016 Jorik Tangelder;
@@ -9344,7 +9857,8 @@ function getWindowForElement(element) {
 var MOBILE_REGEX = /mobile|tablet|ip(ad|hone|od)|android/i;
 
 var SUPPORT_TOUCH = ('ontouchstart' in window);
-var SUPPORT_POINTER_EVENTS = prefixed(window, 'PointerEvent') !== undefined;
+// var SUPPORT_POINTER_EVENTS = prefixed(window, 'PointerEvent') !== undefined;
+var SUPPORT_POINTER_EVENTS = false;
 var SUPPORT_ONLY_TOUCH = SUPPORT_TOUCH && MOBILE_REGEX.test(navigator.userAgent);
 
 var INPUT_TYPE_TOUCH = 'touch';
@@ -11608,7 +12122,6 @@ if (typeof define === 'function' && define.amd) {
 
 
 
-
 //##########################################################################################################################
 //##########################################################################################################################
 //##########################################################################################################################
@@ -11703,8 +12216,14 @@ if (typeof define === 'function' && define.amd) {
           url += '?alt=json&v=3&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime()) + '&access_token=' + gat;
         }
         else {
-          // nanogp
-          url=G.O.google2URL + '?nguserid='+G.O.userID+'&alt=json&v=3&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime());
+          if( G.O.google2URL == '' ) {
+            // old Picasa access method (for content before 09/02/2017
+            url += '?alt=json&v=3&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime());
+          }
+          else {
+            // nanogp
+            url=G.O.google2URL + '?nguserid='+G.O.userID+'&alt=json&v=3&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime());
+          }
         }
         kind='album';
       }
@@ -11719,8 +12238,14 @@ if (typeof define === 'function' && define.amd) {
           url += '/albumid/'+albumID+'?alt=json&kind=photo&thumbsize='+G.picasa.thumbSizes+maxResults+auth+'&imgmax=d&access_token=' + gat;
         }
         else {
-          // nanogp
-          url=G.O.google2URL + '?nguserid='+G.O.userID+'&ngalbumid='+albumID+'&alt=json&v=3&kind=photo&thumbsize='+G.picasa.thumbSizes+maxResults+auth+'&imgmax=d';
+          if( G.O.google2URL == '' ) {
+            // old Picasa access method (for content before 09/02/2017
+            url += '?alt=json&v=3&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime());
+          }
+          else {
+            // nanogp
+            url += '/albumid/'+albumID+'?alt=json&kind=photo&thumbsize='+G.picasa.thumbSizes+maxResults+auth+'&imgmax=d';
+          }
         }
       }
 
@@ -11749,7 +12274,7 @@ if (typeof define === 'function' && define.amd) {
         var gi_data_loaded = null;
         // load more than 1000 data (contributor: Giovanni Chiodi)
         var GI_loadJSON = function(url,start_index){
-console.dir(url + '&start-index=' + start_index + '&callback=?');
+
           jQuery.getJSON( url + '&start-index=' + start_index + '&callback=?', function(data) {
           
             if( data.nano_status == 'error' ) {
@@ -11776,7 +12301,7 @@ console.dir(url + '&start-index=' + start_index + '&callback=?');
             }
             
             // if (data.feed.openSearch$startIndex.$t+data.feed.openSearch$itemsPerPage.$t>=data.feed.openSearch$totalResults.$t){
-            if( cnt >= numItems ) {
+            if( cnt >= numItems || cnt >= G.galleryMaxItems.Get() ) {
               //ok finito
               GI_getJSONfinished(gi_data_loaded);
             }
@@ -11790,7 +12315,6 @@ console.dir(url + '&start-index=' + start_index + '&callback=?');
             clearTimeout(tId);
             PreloaderDisplay(false);
 
-            //alertObject(jqxhr);
             var k=''
             for(var key in jqxhr) {
               k+= key + '=' + jqxhr[key] +'<br>';
