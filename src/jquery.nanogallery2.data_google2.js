@@ -55,8 +55,14 @@
           url += '?alt=json&v=3&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime()) + '&access_token=' + gat;
         }
         else {
-          // nanogp
-          url=G.O.google2URL + '?nguserid='+G.O.userID+'&alt=json&v=3&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime());
+          if( G.O.google2URL == '' ) {
+            // old Picasa access method (for content before 09/02/2017
+            url += '?alt=json&v=3&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime());
+          }
+          else {
+            // nanogp
+            url=G.O.google2URL + '?nguserid='+G.O.userID+'&alt=json&v=3&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime());
+          }
         }
         kind='album';
       }
@@ -71,8 +77,14 @@
           url += '/albumid/'+albumID+'?alt=json&kind=photo&thumbsize='+G.picasa.thumbSizes+maxResults+auth+'&imgmax=d&access_token=' + gat;
         }
         else {
-          // nanogp
-          url=G.O.google2URL + '?nguserid='+G.O.userID+'&ngalbumid='+albumID+'&alt=json&v=3&kind=photo&thumbsize='+G.picasa.thumbSizes+maxResults+auth+'&imgmax=d';
+          if( G.O.google2URL == '' ) {
+            // old Picasa access method (for content before 09/02/2017
+            url += '?alt=json&v=3&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime());
+          }
+          else {
+            // nanogp
+            url += '/albumid/'+albumID+'?alt=json&kind=photo&thumbsize='+G.picasa.thumbSizes+maxResults+auth+'&imgmax=d';
+          }
         }
       }
 
@@ -101,7 +113,7 @@
         var gi_data_loaded = null;
         // load more than 1000 data (contributor: Giovanni Chiodi)
         var GI_loadJSON = function(url,start_index){
-console.dir(url + '&start-index=' + start_index + '&callback=?');
+
           jQuery.getJSON( url + '&start-index=' + start_index + '&callback=?', function(data) {
           
             if( data.nano_status == 'error' ) {
@@ -128,7 +140,7 @@ console.dir(url + '&start-index=' + start_index + '&callback=?');
             }
             
             // if (data.feed.openSearch$startIndex.$t+data.feed.openSearch$itemsPerPage.$t>=data.feed.openSearch$totalResults.$t){
-            if( cnt >= numItems ) {
+            if( cnt >= numItems || cnt >= G.galleryMaxItems.Get() ) {
               //ok finito
               GI_getJSONfinished(gi_data_loaded);
             }
@@ -142,7 +154,6 @@ console.dir(url + '&start-index=' + start_index + '&callback=?');
             clearTimeout(tId);
             PreloaderDisplay(false);
 
-            //alertObject(jqxhr);
             var k=''
             for(var key in jqxhr) {
               k+= key + '=' + jqxhr[key] +'<br>';
