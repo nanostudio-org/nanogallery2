@@ -38,7 +38,6 @@ module.exports = function(grunt) {
         package: {
           src: [
             'src/jquery.nanogallery2.core.js',
-            'src/jquery.nanogallery2.data_google.js',
             'src/jquery.nanogallery2.data_google2.js',
             'src/jquery.nanogallery2.data_flickr.js'
           ],
