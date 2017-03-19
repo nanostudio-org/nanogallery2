@@ -599,21 +599,34 @@
         //        userID: '68188170@N06',   //--> huge albums+photos collection
         //        photoset: '72157656850365463',
 
-        //photoset: 'NONE',
+//        photoset: 'NONE',
         blackList: 'forhomepage|scrapbook|profil',
-        thumbnailDisplayTransition: 'scaleDown_2',
+        thumbnailDisplayTransition: 'scaleDown_1.5',
+//        thumbnailDisplayTransitionDuration: 5000,
         thumbnailHeight: '200 XS150 SM150', thumbnailWidth: 'auto',
         thumbnailL1Height: '200 XS100 SM150', thumbnailL1Width: '300 XS100 SM225',
+
         galleryL1DisplayMode: 'pagination',
         galleryDisplayMode: 'rows',
         galleryPaginationMode: 'rectangles',
         galleryMaxRows: 3,
-        galleryL1MaxRows: 1,
+        galleryL1MaxRows: 100,
         
-        thumbnailL1HoverEffect2: 'image_scale_1.00_1.20_3000|thumbnail_scale_1.00_1.10|labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear',
+        
+//galleryBuildInit2 : 'transform-origin_top right',
+//thumbnailL1BuildInit2: 'thumbnail_transform-origin_50% 150%',
+          
+thumbnailL1HoverEffect2: 'image_scale_1.20_1.00|thumbnail_scale_1.00_1.10|labelAppear|customlayer_backgroundColor_rgba(84,132,12,0.0)_rgba(84,132,12,0.5)|toolsAppear',
 
-        //thumbnailL1BuildInit2: 'image_scale_1.10',
-        //galleryBuildInit2 : 'perspective_900px',
+
+// thumbnailL1HoverEffect2: 'thumbnail_rotateZ_0deg_15deg_easeOutQuad_200_hoverin|\
+//  thumbnail_rotateZ_15deg_-10deg_delay250_keyframe_hoverin_easeOutBack_400|\
+//  thumbnail_rotateZ_-10deg_0deg_keyframe_hoverout_easeOutBack_400',
+//|thumbnail_rotateZ_-10deg_0deg_delay800_keyframe_oneway',
+//thumbnailL1HoverEffect2: 'thumbnail_rotateZ_0deg_10deg_easeOutQuad',
+
+        thumbnailL1BuildInit2: 'image_scale_1.10',
+        //  galleryBuildInit2 : 'perspective_900px|perspective-origin_50% 150%',
 
         thumbnailHoverEffect2: 'label_font-size_1em_1.5em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((84,132,12,0.8)|title_color_#000_#fff|image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
 
@@ -623,10 +636,14 @@
         thumbnailLabel: { display: true, position:'overImageOnBottom', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true},
         thumbnailBorderHorizontal: 0,
         thumbnailBorderVertical: 0,
+        thumbnailL1GutterWidth: 40,
+        thumbnailL1GutterHeight: 20,
+        
         thumbnailSelectable: false,
         breadcrumbHideIcons: true,
         navigationFontSize: '1.2em',
         gallerySorting: 'random',
+        thumbnailDisplayInterval: 30,
 
         colorScheme : { thumbnail: { titleShadow : 'none', descriptionShadow : 'none'} },
         
