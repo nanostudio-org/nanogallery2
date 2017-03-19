@@ -211,13 +211,29 @@
 /**************************************/
 /* THUMBNAILS                         */
 /**************************************/
-.nGY2 .nGY2GThumbnail{
+.nGY2 .nGY2GThumbnail {
 	/* no margin allowed here */
   cursor: pointer;
 	border: 0px solid #000;
 	/*margin: 1px;*/
 	padding: 0px; /* 5 */
 	background-color: #000;
+	display: inline-block;
+	position: absolute;   /*relative;*/
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	overflow:hidden;
+}
+
+.nGY2 .nGY2GThumbnailStack {
+	/* no margin allowed here */
+  background-color: #888;
+  cursor: pointer;
+	border: 0px solid #000;
+	/*margin: 1px;*/
+	padding: 0px; /* 5 */
 	display: inline-block;
 	position: absolute;   /*relative;*/
 	box-sizing: border-box;
@@ -634,13 +650,13 @@
 /* INFO                               */
 /**************************************/
 .nGY2PortInfo {
-  padding: 3px;
-  font-size: 11px;
-  color: #888;
-  text-align: center;
-  z-index:0;
-  text-transform: uppercase;
-  cursor:pointer;
+  padding: 3px !important;
+  font-size: 11px !important;
+  color: #888 !important;
+  text-align: center !important;
+  z-index:0 !important;
+  text-transform: uppercase !important;
+  cursor:pointer !important;
 }
 
 .nGY2PortInfo a, 
@@ -648,8 +664,8 @@
 .nGY2PortInfo > a:visited,
 .nGY2PortInfo a:hover,
 .nGY2PortInfo a:active {
-  color: #888;
-  text-decoration: none;
+  color: #888 !important;
+  text-decoration: none !important;
 }
 
 
