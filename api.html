@@ -420,6 +420,7 @@
   <!-- ##### END LOGO INDEX  ##### -->
   <!-- ########################### -->
 
+  
   <div class="container ngy2documentation">
     <br><br>
     <h1>nanogallery2 API - reference guide</h1>
@@ -954,12 +955,21 @@
           </tbody>
         </table>
         
-        <p>
-          <b>Examples:</b><br>
-          - add items dynamically to an existing gallery: <a href="http://codepen.io/Kris-B/pen/wJKowg" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
-        </p>
       </div>
     </div>
+
+    
+    <br><br><br>
+    <h3>Examples</h3>
+    <hr>
+    <blockquote>
+      - add items dynamically to an existing gallery: <a href="http://codepen.io/Kris-B/pen/wJKowg" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+      <br>
+      - thumbnails: add cutom tool and custom button: <a href="http://codepen.io/Kris-B/pen/RpWKMJ" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+    </blockquote>
+    
+    
+    
   </div>    
   
   <script type="text/javascript">
@@ -981,8 +991,8 @@
         galleryMaxRows: 1,
         locationHash: false,
         thumbnailHoverEffect2: null,
-        thumbnailToolbarImage: { topLeft: 'select', topRight : 'featured,cart' },
-        thumbnailToolbarAlbum: { topLeft: 'select', topRight : 'counter' },
+        thumbnailToolbarImage: { topLeft: 'select', topRight : 'featured,cart', bottomRight: 'display' },
+        thumbnailToolbarAlbum: { topLeft: 'select', topRight : 'counter', bottomRight: 'display' },
         thumbnailSelectable : true
       });
 
