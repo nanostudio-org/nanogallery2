@@ -18,41 +18,6 @@
  *  - ICO online converter: https://iconverticons.com/online/
  */
 
-// v1.2.0beta
-// new: thumbnails hover effects can now be chained and syntax has been enhanced with new options
-// new: options 'thumbnailStacks' and 'thumbnailL1Stacks' to add N stacks behind the thumbnails
-// new: options 'thumbnailStacksTranslateX', 'thumbnailStacksTranslateY', 'thumbnailStacksTranslateZ', 'thumbnailStacksRotateX', 'thumbnailStacksRotateY', 'thumbnailStacksRotateZ', 'thumbnailStacksScale'
-// new: color scheme option 'stackBackground'
-// new: options 'thumbnailL1GutterWidth' and 'thumbnailL1GutterHeight'
-// new: #23 define a specific image for download (options 'downloadURL' or 'ngdownloadurl')
-// new: #21 option 'thumbnailDisplayOutsideScreen' to let the thumbnails always displayed even if not visible on screen (may impact performances)
-// fixed: parameter 'galleryMaxItems' not working with data source 'google2'
-// changed: 'viewerDisplayLogo' default value set to false
-// changed: access to Picasa content now included in module google2
-// new: parameter 'itemsBaseURL' ignored when source of an image is an full URL
-// fixed: #28 - Setting navigationBreadcrumb borderRadius does not have impact
-// new: #20 option 'data-ngcustomdata' (additionaly to 'ngcustomdata')
-// new: hammer.js v2.0.8
-
-// TODO: demo avec bandeau 'favori'
-// TODO: google - message d'erreur compréhensible quand album/user n'existe pas
-// TODO: thumbnail image source optional, default is image source
-// TODO: support video (thumbail + lightbox) 
-//    -> Youtube: href="https://www.youtube.com/watch?v=_sI_Ps7JSEk"
-//        thumbnail image: http://img.youtube.com/vi/_sI_Ps7JSEk/0.jpg - /hqdefault.jpg
-//        https://ctrlq.org/code/19452-embed-youtube-with-javascript
-//    -> vimeo: href="https://vimeo.com/191947042"
-// TODO: image zoom : animate in/out
-// TODO: data-srcset
-// TODO: demarrer gallerie sans images
-// TODO: ajout d'éléments sans réafficher les thumbnails déjà affichés
-// TODO: zoom with mouse on firefox
-// TODO: play slideshow on IOS/Android
-// TODO: destroy bloque hammer (?) sur le viewer
-// TODO: thumbnail image crop when size undefined and not in cache
-// TODO: #22 specify number of images to preload
-// TODO: custom share button
-// TODO: translation module
 
  
 // ###########################################
@@ -795,7 +760,6 @@
 
           //--- thumbnail hover animation
           NGY2Item.prototype.animate = function ( effect, delay, hoverIn ) {
-            
             if( this.$getElt() == null  ) { return; }
 
             var context={};
@@ -1172,6 +1136,7 @@
       thumbnailDownload:            '<i class="nGY2Icon icon-ngy2_download2"></i>',
       thumbnailInfo:                '<i class="nGY2Icon icon-ngy2_info2"></i>',
       thumbnailCart:                '<i class="nGY2Icon icon-basket"></i>',
+      thumbnailDisplay:             '<i class="nGY2Icon icon-ngy2_zoom_in2"></i>',
       thumbnailCustomTool1:         'T1',
       thumbnailCustomTool2:         'T2',
       thumbnailCustomTool3:         'T3',
@@ -3800,26 +3765,32 @@
                 break;
               case 'SHARE':
                 toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="'+tIcon+'">';
-                toolbar+= '      <div class="nGY2GThumbnailIconImageShare">'+G.O.icons.thumbnailShare+'</div>';
+                toolbar+= '      <div>'+G.O.icons.thumbnailShare+'</div>';
                 //toolbar+= '      <div class="nGY2GThumbnailIconText">'+sp+'</div>';
                 toolbar+= '    </li>';
                 cnt++;
                 break;
               case 'DOWNLOAD':
                 toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="'+tIcon+'">';
-                toolbar+= '      <div class="nGY2GThumbnailIconImageShare">'+G.O.icons.thumbnailDownload+'</div>';
+                toolbar+= '      <div>'+G.O.icons.thumbnailDownload+'</div>';
                 toolbar+= '    </li>';
                 cnt++;
                 break;
               case 'INFO':
                 toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="'+tIcon+'">';
-                toolbar+= '      <div class="nGY2GThumbnailIconImageShare">'+G.O.icons.thumbnailInfo+'</div>';
+                toolbar+= '      <div>'+G.O.icons.thumbnailInfo+'</div>';
                 toolbar+= '    </li>';
                 cnt++;
                 break;
               case 'CART':
                 toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="'+tIcon+'">';
-                toolbar+= '      <div class="nGY2GThumbnailIconImageShare">'+G.O.icons.thumbnailCart+'</div>';
+                toolbar+= '      <div>'+G.O.icons.thumbnailCart+'</div>';
+                toolbar+= '    </li>';
+                cnt++;
+                break;
+              case 'DISPLAY':
+                toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="DISPLAY">';
+                toolbar+= '      <div class="nGY2GThumbnailIconImageShare">'+G.O.icons.thumbnailDisplay+'</div>';
                 toolbar+= '    </li>';
                 cnt++;
                 break;
@@ -4286,7 +4257,8 @@
       try {
         for( var j=0; j<effects.length; j++) {
           if( effects[j].hoverin === true ) {
-            item.animate( effects[j], j*10,  true );
+            //item.animate( effects[j], j*10,  true );
+            item.animate( effects[j], 0,  true );
           }
         }
         // effects on whole layout
@@ -4331,7 +4303,8 @@
       try {
         for( var j=0; j<effects.length; j++) {
           if( effects[j].hoverout === true ) {
-            item.animate( effects[j], j*10, false );
+            // item.animate( effects[j], j*10, false );
+            item.animate( effects[j], 0, false );
           }
         }
         // effects on whole layout
@@ -5735,8 +5708,8 @@ console.log('#DisplayPhoto : '+  imageIdx);
           G.tn.style.l1.title+='font-size:'+G.O.thumbnailLabel.titleFontSize+';';
         }
         if( G.O.thumbnailLabel.descriptionFontSize != undefined && G.O.thumbnailLabel.descriptionFontSize != '' ) {
-          G.tn.style.lN.desc+='font-size:'+G.O.thumbnailLabel.titleFontSize+';';
-          G.tn.style.l1.desc+='font-size:'+G.O.thumbnailLabel.titleFontSize+';';
+          G.tn.style.lN.desc+='font-size:'+G.O.thumbnailLabel.descriptionFontSize+';';
+          G.tn.style.l1.desc+='font-size:'+G.O.thumbnailLabel.descriptionFontSize+';';
         }
         
       // }
@@ -6207,7 +6180,12 @@ console.log('#DisplayPhoto : '+  imageIdx);
       var idx=G.GOM.items[r.GOMidx].thumbnailIdx;
       switch( r.action ) {
         case 'OPEN':
-          ThumbnailOpen(idx);
+          ThumbnailOpen(idx, false);
+          return 'exit';
+          break;
+        case 'DISPLAY':
+          // used the display icon (ignore if selection mode)
+          ThumbnailOpen(idx, true);
           return 'exit';
           break;
         case 'TOGGLESELECT':
@@ -6521,7 +6499,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
     
 
     // Open one thumbnail
-    function ThumbnailOpen( idx ) {
+    function ThumbnailOpen( idx, ignoreSelected ) {
       var item=G.I[idx];
 
       if( typeof G.O.fnThumbnailClicked === 'function' ){
@@ -6536,7 +6514,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
 
       switch( item.kind ) {
         case 'image':
-          if( G.GOM.nbSelected > 0 ) {
+          if( ignoreSelected === false && G.GOM.nbSelected > 0 ) {
             ThumbnailSelectionToggle(idx);
           }
           else {
@@ -6545,7 +6523,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
           }
           break;
         case 'album':
-          if( G.GOM.nbSelected > 0 ) {
+          if( ignoreSelected === false && G.GOM.nbSelected > 0 ) {
             ThumbnailSelectionToggle(idx);
           }
           else {
@@ -7960,7 +7938,7 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
             window.clearInterval( G.touchAutoOpenDelayTimerID );
             G.touchAutoOpenDelayTimerID = window.setInterval(function(){
               window.clearInterval( G.touchAutoOpenDelayTimerID );
-              ThumbnailOpen( G.GOM.items[r.GOMidx].thumbnailIdx );
+              ThumbnailOpen( G.GOM.items[r.GOMidx].thumbnailIdx, true );
             }, G.O.touchAutoOpenDelay );
           }
           else {
@@ -7972,7 +7950,7 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
             }
             else {
               // second touch
-              ThumbnailOpen(G.GOM.items[r.GOMidx].thumbnailIdx);
+              ThumbnailOpen(G.GOM.items[r.GOMidx].thumbnailIdx, true);
             }
           }
         }
@@ -8034,7 +8012,7 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
       });
       
       
-      jQuery(window).bind('mousewheel', function(e){
+      jQuery(window).bind('mousewheel wheel', function(e){
         if( G.VOM.viewerDisplayed ) {
         // console.log( e.originalEvent.wheelDelta + ' - ' + e.originalEvent.detail);
           var deltaY = 0;
