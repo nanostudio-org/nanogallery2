@@ -4,7 +4,7 @@ nanogallery2 - ChangeLog
 v1.2.0
 ------
 - new: thumbnails hover effects can now be chained and syntax has been enhanced with new options
-- new: stack motions effects - options 'thumbnailStacks' and 'thumbnailL1Stacks' to add N stacks behind the thumbnails (thanks to Mary Lou from Codrops for the inspiration - https://tympanus.net/codrops/2017/03/15/stack-motion-hover-effects/)
+- new: stack motions effects on thumbnails - options 'thumbnailStacks' and 'thumbnailL1Stacks' to add N stacks behind the thumbnails (thanks to Mary Lou from Codrops for the inspiration - https://tympanus.net/codrops/2017/03/15/stack-motion-hover-effects/)
 - new: options 'thumbnailStacksTranslateX', 'thumbnailStacksTranslateY', 'thumbnailStacksTranslateZ', 'thumbnailStacksRotateX', 'thumbnailStacksRotateY', 'thumbnailStacksRotateZ', 'thumbnailStacksScale'
 - new: color scheme option 'stackBackground'
 - new: options 'thumbnailL1GutterWidth' and 'thumbnailL1GutterHeight'
