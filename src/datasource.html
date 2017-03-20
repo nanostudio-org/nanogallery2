@@ -16,7 +16,7 @@
     </p>
     <div class="row" >
       <div class="col-md-6">
-        <h3>with HTML:</h3>
+        <h3>with HTML markup:</h3>
         <p>use the <code>data-nanogallery2</code> attribute.</p>
     <pre>
       &lt;div data-nanogallery2='{
@@ -57,7 +57,7 @@
             <th>feature</th>
             <th>cloud<br>Google Photos</th>
             <th>cloud<br>Flickr</th>
-            <th>self hosted<br>markup or inline</th>
+            <th>self hosted<br>markup or javascript</th>
             <th>self hosted<br>nanoPhotosProvider</th>
           </tr>
         </thead>
@@ -70,15 +70,29 @@
             <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
           </tr>
           <tr>
-            <td>title</td>
+            <td>display images</td>
             <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
             <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
             <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
             <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
           </tr>
           <tr>
-            <td>description</td>
+            <td>display videos</td>
+            <td>-</td>
+            <td>-</td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i> (1)</td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i> (1)</td>
+          </tr>
+          <tr>
+            <td>image title</td>
             <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+          </tr>
+          <tr>
+            <td>image description</td>
+            <td>-</td>
             <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
             <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
             <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
@@ -87,14 +101,14 @@
             <td>auto thumbnails generation</td>
             <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
             <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
-            <td>*(1)</td>
+            <td>*(2)</td>
             <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
           </tr>
           <tr>
             <td>auto responsive thumbnails</td>
             <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
             <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
-            <td>*(1)</td>
+            <td>*(2)</td>
             <td>limited</td>
           </tr>
           <tr>
@@ -120,10 +134,10 @@
           </tr>
           <tr>
             <td>max images</td>
-            <td>unlimited *(2)</td>
-            <td>unlimited *(2)</td>
-            <td>unlimited *(2)</td>
-            <td>unlimited *(2)</td>
+            <td>unlimited *(3)</td>
+            <td>unlimited *(3)</td>
+            <td>unlimited *(3)</td>
+            <td>unlimited *(3)</td>
           </tr>
           <tr>
             <td>private content</td>
@@ -162,8 +176,9 @@
           </tr>
         </tbody>
       </table>
-      *(1): thumbnail generation is out of the scope of nanogallery2.<br>
-      *(2): large number of images or albums can have negative impact on performances.
+      *(1): with a third-party lightbox.<br>
+      *(2): thumbnail generation is out of the scope of nanogallery2.<br>
+      *(3): large number of images or albums can have negative impact on performances.
     </div>
     
     
@@ -190,12 +205,12 @@
       <pre>
 &lt;div id="my_nanogallery2" data-nanogallery2&gt;
   &lt;!-- first album --&gt;
-  &lt;a href="img01a.jpg" data-ngkind="album" data-ngid="1"                     data-ngthumb="img01Ta.jpg"&gt;Album A&lt;/a&gt;
+  &lt;a href=""           data-ngkind="album" data-ngid="1"                     data-ngthumb="img01Ta.jpg"&gt;Album A&lt;/a&gt;
   &lt;a href="img02a.jpg"                     data-ngid="10" data-ngalbumid="1" data-ngthumb="img02Ta.jpg"&gt;Image 1 / album A&lt;/a&gt;
   &lt;a href="img03a.jpg"                     data-ngid="11" data-ngalbumid="1" data-ngthumb="img03Ta.jpg"&gt;Image 2 / album A&lt;/a&gt;
 
   &lt;!-- second album --&gt;
-  &lt;a href="img02.jpg" data-ngkind="album" data-ngid="2"                     data-ngthumb="image_02t.jpg"&gt;Album B&lt;/a&gt;
+  &lt;a href=""          data-ngkind="album" data-ngid="2"                     data-ngthumb="image_02t.jpg"&gt;Album B&lt;/a&gt;
   &lt;a href="img02.jpg"                     data-ngid="20" data-ngalbumid="2" data-ngthumb="img02T.jpg"   &gt;Image1&lt;/a&gt;
   &lt;a href="img03.jpg"                     data-ngid="21" data-ngalbumid="2" data-ngthumb="img03T.jpg"   &gt;Image2&lt;/a&gt;
   &lt;a href="img04.jpg"                     data-ngid="22" data-ngalbumid="2" data-ngthumb="img04T.jpg"   &gt;Image3&lt;/a&gt;
@@ -311,6 +326,17 @@
             <td>1.0</td>
           </tr>
           <tr>
+            <td>data-ngcustomData</td>
+            <td>object</td>
+            <td></td>
+            <td>
+              Object to store custom data.
+              <br>
+              Usage example: <code>data-ngcustomData='{"property1": "value1", "property2": "value2"}'</code>
+            </td>
+            <td>1.2</td>
+          </tr>
+          <tr>
             <td>data-ngtags</td>
             <td>string</td>
             <td></td>
@@ -374,6 +400,13 @@
             <td>1.0</td>
           </tr>
           <tr>
+            <td>data-ngdownloadurl</td>
+            <td>string</td>
+            <td></td>
+            <td>URL to define a specific image for download</td>
+            <td>1.2</td>
+          </tr>
+          <tr>
             <td></td>
             <td></td>
             <td></td>
@@ -427,13 +460,13 @@ $(document).ready(function () {
   $("#my_nanogallery2 ").nanoGallery({
     items: [
       // album 1
-      { src: 'image_01.jpg', srct: 'image_01ts.jpg', title: 'album A',  ID: 1,	kind:'album' },
+      { src: 'image_01.jpg',                         title: 'album A',  ID: 1,	kind:'album' },
       { src: 'image_01.jpg', srct: 'image_01ts.jpg', title: 'image A1', ID: 10, albumID: 1 },
       { src: 'image_02.jpg', srct: 'image_02ts.jpg', title: 'image A2', ID: 11, albumID: 1 },
       { src: 'image_03.jpg', srct: 'image_03ts.jpg', title: 'image A3', ID: 12, albumID: 1 },
       
       // album 2
-      {	src: 'image_02.jpg', srct: 'image_02ts.jpg', title: 'album B',  ID: 2,  kind:'album' },
+      {	src: 'image_02.jpg',                         title: 'album B',  ID: 2,  kind:'album' },
       { src: 'image_01.jpg', srct: 'image_01ts.jpg', title: 'image B1', ID: 20, albumID: 2 },
       { src: 'image_02.jpg', srct: 'image_02ts.jpg', title: 'image B2', ID: 21, albumID: 2 },
       { src: 'image_03.jpg', srct: 'image_03ts.jpg', title: 'image B3', ID: 22, albumID: 2 }
@@ -523,7 +556,7 @@ $(document).ready(function () {
             <td>1.0</td>
           </tr>
           <tr>
-            <td>imageHeight</td>
+            <td>height</td>
             <td>integer</td>
             <td>0</td>
             <td>
@@ -534,7 +567,7 @@ $(document).ready(function () {
             <td>1.0</td>
           </tr>
           <tr>
-            <td>imageWidth</td>
+            <td>width</td>
             <td>integer</td>
             <td>0</td>
             <td>
@@ -578,9 +611,9 @@ $(document).ready(function () {
             <td>object</td>
             <td></td>
             <td>
-              Property to store custom data.
+              Object to store custom data.
               <br>
-              Usage example: '{src: 'img.jpg', srct: 'imgt.jpg', title: 'image01', albumID:0, customData:{v1:1, v2:2} }'
+              Usage example: <code>'{src: 'img.jpg', srct: 'imgt.jpg', title: 'image01', customData:{prop1: val1, prop1: val2} }'</code>
             </td>
             <td>1.0</td>
           </tr>
@@ -639,7 +672,15 @@ $(document).ready(function () {
             <td></td>
             <td>Exif location - this value is used to display the image location with Google Maps on the image info window.</td>
             <td>1.0</td>
-          </tr>          <tr>
+          </tr>
+          <tr>
+            <td>downloadurl</td>
+            <td>string</td>
+            <td></td>
+            <td>URL to define a specific image for download</td>
+            <td>1.2</td>
+          </tr>
+          <tr>
             <td></td>
             <td></td>
             <td></td>
@@ -996,3 +1037,4 @@ $(document).ready(function () {
 
 
   </script>
+
