@@ -29,7 +29,7 @@
 /*******************************************/
 /* NGY2 ICON FONT                          */
 /* generated with http://fontello.com      */
-/* BASED ON FONT AWESOME                   */
+/* PARTIALLY BASED ON FONT AWESOME         */
 /*******************************************/
 
 @font-face {
@@ -44,9 +44,9 @@
   font-style: normal;
 }
 /* https://jpillora.com/base64-encoder/ */
-
-.icon-search:before { content: '\e800'; } /* '?' */
+  
 .icon-star:before { content: '\e801'; } /* '?' */
+.icon-search:before { content: '\e800'; } /* '?' */
 .icon-star-empty:before { content: '\e802'; } /* '?' */
 .icon-video:before { content: '\e803'; } /* '?' */
 .icon-videocam:before { content: '\e804'; } /* '?' */
@@ -198,22 +198,44 @@
   height: 100%;
 	overflow: hidden;
 	display: inline-block;
+  z-index: 1;
+  /* touch-action: none !important; */
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-o-box-sizing: border-box;
 }
-
+/*
+.nGY2 .nGY2GallerySub  *{
+  touch-action: auto !important;
+}
+*/
 /**************************************/
 /* THUMBNAILS                         */
 /**************************************/
-.nGY2 .nGY2GThumbnail{
+.nGY2 .nGY2GThumbnail {
 	/* no margin allowed here */
   cursor: pointer;
 	border: 0px solid #000;
 	/*margin: 1px;*/
 	padding: 0px; /* 5 */
 	background-color: #000;
+	display: inline-block;
+	position: absolute;   /*relative;*/
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	overflow:hidden;
+}
+
+.nGY2 .nGY2GThumbnailStack {
+	/* no margin allowed here */
+  background-color: #888;
+  cursor: pointer;
+	border: 0px solid #000;
+	/*margin: 1px;*/
+	padding: 0px; /* 5 */
 	display: inline-block;
 	position: absolute;   /*relative;*/
 	box-sizing: border-box;
@@ -630,13 +652,13 @@
 /* INFO                               */
 /**************************************/
 .nGY2PortInfo {
-  padding: 3px;
-  font-size: 11px;
-  color: #888;
-  text-align: center;
-  z-index:0;
-  text-transform: uppercase;
-  cursor:pointer;
+  padding: 3px !important;
+  font-size: 11px !important;
+  color: #888 !important;
+  text-align: center !important;
+  z-index:0 !important;
+  text-transform: uppercase !important;
+  cursor:pointer !important;
 }
 
 .nGY2PortInfo a, 
@@ -644,8 +666,8 @@
 .nGY2PortInfo > a:visited,
 .nGY2PortInfo a:hover,
 .nGY2PortInfo a:active {
-  color: #888;
-  text-decoration: none;
+  color: #888 !important;
+  text-decoration: none !important;
 }
 
 
@@ -681,10 +703,10 @@
   top: 50px;
   left: 5px;
   padding: 2px;
-  background: url(nanogallery2_logo.png) RGBA(0,0,0,0.5) no-repeat center;
+  background: url(nanogallery2_logo.png) RGBA(0,0,0,0) no-repeat center;
   display: block;
-  height: 25px;
-  width: 87px;
+  height: 74px;
+  width: 147px;
 }
 
 .nGY2 .nGY2ViewerContent {
@@ -700,9 +722,35 @@
 	padding-left:5px;
 	padding-right:5px;
 	padding-bottom:5px; */
+  /*
 	cursor: -webkit-zoom-out;
 	cursor: -moz-zoom-out;
 	cursor: zoom-out;
+  */
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+}
+.nGY2 .nGY2ViewerImagePan{
+  visibility: visible;
+  opacity: 0;
+  position: absolute;
+  display: inline-block;
+	padding:0px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;   /* never change this value */
+  zoom: 1;
+  draggable: false;
+  unselectable: on;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -710,7 +758,7 @@
 }
 .nGY2 .nGY2ViewerImage{
   visibility: visible;
-  opacity: 0;
+  opacity: 1;
   will-change: transform;
   transform: translateZ(0);
   position: absolute;
@@ -731,10 +779,8 @@
   background-repeat: no-repeat;
   background-position: center;
   background-color: #000;
-	border:4px solid #f8f8f8;
 	/*display:block;*/
 	padding:0px;
-	box-shadow: #888 0px 0px 20px;
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;

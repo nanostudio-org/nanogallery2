@@ -197,6 +197,7 @@
   height: 100%;
 	overflow: hidden;
 	display: inline-block;
+  z-index: 1;
   /* touch-action: none !important; */
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
