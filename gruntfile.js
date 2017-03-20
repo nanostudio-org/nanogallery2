@@ -29,6 +29,13 @@ module.exports = function(grunt) {
               'build/dist/jquery.nanogallery2.js'
             ]
           }
+        },
+        standardTargetCore: {
+          files: {
+            'build/dist/jquery.nanogallery2.core.min.js': [
+              'src/jquery.nanogallery2.core.js'
+            ]
+          }
         }
       },
       concat: {
@@ -77,6 +84,7 @@ module.exports = function(grunt) {
     grunt.registerTask('build-nanogallery2', [
       'concat:package',
       'uglify:standardTarget',
+      'uglify:standardTargetCore',
       'cssmin',
       'gh-pages'
       /* 'uglify:standardTarget',
