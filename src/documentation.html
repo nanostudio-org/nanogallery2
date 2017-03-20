@@ -1,3 +1,5 @@
+  
+  
   <div class="container ngy2documentation">
   <div class="row" >
   <div class="col-md-10">
@@ -16,7 +18,7 @@
     </p>
     <div class="row" >
       <div class="col-md-6">
-        <h3>with HTML:</h3>
+        <h3>with HTML markup:</h3>
         <p>Options are configured with the <code>data-nanogallery2</code> attribute.</p>
     <pre>
       &lt;div id="nanogallery2" data-nanogallery2='{
@@ -183,7 +185,8 @@
             <td>2</td>
             <td>
               Maximum number of rows to display
-              <br>only for <code>galleryDisplayMode: 'rows'</code> or <code>galleryDisplayMode: 'pagination'</code>
+              <br>Only for <code>galleryDisplayMode: 'rows'</code> or <code>galleryDisplayMode: 'pagination'</code>.
+              <br>Not supported if <code>thumbnailHeight: 'auto'</code>
             </td>
             <td>1.0</td>
           </tr>
@@ -202,7 +205,7 @@
             <td>boolean</td>
             <td>true</td>
             <td>
-              Enables swipe gesture to go to next/previous gallery page.
+              Enables swipe gesture to display next/previous gallery page.
             </td>
             <td>1.0</td>
           </tr>
@@ -231,7 +234,7 @@
             <td>galleryResizeAnimation</td>
             <td>boolean</td>
             <td>true</td>
-            <td>Moves the thumbnails when the gallery is resized.</td>
+            <td>Moves the thumbnails to their new position when the gallery is resized.</td>
             <td>1.0</td>
           </tr>
           <tr>
@@ -264,6 +267,13 @@
             <td>false</td>
             <td>Enable/disable the selection mode. Allows the user to select multiple thumbnails.</td>
             <td>1.0</td>
+          </tr>
+          <tr>
+            <td>thumbnailDisplayOutsideScreen</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Display or hide thumbnails which are displayed outside of the screen (display may impact performances)</td>
+            <td>1.2</td>
           </tr>
         </tbody>
         </table>
@@ -433,7 +443,7 @@
         <tr>
           <td>thumbnailDisplayInterval</td>
           <td>integer</td>
-          <td>30</td>
+          <td>15</td>
           <td>Interval in ms between the display of 2 thumbnails.</td>
           <td>1.0</td>
         </tr>
@@ -460,11 +470,18 @@
           <td>1.0</td>
         </tr>
         <tr>
+          <td>thumbnailStacks</td>
+          <td>integer</td>
+          <td>0</td>
+          <td>Add N stacks behin each thumbnail. Usefull for thumbnails hover effects</td>
+          <td>1.2</td>
+        </tr>
+        <tr>
           <td></td>
           <td></td>
           <td></td>
           <td></td>
-          <td>1.0</td>
+          <td>1.2</td>
         </tr>
       </tbody>
       </table>
@@ -762,8 +779,8 @@
     <br>
     <h4><i class="fa fa-circle-o"></i> Additional tuning</h4>
     <p>
-      Fine tuning settings: duration, delay, easing, back duration, back delay, beack easing
-      <br>syntax: <code>thumbnailHoverEffect2: { name: '[effectName]', delay: 0, duration: 400, easing: 'easeOutQuart', delayBack: 0, durationBack: 300, easingBack: 'easeOutQuart' }</code>
+      Fine tuning settings: duration, delay, easing, back duration, back delay, beack easing, hoverin, hoverout, first keyframe
+      <br>syntax: <code>thumbnailHoverEffect2: { name: '[effectName]', delay: 0, duration: 400, easing: 'easeOutQuart', delayBack: 0, durationBack: 300, easingBack: 'easeOutQuart', hoverin: true, hoverout: true, firstKeyframe: true }</code>
       <br>where:
       <ul>
         <li><b>duration</b>: the duration of the effect in ms</li>
@@ -775,6 +792,9 @@
         <li><b>durationBack</b>: duration of the effect to initial state, in ms</li>
         <li><b>delayBack</b>: start delay back transformation in ms</li>
         <li><b>easingBack</b>: easing used for the back transformation</li>
+        <li><b>hoverin</b>: used on hover in</li>
+        <li><b>hoverout</b>: used on hover out</li>
+        <li><b>firstKeyframe</b>: used for chained animations</li>
       </ul>
       <u>Note:</u> <b>name</b> is the only mandatory proprety.
       <br>Some examples:
@@ -784,7 +804,22 @@
         <li>combination of 2 effects: <code>thumbnailHoverEffect2: [{ name: 'image_scale_1.00_1.20', duration: 500}, { name: 'image_rotateZ_0deg_15deg', delay: 500}]</code></li>
       </ul>
     </p>
-
+    
+    <br><br>
+    <h4><i class="fa fa-circle-o"></i> Stacks</h4>
+    <p>
+      Stacks can be added behind thumbnails to create nice hover effects. Their color is defined in the colorScheme.
+      <br>
+      Use <code>thumbnailStacks</code> and <code>thumbnailL1Stacks</code> to define then number of stacks.
+      <br><br>
+      The thumbnail animation is applied to the stack, but with a percent value.
+      <br>
+      For example, if <code>thumbnailStacksRotateX is set to 0.4</code>, then the 1st stack will have a percent of 0.6 applied to the rotationX value of the thumbnail.
+      <br>
+      For the second stack, the percent will be 0.2, for the third one it will be -0,2, and so on.
+      <br><br>
+      Possible parameters to set these percents: 'thumbnailStacksTranslateX', 'thumbnailStacksTranslateY', 'thumbnailStacksTranslateZ', 'thumbnailStacksRotateX', 'thumbnailStacksRotateY', 'thumbnailStacksRotateZ', 'thumbnailStacksScale'
+    </p>
     
     
     <div id="ngy2_thumbnail_tools"></div>
@@ -993,11 +1028,7 @@
         </thead>
         <tbody>
           <tr>
-            <td>thumbnailL1Height</td>
-            <td>1.0</td>
-          </tr>
-          <tr>
-            <td>thumbnailL1Width</td>
+            <td>thumbnailL1Height, thumbnailL1Width</td>
             <td>1.0</td>
           </tr>
           <tr>
@@ -1037,6 +1068,14 @@
             <td>1.0</td>
           </tr>
           <tr>
+            <td>thumbnailL1Stacks</td>
+            <td>1.2</td>
+          </tr>
+          <tr>
+            <td>thumbnailL1GutterWidth, thumbnailL1GutterHeight</td>
+            <td>1.2</td>
+          </tr>
+          <tr>
             <td></td>
             <td></td>
           </tr>
@@ -1054,7 +1093,7 @@
       <img src="img/ngy2_lightbox.png" class="img-responsive center-block">
       <br><br>
       All available tools can be displaued in each of the 3 toolbar. Possible tools: 'previousButton', 'pageCounter', 'nextButton', 'playPauseButton', 'fullscreenButton', 'infoButton', 'linkOriginalButton', 'closeButton', 'downloadButton', 'label', 'customN'<br>
-      To add custom elements in a toolbar, use the label customN, where N is an integer (e.g. cutom1, custom2...).
+      To add custom elements in a toolbar, use the label customN, where N is an integer (e.g. custom1, custom2...).
     </blockquote>
     <div class="table-responsive">
       <table class="table table-striped table-hover">
@@ -1207,6 +1246,13 @@
             <br>Possible values: 'dark', 'light', 'border'.
             <br>Custom color schemes are supported.</td>
             <td>1.0</td>
+          </tr>
+          <tr>
+            <td>viewerDisplayLogo</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>To display a logo.</td>
+            <td></td>
           </tr>
           <tr>
             <td></td>
