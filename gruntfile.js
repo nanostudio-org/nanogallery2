@@ -36,6 +36,20 @@ module.exports = function(grunt) {
               'src/jquery.nanogallery2.core.js'
             ]
           }
+        },
+        standardTargetGoogle2: {
+          files: {
+            'build/dist/jquery.nanogallery2.data_google2.min.js': [
+              'src/jquery.nanogallery2.data_google2.js'
+            ]
+          }
+        },
+        standardTargetFlickr: {
+          files: {
+            'build/dist/jquery.nanogallery2.data_flickr.min.js': [
+              'src/jquery.nanogallery2.data_flickr.js'
+            ]
+          }
         }
       },
       concat: {
@@ -85,6 +99,8 @@ module.exports = function(grunt) {
       'concat:package',
       'uglify:standardTarget',
       'uglify:standardTargetCore',
+      'uglify:standardTargetGoogle2',
+      'uglify:standardTargetFlickr',
       'cssmin',
       'gh-pages'
       /* 'uglify:standardTarget',
