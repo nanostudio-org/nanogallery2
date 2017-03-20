@@ -1,6 +1,27 @@
 nanogallery2 - ChangeLog
 ===========
   
+v1.2.0
+------
+- new: thumbnails hover effects can now be chained and syntax has been enhanced with new options
+- new: stack motions effects - options 'thumbnailStacks' and 'thumbnailL1Stacks' to add N stacks behind the thumbnails (thanks to Mary Lou from Codrops for the inspiration - https://tympanus.net/codrops/2017/03/15/stack-motion-hover-effects/)
+- new: options 'thumbnailStacksTranslateX', 'thumbnailStacksTranslateY', 'thumbnailStacksTranslateZ', 'thumbnailStacksRotateX', 'thumbnailStacksRotateY', 'thumbnailStacksRotateZ', 'thumbnailStacksScale'
+- new: color scheme option 'stackBackground'
+- new: options 'thumbnailL1GutterWidth' and 'thumbnailL1GutterHeight'
+- new: #23 define a specific image for download (options 'downloadURL' or 'ngdownloadurl')
+- new: #21 option 'thumbnailDisplayOutsideScreen' to let the thumbnails always displayed even if not visible on screen (may impact performances)
+- new: parameter 'itemsBaseURL' ignored when source of an image is an full URL
+- new: #20 option 'data-ngcustomdata' (additionaly to 'ngcustomdata')
+- new: thumbnail icon 'display' to open a thumbnail even if selection mode is activated
+- changed: hammer.js v2.0.8
+- changed: 'viewerDisplayLogo' default value set to false
+- changed: access to old Picasa content now included in module google2
+- fixed: #28 - Setting navigationBreadcrumb borderRadius does not have impact
+- fixed: parameter 'galleryMaxItems' not working with data source 'google2'
+- fixed: parameter 'descriptionFontSize' ignored
+- fixed: image zoom with mouse wheel on Firefox
+
+
 v1.1.0
 ------
 - new: custom tools for thumbnails ('custom1..10' and the associated icons (icons.thumbnailCustomTool1..10))
