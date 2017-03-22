@@ -1,4 +1,3 @@
-  
   <div class="container">
     <br><br>
     <h1>nanogallery2 demonstrations</h1>
@@ -40,9 +39,11 @@
         <button type="button" class="btn btn-primary" id="btnNGY2_source_demo1a">Flickr - albums</button>
         <button type="button" class="btn btn-primary" id="btnNGY2_source_demo1b">Flickr - one album</button>
         <br><br>
-        <button type="button" class="btn btn-primary" id="btnNGY2_source_demo2">Google Photos - albums</button>
-        <button type="button" class="btn btn-primary" id="btnNGY2_source_demo2a">Google Photos - one album</button>
+        <button type="button" class="btn btn-primary" id="btnNGY2_source_demo2">Google Photos - list of albums</button>
+        <button type="button" class="btn btn-primary" id="btnNGY2_source_demo2a">Google Photos - content of one album</button>
+        <!--
         <button type="button" class="btn btn-primary" id="btnNGY2_source_demo2b">Google Photos - one private album</button>
+        -->
       </li>
       <li>
         <!-- <p>Thumbnail components</p> -->
@@ -66,7 +67,7 @@
         <!-- <p>Thumbnail hover effects</p> -->
         <p>
           <button type="button" class="btn btn-success" id="btnNGY2_hover_demo2">Popout thumbnails</button>
-          <button type="button" class="btn btn-primary" id="btnNGY2_hover_demo4">Tilt</button>
+          <button type="button" class="btn btn-primary" id="btnNGY2_hover_demo4">Parallax</button>
           <button type="button" class="btn btn-primary" id="btnNGY2_hover_demo1">Shuffle thumbnails</button>
           <button type="button" class="btn btn-primary" id="btnNGY2_hover_demo3">Image rotate</button>
           <!-- 
@@ -274,14 +275,17 @@
      
         btnNGY2_source_demo2: function() {
           jQuery("#nanogallery2").nanogallery2({
-            kind: 'google',
+            kind: 'google2',
             userID: '111186676244625461692',
+            google2URL: 'https://nano.gallery/nanogp/nanogp.php',
+            whiteList: 'nature|life|traditions|people',
             thumbnailHeight: 150, thumbnailWidth:150,
             locationHash: false
           });
           var html=html_part1;
           html+='        "kind": "google",\n';
           html+='        "userID": "111186676244625461692",\n';
+          html+='        "google2URL": "https://YOUR_WEB_SERVER/nanogp/nanogp.php",\n';
           html+='        "thumbnailHeight": 150, "thumbnailWidth": 150\n';
           html+=html_part2+html_part3;
           jQuery('#ngy2_template').html(html);
@@ -289,19 +293,21 @@
           html2+=' "kind": "google", "userID": "111186676244625461692", "thumbnailHeight": 150, "thumbnailWidth": 150';
           html2+=portable_part2;
           jQuery('#ngy2_portable').html(html2);
-          jQuery('#ngy2_description').text('Content source = Google Photos. Display the public albums.');
+          jQuery('#ngy2_description').text('Content source = Google Photos. Displays the list of public albums. Requires the server module NANOGP.');
         },
         btnNGY2_source_demo2a: function() {
           jQuery("#nanogallery2").nanogallery2({
-            kind: 'google',
+            kind: 'google2',
             userID: '111186676244625461692',
             album: '5852572882905112961',
+            google2URL: 'https://nano.gallery/nanogp/nanogp.php',
             thumbnailHeight: 150, thumbnailWidth:150,
             locationHash: false
           });
           var html=html_part1;
-          html+='        "kind": "google",\n';
+          html+='        "kind": "google2",\n';
           html+='        "userID": "111186676244625461692",\n';
+          html+='        "google2URL": "https://YOUR_WEB_SERVER/nanogp/nanogp.php",\n';
           html+='        "album": "5852572882905112961",\n';
           html+='        "thumbnailHeight": 150, "thumbnailWidth": 150\n';
           html+=html_part2+html_part3;
@@ -310,20 +316,23 @@
           html2+=' "kind": "google", "userID": "111186676244625461692", "album": "5852572882905112961", "thumbnailHeight": 150, "thumbnailWidth": 150';
           html2+=portable_part2;
           jQuery('#ngy2_portable').html(html2);
-          jQuery('#ngy2_description').text('Content source = Google Photos. Display the photos contained in one specific public album.');
+          jQuery('#ngy2_description').text('Content source = Google Photos. Displays the photos contained in one specific public album. Requires the server module NANOGP.');
         },
         btnNGY2_source_demo2b: function() {
           jQuery("#nanogallery2").nanogallery2({
-            kind: 'google',
+            kind: 'google2',
+            google2URL: 'https://nano.gallery/nanogp/nanogp.php',
             userID: '111186676244625461692',
-            album: '5851968929721015169&authkey=CJSlhdKSgoiXtgE',
+            albumList2: ['Traditions', 'People'],
             thumbnailHeight: 150, thumbnailWidth:150,
             locationHash: false
           });
           var html=html_part1;
-          html+='        "kind": "google",\n';
+          html+='        "kind": "google2",\n';
           html+='        "userID": "111186676244625461692",\n';
-          html+='        "album": "5851968929721015169&authkey=CJSlhdKSgoiXtgE",\n';
+          html+='        "google2URL": "https://YOUR_WEB_SERVER/nanogp/nanogp.php",\n';
+          html+='        "album": "5852572882905112961",\n';
+          //html+='        "album": "5851968929721015169&authkey=CJSlhdKSgoiXtgE",\n';
           html+='        "thumbnailHeight": 150, "thumbnailWidth": 150\n';
           html+=html_part2+html_part3;
           jQuery('#ngy2_template').html(html);
@@ -331,7 +340,7 @@
           html2+=' "kind": "google", "userID": "111186676244625461692", "album": "5851968929721015169&authkey=CJSlhdKSgoiXtgE", "thumbnailHeight": 150, "thumbnailWidth": 150';
           html2+=portable_part2;
           jQuery('#ngy2_portable').html(html2);
-          jQuery('#ngy2_description').text('Content source = Google Photos. Display the photos contained in one specific private album.');
+          jQuery('#ngy2_description').text('Content source = Google Photos. Displays 2 specified albums.  Requires the server module NANOGP.');
         },
         
         // Self hosted images - one album
@@ -472,7 +481,7 @@
           jQuery('#ngy2_description').text('Move the mouse over a thumbnail or touch a thumbnail to see the hover effect (requires v1.2.0+).');
         },
 
-        // TILT EFFECT
+        // PARALLAX EFFECT
         btnNGY2_hover_demo4: function() {
           jQuery("#nanogallery2").nanogallery2({
             thumbnailHeight: 210, thumbnailWidth:210,
@@ -865,4 +874,3 @@
     
     
   </script>
-
