@@ -1,4 +1,3 @@
-  
   <div class="container ngy2documentation">
     <br><br>
     <h1>nanogallery2 API - reference guide</h1>
@@ -362,10 +361,26 @@
               <td></td>
               <td>
                 Returns an object pointing to:<br>
-                &nbsp;&nbsp;- items: array with all the gallery items (albums and images)<br>
-                &nbsp;&nbsp;- gallery: the <b>GOM</b> - <b>G</b>allery <b>O</b>bject <b>M</b>odel of the currently displayed gallery<br>
-                &nbsp;&nbsp;- viewer: the <b>VOM</b> - <b>V</b>iewer <b>O</b>bject <b>M</b>odel of the currently displayed lightbox<br>
+                &nbsp;&nbsp;- <b>items</b> (array): with all the gallery items (albums and images)<br>
+                &nbsp;&nbsp;- <b>gallery</b> (object): the <b>GOM</b> - <b>G</b>allery <b>O</b>bject <b>M</b>odel of the current gallery<br>
+                &nbsp;&nbsp;- <b>viewer</b> (object): the <b>VOM</b> - <b>V</b>iewer <b>O</b>bject <b>M</b>odel of the current lightbox<br>
+                <br>
                 Usage: <code>$('#your_nanogallery2').nanogallery2('data');</code>
+                <br><br>
+                Example: get all the items (images and albums)
+                <br>
+                <code>items=$('#your_nanogallery2').nanogallery2('data').items</code>
+                <br><br>
+                Example: retrieve the selected thumbnails
+                <br>
+<pre>                
+var items=$('#your_nanogallery2').nanogallery2('data').gallery.items;
+items.forEach( function(curr) {
+  if( curr.selected === true ) {
+    console.dir(curr);
+  }
+});
+</pre>
               </td>
               <td>1.0</td>
             </tr>
@@ -402,7 +417,7 @@
               <td>option</td>
               <td>option_name</td>
               <td>
-                Returns the value of an option.<br>
+                <b>Returns</b> the value of an option.<br>
                 Usage: <code>var optionValue=$('#your_nanogallery2').nanogallery2('option', option_name);</code>
               </td>
               <td>1.0</td>
@@ -411,11 +426,12 @@
               <td>option</td>
               <td>option_name,<br> new_value</td>
               <td>
-                Sets the value of an option (note: only some options are supported).<br>
+                <b>Sets</b> the value of an option (note: only some options are supported).<br>
                 Usage: <code>$('#your_nanogallery2').nanogallery2('option', option_name, new_value);</code>
               </td>
               <td>1.0</td>
             </tr>
+            <!--
             <tr>
               <td>getItem</td>
               <td>item_index</td>
@@ -443,6 +459,7 @@
               </td>
               <td>1.0</td>
             </tr>
+            -->
             <tr>
               <td>itemsSelectedGet</td>
               <td></td>
