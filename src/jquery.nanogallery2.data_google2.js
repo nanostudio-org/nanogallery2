@@ -55,7 +55,7 @@
           url += '?alt=json&v=3&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime()) + '&access_token=' + gat;
         }
         else {
-          if( G.O.google2URL == '' ) {
+          if( G.O.google2URL == undefined || G.O.google2URL == '' ) {
             // old Picasa access method (for content before 09/02/2017
             url += '?alt=json&v=3&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime());
           }
@@ -77,13 +77,13 @@
           url += '/albumid/'+albumID+'?alt=json&kind=photo&thumbsize='+G.picasa.thumbSizes+maxResults+auth+'&imgmax=d&access_token=' + gat;
         }
         else {
-          if( G.O.google2URL == '' ) {
+          if( G.O.google2URL == undefined || G.O.google2URL == '' ) {
             // old Picasa access method (for content before 09/02/2017
             url += '?alt=json&v=3&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime());
           }
           else {
             // nanogp
-            url += '/albumid/'+albumID+'?alt=json&kind=photo&thumbsize='+G.picasa.thumbSizes+maxResults+auth+'&imgmax=d';
+            url=G.O.google2URL + '?nguserid='+G.O.userID+'&ngalbumid='+albumID+'&alt=json&v=3&kind=photo&thumbsize='+G.picasa.thumbSizes+maxResults+auth+'&imgmax=d';
           }
         }
       }
@@ -113,7 +113,7 @@
         var gi_data_loaded = null;
         // load more than 1000 data (contributor: Giovanni Chiodi)
         var GI_loadJSON = function(url,start_index){
-
+console.log(url + '&start-index=' + start_index + '&callback=?');
           jQuery.getJSON( url + '&start-index=' + start_index + '&callback=?', function(data) {
           
             if( data.nano_status == 'error' ) {
