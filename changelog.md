@@ -1,5 +1,14 @@
 nanogallery2 - ChangeLog
 ===========
+
+v1.2.1
+------
+- fixed: Google Photos albums not displayed (with NANOGP - https://github.com/nanostudio-org/nanogp)
+- fixed: kind 'google' for (old) Picasa data
+- fixed: #31 pagination 'pageChanged' event only fired with next/previous
+- fixed: parameter 'galleryLastRowFull' ignored in justified layout
+
+  
   
 v1.2.0
 ------
@@ -16,7 +25,7 @@ v1.2.0
 - changed: hammer.js v2.0.8
 - changed: 'viewerDisplayLogo' default value set to false
 - changed: access to old Picasa content now included in module google2
-- fixed: #28 - Setting navigationBreadcrumb borderRadius does not have impact
+- fixed: #28 - Setting navigationBreadcrumb borderRadius does not have any impact
 - fixed: parameter 'galleryMaxItems' not working with data source 'google2'
 - fixed: parameter 'descriptionFontSize' ignored
 - fixed: image zoom with mouse wheel on Firefox
