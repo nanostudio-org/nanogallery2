@@ -20,7 +20,6 @@
  */
 
 
- 
 // ###########################################
 // ##### nanogallery2 as a JQUERY PLUGIN #####
 // ###########################################
@@ -298,7 +297,7 @@
           // create new item (image, album or albumUp)
           NGY2Item.New = function( instance, title, description, ID, albumID, kind, tags ) {
             var album=NGY2Item.Get( instance, albumID );
-            if( albumID != -1 && albumID != 0 && title !='dummydummydummy'  ) {
+            if( albumID != -1 && albumID != 0 && title !='image gallery by nanogallery2 [build]'  ) {
               if( instance.O.thumbnailLevelUp && album.getContentLength(false) == 0) {
                 // add navigation thumbnail (album up)
                 var item=new NGY2Item('0');
@@ -319,7 +318,7 @@
               // create a new item (otherwise, just update the existing one)
               item=new NGY2Item(ID);
               instance.I.push(item);
-              if( albumID != -1 && title !='dummydummydummy' ) {
+              if( albumID != -1 && title !='image gallery by nanogallery2 [build]' ) {
                 album.contentLength+=1;
               }
             }
@@ -531,7 +530,7 @@
           NGY2Item.prototype.thumbImg = function () {   
             var tnImg = { src:'', width:0, height:0 };
 
-            if( this.title == 'dummydummydummy' ) {
+            if( this.title == 'image gallery by nanogallery2 [build]' ) {
               tnImg.src=this.G.emptyGif;
               tnImg.url=this.G.emptyGif;
               return tnImg;
@@ -718,10 +717,8 @@
             }
             if( eltClass == '.nGY2GThumbnail' ) {
               var nbStack=obj.$elt.length-1;
-              console.dir(nbStack);
               for( var n=nbStack; n>=0; n-- ) {
                 obj.$elt[n].style[this.G.CSStransformName]= v;
-                // console.dir(n);
               }
             }
             else {
@@ -1281,7 +1278,7 @@
               break;
             }
           }
-          if(typeof nG2.O.fnShoppingCartUpdated === 'function'){
+          if(typeof nG2.O.fn   === 'function'){
             nG2.O.fnShoppingCartUpdated(nG2.shoppingCart);
           }
           return nG2.shoppingCart;
@@ -2371,6 +2368,7 @@
         elt$.data('pageNumber', i );
         elt$.click(function(e) {
           G.GOM.pagination.currentPage=jQuery(this).data('pageNumber');
+          TriggerCustomEvent('pageChanged');
           GalleryDisplay( true );
         });
 
@@ -2408,7 +2406,6 @@
       }
       
       G.GOM.pagination.currentPage = pn;
-      // G.$E.base.trigger('pageChanged.nanogallery2', new Event('pageChanged.nanogallery2'));
       TriggerCustomEvent('pageChanged');
 
       GalleryDisplay( true );
@@ -2439,7 +2436,6 @@
       }
 
       G.GOM.pagination.currentPage = pn;
-      // G.$E.base.trigger('pageChanged.nanogallery2', new Event('pageChanged.nanogallery2'));
       TriggerCustomEvent('pageChanged');
       GalleryDisplay( true );
     }
@@ -3046,7 +3042,7 @@
       lastPosX=0;
       cnt=0;
       
-      G.GOM.lastFullRow=1;    // display at leat 1 row (even if not full)
+      G.GOM.lastFullRow=0;    // display at leat 1 row (even if not full)
       
       // second loop --> calculate each thumbnail size
       for( var i=0; i < nbTn ; i++ ) {
@@ -3093,7 +3089,7 @@
           if( i == rowLastItem[rowNum] ) {
             // start a new row
             curPosY+=curTn.height+gutterHeight;
-            G.GOM.lastFullRow=rowNum;
+            G.GOM.lastFullRow=rowNum-1;
             rowNum++;
             lastPosX=0;
           }
@@ -3678,7 +3674,7 @@
         G.O.fnThumbnailInit($newDiv, item, GOMidx);
       }
 
-      if( item.title != 'dummydummydummy' ) {
+      if( item.title != 'image gallery by nanogallery2 [build]' ) {
         ThumbnailOverInit(GOMidx);
       }
       
@@ -3815,7 +3811,6 @@
                 if( item.featured === true ) {
                   toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="">';
                   toolbar+= '      <div class="nGY2GThumbnailIconImageFeatured">'+G.O.icons.thumbnailFeatured+'</div>';
-                  // toolbar+= '      <div class="nGY2GThumbnailIconText">'+sp+'</div>';
                   toolbar+= '    </li>';
                   cnt++;
                 }
@@ -3829,7 +3824,6 @@
                   else {
                     toolbar+= '      <div class="nGY2GThumbnailIconImageSelect nGY2ThumbnailUnselected">'+G.O.icons.thumbnailUnselected+'</div>';
                   }
-                  // toolbar+= '      <div class="nGY2GThumbnailIconText">'+sp+'</div>';
                   toolbar+= '    </li>';
                   cnt++;
                 }
@@ -7890,7 +7884,6 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
       
       G.GOM.hammertime.on('pan', function(ev) {
         if( G.O.paginationSwipe && G.layout.support.rows && G.galleryDisplayMode.Get() == 'PAGINATION' ) {
-        // console.dir(ev);
           G.$E.conTn.css( G.CSStransformName , 'translateX('+(ev.deltaX)+'px)');
         }
       });
@@ -12194,7 +12187,7 @@ if (typeof define === 'function' && define.amd) {
           url += '?alt=json&v=3&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime()) + '&access_token=' + gat;
         }
         else {
-          if( G.O.google2URL == '' ) {
+          if( G.O.google2URL == undefined || G.O.google2URL == '' ) {
             // old Picasa access method (for content before 09/02/2017
             url += '?alt=json&v=3&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime());
           }
@@ -12216,13 +12209,13 @@ if (typeof define === 'function' && define.amd) {
           url += '/albumid/'+albumID+'?alt=json&kind=photo&thumbsize='+G.picasa.thumbSizes+maxResults+auth+'&imgmax=d&access_token=' + gat;
         }
         else {
-          if( G.O.google2URL == '' ) {
+          if( G.O.google2URL == undefined || G.O.google2URL == '' ) {
             // old Picasa access method (for content before 09/02/2017
             url += '?alt=json&v=3&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime());
           }
           else {
             // nanogp
-            url += '/albumid/'+albumID+'?alt=json&kind=photo&thumbsize='+G.picasa.thumbSizes+maxResults+auth+'&imgmax=d';
+            url=G.O.google2URL + '?nguserid='+G.O.userID+'&ngalbumid='+albumID+'&alt=json&v=3&kind=photo&thumbsize='+G.picasa.thumbSizes+maxResults+auth+'&imgmax=d';
           }
         }
       }
@@ -12252,7 +12245,7 @@ if (typeof define === 'function' && define.amd) {
         var gi_data_loaded = null;
         // load more than 1000 data (contributor: Giovanni Chiodi)
         var GI_loadJSON = function(url,start_index){
-
+console.log(url + '&start-index=' + start_index + '&callback=?');
           jQuery.getJSON( url + '&start-index=' + start_index + '&callback=?', function(data) {
           
             if( data.nano_status == 'error' ) {
