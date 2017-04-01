@@ -12,11 +12,15 @@ nanogallery2 is a javascript library for building beautiful, modern and high-qua
 [![Build Status](https://travis-ci.org/nanostudio-org/nanogallery2.svg?branch=dev-gh-pages)](https://travis-ci.org/nanostudio-org/nanogallery2)
   
 ## Documentation, Demonstrations and Tutorials
-Visit the [nanogallery2 homepage](http://nanogallery2.nanostudio.org)   
+Quick start: [here](http://nanogallery2.nanostudio.org/quickstart.html)   
+Examples: [here](http://nanogallery2.nanostudio.org/demonstration.html)   
+Documentation: [here](http://nanogallery2.nanostudio.org/documentation.html)   
+API: [here](http://nanogallery2.nanostudio.org/api.html)   
+Content source: [here](http://nanogallery2.nanostudio.org/datasource.html)   
+Builder: [here](http://nanogallery2.nanostudio.org/builder.html)   
 
 ## Package managers
 
-Bower: `bower install nanogallery2`  
 npm: `npm install nanogallery2`
 
 ## License
