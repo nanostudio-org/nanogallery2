@@ -5,7 +5,7 @@
   "authors": [
     "Christophe Brisbois"
   ],
-  "description": "beautiful image gallery for your website",
+  "description": "beautiful, modern and high-quality image gallery",
   "main": "dist/jquery.nanogallery2.min.js",
   "keywords": [
     "nanogallery",
