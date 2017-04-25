@@ -34,12 +34,12 @@
 
 @font-face {
   font-family: 'ngy2_icon_font';
-  src: url('font/ngy2_icon_font.eot?68476359');
-  src: url('font/ngy2_icon_font.eot?68476359#iefix') format('embedded-opentype'),
-       url('font/ngy2_icon_font.woff2?68476359') format('woff2'),
-       url('font/ngy2_icon_font.woff?68476359') format('woff'),
-       url('font/ngy2_icon_font.ttf?68476359') format('truetype'),
-       url('font/ngy2_icon_font.svg?68476359#ngy2_icon_font') format('svg');
+  src: url('font/ngy2_icon_font.eot?62863819');
+  src: url('font/ngy2_icon_font.eot?62863819#iefix') format('embedded-opentype'),
+       url('font/ngy2_icon_font.woff2?62863819') format('woff2'),
+       url('font/ngy2_icon_font.woff?62863819') format('woff'),
+       url('font/ngy2_icon_font.ttf?62863819') format('truetype'),
+       url('font/ngy2_icon_font.svg?62863819#ngy2_icon_font') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -112,6 +112,8 @@
 .icon-circle-empty:before { content: '\f10c'; } /* '?' */
 .icon-tumblr-squared:before { content: '\f174'; } /* '?' */
 .icon-twitter-squared:before { content: '\f304'; } /* '?' */
+.icon-youtube-play:before { content: '\f16a'; } /* '?' */
+.icon-vkontakte:before { content: '\f189'; } /* '?' */
 
 .nGY2Icon {
   margin-left: .2em;
