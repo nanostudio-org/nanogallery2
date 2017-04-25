@@ -1,3 +1,4 @@
+
  <div class="jumbotron ngy2dark">
     <div class="container ">
       <div class="row text-right" >
@@ -662,7 +663,6 @@
         //userID: '111186676244625461692',
         kind: 'flickr',
         userID: '149035168@N08',    // nano studio
-        
         //kind : 'google2', 
         //userID : '111186676244625461692', 
         //google2URL : 'http://lvh.me:12345/nanogp/nanogp.php',
@@ -677,10 +677,17 @@
 
         //photoset: 'NONE',
         blackList: 'forhomepage|scrapbook|profil',
-        thumbnailDisplayTransition: 'scaleDown_1.5',
-//        thumbnailDisplayTransitionDuration: 5000,
+//        thumbnailDisplayTransition: 'scaleDown_1.5',
+        thumbnailL1DisplayTransition: 'flipUp',
+        thumbnailL1DisplayTransitionDuration: 500,
+        thumbnailL1DisplayInterval: 90,
+
+        thumbnailDisplayTransition: 'SLIDERIGHT',
+        thumbnailDisplayTransitionDuration: 600,
+        thumbnailDisplayInterval: 60,
         thumbnailHeight: '200 XS150 SM150', thumbnailWidth: 'auto',
         thumbnailL1Height: '200 XS100 SM150', thumbnailL1Width: '300 XS100 SM225',
+        galleryL1MaxRows: 1,
 
 
 
@@ -716,7 +723,7 @@ thumbnail_translateZ_0px_150px_easeOutQuad_400| \
         breadcrumbHideIcons: true,
         navigationFontSize: '1.2em',
         gallerySorting: 'random',
-        thumbnailDisplayInterval: 30,
+//        thumbnailDisplayInterval: 30,
 
         colorScheme : { thumbnail: { titleShadow : 'none', descriptionShadow : 'none'} },
         
