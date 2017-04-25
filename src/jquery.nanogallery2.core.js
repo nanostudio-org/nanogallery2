@@ -18,6 +18,23 @@
  *  - ICO online converter: https://iconverticons.com/online/
  */
 
+/*
+
+v1.2.2
+- new: ImagesLoaded now in version 4.1.1
+- fixed: old Picasa albums not retrieved (for data before 09/02/2017)
+- new: thumbnailDisplayTransition 'slideUp' and 'slideDown': distance can be defined (example: 'slideUp_200')
+- new: thumbnailDisplayTransition 'flipDown' (and 'flipDown_N'), 'flipUp (and 'flipUp_N'), 'slideUp2' (and 'slideUp2_N'), 'slideDown2' (and 'slideDown2_N'), 'slideRight' (and 'slideRight_N'), 'slideLeft' (and 'slideLeft_N')
+- new: fnThumbnailL1DisplayEffect, thumbnailL1DisplayTransition, thumbnailL1DisplayTransitionDuration, thumbnailL1DisplayInterval
+- new: share to VK.com
+- fixed: share to Google+
+- fixed: #37 Error using custom colors for colorSchemeViewer breaks nanoGallery2
+
+TODO:
+- locationHash on false -> remove share?
+
+*/ 
+ 
 
 // ###########################################
 // ##### nanogallery2 as a JQUERY PLUGIN #####
@@ -54,14 +71,14 @@
           NGY2Tools.AreaShuffle = function (o) {
             for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
             return o;
-          }
+          };
 
           // check album name - albumList/blackList/whiteList
           NGY2Tools.FilterAlbumName = function( title, ID ) {
           var s=title.toUpperCase();
             if( this.albumList.length > 0 ) {
               for( var j=0; j < this.albumList.length; j++) {
-                if( s == this.albumList[j].toUpperCase() || ID == this.albumList[j] ) {
+                if( s === this.albumList[j].toUpperCase() || ID === this.albumList[j] ) {
                   return true;
                 }
               }
@@ -90,7 +107,7 @@
               
               return true;
             }
-          }            
+          };
 
 
           /** @function nanoAlert */
@@ -242,7 +259,7 @@
               url:    { l1: { xs: '', sm:'', me: '', la: '', xl: '' }, lN: { xs: '', sm: '', me: '', la:'', xl: '' } },
               width:  { l1: { xs: 0,  sm: 0, me: 0,  la: 0 , xl: 0  }, lN: { xs: 0 , sm: 0,  me: 0,  la: 0, xl: 0  } },
               height: { l1: { xs: 0,  sm: 0, me: 0,  la: 0 , xl: 0  }, lN: { xs: 0,  sm: 0,  me: 0,  la: 0, xl: 0  } }
-            }
+            };
             this.featured =             false;    // featured element
             this.flickrThumbSizes =     {};       // store URLs for all available thumbnail sizes (flickr)
             this.picasaThumbs =         null;     // store URLs and sizes
@@ -281,7 +298,7 @@
               }
             }
             return null;
-          }
+          };
             
           NGY2Item.GetIdx = function( instance, ID ) {
             var l=instance.I.length;
@@ -291,7 +308,7 @@
               }
             }
             return -1;
-          }
+          };
           
           // create new item (image, album or albumUp)
           NGY2Item.New = function( instance, title, description, ID, albumID, kind, tags ) {
@@ -383,7 +400,6 @@
             }
             
             // set (maybe modified) fields title and description
-            
             item.title=escapeHtml(instance, title);
             item.description=escapeHtml(instance, description);
             return item;
@@ -391,16 +407,7 @@
           
           // function to avoid XSS issue - Cross Site Scripting
           // original: https://github.com/janl/mustache.js/blob/master/mustache.js#L55
-          var entityMap = {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#39;',
-            '/': '&#x2F;',
-            '`': '&#x60;',
-            '=': '&#x3D;'
-          };
+          var entityMap = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '/': '&#x2F;', '`': '&#x60;', '=': '&#x3D;' };
           function escapeHtml (instance, string) {
             if( instance.O.allowHTMLinData == true ) {
               return string;
@@ -410,7 +417,7 @@
                 return entityMap[s];
               });
             }
-          };
+          }
           
           
           NGY2Item.get_nextId = function () {
@@ -439,14 +446,14 @@
           //--- returns the album containing the item
           NGY2Item.prototype.album = function() {
             return this.G.I[NGY2Item.GetIdx(this.G, this.albumID)];
-          }
+          };
 
           //--- set one image (url and size)
           NGY2Item.prototype.imageSet = function( src, w, h ) {
             this.src = src;
             this.width = w;
             this.height = h;
-          }
+          };
           
           //--- set one thumbnail (url and size) - screenSize and level are optionnal
           NGY2Item.prototype.thumbSet = function( src, w, h, screenSize, level ) {
@@ -679,13 +686,13 @@
                 
                 if( nbStacks > 0 ) {
                   // apply a percent to the stack elements
-                  pTranslateX-=this.G.thumbnailStacksTranslateX.Get();
-                  pTranslateY-=this.G.thumbnailStacksTranslateY.Get();
-                  pTranslateZ-=this.G.thumbnailStacksTranslateZ.Get();
-                  pRotateX-=this.G.thumbnailStacksRotateX.Get();
-                  pRotateY-=this.G.thumbnailStacksRotateY.Get();
-                  pRotateZ-=this.G.thumbnailStacksRotateZ.Get();
-                  pScale-=this.G.thumbnailStacksScale.Get();
+                  pTranslateX-=this.G.tn.opt.Get('stacksTranslateX');
+                  pTranslateY-=this.G.tn.opt.Get('stacksTranslateY');
+                  pTranslateZ-=this.G.tn.opt.Get('stacksTranslateZ');
+                  pRotateX-=this.G.tn.opt.Get('stacksRotateX');
+                  pRotateY-=this.G.tn.opt.Get('stacksRotateY');
+                  pRotateZ-=this.G.tn.opt.Get('stacksRotateZ');
+                  pScale-=this.G.tn.opt.Get('stacksScale');
                 }
               }
             }
@@ -700,28 +707,6 @@
                 else {
                   v += ' rotate('+obj.rotateZ+')';
                 }
-                obj.$elt[0].style[this.G.CSStransformName]= v;
-              }
-            }
-          };
-          NGY2Item.prototype.CSSTransformApplyOLD = function ( eltClass ) {
-            var obj=this.eltTransform[eltClass];
-            // units must be given with
-            var v = 'translateX('+obj.translateX+') translateY('+obj.translateY+') scale('+obj.scale+')';
-            if( !(this.G.IE <= 9) && !this.G.isGingerbread ) {
-              v += ' rotateX('+obj.rotateX+') rotateY('+obj.rotateY+') rotateZ('+obj.rotateZ+')';
-            }
-            else {
-              v += ' rotate('+obj.rotateZ+')';
-            }
-            if( eltClass == '.nGY2GThumbnail' ) {
-              var nbStack=obj.$elt.length-1;
-              for( var n=nbStack; n>=0; n-- ) {
-                obj.$elt[n].style[this.G.CSStransformName]= v;
-              }
-            }
-            else {
-              if( obj.$elt[0] != undefined ) {
                 obj.$elt[0].style[this.G.CSStransformName]= v;
               }
             }
@@ -1173,6 +1158,7 @@
       shareGooglePlus:              '<i style="color:#dd4b39;" class="nGY2Icon icon-gplus-squared"></i>',
       shareTumblr:                  '<i style="color:#32506d;" class="nGY2Icon icon-tumblr-squared"></i>',
       sharePinterest:               '<i style="color:#cb2027;" class="nGY2Icon icon-pinterest-squared"></i>',
+      shareVK:                      '<i style="color:#3b5998;" class="nGY2Icon icon-vkontakte"></i>',
       shareMail:                    '<i style="color:#555;" class="nGY2Icon icon-mail-alt"></i>',
       viewerCustomTool1:            'T1',
       viewerCustomTool2:            'T2',
@@ -1505,7 +1491,7 @@
           
           G.layout.engine='GRID';
           G.layout.support.rows=true;
-          if( G.thumbnailCrop.Get() === true ) {
+          if( G.tn.opt.Get('crop') === true ) {
             G.layout.prerequisite.imageSize=true;
           }
           else {
@@ -1545,68 +1531,18 @@
         return G.gallerySorting[G.GOM.curNavLevel];
       }
     };
-    G.thumbnailCrop = { l1: true, lN: true,
-      Get: function() {
-        return G.thumbnailCrop[G.GOM.curNavLevel];
-      }
-    };
-    G.thumbnailStacks = { l1: 0, lN: 0,
-      Get: function() {
-        return G.thumbnailStacks[G.GOM.curNavLevel];
-      }
-    };
-    G.thumbnailStacksTranslateX = { l1: 0, lN: 0,
-      Get: function() {
-        return G.thumbnailStacksTranslateX[G.GOM.curNavLevel];
-      }
-    };
-    G.thumbnailStacksTranslateY = { l1: 0, lN: 0,
-      Get: function() {
-        return G.thumbnailStacksTranslateY[G.GOM.curNavLevel];
-      }
-    };
-    G.thumbnailStacksTranslateZ = { l1: 0, lN: 0,
-      Get: function() {
-        return G.thumbnailStacksTranslateZ[G.GOM.curNavLevel];
-      }
-    };
-    G.thumbnailStacksRotateX = { l1: 0, lN: 0,
-      Get: function() {
-        return G.thumbnailStacksRotateX[G.GOM.curNavLevel];
-      }
-    };
-    G.thumbnailStacksRotateY = { l1: 0, lN: 0,
-      Get: function() {
-        return G.thumbnailStacksRotateY[G.GOM.curNavLevel];
-      }
-    };
-    G.thumbnailStacksRotateZ = { l1: 0, lN: 0,
-      Get: function() {
-        return G.thumbnailStacksRotateZ[G.GOM.curNavLevel];
-      }
-    };
-    G.thumbnailStacksScale = { l1: 0, lN: 0,
-      Get: function() {
-        return G.thumbnailStacksScale[G.GOM.curNavLevel];
-      }
-    };
-    G.thumbnailGutterWidth = { l1: 0, lN: 0,
-      Get: function() {
-        return G.thumbnailGutterWidth[G.GOM.curNavLevel];
-      }
-    };
-    G.thumbnailGutterHeight = { l1: 0, lN: 0,
-      Get: function() {
-        return G.thumbnailGutterHeight[G.GOM.curNavLevel];
-      }
-    };
     G.$currentTouchedThumbnail = null;    
     
-    G.tn = {                          // GENERAL THUMBNAILS PROPERTIES -->
-      displayInterval:                10,        // delay between 2 thumbnails display
-      displayTransitionStartVal:      0,
-      displayTransition:              'FADEIN',
-      displayTransitionEasing:        '',
+    // ##### GENERAL THUMBNAILS PROPERTIES -->
+    G.tn = {
+      // levell specific options
+      opt:  {
+        l1: { crop: true, stacks: 0, stacksTranslateX: 0, stacksTranslateY: 0, stacksTranslateZ: 0, stacksRotateX: 0, stacksRotateY: 0, stacksRotateZ: 0, stacksScale: 0, gutterHeight: 0, gutterWidth: 0, displayTransition: 'FADEIN', displayTransitionStartVal: 0, displayTransitionEasing: 'easeOutQuart', displayTransitionDuration: 240, displayInterval: 15 },
+        lN: { crop: true, stacks: 0, stacksTranslateX: 0, stacksTranslateY: 0, stacksTranslateZ: 0, stacksRotateX: 0, stacksRotateY: 0, stacksRotateZ: 0, stacksScale: 0, gutterHeight: 0, gutterWidth: 0, displayTransition: 'FADEIN', displayTransitionStartVal: 0, displayTransitionEasing: 'easeOutQuart', displayTransitionDuration: 240, displayInterval: 15 },
+        Get: function(opt) {
+          return G.tn.opt[G.GOM.curNavLevel][opt];
+        }
+      },
       scale:                          1,         // image scale depending of the hover effect
       borderWidth:                    0,         // thumbnail container border width
       borderHeight:                   0,         // thumbnail container border height
@@ -1915,16 +1851,16 @@
     this.initiateGallery2 = function( element, params ) {
 
       // GLOBAL OPTIONS
-      G.O =             params;
+      G.O =               params;
       // Base element
-      G.$E.base =       jQuery(element);
-      G.baseEltID =     G.$E.base.attr('id');
+      G.$E.base =         jQuery(element);
+      G.baseEltID =       G.$E.base.attr('id');
       if( G.baseEltID == undefined ) {
         // set a default ID to the root container
         G.baseEltID='my_nanogallery';
         G.$E.base.attr('id', G.baseEltID)
       }
-      G.O.$markup =      [];
+      G.O.$markup =       [];
       
       DefineVariables();
       SetPolyFills();
@@ -2769,7 +2705,7 @@
               item.thumbs.width[G.GOM.curNavLevel][G.GOM.curWidth]=curTn.imageWidth;
               item.thumbs.height[G.GOM.curNavLevel][G.GOM.curWidth]=curTn.imageHeight;
  
-              if( G.layout.engine == 'GRID' && G.thumbnailCrop.Get() === true && item.$getElt('.nGY2GThumbnailImg') !== null ) {
+              if( G.layout.engine == 'GRID' && G.tn.opt.Get('crop') === true && item.$getElt('.nGY2GThumbnailImg') !== null ) {
                 // special case (GRID + cropped thumbnails) -> just reposition the image in the thumbnail
                 if( item.thumbImg().height > item.thumbImg().width ) {
                   // portrait
@@ -2875,7 +2811,7 @@
       colHeight=[],
       maxCol=NbThumbnailsPerRow(areaWidth),      //parseInt(areaW/G.tn.defaultFullWidth);
       gutterWidth=0,
-      gutterHeight=G.thumbnailGutterHeight.Get();
+      gutterHeight=G.tn.opt.Get('gutterHeight');
 
       var tnWidth=G.tn.defaultSize.getOuterWidth();
       var nbTn=G.GOM.items.length;
@@ -2885,7 +2821,7 @@
         gutterWidth=(maxCol==1?0:(areaWidth-(maxCol*tnWidth))/(maxCol-1));
       }
       else {
-        gutterWidth=G.thumbnailGutterWidth.Get();
+        gutterWidth=G.tn.opt.Get('gutterWidth');
       }
 
       curRow=0;
@@ -2961,8 +2897,8 @@
       rowHeight=                  [],
       bNewRow=                    false,
       cnt=                        0,
-      gutterWidth=                G.thumbnailGutterWidth.Get(),
-      gutterHeight=               G.thumbnailGutterHeight.Get();
+      gutterWidth=                G.tn.opt.Get('gutterWidth'),
+      gutterHeight=               G.tn.opt.Get('gutterHeight');
       // by grief-of-these-days
       var maxRowHeightVertical=   0; // max height of a row with vertical thumbs
       var maxRowHeightHorizontal= 0; // max height of a row with horizontal thumbs
@@ -3152,7 +3088,7 @@
       var curPosX=      0,
       curPosY=          0,   
       gutterWidth=      0,
-      gutterHeight=     G.thumbnailGutterHeight.Get(),
+      gutterHeight=     G.tn.opt.Get('gutterHeight'),
       maxCol=           NbThumbnailsPerRow(areaWidth),
       w=                0,
       cols=             [],
@@ -3168,7 +3104,7 @@
         gutterWidth=(maxCol==1?0:(areaWidth-(maxCol*tnWidth))/(maxCol-1));
       }
       else {
-        gutterWidth=G.thumbnailGutterWidth.Get();
+        gutterWidth=G.tn.opt.Get('gutterWidth');
       }
 
       if( G.O.RTL ) {
@@ -3333,8 +3269,6 @@
         GalleryDisplay( forceTransition );
       }
 
-      
-
       // counter of not displayed images (is displayed on the last thumbnail)
       if( G.layout.support.rows ) {
         if( G.galleryDisplayMode.Get() == 'ROWS' || (G.galleryDisplayMode.Get() == 'FULLCONTENT' && G.galleryLastRowFull.Get() && G.GOM.lastFullRow != -1) ){
@@ -3357,22 +3291,24 @@
       // first display newly built thumbnails
       var nbBuild=tnToDisplay.length;
       for( var i=0; i < nbBuild ; i++ ) {
-        ThumbnailSetPosition(tnToDisplay[i].idx,tnToDisplay[i].delay+10);
+        // ThumbnailSetPosition(tnToDisplay[i].idx, tnToDisplay[i].delay+10);
+        ThumbnailSetPosition(tnToDisplay[i].idx, i);
       }
       // then re-position already displayed thumbnails
       var n=tnToReDisplay.length;
       for( var i=0; i < n ; i++ ) {
-        ThumbnailSetPosition(tnToReDisplay[i].idx,nbBuild+1);
+        // ThumbnailSetPosition(tnToReDisplay[i].idx, nbBuild+1);
+        ThumbnailSetPosition(tnToReDisplay[i].idx, i);
       }
 
-      if( G.tn.displayTransition == 'NONE' ) {
+      if( G.tn.opt.Get('displayTransition') == 'NONE' ) {
         G.galleryResizeEventEnabled=true;
       }
       else {
         setTimeout(function() {
           // change value after the end of the display transistion of the newly built thumbnails
           G.galleryResizeEventEnabled=true;
-        }, nbBuild*G.tn.displayInterval);
+        }, nbBuild * G.tn.opt.Get('displayInterval'));
       }
       
       // G.$E.base.trigger('galleryDisplayed.nanogallery2', new Event('galleryDisplayed.nanogallery2'));
@@ -3390,7 +3326,7 @@
       if( curTn.neverDisplayed ) {
         // thumbnail is built but has never been displayed (=first display)
         var top=curTn.top-G.GOM.clipArea.top;
-        if( G.thumbnailStacks.Get() > 0 ) {
+        if( G.tn.opt.Get('stacks') > 0 ) {
           // we have stacks -> do not display them here. They will be displayed at the end of the display animation
           item.$elt.last().css({ display: 'block'});
           item.$elt.css({ top: top , left: curTn.left });
@@ -3424,7 +3360,7 @@
                   to:         { top: newTop, left: curTn.left, height: curTn.height, width: curTn.width },
                   attachment: { $e: item.$elt },
                   duration:   300,
-                  delay:      cnt*G.tn.displayInterval,
+                  delay:      cnt * G.tn.opt.Get('displayInterval'),
                   easing:     'easeOutQuart',
                   step:   function (state, att) {
                     att.$e.css(state);
@@ -3535,7 +3471,7 @@
     }
     
     function ThumbnailBuildStacks () {
-      var ns=G.thumbnailStacks.Get();
+      var ns=G.tn.opt.Get('stacks');
       if( ns == 0 ) {
         return '';
       }
@@ -3605,7 +3541,7 @@
         default:    // GRID
           var imgSize='max-width:'+G.tn.settings.getW()+'px;max-height:'+G.tn.settings.getH()+'px;'
           // crop images => no black border
-          if( G.thumbnailCrop.Get() == true && item.thumbImg().height > 0 && item.thumbImg().width > 0 ) {
+          if( G.tn.opt.Get('crop') == true && item.thumbImg().height > 0 && item.thumbImg().width > 0 ) {
             if( item.thumbImg().height > item.thumbImg().width ) {
               // portrait
               imgSize='width:'+G.tn.settings.getW()+'px;';
@@ -3661,7 +3597,7 @@
       newElt[newEltIdx++]='</div>';
       newElt[newEltIdx++]='</div>';
       
-      var $newDiv =jQuery(newElt.join('')).appendTo(G.$E.conTn); //.animate({ opacity: 1},1000, 'swing');  //.show('slow'); //.fadeIn('slow').slideDown('slow');
+      var $newDiv =jQuery(newElt.join('')).appendTo(G.$E.conTn);
 
       item.$elt=$newDiv;
       $newDiv.data('index',GOMidx);
@@ -3899,7 +3835,7 @@
         nbMaxTn=Math.floor((areaWidth)/(tnW));
       }
       else {
-        nbMaxTn=Math.floor((areaWidth+G.thumbnailGutterWidth.Get())/(tnW+G.thumbnailGutterWidth.Get()));
+        nbMaxTn=Math.floor((areaWidth+G.tn.opt.Get('gutterWidth'))/(tnW+G.tn.opt.Get('gutterWidth')));
       }
       
       if(  G.O.maxItemsPerLine >0 && nbMaxTn >  G.O.maxItemsPerLine ) {
@@ -3916,7 +3852,7 @@
       var item=G.I[G.GOM.items[n].thumbnailIdx];
 
     
-      if( G.tn.displayTransition == 'NONE' ) {
+      if( G.tn.opt.Get('displayTransition') == 'NONE' ) {
         item.$elt.css({ opacity: 1 });
         ThumbnailAppearFinish(item);
       }
@@ -3926,31 +3862,21 @@
         var vp=G.GOM.cache.viewport;
         if( (top+(curTn.top-G.GOM.clipArea.top)) >= (vp.t-50) && top <= (vp.t+vp.h+50) ) {
           // display animation only if in the current viewport
-          var delay=cnt*G.tn.displayInterval;
-          switch( G.tn.displayTransition ) {
-            case 'CUSTOM':
+          var delay=cnt*G.tn.opt.Get('displayInterval');
+console.dir(cnt);          
+console.dir(delay);          
+          if( G.tn.opt.Get('displayTransition') == 'CUSTOM' ) {
+            if( G.GOM.curNavLevel == 'lN' ) {
               G.O.fnThumbnailDisplayEffect(item.$elt, item, n, delay);
-              break;
-            case 'SLIDEUP':
-              ThumbnailAppearSlideUp(item, delay);
-              break;
-            case 'SLIDEDOWN':
-              ThumbnailAppearSlideDown(item, delay);
-              break;
-            case 'SCALEDOWN':
-              ThumbnailAppearScaleDown(item, delay);
-              break;
-            case 'SCALEUP':
-              ThumbnailAppearScaleUp(item, delay);
-              break;
-            case 'RANDOMSCALE':
-              ThumbnailAppearRandomScale(item, delay);
-              break;
-            case 'FADEIN':
-            default:
-              ThumbnailAppearFadeIn(item, delay);
-              break;
+            }
+            else {
+              G.O.fnThumbnailL1DisplayEffect(item.$elt, item, n, delay);
+            }
           }
+          else {
+            ThumbnailDisplayAnim[G.tn.opt.Get('displayTransition')](item, delay);
+          }
+          return;
         }
         else {
           item.$elt.css({ opacity: 1 });
@@ -3959,9 +3885,10 @@
       }
     }
     
+    
     // display thumbnail stacks at the end of the display animation
     function ThumbnailAppearFinish( item ) {
-      var ns=G.thumbnailStacks.Get();
+      var ns=G.tn.opt.Get('stacks');
       if( ns > 0 ) {
         // display stacks
         item.$elt.css({ display: 'block'});
@@ -3975,163 +3902,313 @@
       }
     }
     
-    function ThumbnailAppearRandomScale( item, delay ) {
-      var scales=[0.95, 1, 1.05, 1.1];
-      var zi=[1, 2, 3, 4];
+
+
+    var ThumbnailDisplayAnim = {
+      RANDOMSCALE: function( item, delay ) {
+
+        function randomIntFromInterval(min,max) {
+          return Math.floor(Math.random()*(max-min+1)+min);
+        }
+        var scales=[0.95, 1, 1.05, 1.1];
+        var zi=[1, 2, 3, 4];
+        
+        var r=randomIntFromInterval(0,3);
+        while( r == G.GOM.lastRandomValue ) {
+          r=randomIntFromInterval(0,3);
+        }
+        G.GOM.lastRandomValue=r;
+        var f=scales[r];
+        // item.$elt.css({ 'z-index': G.GOM.lastZIndex+zi[r], 'box-shadow': '-1px 2px 5px 1px rgba(0, 0, 0, 0.7)' });
+        item.$elt.css({ 'z-index': G.GOM.lastZIndex+zi[r], 'box-shadow': '0px 0px 5px 3px rgba(0,0,0,0.74)' });
+        
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:         { scale: 0.5, opacity:0  },
+          to:           { scale: f, opacity:1 },
+          attachment:   { $e:item.$elt, item: item },
+          delay:        delay,
+          duration:     G.tn.opt.Get('displayTransitionDuration'),
+          easing:       { opacity: 'easeOutQuint', scale: G.tn.opt.Get('displayTransitionEasing') },
+          step: function (state, att) {
+            att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity',state.opacity);
+          },
+          finish: function (state, att) {
+            att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity','');
+            //att.$e.css( G.CSStransformName , '').css('opacity', '');
+            ThumbnailAppearFinish(att.item);
+          }
+        });
+      },
       
-      var r=randomIntFromInterval(0,3);
-      while( r == G.GOM.lastRandomValue ) {
-        r=randomIntFromInterval(0,3);
+      SCALEUP: function( item, delay ) {
+        var f=G.tn.opt.Get('displayTransitionStartVal');
+        if( f == 0 ) { f=0.6; }   // default value
+
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:         { scale: f, opacity:0  },
+          to:           { scale: 1, opacity:1 },
+          attachment:   { $e:item.$elt, item: item },
+          delay:        delay,
+          duration:     G.tn.opt.Get('displayTransitionDuration'),
+          easing:       { opacity: 'easeOutQuint', scale: G.tn.opt.Get('displayTransitionEasing') },
+          step: function (state, att) {
+            att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity',state.opacity);
+          },
+          finish: function (state, att) {
+            att.$e.css( G.CSStransformName , '').css('opacity', '');
+            ThumbnailAppearFinish(att.item);
+          }
+        });
+      },
+      
+      SCALEDOWN: function( item, delay ) {
+        var f=G.tn.opt.Get('displayTransitionStartVal');
+        if( f == 0 ) { f=1.3; }   // default value
+   
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:         { 'scale': f, 'opacity':0  },
+          to:           { 'scale': 1, 'opacity':1 },
+          attachment:   { item: item },
+          delay:        delay,
+          duration:     G.tn.opt.Get('displayTransitionDuration'),
+          easing:       { opacity: 'easeOutQuint', scale: G.tn.opt.Get('displayTransitionEasing') },
+          step: function (state, att) {
+            att.item.$elt.last().css('opacity', state.opacity);
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+            att.item.CSSTransformApply('.nGY2GThumbnail');
+          },
+          finish: function (state, att) {
+            att.item.$elt.last().css('opacity', '');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+            att.item.CSSTransformApply('.nGY2GThumbnail');
+            ThumbnailAppearFinish(att.item);
+          }
+        });
+      },
+      
+      SLIDEUP: function( item, delay ) {
+        var f=G.tn.opt.Get('displayTransitionStartVal');
+        if( f == 0 ) { f=50; }   // default value
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:         { 'opacity': 0, translateY: f, 'scale': 0.8  },
+          to:           { 'opacity': 1, translateY: 0, 'scale': 1 },
+          attachment:   { item: item },
+          delay:        delay,
+          duration:     G.tn.opt.Get('displayTransitionDuration'),
+          easing:       { opacity: 'easeOutQuint', scale:'easeOutQuart', translateY:'easeOutQuart'},
+          step: function (state, att) {
+            att.item.$elt.css('opacity', state.opacity);
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+            att.item.CSSTransformApply('.nGY2GThumbnail');
+          },
+          finish: function (state, att) {
+            this._step(state, att);
+            att.item.$elt.css('opacity', '');
+            ThumbnailAppearFinish(att.item);
+          }
+        });
+      }, 
+      
+      SLIDEDOWN: function( item, delay ) {
+        var f=G.tn.opt.Get('displayTransitionStartVal');
+        if( f == 0 ) { f=-50; }   // default value
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:         { opacity: 0, translateY: f, scale: 0.8  },
+          to:           { opacity: 1, translateY: 0, scale: 1 },
+          attachment:   { item: item },
+          delay:        delay,
+          duration:     G.tn.opt.Get('displayTransitionDuration'),
+          easing:       { opacity: 'easeOutQuint', scale:'easeOutQuart', translateY:'easeOutQuart'},
+          step: function (state, att) {
+            att.item.$elt.css('opacity', state.opacity);
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+            att.item.CSSTransformApply('.nGY2GThumbnail');
+          },
+          finish: function (state, att) {
+            this._step(state, att);
+            att.item.$elt.css('opacity', '');
+            ThumbnailAppearFinish(att.item);
+          }
+        });
+      },
+
+      FLIPUP: function( item, delay ) {
+        var f=G.tn.opt.Get('displayTransitionStartVal');
+        if( f == 0 ) { f=100; }   // default value
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:         { opacity: 0, translateX: f, rotateX: 45, scale: 0.8  },
+          to:           { opacity: 1, translateX: 0, rotateX: 0, scale: 1 },
+          attachment:   { item: item },
+          delay:        delay,
+          duration:     G.tn.opt.Get('displayTransitionDuration'),
+          easing:       { opacity: 'easeOutQuint', scale:'easeOutQuart', translateX:'easeOutQuart'},
+          step: function (state, att) {
+            att.item.$elt.css('opacity', state.opacity);
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateX+'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateX', state.rotateX+'deg');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+            att.item.CSSTransformApply('.nGY2GThumbnail');
+          },
+          finish: function (state, att) {
+            this._step(state, att);
+            att.item.$elt.css('opacity', '');
+            ThumbnailAppearFinish(att.item);
+          }
+        });
+      },
+      FLIPDOWN: function( item, delay ) {
+        var f=G.tn.opt.Get('displayTransitionStartVal');
+        if( f == 0 ) { f=100; }   // default value
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:         { opacity: 0, translateX: f, rotateX: 60, scale: 0.8  },
+          to:           { opacity: 1, translateX: 0, rotateX: 0, scale: 1 },
+          attachment:   { item: item },
+          delay:        delay,
+          duration:     G.tn.opt.Get('displayTransitionDuration'),
+          easing:       { opacity: 'easeOutQuint', scale:'easeOutQuart', translateX:'easeOutQuart'},
+          step: function (state, att) {
+            att.item.$elt.css('opacity', state.opacity);
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateX+'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateX', state.rotateX+'deg');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+            att.item.CSSTransformApply('.nGY2GThumbnail');
+          },
+          finish: function (state, att) {
+            this._step(state, att);
+            att.item.$elt.css('opacity', '');
+            ThumbnailAppearFinish(att.item);
+          }
+        });
+      },
+      
+      SLIDEUP2: function( item, delay ) {
+        var f=G.tn.opt.Get('displayTransitionStartVal');
+        if( f == 0 ) { f=100; }   // default value
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:         { opacity: 0, translateY: f, rotateY: 40, scale: 0.8  },
+          to:           { opacity: 1, translateY: 0, rotateY: 0, scale: 1 },
+          attachment:   { item: item },
+          delay:        delay,
+          duration:     G.tn.opt.Get('displayTransitionDuration'),
+          easing:       { opacity: 'easeOutQuint', scale:'easeOutQuart', translateX:'easeOutQuart'},
+          step: function (state, att) {
+            att.item.$elt.css('opacity', state.opacity);
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateY', state.rotateY+'deg');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+            att.item.CSSTransformApply('.nGY2GThumbnail');
+          },
+          finish: function (state, att) {
+            this._step(state, att);
+            att.item.$elt.css('opacity', '');
+            ThumbnailAppearFinish(att.item);
+          }
+        });
+      },
+      SLIDEDOWN2: function( item, delay ) {
+        var f=G.tn.opt.Get('displayTransitionStartVal');
+        if( f == 0 ) { f=-100; }   // default value
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:         { opacity: 0, translateY: f, rotateY: 40, scale: 0.8  },
+          to:           { opacity: 1, translateY: 0, rotateY: 0, scale: 1 },
+          attachment:   { item: item },
+          delay:        delay,
+          duration:     G.tn.opt.Get('displayTransitionDuration'),
+          easing:       { opacity: 'easeOutQuint', scale:'easeOutQuart', translateY:'easeOutQuart'},
+          step: function (state, att) {
+            att.item.$elt.css('opacity', state.opacity);
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateY', state.rotateY+'deg');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+            att.item.CSSTransformApply('.nGY2GThumbnail');
+          },
+          finish: function (state, att) {
+            this._step(state, att);
+            att.item.$elt.css('opacity', '');
+            att.item.CSSTransformApply('.nGY2GThumbnail');
+            ThumbnailAppearFinish(att.item);
+          }
+        });
+      },
+      SLIDERIGHT: function( item, delay ) {
+        var f=G.tn.opt.Get('displayTransitionStartVal');
+        if( f == 0 ) { f=-150; }   // default value
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:         { opacity: 0, translateX: f, rotateZ: 10 },
+          to:           { opacity: 1, translateX: 0, rotateZ: 0 },
+          attachment:   { item: item },
+          delay:        delay,
+          duration:     G.tn.opt.Get('displayTransitionDuration'),
+          easing:       { opacity: 'easeOutQuint', translateX:'easeOutQuart', rotateZ:'easeOutQuart'},
+          step: function (state, att) {
+            att.item.$elt.css('opacity', state.opacity);
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translateX', state.translateX+'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateZ', state.rotateZ+'deg');
+            att.item.CSSTransformApply('.nGY2GThumbnail');
+          },
+          finish: function (state, att) {
+            this._step(state, att);
+            att.item.$elt.css('opacity', '');
+            ThumbnailAppearFinish(att.item);
+          }
+        });
+      },
+      SLIDELEFT: function( item, delay ) {
+        var f=G.tn.opt.Get('displayTransitionStartVal');
+        if( f == 0 ) { f=150; }   // default value
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:         { opacity: 0, translateX: f, rotateZ: -10 },
+          to:           { opacity: 1, translateX: 0, rotateZ: 0 },
+          attachment:   { item: item },
+          delay:        delay,
+          duration:     G.tn.opt.Get('displayTransitionDuration'),
+          easing:       { opacity: 'easeOutQuint', translateX:'easeOutQuart', rotateZ:'easeOutQuart'},
+          step: function (state, att) {
+            att.item.$elt.css('opacity', state.opacity);
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translateX', state.translateX+'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateZ', state.rotateZ+'deg');
+            att.item.CSSTransformApply('.nGY2GThumbnail');
+          },
+          finish: function (state, att) {
+            this._step(state, att);
+            att.item.$elt.css('opacity', '');
+            ThumbnailAppearFinish(att.item);
+          }
+        });
+      },
+
+      FADEIN: function( item, delay ) {
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:         { 'opacity': 0 },
+          to:           { 'opacity': 1 },
+          attachment:   { $e:item.$elt, item: item },
+          delay:        delay,
+          duration:     G.tn.opt.Get('displayTransitionDuration'),
+          easing:       'easeInOutSine',
+          step: function (state, att) {
+            att.$e.css(state);
+          },
+          finish: function (state, att) {
+            att.$e.css('opacity', '');
+            // att.$e.css({'opacity':1 });
+            ThumbnailAppearFinish(att.item);
+          }
+        });
       }
-      G.GOM.lastRandomValue=r;
-      var f=scales[r];
-      // item.$elt.css({ 'z-index': G.GOM.lastZIndex+zi[r], 'box-shadow': '-1px 2px 5px 1px rgba(0, 0, 0, 0.7)' });
-      item.$elt.css({ 'z-index': G.GOM.lastZIndex+zi[r], 'box-shadow': '0px 0px 5px 3px rgba(0,0,0,0.74)' });
-      
-      var e=G.tn.displayTransitionEasing;
-      if( e == '' ) { e='easeOutQuart'; }   // default value
-      
-      var tweenable = new NGTweenable();
-      tweenable.tween({
-        from:         { scale: 0.5, opacity:0  },
-        to:           { scale: f, opacity:1 },
-        attachment:   { $e:item.$elt, item: item },
-        delay:        delay,
-        duration:     G.O.thumbnailDisplayTransitionDuration,
-        easing:       { opacity: 'easeOutQuint', scale: e},
-        step: function (state, att) {
-          att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity',state.opacity);
-        },
-        finish: function (state, att) {
-          att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity','');
-          //att.$e.css( G.CSStransformName , '').css('opacity', '');
-          ThumbnailAppearFinish(att.item);
-        }
-      });
-    }
-    function randomIntFromInterval(min,max) {
-      return Math.floor(Math.random()*(max-min+1)+min);
-    }
-    
-    function ThumbnailAppearScaleUp( item, delay ) {
-      var f=G.tn.displayTransitionStartVal;
-      if( f == 0 ) { f=0.6; }   // default value
-      var e=G.tn.displayTransitionEasing;
-      if( e == '' ) { e='easeOutQuart'; }   // default value
-
-      var tweenable = new NGTweenable();
-      tweenable.tween({
-        from:         { scale: f, opacity:0  },
-        to:           { scale: 1, opacity:1 },
-        attachment:   { $e:item.$elt, item: item },
-        delay:        delay,
-        duration:     G.O.thumbnailDisplayTransitionDuration,
-        easing:       { opacity: 'easeOutQuint', scale: e},
-        step: function (state, att) {
-          att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity',state.opacity);
-        },
-        finish: function (state, att) {
-          att.$e.css( G.CSStransformName , '').css('opacity', '');
-          ThumbnailAppearFinish(att.item);
-        }
-      });
-    }
-    function ThumbnailAppearScaleDown( item, delay ) {
-      var f=G.tn.displayTransitionStartVal;
-      if( f == 0 ) { f=1.3; }   // default value
-      var e=G.tn.displayTransitionEasing;
-      if( e == '' ) { e='easeOutQuart'; }   // default value
- 
-      var tweenable = new NGTweenable();
-      tweenable.tween({
-        from:         { 'scale': f, 'opacity':0  },
-        to:           { 'scale': 1, 'opacity':1 },
-        attachment:   { item: item },
-        delay:        delay,
-        duration:     G.O.thumbnailDisplayTransitionDuration,
-        easing:       { opacity: 'easeOutQuint', scale: e},
-        step: function (state, att) {
-          att.item.$elt.last().css('opacity', state.opacity);
-          att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
-          att.item.CSSTransformApply('.nGY2GThumbnail');
-        },
-        finish: function (state, att) {
-          att.item.$elt.last().css('opacity', '');
-          att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
-          att.item.CSSTransformApply('.nGY2GThumbnail');
-          ThumbnailAppearFinish(att.item);
-        }
-      });
-    }
-    
-    function ThumbnailAppearSlideUp( item, delay ) {
-      var tweenable = new NGTweenable();
-      tweenable.tween({
-        from:         { 'opacity': 0, translateY: 50, 'scale': 0.8  },
-        to:           { 'opacity': 1, translateY: 0, 'scale': 1 },
-        attachment:   { item: item },
-        delay:        delay,
-        duration:     G.O.thumbnailDisplayTransitionDuration,
-        easing:       { opacity: 'easeOutQuint', scale:'easeOutQuart', translateY:'easeOutQuart'},
-        step: function (state, att) {
-          att.item.$elt.css('opacity', state.opacity);
-          att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
-          att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
-          att.item.CSSTransformApply('.nGY2GThumbnail');
-        },
-        finish: function (state, att) {
-          att.item.$elt.css('opacity', '');
-          att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
-          att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
-          att.item.CSSTransformApply('.nGY2GThumbnail');
-          ThumbnailAppearFinish(att.item);
-        }
-      });
-    }
-    
-    function ThumbnailAppearSlideDown( item, delay ) {
-      var tweenable = new NGTweenable();
-      tweenable.tween({
-        from:         { opacity: 0, translateY: -50, scale: 0.8  },
-        to:           { opacity: 1, translateY: 0, scale: 1 },
-        attachment:   { item: item },
-        delay:        delay,
-        duration:     G.O.thumbnailDisplayTransitionDuration,
-        easing:       { opacity: 'easeOutQuint', scale:'easeOutQuart', translateY:'easeOutQuart'},
-        step: function (state, att) {
-          att.item.$elt.css('opacity', state.opacity);
-          att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
-          att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
-          att.item.CSSTransformApply('.nGY2GThumbnail');
-        },
-        finish: function (state, att) {
-          att.item.$elt.css('opacity', '');
-          att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
-          att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
-          att.item.CSSTransformApply('.nGY2GThumbnail');
-          ThumbnailAppearFinish(att.item);
-        }
-      });
-    }
-
-    function ThumbnailAppearFadeIn( item, delay ) {
-      var tweenable = new NGTweenable();
-      tweenable.tween({
-        from:         { 'opacity': 0 },
-        to:           { 'opacity': 1 },
-        attachment:   { $e:item.$elt, item: item },
-        delay:        delay,
-        duration:     G.O.thumbnailDisplayTransitionDuration,
-        easing:       'easeInOutSine',
-        step: function (state, att) {
-          att.$e.css(state);
-        },
-        finish: function (state, att) {
-          att.$e.css('opacity', '');
-          // att.$e.css({'opacity':1 });
-          ThumbnailAppearFinish(att.item);
-        }
-      });
     }
 
 
@@ -4279,7 +4356,6 @@
 
     
     function ThumbnailHoverOut( GOMidx ) {
-//      if( G.VOM.viewerDisplayed ) { return; }
       if( G.GOM.albumIdx == -1 || !G.galleryResizeEventEnabled ) { return; };
       var curTn=G.GOM.items[GOMidx];
       var item=G.I[curTn.thumbnailIdx];
@@ -4606,23 +4682,23 @@ console.log('#DisplayPhoto : '+  imageIdx);
         // create dictionnary with all data attribute name in lowercase (to be case unsensitive)
         var data={
           // some default values
-          'data-ngdesc': '',
-          'data-ngid': null,
-          'data-ngkind': 'image',
-          'data-ngtags': null,
-          'data-ngdest': '',
-          'data-ngthumbimgwidth': 0,
-          'data-ngthumbimgheight': 0,
-          'data-ngimagewidth': 0,
-          'data-ngimageheight': 0,
-          'data-ngexifmodel': '',
-          'data-ngexifflash': '',
+          'data-ngdesc':            '',         // item description
+          'data-ngid':              null,       // ID
+          'data-ngkind':            'image',    // kind (image, album, albumup)
+          'data-ngtags':            null,       // tags
+          'data-ngdest':            '',         // destination URL
+          'data-ngthumbimgwidth':   0,          // thumbnail width
+          'data-ngthumbimgheight':  0,          // thumbnail height
+          'data-ngimagewidth':      0,          // image width
+          'data-ngimageheight':     0,          // image height
+          'data-ngexifmodel':       '',         // EXIF data
+          'data-ngexifflash':       '',
           'data-ngexiffocallength': '',
-          'data-ngexiffstop': '',
-          'data-ngexifexposure': '',
-          'data-ngexifiso': '',
-          'data-ngexiftime': '',
-          'data-ngexiflocation': ''
+          'data-ngexiffstop':       '',
+          'data-ngexifexposure':    '',
+          'data-ngexifiso':         '',
+          'data-ngexiftime':        '',
+          'data-ngexiflocation':    ''
         };
         [].forEach.call( item.attributes, function(attr) {
           data[attr.name.toLowerCase()]=attr.value;
@@ -4833,102 +4909,101 @@ console.log('#DisplayPhoto : '+  imageIdx);
         }
       }
       if( G.albumListHidden.length > 0 ) {
-        G.O.locationHash=false;   // disable hash location for hidden/privat albums --> impossible
+        G.O.locationHash=false;   // disable hash location for hidden/privat albums --> combination is impossible
       }
       
       
       // thumbnail image crop
       if( typeof G.O.thumbnailCrop == 'boolean' ) {
-        G.thumbnailCrop.lN=G.O.thumbnailCrop;
-        G.thumbnailCrop.l1=G.O.thumbnailCrop;
+        G.tn.opt.lN.crop=G.O.thumbnailCrop;
+        G.tn.opt.l1.crop=G.O.thumbnailCrop;
       }
       if( G.O.thumbnailL1Crop !== undefined &&  G.O.thumbnailL1Crop != null && G.O.thumbnailL1Crop != '' ) {
-        G.thumbnailCrop.l1=G.O.thumbnailL1Crop;
+        G.tn.opt.l1.crop=G.O.thumbnailL1Crop;
       }
 
       // thumbnail stacks
       if( toType(G.O.thumbnailStacks) == 'number' && G.O.thumbnailStacks > 0 ) {
-        G.thumbnailStacks.lN=G.O.thumbnailStacks;
-        G.thumbnailStacks.l1=G.O.thumbnailStacks;
+        G.tn.opt.lN.stacks=G.O.thumbnailStacks;
+        G.tn.opt.l1.stacks=G.O.thumbnailStacks;
       }
       if( toType(G.O.thumbnailL1Stacks) == 'number' && G.O.thumbnailL1Stacks > 0 ) {
-        G.thumbnailStacks.l1=G.O.thumbnailL1Stacks;
+        G.tn.opt.l1.stacks=G.O.thumbnailL1Stacks;
       }
       // thumbnail stacks translate X
       if( toType(G.O.thumbnailStacksTranslateX) == 'number' ) {
-        G.thumbnailStacksTranslateX.lN=G.O.thumbnailStacksTranslateX;
-        G.thumbnailStacksTranslateX.l1=G.O.thumbnailStacksTranslateX;
+        G.tn.opt.lN.stacksTranslateX=G.O.thumbnailStacksTranslateX;
+        G.tn.opt.l1.stacksTranslateX=G.O.thumbnailStacksTranslateX;
       }
       if( toType(G.O.thumbnailL1StacksTranslateX) == 'number' ) {
-        G.thumbnailStacksTranslateX.l1=G.O.thumbnailL1StacksTranslateX;
+        G.tn.opt.l1.stacksTranslateX=G.O.thumbnailL1StacksTranslateX;
       }
       // thumbnail stacks translate Y
       if( toType(G.O.thumbnailStacksTranslateY) == 'number' ) {
-        G.thumbnailStacksTranslateY.lN=G.O.thumbnailStacksTranslateY;
-        G.thumbnailStacksTranslateY.l1=G.O.thumbnailStacksTranslateY;
+        G.tn.opt.lN.stacksTranslateY=G.O.thumbnailStacksTranslateY;
+        G.tn.opt.l1.stacksTranslateY=G.O.thumbnailStacksTranslateY;
       }
       if( toType(G.O.thumbnailL1StacksTranslateY) == 'number'  ) {
-        G.thumbnailStacksTranslateY.l1=G.O.thumbnailL1StacksTranslateY;
+        G.tn.opt.l1.stacksTranslateY=G.O.thumbnailL1StacksTranslateY;
       }
       // thumbnail stacks translate Z
       if( toType(G.O.thumbnailStacksTranslateZ) == 'number' ) {
-        G.thumbnailStacksTranslateZ.lN=G.O.thumbnailStacksTranslateZ;
-        G.thumbnailStacksTranslateZ.l1=G.O.thumbnailStacksTranslateZ;
+        G.tn.opt.lN.stacksTranslateZ=G.O.thumbnailStacksTranslateZ;
+        G.tn.opt.l1.stacksTranslateZ=G.O.thumbnailStacksTranslateZ;
       }
       if( toType(G.O.thumbnailL1StacksTranslateZ) == 'number'  ) {
-        G.thumbnailStacksTranslateZ.l1=G.O.thumbnailL1StacksTranslateZ;
+        G.tn.opt.l1.stacksTranslateZ=G.O.thumbnailL1StacksTranslateZ;
       }
       // thumbnail stacks rotate X
       if( toType(G.O.thumbnailStacksRotateX) == 'number'  ) {
-        G.thumbnailStacksRotateX.lN=G.O.thumbnailStacksRotateX;
-        G.thumbnailStacksRotateX.l1=G.O.thumbnailStacksRotateX;
+        G.tn.opt.lN.stacksRotateX=G.O.thumbnailStacksRotateX;
+        G.tn.opt.l1.stacksRotateX=G.O.thumbnailStacksRotateX;
       }
       if( toType(G.O.thumbnailL1StacksRotateX) == 'number' ) {
-        G.thumbnailStacksRotateX.l1=G.O.thumbnailL1StacksRotateX;
+        G.tn.opt.l1.stacksRotateX=G.O.thumbnailL1StacksRotateX;
       }
       // thumbnail stacks rotate Y
       if( toType(G.O.thumbnailStacksRotateY) == 'number' ) {
-        G.thumbnailStacksRotateY.lN=G.O.thumbnailStacksRotateY;
-        G.thumbnailStacksRotateY.l1=G.O.thumbnailStacksRotateY;
+        G.tn.opt.lN.stacksRotateY=G.O.thumbnailStacksRotateY;
+        G.tn.opt.l1.stacksRotateY=G.O.thumbnailStacksRotateY;
       }
       if( toType(G.O.thumbnailL1StacksRotateY) == 'number' ) {
-        G.thumbnailStacksRotateY.l1=G.O.thumbnailL1StacksRotateY;
+        G.tn.opt.l1.stacksRotateY=G.O.thumbnailL1StacksRotateY;
       }
       // thumbnail stacks rotate Z
       if( toType(G.O.thumbnailStacksRotateZ) == 'number' ) {
-        G.thumbnailStacksRotateZ.lN=G.O.thumbnailStacksRotateZ;
-        G.thumbnailStacksRotateZ.l1=G.O.thumbnailStacksRotateZ;
+        G.tn.opt.lN.stacksRotateZ=G.O.thumbnailStacksRotateZ;
+        G.tn.opt.l1.stacksRotateZ=G.O.thumbnailStacksRotateZ;
       }
       if( toType(G.O.thumbnailL1StacksRotateZ) == 'number' ) {
-        G.thumbnailStacksRotateZ.l1=G.O.thumbnailL1StacksRotateZ;
+        G.tn.opt.l1.stacksRotateZ=G.O.thumbnailL1StacksRotateZ;
       }
       // thumbnail stacks scale
       if( toType(G.O.thumbnailStacksScale) == 'number' ) {
-        G.thumbnailStacksScale.lN=G.O.thumbnailStacksScale;
-        G.thumbnailStacksScale.l1=G.O.thumbnailStacksScale;
+        G.tn.opt.lN.stacksScale=G.O.thumbnailStacksScale;
+        G.tn.opt.l1.stacksScale=G.O.thumbnailStacksScale;
       }
       if( toType(G.O.thumbnailL1StacksScale) == 'number' ) {
-        G.thumbnailStacksScale.l1=G.O.thumbnailL1StacksScale;
+        G.tn.opt.l1.stacksScale=G.O.thumbnailL1StacksScale;
       }
       
       // thumbnail gutter width
       if( toType(G.O.thumbnailGutterWidth) == 'number' && G.O.thumbnailGutterWidth > 0 ) {
-        G.thumbnailGutterWidth.lN=G.O.thumbnailGutterWidth;
-        G.thumbnailGutterWidth.l1=G.O.thumbnailGutterWidth;
+        G.tn.opt.lN.gutterWidth=G.O.thumbnailGutterWidth;
+        G.tn.opt.l1.gutterWidth=G.O.thumbnailGutterWidth;
       }
       if( toType(G.O.thumbnailL1GutterWidth) == 'number' && G.O.thumbnailL1GutterWidth > 0 ) {
-        G.thumbnailGutterWidth.l1=G.O.thumbnailL1GutterWidth;
+        G.tn.opt.l1.gutterWidth=G.O.thumbnailL1GutterWidth;
       }
       
       // thumbnail gutter height
       if( toType(G.O.thumbnailGutterHeight) == 'number' && G.O.thumbnailGutterHeight > 0 ) {
-        G.thumbnailGutterHeight.lN=G.O.thumbnailGutterHeight;
-        G.thumbnailGutterHeight.l1=G.O.thumbnailGutterHeight;
+        G.tn.opt.lN.gutterHeight=G.O.thumbnailGutterHeight;
+        G.tn.opt.l1.gutterHeight=G.O.thumbnailGutterHeight;
       }
       if( toType(G.O.thumbnailL1GutterHeight) == 'number' && G.O.thumbnailL1GutterHeight > 0 ) {
-        G.thumbnailGutterHeight.l1=G.O.thumbnailL1GutterHeight;
+        G.tn.opt.l1.gutterHeight=G.O.thumbnailL1GutterHeight;
       }
-      
       
       // gallery display mode
       if( G.O.galleryDisplayMode !== undefined && G.O.galleryDisplayMode != '' ) {
@@ -4999,7 +5074,8 @@ console.log('#DisplayPhoto : '+  imageIdx);
 
       // thumbnail display interval
       if( toType(G.O.thumbnailDisplayInterval) == 'number' && G.O.thumbnailDisplayInterval >= 0 ) {
-        G.tn.displayInterval=G.O.thumbnailDisplayInterval;
+        G.tn.opt.lN.displayInterval=G.O.thumbnailDisplayInterval;
+        G.tn.opt.l1.displayInterval=G.O.thumbnailDisplayInterval;
       }
       else {
         NanoConsoleLog(G, 'Parameter "thumbnailDisplayInterval" must be an integer.');
@@ -5008,35 +5084,81 @@ console.log('#DisplayPhoto : '+  imageIdx);
       // gallery display transition
       if( typeof G.O.thumbnailDisplayTransition == 'boolean' ) {
         if( G.O.thumbnailDisplayTransition === true ) {
-          G.tn.displayTransition='FADEIN';
+          // G.displayTransition.lN='FADEIN';
+          G.tn.opt.lN.displayTransition='FADEIN';
+          G.tn.opt.l1.displayTransition='FADEIN';
         }
         else {
-          G.tn.displayTransition='NONE';
+          G.tn.opt.lN.displayTransition='NONE';
+          G.tn.opt.l1.displayTransition='NONE';
         }
       }
 
       if( typeof G.O.fnThumbnailDisplayEffect == 'function' ) {
-        G.O.thumbnailDisplayTransition='CUSTOM';
+        // G.O.thumbnailDisplayTransition='CUSTOM';
+        G.tn.opt.lN.displayTransition='CUSTOM';
+        G.tn.opt.l1.displayTransition='CUSTOM';
+      }
+      if( typeof G.O.fnThumbnailL1DisplayEffect == 'function' ) {
+        G.tn.opt.l1.displayTransition='CUSTOM';
       }
       
       // parse thumbnail display transition
       if( typeof G.O.thumbnailDisplayTransition == 'string' ) {
         var st=G.O.thumbnailDisplayTransition.split('_');
         if( st.length == 1 ) {
-          G.tn.displayTransition = G.O.thumbnailDisplayTransition.toUpperCase();
+          G.tn.opt.lN.displayTransition = G.O.thumbnailDisplayTransition.toUpperCase();
+          G.tn.opt.l1.displayTransition = G.O.thumbnailDisplayTransition.toUpperCase();
         }
         if( st.length == 2 ) {
-          G.tn.displayTransition = st[0].toUpperCase();
-          G.tn.displayTransitionStartVal = Number(st[1]);
+          G.tn.opt.lN.displayTransition = st[0].toUpperCase();
+          G.tn.opt.l1.displayTransition = st[0].toUpperCase();
+          G.tn.opt.lN.displayTransitionStartVal = Number(st[1]);
+          G.tn.opt.l1.displayTransitionStartVal = Number(st[1]);
         }
         if( st.length == 3 ) {
-          G.tn.displayTransition = st[0].toUpperCase();
-          G.tn.displayTransitionStartVal = Number(st[1]);
-          G.tn.displayTransitionEasing = st[2];
+          G.tn.opt.lN.displayTransition = st[0].toUpperCase();
+          G.tn.opt.l1.displayTransition = st[0].toUpperCase();
+          G.tn.opt.lN.displayTransitionStartVal = Number(st[1]);
+          G.tn.opt.l1.displayTransitionStartVal = Number(st[1]);
+          G.tn.opt.lN.displayTransitionEasing = st[2];
+          G.tn.opt.l1.displayTransitionEasing = st[2];
+        }
+      }
+      if( typeof G.O.thumbnailL1DisplayTransition == 'string' ) {
+        var st=G.O.thumbnailL1DisplayTransition.split('_');
+        if( st.length == 1 ) {
+          G.tn.opt.l1.displayTransition = G.O.thumbnailL1DisplayTransition.toUpperCase();
+        }
+        if( st.length == 2 ) {
+          G.tn.opt.l1.displayTransition = st[0].toUpperCase();
+          G.tn.opt.l1.displayTransitionStartVal = Number(st[1]);
+        }
+        if( st.length == 3 ) {
+          G.tn.opt.l1.displayTransition = st[0].toUpperCase();
+          G.tn.opt.l1.displayTransitionStartVal = Number(st[1]);
+          G.tn.opt.l1.displayTransitionEasing = st[2];
         }
       }
       
+      // thumbnail display transition duration
+      if( G.O.thumbnailDisplayTransitionDuration !== undefined && G.O.thumbnailDisplayTransitionDuration != null ) {
+        G.tn.opt.lN.displayTransitionDuration=G.O.thumbnailDisplayTransitionDuration;
+        G.tn.opt.l1.displayTransitionDuration=G.O.thumbnailDisplayTransitionDuration;
+      }
+      if( G.O.thumbnailL1DisplayTransitionDuration !== undefined && G.O.thumbnailL1DisplayTransitionDuration != null ) {
+        G.tn.opt.l1.displayTransitionDuration=G.O.thumbnailL1DisplayTransitionDuration;
+      }
+      // thumbnail display transition interval duration
+      if( G.O.thumbnailDisplayInterval !== undefined && G.O.thumbnailDisplayInterval != null ) {
+        G.tn.opt.lN.displayInterval=G.O.thumbnailDisplayInterval;
+        G.tn.opt.l1.displayInterval=G.O.thumbnailDisplayInterval;
+      }
+      if( G.O.thumbnailL1DisplayInterval !== undefined && G.O.thumbnailL1DisplayInterval != null ) {
+        G.tn.opt.l1.displayInterval=G.O.thumbnailL1DisplayInterval;
+      }
 
+      
       // resolution breakpoints --> convert old syntax to new one
       if( G.O.thumbnailSizeSM !== undefined ) { G.O.breakpointSizeSM=G.O.thumbnailSizeSM; }
       if( G.O.thumbnailSizeME !== undefined ) { G.O.breakpointSizeME=G.O.thumbnailSizeME; }
@@ -5581,13 +5703,12 @@ console.log('#DisplayPhoto : '+  imageIdx);
 
     
     function NewTHoverEffect() {
-      // easing : jQuery supports only 'swing' and 'linear'
       var oDef={ 
           name:           '',
-          element:        '',
-          type:           '',
-          from:           '',
-          to:             '',
+          element:        '',               // element class
+          type:           '',               
+          from:           '',               // start value
+          to:             '',               // end value
           hoverin:        true,
           hoverout:       true,
           firstKeyframe:  true,
@@ -5603,7 +5724,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
     }
 
     function NewTBuildInit() {
-      // easing : jQuery supports only 'swing' and 'linear'
+      // to set CSS properties
       var oDef={ element: '', property: '', value: '' };
       return oDef;
     }
@@ -5784,8 +5905,6 @@ console.log('#DisplayPhoto : '+  imageIdx);
           G.tn.style.l1.desc+='font-size:'+G.O.thumbnailL1Label.titleFontSize+';';
         }
       }
-      
-      
       
       G.tn.borderWidth=G.O.thumbnailBorderHorizontal;
       G.tn.borderHeight=G.O.thumbnailBorderVertical;
@@ -6010,7 +6129,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
       var cs=null;
       switch(toType(G.O.colorSchemeViewer)) {
         case 'object':    // user custom color scheme object 
-          cs=G.colorSchemeViewer_default;
+          cs=G.colorSchemeViewer_dark;
           jQuery.extend(true,cs,G.O.colorSchemeViewer);
           G.VOM.colorSchemeLabel='nanogallery_colorschemeviewer_custom_'+G.baseEltID;
           break;
@@ -6053,8 +6172,6 @@ console.log('#DisplayPhoto : '+  imageIdx);
       G.VOM.$cont.addClass(G.VOM.colorSchemeLabel);
     };
 
-
-    
     /** @function SetPolyFills */
     function SetPolyFills() {
 
@@ -6347,6 +6464,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
       content+='<div class="nGY2PopupOneItem" style="text-align:center;" data-share="tumblr">'+G.O.icons.shareTumblr+'</div>';
       content+='<div class="nGY2PopupOneItem" style="text-align:center;" data-share="twitter">'+G.O.icons.shareTwitter+'</div>';
       content+='<div class="nGY2PopupOneItem" style="text-align:center;" data-share="googleplus">'+G.O.icons.shareGooglePlus+'</div>';
+      content+='<div class="nGY2PopupOneItem" style="text-align:center;" data-share="vk">'+G.O.icons.shareVK+'</div>';
       content+='<div class="nGY2PopupOneItem" style="text-align:center;" data-share="mail">'+G.O.icons.shareMail+'</div>';
       content+='<div class="nGY2PopupOneItem" style="text-align:center;"></div>';
       content+='<input class="nGY2PopupOneItemText" readonly type="text" value="'+currentURL+newLocationHash+'" style="width:100%;text-align:center;">';
@@ -6371,7 +6489,10 @@ console.log('#DisplayPhoto : '+  imageIdx);
             //window.open("https://www.facebook.com/sharer.php?u="+currentURL,"","height=368,width=600,left=100,top=100,menubar=0");
             shareURL='https://www.facebook.com/sharer.php?u='+currentURL;
             break;
-          case 'GOOGLE+':
+          case 'VK':
+            shareURL='http://vk.com/share.php?url='+currentURL;
+            break;
+          case 'GOOGLEPLUS':
             shareURL="https://plus.google.com/share?url="+currentURL;
             break;
           case 'TWITTER':
@@ -7093,14 +7214,14 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
     function ViewerZoomIn( zoomIn ) {
       if( zoomIn ) {
         // zoom in
-        G.VOM.currentZoom+=.1;
+        G.VOM.currentZoom+=0.1;
         if( G.VOM.currentZoom > 2 ) {
           G.VOM.currentZoom=2;
         }
       }
       else {
         // zoom out
-        G.VOM.currentZoom-=.1;
+        G.VOM.currentZoom-=0.1;
         if( G.VOM.currentZoom < 0.2 ) {
           G.VOM.currentZoom=0.2;
         }
@@ -7843,9 +7964,10 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
 
       // do special settings depending for some options
       // thumbnail display transition
-      switch( G.tn.displayTransition ) {
+      switch( G.tn.opt.Get('displayTransition') ) {
         case 'SCALEDOWN':
         case 'RANDOMSCALE':
+        default:
           G.$E.base.css('overflow', 'visible');
           G.$E.conTnParent.css('overflow', 'visible');
           G.$E.conTn.css('overflow', 'visible');
@@ -8350,604 +8472,157 @@ console.log('lH: '+lH);
 //##########################################################################################################################
 //##########################################################################################################################
 
-/*!
- * imagesLoaded PACKAGED v3.1.8
- * JavaScript is all like "You images are done yet or what?"
- * MIT License
- */
-
-
-/*!
- * EventEmitter v4.2.6 - git.io/ee
- * Oliver Caldwell
- * MIT license
- * @preserve
- */
-
 // NGY BUILD:
 // replace "imagesLoaded" with "ngimagesLoaded"
 // replace "ImagesLoaded" with "ngImagesLoaded"
-// replace "EventEmitter" with "ngEventEmitter"
+// replace "EvEmitter" with "ngEvEmitter"
 // replace "var $ = window.jQuery" with "var $ = jQuery;"
- 
- 
- 
-(function () {
-	
-
-	/**
-	 * Class for managing events.
-	 * Can be extended to provide event functionality in other classes.
-	 *
-	 * @class ngEventEmitter Manages event registering and emitting.
-	 */
-	function ngEventEmitter() {}
-
-	// Shortcuts to improve speed and size
-	var proto = ngEventEmitter.prototype;
-	var exports = this;
-	var originalGlobalValue = exports.ngEventEmitter;
-
-	/**
-	 * Finds the index of the listener for the event in it's storage array.
-	 *
-	 * @param {Function[]} listeners Array of listeners to search through.
-	 * @param {Function} listener Method to look for.
-	 * @return {Number} Index of the specified listener, -1 if not found
-	 * @api private
-	 */
-	function indexOfListener(listeners, listener) {
-		var i = listeners.length;
-		while (i--) {
-			if (listeners[i].listener === listener) {
-				return i;
-			}
-		}
-
-		return -1;
-	}
-
-	/**
-	 * Alias a method while keeping the context correct, to allow for overwriting of target method.
-	 *
-	 * @param {String} name The name of the target method.
-	 * @return {Function} The aliased method
-	 * @api private
-	 */
-	function alias(name) {
-		return function aliasClosure() {
-			return this[name].apply(this, arguments);
-		};
-	}
-
-	/**
-	 * Returns the listener array for the specified event.
-	 * Will initialise the event object and listener arrays if required.
-	 * Will return an object if you use a regex search. The object contains keys for each matched event. So /ba[rz]/ might return an object containing bar and baz. But only if you have either defined them with defineEvent or added some listeners to them.
-	 * Each property in the object response is an array of listener functions.
-	 *
-	 * @param {String|RegExp} evt Name of the event to return the listeners from.
-	 * @return {Function[]|Object} All listener functions for the event.
-	 */
-	proto.getListeners = function getListeners(evt) {
-		var events = this._getEvents();
-		var response;
-		var key;
-
-		// Return a concatenated array of all matching events if
-		// the selector is a regular expression.
-		if (typeof evt === 'object') {
-			response = {};
-			for (key in events) {
-				if (events.hasOwnProperty(key) && evt.test(key)) {
-					response[key] = events[key];
-				}
-			}
-		}
-		else {
-			response = events[evt] || (events[evt] = []);
-		}
-
-		return response;
-	};
-
-	/**
-	 * Takes a list of listener objects and flattens it into a list of listener functions.
-	 *
-	 * @param {Object[]} listeners Raw listener objects.
-	 * @return {Function[]} Just the listener functions.
-	 */
-	proto.flattenListeners = function flattenListeners(listeners) {
-		var flatListeners = [];
-		var i;
-
-		for (i = 0; i < listeners.length; i += 1) {
-			flatListeners.push(listeners[i].listener);
-		}
-
-		return flatListeners;
-	};
-
-	/**
-	 * Fetches the requested listeners via getListeners but will always return the results inside an object. This is mainly for internal use but others may find it useful.
-	 *
-	 * @param {String|RegExp} evt Name of the event to return the listeners from.
-	 * @return {Object} All listener functions for an event in an object.
-	 */
-	proto.getListenersAsObject = function getListenersAsObject(evt) {
-		var listeners = this.getListeners(evt);
-		var response;
-
-		if (listeners instanceof Array) {
-			response = {};
-			response[evt] = listeners;
-		}
-
-		return response || listeners;
-	};
-
-	/**
-	 * Adds a listener function to the specified event.
-	 * The listener will not be added if it is a duplicate.
-	 * If the listener returns true then it will be removed after it is called.
-	 * If you pass a regular expression as the event name then the listener will be added to all events that match it.
-	 *
-	 * @param {String|RegExp} evt Name of the event to attach the listener to.
-	 * @param {Function} listener Method to be called when the event is emitted. If the function returns true then it will be removed after calling.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.addListener = function addListener(evt, listener) {
-		var listeners = this.getListenersAsObject(evt);
-		var listenerIsWrapped = typeof listener === 'object';
-		var key;
-
-		for (key in listeners) {
-			if (listeners.hasOwnProperty(key) && indexOfListener(listeners[key], listener) === -1) {
-				listeners[key].push(listenerIsWrapped ? listener : {
-					listener: listener,
-					once: false
-				});
-			}
-		}
-
-		return this;
-	};
-
-	/**
-	 * Alias of addListener
-	 */
-	proto.on = alias('addListener');
-
-	/**
-	 * Semi-alias of addListener. It will add a listener that will be
-	 * automatically removed after it's first execution.
-	 *
-	 * @param {String|RegExp} evt Name of the event to attach the listener to.
-	 * @param {Function} listener Method to be called when the event is emitted. If the function returns true then it will be removed after calling.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.addOnceListener = function addOnceListener(evt, listener) {
-		return this.addListener(evt, {
-			listener: listener,
-			once: true
-		});
-	};
-
-	/**
-	 * Alias of addOnceListener.
-	 */
-	proto.once = alias('addOnceListener');
-
-	/**
-	 * Defines an event name. This is required if you want to use a regex to add a listener to multiple events at once. If you don't do this then how do you expect it to know what event to add to? Should it just add to every possible match for a regex? No. That is scary and bad.
-	 * You need to tell it what event names should be matched by a regex.
-	 *
-	 * @param {String} evt Name of the event to create.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.defineEvent = function defineEvent(evt) {
-		this.getListeners(evt);
-		return this;
-	};
-
-	/**
-	 * Uses defineEvent to define multiple events.
-	 *
-	 * @param {String[]} evts An array of event names to define.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.defineEvents = function defineEvents(evts) {
-		for (var i = 0; i < evts.length; i += 1) {
-			this.defineEvent(evts[i]);
-		}
-		return this;
-	};
-
-	/**
-	 * Removes a listener function from the specified event.
-	 * When passed a regular expression as the event name, it will remove the listener from all events that match it.
-	 *
-	 * @param {String|RegExp} evt Name of the event to remove the listener from.
-	 * @param {Function} listener Method to remove from the event.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.removeListener = function removeListener(evt, listener) {
-		var listeners = this.getListenersAsObject(evt);
-		var index;
-		var key;
-
-		for (key in listeners) {
-			if (listeners.hasOwnProperty(key)) {
-				index = indexOfListener(listeners[key], listener);
-
-				if (index !== -1) {
-					listeners[key].splice(index, 1);
-				}
-			}
-		}
-
-		return this;
-	};
-
-	/**
-	 * Alias of removeListener
-	 */
-	proto.off = alias('removeListener');
-
-	/**
-	 * Adds listeners in bulk using the manipulateListeners method.
-	 * If you pass an object as the second argument you can add to multiple events at once. The object should contain key value pairs of events and listeners or listener arrays. You can also pass it an event name and an array of listeners to be added.
-	 * You can also pass it a regular expression to add the array of listeners to all events that match it.
-	 * Yeah, this function does quite a bit. That's probably a bad thing.
-	 *
-	 * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to add to multiple events at once.
-	 * @param {Function[]} [listeners] An optional array of listener functions to add.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.addListeners = function addListeners(evt, listeners) {
-		// Pass through to manipulateListeners
-		return this.manipulateListeners(false, evt, listeners);
-	};
-
-	/**
-	 * Removes listeners in bulk using the manipulateListeners method.
-	 * If you pass an object as the second argument you can remove from multiple events at once. The object should contain key value pairs of events and listeners or listener arrays.
-	 * You can also pass it an event name and an array of listeners to be removed.
-	 * You can also pass it a regular expression to remove the listeners from all events that match it.
-	 *
-	 * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to remove from multiple events at once.
-	 * @param {Function[]} [listeners] An optional array of listener functions to remove.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.removeListeners = function removeListeners(evt, listeners) {
-		// Pass through to manipulateListeners
-		return this.manipulateListeners(true, evt, listeners);
-	};
-
-	/**
-	 * Edits listeners in bulk. The addListeners and removeListeners methods both use this to do their job. You should really use those instead, this is a little lower level.
-	 * The first argument will determine if the listeners are removed (true) or added (false).
-	 * If you pass an object as the second argument you can add/remove from multiple events at once. The object should contain key value pairs of events and listeners or listener arrays.
-	 * You can also pass it an event name and an array of listeners to be added/removed.
-	 * You can also pass it a regular expression to manipulate the listeners of all events that match it.
-	 *
-	 * @param {Boolean} remove True if you want to remove listeners, false if you want to add.
-	 * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to add/remove from multiple events at once.
-	 * @param {Function[]} [listeners] An optional array of listener functions to add/remove.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.manipulateListeners = function manipulateListeners(remove, evt, listeners) {
-		var i;
-		var value;
-		var single = remove ? this.removeListener : this.addListener;
-		var multiple = remove ? this.removeListeners : this.addListeners;
-
-		// If evt is an object then pass each of it's properties to this method
-		if (typeof evt === 'object' && !(evt instanceof RegExp)) {
-			for (i in evt) {
-				if (evt.hasOwnProperty(i) && (value = evt[i])) {
-					// Pass the single listener straight through to the singular method
-					if (typeof value === 'function') {
-						single.call(this, i, value);
-					}
-					else {
-						// Otherwise pass back to the multiple function
-						multiple.call(this, i, value);
-					}
-				}
-			}
-		}
-		else {
-			// So evt must be a string
-			// And listeners must be an array of listeners
-			// Loop over it and pass each one to the multiple method
-			i = listeners.length;
-			while (i--) {
-				single.call(this, evt, listeners[i]);
-			}
-		}
-
-		return this;
-	};
-
-	/**
-	 * Removes all listeners from a specified event.
-	 * If you do not specify an event then all listeners will be removed.
-	 * That means every event will be emptied.
-	 * You can also pass a regex to remove all events that match it.
-	 *
-	 * @param {String|RegExp} [evt] Optional name of the event to remove all listeners for. Will remove from every event if not passed.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.removeEvent = function removeEvent(evt) {
-		var type = typeof evt;
-		var events = this._getEvents();
-		var key;
-
-		// Remove different things depending on the state of evt
-		if (type === 'string') {
-			// Remove all listeners for the specified event
-			delete events[evt];
-		}
-		else if (type === 'object') {
-			// Remove all events matching the regex.
-			for (key in events) {
-				if (events.hasOwnProperty(key) && evt.test(key)) {
-					delete events[key];
-				}
-			}
-		}
-		else {
-			// Remove all listeners in all events
-			delete this._events;
-		}
-
-		return this;
-	};
-
-	/**
-	 * Alias of removeEvent.
-	 *
-	 * Added to mirror the node API.
-	 */
-	proto.removeAllListeners = alias('removeEvent');
-
-	/**
-	 * Emits an event of your choice.
-	 * When emitted, every listener attached to that event will be executed.
-	 * If you pass the optional argument array then those arguments will be passed to every listener upon execution.
-	 * Because it uses `apply`, your array of arguments will be passed as if you wrote them out separately.
-	 * So they will not arrive within the array on the other side, they will be separate.
-	 * You can also pass a regular expression to emit to all events that match it.
-	 *
-	 * @param {String|RegExp} evt Name of the event to emit and execute listeners for.
-	 * @param {Array} [args] Optional array of arguments to be passed to each listener.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.emitEvent = function emitEvent(evt, args) {
-		var listeners = this.getListenersAsObject(evt);
-		var listener;
-		var i;
-		var key;
-		var response;
-
-		for (key in listeners) {
-			if (listeners.hasOwnProperty(key)) {
-				i = listeners[key].length;
-
-				while (i--) {
-					// If the listener returns true then it shall be removed from the event
-					// The function is executed either with a basic call or an apply if there is an args array
-					listener = listeners[key][i];
-
-					if (listener.once === true) {
-						this.removeListener(evt, listener.listener);
-					}
-
-					response = listener.listener.apply(this, args || []);
-
-					if (response === this._getOnceReturnValue()) {
-						this.removeListener(evt, listener.listener);
-					}
-				}
-			}
-		}
-
-		return this;
-	};
-
-	/**
-	 * Alias of emitEvent
-	 */
-	proto.trigger = alias('emitEvent');
-
-	/**
-	 * Subtly different from emitEvent in that it will pass its arguments on to the listeners, as opposed to taking a single array of arguments to pass on.
-	 * As with emitEvent, you can pass a regex in place of the event name to emit to all events that match it.
-	 *
-	 * @param {String|RegExp} evt Name of the event to emit and execute listeners for.
-	 * @param {...*} Optional additional arguments to be passed to each listener.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.emit = function emit(evt) {
-		var args = Array.prototype.slice.call(arguments, 1);
-		return this.emitEvent(evt, args);
-	};
-
-	/**
-	 * Sets the current value to check against when executing listeners. If a
-	 * listeners return value matches the one set here then it will be removed
-	 * after execution. This value defaults to true.
-	 *
-	 * @param {*} value The new value to check for when executing listeners.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.setOnceReturnValue = function setOnceReturnValue(value) {
-		this._onceReturnValue = value;
-		return this;
-	};
-
-	/**
-	 * Fetches the current value to check against when executing listeners. If
-	 * the listeners return value matches this one then it should be removed
-	 * automatically. It will return true by default.
-	 *
-	 * @return {*|Boolean} The current value to check for or the default, true.
-	 * @api private
-	 */
-	proto._getOnceReturnValue = function _getOnceReturnValue() {
-		if (this.hasOwnProperty('_onceReturnValue')) {
-			return this._onceReturnValue;
-		}
-		else {
-			return true;
-		}
-	};
-
-	/**
-	 * Fetches the events object and creates one if required.
-	 *
-	 * @return {Object} The events storage object.
-	 * @api private
-	 */
-	proto._getEvents = function _getEvents() {
-		return this._events || (this._events = {});
-	};
-
-	/**
-	 * Reverts the global {@link ngEventEmitter} to its previous value and returns a reference to this version.
-	 *
-	 * @return {Function} Non conflicting ngEventEmitter class.
-	 */
-	ngEventEmitter.noConflict = function noConflict() {
-		exports.ngEventEmitter = originalGlobalValue;
-		return ngEventEmitter;
-	};
-
-	// Expose the class either via AMD, CommonJS or the global object
-	if (typeof define === 'function' && define.amd) {
-		define('ngEventEmitter/ngEventEmitter',[],function () {
-			return ngEventEmitter;
-		});
-	}
-	else if (typeof module === 'object' && module.exports){
-		module.exports = ngEventEmitter;
-	}
-	else {
-		this.ngEventEmitter = ngEventEmitter;
-	}
-}.call(this));
 
 /*!
- * eventie v1.0.4
- * event binding helper
- *   eventie.bind( elem, 'click', myFn )
- *   eventie.unbind( elem, 'click', myFn )
- */
-
-/*jshint browser: true, undef: true, unused: true */
-/*global define: false */
-
-( function( window ) {
-
-
-
-var docElem = document.documentElement;
-
-var bind = function() {};
-
-function getIEEvent( obj ) {
-  var event = window.event;
-  // add event.target
-  event.target = event.target || event.srcElement || obj;
-  return event;
-}
-
-if ( docElem.addEventListener ) {
-  bind = function( obj, type, fn ) {
-    obj.addEventListener( type, fn, false );
-  };
-} else if ( docElem.attachEvent ) {
-  bind = function( obj, type, fn ) {
-    obj[ type + fn ] = fn.handleEvent ?
-      function() {
-        var event = getIEEvent( obj );
-        fn.handleEvent.call( fn, event );
-      } :
-      function() {
-        var event = getIEEvent( obj );
-        fn.call( obj, event );
-      };
-    obj.attachEvent( "on" + type, obj[ type + fn ] );
-  };
-}
-
-var unbind = function() {};
-
-if ( docElem.removeEventListener ) {
-  unbind = function( obj, type, fn ) {
-    obj.removeEventListener( type, fn, false );
-  };
-} else if ( docElem.detachEvent ) {
-  unbind = function( obj, type, fn ) {
-    obj.detachEvent( "on" + type, obj[ type + fn ] );
-    try {
-      delete obj[ type + fn ];
-    } catch ( err ) {
-      // can't delete window object properties
-      obj[ type + fn ] = undefined;
-    }
-  };
-}
-
-var eventie = {
-  bind: bind,
-  unbind: unbind
-};
-
-// transport
-if ( typeof define === 'function' && define.amd ) {
-  // AMD
-  define( 'eventie/eventie',eventie );
-} else {
-  // browser global
-  window.eventie = eventie;
-}
-
-})( this );
-
-/*!
- * imagesLoaded v3.1.8
+ * imagesLoaded PACKAGED v4.1.1
  * JavaScript is all like "You images are done yet or what?"
  * MIT License
  */
 
-( function( window, factory ) { 
+/**
+ * EvEmitter v1.0.3
+ * Lil' event emitter
+ * MIT License
+ */
+
+/* jshint unused: true, undef: true, strict: true */
+
+( function( global, factory ) {
+  // universal module definition
+  /* jshint strict: false */ /* globals define, module, window */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD - RequireJS
+    define( 'ev-emitter/ev-emitter',factory );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS - Browserify, Webpack
+    module.exports = factory();
+  } else {
+    // Browser globals
+    global.ngEvEmitter = factory();
+  }
+
+}( typeof window != 'undefined' ? window : this, function() {
+
+
+
+function ngEvEmitter() {}
+
+var proto = ngEvEmitter.prototype;
+
+proto.on = function( eventName, listener ) {
+  if ( !eventName || !listener ) {
+    return;
+  }
+  // set events hash
+  var events = this._events = this._events || {};
+  // set listeners array
+  var listeners = events[ eventName ] = events[ eventName ] || [];
+  // only add once
+  if ( listeners.indexOf( listener ) == -1 ) {
+    listeners.push( listener );
+  }
+
+  return this;
+};
+
+proto.once = function( eventName, listener ) {
+  if ( !eventName || !listener ) {
+    return;
+  }
+  // add event
+  this.on( eventName, listener );
+  // set once flag
+  // set onceEvents hash
+  var onceEvents = this._onceEvents = this._onceEvents || {};
+  // set onceListeners object
+  var onceListeners = onceEvents[ eventName ] = onceEvents[ eventName ] || {};
+  // set flag
+  onceListeners[ listener ] = true;
+
+  return this;
+};
+
+proto.off = function( eventName, listener ) {
+  var listeners = this._events && this._events[ eventName ];
+  if ( !listeners || !listeners.length ) {
+    return;
+  }
+  var index = listeners.indexOf( listener );
+  if ( index != -1 ) {
+    listeners.splice( index, 1 );
+  }
+
+  return this;
+};
+
+proto.emitEvent = function( eventName, args ) {
+  var listeners = this._events && this._events[ eventName ];
+  if ( !listeners || !listeners.length ) {
+    return;
+  }
+  var i = 0;
+  var listener = listeners[i];
+  args = args || [];
+  // once stuff
+  var onceListeners = this._onceEvents && this._onceEvents[ eventName ];
+
+  while ( listener ) {
+    var isOnce = onceListeners && onceListeners[ listener ];
+    if ( isOnce ) {
+      // remove listener
+      // remove before trigger to prevent recursion
+      this.off( eventName, listener );
+      // unset once flag
+      delete onceListeners[ listener ];
+    }
+    // trigger listener
+    listener.apply( this, args );
+    // get next listener
+    i += isOnce ? 0 : 1;
+    listener = listeners[i];
+  }
+
+  return this;
+};
+
+return ngEvEmitter;
+
+}));
+
+/*!
+ * ngimagesLoaded v4.1.1
+ * JavaScript is all like "You images are done yet or what?"
+ * MIT License
+ */
+
+( function( window, factory ) { 'use strict';
   // universal module definition
 
   /*global define: false, module: false, require: false */
 
-  if ( typeof define === 'function' && define.amd ) {
+  if ( typeof define == 'function' && define.amd ) {
     // AMD
     define( [
-      'ngEventEmitter/ngEventEmitter',
-      'eventie/eventie'
-    ], function( ngEventEmitter, eventie ) {
-      return factory( window, ngEventEmitter, eventie );
+      'ev-emitter/ev-emitter'
+    ], function( ngEvEmitter ) {
+      return factory( window, ngEvEmitter );
     });
-  } else if ( typeof exports === 'object' ) {
+  } else if ( typeof module == 'object' && module.exports ) {
     // CommonJS
     module.exports = factory(
       window,
-      require('wolfy87-eventemitter'),
-      require('eventie')
+      require('ev-emitter')
     );
   } else {
     // browser global
     window.ngimagesLoaded = factory(
       window,
-      window.ngEventEmitter,
-      window.eventie
+      window.ngEvEmitter
     );
   }
 
@@ -8955,14 +8630,13 @@ if ( typeof define === 'function' && define.amd ) {
 
 // --------------------------  factory -------------------------- //
 
-function factory( window, ngEventEmitter, eventie ) {
+function factory( window, ngEvEmitter ) {
 
 
 
 // var $ = window.jQuery;
-var $ = jQuery;   // for portable nanogallery2
+var $ = jQuery;
 var console = window.console;
-var hasConsole = typeof console !== 'undefined';
 
 // -------------------------- helpers -------------------------- //
 
@@ -8974,20 +8648,15 @@ function extend( a, b ) {
   return a;
 }
 
-var objToString = Object.prototype.toString;
-function isArray( obj ) {
-  return objToString.call( obj ) === '[object Array]';
-}
-
 // turn element or nodeList into an array
 function makeArray( obj ) {
   var ary = [];
-  if ( isArray( obj ) ) {
+  if ( Array.isArray( obj ) ) {
     // use object if already an array
     ary = obj;
-  } else if ( typeof obj.length === 'number' ) {
+  } else if ( typeof obj.length == 'number' ) {
     // convert nodeList to array
-    for ( var i=0, len = obj.length; i < len; i++ ) {
+    for ( var i=0; i < obj.length; i++ ) {
       ary.push( obj[i] );
     }
   } else {
@@ -8997,261 +8666,306 @@ function makeArray( obj ) {
   return ary;
 }
 
-  // -------------------------- imagesLoaded -------------------------- //
+// -------------------------- ngimagesLoaded -------------------------- //
 
-  /**
-   * @param {Array, Element, NodeList, String} elem
-   * @param {Object or Function} options - if function, use as callback
-   * @param {Function} onAlways - callback function
-   */
-  function ngImagesLoaded( elem, options, onAlways ) {
-    // coerce ImagesLoaded() without new, to be new ImagesLoaded()
-    if ( !( this instanceof ngImagesLoaded ) ) {
-      return new ngImagesLoaded( elem, options );
-    }
-    // use elem as selector string
-    if ( typeof elem === 'string' ) {
-      elem = document.querySelectorAll( elem );
-    }
-
-    this.elements = makeArray( elem );
-    this.options = extend( {}, this.options );
-
-    if ( typeof options === 'function' ) {
-      onAlways = options;
-    } else {
-      extend( this.options, options );
-    }
-
-    if ( onAlways ) {
-      this.on( 'always', onAlways );
-    }
-
-    this.getImages();
-
-    if ( $ ) {
-      // add jQuery Deferred object
-      this.jqDeferred = new $.Deferred();
-    }
-
-    // HACK check async to allow time to bind listeners
-    var _this = this;
-    setTimeout( function() {
-      _this.check();
-    });
+/**
+ * @param {Array, Element, NodeList, String} elem
+ * @param {Object or Function} options - if function, use as callback
+ * @param {Function} onAlways - callback function
+ */
+function ngImagesLoaded( elem, options, onAlways ) {
+  // coerce ngImagesLoaded() without new, to be new ngImagesLoaded()
+  if ( !( this instanceof ngImagesLoaded ) ) {
+    return new ngImagesLoaded( elem, options, onAlways );
+  }
+  // use elem as selector string
+  if ( typeof elem == 'string' ) {
+    elem = document.querySelectorAll( elem );
   }
 
-  ngImagesLoaded.prototype = new ngEventEmitter();
+  this.elements = makeArray( elem );
+  this.options = extend( {}, this.options );
 
-  ngImagesLoaded.prototype.options = {};
+  if ( typeof options == 'function' ) {
+    onAlways = options;
+  } else {
+    extend( this.options, options );
+  }
 
-  ngImagesLoaded.prototype.getImages = function() {
-    this.images = [];
+  if ( onAlways ) {
+    this.on( 'always', onAlways );
+  }
 
-    // filter & find items if we have an item selector
-    for ( var i=0, len = this.elements.length; i < len; i++ ) {
-      var elem = this.elements[i];
-      // filter siblings
-      if ( elem.nodeName === 'IMG' ) {
-        this.addImage( elem );
-      }
-      // find children
-      // no non-element nodes, #143
-      var nodeType = elem.nodeType;
-      if ( !nodeType || !( nodeType === 1 || nodeType === 9 || nodeType === 11 ) ) {
-        continue;
-      }
-      var childElems = elem.querySelectorAll('img');
-      // concat childElems to filterFound array
-      for ( var j=0, jLen = childElems.length; j < jLen; j++ ) {
-        var img = childElems[j];
-        this.addImage( img );
-      }
-    }
-  };
-
-  /**
-   * @param {Image} img
-   */
-  ngImagesLoaded.prototype.addImage = function( img ) {
-    var loadingImage = new LoadingImage( img );
-    this.images.push( loadingImage );
-  };
-
-  ngImagesLoaded.prototype.check = function() {
-    var _this = this;
-    var checkedCount = 0;
-    var length = this.images.length;
-    this.hasAnyBroken = false;
-    // complete if no images
-    if ( !length ) {
-      this.complete();
-      return;
-    }
-
-    function onConfirm( image, message ) {
-      if ( _this.options.debug && hasConsole ) {
-        console.log( 'confirm', image, message );
-      }
-
-      _this.progress( image );
-      checkedCount++;
-      if ( checkedCount === length ) {
-        _this.complete();
-      }
-      return true; // bind once
-    }
-
-    for ( var i=0; i < length; i++ ) {
-      var loadingImage = this.images[i];
-      loadingImage.on( 'confirm', onConfirm );
-      loadingImage.check();
-    }
-  };
-
-  ngImagesLoaded.prototype.progress = function( image ) {
-    this.hasAnyBroken = this.hasAnyBroken || !image.isLoaded;
-    // HACK - Chrome triggers event before object properties have changed. #83
-    var _this = this;
-    setTimeout( function() {
-      _this.emit( 'progress', _this, image );
-      if ( _this.jqDeferred && _this.jqDeferred.notify ) {
-        _this.jqDeferred.notify( _this, image );
-      }
-    });
-  };
-
-  ngImagesLoaded.prototype.complete = function() {
-    var eventName = this.hasAnyBroken ? 'fail' : 'done';
-    this.isComplete = true;
-    var _this = this;
-    // HACK - another setTimeout so that confirm happens after progress
-    setTimeout( function() {
-      _this.emit( eventName, _this );
-      _this.emit( 'always', _this );
-      if ( _this.jqDeferred ) {
-        var jqMethod = _this.hasAnyBroken ? 'reject' : 'resolve';
-        _this.jqDeferred[ jqMethod ]( _this );
-      }
-    });
-  };
-
-  // -------------------------- jquery -------------------------- //
+  this.getImages();
 
   if ( $ ) {
-    $.fn.ngimagesLoaded = function( options, callback ) {
-      var instance = new ngImagesLoaded( this, options, callback );
-      return instance.jqDeferred.promise( $(this) );
-    };
+    // add jQuery Deferred object
+    this.jqDeferred = new $.Deferred();
   }
 
+  // HACK check async to allow time to bind listeners
+  setTimeout( function() {
+    this.check();
+  }.bind( this ));
+}
 
-  // --------------------------  -------------------------- //
+ngImagesLoaded.prototype = Object.create( ngEvEmitter.prototype );
 
-  function LoadingImage( img ) {
-    this.img = img;
+ngImagesLoaded.prototype.options = {};
+
+ngImagesLoaded.prototype.getImages = function() {
+  this.images = [];
+
+  // filter & find items if we have an item selector
+  this.elements.forEach( this.addElementImages, this );
+};
+
+/**
+ * @param {Node} element
+ */
+ngImagesLoaded.prototype.addElementImages = function( elem ) {
+  // filter siblings
+  if ( elem.nodeName == 'IMG' ) {
+    this.addImage( elem );
+  }
+  // get background image on element
+  if ( this.options.background === true ) {
+    this.addElementBackgroundImages( elem );
   }
 
-  LoadingImage.prototype = new ngEventEmitter();
+  // find children
+  // no non-element nodes, #143
+  var nodeType = elem.nodeType;
+  if ( !nodeType || !elementNodeTypes[ nodeType ] ) {
+    return;
+  }
+  var childImgs = elem.querySelectorAll('img');
+  // concat childElems to filterFound array
+  for ( var i=0; i < childImgs.length; i++ ) {
+    var img = childImgs[i];
+    this.addImage( img );
+  }
 
-  LoadingImage.prototype.check = function() {
-    // first check cached any previous images that have same src
-    var resource = cache[ this.img.src ] || new Resource( this.img.src );
-    if ( resource.isConfirmed ) {
-      this.confirm( resource.isLoaded, 'cached was confirmed' );
-      return;
+  // get child background images
+  if ( typeof this.options.background == 'string' ) {
+    var children = elem.querySelectorAll( this.options.background );
+    for ( i=0; i < children.length; i++ ) {
+      var child = children[i];
+      this.addElementBackgroundImages( child );
     }
+  }
+};
 
-    // If complete is true and browser supports natural sizes,
-    // try to check for image status manually.
-    if ( this.img.complete && this.img.naturalWidth !== undefined ) {
-      // report based on naturalWidth
-      this.confirm( this.img.naturalWidth !== 0, 'naturalWidth' );
-      return;
+var elementNodeTypes = {
+  1: true,
+  9: true,
+  11: true
+};
+
+ngImagesLoaded.prototype.addElementBackgroundImages = function( elem ) {
+  var style = getComputedStyle( elem );
+  if ( !style ) {
+    // Firefox returns null if in a hidden iframe https://bugzil.la/548397
+    return;
+  }
+  // get url inside url("...")
+  var reURL = /url\((['"])?(.*?)\1\)/gi;
+  var matches = reURL.exec( style.backgroundImage );
+  while ( matches !== null ) {
+    var url = matches && matches[2];
+    if ( url ) {
+      this.addBackground( url, elem );
     }
+    matches = reURL.exec( style.backgroundImage );
+  }
+};
 
-    // If none of the checks above matched, simulate loading on detached element.
-    var _this = this;
-    resource.on( 'confirm', function( resrc, message ) {
-      _this.confirm( resrc.isLoaded, message );
-      return true;
+/**
+ * @param {Image} img
+ */
+ngImagesLoaded.prototype.addImage = function( img ) {
+  var loadingImage = new LoadingImage( img );
+  this.images.push( loadingImage );
+};
+
+ngImagesLoaded.prototype.addBackground = function( url, elem ) {
+  var background = new Background( url, elem );
+  this.images.push( background );
+};
+
+ngImagesLoaded.prototype.check = function() {
+  var _this = this;
+  this.progressedCount = 0;
+  this.hasAnyBroken = false;
+  // complete if no images
+  if ( !this.images.length ) {
+    this.complete();
+    return;
+  }
+
+  function onProgress( image, elem, message ) {
+    // HACK - Chrome triggers event before object properties have changed. #83
+    setTimeout( function() {
+      _this.progress( image, elem, message );
     });
-
-    resource.check();
-  };
-
-  LoadingImage.prototype.confirm = function( isLoaded, message ) {
-    this.isLoaded = isLoaded;
-    this.emit( 'confirm', this, message );
-  };
-
-  // -------------------------- Resource -------------------------- //
-
-  // Resource checks each src, only once
-  // separate class from LoadingImage to prevent memory leaks. See #115
-
-  var cache = {};
-
-  function Resource( src ) {
-    this.src = src;
-    // add to cache
-    cache[ src ] = this;
   }
 
-  Resource.prototype = new ngEventEmitter();
+  this.images.forEach( function( loadingImage ) {
+    loadingImage.once( 'progress', onProgress );
+    loadingImage.check();
+  });
+};
 
-  Resource.prototype.check = function() {
-    // only trigger checking once
-    if ( this.isChecked ) {
-      return;
-    }
-    // simulate loading on detached element
-    var proxyImage = new Image();
-    eventie.bind( proxyImage, 'load', this );
-    eventie.bind( proxyImage, 'error', this );
-    proxyImage.src = this.src;
-    // set flag
-    this.isChecked = true;
+ngImagesLoaded.prototype.progress = function( image, elem, message ) {
+  this.progressedCount++;
+  this.hasAnyBroken = this.hasAnyBroken || !image.isLoaded;
+  // progress event
+  this.emitEvent( 'progress', [ this, image, elem ] );
+  if ( this.jqDeferred && this.jqDeferred.notify ) {
+    this.jqDeferred.notify( this, image );
+  }
+  // check if completed
+  if ( this.progressedCount == this.images.length ) {
+    this.complete();
+  }
+
+  if ( this.options.debug && console ) {
+    console.log( 'progress: ' + message, image, elem );
+  }
+};
+
+ngImagesLoaded.prototype.complete = function() {
+  var eventName = this.hasAnyBroken ? 'fail' : 'done';
+  this.isComplete = true;
+  this.emitEvent( eventName, [ this ] );
+  this.emitEvent( 'always', [ this ] );
+  if ( this.jqDeferred ) {
+    var jqMethod = this.hasAnyBroken ? 'reject' : 'resolve';
+    this.jqDeferred[ jqMethod ]( this );
+  }
+};
+
+// --------------------------  -------------------------- //
+
+function LoadingImage( img ) {
+  this.img = img;
+}
+
+LoadingImage.prototype = Object.create( ngEvEmitter.prototype );
+
+LoadingImage.prototype.check = function() {
+  // If complete is true and browser supports natural sizes,
+  // try to check for image status manually.
+  var isComplete = this.getIsImageComplete();
+  if ( isComplete ) {
+    // report based on naturalWidth
+    this.confirm( this.img.naturalWidth !== 0, 'naturalWidth' );
+    return;
+  }
+
+  // If none of the checks above matched, simulate loading on detached element.
+  this.proxyImage = new Image();
+  this.proxyImage.addEventListener( 'load', this );
+  this.proxyImage.addEventListener( 'error', this );
+  // bind to image as well for Firefox. #191
+  this.img.addEventListener( 'load', this );
+  this.img.addEventListener( 'error', this );
+  this.proxyImage.src = this.img.src;
+};
+
+LoadingImage.prototype.getIsImageComplete = function() {
+  return this.img.complete && this.img.naturalWidth !== undefined;
+};
+
+LoadingImage.prototype.confirm = function( isLoaded, message ) {
+  this.isLoaded = isLoaded;
+  this.emitEvent( 'progress', [ this, this.img, message ] );
+};
+
+// ----- events ----- //
+
+// trigger specified handler for event type
+LoadingImage.prototype.handleEvent = function( event ) {
+  var method = 'on' + event.type;
+  if ( this[ method ] ) {
+    this[ method ]( event );
+  }
+};
+
+LoadingImage.prototype.onload = function() {
+  this.confirm( true, 'onload' );
+  this.unbindEvents();
+};
+
+LoadingImage.prototype.onerror = function() {
+  this.confirm( false, 'onerror' );
+  this.unbindEvents();
+};
+
+LoadingImage.prototype.unbindEvents = function() {
+  this.proxyImage.removeEventListener( 'load', this );
+  this.proxyImage.removeEventListener( 'error', this );
+  this.img.removeEventListener( 'load', this );
+  this.img.removeEventListener( 'error', this );
+};
+
+// -------------------------- Background -------------------------- //
+
+function Background( url, element ) {
+  this.url = url;
+  this.element = element;
+  this.img = new Image();
+}
+
+// inherit LoadingImage prototype
+Background.prototype = Object.create( LoadingImage.prototype );
+
+Background.prototype.check = function() {
+  this.img.addEventListener( 'load', this );
+  this.img.addEventListener( 'error', this );
+  this.img.src = this.url;
+  // check if image is already complete
+  var isComplete = this.getIsImageComplete();
+  if ( isComplete ) {
+    this.confirm( this.img.naturalWidth !== 0, 'naturalWidth' );
+    this.unbindEvents();
+  }
+};
+
+Background.prototype.unbindEvents = function() {
+  this.img.removeEventListener( 'load', this );
+  this.img.removeEventListener( 'error', this );
+};
+
+Background.prototype.confirm = function( isLoaded, message ) {
+  this.isLoaded = isLoaded;
+  this.emitEvent( 'progress', [ this, this.element, message ] );
+};
+
+// -------------------------- jQuery -------------------------- //
+
+ngImagesLoaded.makeJQueryPlugin = function( jQuery ) {
+  jQuery = jQuery || window.jQuery;
+  if ( !jQuery ) {
+    return;
+  }
+  // set local variable
+  $ = jQuery;
+  // $().ngimagesLoaded()
+  $.fn.ngimagesLoaded = function( options, callback ) {
+    var instance = new ngImagesLoaded( this, options, callback );
+    return instance.jqDeferred.promise( $(this) );
   };
+};
+// try making plugin
+ngImagesLoaded.makeJQueryPlugin();
 
-  // ----- events ----- //
+// --------------------------  -------------------------- //
 
-  // trigger specified handler for event type
-  Resource.prototype.handleEvent = function( event ) {
-    var method = 'on' + event.type;
-    if ( this[ method ] ) {
-      this[ method ]( event );
-    }
-  };
-
-  Resource.prototype.onload = function( event ) {
-    this.confirm( true, 'onload' );
-    this.unbindProxyEvents( event );
-  };
-
-  Resource.prototype.onerror = function( event ) {
-    this.confirm( false, 'onerror' );
-    this.unbindProxyEvents( event );
-  };
-
-  // ----- confirm ----- //
-
-  Resource.prototype.confirm = function( isLoaded, message ) {
-    this.isConfirmed = true;
-    this.isLoaded = isLoaded;
-    this.emit( 'confirm', this, message );
-  };
-
-  Resource.prototype.unbindProxyEvents = function( event ) {
-    eventie.unbind( event.target, 'load', this );
-    eventie.unbind( event.target, 'error', this );
-  };
-
-  // -----  ----- //
-
-  return ngImagesLoaded;
+return ngImagesLoaded;
 
 });
+
 
 
 //##########################################################################################################################

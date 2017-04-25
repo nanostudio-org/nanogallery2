@@ -261,7 +261,7 @@
     function FlickrRetrieveImages(tn, item, level ) {
 
       var sf=1;
-      if( G.thumbnailCrop[level] === true ) {
+      if( G.tn.opt[level].crop === true ) {
         sf=G.O.thumbnailCropScaleFactor;
       }
     

@@ -34,7 +34,8 @@
     
     /** @function AlbumGetContent */
     var AlbumGetContent = function(albumID, fnToCall, fnParam1, fnParam2) {
-      
+
+
       var url= Google.url() + 'user/'+G.O.userID;
       var kind= 'image';
       var albumIdx=NGY2Item.GetIdx(G, albumID);
@@ -44,19 +45,21 @@
         maxResults='&max-results='+G.galleryMaxItems.Get();
       }
       
-      var gat='';
+      var gat='';   // global authorization (using the Builder)
       if( typeof ngy2_pwa_at !== 'undefined' ) {
         gat=ngy2_pwa_at;
       }
       
-      if( G.I[albumIdx].GetID() == 0 ) {
+      if( albumID == 0 ) {
+      // if( G.I[albumIdx].GetID() == 0 ) {
         // retrieve the list of albums
         if( gat != '' ) {
+          // in builder
           url += '?alt=json&v=3&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime()) + '&access_token=' + gat;
         }
         else {
           if( G.O.google2URL == undefined || G.O.google2URL == '' ) {
-            // old Picasa access method (for content before 09/02/2017
+            // old Picasa access method (for content before 09/02/2017)
             url += '?alt=json&v=3&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime());
           }
           else {
@@ -74,12 +77,13 @@
           auth=G.I[albumIdx].authkey;
         }
         if( gat != '' ) {
+          // in builder
           url += '/albumid/'+albumID+'?alt=json&kind=photo&thumbsize='+G.picasa.thumbSizes+maxResults+auth+'&imgmax=d&access_token=' + gat;
         }
         else {
           if( G.O.google2URL == undefined || G.O.google2URL == '' ) {
-            // old Picasa access method (for content before 09/02/2017
-            url += '?alt=json&v=3&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime());
+            // old Picasa access method (for content before 09/02/2017)
+            url += '/albumid/'+albumID+'?alt=json&v=3&kind=photo&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime());
           }
           else {
             // nanogp
@@ -113,7 +117,7 @@
         var gi_data_loaded = null;
         // load more than 1000 data (contributor: Giovanni Chiodi)
         var GI_loadJSON = function(url,start_index){
-console.log(url + '&start-index=' + start_index + '&callback=?');
+          // console.log(url + '&start-index=' + start_index + '&callback=?');
           jQuery.getJSON( url + '&start-index=' + start_index + '&callback=?', function(data) {
           
             if( data.nano_status == 'error' ) {
@@ -133,9 +137,16 @@ console.log(url + '&start-index=' + start_index + '&callback=?');
             var cnt=data.feed.openSearch$startIndex.$t+data.feed.openSearch$itemsPerPage.$t;
             var numItems=0;
             if( kind == 'image' ) {
-              numItems=data.feed.gphoto$numphotos.$t;
+              // retrieve the number of images from one album
+              if( data.feed.gphoto$numphotos === undefined ) {
+                numItems=data.feed.openSearch$totalResults.$t;
+              }
+              else {
+                numItems=data.feed.gphoto$numphotos.$t;
+              }
             }
             else {
+              // retrieve the number of images from a list of albums
               numItems=data.feed.openSearch$totalResults.$t;
             }
             
@@ -174,7 +185,7 @@ console.log(url + '&start-index=' + start_index + '&callback=?');
 
     
     // -----------
-    // Retrieve items from a Google+ (ex Picasa) data stream
+    // Retrieve items from a Google Photos (ex Picasa) data stream
     // items can be images or albums
     function GoogleParseData(albumIdx, kind, data) {
       var albumID=G.I[albumIdx].GetID();
@@ -229,8 +240,12 @@ console.log(url + '&start-index=' + start_index + '&callback=?');
             newItem.src=src;    // image's URL
 
             // image size
-            newItem.imageWidth=parseInt(data.gphoto$width.$t);
-            newItem.imageHeight=parseInt(data.gphoto$height.$t);
+            if( data.gphoto$width !== undefined ) {
+              newItem.imageWidth=parseInt(data.gphoto$width.$t);
+            }
+            if( data.gphoto$height !== undefined ) {
+              newItem.imageHeight=parseInt(data.gphoto$height.$t);
+            }
 
             if( data.media$group != null && data.media$group.media$credit != null && data.media$group.media$credit.length > 0 ) {
               newItem.author=data.media$group.media$credit[0].$t;
@@ -238,32 +253,33 @@ console.log(url + '&start-index=' + start_index + '&callback=?');
 
             
             // exif data
-            if( data.exif$tags.exif$exposure != undefined ) {
-              newItem.exif.exposure= data.exif$tags.exif$exposure.$t;
-            }
-            if( data.exif$tags.exif$flash != undefined ) {
-              if( data.exif$tags.exif$flash.$t == 'true' ) {
-                newItem.exif.flash= 'flash';
+            if( data.exif$tags !== undefined ) {
+              if( data.exif$tags.exif$exposure != undefined ) {
+                newItem.exif.exposure= data.exif$tags.exif$exposure.$t;
+              }
+              if( data.exif$tags.exif$flash != undefined ) {
+                if( data.exif$tags.exif$flash.$t == 'true' ) {
+                  newItem.exif.flash= 'flash';
+                }
+              }
+              if( data.exif$tags.exif$focallength != undefined ) {
+                newItem.exif.focallength= data.exif$tags.exif$focallength.$t;
+              }
+              if( data.exif$tags.exif$fstop != undefined ) {
+                newItem.exif.fstop= data.exif$tags.exif$fstop.$t;
+              }
+              if( data.exif$tags.exif$iso != undefined ) {
+                newItem.exif.iso= data.exif$tags.exif$iso.$t;
+              }
+              if( data.exif$tags.exif$model != undefined ) {
+                newItem.exif.model= data.exif$tags.exif$model.$t;
+              }
+              
+              // geo location
+              if( data.gphoto$location != undefined ) {
+                newItem.exif.location= data.gphoto$location;
               }
             }
-            if( data.exif$tags.exif$focallength != undefined ) {
-              newItem.exif.focallength= data.exif$tags.exif$focallength.$t;
-            }
-            if( data.exif$tags.exif$fstop != undefined ) {
-              newItem.exif.fstop= data.exif$tags.exif$fstop.$t;
-            }
-            if( data.exif$tags.exif$iso != undefined ) {
-              newItem.exif.iso= data.exif$tags.exif$iso.$t;
-            }
-            if( data.exif$tags.exif$model != undefined ) {
-              newItem.exif.model= data.exif$tags.exif$model.$t;
-            }
-            
-            // geo location
-            if( data.gphoto$location != undefined ) {
-              newItem.exif.location= data.gphoto$location;
-            }
-            
           }
           else {
             newItem.author=data.author[0].name.$t;
@@ -433,11 +449,11 @@ console.log(url + '&start-index=' + start_index + '&callback=?');
       };
 
       var sfL1=1;
-      if( G.thumbnailCrop.l1 === true ) {
+      if( G.tn.opt.l1.crop === true ) {
         sfL1=G.O.thumbnailCropScaleFactor;
       }
       var sfLN=1;
-      if( G.thumbnailCrop.lN === true ) {
+      if( G.tn.opt.lN.crop === true ) {
         sfLN=G.O.thumbnailCropScaleFactor;
       }
 
