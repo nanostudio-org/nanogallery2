@@ -1,6 +1,6 @@
   <div class="container">
     <br><br>
-    <h1>nanogallery2 demonstrations</h1>
+    <h1>nanogallery2 demonstrations and inspiration</h1>
     <br><br><br>
     <!--
     <blockquote>
@@ -356,12 +356,14 @@
           html+='        "thumbnailL1GutterWidth": 90,\n';
           html+='        "itemsBaseURL": "http://nanogallery2.nanostudio.org/samples/"\n';
           html+=html_part2;
+          html+='      \n';
+          html+='      &lt;!-- IMAGES -->\n';
           html+='      &lt;a href="berlin1.jpg" data-ngthumb="berlin1t">Berlin 1&lt;/a>\n';
           html+='      &lt;a href="berlin2.jpg" data-ngthumb="berlin2t">Berlin 2&lt;/a>\n';
           html+='      &lt;a href="berlin3.jpg" data-ngthumb="berlin3t">Berlin 3&lt;/a>\n';
           html+=html_part3;
           jQuery('#ngy2_template').html(html);
-          jQuery('#ngy2_description').text('Self hosted images. Note the uss of the parameter "itemsBaseURL" to avoid full URL for each image and thumbnail.');
+          jQuery('#ngy2_description').text('Self hosted images. Note the use of the parameter "itemsBaseURL" to avoid full URL for each image and thumbnail.');
         },
         // Self hosted images - 2 albums
         btnNGY2_source_demo3a: function() {
@@ -382,18 +384,19 @@
           html+='        "thumbnailHeight": 210, "thumbnailWidth": 210,\n';
           html+='        "itemsBaseURL": "http://nanogallery2.nanostudio.org/samples/"\n';
           html+=html_part2;
-          html+='      &lt;!-- first album-->\n';
+          html+='      \n';
+          html+='      &lt;!-- FIRST ALBUM -->\n';
           html+='      &lt;a href="" data-ngkind="album" data-ngid="1" data-ngthumb="berlin1t">Album A&lt;/a>\n';
           html+='      &lt;a href="berlin1.jpg" data-ngid="10" data-ngalbumid="1" data-ngthumb="berlin1t">Image A1&lt;/a>\n';
           html+='      &lt;a href="berlin1.jpg" data-ngid="11" data-ngalbumid="1" data-ngthumb="berlin1t">Image A2&lt;/a>\n';
           html+='      \n';
-          html+='      &lt;!-- second album-->\n';
+          html+='      &lt;!-- SECOND ALBUM -->\n';
           html+='      &lt;a href="" data-ngkind="album" data-ngid="2" data-ngthumb="berlin2t">Album B&lt;/a>\n';
           html+='      &lt;a href="berlin2.jpg" data-ngid="20" data-ngalbumid="2" data-ngthumb="berlin2t">Image B1&lt;/a>\n';
           html+='      &lt;a href="berlin2.jpg" data-ngid="21" data-ngalbumid="2" data-ngthumb="berlin2t">Image B2&lt;/a>\n';
           html+=html_part3;
           jQuery('#ngy2_template').html(html);
-          jQuery('#ngy2_description').text('Self hosted images. When usiung albums, IDs muty be assigned to each element (images and albums).');
+          jQuery('#ngy2_description').text('Self hosted images. When usiung albums, IDs must be assigned to each element (images and albums).');
         },
         
         // ##################################################
@@ -431,6 +434,8 @@
           html+='        "thumbnailBuildInit2": "thumbnail_transform-origin_50% 150%",\n';
           html+='        "thumbnailHoverEffect2": "thumbnail_rotateZ_0deg_15deg_easeOutQuad_200_hoverin | thumbnail_rotateZ_15deg_-10deg_delay250_keyframe_hoverin_easeOutBack_400 | thumbnail_rotateZ_-10deg_0deg_keyframe_hoverout_easeOutBack_400"\n';
           html+=html_part2;
+          html+='      \n';
+          html+='      &lt;!-- IMAGES -->\n';
           html+='      &lt;a href="berlin1.jpg" data-ngthumb="berlin1t">Berlin 1&lt;/a>\n';
           html+='      &lt;a href="berlin2.jpg" data-ngthumb="berlin2t">Berlin 2&lt;/a>\n';
           html+='      &lt;a href="berlin3.jpg" data-ngthumb="berlin3t">Berlin 3&lt;/a>\n';
@@ -469,6 +474,8 @@
           html+='        "galleryBuildInit2": "perspective-origin_50% 150%",\n';
           html+='        "thumbnailHoverEffect2": "image_rotateZ_0deg_7deg_easeOutQuad_150_hoverin|image_rotateZ_7deg_-7deg_delay160_keyframe_hoverin_easeOutQuad_200|image_rotateZ_-7deg_0deg_delay320_keyframe_hoverin_easeOutQuad_150"\n';
           html+=html_part2;
+          html+='      \n';
+          html+='      &lt;!-- IMAGES -->\n';
           html+='      &lt;a href="berlin1.jpg" data-ngthumb="berlin1t">Berlin 1&lt;/a>\n';
           html+='      &lt;a href="berlin2.jpg" data-ngthumb="berlin2t">Berlin 2&lt;/a>\n';
           html+='      &lt;a href="berlin3.jpg" data-ngthumb="berlin3t">Berlin 3&lt;/a>\n';
@@ -513,6 +520,8 @@
           html+='        "galleryBuildInit2": "perspective_1000px",\n';
           html+='        "thumbnailHoverEffect2": "thumbnail_rotateY_0deg_30deg_easeOutQuad_150_hoverin|thumbnail_rotateY_30deg_-30deg_delay160_keyframe_hoverin_easeOutQuad_200|thumbnail_rotateY_-30deg_0deg_delay320_keyframe_hoverin_easeOutQuad_150|title_translateX_0px_20px_easeOutQuad_150_hoverin|title_translateX_20px_-20px_delay160_keyframe_hoverin_easeOutQuad_200|title_translateX_-20px_0px_delay320_keyframe_hoverin_easeOutQuad_150|description_translateX_0px_12px_easeOutQuad_150_hoverin|description_translateX_12px_-12px_delay160_keyframe_hoverin_easeOutQuad_200|description_translateX_-12px_0px_delay320_keyframe_hoverin_easeOutQuad_150"\n';
           html+=html_part2;
+          html+='      \n';
+          html+='      &lt;!-- IMAGES -->\n';
           html+='      &lt;a href="berlin1.jpg" data-ngthumb="berlin1t" data-ngdescription="Brandenburg Gate">Berlin 1&lt;/a>\n';
           html+='      &lt;a href="berlin2.jpg" data-ngthumb="berlin2t" data-ngdescription="Alltag in der DDR">Berlin 2&lt;/a>\n';
           html+='      &lt;a href="berlin3.jpg" data-ngthumb="berlin3t" data-ngdescription="Fernsehturm">Berlin 3&lt;/a>\n';
@@ -554,6 +563,8 @@
           html+='        "galleryBuildInit2": "perspective_900px|perspective-origin_50% 150%",\n';
           html+='        "thumbnailHoverEffect2": "thumbnail_translateZ_0px_100px_easeOutQuad_400 | thumbnail_rotateX_0deg_10deg_easeOutBack_200 | thumbnail_rotateX_10deg_0deg_delay250_keyframe_hoverin_easeOutBack_400"\n';
           html+=html_part2;
+          html+='      \n';
+          html+='      &lt;!-- IMAGES -->\n';
           html+='      &lt;a href="berlin1.jpg" data-ngthumb="berlin1t">Berlin 1&lt;/a>\n';
           html+='      &lt;a href="berlin2.jpg" data-ngthumb="berlin2t">Berlin 2&lt;/a>\n';
           html+='      &lt;a href="berlin3.jpg" data-ngthumb="berlin3t">Berlin 3&lt;/a>\n';
@@ -640,7 +651,7 @@
           html2+=' "kind": "flickr", "userID": "149035168@N08", "thumbnailHeight": 150, "thumbnailWidth": 150, "album": "none", "galleryDisplayMode": "pagination", "galleryMaxRows": 2, "galleryPaginationMode": "numbers"';
           html2+=portable_part2;
           jQuery('#ngy2_portable').html(html2);
-          jQuery('#ngy2_description').text('Display 2 rows of thumbnails and numbers bellow to paginate.');
+          jQuery('#ngy2_description').text('Display 2 rows of thumbnails and numbers below to paginate.');
         },
 
         btnNGY2_displaymode_demo4: function() {
@@ -668,7 +679,7 @@
           html2+=' "kind": "flickr", "userID": "149035168@N08", "thumbnailHeight": 150, "thumbnailWidth": 150, "album": "none", "galleryDisplayMode": "pagination", "galleryMaxRows": 2, "galleryPaginationMode": "dots"';
           html2+=portable_part2;
           jQuery('#ngy2_portable').html(html2);
-          jQuery('#ngy2_description').text('Display 2 rows of thumbnails and dots bellow to paginate.');
+          jQuery('#ngy2_description').text('Display 2 rows of thumbnails and dots below to paginate.');
         },
 
         btnNGY2_displaymode_demo5: function() {
@@ -773,7 +784,7 @@
           html2+=' "kind": "flickr", "userID": "149035168@N08", "photoset": "72157675219521270", "thumbnailLabel": { "position" : "onBottom" }, "thumbnailHeight": "auto", "thumbnailWidth": 200';
           html2+=portable_part2;
           jQuery('#ngy2_portable').html(html2);
-          jQuery('#ngy2_description').text('Display an album the cascading layout. Label is positioned under the thumbanil. The thumbnail height is set to "auto".');
+          jQuery('#ngy2_description').text('Display an album the cascading layout. Label is positioned under the thumbnail. The thumbnail height is set to "auto".');
         },
         
         // #############################################################
@@ -810,13 +821,12 @@
             thumbnailLevelUp: true,
             displayBreadcrumb: false,
             locationHash: false
-            
           });
           var html=html_part1;
           html+='        "kind": "google",\n';
           html+='        "userID": "111186676244625461692",\n';
           html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
-          html+='        "thumbnailLevelUp": true;\n';
+          html+='        "thumbnailLevelUp": true,\n';
           html+='        "displayBreadcrumb": false\n';
           html+=html_part2+html_part3;
           jQuery('#ngy2_template').html(html);
@@ -851,7 +861,7 @@
           html2+=' "kind": "google", "userID": "111186676244625461692", "thumbnailHeight": 150, "thumbnailWidth": 150, "galleryFilterTags": "title", "displayBreadcrumb": false';
           html2+=portable_part2;
           jQuery('#ngy2_portable').html(html2);
-          jQuery('#ngy2_description').text('Filter thumbanils by tags. Tags are extracted from the title (words starting with @).');
+          jQuery('#ngy2_description').text('Filter thumbnails by tags. Tags are extracted from the title (words starting with @).');
         },
         
       }
