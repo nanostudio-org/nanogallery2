@@ -20,7 +20,7 @@
 
 /*
 
-v1.2.2
+v1.n.alpha - do not use
 - new: ImagesLoaded now in version 4.1.1
 - fixed: old Picasa albums not retrieved (for data before 09/02/2017)
 - new: thumbnailDisplayTransition 'slideUp' and 'slideDown': distance can be defined (example: 'slideUp_200')
@@ -1418,7 +1418,7 @@ TODO:
     // author: underscore.js - http://underscorejs.org/docs/underscore.html
     // Returns a function, that, when invoked, will only be triggered at most once during a given window of time.
     // Normally, the throttled function will run as much as it can, without ever going more than once per wait duration;
-    // but if youíd like to disable the execution on the leading edge, pass {leading: false}.
+    // but if you¬íd like to disable the execution on the leading edge, pass {leading: false}.
     // To disable execution on the trailing edge, ditto.
     var throttle = function(func, wait, options) {
       var context, args, result;
@@ -6202,7 +6202,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
         };
       }
 
-      // requestAnimationFrame polyfill by Erik Mˆller. fixes from Paul Irish and Tino Zijdel
+      // requestAnimationFrame polyfill by Erik M√∂ller. fixes from Paul Irish and Tino Zijdel
       // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
       // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
       // MIT license
@@ -6693,7 +6693,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
       var vimg=new VImg(imageIdx);
       G.VOM.items.push(vimg);
       items.push(G.I[imageIdx]);
-//TODO -> danger -> pourquoi reconstruire la liste si dÈj‡ ouvert (back/forward)     
+//TODO -> danger -> pourquoi reconstruire la liste si d√©j√† ouvert (back/forward)     
       var l=G.I.length;
       for( var idx=imageIdx+1; idx<l ; idx++) {
         var item=G.I[idx];
