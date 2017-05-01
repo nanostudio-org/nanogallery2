@@ -2,7 +2,7 @@
   "name": "nanogallery2",
   "description": "nanogallery2 creates beautiful, modern and high quality image galleries for your website",
   "author": "Christophe Brisbois",
-  "version": "1.n.alpha",
+  "version": "1.n.n",
   "homepage": "http://nanogallery2.nanostudio.org",
   "devDependencies": {
     "grunt": "~0.4.1",
