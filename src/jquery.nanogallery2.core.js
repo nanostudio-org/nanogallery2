@@ -8235,7 +8235,8 @@ TODO:
       
       // fullscreen mode on/off --> internal lightbox
       if( ngscreenfull.enabled ) {
-        ngscreenfull.onchange(() => {
+        // ngscreenfull.onchange(() => {
+        ngscreenfull.onchange( function() {
           if( G.VOM.viewerDisplayed ) {
             if( ngscreenfull.isFullscreen ) {
               G.VOM.viewerIsFullscreen=true;
