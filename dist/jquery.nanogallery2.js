@@ -1,4 +1,4 @@
-/* nanogallery2 - v0.0.0 - 2017-05-01 - http://nanogallery2.nanostudio.org */
+/* nanogallery2 - v0.0.0 - 2017-05-03 - http://nanogallery2.nanostudio.org */
 /**!
  * @preserve nanogallery2 - javascript image gallery
  * Homepage: http://nanogallery2.nanostudio.org
@@ -12044,12 +12044,12 @@ if (typeof define === 'function' && define.amd) {
       // iterate and parse each item
       jQuery.each(data.feed.entry, function(i,data){
 
-      //Get the title 
+        // Get the title 
         var imgUrl=data.media$group.media$content[0].url;
         var itemTitle = data.title.$t;
 
         
-        //Get the description
+        // Get the description
         var filename='';
         var itemDescription = data.media$group.media$description.$t;
         if( kind == 'image') {
