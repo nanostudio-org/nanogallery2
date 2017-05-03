@@ -198,12 +198,12 @@
       // iterate and parse each item
       jQuery.each(data.feed.entry, function(i,data){
 
-      //Get the title 
+        // Get the title 
         var imgUrl=data.media$group.media$content[0].url;
         var itemTitle = data.title.$t;
 
         
-        //Get the description
+        // Get the description
         var filename='';
         var itemDescription = data.media$group.media$description.$t;
         if( kind == 'image') {
