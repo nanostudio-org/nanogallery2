@@ -58,7 +58,7 @@
             <th>cloud<br>Google Photos</th>
             <th>cloud<br>Flickr</th>
             <th>self hosted<br>markup or javascript</th>
-            <th>self hosted<br>nanoPhotosProvider</th>
+            <th>self hosted<br>nanoPhotosProvider2</th>
           </tr>
         </thead>
         <tbody>
@@ -81,7 +81,7 @@
             <td>-</td>
             <td>-</td>
             <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i> (1)</td>
-            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i> (1)</td>
+            <td>-</td>
           </tr>
           <tr>
             <td>image title</td>
@@ -105,11 +105,18 @@
             <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
           </tr>
           <tr>
-            <td>auto responsive thumbnails</td>
+            <td>automatic responsive thumbnails</td>
             <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
             <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
             <td>*(2)</td>
-            <td>limited</td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+          </tr>
+          <tr>
+            <td>thumbnails dominant colors<br>(blurred image)</td>
+            <td>-</td>
+            <td>-</td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
+            <td><i class="fa fa-check ngy2color1" aria-hidden="true"></i></td>
           </tr>
           <tr>
             <td>Custom links</td>
@@ -176,7 +183,7 @@
             <td>1.0</td>
             <td>1.0</td>
             <td>1.0</td>
-            <td>not supported<br>at this time</td>
+            <td>1.3</td>
           </tr>
         </tbody>
       </table>
@@ -328,6 +335,31 @@
             <td></td>
             <td>Destination URL on thumbnail click (instead of displaying an image, the user is redirected to the defined URL).</td>
             <td>1.0</td>
+          </tr>
+          <tr>
+            <td>data-ngimagedominantcolor</td>
+            <td>string</td>
+            <td></td>
+            <td>
+              Thumbnail's image dominant color. RGB value in HEX-format.
+              <br>This color is used as background for thumbnail images. It may be visible before an image is fully displayed.
+              <br><b>Example:</b>
+              <br><code>"data-ngimagedominantcolor": "#808080"</code>
+            </td>
+            <td>1.3</td>
+          </tr>
+          <tr>
+            <td>data-ngimagedominantcolors</td>
+            <td>base64-string</td>
+            <td></td>
+            <td>
+              Thumbnail's image dominant colors (gradient/blurred image).
+              <br>Set a very small base64 encoded GIF image.
+              <br>This color is used as background for thumbnail images. It may be visible before an image is fully displayed.
+              <br><b>Example:</b>
+              <br><code>"data-ngimagedominantcolors": "data:image/gif;base64,R0lGODdhAwADAOMAAMnjXJi3OB0pFaqnWqeeU0xDGntmMbGYbzsvFQAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAAAwADAAAEBxAEMUgxB0UAOw=="</code>
+            </td>
+            <td>1.3</td>
           </tr>
           <tr>
             <td>data-ngcustomData</td>
@@ -611,6 +643,31 @@ $(document).ready(function () {
             <td>1.0</td>
           </tr>
           <tr>
+            <td>imageDominantColor</td>
+            <td>string</td>
+            <td></td>
+            <td>
+              Thumbnail's image dominant color. RGB value in HEX-format.
+              <br>This color is used as background for thumbnail images. It may be visible before an image is fully displayed.
+              <br><b>Example:</b>
+              <br><code>imageDominantColor: '#808080'</code>
+            </td>
+            <td>1.3</td>
+          </tr>
+          <tr>
+            <td>imageDominantColors</td>
+            <td>string</td>
+            <td></td>
+            <td>
+              Thumbnail's image dominant colors (gradient/blurred image).
+              <br>Set a very small base64 encoded GIF image.
+              <br>This color is used as background for thumbnail images. It may be visible before an image is fully displayed.
+              <br><b>Example:</b>
+              <br><code>imageDominantColors: 'data:image/gif;base64,R0lGODdhAwADAOMAAMnjXJi3OB0pFaqnWqeeU0xDGntmMbGYbzsvFQAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAAAwADAAAEBxAEMUgxB0UAOw=='</code>
+            </td>
+            <td>1.3</td>
+          </tr>
+          <tr>
             <td>customData</td>
             <td>object</td>
             <td></td>
@@ -695,7 +752,58 @@ $(document).ready(function () {
       </table>
     </div>
 
+    
+    
+    <div id="ngy2_npp2"></div>
+    <br><br><br><br><br><br><br>
+    <h3>nanoPhotosProvider2</h3>
+    <hr>
+    <blockquote>
+      nanoPhotosProvider2 is a PHP application for your webserver to provide images and albums automatically to nanogallery2.
+      <br>
+      Thumbnails for all nanogallery2 layouts (grid, justified, cascading) are automatically generated.
+    </blockquote>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>property</th>
+            <th>type</th>
+            <th>default</th>
+            <th>description</th>
+            <th>min<br>version</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>kind</td>
+            <td>string</td>
+            <td></td>
+            <td>
+              <b>MANDATORY</b><br>
+              Storage type. Must be set to <code>'nano_photos_provider2'</code> to access nanoPhotosProvider2 data.
+            </td>
+          </tr>
+          <tr>
+            <td>dataProvider</td>
+            <td>string</td>
+            <td></td>
+            <td>
+              <b>MANDATORY</b><br>
+              URL of your nanoPhotosProvider2 installation.
+              <br>
+              Example:
+              <br>
+              <code>dataProvider: 'http://mywebsever.com/mypath/nano_photos_provider2/nano_photos_provider2.php'</code>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
+
+
+    
     <div id="ngy2_google"></div>
     <br><br><br><br><br><br><br>
     <h3>Google Photos / Google+ storage</h3>
@@ -883,7 +991,7 @@ $(document).ready(function () {
             <td></td>
             <td>
               <b>MANDATORY</b><br>
-              Storage type. Must be set to 'flickr' to access Flickr data.
+              Storage type. Must be set to <code>'flickr'</code> to access Flickr data.
               </td>
             <td>1.0</td>
           </tr>
@@ -972,20 +1080,6 @@ $(document).ready(function () {
     </div>
     
         
-    
-
-    <br><br><br><br><br><br><br>
-    <h3>nanoPhotosProvider</h3>
-    <hr>
-    <blockquote>
-      not supported at this time.
-    </blockquote>
-
-
-
-
-
-    
 
   </div>
   <div id="ngy2_vert_nav_style" class="col-md-2 scrollspy">
@@ -1001,6 +1095,9 @@ $(document).ready(function () {
       </li>
       <li>
         <a href="#ngy2_define_javascript">Self hosted - javascript</a>
+      </li>
+      <li>
+        <a href="#ngy2_npp2">Self hosted - nanoPhotosProvider2</a>
       </li>
       <li>
         <a href="#ngy2_google">Google Photos</a>
@@ -1044,3 +1141,4 @@ $(document).ready(function () {
 
 
   </script>
+
