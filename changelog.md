@@ -1,6 +1,30 @@
 nanogallery2 - ChangeLog
 ===========
 
+v1.3.0
+------
+- new: #3 Auto hide tools on image view after inactivity. Use the option viewerHideToolsDelay to define the delay in ms.
+- new: compatibility to nanoPhotosProvider2 (https://github.com/nanostudio-org/nanoPhotosProvider2)
+- new: possibility to display dominant color gradient (blurred images) during image load (on thumbnails, not supported by Google Photos or Flickr data source)
+- new: thumbnail display transitions, new possibilties: 'flipDown', 'flipUp', 'slideUp2', 'slideDown2', 'slideRight', 'slideLeft'
+- new: thumbnailDisplayTransition 'slideUp' and 'slideDown': distance can be defined (example: 'slideUp_200')
+- new: share to VK.com
+- new: #39 lightbox single tap/click to go to next/previous image (to remove the single tap delay, set option 'viewerZoom' to false)
+- new: album level 1 specific options: 'fnThumbnailL1DisplayEffect', 'thumbnailL1DisplayTransition', 'thumbnailL1DisplayTransitionDuration', 'thumbnailL1DisplayInterval'
+- new: #30 callbacks in HTML markup mode
+- new: enhanced compatibility to browser without CSS Transform support
+- new: ImagesLoaded now in version 4.1.1
+- new: screenfull.js now in version 3.2.0
+- changed: removed share button from to top right toolbar (can be changed with the option 'viewerTools')
+- fixed: low image quality in some cases
+- fixed: share to Google+
+- fixed: old Picasa albums not retrieved (for data before 09/02/2017)
+- fixed: #14 Slideshow stop on iPhone/android
+- fixex: #34 Image description - filename no more used in title by default
+- fixed: #37 Error using custom colors for colorSchemeViewer breaks nanoGallery2
+- fixed: #38 Fullscreen icon when opening in fullscreen
+
+  
 v1.2.1
 ------
 - fixed: Google Photos albums not displayed (with NANOGP - https://github.com/nanostudio-org/nanogp)
