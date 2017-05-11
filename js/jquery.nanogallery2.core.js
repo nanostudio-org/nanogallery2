@@ -14,47 +14,37 @@
  *  - imagesloaded (https://github.com/desandro/imagesloaded) - is embebed
  *  - hammer.js (http://hammerjs.github.io/) - is embeded
  *  - screenfull.js (https://github.com/sindresorhus/screenfull.js) - is embeded
- *  - webfont generated with http://fontello.com - based on Font Awesome Copyright (C) 2012 by Dave Gandy (http://fortawesome.github.com/Font-Awesome/)
+ *  - webfont generated with http://fontello.com - mainly based on Font Awesome Copyright (C) 2012 by Dave Gandy (http://fontawesome.io/)
  *  - ICO online converter: https://iconverticons.com/online/
  */
 
-// v1.2.0beta
-// new: thumbnails hover effects can now be chained and syntax has been enhanced with new options
-// new: options 'thumbnailStacks' and 'thumbnailL1Stacks' to add N stacks behind the thumbnails
-// new: options 'thumbnailStacksTranslateX', 'thumbnailStacksTranslateY', 'thumbnailStacksTranslateZ', 'thumbnailStacksRotateX', 'thumbnailStacksRotateY', 'thumbnailStacksRotateZ', 'thumbnailStacksScale'
-// new: color scheme option 'stackBackground'
-// new: options 'thumbnailL1GutterWidth' and 'thumbnailL1GutterHeight'
-// new: #23 define a specific image for download (options 'downloadURL' or 'ngdownloadurl')
-// new: #21 option 'thumbnailDisplayOutsideScreen' to let the thumbnails always displayed even if not visible on screen (may impact performances)
-// fixed: parameter 'galleryMaxItems' not working with data source 'google2'
-// changed: 'viewerDisplayLogo' default value set to false
-// changed: access to Picasa content now included in module google2
-// new: parameter 'itemsBaseURL' ignored when source of an image is an full URL
-// fixed: #28 - Setting navigationBreadcrumb borderRadius does not have impact
-// new: #20 option 'data-ngcustomdata' (additionaly to 'ngcustomdata')
-// new: hammer.js v2.0.8
+/*
 
-// TODO: demo avec bandeau 'favori'
-// TODO: google - message d'erreur compréhensible quand album/user n'existe pas
-// TODO: thumbnail image source optional, default is image source
-// TODO: support video (thumbail + lightbox) 
-//    -> Youtube: href="https://www.youtube.com/watch?v=_sI_Ps7JSEk"
-//        thumbnail image: http://img.youtube.com/vi/_sI_Ps7JSEk/0.jpg - /hqdefault.jpg
-//        https://ctrlq.org/code/19452-embed-youtube-with-javascript
-//    -> vimeo: href="https://vimeo.com/191947042"
-// TODO: image zoom : animate in/out
-// TODO: data-srcset
-// TODO: demarrer gallerie sans images
-// TODO: ajout d'éléments sans réafficher les thumbnails déjà affichés
-// TODO: zoom with mouse on firefox
-// TODO: play slideshow on IOS/Android
-// TODO: destroy bloque hammer (?) sur le viewer
-// TODO: thumbnail image crop when size undefined and not in cache
-// TODO: #22 specify number of images to preload
-// TODO: custom share button
-// TODO: translation module
+v1.3.0
+- new: #3 Auto hide tools on image view after inactivity. Use the option viewerHideToolsDelay to define the delay in ms.
+- new: compatibility to nanoPhotosProvider2 (https://github.com/nanostudio-org/nanoPhotosProvider2)
+- new: possibility to display dominant color gradient (blurred images) during image load (on thumbnails, not supported by Google Photos or Flickr data source)
+- new: thumbnail display transitions, new possibilties: 'flipDown', 'flipUp', 'slideUp2', 'slideDown2', 'slideRight', 'slideLeft'
+- new: thumbnailDisplayTransition 'slideUp' and 'slideDown': distance can be defined (example: 'slideUp_200')
+- new: share to VK.com
+- new: #39 lightbox single tap/click to go to next/previous image (to remove the single tap delay, set option 'viewerZoom' to false)
+- new: album level 1 specific options: 'fnThumbnailL1DisplayEffect', 'thumbnailL1DisplayTransition', 'thumbnailL1DisplayTransitionDuration', 'thumbnailL1DisplayInterval'
+- new: #30 callbacks in HTML markup mode
+- new: enhanced compatibility to browser without CSS Transform support
+- new: ImagesLoaded now in version 4.1.1
+- new: screenfull.js now in version 3.2.0
+- changed: removed share button from to top right toolbar (can be changed with the option 'viewerTools')
+- fixed: low image quality in some cases
+- fixed: share to Google+
+- fixed: old Picasa albums not retrieved (for data before 09/02/2017)
+- fixed: #14 Slideshow stop on iPhone/android
+- fixex: #34 Image description - filename no more used in title by default
+- fixed: #37 Error using custom colors for colorSchemeViewer breaks nanoGallery2
+- fixed: #38 Fullscreen icon when opening in fullscreen
 
+*/ 
  
+
 // ###########################################
 // ##### nanogallery2 as a JQUERY PLUGIN #####
 // ###########################################
@@ -68,8 +58,8 @@
     var _this = this;
 
     // Access to jQuery and DOM versions of element
-    _this.$e = jQuery(elt);
-    _this.e = elt;
+    _this.$e  = jQuery(elt);
+    _this.e   = elt;
 
     // Add a reverse reference to the DOM object
     _this.$e.data('nanogallery2data', _this);
@@ -85,19 +75,12 @@
             var nextId = 1;                   // private static --> all instances
           }
 
-          //+ Jonas Raoni Soares Silva
-          //@ http://jsfromhell.com/array/shuffle [v1.0]
-          NGY2Tools.AreaShuffle = function (o) {
-            for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-            return o;
-          }
-
           // check album name - albumList/blackList/whiteList
           NGY2Tools.FilterAlbumName = function( title, ID ) {
           var s=title.toUpperCase();
             if( this.albumList.length > 0 ) {
               for( var j=0; j < this.albumList.length; j++) {
-                if( s == this.albumList[j].toUpperCase() || ID == this.albumList[j] ) {
+                if( s === this.albumList[j].toUpperCase() || ID === this.albumList[j] ) {
                   return true;
                 }
               }
@@ -126,7 +109,7 @@
               
               return true;
             }
-          }            
+          };
 
 
           /** @function nanoAlert */
@@ -164,19 +147,26 @@
             }
           };
 
+          //+ Jonas Raoni Soares Silva
+          //@ http://jsfromhell.com/array/shuffle [v1.0]
+          NGY2Tools.AreaShuffle = function (o) {
+            for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+            return o;
+          };
           
           /** @function GetImageTitleFromURL() */
           /* retrieve filemane */
-          NGY2Tools.GetImageTitleFromURL = function(imageSRC) {
+          NGY2Tools.GetImageTitleFromURL = function( imageURL ) {
             if( this.O.thumbnailLabel.get('title') == '%filename' ) {
-              return (imageSRC.split('/').pop()).replace('_',' ');
+              return (imageURL.split('/').pop()).replace('_',' ');
             }
             
             if( this.O.thumbnailLabel.get('title') == '%filenameNoExt' ) {
-              var s=imageSRC.split('/').pop();
+              var s=imageURL.split('/').pop();
               return (s.split('.').shift()).replace('_',' ');
             }
-            return imageSRC;
+            // return imageURL;
+            return '';
           };
           
 
@@ -278,7 +268,9 @@
               url:    { l1: { xs: '', sm:'', me: '', la: '', xl: '' }, lN: { xs: '', sm: '', me: '', la:'', xl: '' } },
               width:  { l1: { xs: 0,  sm: 0, me: 0,  la: 0 , xl: 0  }, lN: { xs: 0 , sm: 0,  me: 0,  la: 0, xl: 0  } },
               height: { l1: { xs: 0,  sm: 0, me: 0,  la: 0 , xl: 0  }, lN: { xs: 0,  sm: 0,  me: 0,  la: 0, xl: 0  } }
-            }
+            };
+            this.imageDominantColors    =  null;  // base64 GIF
+            this.imageDominantColor     =  null;  // HEX RGB
             this.featured =             false;    // featured element
             this.flickrThumbSizes =     {};       // store URLs for all available thumbnail sizes (flickr)
             this.picasaThumbs =         null;     // store URLs and sizes
@@ -317,7 +309,7 @@
               }
             }
             return null;
-          }
+          };
             
           NGY2Item.GetIdx = function( instance, ID ) {
             var l=instance.I.length;
@@ -327,12 +319,12 @@
               }
             }
             return -1;
-          }
+          };
           
           // create new item (image, album or albumUp)
           NGY2Item.New = function( instance, title, description, ID, albumID, kind, tags ) {
             var album=NGY2Item.Get( instance, albumID );
-            if( albumID != -1 && albumID != 0 && title !='dummydummydummy'  ) {
+            if( albumID != -1 && albumID != 0 && title !='image gallery by nanogallery2 [build]'  ) {
               if( instance.O.thumbnailLevelUp && album.getContentLength(false) == 0) {
                 // add navigation thumbnail (album up)
                 var item=new NGY2Item('0');
@@ -353,7 +345,7 @@
               // create a new item (otherwise, just update the existing one)
               item=new NGY2Item(ID);
               instance.I.push(item);
-              if( albumID != -1 && title !='dummydummydummy' ) {
+              if( albumID != -1 && title !='image gallery by nanogallery2 [build]' ) {
                 album.contentLength+=1;
               }
             }
@@ -419,7 +411,6 @@
             }
             
             // set (maybe modified) fields title and description
-            
             item.title=escapeHtml(instance, title);
             item.description=escapeHtml(instance, description);
             return item;
@@ -427,16 +418,7 @@
           
           // function to avoid XSS issue - Cross Site Scripting
           // original: https://github.com/janl/mustache.js/blob/master/mustache.js#L55
-          var entityMap = {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#39;',
-            '/': '&#x2F;',
-            '`': '&#x60;',
-            '=': '&#x3D;'
-          };
+          var entityMap = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '/': '&#x2F;', '`': '&#x60;', '=': '&#x3D;' };
           function escapeHtml (instance, string) {
             if( instance.O.allowHTMLinData == true ) {
               return string;
@@ -446,7 +428,7 @@
                 return entityMap[s];
               });
             }
-          };
+          }
           
           
           NGY2Item.get_nextId = function () {
@@ -475,14 +457,14 @@
           //--- returns the album containing the item
           NGY2Item.prototype.album = function() {
             return this.G.I[NGY2Item.GetIdx(this.G, this.albumID)];
-          }
+          };
 
           //--- set one image (url and size)
           NGY2Item.prototype.imageSet = function( src, w, h ) {
             this.src = src;
             this.width = w;
             this.height = h;
-          }
+          };
           
           //--- set one thumbnail (url and size) - screenSize and level are optionnal
           NGY2Item.prototype.thumbSet = function( src, w, h, screenSize, level ) {
@@ -565,7 +547,7 @@
           NGY2Item.prototype.thumbImg = function () {   
             var tnImg = { src:'', width:0, height:0 };
 
-            if( this.title == 'dummydummydummy' ) {
+            if( this.title == 'image gallery by nanogallery2 [build]' ) {
               tnImg.src=this.G.emptyGif;
               tnImg.url=this.G.emptyGif;
               return tnImg;
@@ -715,13 +697,13 @@
                 
                 if( nbStacks > 0 ) {
                   // apply a percent to the stack elements
-                  pTranslateX-=this.G.thumbnailStacksTranslateX.Get();
-                  pTranslateY-=this.G.thumbnailStacksTranslateY.Get();
-                  pTranslateZ-=this.G.thumbnailStacksTranslateZ.Get();
-                  pRotateX-=this.G.thumbnailStacksRotateX.Get();
-                  pRotateY-=this.G.thumbnailStacksRotateY.Get();
-                  pRotateZ-=this.G.thumbnailStacksRotateZ.Get();
-                  pScale-=this.G.thumbnailStacksScale.Get();
+                  pTranslateX-=this.G.tn.opt.Get('stacksTranslateX');
+                  pTranslateY-=this.G.tn.opt.Get('stacksTranslateY');
+                  pTranslateZ-=this.G.tn.opt.Get('stacksTranslateZ');
+                  pRotateX-=this.G.tn.opt.Get('stacksRotateX');
+                  pRotateY-=this.G.tn.opt.Get('stacksRotateY');
+                  pRotateZ-=this.G.tn.opt.Get('stacksRotateZ');
+                  pScale-=this.G.tn.opt.Get('stacksScale');
                 }
               }
             }
@@ -736,30 +718,6 @@
                 else {
                   v += ' rotate('+obj.rotateZ+')';
                 }
-                obj.$elt[0].style[this.G.CSStransformName]= v;
-              }
-            }
-          };
-          NGY2Item.prototype.CSSTransformApplyOLD = function ( eltClass ) {
-            var obj=this.eltTransform[eltClass];
-            // units must be given with
-            var v = 'translateX('+obj.translateX+') translateY('+obj.translateY+') scale('+obj.scale+')';
-            if( !(this.G.IE <= 9) && !this.G.isGingerbread ) {
-              v += ' rotateX('+obj.rotateX+') rotateY('+obj.rotateY+') rotateZ('+obj.rotateZ+')';
-            }
-            else {
-              v += ' rotate('+obj.rotateZ+')';
-            }
-            if( eltClass == '.nGY2GThumbnail' ) {
-              var nbStack=obj.$elt.length-1;
-              console.dir(nbStack);
-              for( var n=nbStack; n>=0; n-- ) {
-                obj.$elt[n].style[this.G.CSStransformName]= v;
-                // console.dir(n);
-              }
-            }
-            else {
-              if( obj.$elt[0] != undefined ) {
                 obj.$elt[0].style[this.G.CSStransformName]= v;
               }
             }
@@ -795,7 +753,6 @@
 
           //--- thumbnail hover animation
           NGY2Item.prototype.animate = function ( effect, delay, hoverIn ) {
-            
             if( this.$getElt() == null  ) { return; }
 
             var context={};
@@ -1025,8 +982,8 @@
     items :                       null,
     itemsBaseURL :                '',
     thumbnailSelectable :         false,
-    jsonCharset:                  'Latin',
-    jsonProvider:                 '',
+    dataProvider:                 '',
+    dataCharset:                  'Latin',
     allowHTMLinData:              false,
     locationHash :                true,
     slideshowDelay :              3000,
@@ -1047,20 +1004,26 @@
     paginationSwipeSensibilityVert : 10,
     galleryFilterTags :           false,    // possible values: false, true, 'title', 'description'
     galleryL1FilterTags :         null,     // possible values: false, true, 'title', 'description'
-    galleryMaxItems :             0,        // maximum number of items per album  --> only flickr, google+, nanophotosprovider
-    galleryL1MaxItems :           null,     // maximum number of items per gallery page --> only flickr, google+, nanophotosprovider
+    galleryMaxItems :             0,        // maximum number of items per album  --> only flickr, google+, nano_photos_provider2
+    galleryL1MaxItems :           null,     // maximum number of items per gallery page --> only flickr, google+, nano_photos_provider2
     gallerySorting :              '',
     galleryL1Sorting :            null,
     galleryResizeAnimation :      true,
+    galleryRenderDelay :          60,
 
     thumbnailCrop :               true,
+    thumbnailL1Crop :             null,
     thumbnailCropScaleFactor :    1.5,
     thumbnailLevelUp :            false,
     thumbnailAlignment :          'center',
     thumbnailWidth :              300,
+    thumbnailL1Width :            null,
     thumbnailHeight :             200,
+    thumbnailL1Height :           null,
     thumbnailGutterWidth :        2,
+    thumbnailL1GutterWidth :      null,
     thumbnailGutterHeight :       2,
+    thumbnailL1GutterHeight :     null,
     thumbnailBorderVertical :     2,
     thumbnailBorderHorizontal :   2,
     thumbnailFeaturedKeyword :    '*featured',
@@ -1068,13 +1031,21 @@
     thumbnailHoverEffect2 :       'toolsAppear',
     thumbnailBuildInit2 :         '',
     thumbnailStacks :             0,
+    thumbnailL1Stacks :           null,
     thumbnailStacksTranslateX :   0,
+    thumbnailL1StacksTranslateX : null,
     thumbnailStacksTranslateY :   0,
+    thumbnailL1StacksTranslateY : null,
     thumbnailStacksTranslateZ :   0,
+    thumbnailL1StacksTranslateZ : null,
     thumbnailStacksRotateX :      0,
+    thumbnailL1StacksRotateX :    null,
     thumbnailStacksRotateY :      0,
+    thumbnailL1StacksRotateY :    null,
     thumbnailStacksRotateZ :      0,
+    thumbnailL1StacksRotateZ :    null,
     thumbnailStacksScale :        0,
+    thumbnailL1StacksScale :      null,
     thumbnailDisplayOutsideScreen: false,
     galleryBuildInit2 :           '',
     portable :                    false,
@@ -1098,8 +1069,11 @@
     thumbnailToolbarImage :       { topLeft: 'select', topRight : 'featured' },
     thumbnailToolbarAlbum :       { topLeft: 'select', topRight : 'counter' },
     thumbnailDisplayInterval :    15,
+    thumbnailL1DisplayInterval :  null,
     thumbnailDisplayTransition :  'fadeIn',
-    thumbnailDisplayTransitionDuration: 240,
+    thumbnailL1DisplayTransition : null,
+    thumbnailDisplayTransitionDuration:   240,
+    thumbnailL1DisplayTransitionDuration: null,
     thumbnailOpenImage :          true,
     thumbnailOpenOriginal :       false,
     thumbnailGlobalImageTitle :   '',
@@ -1111,6 +1085,7 @@
     imageTransition :             'swipe',
     viewerZoom :                  true,
     openOnStart :                 '',
+    viewerHideToolsDelay :        3000,
     viewerToolbar : {
       display :                   true,
       position :                  'bottomOverImage',
@@ -1118,11 +1093,11 @@
       align :                     'center',
       autoMinimize :              0,
       standard :                  'minimizeButton,label',
-      minimized :                 'minimizeButton,label,infoButton,downloadButton,linkOriginalButton,fullscreenButton'
+      minimized :                 'minimizeButton,label,infoButton,shareButton,downloadButton,linkOriginalButton,fullscreenButton'
     },
     viewerTools : {
       topLeft :                   'pageCounter,playPauseButton',
-      topRight :                  'zoomButton,shareButton,closeButton' 
+      topRight :                  'zoomButton,closeButton' 
     },
     
     breakpointSizeSM :            480,
@@ -1145,7 +1120,11 @@
     fnGalleryRenderEnd :          null,
     fnGalleryObjectModelBuilt :   null,
     fnGalleryLayoutApplied :      null,
-    
+    fnThumbnailClicked :          null,
+    fnShoppingCartUpdated :       null,
+    fnThumbnailToolCustAction :   null,
+    fnThumbnailOpen :             null,
+    fnImgDisplayed :              null,
 
     i18n : {
       'breadcrumbHome' : 'Galleries', 'breadcrumbHome_FR' : 'Galeries',
@@ -1172,6 +1151,7 @@
       thumbnailDownload:            '<i class="nGY2Icon icon-ngy2_download2"></i>',
       thumbnailInfo:                '<i class="nGY2Icon icon-ngy2_info2"></i>',
       thumbnailCart:                '<i class="nGY2Icon icon-basket"></i>',
+      thumbnailDisplay:             '<i class="nGY2Icon icon-ngy2_zoom_in2"></i>',
       thumbnailCustomTool1:         'T1',
       thumbnailCustomTool2:         'T2',
       thumbnailCustomTool3:         'T3',
@@ -1211,6 +1191,7 @@
       shareGooglePlus:              '<i style="color:#dd4b39;" class="nGY2Icon icon-gplus-squared"></i>',
       shareTumblr:                  '<i style="color:#32506d;" class="nGY2Icon icon-tumblr-squared"></i>',
       sharePinterest:               '<i style="color:#cb2027;" class="nGY2Icon icon-pinterest-squared"></i>',
+      shareVK:                      '<i style="color:#3b5998;" class="nGY2Icon icon-vkontakte"></i>',
       shareMail:                    '<i style="color:#555;" class="nGY2Icon icon-mail-alt"></i>',
       viewerCustomTool1:            'T1',
       viewerCustomTool2:            'T2',
@@ -1299,8 +1280,14 @@
               nG2.shoppingCart[i].cnt=cnt;
             }
           }
-          if(typeof nG2.O.fnShoppingCartUpdated === 'function'){
-            nG2.O.fnShoppingCartUpdated(nG2.shoppingCart);
+          if( G.O.fnShoppingCartUpdated !== null ) {
+            if( typeof G.O.fnShoppingCartUpdated == 'function' ) {
+              G.O.fnShoppingCartUpdated(nG2.shoppingCart);
+            }
+            else {
+              // defined in markup
+              window[G.O.fnShoppingCartUpdated](nG2.shoppingCart);
+            }
           }
           return nG2.shoppingCart;
           break;
@@ -1315,8 +1302,14 @@
               break;
             }
           }
-          if(typeof nG2.O.fnShoppingCartUpdated === 'function'){
-            nG2.O.fnShoppingCartUpdated(nG2.shoppingCart);
+          if( G.O.fnShoppingCartUpdated !== null ) {
+            if( typeof G.O.fnShoppingCartUpdated == 'function' ) {
+              G.O.fnShoppingCartUpdated(nG2.shoppingCart);
+            }
+            else {
+              // defined in markup
+              window[G.O.fnShoppingCartUpdated](nG2.shoppingCart);
+            }
           }
           return nG2.shoppingCart;
           break;
@@ -1460,7 +1453,8 @@
 
       jQuery(window).off('resize.nanogallery2.'+G.baseEltID);
       jQuery(window).off('scroll.nanogallery2.'+G.baseEltID);
-      
+      G.GOM.firstDisplay=false;
+
       
     };
     
@@ -1502,10 +1496,33 @@
         }
         return result;
       };
-    };    
+    };
+    
+    
+    // DEBOUNCE
+    // author: John Hann - http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
+    // execAsap - false means executing at the end of the detection period
+    var debounce = function (func, threshold, execAsap) {
+      var timeout;
+      return function debounced () {
+          var obj = this, args = arguments;
+          function delayed () {
+              if (!execAsap)
+                  func.apply(obj, args);
+              timeout = null; 
+          };
+   
+          if (timeout)
+              clearTimeout(timeout);
+          else if (execAsap)
+              func.apply(obj, args);
+          timeout = setTimeout(delayed, threshold || 100); 
+      };
+    }
 
+    
     /*
-    ** Global data for this nanoGALLERY instance
+    ** Global data for this nanogallery2 instance
     **/
     var G=this;
     G.I =                       [];           // gallery items
@@ -1543,7 +1560,7 @@
           
           G.layout.engine='GRID';
           G.layout.support.rows=true;
-          if( G.thumbnailCrop.Get() === true ) {
+          if( G.tn.opt.Get('crop') === true ) {
             G.layout.prerequisite.imageSize=true;
           }
           else {
@@ -1583,73 +1600,23 @@
         return G.gallerySorting[G.GOM.curNavLevel];
       }
     };
-    G.thumbnailCrop = { l1: true, lN: true,
-      Get: function() {
-        return G.thumbnailCrop[G.GOM.curNavLevel];
-      }
-    };
-    G.thumbnailStacks = { l1: 0, lN: 0,
-      Get: function() {
-        return G.thumbnailStacks[G.GOM.curNavLevel];
-      }
-    };
-    G.thumbnailStacksTranslateX = { l1: 0, lN: 0,
-      Get: function() {
-        return G.thumbnailStacksTranslateX[G.GOM.curNavLevel];
-      }
-    };
-    G.thumbnailStacksTranslateY = { l1: 0, lN: 0,
-      Get: function() {
-        return G.thumbnailStacksTranslateY[G.GOM.curNavLevel];
-      }
-    };
-    G.thumbnailStacksTranslateZ = { l1: 0, lN: 0,
-      Get: function() {
-        return G.thumbnailStacksTranslateZ[G.GOM.curNavLevel];
-      }
-    };
-    G.thumbnailStacksRotateX = { l1: 0, lN: 0,
-      Get: function() {
-        return G.thumbnailStacksRotateX[G.GOM.curNavLevel];
-      }
-    };
-    G.thumbnailStacksRotateY = { l1: 0, lN: 0,
-      Get: function() {
-        return G.thumbnailStacksRotateY[G.GOM.curNavLevel];
-      }
-    };
-    G.thumbnailStacksRotateZ = { l1: 0, lN: 0,
-      Get: function() {
-        return G.thumbnailStacksRotateZ[G.GOM.curNavLevel];
-      }
-    };
-    G.thumbnailStacksScale = { l1: 0, lN: 0,
-      Get: function() {
-        return G.thumbnailStacksScale[G.GOM.curNavLevel];
-      }
-    };
-    G.thumbnailGutterWidth = { l1: 0, lN: 0,
-      Get: function() {
-        return G.thumbnailGutterWidth[G.GOM.curNavLevel];
-      }
-    };
-    G.thumbnailGutterHeight = { l1: 0, lN: 0,
-      Get: function() {
-        return G.thumbnailGutterHeight[G.GOM.curNavLevel];
-      }
-    };
     G.$currentTouchedThumbnail = null;    
     
-    G.tn = {                          // GENERAL THUMBNAILS PROPERTIES -->
-      displayInterval:                10,        // delay between 2 thumbnails display
-      displayTransitionStartVal:      0,
-      displayTransition:              'FADEIN',
-      displayTransitionEasing:        '',
+    // ##### GENERAL THUMBNAILS PROPERTIES -->
+    G.tn = {
+      // levell specific options
+      opt:  {
+        l1: { crop: true, stacks: 0, stacksTranslateX: 0, stacksTranslateY: 0, stacksTranslateZ: 0, stacksRotateX: 0, stacksRotateY: 0, stacksRotateZ: 0, stacksScale: 0, gutterHeight: 0, gutterWidth: 0, displayTransition: 'FADEIN', displayTransitionStartVal: 0, displayTransitionEasing: 'easeOutQuart', displayTransitionDuration: 240, displayInterval: 15 },
+        lN: { crop: true, stacks: 0, stacksTranslateX: 0, stacksTranslateY: 0, stacksTranslateZ: 0, stacksRotateX: 0, stacksRotateY: 0, stacksRotateZ: 0, stacksScale: 0, gutterHeight: 0, gutterWidth: 0, displayTransition: 'FADEIN', displayTransitionStartVal: 0, displayTransitionEasing: 'easeOutQuart', displayTransitionDuration: 240, displayInterval: 15 },
+        Get: function(opt) {
+          return G.tn.opt[G.GOM.curNavLevel][opt];
+        }
+      },
       scale:                          1,         // image scale depending of the hover effect
       borderWidth:                    0,         // thumbnail container border width
       borderHeight:                   0,         // thumbnail container border height
       labelHeight: {                  // in case label on bottom, otherwise always=0
-        l1:0, lN:0,
+        l1: 0, lN: 0,
         get: function() {
           return G.tn.labelHeight[G.GOM.curNavLevel];
         }
@@ -1752,7 +1719,6 @@
     G.CSSanimationName =          FirstSupportedPropertyName(["animation", "msAnimation", "MozAnimation", "WebkitAnimation", "OAnimation"]);
     G.GalleryResizeThrottled =    throttle(GalleryResize, 100, {leading: false});
     
-    
     G.blackList =                 null;     // album white list
     G.whiteList =                 null;     // album black list
     G.albumList =                 [];       // album list
@@ -1760,7 +1726,6 @@
     G.locationHashLastUsed =      '';
     G.custGlobals =               {};
     G.touchAutoOpenDelayTimerID = 0;
-    G.supportFullscreenAPI =      false;
     G.i18nLang =                  '';
     G.timeLastTouchStart =        0;
     G.custGlobals =               {};
@@ -1769,7 +1734,7 @@
     //--- Gallery Object Model
     G.GOM = {
       albumIdx :                  -1, // index (in G.I) of the currently displayed album
-      clipArea :                  { top:0, height: 0 }, // area of the GOM to display on screen
+      clipArea :                  { top: 0, height: 0 }, // area of the GOM to display on screen
       displayArea :               { width: 0 , height: 0 }, // size of the GOM area
       displayAreaLast :           { width: 0 , height: 0 }, // previous size of the GOM area
       displayedMoreSteps :        0, // current number of displayed steps (moreButton mode)
@@ -1820,10 +1785,12 @@
       viewerDisplayed:            false,  // is the viewer currently displayed
       viewerIsFullscreen:         false,  // viewer in fullscreen mode
       infoDisplayed:              false,  // is the info box displayed
+      toolbarsDisplayed:          true,   // the toolbars are displayed
+      toolsHide:                  null,
       currentZoom:                1,
       isZooming:                  false,
-      padding:                    { H:0, V:0 }, // padding for the image
-      window:                     { lastWidth:0, lastHeight:0 },
+      padding:                    { H: 0, V: 0 }, // padding for the image
+      window:                     { lastWidth: 0, lastHeight: 0 },
       $cont:                      null,   // viewer container
       $viewer:                    null,
       $toolbar:                   null,   // viewerToolbar
@@ -1844,15 +1811,88 @@
       Item: function(idx) {
         return G.I[this.items[idx].imageIdx];
       },
-      userEvents:                 null,   // user events management
-      hammertime:                 null,
-      swipePosX:                  0,
-      panPosX:                    0,      // manual pan position
-      panPosY:                    0,
-      zoomPosX:                   0,      // position to center zoom in/out
-      zoomPosY:                   0,
-      colorSchemeLabel:           '',
-      timeImgChanged:             0
+      IdxNext: function(idx) {
+        var n=0;
+        if( idx != G.VOM.items.length-1 ) {
+          n=idx+1;
+        }
+        return n;
+      },
+      IdxPrevious: function(idx) {
+        var n=idx-1;
+        if( idx == 0 ) {
+          n=G.VOM.items.length-1;
+        }
+        return n;
+      },
+      ItemNext: function(idx) {
+        return G.I[this.items[this.IdxNext(idx)].imageIdx]
+      },
+      ItemPrevious: function(idx) {
+        return G.I[this.items[this.IdxPrevious(idx)].imageIdx]
+      },
+      userEvents:         null,   // user events management
+      hammertime:         null,   // hammer.js manager
+      swipePosX:          0,      // current horizontal swip position
+      panPosX:            0,      // manual pan position
+      panPosY:            0,
+      zoomPosX:           0,      // position to center zoom in/out
+      zoomPosY:           0,
+      colorSchemeLabel:   '',
+      timeImgChanged:     0,
+      ImageLoader: {
+        // inspired by ROB - http://stackoverflow.com/users/226507/rob
+        maxChecks:        1000,
+        list:             [],
+        intervalHandle :  null,
+
+        loadImage : function (callback, url, ngitem) {
+          var img = new Image ();
+          img.src = url;
+          if (img.width && img.height) {
+            callback (img.width, img.height, url, ngitem, 0);
+            }
+          else {
+            var obj = {image: img, url: url, ngitem: ngitem, callback: callback, checks: 1};
+            var i;
+            for (i=0; i < this.list.length; i++)    {
+              if (this.list[i] == null)
+                break;
+              }
+            this.list[i] = obj;
+            if (!this.intervalHandle)
+              this.intervalHandle = setInterval(this.interval, 60);
+            }
+          },
+
+        // called by setInterval  
+        interval : function () {
+          var count = 0;
+          var list = G.VOM.ImageLoader.list, item;
+          for (var i=0; i<list.length; i++) {
+            item = list[i];
+            if (item != null) {
+              if (item.image.width && item.image.height) {
+                item.callback (item.image.width, item.image.height, item.url, item.ngitem, item.checks);
+                G.VOM.ImageLoader.list[i] = null;
+                }
+              else if (item.checks > G.VOM.ImageLoader.maxChecks) {
+                item.callback (0, 0, item.url, item.ngitem, item.checks);
+                G.VOM.ImageLoader.list[i] = null;
+                }
+              else {
+                count++;
+                item.checks++;
+                }
+              }
+            }
+          if (count == 0) {
+            G.VOM.ImageLoader.list = [];
+            clearInterval (G.VOM.ImageLoader.intervalHandle);
+            delete G.VOM.ImageLoader.intervalHandle;
+            }
+          }
+        }
     }
     // One VOM item (image)
     function VImg(index) {
@@ -1863,8 +1903,8 @@
     //------------------------
     //--- popup
     G.popup = {
-      isDisplayed:  false,
-      $elt:         null,
+      isDisplayed:      false,
+      $elt:             null,
       close: function() {
         if( this.$elt != null ) {
           var tweenable = new NGTweenable();
@@ -1953,16 +1993,16 @@
     this.initiateGallery2 = function( element, params ) {
 
       // GLOBAL OPTIONS
-      G.O =             params;
+      G.O =               params;
       // Base element
-      G.$E.base =       jQuery(element);
-      G.baseEltID =     G.$E.base.attr('id');
+      G.$E.base =         jQuery(element);
+      G.baseEltID =       G.$E.base.attr('id');
       if( G.baseEltID == undefined ) {
         // set a default ID to the root container
         G.baseEltID='my_nanogallery';
         G.$E.base.attr('id', G.baseEltID)
       }
-      G.O.$markup =      [];
+      G.O.$markup =       [];
       
       DefineVariables();
       SetPolyFills();
@@ -2056,7 +2096,7 @@
     
     // Parse string to extract albumID and imageID (format albumID/imageID)
     function parseIDs( IDs ) {
-      var r={ albumID:'0', imageID:'0' };
+      var r={ albumID: '0', imageID: '0' };
       
       var t=IDs.split('/');
       if( t.length > 0 ) {
@@ -2102,7 +2142,7 @@
     
       G.GOM.pagination.currentPage=0;
       SetLocationHash( albumID, '' );
-      
+
       GalleryRender( albumIdx );
     
     }
@@ -2135,7 +2175,6 @@
         default:
           break;
       }
-    
     }
     
     
@@ -2226,7 +2265,7 @@
       if( G.galleryFilterTags.Get() != false ) {
         var nTags=G.I[albumIdx].albumTagList.length;
         if( nTags > 0 ) {
-          for(var i=0; i <nTags; i++ ) {
+          for(var i=0; i < nTags; i++ ) {
             var s=G.I[albumIdx].albumTagList[i];
             var ic=G.O.icons.navigationFilterUnselected;
             var tagClass='Unselected';
@@ -2405,6 +2444,7 @@
         elt$.data('pageNumber', i );
         elt$.click(function(e) {
           G.GOM.pagination.currentPage=jQuery(this).data('pageNumber');
+          TriggerCustomEvent('pageChanged');
           GalleryDisplay( true );
         });
 
@@ -2442,7 +2482,6 @@
       }
       
       G.GOM.pagination.currentPage = pn;
-      // G.$E.base.trigger('pageChanged.nanogallery2', new Event('pageChanged.nanogallery2'));
       TriggerCustomEvent('pageChanged');
 
       GalleryDisplay( true );
@@ -2473,7 +2512,6 @@
       }
 
       G.GOM.pagination.currentPage = pn;
-      // G.$E.base.trigger('pageChanged.nanogallery2', new Event('pageChanged.nanogallery2'));
       TriggerCustomEvent('pageChanged');
       GalleryDisplay( true );
     }
@@ -2556,10 +2594,15 @@
     function GalleryRender( albumIdx ) {
 
       TriggerCustomEvent('galleryRenderStart');
-      if( typeof G.O.fnGalleryRenderStart == 'function' ) {
-        G.O.fnGalleryRenderStart(albumIdx);
+      if( G.O.fnGalleryRenderStart !== null ) {
+        if( typeof G.O.fnGalleryRenderStart == 'function' ) {
+          G.O.fnGalleryRenderStart(albumIdx);
+        }
+        else {
+          // defined in markup
+          window[G.O.fnGalleryRenderStart](albumIdx);
+        }
       }
-      
 
       G.layout.SetEngine();
       G.galleryResizeEventEnabled=false;
@@ -2584,7 +2627,8 @@
       
       if( G.GOM.firstDisplay ) {
         G.GOM.firstDisplay=false;
-        GalleryRenderPart1( albumIdx );
+        // GalleryRenderPart1( albumIdx );
+        setTimeout( function() { GalleryRenderPart1( albumIdx )}, G.O.galleryRenderDelay);
       }
       else {
         var hideNavigationBar=false;
@@ -2595,18 +2639,18 @@
         // hide everything
         var tweenable = new NGTweenable();
         tweenable.tween({
-          from: { 'opacity': 1 },
-          to: { 'opacity': 0 },
-          duration: 200,
-          easing: 'easeInQuart',
-          attachment: { h: hideNavigationBar },
-          step: function (state, att) {
+          from:         { 'opacity': 1 },
+          to:           { 'opacity': 0 },
+          duration:     200,
+          easing:       'easeInQuart',
+          attachment:   { h: hideNavigationBar },
+          step:         function (state, att) {
             G.$E.conTnParent.css({'opacity': state.opacity });
             if( att.h ) {
               G.$E.conNavigationBar.css({ 'opacity': state.opacity });
             }
           },
-          finish: function (state, att) {
+          finish:       function (state, att) {
             G.$E.conTnParent.css({'opacity': 0});
             if( att.h ) {
               G.$E.conNavigationBar.css({ 'opacity': 0, 'display': 'none' });
@@ -2631,10 +2675,10 @@
           to:       { 'opacity': 1 },
           duration: 200,
           easing:   'easeInQuart',
-          step: function (state, att) {
+          step:     function (state, att) {
             G.$E.conNavigationBar.css({ 'opacity': state.opacity });
           },
-          finish: function (state, att) {
+          finish:   function (state, att) {
             G.$E.conNavigationBar.css({ 'opacity': 1 });
           }
         });
@@ -2651,8 +2695,6 @@
         G.GOM.lastZIndex=0;
       }
       G.$E.conTnParent.css({'opacity': 0 });
-      // G.$E.conTn.hide(0).off().show(0).html('');
-      // G.$E.conTn.off().html('');
       G.$E.conTn.off().empty();
       var l=G.I.length;
       for( var i=0; i < l ; i++ ) {
@@ -2671,7 +2713,13 @@
         item.resizedContentHeight=0;
       }
 
-      G.$E.conTn.css( G.CSStransformName , 'translateX('+0+'px)');
+      if( G.CSStransformName == null ) {
+        G.$E.conTn.css( 'left' , '0px');
+      }
+      else {
+        G.$E.conTn.css( G.CSStransformName , 'translateX('+0+'px)');
+      }
+      
       G.$E.conTnParent.css({ left: 0, opacity: 1 });
 
       GalleryRenderPart3(albumIdx);
@@ -2684,7 +2732,7 @@
       
       G.GOM.items = [];
       G.GOM.displayedMoreSteps=0;
-// retrieve annotation height      
+      // retrieve annotation height      
       var annotationHeight = 0;
       if( G.O.thumbnailLabel.get('position') == 'onBottom' ) {
         // retrieve height each time because size can change depending on thumbnail's settings
@@ -2697,13 +2745,19 @@
       G.GOM.albumIdx=albumIdx;
 
       TriggerCustomEvent('galleryRenderEnd');
-      if( typeof G.O.fnGalleryRenderEnd == 'function' ) {
-        G.O.fnGalleryRenderEnd(albumIdx);
+      if( G.O.fnGalleryRenderEnd !== null ) {
+        if( typeof G.O.fnGalleryRenderEnd == 'function' ) {
+          G.O.fnGalleryRenderEnd(albumIdx);
+        }
+        else {
+          // defined in markup
+          window[G.O.fnGalleryRenderEnd](albumIdx);
+        }
       }
       
       // Step 1: populate GOM
       if( GalleryPopulateGOM() ) {
-      
+
         // step 2: calculate layout
         GallerySetLayout();
 
@@ -2715,9 +2769,7 @@
         G.galleryResizeEventEnabled=true;
       }
       
-      if( G.O.debugMode ) {
-        console.log('GalleryRenderPart3: '+ (new Date()-d));
-      }
+      if( G.O.debugMode ) { console.log('GalleryRenderPart3: '+ (new Date()-d)); }
 
     }
     
@@ -2728,37 +2780,28 @@
       G.galleryResizeEventEnabled=false;
       if( GallerySetLayout( GOMidx ) == false ) {
         G.galleryResizeEventEnabled=true;
-        if( G.O.debugMode ) {
-          console.log('GalleryResize1: '+ (new Date()-d));
-        }
+        if( G.O.debugMode ) { console.log('GalleryResize1: '+ (new Date()-d)); }
         return;
       }
-      if( G.O.debugMode ) {
-        console.log('GalleryResizeSetLayout: '+ (new Date()-d));
-      }
+      if( G.O.debugMode ) { console.log('GalleryResizeSetLayout: '+ (new Date()-d)); }
 
       GalleryDisplay( false );
 
-      // G.galleryResizeEventEnabled=true;
-      if( G.O.debugMode ) {
-        console.log('GalleryResizeFull: '+ (new Date()-d));
-      }
+      if( G.O.debugMode ) { console.log('GalleryResizeFull: '+ (new Date()-d)); }
     }
     
     
     
     // copy items (album content) to GOM
     function GalleryPopulateGOM() {
-      // G.galleryResizeEventEnabled=false;
       
       var preloadImages='';
       var imageSizeRequested=false;
-      //var nbTn=G.GOM.items.length;
       var albumID=G.I[G.GOM.albumIdx].GetID();
       var l=G.I.length;
       var cnt=0;
 
-      for( var idx=0; idx<l; idx++ ) {
+      for( var idx=0; idx < l; idx++ ) {
         var item=G.I[idx];
         // check album
         if( item.albumID == albumID && item.checkTagFilter() && item.isSearchFound() ) {
@@ -2783,10 +2826,15 @@
         }
       }
 
-      // G.$E.base.trigger('galleryObjectModelBuilt.nanogallery2', new Event('galleryObjectModelBuilt.nanogallery2'));
       TriggerCustomEvent('galleryObjectModelBuilt');
-      if( typeof G.O.fnGalleryObjectModelBuilt == 'function' ) {
-        G.O.fnGalleryObjectModelBuilt();
+      if( G.O.fnGalleryObjectModelBuilt !== null ) {
+        if( typeof G.O.fnGalleryObjectModelBuilt == 'function' ) {
+          G.O.fnGalleryObjectModelBuilt();
+        }
+        else {
+          // defined in markup
+          window[G.O.fnGalleryObjectModelBuilt]();
+        }
       }
       
       if( imageSizeRequested ) {
@@ -2808,7 +2856,7 @@
               item.thumbs.width[G.GOM.curNavLevel][G.GOM.curWidth]=curTn.imageWidth;
               item.thumbs.height[G.GOM.curNavLevel][G.GOM.curWidth]=curTn.imageHeight;
  
-              if( G.layout.engine == 'GRID' && G.thumbnailCrop.Get() === true && item.$getElt('.nGY2GThumbnailImg') !== null ) {
+              if( G.layout.engine == 'GRID' && G.tn.opt.Get('crop') === true && item.$getElt('.nGY2GThumbnailImg') !== null ) {
                 // special case (GRID + cropped thumbnails) -> just reposition the image in the thumbnail
                 if( item.thumbImg().height > item.thumbImg().width ) {
                   // portrait
@@ -2898,8 +2946,14 @@
       }
       
       TriggerCustomEvent('galleryLayoutApplied');
-      if( typeof G.O.fnGalleryLayoutApplied == 'function' ) {
-        G.O.fnGalleryLayoutApplied();
+      if( G.O.fnGalleryLayoutApplied !== null ) {
+        if( typeof G.O.fnGalleryLayoutApplied == 'function' ) {
+          G.O.fnGalleryLayoutApplied();
+        }
+        else {
+          // defined in markup
+          window[G.O.fnGalleryLayoutApplied]();
+        }
       }
       return r;
 
@@ -2909,22 +2963,22 @@
     //----- CASCADING LAYOUT
     function GallerySetLayoutHeightAuto( areaWidth, GOMidx ) {
       var areaW=G.$E.conTnParent.width(),
-      curCol=0,
-      curRow=0,
-      colHeight=[],
-      maxCol=NbThumbnailsPerRow(areaWidth),      //parseInt(areaW/G.tn.defaultFullWidth);
-      gutterWidth=0,
-      gutterHeight=G.thumbnailGutterHeight.Get();
+      curCol =        0,
+      curRow =        0,
+      colHeight =     [],
+      maxCol =        NbThumbnailsPerRow(areaWidth),
+      gutterWidth =   0,
+      gutterHeight =  G.tn.opt.Get('gutterHeight');
 
-      var tnWidth=G.tn.defaultSize.getOuterWidth();
-      var nbTn=G.GOM.items.length;
+      var tnWidth =   G.tn.defaultSize.getOuterWidth();
+      var nbTn =      G.GOM.items.length;
 
       if( G.O.thumbnailAlignment == 'justified' ) {
         maxCol=Math.min(maxCol,nbTn);
-        gutterWidth=(maxCol==1?0:(areaWidth-(maxCol*tnWidth))/(maxCol-1));
+        gutterWidth=( maxCol == 1 ? 0 : (areaWidth-(maxCol*tnWidth))/(maxCol-1) );
       }
       else {
-        gutterWidth=G.thumbnailGutterWidth.Get();
+        gutterWidth=G.tn.opt.Get('gutterWidth');
       }
 
       curRow=0;
@@ -3000,8 +3054,8 @@
       rowHeight=                  [],
       bNewRow=                    false,
       cnt=                        0,
-      gutterWidth=                G.thumbnailGutterWidth.Get(),
-      gutterHeight=               G.thumbnailGutterHeight.Get();
+      gutterWidth=                G.tn.opt.Get('gutterWidth'),
+      gutterHeight=               G.tn.opt.Get('gutterHeight');
       // by grief-of-these-days
       var maxRowHeightVertical=   0; // max height of a row with vertical thumbs
       var maxRowHeightHorizontal= 0; // max height of a row with horizontal thumbs
@@ -3080,7 +3134,7 @@
       lastPosX=0;
       cnt=0;
       
-      G.GOM.lastFullRow=1;    // display at leat 1 row (even if not full)
+      G.GOM.lastFullRow=0;    // display at leat 1 row (even if not full)
       
       // second loop --> calculate each thumbnail size
       for( var i=0; i < nbTn ; i++ ) {
@@ -3127,7 +3181,7 @@
           if( i == rowLastItem[rowNum] ) {
             // start a new row
             curPosY+=curTn.height+gutterHeight;
-            G.GOM.lastFullRow=rowNum;
+            G.GOM.lastFullRow=rowNum-1;
             rowNum++;
             lastPosX=0;
           }
@@ -3191,7 +3245,7 @@
       var curPosX=      0,
       curPosY=          0,   
       gutterWidth=      0,
-      gutterHeight=     G.thumbnailGutterHeight.Get(),
+      gutterHeight=     G.tn.opt.Get('gutterHeight'),
       maxCol=           NbThumbnailsPerRow(areaWidth),
       w=                0,
       cols=             [],
@@ -3207,12 +3261,12 @@
         gutterWidth=(maxCol==1?0:(areaWidth-(maxCol*tnWidth))/(maxCol-1));
       }
       else {
-        gutterWidth=G.thumbnailGutterWidth.Get();
+        gutterWidth=G.tn.opt.Get('gutterWidth');
       }
 
       if( G.O.RTL ) {
         // first loop to retrieve the real used width of the area
-        for( var i=0; i < nbTn ; i++ ) {
+        for( var i= 0 ; i < nbTn ; i++ ) {
           if( curPosY != 0 ) {
             break;
           }
@@ -3276,7 +3330,12 @@
     //----- Display the thumbnails according to the calculated layout
     function GalleryDisplay( forceTransition ) {
 
-      G.$E.conTn.css( G.CSStransformName , 'translateX('+0+'px)');
+      if( G.CSStransformName == null ) {
+        G.$E.conTn.css( 'left' , '0px');
+      }
+      else {
+        G.$E.conTn.css( G.CSStransformName , 'translateX('+0+'px)');
+      }
 
       var nbTn=G.GOM.items.length;
       G.GOM.itemsDisplayed=0;
@@ -3372,8 +3431,6 @@
         GalleryDisplay( forceTransition );
       }
 
-      
-
       // counter of not displayed images (is displayed on the last thumbnail)
       if( G.layout.support.rows ) {
         if( G.galleryDisplayMode.Get() == 'ROWS' || (G.galleryDisplayMode.Get() == 'FULLCONTENT' && G.galleryLastRowFull.Get() && G.GOM.lastFullRow != -1) ){
@@ -3396,22 +3453,24 @@
       // first display newly built thumbnails
       var nbBuild=tnToDisplay.length;
       for( var i=0; i < nbBuild ; i++ ) {
-        ThumbnailSetPosition(tnToDisplay[i].idx,tnToDisplay[i].delay+10);
+        // ThumbnailSetPosition(tnToDisplay[i].idx, tnToDisplay[i].delay+10);
+        ThumbnailSetPosition(tnToDisplay[i].idx, i);
       }
       // then re-position already displayed thumbnails
       var n=tnToReDisplay.length;
       for( var i=0; i < n ; i++ ) {
-        ThumbnailSetPosition(tnToReDisplay[i].idx,nbBuild+1);
+        // ThumbnailSetPosition(tnToReDisplay[i].idx, nbBuild+1);
+        ThumbnailSetPosition(tnToReDisplay[i].idx, i);
       }
 
-      if( G.tn.displayTransition == 'NONE' ) {
+      if( G.tn.opt.Get('displayTransition') == 'NONE' ) {
         G.galleryResizeEventEnabled=true;
       }
       else {
         setTimeout(function() {
           // change value after the end of the display transistion of the newly built thumbnails
           G.galleryResizeEventEnabled=true;
-        }, nbBuild*G.tn.displayInterval);
+        }, nbBuild * G.tn.opt.Get('displayInterval'));
       }
       
       // G.$E.base.trigger('galleryDisplayed.nanogallery2', new Event('galleryDisplayed.nanogallery2'));
@@ -3421,15 +3480,15 @@
     
     // Thumbnail: set the new position
     function ThumbnailSetPosition( GOMidx, cnt ) {
-      var newTop= 0;
-      var curTn=  G.GOM.items[GOMidx];
-      var idx=    G.GOM.items[GOMidx].thumbnailIdx;
-      var item=   G.I[idx];
+      var newTop=   0;
+      var curTn=    G.GOM.items[GOMidx];
+      var idx=      G.GOM.items[GOMidx].thumbnailIdx;
+      var item=     G.I[idx];
     
       if( curTn.neverDisplayed ) {
         // thumbnail is built but has never been displayed (=first display)
         var top=curTn.top-G.GOM.clipArea.top;
-        if( G.thumbnailStacks.Get() > 0 ) {
+        if( G.tn.opt.Get('stacks') > 0 ) {
           // we have stacks -> do not display them here. They will be displayed at the end of the display animation
           item.$elt.last().css({ display: 'block'});
           item.$elt.css({ top: top , left: curTn.left });
@@ -3463,12 +3522,12 @@
                   to:         { top: newTop, left: curTn.left, height: curTn.height, width: curTn.width },
                   attachment: { $e: item.$elt },
                   duration:   300,
-                  delay:      cnt*G.tn.displayInterval,
+                  delay:      cnt * G.tn.opt.Get('displayInterval'),
                   easing:     'easeOutQuart',
-                  step:   function (state, att) {
+                  step:       function (state, att) {
                     att.$e.css(state);
                   },
-                  finish: function (state, att) {
+                  finish:     function (state, att) {
                     att.$e.css(state);
                     this.dispose();
                   }
@@ -3554,27 +3613,26 @@
       }
 
       // visibility set to hidden
-      newElt[newEltIdx++]='<div class="nGY2GThumbnail '+G.O.theme+'" style="display:block;visibility:hidden;position:absolute;top:-9999px;left:-9999px;" ><div class="nGY2GThumbnailSub">';
+      newElt[newEltIdx++] = '<div class="nGY2GThumbnail '+G.O.theme+'" style="display:block;visibility:hidden;position:absolute;top:-9999px;left:-9999px;" ><div class="nGY2GThumbnailSub">';
       if( G.O.thumbnailLabel.get('display') == true ) {
         // Labels: title and description
-        newElt[newEltIdx++]= '  <div class="nGY2GThumbnailLabel" '+ G.tn.style.getLabel() +'>';
-        newElt[newEltIdx++]= '    <div class="nGY2GThumbnailAlbumTitle" '+G.tn.style.getTitle()+'>aAzZjJ</div>';
-        newElt[newEltIdx++]= '    <div class="nGY2GThumbnailDescription" '+G.tn.style.getDesc()+'>'+desc+'</div>';
-        newElt[newEltIdx++]= '  </div>';
+        newElt[newEltIdx++] = '  <div class="nGY2GThumbnailLabel" '+ G.tn.style.getLabel() +'>';
+        newElt[newEltIdx++] = '    <div class="nGY2GThumbnailAlbumTitle" '+G.tn.style.getTitle()+'>aAzZjJ</div>';
+        newElt[newEltIdx++] = '    <div class="nGY2GThumbnailDescription" '+G.tn.style.getDesc()+'>'+desc+'</div>';
+        newElt[newEltIdx++] = '  </div>';
       }
       
       newElt[newEltIdx++]='</div></div>';
     
-      // var $newDiv =jQuery(newElt.join('')).appendTo('body');
-      var $newDiv =jQuery(newElt.join('')).appendTo(G.$E.conTn);
-      var h=$newDiv.find('.nGY2GThumbnailLabel').outerHeight(true);
+      var $newDiv = jQuery(newElt.join('')).appendTo(G.$E.conTn);
+      var h = $newDiv.find('.nGY2GThumbnailLabel').outerHeight(true);
       $newDiv.remove();
 
       return h;
     }
     
     function ThumbnailBuildStacks () {
-      var ns=G.thumbnailStacks.Get();
+      var ns=G.tn.opt.Get('stacks');
       if( ns == 0 ) {
         return '';
       }
@@ -3632,19 +3690,30 @@
       var src=item.thumbImg().src,
       sTitle=getThumbnailTitle(item),
       sDesc=getTumbnailDescription(item);
+
+      // dominant colorS -> background image
+      var imgBG='';
+      if( item.imageDominantColors != null ) {
+        imgBG="background: url('"+item.imageDominantColors+"') no-repeat; background-size: 100% 100%;";
+      }
+      // dominant color -> background color
+      var bg=''
+      if( item.imageDominantColor != null ) {
+        bg='background:'+item.imageDominantColor+';';
+      }
       
       // image
       switch( G.layout.engine ) {
         case 'CASCADING':
-          newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="width:'+G.tn.settings.getW()+'px;"><img class="nGY2GThumbnailImg" src="'+src+'" alt="'+sTitle+'" style="max-width:'+G.tn.settings.getW()+'px;"></div>';
+          newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="width:'+G.tn.settings.getW()+'px;'+bg+'"><img class="nGY2GThumbnailImg" src="'+src+'" alt="'+sTitle+'" style="'+imgBG+'max-width:'+G.tn.settings.getW()+'px;"></div>';
           break;
         case 'JUSTIFIED':
-          newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="height:'+G.tn.settings.getH()+'px;"><img class="nGY2GThumbnailImg" src="'+src+'" alt="'+sTitle+'" ></div>';
+          newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="height:'+G.tn.settings.getH()+'px;'+bg+'"><img class="nGY2GThumbnailImg" src="'+src+'" alt="'+sTitle+'" style="'+imgBG+'"></div>';
           break;
         default:    // GRID
           var imgSize='max-width:'+G.tn.settings.getW()+'px;max-height:'+G.tn.settings.getH()+'px;'
           // crop images => no black border
-          if( G.thumbnailCrop.Get() == true && item.thumbImg().height > 0 && item.thumbImg().width > 0 ) {
+          if( G.tn.opt.Get('crop') == true && item.thumbImg().height > 0 && item.thumbImg().width > 0 ) {
             if( item.thumbImg().height > item.thumbImg().width ) {
               // portrait
               imgSize='width:'+G.tn.settings.getW()+'px;';
@@ -3673,7 +3742,7 @@
               }
             }
           }
-          newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="width:'+G.tn.settings.getW()+'px;height:'+G.tn.settings.getH()+'px;"><img class="nGY2GThumbnailImg" src="'+src+'" alt="'+sTitle+'" style="'+imgSize+'" ></div>';
+          newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="width:'+G.tn.settings.getW()+'px;height:'+G.tn.settings.getH()+'px;'+bg+'"><img class="nGY2GThumbnailImg" src="'+src+'" alt="'+sTitle+'" style="'+imgBG+imgSize+'" ></div>';
           break;
       }
 
@@ -3700,7 +3769,7 @@
       newElt[newEltIdx++]='</div>';
       newElt[newEltIdx++]='</div>';
       
-      var $newDiv =jQuery(newElt.join('')).appendTo(G.$E.conTn); //.animate({ opacity: 1},1000, 'swing');  //.show('slow'); //.fadeIn('slow').slideDown('slow');
+      var $newDiv =jQuery(newElt.join('')).appendTo(G.$E.conTn);
 
       item.$elt=$newDiv;
       $newDiv.data('index',GOMidx);
@@ -3708,11 +3777,17 @@
 
       
       // Custom init function
-      if( typeof G.O.fnThumbnailInit == 'function' ) { 
-        G.O.fnThumbnailInit($newDiv, item, GOMidx);
+      if( G.O.fnThumbnailInit !== null ) {
+        if( typeof G.O.fnThumbnailInit == 'function' ) {
+          G.O.fnThumbnailInit($newDiv, item, GOMidx);
+        }
+        else {
+          // defined in markup
+          window[G.O.fnThumbnailInit]($newDiv, item, GOMidx);
+        }
       }
 
-      if( item.title != 'dummydummydummy' ) {
+      if( item.title != 'image gallery by nanogallery2 [build]' ) {
         ThumbnailOverInit(GOMidx);
       }
       
@@ -3737,13 +3812,13 @@
     }
     
     function ThumbnailBuildToolbarOne( item, position ) {
-      var toolbar='';
-      var tb=G.tn.toolbar.get(item);
-      var width={ xs:0, sm:1, me:2, la:3, xl:4 };
-      var cnt=0;
+      var toolbar = '';
+      var tb =      G.tn.toolbar.get(item);
+      var width =   { xs:0, sm:1, me:2, la:3, xl:4 };
+      var cnt =     0;
       
       if( tb[position] != '' ) {
-        var pos='';
+        var pos='top:0; right:0; text-align:right;';     // 'topRight' and default
         switch( position ) {
           case 'topLeft':
             pos='top:0; left:0; text-align:left;:';
@@ -3753,10 +3828,6 @@
             break;
           case 'bottomLeft':
             pos='bottom:0; left:0; text-align:left;';
-            break;
-          case 'topRight':
-          default:
-            pos='top:0; right:0; text-align:right;';
             break;
         }
         
@@ -3800,26 +3871,32 @@
                 break;
               case 'SHARE':
                 toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="'+tIcon+'">';
-                toolbar+= '      <div class="nGY2GThumbnailIconImageShare">'+G.O.icons.thumbnailShare+'</div>';
+                toolbar+= '      <div>'+G.O.icons.thumbnailShare+'</div>';
                 //toolbar+= '      <div class="nGY2GThumbnailIconText">'+sp+'</div>';
                 toolbar+= '    </li>';
                 cnt++;
                 break;
               case 'DOWNLOAD':
                 toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="'+tIcon+'">';
-                toolbar+= '      <div class="nGY2GThumbnailIconImageShare">'+G.O.icons.thumbnailDownload+'</div>';
+                toolbar+= '      <div>'+G.O.icons.thumbnailDownload+'</div>';
                 toolbar+= '    </li>';
                 cnt++;
                 break;
               case 'INFO':
                 toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="'+tIcon+'">';
-                toolbar+= '      <div class="nGY2GThumbnailIconImageShare">'+G.O.icons.thumbnailInfo+'</div>';
+                toolbar+= '      <div>'+G.O.icons.thumbnailInfo+'</div>';
                 toolbar+= '    </li>';
                 cnt++;
                 break;
               case 'CART':
                 toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="'+tIcon+'">';
-                toolbar+= '      <div class="nGY2GThumbnailIconImageShare">'+G.O.icons.thumbnailCart+'</div>';
+                toolbar+= '      <div>'+G.O.icons.thumbnailCart+'</div>';
+                toolbar+= '    </li>';
+                cnt++;
+                break;
+              case 'DISPLAY':
+                toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="DISPLAY">';
+                toolbar+= '      <div class="nGY2GThumbnailIconImageShare">'+G.O.icons.thumbnailDisplay+'</div>';
                 toolbar+= '    </li>';
                 cnt++;
                 break;
@@ -3843,7 +3920,6 @@
                 if( item.featured === true ) {
                   toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="">';
                   toolbar+= '      <div class="nGY2GThumbnailIconImageFeatured">'+G.O.icons.thumbnailFeatured+'</div>';
-                  // toolbar+= '      <div class="nGY2GThumbnailIconText">'+sp+'</div>';
                   toolbar+= '    </li>';
                   cnt++;
                 }
@@ -3857,7 +3933,6 @@
                   else {
                     toolbar+= '      <div class="nGY2GThumbnailIconImageSelect nGY2ThumbnailUnselected">'+G.O.icons.thumbnailUnselected+'</div>';
                   }
-                  // toolbar+= '      <div class="nGY2GThumbnailIconText">'+sp+'</div>';
                   toolbar+= '    </li>';
                   cnt++;
                 }
@@ -3925,7 +4000,7 @@
 
     
     
-    // Retrieve the maximum number of thumbnails in one row
+    // Retrieve the maximum number of thumbnails that fits in one row
     function NbThumbnailsPerRow(areaWidth) {
       var tnW=G.tn.defaultSize.getOuterWidth();
       
@@ -3934,7 +4009,7 @@
         nbMaxTn=Math.floor((areaWidth)/(tnW));
       }
       else {
-        nbMaxTn=Math.floor((areaWidth+G.thumbnailGutterWidth.Get())/(tnW+G.thumbnailGutterWidth.Get()));
+        nbMaxTn=Math.floor((areaWidth+G.tn.opt.Get('gutterWidth'))/(tnW+G.tn.opt.Get('gutterWidth')));
       }
       
       if(  G.O.maxItemsPerLine >0 && nbMaxTn >  G.O.maxItemsPerLine ) {
@@ -3946,12 +4021,13 @@
       return nbMaxTn
     }
   
+    // Thumbnail display animation
     function ThumbnailAppear( n, cnt ) {
       var curTn=G.GOM.items[n];
       var item=G.I[G.GOM.items[n].thumbnailIdx];
 
     
-      if( G.tn.displayTransition == 'NONE' ) {
+      if( G.tn.opt.Get('displayTransition') == 'NONE' ) {
         item.$elt.css({ opacity: 1 });
         ThumbnailAppearFinish(item);
       }
@@ -3961,31 +4037,19 @@
         var vp=G.GOM.cache.viewport;
         if( (top+(curTn.top-G.GOM.clipArea.top)) >= (vp.t-50) && top <= (vp.t+vp.h+50) ) {
           // display animation only if in the current viewport
-          var delay=cnt*G.tn.displayInterval;
-          switch( G.tn.displayTransition ) {
-            case 'CUSTOM':
+          var delay=cnt*G.tn.opt.Get('displayInterval');
+          if( G.tn.opt.Get('displayTransition') == 'CUSTOM' ) {
+            if( G.GOM.curNavLevel == 'lN' ) {
               G.O.fnThumbnailDisplayEffect(item.$elt, item, n, delay);
-              break;
-            case 'SLIDEUP':
-              ThumbnailAppearSlideUp(item, delay);
-              break;
-            case 'SLIDEDOWN':
-              ThumbnailAppearSlideDown(item, delay);
-              break;
-            case 'SCALEDOWN':
-              ThumbnailAppearScaleDown(item, delay);
-              break;
-            case 'SCALEUP':
-              ThumbnailAppearScaleUp(item, delay);
-              break;
-            case 'RANDOMSCALE':
-              ThumbnailAppearRandomScale(item, delay);
-              break;
-            case 'FADEIN':
-            default:
-              ThumbnailAppearFadeIn(item, delay);
-              break;
+            }
+            else {
+              G.O.fnThumbnailL1DisplayEffect(item.$elt, item, n, delay);
+            }
           }
+          else {
+            ThumbnailDisplayAnim[G.tn.opt.Get('displayTransition')](item, delay);
+          }
+          return;
         }
         else {
           item.$elt.css({ opacity: 1 });
@@ -3994,9 +4058,10 @@
       }
     }
     
+    
     // display thumbnail stacks at the end of the display animation
     function ThumbnailAppearFinish( item ) {
-      var ns=G.thumbnailStacks.Get();
+      var ns=G.tn.opt.Get('stacks');
       if( ns > 0 ) {
         // display stacks
         item.$elt.css({ display: 'block'});
@@ -4010,163 +4075,313 @@
       }
     }
     
-    function ThumbnailAppearRandomScale( item, delay ) {
-      var scales=[0.95, 1, 1.05, 1.1];
-      var zi=[1, 2, 3, 4];
+
+
+    var ThumbnailDisplayAnim = {
+      RANDOMSCALE: function( item, delay ) {
+
+        function randomIntFromInterval(min,max) {
+          return Math.floor(Math.random()*(max-min+1)+min);
+        }
+        var scales=[0.95, 1, 1.05, 1.1];
+        var zi=[1, 2, 3, 4];
+        
+        var r=randomIntFromInterval(0,3);
+        while( r == G.GOM.lastRandomValue ) {
+          r=randomIntFromInterval(0,3);
+        }
+        G.GOM.lastRandomValue=r;
+        var f=scales[r];
+        // item.$elt.css({ 'z-index': G.GOM.lastZIndex+zi[r], 'box-shadow': '-1px 2px 5px 1px rgba(0, 0, 0, 0.7)' });
+        item.$elt.css({ 'z-index': G.GOM.lastZIndex+zi[r], 'box-shadow': '0px 0px 5px 3px rgba(0,0,0,0.74)' });
+        
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:         { scale: 0.5, opacity:0  },
+          to:           { scale: f, opacity:1 },
+          attachment:   { $e:item.$elt, item: item },
+          delay:        delay,
+          duration:     G.tn.opt.Get('displayTransitionDuration'),
+          easing:       { opacity: 'easeOutQuint', scale: G.tn.opt.Get('displayTransitionEasing') },
+          step:         function (state, att) {
+            att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity',state.opacity);
+          },
+          finish:       function (state, att) {
+            att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity','');
+            //att.$e.css( G.CSStransformName , '').css('opacity', '');
+            ThumbnailAppearFinish(att.item);
+          }
+        });
+      },
       
-      var r=randomIntFromInterval(0,3);
-      while( r == G.GOM.lastRandomValue ) {
-        r=randomIntFromInterval(0,3);
+      SCALEUP: function( item, delay ) {
+        var f=G.tn.opt.Get('displayTransitionStartVal');
+        if( f == 0 ) { f=0.6; }   // default value
+
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:         { scale: f, opacity:0  },
+          to:           { scale: 1, opacity:1 },
+          attachment:   { $e:item.$elt, item: item },
+          delay:        delay,
+          duration:     G.tn.opt.Get('displayTransitionDuration'),
+          easing:       { opacity: 'easeOutQuint', scale: G.tn.opt.Get('displayTransitionEasing') },
+          step:         function (state, att) {
+            att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity',state.opacity);
+          },
+          finish:       function (state, att) {
+            att.$e.css( G.CSStransformName , '').css('opacity', '');
+            ThumbnailAppearFinish(att.item);
+          }
+        });
+      },
+      
+      SCALEDOWN: function( item, delay ) {
+        var f=G.tn.opt.Get('displayTransitionStartVal');
+        if( f == 0 ) { f=1.3; }   // default value
+   
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:         { 'scale': f, 'opacity':0  },
+          to:           { 'scale': 1, 'opacity':1 },
+          attachment:   { item: item },
+          delay:        delay,
+          duration:     G.tn.opt.Get('displayTransitionDuration'),
+          easing:       { opacity: 'easeOutQuint', scale: G.tn.opt.Get('displayTransitionEasing') },
+          step:         function (state, att) {
+            att.item.$elt.last().css('opacity', state.opacity);
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+            att.item.CSSTransformApply('.nGY2GThumbnail');
+          },
+          finish:       function (state, att) {
+            att.item.$elt.last().css('opacity', '');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+            att.item.CSSTransformApply('.nGY2GThumbnail');
+            ThumbnailAppearFinish(att.item);
+          }
+        });
+      },
+      
+      SLIDEUP: function( item, delay ) {
+        var f=G.tn.opt.Get('displayTransitionStartVal');
+        if( f == 0 ) { f=50; }   // default value
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:         { 'opacity': 0, translateY: f, 'scale': 0.8  },
+          to:           { 'opacity': 1, translateY: 0, 'scale': 1 },
+          attachment:   { item: item },
+          delay:        delay,
+          duration:     G.tn.opt.Get('displayTransitionDuration'),
+          easing:       { opacity: 'easeOutQuint', scale: 'easeOutQuart', translateY: G.tn.opt.Get('displayTransitionEasing') },
+          step:         function (state, att) {
+            att.item.$elt.css('opacity', state.opacity);
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+            att.item.CSSTransformApply('.nGY2GThumbnail');
+          },
+          finish:       function (state, att) {
+            this._step(state, att);
+            att.item.$elt.css('opacity', '');
+            ThumbnailAppearFinish(att.item);
+          }
+        });
+      }, 
+      
+      SLIDEDOWN: function( item, delay ) {
+        var f=G.tn.opt.Get('displayTransitionStartVal');
+        if( f == 0 ) { f=-50; }   // default value
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:         { opacity: 0, translateY: f, scale: 0.8  },
+          to:           { opacity: 1, translateY: 0, scale: 1 },
+          attachment:   { item: item },
+          delay:        delay,
+          duration:     G.tn.opt.Get('displayTransitionDuration'),
+          easing:       { opacity: 'easeOutQuint', scale: 'easeOutQuart', translateY: G.tn.opt.Get('displayTransitionEasing') },
+          step:         function (state, att) {
+            att.item.$elt.css('opacity', state.opacity);
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+            att.item.CSSTransformApply('.nGY2GThumbnail');
+          },
+          finish:       function (state, att) {
+            this._step(state, att);
+            att.item.$elt.css('opacity', '');
+            ThumbnailAppearFinish(att.item);
+          }
+        });
+      },
+
+      FLIPUP: function( item, delay ) {
+        var f=G.tn.opt.Get('displayTransitionStartVal');
+        if( f == 0 ) { f=100; }   // default value
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:         { opacity: 0, translateX: f, rotateX: 45, scale: 0.8  },
+          to:           { opacity: 1, translateX: 0, rotateX: 0, scale: 1 },
+          attachment:   { item: item },
+          delay:        delay,
+          duration:     G.tn.opt.Get('displayTransitionDuration'),
+          easing:       { opacity: 'easeOutQuint', scale: 'easeOutQuart', translateX: G.tn.opt.Get('displayTransitionEasing') },
+          step:         function (state, att) {
+            att.item.$elt.css('opacity', state.opacity);
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateX+'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateX', state.rotateX+'deg');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+            att.item.CSSTransformApply('.nGY2GThumbnail');
+          },
+          finish:       function (state, att) {
+            this._step(state, att);
+            att.item.$elt.css('opacity', '');
+            ThumbnailAppearFinish(att.item);
+          }
+        });
+      },
+      FLIPDOWN: function( item, delay ) {
+        var f=G.tn.opt.Get('displayTransitionStartVal');
+        if( f == 0 ) { f=-100; }   // default value
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:         { opacity: 0, translateX: f, rotateX: -45, scale: 0.8  },
+          to:           { opacity: 1, translateX: 0, rotateX: 0, scale: 1 },
+          attachment:   { item: item },
+          delay:        delay,
+          duration:     G.tn.opt.Get('displayTransitionDuration'),
+          easing:       { opacity: 'easeOutQuint', scale:'easeOutQuart', translateX: G.tn.opt.Get('displayTransitionEasing')},
+          step:         function (state, att) {
+            att.item.$elt.css('opacity', state.opacity);
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateX+'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateX', state.rotateX+'deg');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+            att.item.CSSTransformApply('.nGY2GThumbnail');
+          },
+          finish:       function (state, att) {
+            this._step(state, att);
+            att.item.$elt.css('opacity', '');
+            ThumbnailAppearFinish(att.item);
+          }
+        });
+      },
+      
+      SLIDEUP2: function( item, delay ) {
+        var f=G.tn.opt.Get('displayTransitionStartVal');
+        if( f == 0 ) { f=100; }   // default value
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:         { opacity: 0, translateY: f, rotateY: 40, scale: 0.8  },
+          to:           { opacity: 1, translateY: 0, rotateY: 0, scale: 1 },
+          attachment:   { item: item },
+          delay:        delay,
+          duration:     G.tn.opt.Get('displayTransitionDuration'),
+          easing:       { opacity: 'easeOutQuint', scale:'easeOutQuart', translateX: G.tn.opt.Get('displayTransitionEasing') },
+          step:         function (state, att) {
+            att.item.$elt.css('opacity', state.opacity);
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateY', state.rotateY+'deg');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+            att.item.CSSTransformApply('.nGY2GThumbnail');
+          },
+          finish:       function (state, att) {
+            this._step(state, att);
+            att.item.$elt.css('opacity', '');
+            ThumbnailAppearFinish(att.item);
+          }
+        });
+      },
+      SLIDEDOWN2: function( item, delay ) {
+        var f=G.tn.opt.Get('displayTransitionStartVal');
+        if( f == 0 ) { f=-100; }   // default value
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:         { opacity: 0, translateY: f, rotateY: 40, scale: 0.8  },
+          to:           { opacity: 1, translateY: 0, rotateY: 0, scale: 1 },
+          attachment:   { item: item },
+          delay:        delay,
+          duration:     G.tn.opt.Get('displayTransitionDuration'),
+          easing:       { opacity: 'easeOutQuint', scale: 'easeOutQuart', translateY: G.tn.opt.Get('displayTransitionEasing') },
+          step:         function (state, att) {
+            att.item.$elt.css('opacity', state.opacity);
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateY', state.rotateY+'deg');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+            att.item.CSSTransformApply('.nGY2GThumbnail');
+          },
+          finish:       function (state, att) {
+            this._step(state, att);
+            att.item.$elt.css('opacity', '');
+            att.item.CSSTransformApply('.nGY2GThumbnail');
+            ThumbnailAppearFinish(att.item);
+          }
+        });
+      },
+      SLIDERIGHT: function( item, delay ) {
+        var f=G.tn.opt.Get('displayTransitionStartVal');
+        if( f == 0 ) { f=-150; }   // default value
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:         { opacity: 0, translateX: f, rotateZ: 10 },
+          to:           { opacity: 1, translateX: 0, rotateZ: 0 },
+          attachment:   { item: item },
+          delay:        delay,
+          duration:     G.tn.opt.Get('displayTransitionDuration'),
+          easing:       { opacity: 'easeOutQuint', translateX: G.tn.opt.Get('displayTransitionEasing'), rotateZ:'easeOutQuart'},
+          step:         function (state, att) {
+            att.item.$elt.css('opacity', state.opacity);
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translateX', state.translateX+'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateZ', state.rotateZ+'deg');
+            att.item.CSSTransformApply('.nGY2GThumbnail');
+          },
+          finish:       function (state, att) {
+            this._step(state, att);
+            att.item.$elt.css('opacity', '');
+            ThumbnailAppearFinish(att.item);
+          }
+        });
+      },
+      SLIDELEFT: function( item, delay ) {
+        var f=G.tn.opt.Get('displayTransitionStartVal');
+        if( f == 0 ) { f=150; }   // default value
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:         { opacity: 0, translateX: f, rotateZ: -10 },
+          to:           { opacity: 1, translateX: 0, rotateZ: 0 },
+          attachment:   { item: item },
+          delay:        delay,
+          duration:     G.tn.opt.Get('displayTransitionDuration'),
+          easing:       { opacity: 'easeOutQuint', translateX: G.tn.opt.Get('displayTransitionEasing'), rotateZ:'easeOutQuart'},
+          step:         function (state, att) {
+            att.item.$elt.css('opacity', state.opacity);
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translateX', state.translateX+'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateZ', state.rotateZ+'deg');
+            att.item.CSSTransformApply('.nGY2GThumbnail');
+          },
+          finish:       function (state, att) {
+            this._step(state, att);
+            att.item.$elt.css('opacity', '');
+            ThumbnailAppearFinish(att.item);
+          }
+        });
+      },
+
+      FADEIN: function( item, delay ) {
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:         { 'opacity': 0 },
+          to:           { 'opacity': 1 },
+          attachment:   { $e:item.$elt, item: item },
+          delay:        delay,
+          duration:     G.tn.opt.Get('displayTransitionDuration'),
+          easing:       'easeInOutSine',
+          step:         function (state, att) {
+            att.$e.css(state);
+          },
+          finish:       function (state, att) {
+            att.$e.css('opacity', '');
+            // att.$e.css({'opacity':1 });
+            ThumbnailAppearFinish(att.item);
+          }
+        });
       }
-      G.GOM.lastRandomValue=r;
-      var f=scales[r];
-      // item.$elt.css({ 'z-index': G.GOM.lastZIndex+zi[r], 'box-shadow': '-1px 2px 5px 1px rgba(0, 0, 0, 0.7)' });
-      item.$elt.css({ 'z-index': G.GOM.lastZIndex+zi[r], 'box-shadow': '0px 0px 5px 3px rgba(0,0,0,0.74)' });
-      
-      var e=G.tn.displayTransitionEasing;
-      if( e == '' ) { e='easeOutQuart'; }   // default value
-      
-      var tweenable = new NGTweenable();
-      tweenable.tween({
-        from:         { scale: 0.5, opacity:0  },
-        to:           { scale: f, opacity:1 },
-        attachment:   { $e:item.$elt, item: item },
-        delay:        delay,
-        duration:     G.O.thumbnailDisplayTransitionDuration,
-        easing:       { opacity: 'easeOutQuint', scale: e},
-        step: function (state, att) {
-          att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity',state.opacity);
-        },
-        finish: function (state, att) {
-          att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity','');
-          //att.$e.css( G.CSStransformName , '').css('opacity', '');
-          ThumbnailAppearFinish(att.item);
-        }
-      });
-    }
-    function randomIntFromInterval(min,max) {
-      return Math.floor(Math.random()*(max-min+1)+min);
-    }
-    
-    function ThumbnailAppearScaleUp( item, delay ) {
-      var f=G.tn.displayTransitionStartVal;
-      if( f == 0 ) { f=0.6; }   // default value
-      var e=G.tn.displayTransitionEasing;
-      if( e == '' ) { e='easeOutQuart'; }   // default value
-
-      var tweenable = new NGTweenable();
-      tweenable.tween({
-        from:         { scale: f, opacity:0  },
-        to:           { scale: 1, opacity:1 },
-        attachment:   { $e:item.$elt, item: item },
-        delay:        delay,
-        duration:     G.O.thumbnailDisplayTransitionDuration,
-        easing:       { opacity: 'easeOutQuint', scale: e},
-        step: function (state, att) {
-          att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity',state.opacity);
-        },
-        finish: function (state, att) {
-          att.$e.css( G.CSStransformName , '').css('opacity', '');
-          ThumbnailAppearFinish(att.item);
-        }
-      });
-    }
-    function ThumbnailAppearScaleDown( item, delay ) {
-      var f=G.tn.displayTransitionStartVal;
-      if( f == 0 ) { f=1.3; }   // default value
-      var e=G.tn.displayTransitionEasing;
-      if( e == '' ) { e='easeOutQuart'; }   // default value
- 
-      var tweenable = new NGTweenable();
-      tweenable.tween({
-        from:         { 'scale': f, 'opacity':0  },
-        to:           { 'scale': 1, 'opacity':1 },
-        attachment:   { item: item },
-        delay:        delay,
-        duration:     G.O.thumbnailDisplayTransitionDuration,
-        easing:       { opacity: 'easeOutQuint', scale: e},
-        step: function (state, att) {
-          att.item.$elt.last().css('opacity', state.opacity);
-          att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
-          att.item.CSSTransformApply('.nGY2GThumbnail');
-        },
-        finish: function (state, att) {
-          att.item.$elt.last().css('opacity', '');
-          att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
-          att.item.CSSTransformApply('.nGY2GThumbnail');
-          ThumbnailAppearFinish(att.item);
-        }
-      });
-    }
-    
-    function ThumbnailAppearSlideUp( item, delay ) {
-      var tweenable = new NGTweenable();
-      tweenable.tween({
-        from:         { 'opacity': 0, translateY: 50, 'scale': 0.8  },
-        to:           { 'opacity': 1, translateY: 0, 'scale': 1 },
-        attachment:   { item: item },
-        delay:        delay,
-        duration:     G.O.thumbnailDisplayTransitionDuration,
-        easing:       { opacity: 'easeOutQuint', scale:'easeOutQuart', translateY:'easeOutQuart'},
-        step: function (state, att) {
-          att.item.$elt.css('opacity', state.opacity);
-          att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
-          att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
-          att.item.CSSTransformApply('.nGY2GThumbnail');
-        },
-        finish: function (state, att) {
-          att.item.$elt.css('opacity', '');
-          att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
-          att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
-          att.item.CSSTransformApply('.nGY2GThumbnail');
-          ThumbnailAppearFinish(att.item);
-        }
-      });
-    }
-    
-    function ThumbnailAppearSlideDown( item, delay ) {
-      var tweenable = new NGTweenable();
-      tweenable.tween({
-        from:         { opacity: 0, translateY: -50, scale: 0.8  },
-        to:           { opacity: 1, translateY: 0, scale: 1 },
-        attachment:   { item: item },
-        delay:        delay,
-        duration:     G.O.thumbnailDisplayTransitionDuration,
-        easing:       { opacity: 'easeOutQuint', scale:'easeOutQuart', translateY:'easeOutQuart'},
-        step: function (state, att) {
-          att.item.$elt.css('opacity', state.opacity);
-          att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
-          att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
-          att.item.CSSTransformApply('.nGY2GThumbnail');
-        },
-        finish: function (state, att) {
-          att.item.$elt.css('opacity', '');
-          att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
-          att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
-          att.item.CSSTransformApply('.nGY2GThumbnail');
-          ThumbnailAppearFinish(att.item);
-        }
-      });
-    }
-
-    function ThumbnailAppearFadeIn( item, delay ) {
-      var tweenable = new NGTweenable();
-      tweenable.tween({
-        from:         { 'opacity': 0 },
-        to:           { 'opacity': 1 },
-        attachment:   { $e:item.$elt, item: item },
-        delay:        delay,
-        duration:     G.O.thumbnailDisplayTransitionDuration,
-        easing:       'easeInOutSine',
-        step: function (state, att) {
-          att.$e.css(state);
-        },
-        finish: function (state, att) {
-          att.$e.css('opacity', '');
-          // att.$e.css({'opacity':1 });
-          ThumbnailAppearFinish(att.item);
-        }
-      });
     }
 
 
@@ -4185,15 +4400,19 @@
 
       if( item.$elt == null ) { return; } // zombie
       
-      if( typeof G.O.fnThumbnailHoverInit == 'function' ) {
-        // G.O.fnThumbnailHoverInit($e, item, ExposedObjects() );
-        G.O.fnThumbnailHoverInit($e, item, GOMidx );
+      if( G.O.fnThumbnailHoverInit !== null ) {
+        if( typeof G.O.fnThumbnailHoverInit == 'function' ) {
+          G.O.fnThumbnailHoverInit($e, item, GOMidx);
+        }
+        else {
+          // defined in markup
+          window[G.O.fnThumbnailHoverInit]($e, item, GOMidx);
+        }
       }
 
-      // build init
+      // build initialization
       var inits=G.tn.buildInit.get();
       for( var j=0; j<inits.length; j++) {
-      
         switch( inits[j].property ) {
           case 'scale':
           case 'rotateX':
@@ -4277,16 +4496,22 @@
 
       item.hovered=true;
 
-      if( typeof G.O.fnThumbnailHover == 'function' ) { 
-        // G.O.fnThumbnailHover($e, item, ExposedObjects());
-        G.O.fnThumbnailHover(item.$elt, item, GOMidx);
-      }    
+      if( G.O.fnThumbnailHover !== null ) {
+        if( typeof G.O.fnThumbnailHover == 'function' ) {
+          G.O.fnThumbnailHover(item.$elt, item, GOMidx);
+        }
+        else {
+          // defined in markup
+          window[G.O.fnThumbnailHover](item.$elt, item, GOMidx);
+        }
+      }
       var effects=G.tn.hoverEffects.get();
 
       try {
         for( var j=0; j<effects.length; j++) {
           if( effects[j].hoverin === true ) {
-            item.animate( effects[j], j*10,  true );
+            //item.animate( effects[j], j*10,  true );
+            item.animate( effects[j], 0,  true );
           }
         }
         // effects on whole layout
@@ -4313,7 +4538,6 @@
 
     
     function ThumbnailHoverOut( GOMidx ) {
-//      if( G.VOM.viewerDisplayed ) { return; }
       if( G.GOM.albumIdx == -1 || !G.galleryResizeEventEnabled ) { return; };
       var curTn=G.GOM.items[GOMidx];
       var item=G.I[curTn.thumbnailIdx];
@@ -4322,16 +4546,22 @@
 
       item.hovered=false;
 
-      if( typeof G.O.fnThumbnailHoverOut == 'function' ) { 
-        // G.O.fnThumbnailHoverOut($e, item, ExposedObjects());
-        G.O.fnThumbnailHoverOut(item.$elt, item, GOMidx);
-      }    
+      if( G.O.fnThumbnailHoverOut !== null ) {
+        if( typeof G.O.fnThumbnailHoverOut == 'function' ) {
+          G.O.fnThumbnailHoverOut(item.$elt, item, GOMidx);
+        }
+        else {
+          // defined in markup
+          window[G.O.fnThumbnailHoverOut](item.$elt, item, GOMidx);
+        }
+      }
 
       var effects=G.tn.hoverEffects.get();
       try {
         for( var j=0; j<effects.length; j++) {
           if( effects[j].hoverout === true ) {
-            item.animate( effects[j], j*10, false );
+            // item.animate( effects[j], j*10, false );
+            item.animate( effects[j], 0, false );
           }
         }
         // effects on whole layout
@@ -4346,9 +4576,9 @@
 
     /** @function DisplayPhoto */
     function DisplayPhoto( imageID, albumID ) {
-console.log('#DisplayPhoto : '+  albumID +'-'+ imageID);
+
+      if( G.O.debugMode ) { console.log('#DisplayPhoto : '+  albumID +'-'+ imageID); }
       var albumIdx=NGY2Item.GetIdx(G, albumID);
-      // if( albumIdx == 0 || albumIdx == -1 ) {
       if( albumIdx == 0 ) {
         G.GOM.curNavLevel='l1';
       }
@@ -4359,8 +4589,6 @@ console.log('#DisplayPhoto : '+  albumID +'-'+ imageID);
       if( albumIdx == -1 ) {
         // get content of album on root level
         NGY2Item.New( G, '', '', albumID, '0', 'album' );    // create empty album
-        // AlbumGetContent( '0', DisplayPhoto, imageID, albumID );
-        // return;
         albumIdx=G.I.length-1;
       }
 
@@ -4370,19 +4598,19 @@ console.log('#DisplayPhoto : '+  albumID +'-'+ imageID);
         AlbumGetContent( albumID, DisplayPhoto, imageID, albumID );
         return;
       }
-console.log('#DisplayPhoto : '+  imageIdx);
+      
+      if( G.O.debugMode ) { console.log('#DisplayPhoto : '+  imageIdx); }
      
       DisplayPhotoIdx(imageIdx);
     
     }
 
 
-    // BETA -> NOT finished
+    // BETA -> NOT finished and not used at this time
     // Retrieve the title+description of ONE album
     function albumGetInfo( albumIdx, fnToCall ) {
-      var url='';
-      var kind='image';
-      //var albumIdx=NGY2Item.GetIdx(G, ID);
+      var url =   '';
+      var kind =  'image';
       
       switch( G.O.kind ) {
         case 'json':
@@ -4559,6 +4787,15 @@ console.log('#DisplayPhoto : '+  imageIdx);
         // image source url
         newItem.src=src;
         
+        // dominant colors (needs to be a base64 gif)
+        if( item.imageDominantColors !== undefined ) {
+          newItem.imageDominantColors=item.imageDominantColors;
+        }
+        // dominant color (rgb hex)
+        if( item.imageDominantColor !== undefined ) {
+          newItem.imageDominantColor=item.imageDominantColor;
+        }
+        
         // dest url
         if( item.destURL !== undefined && item.destURL.length>0 ) {
           newItem.destinationURL=item.destURL;
@@ -4582,8 +4819,8 @@ console.log('#DisplayPhoto : '+  imageIdx);
         }
 
         newItem.thumbs = {
-          url: { l1 : { xs:thumbsrc, sm:thumbsrc, me:thumbsrc, la:thumbsrc, xl:thumbsrc }, lN : { xs:thumbsrc, sm:thumbsrc, me:thumbsrc, la:thumbsrc, xl:thumbsrc } },
-          width: { l1 : { xs:tw, sm:tw, me:tw, la:tw, xl:tw }, lN : { xs:tw, sm:tw, me:tw, la:tw, xl:tw } },
+          url:    { l1 : { xs:thumbsrc, sm:thumbsrc, me:thumbsrc, la:thumbsrc, xl:thumbsrc }, lN : { xs:thumbsrc, sm:thumbsrc, me:thumbsrc, la:thumbsrc, xl:thumbsrc } },
+          width:  { l1 : { xs:tw, sm:tw, me:tw, la:tw, xl:tw }, lN : { xs:tw, sm:tw, me:tw, la:tw, xl:tw } },
           height: { l1 : { xs:th, sm:th, me:th, la:th, xl:th }, lN : { xs:th, sm:th, me:th, la:th, xl:th } }
         };
 
@@ -4617,8 +4854,14 @@ console.log('#DisplayPhoto : '+  imageIdx);
 
         newItem.contentIsLoaded=true;
         
-        if( typeof G.O.fnProcessData == 'function' ) {
-          G.O.fnProcessData(newItem, 'api', item);
+        if( G.O.fnProcessData !== null ) {
+          if( typeof G.O.fnProcessData == 'function' ) {
+            G.O.fnProcessData(newItem, 'api', item);
+          }
+          else {
+            // defined in markup
+            window[G.O.fnProcessData](newItem, 'api', item);
+          }
         }
       });
       
@@ -4639,23 +4882,25 @@ console.log('#DisplayPhoto : '+  imageIdx);
         // create dictionnary with all data attribute name in lowercase (to be case unsensitive)
         var data={
           // some default values
-          'data-ngdesc': '',
-          'data-ngid': null,
-          'data-ngkind': 'image',
-          'data-ngtags': null,
-          'data-ngdest': '',
-          'data-ngthumbimgwidth': 0,
-          'data-ngthumbimgheight': 0,
-          'data-ngimagewidth': 0,
-          'data-ngimageheight': 0,
-          'data-ngexifmodel': '',
-          'data-ngexifflash': '',
-          'data-ngexiffocallength': '',
-          'data-ngexiffstop': '',
-          'data-ngexifexposure': '',
-          'data-ngexifiso': '',
-          'data-ngexiftime': '',
-          'data-ngexiflocation': ''
+          'data-ngdesc':                  '',         // item description
+          'data-ngid':                    null,       // ID
+          'data-ngkind':                  'image',    // kind (image, album, albumup)
+          'data-ngtags':                  null,       // tags
+          'data-ngdest':                  '',         // destination URL
+          'data-ngthumbimgwidth':         0,          // thumbnail width
+          'data-ngthumbimgheight':        0,          // thumbnail height
+          'data-ngimagewidth':            0,          // image width
+          'data-ngimageheight':           0,          // image height
+          'data-ngimagedominantcolors':   null,       // image dominant colors
+          'data-ngimagedominantcolor':    null,       // image dominant colors
+          'data-ngexifmodel':             '',         // EXIF data
+          'data-ngexifflash':             '',
+          'data-ngexiffocallength':       '',
+          'data-ngexiffstop':             '',
+          'data-ngexifexposure':          '',
+          'data-ngexifiso':               '',
+          'data-ngexiftime':              '',
+          'data-ngexiflocation':          ''
         };
         [].forEach.call( item.attributes, function(attr) {
           data[attr.name.toLowerCase()]=attr.value;
@@ -4714,7 +4959,12 @@ console.log('#DisplayPhoto : '+  imageIdx);
 
         // image source url
         newItem.src=src;
-        
+
+        // dominant colorS (needs to be a base64 gif)
+        newItem.imageDominantColors=data['data-ngimagedominantcolors'];
+        // dominant color (rgb hex)
+        newItem.imageDominantColor=data['data-ngimagedominantcolors'];
+
         newItem.destinationURL=data['data-ngdest'];
         newItem.downloadURL=data['data-ngdownloadurl'];
 
@@ -4722,8 +4972,8 @@ console.log('#DisplayPhoto : '+  imageIdx);
         var tw=parseInt(data['data-ngthumbimgwidth']);
         var th=parseInt(data['data-ngthumbimgheight']);
         newItem.thumbs = {
-          url: { l1 : { xs:thumbsrc, sm:thumbsrc, me:thumbsrc, la:thumbsrc, xl:thumbsrc }, lN : { xs:thumbsrc, sm:thumbsrc, me:thumbsrc, la:thumbsrc, xl:thumbsrc } },
-          width: { l1 : { xs:tw, sm:tw, me:tw, la:tw, xl:tw }, lN : { xs:tw, sm:tw, me:tw, la:tw, xl:tw } },
+          url:    { l1 : { xs:thumbsrc, sm:thumbsrc, me:thumbsrc, la:thumbsrc, xl:thumbsrc }, lN : { xs:thumbsrc, sm:thumbsrc, me:thumbsrc, la:thumbsrc, xl:thumbsrc } },
+          width:  { l1 : { xs:tw, sm:tw, me:tw, la:tw, xl:tw }, lN : { xs:tw, sm:tw, me:tw, la:tw, xl:tw } },
           height: { l1 : { xs:th, sm:th, me:th, la:th, xl:th }, lN : { xs:th, sm:th, me:th, la:th, xl:th } }
         };
 
@@ -4759,9 +5009,15 @@ console.log('#DisplayPhoto : '+  imageIdx);
           newItem.customData=cloneJSObject(jQuery(item).data('ngcustomdata'));
         }
 
-        if( typeof G.O.fnProcessData == 'function' ) {
-          G.O.fnProcessData(newItem, 'markup', item);
-        }        
+        if( G.O.fnProcessData !== null ) {
+          if( typeof G.O.fnProcessData == 'function' ) {
+            G.O.fnProcessData(newItem, 'markup', item);
+          }
+          else {
+            // defined in markup
+            window[G.O.fnProcessData](newItem, 'markup', item);
+          }
+        }
         
       });
       
@@ -4822,7 +5078,6 @@ console.log('#DisplayPhoto : '+  imageIdx);
       G.tn.toolbar.album.bottomRight=G.tn.toolbar.album.bottomRight.toUpperCase();
 
       // thumbnails label - level dependant settings
-//TODO --> following must be moved to G.tn
       G.O.thumbnailLabel.get = function( opt ) {
         if( G.GOM.curNavLevel == 'l1' && G.O.thumbnailL1Label !== undefined && G.O.thumbnailL1Label[opt] !== undefined ) {
           return G.O.thumbnailL1Label[opt];
@@ -4866,163 +5121,92 @@ console.log('#DisplayPhoto : '+  imageIdx);
         }
       }
       if( G.albumListHidden.length > 0 ) {
-        G.O.locationHash=false;   // disable hash location for hidden/privat albums --> impossible
+        G.O.locationHash=false;   // disable hash location for hidden/privat albums --> combination is impossible
       }
       
       
       // thumbnail image crop
-      if( typeof G.O.thumbnailCrop == 'boolean' ) {
-        G.thumbnailCrop.lN=G.O.thumbnailCrop;
-        G.thumbnailCrop.l1=G.O.thumbnailCrop;
-      }
-      if( G.O.thumbnailL1Crop !== undefined &&  G.O.thumbnailL1Crop != null && G.O.thumbnailL1Crop != '' ) {
-        G.thumbnailCrop.l1=G.O.thumbnailL1Crop;
+      G.tn.opt.lN.crop=G.O.thumbnailCrop;
+      G.tn.opt.l1.crop=G.O.thumbnailCrop;
+      if( G.O.thumbnailL1Crop != null ) {
+        G.tn.opt.l1.crop=G.O.thumbnailL1Crop;
       }
 
+
+
+      function ThumbnailOpt( lN, l1, opt) {
+        G.tn.opt.lN[opt]=G.O[lN];
+        G.tn.opt.l1[opt]=G.O[lN];
+        if( toType(G.O[l1]) == 'number' ) {
+          G.tn.opt.l1[opt]=G.O[l1];
+        }
+      }
       // thumbnail stacks
-      if( toType(G.O.thumbnailStacks) == 'number' && G.O.thumbnailStacks > 0 ) {
-        G.thumbnailStacks.lN=G.O.thumbnailStacks;
-        G.thumbnailStacks.l1=G.O.thumbnailStacks;
-      }
-      if( toType(G.O.thumbnailL1Stacks) == 'number' && G.O.thumbnailL1Stacks > 0 ) {
-        G.thumbnailStacks.l1=G.O.thumbnailL1Stacks;
-      }
+      ThumbnailOpt('thumbnailStacks', 'thumbnailL1Stacks', 'stacks');
       // thumbnail stacks translate X
-      if( toType(G.O.thumbnailStacksTranslateX) == 'number' ) {
-        G.thumbnailStacksTranslateX.lN=G.O.thumbnailStacksTranslateX;
-        G.thumbnailStacksTranslateX.l1=G.O.thumbnailStacksTranslateX;
-      }
-      if( toType(G.O.thumbnailL1StacksTranslateX) == 'number' ) {
-        G.thumbnailStacksTranslateX.l1=G.O.thumbnailL1StacksTranslateX;
-      }
+      ThumbnailOpt('thumbnailStacksTranslateX', 'thumbnailL1StacksTranslateX', 'stacksTranslateX');
       // thumbnail stacks translate Y
-      if( toType(G.O.thumbnailStacksTranslateY) == 'number' ) {
-        G.thumbnailStacksTranslateY.lN=G.O.thumbnailStacksTranslateY;
-        G.thumbnailStacksTranslateY.l1=G.O.thumbnailStacksTranslateY;
-      }
-      if( toType(G.O.thumbnailL1StacksTranslateY) == 'number'  ) {
-        G.thumbnailStacksTranslateY.l1=G.O.thumbnailL1StacksTranslateY;
-      }
+      ThumbnailOpt('thumbnailStacksTranslateY', 'thumbnailL1StacksTranslateY', 'stacksTranslateY');
       // thumbnail stacks translate Z
-      if( toType(G.O.thumbnailStacksTranslateZ) == 'number' ) {
-        G.thumbnailStacksTranslateZ.lN=G.O.thumbnailStacksTranslateZ;
-        G.thumbnailStacksTranslateZ.l1=G.O.thumbnailStacksTranslateZ;
-      }
-      if( toType(G.O.thumbnailL1StacksTranslateZ) == 'number'  ) {
-        G.thumbnailStacksTranslateZ.l1=G.O.thumbnailL1StacksTranslateZ;
-      }
+      ThumbnailOpt('thumbnailStacksTranslateZ', 'thumbnailL1StacksTranslateZ', 'stacksTranslateZ');
       // thumbnail stacks rotate X
-      if( toType(G.O.thumbnailStacksRotateX) == 'number'  ) {
-        G.thumbnailStacksRotateX.lN=G.O.thumbnailStacksRotateX;
-        G.thumbnailStacksRotateX.l1=G.O.thumbnailStacksRotateX;
-      }
-      if( toType(G.O.thumbnailL1StacksRotateX) == 'number' ) {
-        G.thumbnailStacksRotateX.l1=G.O.thumbnailL1StacksRotateX;
-      }
+      ThumbnailOpt('thumbnailStacksRotateX', 'thumbnailL1StacksRotateX', 'stacksRotateX');
       // thumbnail stacks rotate Y
-      if( toType(G.O.thumbnailStacksRotateY) == 'number' ) {
-        G.thumbnailStacksRotateY.lN=G.O.thumbnailStacksRotateY;
-        G.thumbnailStacksRotateY.l1=G.O.thumbnailStacksRotateY;
-      }
-      if( toType(G.O.thumbnailL1StacksRotateY) == 'number' ) {
-        G.thumbnailStacksRotateY.l1=G.O.thumbnailL1StacksRotateY;
-      }
+      ThumbnailOpt('thumbnailStacksRotateY', 'thumbnailL1StacksRotateY', 'stacksRotateY');
       // thumbnail stacks rotate Z
-      if( toType(G.O.thumbnailStacksRotateZ) == 'number' ) {
-        G.thumbnailStacksRotateZ.lN=G.O.thumbnailStacksRotateZ;
-        G.thumbnailStacksRotateZ.l1=G.O.thumbnailStacksRotateZ;
-      }
-      if( toType(G.O.thumbnailL1StacksRotateZ) == 'number' ) {
-        G.thumbnailStacksRotateZ.l1=G.O.thumbnailL1StacksRotateZ;
-      }
+      ThumbnailOpt('thumbnailStacksRotateZ', 'thumbnailL1StacksRotateZ', 'stacksRotateZ');
       // thumbnail stacks scale
-      if( toType(G.O.thumbnailStacksScale) == 'number' ) {
-        G.thumbnailStacksScale.lN=G.O.thumbnailStacksScale;
-        G.thumbnailStacksScale.l1=G.O.thumbnailStacksScale;
-      }
-      if( toType(G.O.thumbnailL1StacksScale) == 'number' ) {
-        G.thumbnailStacksScale.l1=G.O.thumbnailL1StacksScale;
-      }
-      
+      ThumbnailOpt('thumbnailStacksScale', 'thumbnailL1StacksScale', 'stacksScale');
       // thumbnail gutter width
-      if( toType(G.O.thumbnailGutterWidth) == 'number' && G.O.thumbnailGutterWidth > 0 ) {
-        G.thumbnailGutterWidth.lN=G.O.thumbnailGutterWidth;
-        G.thumbnailGutterWidth.l1=G.O.thumbnailGutterWidth;
-      }
-      if( toType(G.O.thumbnailL1GutterWidth) == 'number' && G.O.thumbnailL1GutterWidth > 0 ) {
-        G.thumbnailGutterWidth.l1=G.O.thumbnailL1GutterWidth;
-      }
-      
+      ThumbnailOpt('thumbnailGutterWidth', 'thumbnailL1GutterWidth', 'gutterWidth');
       // thumbnail gutter height
-      if( toType(G.O.thumbnailGutterHeight) == 'number' && G.O.thumbnailGutterHeight > 0 ) {
-        G.thumbnailGutterHeight.lN=G.O.thumbnailGutterHeight;
-        G.thumbnailGutterHeight.l1=G.O.thumbnailGutterHeight;
-      }
-      if( toType(G.O.thumbnailL1GutterHeight) == 'number' && G.O.thumbnailL1GutterHeight > 0 ) {
-        G.thumbnailGutterHeight.l1=G.O.thumbnailL1GutterHeight;
-      }
-      
+      ThumbnailOpt('thumbnailGutterHeight', 'thumbnailL1GutterHeight', 'gutterHeight');
       
       // gallery display mode
-      if( G.O.galleryDisplayMode !== undefined && G.O.galleryDisplayMode != '' ) {
-        G.galleryDisplayMode.lN=G.O.galleryDisplayMode.toUpperCase();
-        G.galleryDisplayMode.l1=G.O.galleryDisplayMode.toUpperCase();
-      }
-      if( G.O.galleryL1DisplayMode !== undefined &&  G.O.galleryL1DisplayMode != null && G.O.galleryL1DisplayMode != '' ) {
+      G.galleryDisplayMode.lN=G.O.galleryDisplayMode.toUpperCase();
+      G.galleryDisplayMode.l1=G.O.galleryDisplayMode.toUpperCase();
+      if( G.O.galleryL1DisplayMode != null ) {
         G.galleryDisplayMode.l1=G.O.galleryL1DisplayMode.toUpperCase();
       }
       
       // gallery maximum number of lines of thumbnails
-      if( toType(G.O.galleryMaxRows) == 'number' && G.O.galleryMaxRows >= 0 ) {
-        G.galleryMaxRows.lN=G.O.galleryMaxRows;
-        G.galleryMaxRows.l1=G.O.galleryMaxRows;
-      }
-      else {
-        NanoConsoleLog(G, 'Parameter "galleryMaxRows" must be an integer.');
-      }
-      if( toType(G.O.galleryL1MaxRows) == 'number' && G.O.galleryL1MaxRows >= 0 ) {
+      G.galleryMaxRows.lN=G.O.galleryMaxRows;
+      G.galleryMaxRows.l1=G.O.galleryMaxRows;
+      if( toType(G.O.galleryL1MaxRows) == 'number' ) {
         G.galleryMaxRows.l1=G.O.galleryL1MaxRows;
       }
 
       // gallery last row full
-      if( G.O.galleryLastRowFull !== undefined && G.O.galleryLastRowFull != null ) {
-        G.galleryLastRowFull.lN=G.O.galleryLastRowFull;
-        G.galleryLastRowFull.l1=G.O.galleryLastRowFull;
-      }
-      if( G.O.galleryL1LastRowFull !== undefined && G.O.galleryL1LastRowFull != null ) {
+      G.galleryLastRowFull.lN=G.O.galleryLastRowFull;
+      G.galleryLastRowFull.l1=G.O.galleryLastRowFull;
+      if( G.O.galleryL1LastRowFull != null ) {
         G.galleryLastRowFull.l1=G.O.galleryL1LastRowFull;
       }
       
       // gallery sorting
-      if( G.O.gallerySorting !== undefined && G.O.gallerySorting != null ) {
-        G.gallerySorting.lN=G.O.gallerySorting.toUpperCase();
-        G.gallerySorting.l1=G.gallerySorting.lN;
-      }
-      if( G.O.galleryL1Sorting !== undefined && G.O.galleryL1Sorting != null ) {
+      G.gallerySorting.lN=G.O.gallerySorting.toUpperCase();
+      G.gallerySorting.l1=G.gallerySorting.lN;
+      if( G.O.galleryL1Sorting != null ) {
         G.gallerySorting.l1=G.O.galleryL1Sorting.toUpperCase();
       }
       
       // gallery max items per album (not for inline/api defined items)
-      if( toType(G.O.galleryMaxItems) == 'number' && G.O.galleryMaxItems >= 0 ) {
-        G.galleryMaxItems.lN=G.O.galleryMaxItems;
-        G.galleryMaxItems.l1=G.O.galleryMaxItems;
-      }
-      if( toType(G.O.galleryL1MaxItems) == 'number' && G.O.galleryL1MaxItems >= 0 ) {
+      G.galleryMaxItems.lN=G.O.galleryMaxItems;
+      G.galleryMaxItems.l1=G.O.galleryMaxItems;
+      if( toType(G.O.galleryL1MaxItems) == 'number' ) {
         G.galleryMaxItems.l1=G.O.galleryL1MaxItems;
       }
 
       // gallery filter tags
       G.galleryFilterTags.lN=G.O.galleryFilterTags;
       G.galleryFilterTags.l1=G.O.galleryFilterTags;
-      if( G.O.galleryL1FilterTags != null && G.O.galleryL1FilterTags != undefined ) {
+      if( G.O.galleryL1FilterTags != null ) {
         G.galleryFilterTags.l1=G.O.galleryL1FilterTags;
       }
-      
       
       // gallery pagination
       G.O.galleryPaginationMode=G.O.galleryPaginationMode.toUpperCase();
 
-      
       if( toType(G.O.slideshowDelay) == 'number' && G.O.slideshowDelay >= 2000 ) {
         G.VOM.slideshowDelay=G.O.slideshowDelay;
       }
@@ -5030,46 +5214,73 @@ console.log('#DisplayPhoto : '+  imageIdx);
         NanoConsoleLog(G, 'Parameter "slideshowDelay" must be an integer >= 2000 ms.');
       }
 
-      // thumbnail display interval
-      if( toType(G.O.thumbnailDisplayInterval) == 'number' && G.O.thumbnailDisplayInterval >= 0 ) {
-        G.tn.displayInterval=G.O.thumbnailDisplayInterval;
-      }
-      else {
-        NanoConsoleLog(G, 'Parameter "thumbnailDisplayInterval" must be an integer.');
-      }
-      
       // gallery display transition
       if( typeof G.O.thumbnailDisplayTransition == 'boolean' ) {
         if( G.O.thumbnailDisplayTransition === true ) {
-          G.tn.displayTransition='FADEIN';
+          // G.displayTransition.lN='FADEIN';
+          G.tn.opt.lN.displayTransition='FADEIN';
+          G.tn.opt.l1.displayTransition='FADEIN';
         }
         else {
-          G.tn.displayTransition='NONE';
+          G.tn.opt.lN.displayTransition='NONE';
+          G.tn.opt.l1.displayTransition='NONE';
         }
       }
 
-      if( typeof G.O.fnThumbnailDisplayEffect == 'function' ) {
-        G.O.thumbnailDisplayTransition='CUSTOM';
+      if( G.O.fnThumbnailDisplayEffect !== '' ) {
+        // G.O.thumbnailDisplayTransition='CUSTOM';
+        G.tn.opt.lN.displayTransition='CUSTOM';
+        G.tn.opt.l1.displayTransition='CUSTOM';
+      }
+      if( G.O.fnThumbnailL1DisplayEffect !== '' ) {
+      // if( typeof G.O.fnThumbnailL1DisplayEffect == 'function' ) {
+        G.tn.opt.l1.displayTransition='CUSTOM';
       }
       
       // parse thumbnail display transition
       if( typeof G.O.thumbnailDisplayTransition == 'string' ) {
         var st=G.O.thumbnailDisplayTransition.split('_');
         if( st.length == 1 ) {
-          G.tn.displayTransition = G.O.thumbnailDisplayTransition.toUpperCase();
+          G.tn.opt.lN.displayTransition = G.O.thumbnailDisplayTransition.toUpperCase();
+          G.tn.opt.l1.displayTransition = G.O.thumbnailDisplayTransition.toUpperCase();
         }
         if( st.length == 2 ) {
-          G.tn.displayTransition = st[0].toUpperCase();
-          G.tn.displayTransitionStartVal = Number(st[1]);
+          G.tn.opt.lN.displayTransition = st[0].toUpperCase();
+          G.tn.opt.l1.displayTransition = st[0].toUpperCase();
+          G.tn.opt.lN.displayTransitionStartVal = Number(st[1]);
+          G.tn.opt.l1.displayTransitionStartVal = Number(st[1]);
         }
         if( st.length == 3 ) {
-          G.tn.displayTransition = st[0].toUpperCase();
-          G.tn.displayTransitionStartVal = Number(st[1]);
-          G.tn.displayTransitionEasing = st[2];
+          G.tn.opt.lN.displayTransition = st[0].toUpperCase();
+          G.tn.opt.l1.displayTransition = st[0].toUpperCase();
+          G.tn.opt.lN.displayTransitionStartVal = Number(st[1]);
+          G.tn.opt.l1.displayTransitionStartVal = Number(st[1]);
+          G.tn.opt.lN.displayTransitionEasing = st[2];
+          G.tn.opt.l1.displayTransitionEasing = st[2];
+        }
+      }
+      if( typeof G.O.thumbnailL1DisplayTransition == 'string' ) {
+        var st=G.O.thumbnailL1DisplayTransition.split('_');
+        if( st.length == 1 ) {
+          G.tn.opt.l1.displayTransition = G.O.thumbnailL1DisplayTransition.toUpperCase();
+        }
+        if( st.length == 2 ) {
+          G.tn.opt.l1.displayTransition = st[0].toUpperCase();
+          G.tn.opt.l1.displayTransitionStartVal = Number(st[1]);
+        }
+        if( st.length == 3 ) {
+          G.tn.opt.l1.displayTransition = st[0].toUpperCase();
+          G.tn.opt.l1.displayTransitionStartVal = Number(st[1]);
+          G.tn.opt.l1.displayTransitionEasing = st[2];
         }
       }
       
+      // thumbnail display transition duration
+      ThumbnailOpt('thumbnailDisplayTransitionDuration', 'thumbnailL1DisplayTransitionDuration', 'displayTransitionDuration');
+      // thumbnail display transition interval duration
+      ThumbnailOpt('thumbnailDisplayInterval', 'thumbnailL1DisplayInterval', 'displayInterval');
 
+      
       // resolution breakpoints --> convert old syntax to new one
       if( G.O.thumbnailSizeSM !== undefined ) { G.O.breakpointSizeSM=G.O.thumbnailSizeSM; }
       if( G.O.thumbnailSizeME !== undefined ) { G.O.breakpointSizeME=G.O.thumbnailSizeME; }
@@ -5210,44 +5421,25 @@ console.log('#DisplayPhoto : '+  imageIdx);
       }
 
       // RETRIEVE ALL THUMBNAIL SIZES
-      if( toType(G.O.thumbnailWidth) == 'number' ) {
-        ThumbnailsSetSize( 'width', 'l1', G.O.thumbnailWidth, 'u');
-        ThumbnailsSetSize( 'width', 'lN', G.O.thumbnailWidth, 'u');
-      }
-      else {
-        var ws=G.O.thumbnailWidth.split(' ');
-        var v='auto';
-        if( ws[0].substring(0,4) != 'auto' ) { v=parseInt(ws[0]); }
-        var c='u';
-        if( ws[0].charAt(ws[0].length - 1) == 'C' ) { c='c'; }
-        ThumbnailsSetSize( 'width', 'l1', v, c );   // default value for all resolutions and navigation levels
-        ThumbnailsSetSize( 'width', 'lN', v, c );
-        for( var i=1; i<ws.length; i++ ) {
-          var r=ws[i].substring(0,2).toLowerCase();
-          if( /xs|sm|me|la|xl/i.test(r) ) {
-            var w=ws[i].substring(2);
-            var v='auto';
-            if( w.substring(0,4) != 'auto' ) { v=parseInt(w); }
-            var c='u';
-            if( w.charAt(w.length - 1) == 'C' ) { c='c'; }
-            G.tn.settings.width['l1'][r]=v;
-            G.tn.settings.width['lN'][r]=v;
-            G.tn.settings.width['l1'][r+'c']=c;
-            G.tn.settings.width['lN'][r+'c']=c;
+      function ThumbnailSizes( srcOpt, onlyl1, opt) {
+        if( G.O[srcOpt] == null ) { return; }
+        
+        if( toType(G.O[srcOpt]) == 'number' ) {
+          ThumbnailsSetSize( opt, 'l1', G.O[srcOpt], 'u');
+          if( !onlyl1 ) {
+            ThumbnailsSetSize( opt, 'lN', G.O[srcOpt], 'u');
           }
         }
-      }
-      if( G.O.thumbnailL1Width != undefined ) {
-        if( toType(G.O.thumbnailL1Width) == 'number' ) {
-          ThumbnailsSetSize( 'width', 'l1', G.O.thumbnailL1Width, 'u');
-        }
         else {
-          var ws=G.O.thumbnailL1Width.split(' ');
+          var ws=G.O[srcOpt].split(' ');
           var v='auto';
           if( ws[0].substring(0,4) != 'auto' ) { v=parseInt(ws[0]); }
           var c='u';
           if( ws[0].charAt(ws[0].length - 1) == 'C' ) { c='c'; }
-          ThumbnailsSetSize( 'width', 'l1', v, c );
+          ThumbnailsSetSize( opt, 'l1', v, c );   // default value for all resolutions and navigation levels
+          if( !onlyl1 ) {
+            ThumbnailsSetSize( opt, 'lN', v, c );
+          }
           for( var i=1; i<ws.length; i++ ) {
             var r=ws[i].substring(0,2).toLowerCase();
             if( /xs|sm|me|la|xl/i.test(r) ) {
@@ -5256,65 +5448,22 @@ console.log('#DisplayPhoto : '+  imageIdx);
               if( w.substring(0,4) != 'auto' ) { v=parseInt(w); }
               var c='u';
               if( w.charAt(w.length - 1) == 'C' ) { c='c'; }
-              G.tn.settings.width['l1'][r]=v;
-              G.tn.settings.width['l1'][r+'c']=c;
+              G.tn.settings[opt]['l1'][r]=v;
+              G.tn.settings[opt]['l1'][r+'c']=c;
+              if( !onlyl1 ) {
+                G.tn.settings[opt]['lN'][r]=v;
+                G.tn.settings[opt]['lN'][r+'c']=c;
+              }
             }
           }
         }
       }
+      ThumbnailSizes( 'thumbnailWidth', false, 'width');
+      ThumbnailSizes( 'thumbnailL1Width', true, 'width');
+      
+      ThumbnailSizes( 'thumbnailHeight', false, 'height');
+      ThumbnailSizes( 'thumbnailL1Height', true, 'height');
 
-      if( toType(G.O.thumbnailHeight) == 'number' ) {
-        ThumbnailsSetSize( 'height', 'l1', G.O.thumbnailHeight, 'u');
-        ThumbnailsSetSize( 'height', 'lN', G.O.thumbnailHeight, 'u');
-      }
-      else {
-        var ws=G.O.thumbnailHeight.split(' ');
-        var v='auto';
-        if( ws[0].substring(0,4) != 'auto' ) { v=parseInt(ws[0]); }
-        var c='u';
-        if( ws[0].charAt(ws[0].length - 1) == 'C' ) { c='c'; }
-        ThumbnailsSetSize( 'height', 'l1', v, c );   // default value for all resolutions and navigation levels
-        ThumbnailsSetSize( 'height', 'lN', v, c );
-        for( var i=1; i<ws.length; i++ ) {
-          var r=ws[i].substring(0,2).toLowerCase();
-          if( /xs|sm|me|la|xl/i.test(r) ) {
-            var w=ws[i].substring(2);
-            var v='auto';
-            if( w.substring(0,4) != 'auto' ) { v=parseInt(w); }
-            var c='u';
-            if( w.charAt(w.length - 1) == 'C' ) { c='c'; }
-            G.tn.settings.height['l1'][r]=v;
-            G.tn.settings.height['lN'][r]=v;
-            G.tn.settings.height['l1'][r+'c']=c;
-            G.tn.settings.height['lN'][r+'c']=c;
-          }
-        }
-      }
-      if( G.O.thumbnailL1Height != undefined ) {
-        if( toType(G.O.thumbnailL1Height) == 'number' ) {
-          ThumbnailsSetSize( 'height', 'l1', G.O.thumbnailL1Height, 'u');
-        }
-        else {
-          var ws=G.O.thumbnailL1Height.split(' ');
-          var v='auto';
-          if( ws[0].substring(0,4) != 'auto' ) { v=parseInt(ws[0]); }
-          var c='u';
-          if( ws[0].charAt(ws[0].length - 1) == 'C' ) { c='c'; }
-          ThumbnailsSetSize( 'height', 'l1', v, c );
-          for( var i=1; i<ws.length; i++ ) {
-            var r=ws[i].substring(0,2).toLowerCase();
-            if( /xs|sm|me|la|xl/i.test(r) ) {
-              var w=ws[i].substring(2);
-              var v='auto';
-              if( w.substring(0,4) != 'auto' ) { v=parseInt(w); }
-              var c='u';
-              if( w.charAt(w.length - 1) == 'C' ) { c='c'; }
-              G.tn.settings.height['l1'][r]=v;
-              G.tn.settings.height['l1'][r+'c']=c;
-            }
-          }
-        }
-      }
       
       G.O.thumbnailBorderHorizontal=parseInt(G.O.thumbnailBorderHorizontal);
       G.O.thumbnailBorderVertical=parseInt(G.O.thumbnailBorderVertical);
@@ -5612,15 +5761,14 @@ console.log('#DisplayPhoto : '+  imageIdx);
     }
 
 
-    
+    // Thumbnail hover effect definition
     function NewTHoverEffect() {
-      // easing : jQuery supports only 'swing' and 'linear'
       var oDef={ 
           name:           '',
-          element:        '',
-          type:           '',
-          from:           '',
-          to:             '',
+          element:        '',               // element class
+          type:           '',               
+          from:           '',               // start value
+          to:             '',               // end value
           hoverin:        true,
           hoverout:       true,
           firstKeyframe:  true,
@@ -5636,7 +5784,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
     }
 
     function NewTBuildInit() {
-      // easing : jQuery supports only 'swing' and 'linear'
+      // to set CSS properties
       var oDef={ element: '', property: '', value: '' };
       return oDef;
     }
@@ -5735,8 +5883,8 @@ console.log('#DisplayPhoto : '+  imageIdx);
           G.tn.style.l1.title+='font-size:'+G.O.thumbnailLabel.titleFontSize+';';
         }
         if( G.O.thumbnailLabel.descriptionFontSize != undefined && G.O.thumbnailLabel.descriptionFontSize != '' ) {
-          G.tn.style.lN.desc+='font-size:'+G.O.thumbnailLabel.titleFontSize+';';
-          G.tn.style.l1.desc+='font-size:'+G.O.thumbnailLabel.titleFontSize+';';
+          G.tn.style.lN.desc+='font-size:'+G.O.thumbnailLabel.descriptionFontSize+';';
+          G.tn.style.l1.desc+='font-size:'+G.O.thumbnailLabel.descriptionFontSize+';';
         }
         
       // }
@@ -5817,8 +5965,6 @@ console.log('#DisplayPhoto : '+  imageIdx);
           G.tn.style.l1.desc+='font-size:'+G.O.thumbnailL1Label.titleFontSize+';';
         }
       }
-      
-      
       
       G.tn.borderWidth=G.O.thumbnailBorderHorizontal;
       G.tn.borderHeight=G.O.thumbnailBorderVertical;
@@ -6043,7 +6189,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
       var cs=null;
       switch(toType(G.O.colorSchemeViewer)) {
         case 'object':    // user custom color scheme object 
-          cs=G.colorSchemeViewer_default;
+          cs=G.colorSchemeViewer_dark;
           jQuery.extend(true,cs,G.O.colorSchemeViewer);
           G.VOM.colorSchemeLabel='nanogallery_colorschemeviewer_custom_'+G.baseEltID;
           break;
@@ -6072,22 +6218,20 @@ console.log('#DisplayPhoto : '+  imageIdx);
           return;
       }
 
-      var s1='.' + G.VOM.colorSchemeLabel + ' ';
-      var s=s1+'.nGY2Viewer { background:'+cs.background+'; }'+'\n';
-      s+=s1+'.nGY2ViewerImage { border:'+cs.imageBorder+'; box-shadow:'+cs.imageBoxShadow+'; }'+'\n';
-      s+=s1+'.nGY2Viewer .toolbarBackground { background:'+cs.barBackground+'; }'+'\n';
-      s+=s1+'.nGY2Viewer .toolbar { border:'+cs.barBorder+'; color:'+cs.barColor+'; }'+'\n';
-      s+=s1+'.nGY2Viewer .toolbar .previousButton:after { color:'+cs.barColor+'; }'+'\n';
-      s+=s1+'.nGY2Viewer .toolbar .nextButton:after { color:'+cs.barColor+'; }'+'\n';
-      s+=s1+'.nGY2Viewer .toolbar .closeButton:after { color:'+cs.barColor+'; }'+'\n';
-      s+=s1+'.nGY2Viewer .toolbar .label .title { color:'+cs.barColor+'; }'+'\n';
-      s+=s1+'.nGY2Viewer .toolbar .label .description { color:'+cs.barDescriptionColor+'; }'+'\n';
+      var s1 = '.' + G.VOM.colorSchemeLabel + ' ';
+      var s = s1+'.nGY2Viewer { background:'+cs.background+'; }'+'\n';
+      s += s1+'.nGY2ViewerImage { border:'+cs.imageBorder+'; box-shadow:'+cs.imageBoxShadow+'; }'+'\n';
+      s += s1+'.nGY2Viewer .toolbarBackground { background:'+cs.barBackground+'; }'+'\n';
+      s += s1+'.nGY2Viewer .toolbar { border:'+cs.barBorder+'; color:'+cs.barColor+'; }'+'\n';
+      s += s1+'.nGY2Viewer .toolbar .previousButton:after { color:'+cs.barColor+'; }'+'\n';
+      s += s1+'.nGY2Viewer .toolbar .nextButton:after { color:'+cs.barColor+'; }'+'\n';
+      s += s1+'.nGY2Viewer .toolbar .closeButton:after { color:'+cs.barColor+'; }'+'\n';
+      s += s1+'.nGY2Viewer .toolbar .label .title { color:'+cs.barColor+'; }'+'\n';
+      s += s1+'.nGY2Viewer .toolbar .label .description { color:'+cs.barDescriptionColor+'; }'+'\n';
       jQuery('head').append('<style>'+s+'</style>');
       G.VOM.$cont.addClass(G.VOM.colorSchemeLabel);
     };
 
-
-    
     /** @function SetPolyFills */
     function SetPolyFills() {
 
@@ -6207,7 +6351,12 @@ console.log('#DisplayPhoto : '+  imageIdx);
       var idx=G.GOM.items[r.GOMidx].thumbnailIdx;
       switch( r.action ) {
         case 'OPEN':
-          ThumbnailOpen(idx);
+          ThumbnailOpen(idx, false);
+          return 'exit';
+          break;
+        case 'DISPLAY':
+          // used the display icon (ignore if selection mode)
+          ThumbnailOpen(idx, true);
           return 'exit';
           break;
         case 'TOGGLESELECT':
@@ -6232,8 +6381,14 @@ console.log('#DisplayPhoto : '+  imageIdx);
           break;
         default:
           // all other actions (custom1..10, or anything else)
-          if(typeof G.O.fnThumbnailToolCustAction === 'function'){
-            G.O.fnThumbnailToolCustAction(r.action, G.I[idx]);
+          if( G.O.fnThumbnailToolCustAction !== null ) {
+            if( typeof G.O.fnThumbnailToolCustAction == 'function' ) {
+              G.O.fnThumbnailToolCustAction(r.action, G.I[idx]);
+            }
+            else {
+              // defined in markup
+              window[G.O.fnThumbnailToolCustAction](r.action, G.I[idx]);
+            }
           }
           break;
       }
@@ -6263,10 +6418,15 @@ console.log('#DisplayPhoto : '+  imageIdx);
       for( var i=0; i<G.shoppingCart.length; i++ ) {
         if( G.shoppingCart[i].idx == idx ) {
           G.shoppingCart[i].cnt++;
-          if(typeof G.O.fnShoppingCartUpdated === 'function'){
-            G.O.fnShoppingCartUpdated(G.shoppingCart);
+          if( G.O.fnShoppingCartUpdated !== null ) {
+            if( typeof G.O.fnShoppingCartUpdated == 'function' ) {
+              G.O.fnShoppingCartUpdated(G.shoppingCart);
+            }
+            else {
+              // defined in markup
+              window[G.O.fnShoppingCartUpdated](G.shoppingCart);
+            }
           }
-          // G.$E.base.trigger('shoppingCartUpdated.nanogallery2', new Event('shoppingCartUpdated.nanogallery2'));
           TriggerCustomEvent('shoppingCartUpdated');
           return;
         }
@@ -6275,10 +6435,15 @@ console.log('#DisplayPhoto : '+  imageIdx);
       // add to shopping cart
       if( !found) {
         G.shoppingCart.push( { idx:idx, ID:G.I[idx].GetID(), cnt:1} );
-        if(typeof G.O.fnShoppingCartUpdated === 'function'){
-          G.O.fnShoppingCartUpdated(G.shoppingCart);
+        if( G.O.fnShoppingCartUpdated !== null ) {
+          if( typeof G.O.fnShoppingCartUpdated == 'function' ) {
+            G.O.fnShoppingCartUpdated(G.shoppingCart);
+          }
+          else {
+            // defined in markup
+            window[G.O.fnShoppingCartUpdated](G.shoppingCart);
+          }
         }
-        // G.$E.base.trigger('shoppingCartUpdated.nanogallery2', new Event('shoppingCartUpdated.nanogallery2'));
         TriggerCustomEvent('shoppingCartUpdated');
       }
     }
@@ -6291,9 +6456,14 @@ console.log('#DisplayPhoto : '+  imageIdx);
         var item=G.I[G.GOM.items[i].thumbnailIdx];
         if( item.selected ) {
           item.selected=false;
-          if(typeof G.O.fnThumbnailSelection === 'function'){
-            // called when the selection status of an item changed
-            G.O.fnThumbnailSelection(item.$elt, item, G.I);
+          if( G.O.fnThumbnailSelection !== null ) {
+            if( typeof G.O.fnThumbnailSelection == 'function' ) {
+              G.O.fnThumbnailSelection(item.$elt, item, G.I);
+            }
+            else {
+              // defined in markup
+              window[G.O.fnThumbnailSelection](item.$elt, item, G.I);
+            }
           }
         }
         item.selected=false;
@@ -6322,9 +6492,15 @@ console.log('#DisplayPhoto : '+  imageIdx);
       
       ThumbnailSelectionSetIcon( item );
       
-      if(typeof G.O.fnThumbnailSelection === 'function'){
-        // called when the selection status of an item changed
-        G.O.fnThumbnailSelection(item.$elt, item, G.I);
+      // called when the selection status of an item changed
+      if( G.O.fnThumbnailSelection !== null ) {
+        if( typeof G.O.fnThumbnailSelection == 'function' ) {
+          G.O.fnThumbnailSelection(item.$elt, item, G.I);
+        }
+        else {
+          // defined in markup
+          window[G.O.fnThumbnailSelection](item.$elt, item, G.I);
+        }
       }
     
     }
@@ -6375,6 +6551,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
       content+='<div class="nGY2PopupOneItem" style="text-align:center;" data-share="tumblr">'+G.O.icons.shareTumblr+'</div>';
       content+='<div class="nGY2PopupOneItem" style="text-align:center;" data-share="twitter">'+G.O.icons.shareTwitter+'</div>';
       content+='<div class="nGY2PopupOneItem" style="text-align:center;" data-share="googleplus">'+G.O.icons.shareGooglePlus+'</div>';
+      content+='<div class="nGY2PopupOneItem" style="text-align:center;" data-share="vk">'+G.O.icons.shareVK+'</div>';
       content+='<div class="nGY2PopupOneItem" style="text-align:center;" data-share="mail">'+G.O.icons.shareMail+'</div>';
       content+='<div class="nGY2PopupOneItem" style="text-align:center;"></div>';
       content+='<input class="nGY2PopupOneItemText" readonly type="text" value="'+currentURL+newLocationHash+'" style="width:100%;text-align:center;">';
@@ -6399,7 +6576,10 @@ console.log('#DisplayPhoto : '+  imageIdx);
             //window.open("https://www.facebook.com/sharer.php?u="+currentURL,"","height=368,width=600,left=100,top=100,menubar=0");
             shareURL='https://www.facebook.com/sharer.php?u='+currentURL;
             break;
-          case 'GOOGLE+':
+          case 'VK':
+            shareURL='http://vk.com/share.php?url='+currentURL;
+            break;
+          case 'GOOGLEPLUS':
             shareURL="https://plus.google.com/share?url="+currentURL;
             break;
           case 'TWITTER':
@@ -6433,11 +6613,11 @@ console.log('#DisplayPhoto : '+  imageIdx);
     
     // build a modal popup
     function Popup(title, content, align) {
-      var pp='<div class="nGY2Popup" style="opacity:0;"><div class="nGY2PopupContent'+align+'">';
-      pp+='<div class="nGY2PopupCloseButton">'+G.O.icons.buttonClose+'</div>';
-      pp+='<div class="nGY2PopupTitle">'+title+'</div>';
-      pp+=content;
-      pp+='</div></div>';
+      var pp =  '<div class="nGY2Popup" style="opacity:0;"><div class="nGY2PopupContent'+align+'">';
+      pp +=     '<div class="nGY2PopupCloseButton">'+G.O.icons.buttonClose+'</div>';
+      pp +=     '<div class="nGY2PopupTitle">'+title+'</div>';
+      pp +=     content;
+      pp +=     '</div></div>';
       
       G.popup.$elt=jQuery(pp).appendTo('body');
       setElementOnTop( G.VOM.$viewer, G.popup.$elt);
@@ -6448,12 +6628,12 @@ console.log('#DisplayPhoto : '+  imageIdx);
       tweenable.tween({
         from:       { opacity:0  },
         to:         { opacity:1 },
-        easing: 'easeInOutSine',
-        duration: 180,
-        step: function (state, att) {
+        easing:     'easeInOutSine',
+        duration:   180,
+        step:       function (state, att) {
           G.popup.$elt.css('opacity',state.opacity);
         },
-        finish: function (state, att) {
+        finish:     function (state, att) {
           G.popup.$elt.css('opacity',1);
         }
       });
@@ -6521,11 +6701,17 @@ console.log('#DisplayPhoto : '+  imageIdx);
     
 
     // Open one thumbnail
-    function ThumbnailOpen( idx ) {
+    function ThumbnailOpen( idx, ignoreSelected ) {
       var item=G.I[idx];
 
-      if( typeof G.O.fnThumbnailClicked === 'function' ){
-        if( !G.O.fnThumbnailClicked(item.$elt, item) ) { return; }
+      if( G.O.fnThumbnailClicked !== null ) {
+        if( typeof G.O.fnThumbnailClicked == 'function' ) {
+          G.O.fnThumbnailClicked(item.$elt, item);
+        }
+        else {
+          // defined in markup
+          window[G.O.fnThumbnailClicked](item.$elt, item);
+        }
       }
       
       // open URL
@@ -6536,7 +6722,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
 
       switch( item.kind ) {
         case 'image':
-          if( G.GOM.nbSelected > 0 ) {
+          if( ignoreSelected === false && G.GOM.nbSelected > 0 ) {
             ThumbnailSelectionToggle(idx);
           }
           else {
@@ -6545,7 +6731,7 @@ console.log('#DisplayPhoto : '+  imageIdx);
           }
           break;
         case 'album':
-          if( G.GOM.nbSelected > 0 ) {
+          if( ignoreSelected === false && G.GOM.nbSelected > 0 ) {
             ThumbnailSelectionToggle(idx);
           }
           else {
@@ -6563,7 +6749,6 @@ console.log('#DisplayPhoto : '+  imageIdx);
     // Open link to original image (new window)
     function OpenOriginal( item ) {
       switch( G.O.kind ) {
-        case 'json':
         case 'flickr':
           var sU='https://www.flickr.com/photos/'+G.O.userID+'/'+item.GetID();
           window.open(sU,'_blank');
@@ -6627,10 +6812,15 @@ console.log('#DisplayPhoto : '+  imageIdx);
         cnt++;
       }
     
-      if( typeof G.O.fnThumbnailOpen == 'function' ) { 
-        // opens image with external viewer
-        G.O.fnThumbnailOpen(items);
-        return;
+      // opens image with external viewer
+      if( G.O.fnThumbnailOpen !== null ) {
+        if( typeof G.O.fnThumbnailOpen == 'function' ) {
+          G.O.fnThumbnailOpen(items);
+        }
+        else {
+          // defined in markup
+          window[G.O.fnThumbnailOpen](items);
+        }
       }
     
       if( !G.VOM.viewerDisplayed ) {
@@ -6639,14 +6829,35 @@ console.log('#DisplayPhoto : '+  imageIdx);
       }
       else {
         // display
-        // DisplayInternalViewer(imageIdx, '');
         G.VOM.$imgC.css({ opacity:0, left:0, visibility:'hidden' }).attr('src','');
-        G.VOM.$imgC.children().eq(0).attr('src',G.emptyGif).attr('src',G.VOM.Item(0).responsiveURL());
+        G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.Item(0).responsiveURL(), G.VOM.Item(0));
+        G.VOM.$imgC.children().eq(0).attr('src',G.emptyGif).attr('src', G.VOM.Item(0).responsiveURL());
+        ViewerDisplayDominantColors(G.VOM.Item(0), G.VOM.$imgC.children());
         DisplayInternalViewer(0, '');
       }
     }
+    
+    function ViewerDisplayDominantColors(item, $img) {
+      // if( item.imageDominantColors != null ) {
+        // $img.css({ 'background': "url('data:image/gif;base64,"+item.imageDominantColors+"') no-repeat", 'background-size': '100% 100%'});
+      // }
+    }
 
-    // display image with internal viewer
+    // is callbacked as soon as the size of an image has been retrieved
+    function VieweImgSizeRetrieved(w,h, url, item, n) {
+
+      item.imageWidth=w;
+      item.imageHeight=h;
+
+      if( G.VOM.$imgC !== null && G.VOM.$imgC.children().prop('src') === url ) {
+        ViewerImageSetSize(G.VOM.$imgC, item);
+        G.VOM.$imgC.css('opacity', 1);
+      }
+
+    }
+
+
+      // display image with internal viewer
     function OpenInternalViewer( vomIdx ) {
 
       G.VOM.viewerDisplayed=true;
@@ -6658,16 +6869,16 @@ console.log('#DisplayPhoto : '+  imageIdx);
 
       G.VOM.$viewer=jQuery('<div class="nGY2Viewer" itemscope itemtype="http://schema.org/ImageObject"></div>').appendTo(G.VOM.$cont);
 
-// avoid pinch zoom
-G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});      
-// TODO -> check if still required?
+      // avoid pinch zoom
+      // TODO -> check if still required?
+      G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});      
 
-      
       var sImg='',
       l=G.I.length;
-      sImg+='<div class="nGY2ViewerImagePan"><img class="nGY2ViewerImage" src="'+G.VOM.Item(GetPreviousImageIdx(vomIdx)).responsiveURL()+'" alt=" " itemprop="contentURL"></div>';
+      
+      sImg+='<div class="nGY2ViewerImagePan"><img class="nGY2ViewerImage" src="'+G.VOM.ItemPrevious(vomIdx).responsiveURL()+'" alt=" " itemprop="contentURL"></div>';
       sImg+='<div class="nGY2ViewerImagePan"><img class="nGY2ViewerImage" src="'+G.VOM.Item(vomIdx).responsiveURL()+'" alt=" " itemprop="contentURL"></div>';
-      sImg+='<div class="nGY2ViewerImagePan"><img class="nGY2ViewerImage" src="'+G.VOM.Item(GetNextImageIdx(vomIdx)).responsiveURL()+'" alt=" " itemprop="contentURL"></div>';
+      sImg+='<div class="nGY2ViewerImagePan"><img class="nGY2ViewerImage" src="'+G.VOM.ItemNext(vomIdx).responsiveURL()+'" alt=" " itemprop="contentURL"></div>';
       var sNav='';
       if( G.O.icons.viewerImgPrevious != undefined && G.O.icons.viewerImgPrevious != '') {
         sNav+='<div class="nGY2ViewerAreaPrevious ngy2viewerToolAction" data-ngy2action="previous">'+G.O.icons.viewerImgPrevious+'</div>';
@@ -6679,6 +6890,13 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
       G.VOM.$imgP=G.VOM.$content.find('.nGY2ViewerImagePan').eq(0);
       G.VOM.$imgC=G.VOM.$content.find('.nGY2ViewerImagePan').eq(1);
       G.VOM.$imgN=G.VOM.$content.find('.nGY2ViewerImagePan').eq(2);
+      G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.Item(vomIdx).responsiveURL(), G.VOM.Item(vomIdx));
+      G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.ItemPrevious(vomIdx).responsiveURL(), G.VOM.ItemPrevious(vomIdx));
+      G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.ItemNext(vomIdx).responsiveURL(), G.VOM.ItemNext(vomIdx));
+      
+      ViewerDisplayDominantColors(G.VOM.Item(vomIdx), G.VOM.$imgC.children());
+      ViewerDisplayDominantColors(G.VOM.ItemPrevious(vomIdx), G.VOM.$imgP.children());
+      ViewerDisplayDominantColors(G.VOM.ItemNext(vomIdx), G.VOM.$imgN.children());
       
       // makes content unselectable --> avoid image drag effect during 'mouse swipe'
       G.VOM.$cont.find('*').attr('draggable', 'false').attr('unselectable', 'on');
@@ -6735,14 +6953,9 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
         G.VOM.$toolbarTR=jQuery(sTopRight).appendTo(G.VOM.$viewer);
       }
 
-      
       // Go to fullscreen mode
-      if( G.supportFullscreenAPI ) {
-        if( G.O.viewerFullscreen ) {
-          G.VOM.viewerIsFullscreen=true;
-          G.VOM.$viewer.find('.ngy2viewerToolAction').find('.fullscreenButton').html(G.O.icons.viewerFullscreenOn);
-          ngscreenfull.request();
-        }
+      if( ngscreenfull.enabled && G.O.viewerFullscreen ) {
+        ngscreenfull.request();
       }
 
       // set the events handler for toolbars
@@ -6755,7 +6968,6 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
 
       setElementOnTop('', G.VOM.$viewer);
       ResizeInternalViewer(true);
-
       G.VOM.timeImgChanged=new Date().getTime();
 
       // stop click propagation on image ==> if the user clicks outside of an image, the viewer is closed
@@ -6769,10 +6981,16 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
       // viewer gesture handling
       if( G.VOM.hammertime == null ) {
       
-        G.VOM.hammertime =  new NGHammer(G.VOM.$cont[0]);
+        // G.VOM.hammertime =  new NGHammer(G.VOM.$cont[0]);
+        G.VOM.hammertime =  new NGHammer.Manager(G.VOM.$cont[0], {
+          recognizers: [
+            [NGHammer.Pinch, { enable: true }],
+            [NGHammer.Pan, { direction: NGHammer.DIRECTION_ALL }]
+          ]
+        });
      
-        G.VOM.hammertime.get('pan').set({ direction: NGHammer.DIRECTION_ALL });        
-        G.VOM.hammertime.get('pinch').set({ enable: true });        
+        // G.VOM.hammertime.get('pan').set({ direction: NGHammer.DIRECTION_ALL });        
+        // G.VOM.hammertime.get('pinch').set({ enable: true });        
 
         G.VOM.hammertime.on('pan', function(ev) {
           if( !G.VOM.viewerDisplayed ) { return; }
@@ -6805,11 +7023,30 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
         });
         
         if( G.O.viewerZoom ) {
-          // double tap event only if zoom-feature is activated
+        
+          G.VOM.hammertime.add( new NGHammer.Tap({ event: 'doubletap', taps: 2 }) );
+          G.VOM.hammertime.add( new NGHammer.Tap({ event: 'singletap' }) );
+          G.VOM.hammertime.get('doubletap').recognizeWith('singletap');
+          G.VOM.hammertime.get('singletap').requireFailure('doubletap');
+
+          // single tap -> next/previous image
+          G.VOM.hammertime.on('singletap', function(ev) {
+            if( !G.VOM.viewerDisplayed ) { return; }
+            StopPropagationPreventDefault(ev.srcEvent);
+            if( ev.target.className.indexOf('nGY2ViewerImage') !== -1 ) {
+              if( ev.srcEvent.pageX < (jQuery(window).width()/2) ) {
+                DisplayPreviousImage();
+              }
+              else {
+                DisplayNextImage();
+              }
+            }
+          });
+          
+          // double tap -> zoom
           G.VOM.hammertime.on('doubletap', function(ev) {
             if( !G.VOM.viewerDisplayed ) { return; }
-            ev.srcEvent.stopPropagation();
-            ev.srcEvent.preventDefault();
+            StopPropagationPreventDefault(ev.srcEvent);
             
             if( ev.target.className.indexOf('nGY2ViewerImage') !== -1 ) {
               // double tap only one image
@@ -6850,6 +7087,21 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
             }
           });
         }
+        else {
+          // no zoom -> click/tap on image to go to next/previous one
+          G.VOM.hammertime.on('tap', function(ev) {
+            if( !G.VOM.viewerDisplayed ) { return; }
+            StopPropagationPreventDefault(ev.srcEvent);
+            if( ev.target.className.indexOf('nGY2ViewerImage') !== -1 ) {
+              if( ev.srcEvent.pageX < (jQuery(window).width()/2) ) {
+                DisplayPreviousImage();
+              }
+              else {
+                DisplayNextImage();
+              }
+            }
+          });
+        }
       }
 
       
@@ -6859,6 +7111,36 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
       }
     }
 
+    
+    function StopPropagationPreventDefault(e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+
+    function ViewerToolsHide() {
+      if( G.VOM.viewerDisplayed ) {
+        G.VOM.toolbarsDisplayed=false;
+        G.VOM.$toolbar.css('opacity', 0);
+        G.VOM.$toolbarTL.css('opacity', 0);
+        G.VOM.$toolbarTR.css('opacity', 0);
+        G.VOM.$content.find('.nGY2ViewerAreaNext').css('opacity', 0);
+        G.VOM.$content.find('.nGY2ViewerAreaPrevious').css('opacity', 0);
+      }
+    }
+    
+    function ViewerToolsUnHide() {
+      if( G.VOM.viewerDisplayed ) {
+        G.VOM.toolbarsDisplayed=true;
+        G.VOM.$toolbar.css('opacity', 1);
+        G.VOM.$toolbarTL.css('opacity', 1);
+        G.VOM.$toolbarTR.css('opacity', 1);
+        G.VOM.$content.find('.nGY2ViewerAreaNext').css('opacity', 1);
+        G.VOM.$content.find('.nGY2ViewerAreaPrevious').css('opacity', 1);
+        G.VOM.toolsHide();
+      }
+    }
+    
+    
     function ViewerToolsOn() {
       // removes all events
       G.VOM.$viewer.off("touchstart click", '.ngy2viewerToolAction', ViewerToolsAction); 
@@ -6867,120 +7149,105 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
       G.VOM.$viewer.on("touchstart click", '.ngy2viewerToolAction', ViewerToolsAction); 
     }
 
-      // Actions of the buttton/elements
-      function ViewerToolsAction(e) {
-        var $this=$(this);
-        var ngy2action=$this.data('ngy2action');
-        switch( ngy2action ) {
-          case 'next':
-            e.stopPropagation();
-            e.preventDefault();
-            DisplayNextImage();
-            break;
-          case 'previous':
-            e.stopPropagation();
-            e.preventDefault();
-            DisplayPreviousImage();
-            break;
-          case 'playPause':
-            e.stopPropagation();
-            SlideshowToggle();
-            break;
-          case 'zoomIn':
-            e.stopPropagation();
-            e.preventDefault();
-            if( ViewerZoomStart() ) {
-              ViewerZoomIn( true );
-            }
-            break;
-          case 'zoomOut':
-            e.stopPropagation();
-            e.preventDefault();
-            if( ViewerZoomStart() ) {
-              ViewerZoomIn( false );
-            }
-            break;
-          case 'minimize':
-            // toggle toolbar visibility
-            e.stopPropagation();
-            e.preventDefault();
-            if( G.VOM.toolbarMode == 'std' ) {
-              ViewerToolbarForVisibilityMin();
-            }
-            else {
-              ViewerToolbarForVisibilityStd();
-            }
-            break;
-          case 'fullScreen':
-            // Toggle viewer fullscreen mode on/off
-            e.stopPropagation();
-            if( G.supportFullscreenAPI ) {
-              if( ngscreenfull.enabled ) {
-                ngscreenfull.toggle();
-                if( G.VOM.viewerIsFullscreen ) {
-                  G.VOM.viewerIsFullscreen=false;
-                  G.VOM.$viewer.find('.fullscreenButton').html(G.O.icons.viewerFullscreenOff);
-                }
-                else {
-                  G.VOM.viewerIsFullscreen=true;
-                  G.VOM.$viewer.find('.fullscreenButton').html(G.O.icons.viewerFullscreenOn);
-                }
-              }
-            }
-            break;
-          case 'info':
-            e.stopPropagation();
-            // if( typeof G.O.fnViewerInfo == 'function' ) {
-              // G.O.fnViewerInfo(G.VOM.Item(G.VOM.currItemIdx), ExposedObjects());
-            // }
-            ItemDisplayInfo(G.VOM.Item(G.VOM.currItemIdx));
-            break;
-          case 'close':
-            e.stopPropagation();
-            e.preventDefault();
-            if( (new Date().getTime()) - G.VOM.timeImgChanged < 400 ) { return; }
-            CloseInternalViewer(G.VOM.currItemIdx);
-            break;
-          case 'download':
-            e.stopPropagation();
-            e.preventDefault();
-            DownloadImage(G.VOM.items[G.VOM.currItemIdx].imageIdx);
-            break;
-          case 'share':
-            e.stopPropagation();
-            e.preventDefault();
-            PopupShare(G.VOM.items[G.VOM.currItemIdx].imageIdx);
-            break;
-          case 'custom':
-            e.stopPropagation();
-            e.preventDefault();
-            PopupShare(G.VOM.items[G.VOM.currItemIdx].imageIdx);
-            break;
-          case 'linkOriginal':
-            // $closeB.on( (G.isIOS ? "touchstart" : "click") ,function(e){     // IPAD
-            e.stopPropagation();
-            e.preventDefault();
-            OpenOriginal( G.VOM.Item(G.VOM.currItemIdx) );
-            if( G.O.kind == 'google' || G.O.kind == 'google2') {
-              var sU='https://plus.google.com/photos/'+G.O.userID+'/albums/'+G.VOM.Item(G.VOM.currItemIdx).albumID+'/'+G.VOM.Item(G.VOM.currItemIdx).GetID();
-              window.open(sU,'_blank');
-            }
-            
-            if( G.O.kind == 'flickr') {
-              var sU='https://www.flickr.com/photos/'+G.O.userID+'/'+G.VOM.Item(G.VOM.currItemIdx).GetID();
-              window.open(sU,'_blank');
-            }
-            break;
-        }
-        
-        // custom button
-        if( ngy2action.indexOf('custom') == 0  && typeof G.O.fnImgToolbarCustClick == 'function') {
-          // var n=ngy2action.substring(6);
-          G.O.fnImgToolbarCustClick(ngy2action, $this, G.VOM.Item(G.VOM.currItemIdx));
-        }
-        
+    // Actions of the buttton/elements
+    function ViewerToolsAction(e) {
+      // delay to avoid twice handling on smartphone/tablet (both touchstart click events are fired)
+      if( (new Date().getTime()) - G.timeLastTouchStart < 300 ) { return; }
+      G.timeLastTouchStart=new Date().getTime();
+      
+      var $this=$(this);
+      var ngy2action=$this.data('ngy2action');
+      switch( ngy2action ) {
+        case 'next':
+          StopPropagationPreventDefault(e);
+          DisplayNextImage();
+          break;
+        case 'previous':
+          StopPropagationPreventDefault(e);
+          DisplayPreviousImage();
+          break;
+        case 'playPause':
+          e.stopPropagation();
+          SlideshowToggle();
+          break;
+        case 'zoomIn':
+          StopPropagationPreventDefault(e);
+          if( ViewerZoomStart() ) {
+            ViewerZoomIn( true );
+          }
+          break;
+        case 'zoomOut':
+          StopPropagationPreventDefault(e);
+          if( ViewerZoomStart() ) {
+            ViewerZoomIn( false );
+          }
+          break;
+        case 'minimize':
+          // toggle toolbar visibility
+          StopPropagationPreventDefault(e);
+          if( G.VOM.toolbarMode == 'std' ) {
+            ViewerToolbarForVisibilityMin();
+          }
+          else {
+            ViewerToolbarForVisibilityStd();
+          }
+          break;
+        case 'fullScreen':
+          // Toggle viewer fullscreen mode on/off
+          e.stopPropagation();
+          if( ngscreenfull.enabled ) {
+            ngscreenfull.toggle();
+          }
+          break;
+        case 'info':
+          e.stopPropagation();
+          ItemDisplayInfo(G.VOM.Item(G.VOM.currItemIdx));
+          break;
+        case 'close':
+          StopPropagationPreventDefault(e);
+          if( (new Date().getTime()) - G.VOM.timeImgChanged < 400 ) { return; }
+          CloseInternalViewer(G.VOM.currItemIdx);
+          break;
+        case 'download':
+          StopPropagationPreventDefault(e);
+          DownloadImage(G.VOM.items[G.VOM.currItemIdx].imageIdx);
+          break;
+        case 'share':
+          StopPropagationPreventDefault(e);
+          PopupShare(G.VOM.items[G.VOM.currItemIdx].imageIdx);
+          break;
+        case 'custom':
+          StopPropagationPreventDefault(e);
+          PopupShare(G.VOM.items[G.VOM.currItemIdx].imageIdx);
+          break;
+        case 'linkOriginal':
+          // $closeB.on( (G.isIOS ? "touchstart" : "click") ,function(e){     // IPAD
+          StopPropagationPreventDefault(e);
+          OpenOriginal( G.VOM.Item(G.VOM.currItemIdx) );
+          if( G.O.kind == 'google' || G.O.kind == 'google2') {
+            var sU='https://plus.google.com/photos/'+G.O.userID+'/albums/'+G.VOM.Item(G.VOM.currItemIdx).albumID+'/'+G.VOM.Item(G.VOM.currItemIdx).GetID();
+            window.open(sU,'_blank');
+          }
+          
+          if( G.O.kind == 'flickr') {
+            var sU='https://www.flickr.com/photos/'+G.O.userID+'/'+G.VOM.Item(G.VOM.currItemIdx).GetID();
+            window.open(sU,'_blank');
+          }
+          break;
       }
       
+      // custom button
+      if( ngy2action.indexOf('custom') == 0  && G.O.fnImgToolbarCustClick !== null ) {
+        if( typeof G.O.fnImgToolbarCustClick == 'function' ) {
+          G.O.fnImgToolbarCustClick(ngy2action, $this, G.VOM.Item(G.VOM.currItemIdx));
+        }
+        else {
+          // defined in markup
+          window[G.O.fnImgToolbarCustClick](ngy2action, $this, G.VOM.Item(G.VOM.currItemIdx));
+        }
+      }
+    }
+     
 
 
     
@@ -7060,9 +7327,11 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
           r='<div class="ngbt ngy2viewerToolAction nGEvent" data-ngy2action="zoomIn">'+G.O.icons.viewerZoomIn+'</div><div class="ngbt ngy2viewerToolAction nGEvent" data-ngy2action="zoomOut">'+G.O.icons.viewerZoomOut+'</div>';
           break;
         case 'fullscreenButton':
-          if( G.supportFullscreenAPI ) {
-            r='<div class="ngbt ngy2viewerToolAction setFullscreenButton fullscreenButton nGEvent" data-ngy2action="fullScreen">'+G.O.icons.viewerFullscreenOn+'</div>';
+          var s=G.O.icons.viewerFullscreenOn;
+          if( ngscreenfull.enabled && G.VOM.viewerIsFullscreen ) {
+            s=G.O.icons.viewerFullscreenOff;
           }
+          r='<div class="ngbt ngy2viewerToolAction setFullscreenButton fullscreenButton nGEvent" data-ngy2action="fullScreen">'+s+'</div>';
           break;
         case 'infoButton':
           // if( typeof G.O.fnViewerInfo == 'function' ) {
@@ -7087,9 +7356,15 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
           // custom button
           if( e.indexOf('custom') == 0 ) {
             var t='';
-            if( typeof G.O.fnImgToolbarCustInit == 'function' ) {
-              // content to display from custom script
-              t=G.O.fnImgToolbarCustInit(e);
+            // content to display from custom script
+            if( G.O.fnImgToolbarCustInit !== null ) {
+              if( typeof G.O.fnImgToolbarCustInit == 'function' ) {
+                G.O.fnImgToolbarCustInit(e);
+              }
+              else {
+                // defined in markup
+                window[G.O.fnImgToolbarCustInit](e);
+              }
             }
             if( t == undefined || t == '' ) {
               // content from icons
@@ -7121,14 +7396,14 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
     function ViewerZoomIn( zoomIn ) {
       if( zoomIn ) {
         // zoom in
-        G.VOM.currentZoom+=.1;
+        G.VOM.currentZoom+=0.1;
         if( G.VOM.currentZoom > 2 ) {
           G.VOM.currentZoom=2;
         }
       }
       else {
         // zoom out
-        G.VOM.currentZoom-=.1;
+        G.VOM.currentZoom-=0.1;
         if( G.VOM.currentZoom < 0.2 ) {
           G.VOM.currentZoom=0.2;
         }
@@ -7140,10 +7415,9 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
     function ViewerZoomApply() {
           
       // var curZ=G.VOM.currentZoom;
-        var item=G.VOM.Item(G.VOM.currItemIdx);
+      var item=G.VOM.Item(G.VOM.currItemIdx);
         // if( item.imageHeight > 0 && item.imageWidth > 0 ) {
 
-      
       var imageCurrentHeight=(item.imageHeight/window.devicePixelRatio) * G.VOM.currentZoom;
       var imageCurrentWidth=(item.imageWidth/window.devicePixelRatio) * G.VOM.currentZoom;
       G.VOM.$imgC.children().eq(0).css( {'height': imageCurrentHeight, 'max-height': 'none' });
@@ -7250,8 +7524,14 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
       
       // custom elements
       var $cu=G.VOM.$viewer.find('.ngy2CustomBtn');
-      if( $cu.length > 0 && typeof G.O.fnImgToolbarCustDisplay == 'function' ) {
-        G.O.fnImgToolbarCustDisplay( $cu, item);
+      if( $cu.length > 0 && G.O.fnImgToolbarCustDisplay !== null ) {
+        if( typeof G.O.fnImgToolbarCustDisplay == 'function' ) {
+          G.O.fnImgToolbarCustDisplay($cu, item);
+        }
+        else {
+          // defined in markup
+          window[G.O.fnImgToolbarCustDisplay]($cu, item);
+        }
       }
       
       // set event handlers again
@@ -7262,7 +7542,8 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
     function ImageSwipeTranslateX( posX ) {
       G.VOM.swipePosX=posX;
       if( G.CSStransformName == null ) {
-        G.VOM.$imgC.css({ left: posX }); 
+        // no pan if CSS transform not supported
+        // G.VOM.$imgC.css({ left: posX }); 
       }
       else {
         G.VOM.$imgC[0].style[G.CSStransformName]= 'translateX('+posX+'px)';
@@ -7271,7 +7552,8 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
             var $new=G.VOM.$imgP;
             // var dir=getViewport().w;
             var dir=G.VOM.$viewer.width();
-            G.VOM.$imgP.css({visibility:'visible', left:0, opacity:1});
+            // G.VOM.$imgP.css({visibility:'visible', left:0, opacity:1});
+            G.VOM.$imgP.css({visibility:'visible', opacity:1});
             G.VOM.$imgP[0].style[G.CSStransformName]= 'translateX('+(-dir+posX)+'px) '
             G.VOM.$imgN[0].style[G.CSStransformName]= 'translateX('+(-dir)+'px) '
           }
@@ -7279,7 +7561,8 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
             var $new=G.VOM.$imgN;
             // var dir=-getViewport().w;
             var dir=-G.VOM.$viewer.width();
-            G.VOM.$imgN.css({visibility:'visible', left:0, opacity:1});
+            // G.VOM.$imgN.css({visibility:'visible', left:0, opacity:1});
+            G.VOM.$imgN.css({visibility:'visible', opacity:1});
             G.VOM.$imgN[0].style[G.CSStransformName]= 'translateX('+(-dir+posX)+'px) '
             G.VOM.$imgP[0].style[G.CSStransformName]= 'translateX('+(-dir)+'px) '
           }
@@ -7293,7 +7576,7 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
       if( (new Date().getTime()) - G.VOM.timeImgChanged < 300 ) { return; }
       
       TriggerCustomEvent('lightboxNextImage');
-      DisplayInternalViewer(GetNextImageIdx(G.VOM.currItemIdx), 'nextImage');
+      DisplayInternalViewer(G.VOM.IdxNext(G.VOM.currItemIdx), 'nextImage');
     };
     
     // Display previous image
@@ -7305,7 +7588,7 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
       }
       
       TriggerCustomEvent('lightboxPreviousImage');
-      DisplayInternalViewer(GetPreviousImageIdx(G.VOM.currItemIdx), 'previousImage');
+      DisplayInternalViewer(G.VOM.IdxPrevious(G.VOM.currItemIdx), 'previousImage');
     };
     
     // Display image (and run animation)
@@ -7315,6 +7598,10 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
       if( G.VOM.playSlideshow ) {
         window.clearTimeout(G.VOM.playSlideshowTimerID);
       }
+      
+      var item=G.VOM.Item(G.VOM.currItemIdx);
+      var itemNew=G.VOM.Item(vomIdx);
+      var $new=(displayType == 'nextImage' ? G.VOM.$imgN : G.VOM.$imgP);
 
       G.VOM.timeImgChanged=new Date().getTime();
       G.VOM.viewerImageIsChanged=true;
@@ -7323,53 +7610,63 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
  
       var displayNext=true;
 
-      SetLocationHash( G.VOM.Item(vomIdx).albumID, G.VOM.Item(vomIdx).GetID() );
+      SetLocationHash( itemNew.albumID, itemNew.GetID() );
       
       
-      if( G.O.debugMode && console.timeline ) {
-        console.timeline('nanogallery2_viewer');
-      }
+      if( G.O.debugMode && console.timeline ) { console.timeline('nanogallery2_viewer'); }
 
       G.VOM.currItemIdx=vomIdx;
       var vP=getViewport();
       
       if( displayType == '' ) {
         // first image --> just appear / no slide animation
-        G.VOM.$imgC.css({ opacity:1, left:0, visibility: 'visible'});
-        var tweenable = new NGTweenable();
-        tweenable.tween({
-          from:       { scale: 0.8, opacity:0  },
-          to:         { scale: 1, opacity:1 },
-          attachment: { idx:vomIdx, dT:displayType },
-          easing: 'easeInOutSine',
-          duration: 400,
-          step: function (state, att) {
-            G.VOM.$content.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity',state.opacity);
-          },
-          finish: function (state, att) {
-            G.VOM.$content.css( G.CSStransformName , '').css('opacity',1);
-            DisplayInternalViewerComplete(att.idx, att.dT);
-          }
-        });
+        G.VOM.$imgC.css({ opacity:1, visibility: 'visible'});
+        if( G.CSStransformName == null ) {
+          // no CSS transform support -> no animation
+          $new.css({ opacity: 1, visibility: 'visible'});
+          DisplayInternalViewerComplete(vomIdx,displayType);
+        }
+        else {
+          $new.css({ opacity:0, visibility:'visible'});
+          var tweenable = new NGTweenable();
+          tweenable.tween({
+            from:         { scale: 0.8, opacity: 0 },
+            to:           { scale: 1,   opacity: 1 },
+            attachment:   { idx: vomIdx, dT: displayType, item: item },
+            easing:       'easeInOutSine',
+            duration:     400,
+            step:         function (state, att) {
+              G.VOM.$content.css( G.CSStransformName, 'scale('+state.scale+')').css('opacity', state.opacity);
+              ViewerImageOpacityOn(G.VOM.$imgC, att.item);
+
+            },
+            finish:       function (state, att) {
+              G.VOM.$content.css( G.CSStransformName, '').css('opacity', 1);
+              ViewerImageOpacityOn(G.VOM.$imgC, att.item);
+              ViewerToolsUnHide();
+              DisplayInternalViewerComplete(att.idx, att.dT);
+            }
+          });
+        }
       }
       else {
         // animate the image change
-        switch( G.O.imageTransition ) {
-          case 'fade':
+        switch( G.O.imageTransition.toUpperCase() ) {
+          case 'FADE':
             var $new=(displayType == 'nextImage' ? G.VOM.$imgN : G.VOM.$imgP);
             $new.css({ opacity:0, left:0, visibility:'visible'});
             var tweenable = new NGTweenable();
             tweenable.tween({
-              from: { o: 0  },
-              to: { o: 1 },
-              easing: 'easeInOutSine',
+              from:       { o: 0 },
+              to:         { o: 1 },
+              easing:     'easeInOutSine',
               attachment: { idx:vomIdx, dT:displayType, $e:$new },
-              duration: 300,
-              step: function (state, att) {
+              duration:   300,
+              step:       function (state, att) {
                 G.VOM.$imgC.css({ opacity: 1-state.o }); 
                 att.$e.css({ opacity: state.o });
               },
-              finish: function (state, att) {
+              finish:     function (state, att) {
                 G.VOM.$imgC.css({ opacity: 0 });
                 att.$e.css({ opacity: 1 });
                 DisplayInternalViewerComplete(att.idx, att.dT);
@@ -7377,68 +7674,38 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
             });
             break;
             
-          case 'slideBETA':
-            var $new=(displayType == 'nextImage' ? G.VOM.$imgN : G.VOM.$imgP);
-            $new.css({ opacity:1, left:0, visibility:'visible'});
-            if( G.CSStransformName == null ) {
-              // animate LEFT
-              jQuery.when(
-                G.VOM.$imgC.animate({ left: (displayType == 'nextImage' ? -getViewport().w : getViewport().w)+'px', opacity: 0 }, 500), 
-                $new.animate({ opacity: 1 }, 300)
-              ).done(function () {
-                DisplayInternalViewerComplete(vomIdx, displayType);
-              });
-            }
-            else {
-              // animate TRANSLATEX
-              var dir=(displayType == 'nextImage' ? - getViewport().w : getViewport().w);
-              $new[0].style[G.CSStransformName]= 'translateX('+(-dir)+'px) '
-              var from = {v: G.VOM.swipePosX };
-              var to = {v: (displayType == 'nextImage' ? - getViewport().w : getViewport().w)};
-              jQuery(from).animate(to, { duration:500, step: function(currentValue) {
-                  G.VOM.$imgC[0].style[G.CSStransformName]= 'translateX('+currentValue+'px)';
-                  G.VOM.$imgC.css({ opacity: (1-Math.abs(currentValue/dir)) });
-                  $new[0].style[G.CSStransformName]= 'translateX('+(-dir+currentValue)+'px) '
-                }, complete: function() {
-                  G.VOM.$imgC[0].style[G.CSStransformName]= '';
-                  G.VOM.$imgC.css({ opacity:0 });
-                  DisplayInternalViewerComplete(vomIdx, displayType);
-                }
-              });
-            }
-            break;
-
-          case 'swipe':
-            var $new=(displayType == 'nextImage' ? G.VOM.$imgN : G.VOM.$imgP);
-            // if( G.CSStransformName == null || ( G.isIOS && G.IOSversion < 6 ) ) {
+          case 'SWIPE':
             if( G.CSStransformName == null  ) {
-              // animate LEFT
-              $new.css({ opacity:0, left:0, visibility:'visible'});
-              jQuery.when(
-                G.VOM.$imgC.animate({ left: ((displayType == 'nextImage' ? -getViewport().w : getViewport().w)*2)+'px' }, 500), 
-                $new.animate({ opacity: 1 }, 300)
-              ).done(function () {
-                DisplayInternalViewerComplete(vomIdx, displayType);
-              });
+              // no CSS transform support -> no animation
+              $new.css({ opacity: 1, visibility: 'visible' });
+              G.VOM.$imgC.css({ opacity:1 });
+              DisplayInternalViewerComplete(vomIdx, displayType);
             }
             else {
-              // animate using TRANSLATEX
               var dir=(displayType == 'nextImage' ? - vP.w : vP.w);
-              $new.css({ opacity:1, left:0, visibility:'visible'});
+              $new.css({ visibility:'visible'});
               $new[0].style[G.CSStransformName]= 'translateX('+(-dir)+'px) '
               var tweenable = new NGTweenable();
               tweenable.tween({
-                from: { t: G.VOM.swipePosX  },
-                to: { t: (displayType == 'nextImage' ? - vP.w : vP.w) },
-                attachment: { idx:vomIdx, dT:displayType, $e:$new, dir:dir },
-                duration: 300,
-                easing: 'easeInOutSine',
-                step: function (state, att) {
+                from:         { t: G.VOM.swipePosX  },
+                to:           { t: (displayType == 'nextImage' ? - vP.w : vP.w) },
+                attachment:   { idx:vomIdx, dT:displayType, $e:$new, item: item, itemNew: itemNew, dir:dir },
+                duration:     300,
+                easing:       'easeInOutSine',
+                step:         function (state, att) {
+                  // current image
+                  ViewerImageOpacityOn(G.VOM.$imgC, att.item);
                   G.VOM.$imgC[0].style[G.CSStransformName]= 'translateX('+state.t+'px)';
+                  // new image
+                  ViewerImageOpacityOn(att.$e, att.itemNew);
                   att.$e[0].style[G.CSStransformName]= 'translateX('+(-att.dir+state.t)+'px) ';
                 },
-                finish: function (state, att) {
+                finish:       function (state, att) {
+                  // current image
+                  ViewerImageOpacityOn(G.VOM.$imgC, att.item);
                   G.VOM.$imgC[0].style[G.CSStransformName]= '';
+                  // new image
+                  ViewerImageOpacityOn(att.$e, att.itemNew);
                   att.$e[0].style[G.CSStransformName]= '';
                   DisplayInternalViewerComplete(att.idx, att.dT);
                 }
@@ -7446,22 +7713,42 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
             }
             break;
             
-          case 'slideAppear':
+          case 'SLIDEAPPEAR':
           default:
-            var dir= getViewport().w+'px';
-            var $new=G.VOM.$imgP;
-            if( displayType == 'nextImage' ) {
-              dir='-'+dir;
-              $new=G.VOM.$imgN;
-            }
-            $new.css({ opacity:0, left:0, visibility:'visible'});
-            jQuery.when(
-              G.VOM.$imgC.animate({ left: dir, opacity: 0 }, 500), 
-              $new.animate({ opacity: 1 }, 300)
-            ).done(function () {
-              ImageSwipeTranslateX(0);
+            if( G.CSStransformName == null  ) {
+              // no CSS transform support -> no animation
+              $new.css({ opacity: 1, visibility: 'visible' });
+              G.VOM.$imgC.css({ opacity:1 });
               DisplayInternalViewerComplete(vomIdx, displayType);
-            });
+            }
+            else {
+              var dir=(displayType == 'nextImage' ? - vP.w : vP.w);
+              $new.css({ visibility:'visible'});
+              var tweenable = new NGTweenable();
+              tweenable.tween({
+                from:         { o: 0, t: G.VOM.swipePosX },
+                to:           { o: 1, t: (displayType == 'nextImage' ? - vP.w : vP.w) },
+                attachment:   { idx:vomIdx, dT:displayType, $e:$new, item: item, itemNew: itemNew, dir: dir },
+                duration:     300,
+                easing:       'easeInOutSine',
+                step:         function (state, att) {
+                  // current image - translate
+                  ViewerImageOpacityOn(G.VOM.$imgC, att.item);
+                  G.VOM.$imgC[0].style[G.CSStransformName]= 'translateX('+state.t+'px)';
+                  // new image - opacity
+                  att.$e.css({ opacity: state.o });
+                  ViewerImageSetSize(att.$e, att.itemNew);
+                },
+                finish:       function (state, att) {
+                  // current image
+                  ViewerImageOpacityOn(G.VOM.$imgC, att.item);
+                  G.VOM.$imgC[0].style[G.CSStransformName]= '';
+                  // new image
+                  att.$e.css({ opacity: 1 });
+                  DisplayInternalViewerComplete(att.idx, att.dT);
+                }
+              });
+            }
             break;
         }
       }
@@ -7469,13 +7756,18 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
   
 
     function DisplayInternalViewerComplete( vomIdx, displayType ) {
-      ViewerToolbarElementContent();
-      if( G.O.debugMode && console.timeline ) {
-        console.timelineEnd('nanogallery2_viewer');
-      }
 
-      if( typeof G.O.fnImgDisplayed === 'function'){
-        if( !G.O.fnImgDisplayed(G.VOM.Item(vomIdx).$elt, G.VOM.Item(vomIdx)) ) { return; }
+      ViewerToolbarElementContent();
+      if( G.O.debugMode && console.timeline ) { console.timelineEnd('nanogallery2_viewer'); }
+
+      if( G.O.fnImgDisplayed !== null ) {
+        if( typeof G.O.fnImgDisplayed == 'function' ) {
+          if( !G.O.fnImgDisplayed(G.VOM.Item(vomIdx)) ) { return; }
+        }
+        else {
+          // defined in markup
+          if( !window[G.O.fnImgDisplayed](G.VOM.Item(vomIdx)) ) { return; }
+        }
       }
       
       G.VOM.swipePosX=0;
@@ -7495,25 +7787,30 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
           break;
       }
       G.VOM.$imgC.addClass('imgCurrent');
+      G.VOM.$imgC.css({ opacity: 1 });
       
-      G.VOM.$imgN.css({ opacity:0, left:0, visibility:'hidden' }).attr('src','');
-      G.VOM.$imgN.children().eq(0).attr('src',G.emptyGif).attr('src',G.VOM.Item(GetNextImageIdx(vomIdx)).responsiveURL());
-      G.VOM.$imgP.css({ opacity:0, left:0, visibility:'hidden'}).attr('src','');
-      G.VOM.$imgP.children().eq(0).attr('src',G.emptyGif).attr('src',G.VOM.Item(GetPreviousImageIdx(vomIdx)).responsiveURL());
+      // new next image
+      // G.VOM.$imgN.css({ opacity:0, left:0, visibility:'hidden' }).attr('src','');
+      // G.VOM.$imgN.css({ opacity: 0 }).attr('src', '');
+      G.VOM.$imgN.css({ opacity: 0 });
+      G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.ItemNext(vomIdx).responsiveURL(), G.VOM.ItemNext(vomIdx));
+      G.VOM.$imgN.children().eq(0).attr('src', '');
+      G.VOM.$imgN.children().eq(0).attr('src',G.emptyGif).attr('src', G.VOM.ItemNext(vomIdx).responsiveURL());
+      ViewerDisplayDominantColors(G.VOM.ItemNext(vomIdx), G.VOM.$imgN.children());
+
+      // new previous image
+      // G.VOM.$imgP.css({ opacity:0, left:0, visibility:'hidden'}).attr('src', '');
+      // G.VOM.$imgP.css({ opacity: 0 }).attr('src', '');
+      G.VOM.$imgP.css({ opacity: 0 });
+      G.VOM.$imgP.children().eq(0).attr('src', '');
+      G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.ItemPrevious(vomIdx).responsiveURL(), G.VOM.ItemPrevious(vomIdx));
+      G.VOM.$imgP.children().eq(0).attr('src',G.emptyGif).attr('src',G.VOM.ItemPrevious(vomIdx).responsiveURL());
+      ViewerDisplayDominantColors(G.VOM.ItemPrevious(vomIdx), G.VOM.$imgP.children());
+
 
       // slideshow mode - wait until image is loaded to start the delay for next image
-      var item=G.VOM.Item(G.VOM.currItemIdx);
-      if( G.VOM.playSlideshow || item.imageHeight == 0 || item.imageWidth == 0) {
-        
+      if( G.VOM.playSlideshow ) {
         G.VOM.$imgC.children().eq(0).ngimagesLoaded().always( function( instance ) {
-          
-          if( item.imageWidth == 0 ) {
-            item.imageWidth=G.VOM.$imgC.children().eq(0).prop('naturalWidth');
-          }
-          if( item.imageHeight == 0 ) {
-            item.imageHeight=G.VOM.$imgC.children().eq(0).prop('naturalHeight');
-          }
-
           if( G.VOM.playSlideshow ) {
             // in the meantime the user could have stopped the slideshow
             G.VOM.playSlideshowTimerID=window.setTimeout( function(){DisplayNextImage(); }, G.VOM.slideshowDelay);
@@ -7525,59 +7822,36 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
       G.VOM.$imgC.on("click",function(e){
         e.stopPropagation();
         if( (new Date().getTime()) - G.VOM.timeImgChanged < 400 ) { return; }
-        e.stopPropagation();
-        e.preventDefault();
+        StopPropagationPreventDefault(e);
         CloseInternalViewer(vomIdx);
         return false;
       });
 
       ResizeInternalViewer();
 
-      // TODO: following code does not work
-      //jQuery(G.containerViewerContent).item.$getElt('img').on('resize', function(){ 
-      //  ResizeInternalViewer('.imgCurrent');
-      //  console.log('resized');
-      //});
-
       G.VOM.viewerImageIsChanged=false;
       TriggerCustomEvent('lightboxImageDisplayed');
       
     }
-    
 
-    function GetNextImageIdx( vomIdx ) {
-    
-      if( vomIdx == G.VOM.items.length-1 ) {
-        return 0;
-      }
-      else {
-        return vomIdx+1;
-      }
-    
-    }
-
-    function GetPreviousImageIdx( vomIdx ) {
-    
-      if( vomIdx == 0 ) {
-        return G.VOM.items.length-1;
-      }
-      else {
-        return vomIdx-1;
+    // display image only when the size is knowed
+    function ViewerImageOpacityOn( $img, item ) {
+      if( $img[0].style.opacity == 0 && item.imageWidth != 0 ) {
+        // display it when the size is knowed
+        ViewerImageSetSize($img, item);
+        $img[0].style.opacity=1;
       }
     }
 
     // Close the internal lightbox
     function CloseInternalViewer( vomIdx ) {
 
-      if( G.VOM.viewerImageIsChanged ) {
-        G.VOM.$content.find('*').stop(true,true);
-        //return;
-      }
       G.VOM.viewerImageIsChanged=false;
 
       if( G.VOM.viewerDisplayed ) {
 
-        ScrollbarSetVisible();        
+        // set scrollbar visible
+        jQuery('body').css({overflow:'visible'});
         
         if( G.VOM.playSlideshow ) {
           window.clearTimeout(G.VOM.playSlideshowTimerID);
@@ -7589,11 +7863,9 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
         G.VOM.hammertime.destroy();
         G.VOM.hammertime=null;
 
-        if( G.supportFullscreenAPI ) {
-          if( G.VOM.viewerIsFullscreen ) {
-            G.VOM.viewerIsFullscreen=false;
-            ngscreenfull.exit();
-          }
+        if( ngscreenfull.enabled && G.VOM.viewerIsFullscreen ) {
+          G.VOM.viewerIsFullscreen=false;
+          ngscreenfull.exit();
         }
         
         G.VOM.$cont.hide(0).off().show(0).html('').remove();
@@ -7612,14 +7884,8 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
         G.VOM.timeImgChanged=new Date().getTime();
       }
     }
-    
-    
-    function ScrollbarSetVisible() {
-      //jQuery('body').css({overflow:'initial'});
-     jQuery('body').css({overflow:'visible'});
-    }
-    
 
+    // Internal viewer resized -> reposition elements
     function ResizeInternalViewer( forceUpdate ) {
       forceUpdate = typeof forceUpdate !== 'undefined' ? forceUpdate : false;
       
@@ -7674,21 +7940,27 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
         G.VOM.zoomPosX=0;
         G.VOM.zoomPosY=0;
         G.VOM.$imgC[0].style[G.CSStransformName]= 'translate3D(0,0,0) ';
-
         
         var maxW=windowsW-G.VOM.padding.H;
-        var item=G.VOM.Item(G.VOM.currItemIdx);
-        if( item.imageWidth > 0 &&  window.devicePixelRatio > 1 ) {
-          var w=item.imageWidth/window.devicePixelRatio;
-          if( maxW > w ) {
-            maxW=w;
-          }
-        }
         
-        // G.VOM.$content.find('img').css({'max-width':(windowsW-G.VOM.padding.H), 'max-height':(windowsH-G.VOM.padding.V), 'height':'auto', 'width':'auto' });
-        G.VOM.$content.find('img').css({'max-width':(maxW), 'max-height':(windowsH-G.VOM.padding.V), 'height':'auto', 'width':'auto' });
+        var item=G.VOM.Item(G.VOM.currItemIdx);
+        ViewerImageSetSize(G.VOM.$imgC, item);
+        ViewerImageSetSize(G.VOM.$imgN, G.VOM.ItemNext(G.VOM.currItemIdx));
+        ViewerImageSetSize(G.VOM.$imgP, G.VOM.ItemPrevious(G.VOM.currItemIdx));
       }
-      
+    }
+    
+    function ViewerImageSetSize( $img, item) {
+      var maxW=G.VOM.window.lastWidth-G.VOM.padding.H;
+    
+      if( item.imageWidth > 0 &&  window.devicePixelRatio > 1 ) {
+        var w=item.imageWidth/window.devicePixelRatio;
+        if( maxW > w ) {
+          maxW=w;
+        }
+      }
+
+      $img.find('img').css({'max-width':(maxW), 'max-height':(G.VOM.window.lastHeight-G.VOM.padding.V), 'height':'auto', 'width':'auto' });
     }
     
     // position the image depending on the zoom factor and the pan X/Y position
@@ -7704,47 +7976,8 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
     
       G.VOM.$imgC[0].style[G.CSStransformName]= 'translate3D('+ posX+'px, '+ posY+'px, 0) ';
     }
-
     
 
-    function ImageGetSize( item ) {
-    }
-    
-    function ImageGetSize2( item ) {
-      // inspired by code from Dmitry Semenov
-        var counter = 0,
-				img = item.img[0],
-        
-				mfpSetInterval = function(delay) {
-
-					if(_imgInterval) {
-						clearInterval(_imgInterval);
-					}
-					// decelerating interval that checks for size of an image
-					_imgInterval = setInterval(function() {
-						if(img.naturalWidth > 0) {
-							mfp._onImageHasSize(item);
-							return;
-						}
-
-						if(counter > 200) {
-							clearInterval(_imgInterval);
-						}
-
-						counter++;
-						if(counter === 3) {
-							mfpSetInterval(10);
-						} else if(counter === 40) {
-							mfpSetInterval(50);
-						} else if(counter === 100) {
-							mfpSetInterval(500);
-						}
-					}, delay);
-				};
-
-        mfpSetInterval(1);
-    }
-    
     /** @function BuildSkeleton */
     /** Build the gallery structure **/
     function BuildSkeleton() {
@@ -7859,21 +8092,15 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
       // i18n translations
       i18n();
 
-      // fullscreen API support
-      if( document.fullscreenEnabled || document.webkitFullscreenEnabled || document.msFullscreenEnabled || document.mozFullScreenEnabled) {
-        G.supportFullscreenAPI=true;
-      } else {
-        NGY2Tools.NanoConsoleLog(G, 'Your browser does not support the fullscreen API. Fullscreen button will not be displayed.');
-      }
-
       // cache some thumbnails data (sizes, styles...)
       ThumbnailDefCaches();
 
       // do special settings depending for some options
       // thumbnail display transition
-      switch( G.tn.displayTransition ) {
+      switch( G.tn.opt.Get('displayTransition') ) {
         case 'SCALEDOWN':
         case 'RANDOMSCALE':
+        default:
           G.$E.base.css('overflow', 'visible');
           G.$E.conTnParent.css('overflow', 'visible');
           G.$E.conTn.css('overflow', 'visible');
@@ -7911,12 +8138,10 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
       
       G.GOM.hammertime.on('pan', function(ev) {
         if( G.O.paginationSwipe && G.layout.support.rows && G.galleryDisplayMode.Get() == 'PAGINATION' ) {
-        // console.dir(ev);
           G.$E.conTn.css( G.CSStransformName , 'translateX('+(ev.deltaX)+'px)');
         }
       });
       G.GOM.hammertime.on('panend', function(ev) {
-        // console.log(ev);
         if( G.O.paginationSwipe && G.layout.support.rows && G.galleryDisplayMode.Get() == 'PAGINATION' ) {
           if( Math.abs(ev.deltaY) > 100 ) {
             // user moved vertically -> cancel pagination
@@ -7936,11 +8161,9 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
         }
       });
       G.GOM.hammertime.on('tap', function(ev) {
-        // console.log(ev);
         ev.srcEvent.stopPropagation();
         ev.srcEvent.preventDefault();  // cancel  mouseenter event
 
-        // OpenTouchedThumbnail(ev.target);
         if( ev.pointerType == 'mouse') {
           if( GalleryClicked(ev.srcEvent) == 'exit' ) { return; }
         }
@@ -7952,7 +8175,6 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
             GalleryClicked(ev.srcEvent);
             return;
           }
-          // console.log(r);
           if( G.O.touchAutoOpenDelay > 0 ) {
             // one touch scenario
             ThumbnailHoverOutAll();
@@ -7960,7 +8182,7 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
             window.clearInterval( G.touchAutoOpenDelayTimerID );
             G.touchAutoOpenDelayTimerID = window.setInterval(function(){
               window.clearInterval( G.touchAutoOpenDelayTimerID );
-              ThumbnailOpen( G.GOM.items[r.GOMidx].thumbnailIdx );
+              ThumbnailOpen( G.GOM.items[r.GOMidx].thumbnailIdx, true );
             }, G.O.touchAutoOpenDelay );
           }
           else {
@@ -7972,17 +8194,13 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
             }
             else {
               // second touch
-              ThumbnailOpen(G.GOM.items[r.GOMidx].thumbnailIdx);
+              ThumbnailOpen(G.GOM.items[r.GOMidx].thumbnailIdx, true);
             }
           }
         }
       });
       
       
-      
-      
-      
-
       // browser location hash management
       if( G.O.locationHash ) {
         jQuery(window).bind( 'hashchange', function() {
@@ -7996,6 +8214,8 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
       // Event page scrolled
       $(window).on('scroll.nanogallery2.'+G.baseEltID,  debounce( OnScrollEvent, 100, false) );
       
+      // Debounced function to hide the toolbars on the viewer
+      G.VOM.toolsHide=debounce( ViewerToolsHide, G.O.viewerHideToolsDelay, false );
       
       // Keyboard management
       jQuery(document).keyup(function(e) {
@@ -8008,6 +8228,7 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
         }
         else {
           if( G.VOM.viewerDisplayed ) {
+            ViewerToolsUnHide();
             switch( e.keyCode) {
               case 27:    // Esc key
                 CloseInternalViewer(G.VOM.currItemIdx);
@@ -8033,10 +8254,9 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
         }
       });
       
-      
-      jQuery(window).bind('mousewheel', function(e){
+      // mouse wheel to zoom in/out the image displayed in the internal lightbox
+      jQuery(window).bind('mousewheel wheel', function(e){
         if( G.VOM.viewerDisplayed ) {
-        // console.log( e.originalEvent.wheelDelta + ' - ' + e.originalEvent.detail);
           var deltaY = 0;
           e.preventDefault();
 
@@ -8050,6 +8270,28 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
           }
         }
       });
+      
+      // mouse mouse -> unhide lightbox toolbars
+      jQuery(window).bind('mousemove', function(e){
+        ViewerToolsUnHide();
+      });
+      
+      // fullscreen mode on/off --> internal lightbox
+      if( ngscreenfull.enabled ) {
+        // ngscreenfull.onchange(() => {
+        ngscreenfull.onchange( function() {
+          if( G.VOM.viewerDisplayed ) {
+            if( ngscreenfull.isFullscreen ) {
+              G.VOM.viewerIsFullscreen=true;
+              G.VOM.$viewer.find('.fullscreenButton').html(G.O.icons.viewerFullscreenOff);
+            }
+            else {
+              G.VOM.viewerIsFullscreen=false;
+              G.VOM.$viewer.find('.fullscreenButton').html(G.O.icons.viewerFullscreenOn);
+            }
+          }
+        });
+      }
 
     }
     
@@ -8061,8 +8303,10 @@ G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});
 
       var curGal='#nanogallery/'+G.baseEltID+'/',
       newLocationHash=location.hash;
-console.log('newLocationHash1: ' +newLocationHash);
-console.log('G.locationHashLastUsed: ' +G.locationHashLastUsed);
+      if( G.O.debugMode ) {
+        console.log('newLocationHash1: ' +newLocationHash);
+        console.log('G.locationHashLastUsed: ' +G.locationHashLastUsed);
+      }
       
       if( newLocationHash == '' ) {
         if( G.GOM.lastDisplayedIdx != -1 ) {
@@ -8079,7 +8323,7 @@ console.log('G.locationHashLastUsed: ' +G.locationHashLastUsed);
         // item IDs detected
         var IDs=parseIDs( newLocationHash.substring(curGal.length) );
         if( IDs.imageID != '0' ) {
-console.log('display: ' + IDs.albumID +'-'+ IDs.imageID );
+          if( G.O.debugMode ) { console.log('display: ' + IDs.albumID +'-'+ IDs.imageID ); }
           DisplayPhoto( IDs.imageID, IDs.albumID );
           return true;
         }
@@ -8117,12 +8361,14 @@ console.log('display: ' + IDs.albumID +'-'+ IDs.imageID );
       }
 
       var lH=location.hash;
-console.log('newLocationHash2: '+newLocationHash);
-console.log('lH: '+lH);
+      if( G.O.debugMode ) {
+        console.log('newLocationHash2: '+newLocationHash);
+        console.log('lH: '+lH);
+      }
       if(  lH == '' || lH != newLocationHash ) {
         // G.locationHashLastUsed='#'+newLocationHash;
         G.locationHashLastUsed=newLocationHash;
-        console.log('new G.locationHashLastUsed: '+G.locationHashLastUsed);
+        if( G.O.debugMode ) { console.log('new G.locationHashLastUsed: '+G.locationHashLastUsed); }
         try {
           top.location.hash=newLocationHash;
         }
@@ -8158,27 +8404,7 @@ console.log('lH: '+lH);
     }
     
     
-    // DEBOUNCE
-    // author: John Hann - http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
-    // execAsap - false means executing at the end of the detection period
-    var debounce = function (func, threshold, execAsap) {
-      var timeout;
-      return function debounced () {
-          var obj = this, args = arguments;
-          function delayed () {
-              if (!execAsap)
-                  func.apply(obj, args);
-              timeout = null; 
-          };
-   
-          if (timeout)
-              clearTimeout(timeout);
-          else if (execAsap)
-              func.apply(obj, args);
-   
-          timeout = setTimeout(delayed, threshold || 100); 
-      };
-    }
+
 
     
     function OnScrollEvent() {
@@ -8187,8 +8413,6 @@ console.log('lH: '+lH);
       }
       
       G.scrollTimeOut = setTimeout(function () {
-      
-        //console.log('OnScrollEvent');
       
         if( !G.VOM.viewerDisplayed ) {
           if( G.galleryResizeEventEnabled ) {
@@ -8379,604 +8603,157 @@ console.log('lH: '+lH);
 //##########################################################################################################################
 //##########################################################################################################################
 
-/*!
- * imagesLoaded PACKAGED v3.1.8
- * JavaScript is all like "You images are done yet or what?"
- * MIT License
- */
-
-
-/*!
- * EventEmitter v4.2.6 - git.io/ee
- * Oliver Caldwell
- * MIT license
- * @preserve
- */
-
 // NGY BUILD:
 // replace "imagesLoaded" with "ngimagesLoaded"
 // replace "ImagesLoaded" with "ngImagesLoaded"
-// replace "EventEmitter" with "ngEventEmitter"
+// replace "EvEmitter" with "ngEvEmitter"
 // replace "var $ = window.jQuery" with "var $ = jQuery;"
- 
- 
- 
-(function () {
-	
-
-	/**
-	 * Class for managing events.
-	 * Can be extended to provide event functionality in other classes.
-	 *
-	 * @class ngEventEmitter Manages event registering and emitting.
-	 */
-	function ngEventEmitter() {}
-
-	// Shortcuts to improve speed and size
-	var proto = ngEventEmitter.prototype;
-	var exports = this;
-	var originalGlobalValue = exports.ngEventEmitter;
-
-	/**
-	 * Finds the index of the listener for the event in it's storage array.
-	 *
-	 * @param {Function[]} listeners Array of listeners to search through.
-	 * @param {Function} listener Method to look for.
-	 * @return {Number} Index of the specified listener, -1 if not found
-	 * @api private
-	 */
-	function indexOfListener(listeners, listener) {
-		var i = listeners.length;
-		while (i--) {
-			if (listeners[i].listener === listener) {
-				return i;
-			}
-		}
-
-		return -1;
-	}
-
-	/**
-	 * Alias a method while keeping the context correct, to allow for overwriting of target method.
-	 *
-	 * @param {String} name The name of the target method.
-	 * @return {Function} The aliased method
-	 * @api private
-	 */
-	function alias(name) {
-		return function aliasClosure() {
-			return this[name].apply(this, arguments);
-		};
-	}
-
-	/**
-	 * Returns the listener array for the specified event.
-	 * Will initialise the event object and listener arrays if required.
-	 * Will return an object if you use a regex search. The object contains keys for each matched event. So /ba[rz]/ might return an object containing bar and baz. But only if you have either defined them with defineEvent or added some listeners to them.
-	 * Each property in the object response is an array of listener functions.
-	 *
-	 * @param {String|RegExp} evt Name of the event to return the listeners from.
-	 * @return {Function[]|Object} All listener functions for the event.
-	 */
-	proto.getListeners = function getListeners(evt) {
-		var events = this._getEvents();
-		var response;
-		var key;
-
-		// Return a concatenated array of all matching events if
-		// the selector is a regular expression.
-		if (typeof evt === 'object') {
-			response = {};
-			for (key in events) {
-				if (events.hasOwnProperty(key) && evt.test(key)) {
-					response[key] = events[key];
-				}
-			}
-		}
-		else {
-			response = events[evt] || (events[evt] = []);
-		}
-
-		return response;
-	};
-
-	/**
-	 * Takes a list of listener objects and flattens it into a list of listener functions.
-	 *
-	 * @param {Object[]} listeners Raw listener objects.
-	 * @return {Function[]} Just the listener functions.
-	 */
-	proto.flattenListeners = function flattenListeners(listeners) {
-		var flatListeners = [];
-		var i;
-
-		for (i = 0; i < listeners.length; i += 1) {
-			flatListeners.push(listeners[i].listener);
-		}
-
-		return flatListeners;
-	};
-
-	/**
-	 * Fetches the requested listeners via getListeners but will always return the results inside an object. This is mainly for internal use but others may find it useful.
-	 *
-	 * @param {String|RegExp} evt Name of the event to return the listeners from.
-	 * @return {Object} All listener functions for an event in an object.
-	 */
-	proto.getListenersAsObject = function getListenersAsObject(evt) {
-		var listeners = this.getListeners(evt);
-		var response;
-
-		if (listeners instanceof Array) {
-			response = {};
-			response[evt] = listeners;
-		}
-
-		return response || listeners;
-	};
-
-	/**
-	 * Adds a listener function to the specified event.
-	 * The listener will not be added if it is a duplicate.
-	 * If the listener returns true then it will be removed after it is called.
-	 * If you pass a regular expression as the event name then the listener will be added to all events that match it.
-	 *
-	 * @param {String|RegExp} evt Name of the event to attach the listener to.
-	 * @param {Function} listener Method to be called when the event is emitted. If the function returns true then it will be removed after calling.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.addListener = function addListener(evt, listener) {
-		var listeners = this.getListenersAsObject(evt);
-		var listenerIsWrapped = typeof listener === 'object';
-		var key;
-
-		for (key in listeners) {
-			if (listeners.hasOwnProperty(key) && indexOfListener(listeners[key], listener) === -1) {
-				listeners[key].push(listenerIsWrapped ? listener : {
-					listener: listener,
-					once: false
-				});
-			}
-		}
-
-		return this;
-	};
-
-	/**
-	 * Alias of addListener
-	 */
-	proto.on = alias('addListener');
-
-	/**
-	 * Semi-alias of addListener. It will add a listener that will be
-	 * automatically removed after it's first execution.
-	 *
-	 * @param {String|RegExp} evt Name of the event to attach the listener to.
-	 * @param {Function} listener Method to be called when the event is emitted. If the function returns true then it will be removed after calling.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.addOnceListener = function addOnceListener(evt, listener) {
-		return this.addListener(evt, {
-			listener: listener,
-			once: true
-		});
-	};
-
-	/**
-	 * Alias of addOnceListener.
-	 */
-	proto.once = alias('addOnceListener');
-
-	/**
-	 * Defines an event name. This is required if you want to use a regex to add a listener to multiple events at once. If you don't do this then how do you expect it to know what event to add to? Should it just add to every possible match for a regex? No. That is scary and bad.
-	 * You need to tell it what event names should be matched by a regex.
-	 *
-	 * @param {String} evt Name of the event to create.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.defineEvent = function defineEvent(evt) {
-		this.getListeners(evt);
-		return this;
-	};
-
-	/**
-	 * Uses defineEvent to define multiple events.
-	 *
-	 * @param {String[]} evts An array of event names to define.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.defineEvents = function defineEvents(evts) {
-		for (var i = 0; i < evts.length; i += 1) {
-			this.defineEvent(evts[i]);
-		}
-		return this;
-	};
-
-	/**
-	 * Removes a listener function from the specified event.
-	 * When passed a regular expression as the event name, it will remove the listener from all events that match it.
-	 *
-	 * @param {String|RegExp} evt Name of the event to remove the listener from.
-	 * @param {Function} listener Method to remove from the event.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.removeListener = function removeListener(evt, listener) {
-		var listeners = this.getListenersAsObject(evt);
-		var index;
-		var key;
-
-		for (key in listeners) {
-			if (listeners.hasOwnProperty(key)) {
-				index = indexOfListener(listeners[key], listener);
-
-				if (index !== -1) {
-					listeners[key].splice(index, 1);
-				}
-			}
-		}
-
-		return this;
-	};
-
-	/**
-	 * Alias of removeListener
-	 */
-	proto.off = alias('removeListener');
-
-	/**
-	 * Adds listeners in bulk using the manipulateListeners method.
-	 * If you pass an object as the second argument you can add to multiple events at once. The object should contain key value pairs of events and listeners or listener arrays. You can also pass it an event name and an array of listeners to be added.
-	 * You can also pass it a regular expression to add the array of listeners to all events that match it.
-	 * Yeah, this function does quite a bit. That's probably a bad thing.
-	 *
-	 * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to add to multiple events at once.
-	 * @param {Function[]} [listeners] An optional array of listener functions to add.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.addListeners = function addListeners(evt, listeners) {
-		// Pass through to manipulateListeners
-		return this.manipulateListeners(false, evt, listeners);
-	};
-
-	/**
-	 * Removes listeners in bulk using the manipulateListeners method.
-	 * If you pass an object as the second argument you can remove from multiple events at once. The object should contain key value pairs of events and listeners or listener arrays.
-	 * You can also pass it an event name and an array of listeners to be removed.
-	 * You can also pass it a regular expression to remove the listeners from all events that match it.
-	 *
-	 * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to remove from multiple events at once.
-	 * @param {Function[]} [listeners] An optional array of listener functions to remove.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.removeListeners = function removeListeners(evt, listeners) {
-		// Pass through to manipulateListeners
-		return this.manipulateListeners(true, evt, listeners);
-	};
-
-	/**
-	 * Edits listeners in bulk. The addListeners and removeListeners methods both use this to do their job. You should really use those instead, this is a little lower level.
-	 * The first argument will determine if the listeners are removed (true) or added (false).
-	 * If you pass an object as the second argument you can add/remove from multiple events at once. The object should contain key value pairs of events and listeners or listener arrays.
-	 * You can also pass it an event name and an array of listeners to be added/removed.
-	 * You can also pass it a regular expression to manipulate the listeners of all events that match it.
-	 *
-	 * @param {Boolean} remove True if you want to remove listeners, false if you want to add.
-	 * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to add/remove from multiple events at once.
-	 * @param {Function[]} [listeners] An optional array of listener functions to add/remove.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.manipulateListeners = function manipulateListeners(remove, evt, listeners) {
-		var i;
-		var value;
-		var single = remove ? this.removeListener : this.addListener;
-		var multiple = remove ? this.removeListeners : this.addListeners;
-
-		// If evt is an object then pass each of it's properties to this method
-		if (typeof evt === 'object' && !(evt instanceof RegExp)) {
-			for (i in evt) {
-				if (evt.hasOwnProperty(i) && (value = evt[i])) {
-					// Pass the single listener straight through to the singular method
-					if (typeof value === 'function') {
-						single.call(this, i, value);
-					}
-					else {
-						// Otherwise pass back to the multiple function
-						multiple.call(this, i, value);
-					}
-				}
-			}
-		}
-		else {
-			// So evt must be a string
-			// And listeners must be an array of listeners
-			// Loop over it and pass each one to the multiple method
-			i = listeners.length;
-			while (i--) {
-				single.call(this, evt, listeners[i]);
-			}
-		}
-
-		return this;
-	};
-
-	/**
-	 * Removes all listeners from a specified event.
-	 * If you do not specify an event then all listeners will be removed.
-	 * That means every event will be emptied.
-	 * You can also pass a regex to remove all events that match it.
-	 *
-	 * @param {String|RegExp} [evt] Optional name of the event to remove all listeners for. Will remove from every event if not passed.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.removeEvent = function removeEvent(evt) {
-		var type = typeof evt;
-		var events = this._getEvents();
-		var key;
-
-		// Remove different things depending on the state of evt
-		if (type === 'string') {
-			// Remove all listeners for the specified event
-			delete events[evt];
-		}
-		else if (type === 'object') {
-			// Remove all events matching the regex.
-			for (key in events) {
-				if (events.hasOwnProperty(key) && evt.test(key)) {
-					delete events[key];
-				}
-			}
-		}
-		else {
-			// Remove all listeners in all events
-			delete this._events;
-		}
-
-		return this;
-	};
-
-	/**
-	 * Alias of removeEvent.
-	 *
-	 * Added to mirror the node API.
-	 */
-	proto.removeAllListeners = alias('removeEvent');
-
-	/**
-	 * Emits an event of your choice.
-	 * When emitted, every listener attached to that event will be executed.
-	 * If you pass the optional argument array then those arguments will be passed to every listener upon execution.
-	 * Because it uses `apply`, your array of arguments will be passed as if you wrote them out separately.
-	 * So they will not arrive within the array on the other side, they will be separate.
-	 * You can also pass a regular expression to emit to all events that match it.
-	 *
-	 * @param {String|RegExp} evt Name of the event to emit and execute listeners for.
-	 * @param {Array} [args] Optional array of arguments to be passed to each listener.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.emitEvent = function emitEvent(evt, args) {
-		var listeners = this.getListenersAsObject(evt);
-		var listener;
-		var i;
-		var key;
-		var response;
-
-		for (key in listeners) {
-			if (listeners.hasOwnProperty(key)) {
-				i = listeners[key].length;
-
-				while (i--) {
-					// If the listener returns true then it shall be removed from the event
-					// The function is executed either with a basic call or an apply if there is an args array
-					listener = listeners[key][i];
-
-					if (listener.once === true) {
-						this.removeListener(evt, listener.listener);
-					}
-
-					response = listener.listener.apply(this, args || []);
-
-					if (response === this._getOnceReturnValue()) {
-						this.removeListener(evt, listener.listener);
-					}
-				}
-			}
-		}
-
-		return this;
-	};
-
-	/**
-	 * Alias of emitEvent
-	 */
-	proto.trigger = alias('emitEvent');
-
-	/**
-	 * Subtly different from emitEvent in that it will pass its arguments on to the listeners, as opposed to taking a single array of arguments to pass on.
-	 * As with emitEvent, you can pass a regex in place of the event name to emit to all events that match it.
-	 *
-	 * @param {String|RegExp} evt Name of the event to emit and execute listeners for.
-	 * @param {...*} Optional additional arguments to be passed to each listener.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.emit = function emit(evt) {
-		var args = Array.prototype.slice.call(arguments, 1);
-		return this.emitEvent(evt, args);
-	};
-
-	/**
-	 * Sets the current value to check against when executing listeners. If a
-	 * listeners return value matches the one set here then it will be removed
-	 * after execution. This value defaults to true.
-	 *
-	 * @param {*} value The new value to check for when executing listeners.
-	 * @return {Object} Current instance of EventEmitter for chaining.
-	 */
-	proto.setOnceReturnValue = function setOnceReturnValue(value) {
-		this._onceReturnValue = value;
-		return this;
-	};
-
-	/**
-	 * Fetches the current value to check against when executing listeners. If
-	 * the listeners return value matches this one then it should be removed
-	 * automatically. It will return true by default.
-	 *
-	 * @return {*|Boolean} The current value to check for or the default, true.
-	 * @api private
-	 */
-	proto._getOnceReturnValue = function _getOnceReturnValue() {
-		if (this.hasOwnProperty('_onceReturnValue')) {
-			return this._onceReturnValue;
-		}
-		else {
-			return true;
-		}
-	};
-
-	/**
-	 * Fetches the events object and creates one if required.
-	 *
-	 * @return {Object} The events storage object.
-	 * @api private
-	 */
-	proto._getEvents = function _getEvents() {
-		return this._events || (this._events = {});
-	};
-
-	/**
-	 * Reverts the global {@link ngEventEmitter} to its previous value and returns a reference to this version.
-	 *
-	 * @return {Function} Non conflicting ngEventEmitter class.
-	 */
-	ngEventEmitter.noConflict = function noConflict() {
-		exports.ngEventEmitter = originalGlobalValue;
-		return ngEventEmitter;
-	};
-
-	// Expose the class either via AMD, CommonJS or the global object
-	if (typeof define === 'function' && define.amd) {
-		define('ngEventEmitter/ngEventEmitter',[],function () {
-			return ngEventEmitter;
-		});
-	}
-	else if (typeof module === 'object' && module.exports){
-		module.exports = ngEventEmitter;
-	}
-	else {
-		this.ngEventEmitter = ngEventEmitter;
-	}
-}.call(this));
 
 /*!
- * eventie v1.0.4
- * event binding helper
- *   eventie.bind( elem, 'click', myFn )
- *   eventie.unbind( elem, 'click', myFn )
- */
-
-/*jshint browser: true, undef: true, unused: true */
-/*global define: false */
-
-( function( window ) {
-
-
-
-var docElem = document.documentElement;
-
-var bind = function() {};
-
-function getIEEvent( obj ) {
-  var event = window.event;
-  // add event.target
-  event.target = event.target || event.srcElement || obj;
-  return event;
-}
-
-if ( docElem.addEventListener ) {
-  bind = function( obj, type, fn ) {
-    obj.addEventListener( type, fn, false );
-  };
-} else if ( docElem.attachEvent ) {
-  bind = function( obj, type, fn ) {
-    obj[ type + fn ] = fn.handleEvent ?
-      function() {
-        var event = getIEEvent( obj );
-        fn.handleEvent.call( fn, event );
-      } :
-      function() {
-        var event = getIEEvent( obj );
-        fn.call( obj, event );
-      };
-    obj.attachEvent( "on" + type, obj[ type + fn ] );
-  };
-}
-
-var unbind = function() {};
-
-if ( docElem.removeEventListener ) {
-  unbind = function( obj, type, fn ) {
-    obj.removeEventListener( type, fn, false );
-  };
-} else if ( docElem.detachEvent ) {
-  unbind = function( obj, type, fn ) {
-    obj.detachEvent( "on" + type, obj[ type + fn ] );
-    try {
-      delete obj[ type + fn ];
-    } catch ( err ) {
-      // can't delete window object properties
-      obj[ type + fn ] = undefined;
-    }
-  };
-}
-
-var eventie = {
-  bind: bind,
-  unbind: unbind
-};
-
-// transport
-if ( typeof define === 'function' && define.amd ) {
-  // AMD
-  define( 'eventie/eventie',eventie );
-} else {
-  // browser global
-  window.eventie = eventie;
-}
-
-})( this );
-
-/*!
- * imagesLoaded v3.1.8
+ * imagesLoaded PACKAGED v4.1.1
  * JavaScript is all like "You images are done yet or what?"
  * MIT License
  */
 
-( function( window, factory ) { 
+/**
+ * EvEmitter v1.0.3
+ * Lil' event emitter
+ * MIT License
+ */
+
+/* jshint unused: true, undef: true, strict: true */
+
+( function( global, factory ) {
+  // universal module definition
+  /* jshint strict: false */ /* globals define, module, window */
+  if ( typeof define == 'function' && define.amd ) {
+    // AMD - RequireJS
+    define( 'ev-emitter/ev-emitter',factory );
+  } else if ( typeof module == 'object' && module.exports ) {
+    // CommonJS - Browserify, Webpack
+    module.exports = factory();
+  } else {
+    // Browser globals
+    global.ngEvEmitter = factory();
+  }
+
+}( typeof window != 'undefined' ? window : this, function() {
+
+
+
+function ngEvEmitter() {}
+
+var proto = ngEvEmitter.prototype;
+
+proto.on = function( eventName, listener ) {
+  if ( !eventName || !listener ) {
+    return;
+  }
+  // set events hash
+  var events = this._events = this._events || {};
+  // set listeners array
+  var listeners = events[ eventName ] = events[ eventName ] || [];
+  // only add once
+  if ( listeners.indexOf( listener ) == -1 ) {
+    listeners.push( listener );
+  }
+
+  return this;
+};
+
+proto.once = function( eventName, listener ) {
+  if ( !eventName || !listener ) {
+    return;
+  }
+  // add event
+  this.on( eventName, listener );
+  // set once flag
+  // set onceEvents hash
+  var onceEvents = this._onceEvents = this._onceEvents || {};
+  // set onceListeners object
+  var onceListeners = onceEvents[ eventName ] = onceEvents[ eventName ] || {};
+  // set flag
+  onceListeners[ listener ] = true;
+
+  return this;
+};
+
+proto.off = function( eventName, listener ) {
+  var listeners = this._events && this._events[ eventName ];
+  if ( !listeners || !listeners.length ) {
+    return;
+  }
+  var index = listeners.indexOf( listener );
+  if ( index != -1 ) {
+    listeners.splice( index, 1 );
+  }
+
+  return this;
+};
+
+proto.emitEvent = function( eventName, args ) {
+  var listeners = this._events && this._events[ eventName ];
+  if ( !listeners || !listeners.length ) {
+    return;
+  }
+  var i = 0;
+  var listener = listeners[i];
+  args = args || [];
+  // once stuff
+  var onceListeners = this._onceEvents && this._onceEvents[ eventName ];
+
+  while ( listener ) {
+    var isOnce = onceListeners && onceListeners[ listener ];
+    if ( isOnce ) {
+      // remove listener
+      // remove before trigger to prevent recursion
+      this.off( eventName, listener );
+      // unset once flag
+      delete onceListeners[ listener ];
+    }
+    // trigger listener
+    listener.apply( this, args );
+    // get next listener
+    i += isOnce ? 0 : 1;
+    listener = listeners[i];
+  }
+
+  return this;
+};
+
+return ngEvEmitter;
+
+}));
+
+/*!
+ * ngimagesLoaded v4.1.1
+ * JavaScript is all like "You images are done yet or what?"
+ * MIT License
+ */
+
+( function( window, factory ) { 'use strict';
   // universal module definition
 
   /*global define: false, module: false, require: false */
 
-  if ( typeof define === 'function' && define.amd ) {
+  if ( typeof define == 'function' && define.amd ) {
     // AMD
     define( [
-      'ngEventEmitter/ngEventEmitter',
-      'eventie/eventie'
-    ], function( ngEventEmitter, eventie ) {
-      return factory( window, ngEventEmitter, eventie );
+      'ev-emitter/ev-emitter'
+    ], function( ngEvEmitter ) {
+      return factory( window, ngEvEmitter );
     });
-  } else if ( typeof exports === 'object' ) {
+  } else if ( typeof module == 'object' && module.exports ) {
     // CommonJS
     module.exports = factory(
       window,
-      require('wolfy87-eventemitter'),
-      require('eventie')
+      require('ev-emitter')
     );
   } else {
     // browser global
     window.ngimagesLoaded = factory(
       window,
-      window.ngEventEmitter,
-      window.eventie
+      window.ngEvEmitter
     );
   }
 
@@ -8984,14 +8761,13 @@ if ( typeof define === 'function' && define.amd ) {
 
 // --------------------------  factory -------------------------- //
 
-function factory( window, ngEventEmitter, eventie ) {
+function factory( window, ngEvEmitter ) {
 
 
 
 // var $ = window.jQuery;
-var $ = jQuery;   // for portable nanogallery2
+var $ = jQuery;
 var console = window.console;
-var hasConsole = typeof console !== 'undefined';
 
 // -------------------------- helpers -------------------------- //
 
@@ -9003,20 +8779,15 @@ function extend( a, b ) {
   return a;
 }
 
-var objToString = Object.prototype.toString;
-function isArray( obj ) {
-  return objToString.call( obj ) === '[object Array]';
-}
-
 // turn element or nodeList into an array
 function makeArray( obj ) {
   var ary = [];
-  if ( isArray( obj ) ) {
+  if ( Array.isArray( obj ) ) {
     // use object if already an array
     ary = obj;
-  } else if ( typeof obj.length === 'number' ) {
+  } else if ( typeof obj.length == 'number' ) {
     // convert nodeList to array
-    for ( var i=0, len = obj.length; i < len; i++ ) {
+    for ( var i=0; i < obj.length; i++ ) {
       ary.push( obj[i] );
     }
   } else {
@@ -9026,261 +8797,306 @@ function makeArray( obj ) {
   return ary;
 }
 
-  // -------------------------- imagesLoaded -------------------------- //
+// -------------------------- ngimagesLoaded -------------------------- //
 
-  /**
-   * @param {Array, Element, NodeList, String} elem
-   * @param {Object or Function} options - if function, use as callback
-   * @param {Function} onAlways - callback function
-   */
-  function ngImagesLoaded( elem, options, onAlways ) {
-    // coerce ImagesLoaded() without new, to be new ImagesLoaded()
-    if ( !( this instanceof ngImagesLoaded ) ) {
-      return new ngImagesLoaded( elem, options );
-    }
-    // use elem as selector string
-    if ( typeof elem === 'string' ) {
-      elem = document.querySelectorAll( elem );
-    }
-
-    this.elements = makeArray( elem );
-    this.options = extend( {}, this.options );
-
-    if ( typeof options === 'function' ) {
-      onAlways = options;
-    } else {
-      extend( this.options, options );
-    }
-
-    if ( onAlways ) {
-      this.on( 'always', onAlways );
-    }
-
-    this.getImages();
-
-    if ( $ ) {
-      // add jQuery Deferred object
-      this.jqDeferred = new $.Deferred();
-    }
-
-    // HACK check async to allow time to bind listeners
-    var _this = this;
-    setTimeout( function() {
-      _this.check();
-    });
+/**
+ * @param {Array, Element, NodeList, String} elem
+ * @param {Object or Function} options - if function, use as callback
+ * @param {Function} onAlways - callback function
+ */
+function ngImagesLoaded( elem, options, onAlways ) {
+  // coerce ngImagesLoaded() without new, to be new ngImagesLoaded()
+  if ( !( this instanceof ngImagesLoaded ) ) {
+    return new ngImagesLoaded( elem, options, onAlways );
+  }
+  // use elem as selector string
+  if ( typeof elem == 'string' ) {
+    elem = document.querySelectorAll( elem );
   }
 
-  ngImagesLoaded.prototype = new ngEventEmitter();
+  this.elements = makeArray( elem );
+  this.options = extend( {}, this.options );
 
-  ngImagesLoaded.prototype.options = {};
+  if ( typeof options == 'function' ) {
+    onAlways = options;
+  } else {
+    extend( this.options, options );
+  }
 
-  ngImagesLoaded.prototype.getImages = function() {
-    this.images = [];
+  if ( onAlways ) {
+    this.on( 'always', onAlways );
+  }
 
-    // filter & find items if we have an item selector
-    for ( var i=0, len = this.elements.length; i < len; i++ ) {
-      var elem = this.elements[i];
-      // filter siblings
-      if ( elem.nodeName === 'IMG' ) {
-        this.addImage( elem );
-      }
-      // find children
-      // no non-element nodes, #143
-      var nodeType = elem.nodeType;
-      if ( !nodeType || !( nodeType === 1 || nodeType === 9 || nodeType === 11 ) ) {
-        continue;
-      }
-      var childElems = elem.querySelectorAll('img');
-      // concat childElems to filterFound array
-      for ( var j=0, jLen = childElems.length; j < jLen; j++ ) {
-        var img = childElems[j];
-        this.addImage( img );
-      }
-    }
-  };
-
-  /**
-   * @param {Image} img
-   */
-  ngImagesLoaded.prototype.addImage = function( img ) {
-    var loadingImage = new LoadingImage( img );
-    this.images.push( loadingImage );
-  };
-
-  ngImagesLoaded.prototype.check = function() {
-    var _this = this;
-    var checkedCount = 0;
-    var length = this.images.length;
-    this.hasAnyBroken = false;
-    // complete if no images
-    if ( !length ) {
-      this.complete();
-      return;
-    }
-
-    function onConfirm( image, message ) {
-      if ( _this.options.debug && hasConsole ) {
-        console.log( 'confirm', image, message );
-      }
-
-      _this.progress( image );
-      checkedCount++;
-      if ( checkedCount === length ) {
-        _this.complete();
-      }
-      return true; // bind once
-    }
-
-    for ( var i=0; i < length; i++ ) {
-      var loadingImage = this.images[i];
-      loadingImage.on( 'confirm', onConfirm );
-      loadingImage.check();
-    }
-  };
-
-  ngImagesLoaded.prototype.progress = function( image ) {
-    this.hasAnyBroken = this.hasAnyBroken || !image.isLoaded;
-    // HACK - Chrome triggers event before object properties have changed. #83
-    var _this = this;
-    setTimeout( function() {
-      _this.emit( 'progress', _this, image );
-      if ( _this.jqDeferred && _this.jqDeferred.notify ) {
-        _this.jqDeferred.notify( _this, image );
-      }
-    });
-  };
-
-  ngImagesLoaded.prototype.complete = function() {
-    var eventName = this.hasAnyBroken ? 'fail' : 'done';
-    this.isComplete = true;
-    var _this = this;
-    // HACK - another setTimeout so that confirm happens after progress
-    setTimeout( function() {
-      _this.emit( eventName, _this );
-      _this.emit( 'always', _this );
-      if ( _this.jqDeferred ) {
-        var jqMethod = _this.hasAnyBroken ? 'reject' : 'resolve';
-        _this.jqDeferred[ jqMethod ]( _this );
-      }
-    });
-  };
-
-  // -------------------------- jquery -------------------------- //
+  this.getImages();
 
   if ( $ ) {
-    $.fn.ngimagesLoaded = function( options, callback ) {
-      var instance = new ngImagesLoaded( this, options, callback );
-      return instance.jqDeferred.promise( $(this) );
-    };
+    // add jQuery Deferred object
+    this.jqDeferred = new $.Deferred();
   }
 
+  // HACK check async to allow time to bind listeners
+  setTimeout( function() {
+    this.check();
+  }.bind( this ));
+}
 
-  // --------------------------  -------------------------- //
+ngImagesLoaded.prototype = Object.create( ngEvEmitter.prototype );
 
-  function LoadingImage( img ) {
-    this.img = img;
+ngImagesLoaded.prototype.options = {};
+
+ngImagesLoaded.prototype.getImages = function() {
+  this.images = [];
+
+  // filter & find items if we have an item selector
+  this.elements.forEach( this.addElementImages, this );
+};
+
+/**
+ * @param {Node} element
+ */
+ngImagesLoaded.prototype.addElementImages = function( elem ) {
+  // filter siblings
+  if ( elem.nodeName == 'IMG' ) {
+    this.addImage( elem );
+  }
+  // get background image on element
+  if ( this.options.background === true ) {
+    this.addElementBackgroundImages( elem );
   }
 
-  LoadingImage.prototype = new ngEventEmitter();
+  // find children
+  // no non-element nodes, #143
+  var nodeType = elem.nodeType;
+  if ( !nodeType || !elementNodeTypes[ nodeType ] ) {
+    return;
+  }
+  var childImgs = elem.querySelectorAll('img');
+  // concat childElems to filterFound array
+  for ( var i=0; i < childImgs.length; i++ ) {
+    var img = childImgs[i];
+    this.addImage( img );
+  }
 
-  LoadingImage.prototype.check = function() {
-    // first check cached any previous images that have same src
-    var resource = cache[ this.img.src ] || new Resource( this.img.src );
-    if ( resource.isConfirmed ) {
-      this.confirm( resource.isLoaded, 'cached was confirmed' );
-      return;
+  // get child background images
+  if ( typeof this.options.background == 'string' ) {
+    var children = elem.querySelectorAll( this.options.background );
+    for ( i=0; i < children.length; i++ ) {
+      var child = children[i];
+      this.addElementBackgroundImages( child );
     }
+  }
+};
 
-    // If complete is true and browser supports natural sizes,
-    // try to check for image status manually.
-    if ( this.img.complete && this.img.naturalWidth !== undefined ) {
-      // report based on naturalWidth
-      this.confirm( this.img.naturalWidth !== 0, 'naturalWidth' );
-      return;
+var elementNodeTypes = {
+  1: true,
+  9: true,
+  11: true
+};
+
+ngImagesLoaded.prototype.addElementBackgroundImages = function( elem ) {
+  var style = getComputedStyle( elem );
+  if ( !style ) {
+    // Firefox returns null if in a hidden iframe https://bugzil.la/548397
+    return;
+  }
+  // get url inside url("...")
+  var reURL = /url\((['"])?(.*?)\1\)/gi;
+  var matches = reURL.exec( style.backgroundImage );
+  while ( matches !== null ) {
+    var url = matches && matches[2];
+    if ( url ) {
+      this.addBackground( url, elem );
     }
+    matches = reURL.exec( style.backgroundImage );
+  }
+};
 
-    // If none of the checks above matched, simulate loading on detached element.
-    var _this = this;
-    resource.on( 'confirm', function( resrc, message ) {
-      _this.confirm( resrc.isLoaded, message );
-      return true;
+/**
+ * @param {Image} img
+ */
+ngImagesLoaded.prototype.addImage = function( img ) {
+  var loadingImage = new LoadingImage( img );
+  this.images.push( loadingImage );
+};
+
+ngImagesLoaded.prototype.addBackground = function( url, elem ) {
+  var background = new Background( url, elem );
+  this.images.push( background );
+};
+
+ngImagesLoaded.prototype.check = function() {
+  var _this = this;
+  this.progressedCount = 0;
+  this.hasAnyBroken = false;
+  // complete if no images
+  if ( !this.images.length ) {
+    this.complete();
+    return;
+  }
+
+  function onProgress( image, elem, message ) {
+    // HACK - Chrome triggers event before object properties have changed. #83
+    setTimeout( function() {
+      _this.progress( image, elem, message );
     });
-
-    resource.check();
-  };
-
-  LoadingImage.prototype.confirm = function( isLoaded, message ) {
-    this.isLoaded = isLoaded;
-    this.emit( 'confirm', this, message );
-  };
-
-  // -------------------------- Resource -------------------------- //
-
-  // Resource checks each src, only once
-  // separate class from LoadingImage to prevent memory leaks. See #115
-
-  var cache = {};
-
-  function Resource( src ) {
-    this.src = src;
-    // add to cache
-    cache[ src ] = this;
   }
 
-  Resource.prototype = new ngEventEmitter();
+  this.images.forEach( function( loadingImage ) {
+    loadingImage.once( 'progress', onProgress );
+    loadingImage.check();
+  });
+};
 
-  Resource.prototype.check = function() {
-    // only trigger checking once
-    if ( this.isChecked ) {
-      return;
-    }
-    // simulate loading on detached element
-    var proxyImage = new Image();
-    eventie.bind( proxyImage, 'load', this );
-    eventie.bind( proxyImage, 'error', this );
-    proxyImage.src = this.src;
-    // set flag
-    this.isChecked = true;
+ngImagesLoaded.prototype.progress = function( image, elem, message ) {
+  this.progressedCount++;
+  this.hasAnyBroken = this.hasAnyBroken || !image.isLoaded;
+  // progress event
+  this.emitEvent( 'progress', [ this, image, elem ] );
+  if ( this.jqDeferred && this.jqDeferred.notify ) {
+    this.jqDeferred.notify( this, image );
+  }
+  // check if completed
+  if ( this.progressedCount == this.images.length ) {
+    this.complete();
+  }
+
+  if ( this.options.debug && console ) {
+    console.log( 'progress: ' + message, image, elem );
+  }
+};
+
+ngImagesLoaded.prototype.complete = function() {
+  var eventName = this.hasAnyBroken ? 'fail' : 'done';
+  this.isComplete = true;
+  this.emitEvent( eventName, [ this ] );
+  this.emitEvent( 'always', [ this ] );
+  if ( this.jqDeferred ) {
+    var jqMethod = this.hasAnyBroken ? 'reject' : 'resolve';
+    this.jqDeferred[ jqMethod ]( this );
+  }
+};
+
+// --------------------------  -------------------------- //
+
+function LoadingImage( img ) {
+  this.img = img;
+}
+
+LoadingImage.prototype = Object.create( ngEvEmitter.prototype );
+
+LoadingImage.prototype.check = function() {
+  // If complete is true and browser supports natural sizes,
+  // try to check for image status manually.
+  var isComplete = this.getIsImageComplete();
+  if ( isComplete ) {
+    // report based on naturalWidth
+    this.confirm( this.img.naturalWidth !== 0, 'naturalWidth' );
+    return;
+  }
+
+  // If none of the checks above matched, simulate loading on detached element.
+  this.proxyImage = new Image();
+  this.proxyImage.addEventListener( 'load', this );
+  this.proxyImage.addEventListener( 'error', this );
+  // bind to image as well for Firefox. #191
+  this.img.addEventListener( 'load', this );
+  this.img.addEventListener( 'error', this );
+  this.proxyImage.src = this.img.src;
+};
+
+LoadingImage.prototype.getIsImageComplete = function() {
+  return this.img.complete && this.img.naturalWidth !== undefined;
+};
+
+LoadingImage.prototype.confirm = function( isLoaded, message ) {
+  this.isLoaded = isLoaded;
+  this.emitEvent( 'progress', [ this, this.img, message ] );
+};
+
+// ----- events ----- //
+
+// trigger specified handler for event type
+LoadingImage.prototype.handleEvent = function( event ) {
+  var method = 'on' + event.type;
+  if ( this[ method ] ) {
+    this[ method ]( event );
+  }
+};
+
+LoadingImage.prototype.onload = function() {
+  this.confirm( true, 'onload' );
+  this.unbindEvents();
+};
+
+LoadingImage.prototype.onerror = function() {
+  this.confirm( false, 'onerror' );
+  this.unbindEvents();
+};
+
+LoadingImage.prototype.unbindEvents = function() {
+  this.proxyImage.removeEventListener( 'load', this );
+  this.proxyImage.removeEventListener( 'error', this );
+  this.img.removeEventListener( 'load', this );
+  this.img.removeEventListener( 'error', this );
+};
+
+// -------------------------- Background -------------------------- //
+
+function Background( url, element ) {
+  this.url = url;
+  this.element = element;
+  this.img = new Image();
+}
+
+// inherit LoadingImage prototype
+Background.prototype = Object.create( LoadingImage.prototype );
+
+Background.prototype.check = function() {
+  this.img.addEventListener( 'load', this );
+  this.img.addEventListener( 'error', this );
+  this.img.src = this.url;
+  // check if image is already complete
+  var isComplete = this.getIsImageComplete();
+  if ( isComplete ) {
+    this.confirm( this.img.naturalWidth !== 0, 'naturalWidth' );
+    this.unbindEvents();
+  }
+};
+
+Background.prototype.unbindEvents = function() {
+  this.img.removeEventListener( 'load', this );
+  this.img.removeEventListener( 'error', this );
+};
+
+Background.prototype.confirm = function( isLoaded, message ) {
+  this.isLoaded = isLoaded;
+  this.emitEvent( 'progress', [ this, this.element, message ] );
+};
+
+// -------------------------- jQuery -------------------------- //
+
+ngImagesLoaded.makeJQueryPlugin = function( jQuery ) {
+  jQuery = jQuery || window.jQuery;
+  if ( !jQuery ) {
+    return;
+  }
+  // set local variable
+  $ = jQuery;
+  // $().ngimagesLoaded()
+  $.fn.ngimagesLoaded = function( options, callback ) {
+    var instance = new ngImagesLoaded( this, options, callback );
+    return instance.jqDeferred.promise( $(this) );
   };
+};
+// try making plugin
+ngImagesLoaded.makeJQueryPlugin();
 
-  // ----- events ----- //
+// --------------------------  -------------------------- //
 
-  // trigger specified handler for event type
-  Resource.prototype.handleEvent = function( event ) {
-    var method = 'on' + event.type;
-    if ( this[ method ] ) {
-      this[ method ]( event );
-    }
-  };
-
-  Resource.prototype.onload = function( event ) {
-    this.confirm( true, 'onload' );
-    this.unbindProxyEvents( event );
-  };
-
-  Resource.prototype.onerror = function( event ) {
-    this.confirm( false, 'onerror' );
-    this.unbindProxyEvents( event );
-  };
-
-  // ----- confirm ----- //
-
-  Resource.prototype.confirm = function( isLoaded, message ) {
-    this.isConfirmed = true;
-    this.isLoaded = isLoaded;
-    this.emit( 'confirm', this, message );
-  };
-
-  Resource.prototype.unbindProxyEvents = function( event ) {
-    eventie.unbind( event.target, 'load', this );
-    eventie.unbind( event.target, 'error', this );
-  };
-
-  // -----  ----- //
-
-  return ngImagesLoaded;
+return ngImagesLoaded;
 
 });
+
 
 
 //##########################################################################################################################
@@ -9290,7 +9106,7 @@ function makeArray( obj ) {
 //##########################################################################################################################
 
 // screenfull.js
-// v1.1.0
+// v3.2.0
 // by sindresorhus - https://github.com/sindresorhus
 // from: https://github.com/sindresorhus/screenfull.js
 
@@ -9301,12 +9117,12 @@ function makeArray( obj ) {
 (function () {
 	'use strict';
 
+	var document = typeof window === 'undefined' ? {} : window.document;
 	var isCommonjs = typeof module !== 'undefined' && module.exports;
 	var keyboardAllowed = typeof Element !== 'undefined' && 'ALLOW_KEYBOARD_INPUT' in Element;
 
 	var fn = (function () {
 		var val;
-		var valLength;
 
 		var fnMap = [
 			[
@@ -9317,7 +9133,7 @@ function makeArray( obj ) {
 				'fullscreenchange',
 				'fullscreenerror'
 			],
-			// new WebKit
+			// New WebKit
 			[
 				'webkitRequestFullscreen',
 				'webkitExitFullscreen',
@@ -9327,7 +9143,7 @@ function makeArray( obj ) {
 				'webkitfullscreenerror'
 
 			],
-			// old WebKit (Safari 5.1)
+			// Old WebKit (Safari 5.1)
 			[
 				'webkitRequestFullScreen',
 				'webkitCancelFullScreen',
@@ -9362,7 +9178,7 @@ function makeArray( obj ) {
 		for (; i < l; i++) {
 			val = fnMap[i];
 			if (val && val[1] in document) {
-				for (i = 0, valLength = val.length; i < valLength; i++) {
+				for (i = 0; i < val.length; i++) {
 					ret[fnMap[0][i]] = val[i];
 				}
 				return ret;
@@ -9382,7 +9198,7 @@ function makeArray( obj ) {
 			// keyboard in fullscreen even though it doesn't.
 			// Browser sniffing, since the alternative with
 			// setTimeout is even worse.
-			if (/5\.1[\.\d]* Safari/.test(navigator.userAgent)) {
+			if (/5\.1[.\d]* Safari/.test(navigator.userAgent)) {
 				elem[request]();
 			} else {
 				elem[request](keyboardAllowed && Element.ALLOW_KEYBOARD_INPUT);
@@ -9397,6 +9213,12 @@ function makeArray( obj ) {
 			} else {
 				this.request(elem);
 			}
+		},
+		onchange: function (callback) {
+			document.addEventListener(fn.fullscreenchange, callback, false);
+		},
+		onerror: function (callback) {
+			document.addEventListener(fn.fullscreenerror, callback, false);
 		},
 		raw: fn
 	};
@@ -9438,6 +9260,7 @@ function makeArray( obj ) {
 		window.ngscreenfull = ngscreenfull;
 	}
 })();
+
 
   
 //##########################################################################################################################

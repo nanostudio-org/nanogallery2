@@ -24,13 +24,13 @@
         // Flickr API Going SSL-Only on June 27th, 2014
         return 'https://api.flickr.com/services/rest/';
       },
-      thumbSize:'sq',
-      thumbAvailableSizes : new Array(75,100,150,240,500,640),
-      thumbAvailableSizesStr : new Array('sq','t','q','s','m','z'),
-      photoSize : '0',
-      photoAvailableSizes : new Array(75,100,150,240,500,640,1024,1024,1600,2048),
-      photoAvailableSizesStr : new Array('sq','t','q','s','m','z','b','l','h','k'),
-      ApiKey : "2f0e634b471fdb47446abcb9c5afebdc"
+      thumbSize:'               sq',
+      thumbAvailableSizes :     new Array(75,100,150,240,500,640),
+      thumbAvailableSizesStr :  new Array('sq','t','q','s','m','z'),
+      photoSize :               '0',
+      photoAvailableSizes :     new Array(75,100,150,240,500,640,1024,1024,1600,2048),
+      photoAvailableSizesStr :  new Array('sq','t','q','s','m','z','b','l','h','k'),
+      ApiKey :                  "2f0e634b471fdb47446abcb9c5afebdc"
     };
     
     
@@ -194,8 +194,8 @@
         }
 
         var tn = {
-          url: { l1 : { xs:'', sm:'', me:'', la:'', xl:'' }, lN : { xs:'', sm:'', me:'', la:'', xl:'' } },
-          width: { l1 : { xs:0, sm:0, me:0, la:0, xl:0 }, lN : { xs:0, sm:0, me:0, la:0, xl:0 } },
+          url:    { l1 : { xs:'', sm:'', me:'', la:'', xl:'' }, lN : { xs:'', sm:'', me:'', la:'', xl:'' } },
+          width:  { l1 : { xs:0, sm:0, me:0, la:0, xl:0 }, lN : { xs:0, sm:0, me:0, la:0, xl:0 } },
           height: { l1 : { xs:0, sm:0, me:0, la:0, xl:0 }, lN : { xs:0, sm:0, me:0, la:0, xl:0 } }
         };
         tn=FlickrRetrieveImages(tn, item, 'l1' );
@@ -244,8 +244,8 @@
           newItem.thumbSizes=sizes;
           
           var tn = {
-            url: { l1 : { xs:'', sm:'', me:'', la:'', xl:'' }, lN : { xs:'', sm:'', me:'', la:'', xl:'' } },
-            width: { l1 : { xs:0, sm:0, me:0, la:0, xl:0 }, lN : { xs:0, sm:0, me:0, la:0, xl:0 } },
+            url:    { l1 : { xs:'', sm:'', me:'', la:'', xl:'' }, lN : { xs:'', sm:'', me:'', la:'', xl:'' } },
+            width:  { l1 : { xs:0, sm:0, me:0, la:0, xl:0 }, lN : { xs:0, sm:0, me:0, la:0, xl:0 } },
             height: { l1 : { xs:0, sm:0, me:0, la:0, xl:0 }, lN : { xs:0, sm:0, me:0, la:0, xl:0 } }
           };
           tn=FlickrRetrieveImages(tn, item.primary_photo_extras, 'l1' );
@@ -261,7 +261,7 @@
     function FlickrRetrieveImages(tn, item, level ) {
 
       var sf=1;
-      if( G.thumbnailCrop[level] === true ) {
+      if( G.tn.opt[level].crop === true ) {
         sf=G.O.thumbnailCropScaleFactor;
       }
     
@@ -302,11 +302,11 @@
     }
     
     function FlickrRetrieveOneImage(sdir, tsize, item ) {
-      var one={ url:'', width:0, height:0 };
+      var one={ url: '', width: 0, height: 0 };
       var tnIndex=0;
-      for(var j=0; j<Flickr.thumbAvailableSizes.length; j++ ) {
+      for(var j=0; j < Flickr.thumbAvailableSizes.length; j++ ) {
         var size=item[sdir+Flickr.photoAvailableSizesStr[j]];
-        if(  size != undefined ) {
+        if( size != undefined ) {
           tnIndex=j;
           if( size >= tsize ) {
             break;
