@@ -1,4 +1,3 @@
-
  <div class="jumbotron ngy2dark">
     <div class="container ">
       <div class="row text-right" >
@@ -29,7 +28,6 @@
   <svg class="svg-diag" style="background-color:#1C2B3B;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10" preserveAspectRatio="none">
     <polygon points="100 0 100 10 -50 10" style="fill:#fff;"/>
   </svg>
-
 
   
   <div class="container">
@@ -151,7 +149,7 @@
           nanogallery2 is following the popular <a href="http://nanogallery.brisbois.fr" style="background-color:#eee;" >nanoGALLERY</a> script.
           <br>
           The display algorithm has been completely rewritten for improved user experience.
-          New features include filter by keywords, shopping cart, social sharing, advanced combinable and chainable hover effects, styling, tools on thumbnails, more button, thumbnail display transitions, info page with google maps location...
+          New features include filter by keywords, shopping cart, social sharing, advanced combinable and chainable hover effects, styling, tools on thumbnails, more button, thumbnail display transitions, info page with google maps location, thumbnail dominant colors...
         </p>
       </div>
     </div>
@@ -224,7 +222,7 @@
     
     <div class="row">
       <div class="col-md-4 text-center">
-        <a itemprop="downloadUrl" href="https://github.com/nanostudio-org/nanogallery2/archive/v1.2.1.zip" class="btn btn-success btn-lg btn-block" ><i class="fa fa-download" aria-hidden="true"></i> download nanogallery2</a>
+        <a itemprop="downloadUrl" href="https://github.com/nanostudio-org/nanogallery2/archive/v1.3.0.zip" class="btn btn-success btn-lg btn-block" ><i class="fa fa-download" aria-hidden="true"></i> download nanogallery2</a>
       </div>
       <!--
       <div class="col-md-4 text-center">
@@ -240,7 +238,7 @@
     </div>
     <div class="row">
       <div class="col-md-12 text-center">
-        <p class="text-center"><br><b>latest release: nanogallery <span itemprop="softwareVersion">v1.2.1</span> - <span itemprop="datePublished" content="2017-03-23">march 23 2017</span></b></p>
+        <p class="text-center"><br><b>latest release: nanogallery <span itemprop="softwareVersion">v1.3.0</span> - <span itemprop="datePublished" content="2017-05-11">mai 11 2017</span></b></p>
         <br><br>
       </div>
     </div>
@@ -661,8 +659,12 @@
       jQuery("#nanogallery").nanogallery2({
         //kind: 'google',
         //userID: '111186676244625461692',
-        kind: 'flickr',
-        userID: '149035168@N08',    // nano studio
+kind: 'flickr',
+userID: '149035168@N08',    // nano studio
+
+//kind: 'nano_photos_provider2',
+//dataProvider: 'http://localhost:12345/nano_photos_provider2/nano_photos_provider2.php',
+//dataProvider: 'http://lvh.me:12345/nanoPhotosProvider/nanoPhotosProvider.php',
         //kind : 'google2', 
         //userID : '111186676244625461692', 
         //google2URL : 'http://lvh.me:12345/nanogp/nanogp.php',
@@ -678,7 +680,7 @@
         //photoset: 'NONE',
         blackList: 'forhomepage|scrapbook|profil',
 //        thumbnailDisplayTransition: 'scaleDown_1.5',
-        thumbnailL1DisplayTransition: 'flipUp',
+        thumbnailL1DisplayTransition: 'flipDown',
         thumbnailL1DisplayTransitionDuration: 500,
         thumbnailL1DisplayInterval: 90,
 
