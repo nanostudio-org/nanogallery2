@@ -15,23 +15,26 @@
  *  - imagesloaded (https://github.com/desandro/imagesloaded) - is embebed
  *  - hammer.js (http://hammerjs.github.io/) - is embeded
  *  - screenfull.js (https://github.com/sindresorhus/screenfull.js) - is embeded
- *  - webfont generated with http://fontello.com - based on Font Awesome Copyright (C) 2012 by Dave Gandy (http://fortawesome.github.com/Font-Awesome/)
+ *  - webfont generated with http://fontello.com - mainly based on Font Awesome Copyright (C) 2012 by Dave Gandy (http://fontawesome.io/)
  *  - ICO online converter: https://iconverticons.com/online/
  */
 
 /*
 
-v1.3.0 - ALPHA - DO NOT USE
+v1.3.0
 - new: #3 Auto hide tools on image view after inactivity. Use the option viewerHideToolsDelay to define the delay in ms.
+- new: compatibility to nanoPhotosProvider2 (https://github.com/nanostudio-org/nanoPhotosProvider2)
+- new: possibility to display dominant color gradient (blurred images) during image load (on thumbnails, not supported by Google Photos or Flickr data source)
 - new: thumbnail display transitions, new possibilties: 'flipDown', 'flipUp', 'slideUp2', 'slideDown2', 'slideRight', 'slideLeft'
 - new: thumbnailDisplayTransition 'slideUp' and 'slideDown': distance can be defined (example: 'slideUp_200')
 - new: share to VK.com
-- new: #39 lightbox single tap/click to go to next/previous image (to remove the single tap delay, set viewerZoom to false)
+- new: #39 lightbox single tap/click to go to next/previous image (to remove the single tap delay, set option 'viewerZoom' to false)
 - new: album level 1 specific options: 'fnThumbnailL1DisplayEffect', 'thumbnailL1DisplayTransition', 'thumbnailL1DisplayTransitionDuration', 'thumbnailL1DisplayInterval'
 - new: #30 callbacks in HTML markup mode
 - new: enhanced compatibility to browser without CSS Transform support
 - new: ImagesLoaded now in version 4.1.1
 - new: screenfull.js now in version 3.2.0
+- changed: removed share button from to top right toolbar (can be changed with the option 'viewerTools')
 - fixed: low image quality in some cases
 - fixed: share to Google+
 - fixed: old Picasa albums not retrieved (for data before 09/02/2017)
@@ -39,8 +42,6 @@ v1.3.0 - ALPHA - DO NOT USE
 - fixex: #34 Image description - filename no more used in title by default
 - fixed: #37 Error using custom colors for colorSchemeViewer breaks nanoGallery2
 - fixed: #38 Fullscreen icon when opening in fullscreen
-TODO:
-- locationHash on false -> remove share?
 
 */ 
  
@@ -58,8 +59,8 @@ TODO:
     var _this = this;
 
     // Access to jQuery and DOM versions of element
-    _this.$e = jQuery(elt);
-    _this.e = elt;
+    _this.$e  = jQuery(elt);
+    _this.e   = elt;
 
     // Add a reverse reference to the DOM object
     _this.$e.data('nanogallery2data', _this);
@@ -74,13 +75,6 @@ TODO:
           function NGY2Tools() {
             var nextId = 1;                   // private static --> all instances
           }
-
-          //+ Jonas Raoni Soares Silva
-          //@ http://jsfromhell.com/array/shuffle [v1.0]
-          NGY2Tools.AreaShuffle = function (o) {
-            for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-            return o;
-          };
 
           // check album name - albumList/blackList/whiteList
           NGY2Tools.FilterAlbumName = function( title, ID ) {
@@ -154,6 +148,12 @@ TODO:
             }
           };
 
+          //+ Jonas Raoni Soares Silva
+          //@ http://jsfromhell.com/array/shuffle [v1.0]
+          NGY2Tools.AreaShuffle = function (o) {
+            for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+            return o;
+          };
           
           /** @function GetImageTitleFromURL() */
           /* retrieve filemane */
@@ -270,6 +270,8 @@ TODO:
               width:  { l1: { xs: 0,  sm: 0, me: 0,  la: 0 , xl: 0  }, lN: { xs: 0 , sm: 0,  me: 0,  la: 0, xl: 0  } },
               height: { l1: { xs: 0,  sm: 0, me: 0,  la: 0 , xl: 0  }, lN: { xs: 0,  sm: 0,  me: 0,  la: 0, xl: 0  } }
             };
+            this.imageDominantColors    =  null;  // base64 GIF
+            this.imageDominantColor     =  null;  // HEX RGB
             this.featured =             false;    // featured element
             this.flickrThumbSizes =     {};       // store URLs for all available thumbnail sizes (flickr)
             this.picasaThumbs =         null;     // store URLs and sizes
@@ -981,8 +983,8 @@ TODO:
     items :                       null,
     itemsBaseURL :                '',
     thumbnailSelectable :         false,
-    jsonCharset:                  'Latin',
-    jsonProvider:                 '',
+    dataProvider:                 '',
+    dataCharset:                  'Latin',
     allowHTMLinData:              false,
     locationHash :                true,
     slideshowDelay :              3000,
@@ -1003,8 +1005,8 @@ TODO:
     paginationSwipeSensibilityVert : 10,
     galleryFilterTags :           false,    // possible values: false, true, 'title', 'description'
     galleryL1FilterTags :         null,     // possible values: false, true, 'title', 'description'
-    galleryMaxItems :             0,        // maximum number of items per album  --> only flickr, google+, nanophotosprovider
-    galleryL1MaxItems :           null,     // maximum number of items per gallery page --> only flickr, google+, nanophotosprovider
+    galleryMaxItems :             0,        // maximum number of items per album  --> only flickr, google+, nano_photos_provider2
+    galleryL1MaxItems :           null,     // maximum number of items per gallery page --> only flickr, google+, nano_photos_provider2
     gallerySorting :              '',
     galleryL1Sorting :            null,
     galleryResizeAnimation :      true,
@@ -1092,11 +1094,11 @@ TODO:
       align :                     'center',
       autoMinimize :              0,
       standard :                  'minimizeButton,label',
-      minimized :                 'minimizeButton,label,infoButton,downloadButton,linkOriginalButton,fullscreenButton'
+      minimized :                 'minimizeButton,label,infoButton,shareButton,downloadButton,linkOriginalButton,fullscreenButton'
     },
     viewerTools : {
       topLeft :                   'pageCounter,playPauseButton',
-      topRight :                  'zoomButton,shareButton,closeButton' 
+      topRight :                  'zoomButton,closeButton' 
     },
     
     breakpointSizeSM :            480,
@@ -2141,7 +2143,7 @@ TODO:
     
       G.GOM.pagination.currentPage=0;
       SetLocationHash( albumID, '' );
-      
+
       GalleryRender( albumIdx );
     
     }
@@ -2756,7 +2758,7 @@ TODO:
       
       // Step 1: populate GOM
       if( GalleryPopulateGOM() ) {
-      
+
         // step 2: calculate layout
         GallerySetLayout();
 
@@ -3689,14 +3691,25 @@ TODO:
       var src=item.thumbImg().src,
       sTitle=getThumbnailTitle(item),
       sDesc=getTumbnailDescription(item);
+
+      // dominant colorS -> background image
+      var imgBG='';
+      if( item.imageDominantColors != null ) {
+        imgBG="background: url('"+item.imageDominantColors+"') no-repeat; background-size: 100% 100%;";
+      }
+      // dominant color -> background color
+      var bg=''
+      if( item.imageDominantColor != null ) {
+        bg='background:'+item.imageDominantColor+';';
+      }
       
       // image
       switch( G.layout.engine ) {
         case 'CASCADING':
-          newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="width:'+G.tn.settings.getW()+'px;"><img class="nGY2GThumbnailImg" src="'+src+'" alt="'+sTitle+'" style="max-width:'+G.tn.settings.getW()+'px;"></div>';
+          newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="width:'+G.tn.settings.getW()+'px;'+bg+'"><img class="nGY2GThumbnailImg" src="'+src+'" alt="'+sTitle+'" style="'+imgBG+'max-width:'+G.tn.settings.getW()+'px;"></div>';
           break;
         case 'JUSTIFIED':
-          newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="height:'+G.tn.settings.getH()+'px;"><img class="nGY2GThumbnailImg" src="'+src+'" alt="'+sTitle+'" ></div>';
+          newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="height:'+G.tn.settings.getH()+'px;'+bg+'"><img class="nGY2GThumbnailImg" src="'+src+'" alt="'+sTitle+'" style="'+imgBG+'"></div>';
           break;
         default:    // GRID
           var imgSize='max-width:'+G.tn.settings.getW()+'px;max-height:'+G.tn.settings.getH()+'px;'
@@ -3730,7 +3743,7 @@ TODO:
               }
             }
           }
-          newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="width:'+G.tn.settings.getW()+'px;height:'+G.tn.settings.getH()+'px;"><img class="nGY2GThumbnailImg" src="'+src+'" alt="'+sTitle+'" style="'+imgSize+'" ></div>';
+          newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="width:'+G.tn.settings.getW()+'px;height:'+G.tn.settings.getH()+'px;'+bg+'"><img class="nGY2GThumbnailImg" src="'+src+'" alt="'+sTitle+'" style="'+imgBG+imgSize+'" ></div>';
           break;
       }
 
@@ -4775,6 +4788,15 @@ TODO:
         // image source url
         newItem.src=src;
         
+        // dominant colors (needs to be a base64 gif)
+        if( item.imageDominantColors !== undefined ) {
+          newItem.imageDominantColors=item.imageDominantColors;
+        }
+        // dominant color (rgb hex)
+        if( item.imageDominantColor !== undefined ) {
+          newItem.imageDominantColor=item.imageDominantColor;
+        }
+        
         // dest url
         if( item.destURL !== undefined && item.destURL.length>0 ) {
           newItem.destinationURL=item.destURL;
@@ -4861,23 +4883,25 @@ TODO:
         // create dictionnary with all data attribute name in lowercase (to be case unsensitive)
         var data={
           // some default values
-          'data-ngdesc':            '',         // item description
-          'data-ngid':              null,       // ID
-          'data-ngkind':            'image',    // kind (image, album, albumup)
-          'data-ngtags':            null,       // tags
-          'data-ngdest':            '',         // destination URL
-          'data-ngthumbimgwidth':   0,          // thumbnail width
-          'data-ngthumbimgheight':  0,          // thumbnail height
-          'data-ngimagewidth':      0,          // image width
-          'data-ngimageheight':     0,          // image height
-          'data-ngexifmodel':       '',         // EXIF data
-          'data-ngexifflash':       '',
-          'data-ngexiffocallength': '',
-          'data-ngexiffstop':       '',
-          'data-ngexifexposure':    '',
-          'data-ngexifiso':         '',
-          'data-ngexiftime':        '',
-          'data-ngexiflocation':    ''
+          'data-ngdesc':                  '',         // item description
+          'data-ngid':                    null,       // ID
+          'data-ngkind':                  'image',    // kind (image, album, albumup)
+          'data-ngtags':                  null,       // tags
+          'data-ngdest':                  '',         // destination URL
+          'data-ngthumbimgwidth':         0,          // thumbnail width
+          'data-ngthumbimgheight':        0,          // thumbnail height
+          'data-ngimagewidth':            0,          // image width
+          'data-ngimageheight':           0,          // image height
+          'data-ngimagedominantcolors':   null,       // image dominant colors
+          'data-ngimagedominantcolor':    null,       // image dominant colors
+          'data-ngexifmodel':             '',         // EXIF data
+          'data-ngexifflash':             '',
+          'data-ngexiffocallength':       '',
+          'data-ngexiffstop':             '',
+          'data-ngexifexposure':          '',
+          'data-ngexifiso':               '',
+          'data-ngexiftime':              '',
+          'data-ngexiflocation':          ''
         };
         [].forEach.call( item.attributes, function(attr) {
           data[attr.name.toLowerCase()]=attr.value;
@@ -4936,7 +4960,12 @@ TODO:
 
         // image source url
         newItem.src=src;
-        
+
+        // dominant colorS (needs to be a base64 gif)
+        newItem.imageDominantColors=data['data-ngimagedominantcolors'];
+        // dominant color (rgb hex)
+        newItem.imageDominantColor=data['data-ngimagedominantcolors'];
+
         newItem.destinationURL=data['data-ngdest'];
         newItem.downloadURL=data['data-ngdownloadurl'];
 
@@ -6804,8 +6833,15 @@ TODO:
         G.VOM.$imgC.css({ opacity:0, left:0, visibility:'hidden' }).attr('src','');
         G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.Item(0).responsiveURL(), G.VOM.Item(0));
         G.VOM.$imgC.children().eq(0).attr('src',G.emptyGif).attr('src', G.VOM.Item(0).responsiveURL());
+        ViewerDisplayDominantColors(G.VOM.Item(0), G.VOM.$imgC.children());
         DisplayInternalViewer(0, '');
       }
+    }
+    
+    function ViewerDisplayDominantColors(item, $img) {
+      // if( item.imageDominantColors != null ) {
+        // $img.css({ 'background': "url('data:image/gif;base64,"+item.imageDominantColors+"') no-repeat", 'background-size': '100% 100%'});
+      // }
     }
 
     // is callbacked as soon as the size of an image has been retrieved
@@ -6858,6 +6894,10 @@ TODO:
       G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.Item(vomIdx).responsiveURL(), G.VOM.Item(vomIdx));
       G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.ItemPrevious(vomIdx).responsiveURL(), G.VOM.ItemPrevious(vomIdx));
       G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.ItemNext(vomIdx).responsiveURL(), G.VOM.ItemNext(vomIdx));
+      
+      ViewerDisplayDominantColors(G.VOM.Item(vomIdx), G.VOM.$imgC.children());
+      ViewerDisplayDominantColors(G.VOM.ItemPrevious(vomIdx), G.VOM.$imgP.children());
+      ViewerDisplayDominantColors(G.VOM.ItemNext(vomIdx), G.VOM.$imgN.children());
       
       // makes content unselectable --> avoid image drag effect during 'mouse swipe'
       G.VOM.$cont.find('*').attr('draggable', 'false').attr('unselectable', 'on');
@@ -7757,6 +7797,7 @@ TODO:
       G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.ItemNext(vomIdx).responsiveURL(), G.VOM.ItemNext(vomIdx));
       G.VOM.$imgN.children().eq(0).attr('src', '');
       G.VOM.$imgN.children().eq(0).attr('src',G.emptyGif).attr('src', G.VOM.ItemNext(vomIdx).responsiveURL());
+      ViewerDisplayDominantColors(G.VOM.ItemNext(vomIdx), G.VOM.$imgN.children());
 
       // new previous image
       // G.VOM.$imgP.css({ opacity:0, left:0, visibility:'hidden'}).attr('src', '');
@@ -7765,6 +7806,8 @@ TODO:
       G.VOM.$imgP.children().eq(0).attr('src', '');
       G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.ItemPrevious(vomIdx).responsiveURL(), G.VOM.ItemPrevious(vomIdx));
       G.VOM.$imgP.children().eq(0).attr('src',G.emptyGif).attr('src',G.VOM.ItemPrevious(vomIdx).responsiveURL());
+      ViewerDisplayDominantColors(G.VOM.ItemPrevious(vomIdx), G.VOM.$imgP.children());
+
 
       // slideshow mode - wait until image is loaded to start the delay for next image
       if( G.VOM.playSlideshow ) {
@@ -11940,6 +11983,236 @@ if (typeof define === 'function' && define.amd) {
 
 
 /**!
+ * @preserve nanogallery2 - NANOPHOTOSPROVIDER data provider
+ * Homepage: http://nanogallery2.nanostudio.org
+ * Sources:  https://github.com/nanostudio-org/nanogallery2
+ *
+ * License:  GPLv3 and commercial licence
+ * 
+*/
+ 
+// ########################################################
+// ##### nanogallery2 - module for NANOPHOTOSPROVIDER #####
+// ########################################################
+
+
+;(function ($) {
+  
+  jQuery.nanogallery2.data_nano_photos_provider2 = function (instance, fnName){
+    var G=instance;      // current nanogallery2 instance
+    
+    /** @function AlbumGetContent */
+    var AlbumGetContent = function(albumID, fnToCall, fnParam1, fnParam2) {
+
+
+      var albumIdx=NGY2Item.GetIdx(G, albumID);
+    
+      var url = G.O.dataProvider + '?albumID='+encodeURIComponent(albumID);
+      url += '&wxs='+G.tn.settings.width[G.GOM.curNavLevel].xs;
+      url += '&hxs='+G.tn.settings.height[G.GOM.curNavLevel].xs;
+      url += '&wsm='+G.tn.settings.width[G.GOM.curNavLevel].sm;
+      url += '&hsm='+G.tn.settings.height[G.GOM.curNavLevel].sm;
+      url += '&wme='+G.tn.settings.width[G.GOM.curNavLevel].me;
+      url += '&hme='+G.tn.settings.height[G.GOM.curNavLevel].me;
+      url += '&wla='+G.tn.settings.width[G.GOM.curNavLevel].la;
+      url += '&hla='+G.tn.settings.height[G.GOM.curNavLevel].la;
+      url += '&wxl='+G.tn.settings.width[G.GOM.curNavLevel].xl;
+      url += '&hxl='+G.tn.settings.height[G.GOM.curNavLevel].xl;
+      
+      PreloaderDisplay(true);
+
+      jQuery.ajaxSetup({ cache: false });
+      jQuery.support.cors = true;
+      try {
+        
+        
+        
+        var tId = setTimeout( function() {
+          // workaround to handle JSONP (cross-domain) errors
+          PreloaderDisplay(false);
+          NanoAlert('Could not retrieve AJAX data...');
+        }, 60000 );
+
+        
+          jQuery.getJSON(url, function(data, status, xhr) {
+            clearTimeout(tId);
+            PreloaderDisplay(false);
+            JsonParseData(albumIdx, data);
+            if( data.nano_status == 'ok' ) {
+              AlbumPostProcess(albumID);
+              if( fnToCall !== null &&  fnToCall !== undefined) {
+                fnToCall( fnParam1, fnParam2, null );
+              }
+            }
+            else {
+              NanoAlert(G, 'Could not retrieve nanoPhotosProvider data. Error: ' + data.nano_status + ' - ' + data.nano_message);
+            }
+          })
+          .fail( function(jqxhr, textStatus, error) {
+            clearTimeout(tId);
+            PreloaderDisplay(false);
+
+            var k=''
+            for(var key in jqxhr) {
+              k+= key + '=' + jqxhr[key] +'<br>';
+            }
+            var err = textStatus + ', ' + error + ' ' + k + '<br><br>URL:'+url;
+            NanoAlert(G, 'Could not retrieve nanoPhotosProvider data. Error: ' + err);
+
+          });    
+        
+      }
+      catch(e) {
+        NanoAlert(G, 'Could not retrieve nanoPhotosProvider data. Error: ' + e);
+      }
+    }
+
+    
+    function JsonConvertCharset( str ) {
+      
+      return decodeURIComponent(str);
+
+
+      // Pb %C3%A9 --> %E9
+      // in UTF-8: \u00e9=\xe9 (e9 = hex value)
+      switch( G.O.dataCharset.toUpperCase() ) {
+        case 'UTF-8':     // Apache Windows
+          return decodeURI(str);      // do not use decodeURIComponent (would convert slash also)
+          break;
+        case 'Latin':     // Apache Linux
+        default :
+          return escape(str);
+          break;
+      }
+    }
+
+    function JsonParseData(albumIdx, data) {
+      var foundAlbumID=false;
+      var nb=0;
+      jQuery.each(data.album_content, function(i,item){
+        var title=item.title;
+        // title=GetI18nItem(item,'title');
+        // if( title === undefined ) { title=''; }
+
+        var baseURL=G.O.dataProvider.substring(0, G.O.dataProvider.indexOf('nano_photos_provider2.php'));
+        var src=baseURL+JsonConvertCharset(item.src);
+
+        if( G.O.thumbnailLabel.get('title') != '' ) {
+          title=GetImageTitle((item.src));
+        }
+
+        var description=item.description;     //'&nbsp;';
+        // description=GetI18nItem(item,'description');
+        // if( description === undefined ) { description=''; }
+
+        var kind='image';
+        if( item.kind !== undefined && item.kind.length > 0 ) {
+          kind=item.kind;
+        }
+
+        var ID=null;
+        if( item.ID !== undefined ) {
+          ID=(item.ID);
+        }
+
+        var ok=true;
+        if( kind == 'album' ) {
+          if( !FilterAlbumName(title, ID) ) { ok=false; }
+        }
+
+        if( ok ) {
+          var albumID=0;
+          if( item.albumID !== undefined  ) {
+            albumID=item.albumID;
+            foundAlbumID=true;
+          }
+
+          var newItem=NGY2Item.New( G, title, description, ID, albumID, kind, '' );
+          newItem.src=src;
+
+          // dominant colors as a gif
+          if( item.dcGIF !== undefined ) {
+            newItem.imageDominantColors='data:image/gif;base64,'+item.dcGIF;
+          }
+          // dominant color as hex rgb value
+          if( item.dc !== undefined && item.dc !== '' ) {
+            newItem.imageDominantColor=item.dc;
+          }
+          
+          if( kind == 'album' ) {
+            // number of items in album
+            newItem.numberItems=item.cnt;
+          }
+          else {
+            // image size
+            newItem.imageWidth=item.imgWidth;
+            newItem.imageHeight=item.imgHeight;
+          }
+          
+          // retrieve responsive thumbnails urls and sizes
+          var cnl=G.GOM.curNavLevel;
+          var l=['xs', 'sm', 'me', 'la', 'xl'];
+          for( var n=0; n<l.length; n++ ) {
+            newItem.thumbs.url[cnl][l[n]]     = baseURL + JsonConvertCharset(item.t_url[n]);
+            newItem.thumbs.width[cnl][l[n]]   = parseInt(item.t_width[n]);
+            newItem.thumbs.height[cnl][l[n]]  = parseInt(item.t_height[n]);
+          }
+         
+          if( typeof G.O.fnProcessData == 'function' ) {
+            G.O.fnProcessData(newItem, 'nanophotosprovider', data);
+          }
+        }
+      });
+
+      G.I[albumIdx].contentIsLoaded=true;   // album's content is ready
+
+    }    
+    
+
+    // -----------
+    // Initialize 
+    function Init() {
+
+    }
+    
+
+    // shortcuts to NGY2Tools functions (with context)
+    var PreloaderDisplay = NGY2Tools.PreloaderDisplay.bind(G);
+    // var NanoAlert = NGY2Tools.NanoAlert.bind(G);
+    var NanoAlert = NGY2Tools.NanoAlert;
+    var GetImageTitleFromURL = NGY2Tools.GetImageTitleFromURL.bind(G);
+    var FilterAlbumName = NGY2Tools.FilterAlbumName.bind(G);
+    var AlbumPostProcess = NGY2Tools.AlbumPostProcess.bind(G);
+ 
+    switch( fnName ){
+      case 'GetHiddenAlbums':
+        break;
+      case 'AlbumGetContent':
+        var albumID = arguments[2],
+        callback = arguments[3],
+        cbParam1 = arguments[4],
+        cbParam2 = arguments[5];
+        AlbumGetContent(albumID, callback, cbParam1, cbParam2);
+        break;
+      case 'Init':
+        Init();
+        break;
+      case '':
+        break;
+      case '':
+        break;
+    }
+
+  };
+  
+// END NANOPHOTOSPROVIDER DATA SOURCE FOR NANOGALLERY2
+}( jQuery ));
+  
+  
+  
+  
+  
+/**!
  * @preserve nanogallery2 - GOOGLE PHOTOS data provider
  * Homepage: http://nanogallery2.nanostudio.org
  * Sources:  https://github.com/nanostudio-org/nanogallery2
@@ -12163,7 +12436,7 @@ if (typeof define === 'function' && define.amd) {
         var itemID = data.gphoto$id.$t;
         if( !(kind == 'album' && !FilterAlbumName(itemTitle, itemID)) ) {
 
-        var newItem=NGY2Item.New( G, itemTitle, itemDescription, itemID, albumID, kind, '' );
+          var newItem=NGY2Item.New( G, itemTitle, itemDescription, itemID, albumID, kind, '' );
           // set the image src
           var src='';
           if( kind == 'image' ) {
@@ -12232,7 +12505,7 @@ if (typeof define === 'function' && define.amd) {
           newItem.thumbs=GoogleThumbSetSizes('lN', 5, newItem.thumbs, data, kind );
           
           if( typeof G.O.fnProcessData == 'function' ) {
-            G.O.fnProcessData(newItem, 'google', data);
+            G.O.fnProcessData(newItem, 'google2', data);
           }
         }
       });
@@ -12497,13 +12770,13 @@ if (typeof define === 'function' && define.amd) {
         // Flickr API Going SSL-Only on June 27th, 2014
         return 'https://api.flickr.com/services/rest/';
       },
-      thumbSize:'sq',
-      thumbAvailableSizes : new Array(75,100,150,240,500,640),
-      thumbAvailableSizesStr : new Array('sq','t','q','s','m','z'),
-      photoSize : '0',
-      photoAvailableSizes : new Array(75,100,150,240,500,640,1024,1024,1600,2048),
-      photoAvailableSizesStr : new Array('sq','t','q','s','m','z','b','l','h','k'),
-      ApiKey : "2f0e634b471fdb47446abcb9c5afebdc"
+      thumbSize:'               sq',
+      thumbAvailableSizes :     new Array(75,100,150,240,500,640),
+      thumbAvailableSizesStr :  new Array('sq','t','q','s','m','z'),
+      photoSize :               '0',
+      photoAvailableSizes :     new Array(75,100,150,240,500,640,1024,1024,1600,2048),
+      photoAvailableSizesStr :  new Array('sq','t','q','s','m','z','b','l','h','k'),
+      ApiKey :                  "2f0e634b471fdb47446abcb9c5afebdc"
     };
     
     
@@ -12667,8 +12940,8 @@ if (typeof define === 'function' && define.amd) {
         }
 
         var tn = {
-          url: { l1 : { xs:'', sm:'', me:'', la:'', xl:'' }, lN : { xs:'', sm:'', me:'', la:'', xl:'' } },
-          width: { l1 : { xs:0, sm:0, me:0, la:0, xl:0 }, lN : { xs:0, sm:0, me:0, la:0, xl:0 } },
+          url:    { l1 : { xs:'', sm:'', me:'', la:'', xl:'' }, lN : { xs:'', sm:'', me:'', la:'', xl:'' } },
+          width:  { l1 : { xs:0, sm:0, me:0, la:0, xl:0 }, lN : { xs:0, sm:0, me:0, la:0, xl:0 } },
           height: { l1 : { xs:0, sm:0, me:0, la:0, xl:0 }, lN : { xs:0, sm:0, me:0, la:0, xl:0 } }
         };
         tn=FlickrRetrieveImages(tn, item, 'l1' );
@@ -12717,8 +12990,8 @@ if (typeof define === 'function' && define.amd) {
           newItem.thumbSizes=sizes;
           
           var tn = {
-            url: { l1 : { xs:'', sm:'', me:'', la:'', xl:'' }, lN : { xs:'', sm:'', me:'', la:'', xl:'' } },
-            width: { l1 : { xs:0, sm:0, me:0, la:0, xl:0 }, lN : { xs:0, sm:0, me:0, la:0, xl:0 } },
+            url:    { l1 : { xs:'', sm:'', me:'', la:'', xl:'' }, lN : { xs:'', sm:'', me:'', la:'', xl:'' } },
+            width:  { l1 : { xs:0, sm:0, me:0, la:0, xl:0 }, lN : { xs:0, sm:0, me:0, la:0, xl:0 } },
             height: { l1 : { xs:0, sm:0, me:0, la:0, xl:0 }, lN : { xs:0, sm:0, me:0, la:0, xl:0 } }
           };
           tn=FlickrRetrieveImages(tn, item.primary_photo_extras, 'l1' );
@@ -12775,11 +13048,11 @@ if (typeof define === 'function' && define.amd) {
     }
     
     function FlickrRetrieveOneImage(sdir, tsize, item ) {
-      var one={ url:'', width:0, height:0 };
+      var one={ url: '', width: 0, height: 0 };
       var tnIndex=0;
-      for(var j=0; j<Flickr.thumbAvailableSizes.length; j++ ) {
+      for(var j=0; j < Flickr.thumbAvailableSizes.length; j++ ) {
         var size=item[sdir+Flickr.photoAvailableSizesStr[j]];
-        if(  size != undefined ) {
+        if( size != undefined ) {
           tnIndex=j;
           if( size >= tsize ) {
             break;
