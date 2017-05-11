@@ -1,3 +1,4 @@
+  
   <div class="container ngy2documentation">
     <br><br>
     <h1>nanogallery2 API - reference guide</h1>
@@ -141,6 +142,8 @@
     <hr>
     <blockquote>
       Callbacks provide a simple mechanism to extend the capabilities of nanogallery2 with your own javascript functions.
+      <br>
+      Since v1.3, callbacks are supported in HTML markup mode.
     </blockquote>
     <div class="row">
       <div class="table-responsive">
@@ -240,6 +243,15 @@
               <td>1.0</td>
             </tr>
             <tr>
+              <td>fnThumbnailL1DisplayEffect</td>
+              <td>
+                Called to display one thumbnail, after it was built. <b>Only on first album level</b>
+                <br>
+                Parameters: <code>$thumbnail, item, GOMidx, delay</code>
+              </td>
+              <td>1.3</td>
+            </tr>
+            <tr>
               <td>fnThumbnailOpen</td>
               <td>
                 Called when a thumbnail is clicked/touched to display the image.<br>
@@ -250,6 +262,14 @@
               <td>1.0</td>
             </tr>
             <tr>
+              <td>fnImgDisplayed</td>
+              <td>
+                Called when an image has been displayed in the lightbox/viewer.
+                <br>
+                Parameter: <code>item</code>
+              </td>
+              <td>1.1</td>
+            </tr>            <tr>
               <td>fnImgToolbarCustInit</td>
               <td>
                 Lightbox toolbar custom element.<br>
