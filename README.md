@@ -19,6 +19,13 @@ nanogallery2 is a javascript library for building beautiful, modern and high-qua
 [Content source](http://nanogallery2.nanostudio.org/datasource.html)   
 [Builder](http://nanogallery2.nanostudio.org/builder.html)   
 
+## Some from many features
+
+#### Display animation
+![nanogallery2 Sample display animation](https://github.com/nanostudio-org/nanogallery2/raw/gh-pages/videos/ngy2_scroll1.gif "Sample display animation")
+
+
+
 ## Package managers
 
 npm: `npm install nanogallery2`
