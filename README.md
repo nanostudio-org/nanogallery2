@@ -21,8 +21,16 @@ nanogallery2 is a javascript library for building beautiful, modern and high-qua
 
 ## Some from many features
 
-#### Display animation
+#### Thumbnail display animations
+![nanogallery2 Sample display animation](https://github.com/nanostudio-org/nanogallery2/raw/gh-pages/videos/ngy2_display1.gif "Sample display animation")
+
 ![nanogallery2 Sample display animation](https://github.com/nanostudio-org/nanogallery2/raw/gh-pages/videos/ngy2_scroll1.gif "Sample display animation")
+
+#### thumbnails hover effects, photo albums, lightbox
+
+
+#### Multiple layouts, builder for testing
+![nanogallery2 Sample layouts](https://github.com/nanostudio-org/nanogallery2/raw/gh-pages/videos/ngy2_layouts_builder.gif "Sample layouts")
 
 
 
