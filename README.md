@@ -26,15 +26,35 @@ nanogallery2 is a javascript library for building beautiful, modern and high-qua
 
 ![nanogallery2 Sample display animation](https://github.com/nanostudio-org/nanogallery2/raw/gh-pages/videos/ngy2_scroll1.gif "Sample display animation")
 
-#### - Thumbnails hover effects, photo albums, lightbox
+#### - Thumbnails hover effects, photo albums, lightbox, social sharing
 ![nanogallery2 Sample lightbox](https://github.com/nanostudio-org/nanogallery2/raw/gh-pages/videos/ngy2_lightbox1.gif "Sample lightbox")
 
 #### - Multiple layouts, builder for online testing
 ![nanogallery2 Sample layouts](https://github.com/nanostudio-org/nanogallery2/raw/gh-pages/videos/ngy2_layouts_builder.gif "Sample layouts")
 
-#### - Self hosted photos, Flickr, Google Photos
+#### - Content source : self hosted photos, Flickr, Google Photos
+
+#### - Shopping cart
+
+#### - keyword filtering
+
+#### - blurred images for thumbnail preview 
+
+#### - API, callbacks, events
 
 #### - Endless customization
+  
+  
+## Usage
+
+HTML markup configuration example:
+```
+<body>
+  <div id="my_nanogallery2" 
+    data-nanogallery2='{ "userID": "34858669@N00", "kind": "flickr", "thumbnailHeight": 150, "thumbnailWidth": 150 }'>
+  </div>
+</body>
+```
 
 ## Package managers
 
