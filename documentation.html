@@ -433,7 +433,7 @@
   <!-- ##### END LOGO INDEX  ##### -->
   <!-- ########################### -->
 
- <div class="container ngy2documentation">
+  <div class="container ngy2documentation">
   <div class="row" >
   <div class="col-md-10">
 
@@ -443,10 +443,17 @@
     <br><br><br>
     <br><br><br>
     <blockquote>
-      nanogallery2 is highly customizable and fully adjustable to suit your needs.<br>
-      This page lists the options accepted by nanogallery2 (<b>everything is CaSe sEnSiTiVe</b>).
+      <br>
+        nanogallery2 is highly customizable and fully adjustable to suit your needs.<br>
+        This page lists and describes the options accepted by nanogallery2 (<b>everything is CaSe sEnSiTiVe</b>).
+      <br>
+      <br>
+        You may also want to use the <b><a href="builder.html">BUILDER</a></b> to quickly check some available options.
+      <br>
+      <br>
     </blockquote>
     <p>
+      <br><br><br><br>
       Settings are passed to the gallery on initialization:
     </p>
     <div class="row" >
@@ -454,29 +461,29 @@
         <h3>with HTML markup:</h3>
         <p>Options are configured with the <code>data-nanogallery2</code> attribute.</p>
     <pre>
-      &lt;div id="nanogallery2" data-nanogallery2='{
-          "userID": "34858669@N00",
-          "kind": "flickr",
-          "thumbnailHeight": 200,
-          "thumbnailWidth": "auto",
-          galleryDisplayMode: "rows",
-          ...
-        }'&gt;
-      &lt;/div&gt;
+    &lt;div id="nanogallery2" data-nanogallery2='{
+        "userID":           "34858669@N00",
+        "kind":             "flickr",
+        "thumbnailHeight":  200,
+        "thumbnailWidth":   "auto",
+        galleryDisplayMode: "rows",
+        ...
+      }'&gt;
+    &lt;/div&gt;
     </pre>
       </div>
       <div class="col-md-6">
         <h3>or, with javascript:</h3>
         <p>Options are passed to the <code>nanogallery2()</code> function.</p>
     <pre>
-      $("#nanogallery2").nanogallery2({
-        userID: '34858669@N00',
-        kind: 'flickr',
-        thumbnailHeight: 200,
-        thumbnailWidth: 'auto',
-        galleryDisplayMode: 'rows',
-        ...
-      });
+    $("#nanogallery2").nanogallery2({
+      userID:             '34858669@N00',
+      kind:               'flickr',
+      thumbnailHeight:    200,
+      thumbnailWidth:     'auto',
+      galleryDisplayMode: 'rows',
+      ...
+    });
       
     </pre>
       </div>
@@ -550,10 +557,10 @@
     
     <div id="ngy2_gallery"></div>
     <br><br><br><br><br><br><br>
-    <h3 >Gallery</h3>
+    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> GALLERY</h3>
     <hr>
     <blockquote>
-      Configure the layout of the gallery.
+      Configure the behaviour of the gallery.
     </blockquote>
       <div class="table-responsive">
         <table class="table table-striped table-hover">
@@ -568,24 +575,15 @@
         </thead>
         <tbody>
           <tr>
-            <td>colorScheme</td>
-            <td>string<br>object</td>
-            <td>'dark'</td>
-            <td>Gallery color scheme (thumbnails, navigation...).
-            <br>Possible values: 'dark', 'light'
-            <br>Custom color schemes are supported.</td>
-            <td>1.0</td>
-          </tr>
-          <tr>
             <td>galleryDisplayMode</td>
             <td>string</td>
             <td>'fullContent'</td>
             <td>
               Possible values:
-              <br>- 'fullContent': display all thumbnails at once
-              <br>- 'moreButton': display N rows and a button to show N more rows (see <code>galleryDisplayMoreStep</code>)
-              <br>- 'pagination': display N rows and numbers/dots to paginate the gallery (see <code>galleryMaxRows</code>)
-              <br>- 'rows': display max N rows (see <code>galleryMaxRows</code>)
+              <br>- <b>'fullContent'</b>: display all thumbnails at once
+              <br>- <b>'moreButton'</b>: display N rows and a button to show N more rows (see <code>galleryDisplayMoreStep</code>)
+              <br>- <b>'pagination'</b>: display N rows and <b>numbers/dots</b> to paginate the gallery (see <code>galleryMaxRows</code>)
+              <br>- <b>'rows'</b>: display maximum N rows (see <code>galleryMaxRows</code>). The number of remaining images is displayed over the last thumbnail.
             </td>
             <td>1.0</td>
           </tr>
@@ -595,6 +593,7 @@
             <td>2</td>
             <td>
               Set the number of rows to display each time the "more button" is hit.
+              <br>
               <br>only for <code>galleryDisplayMode: 'moreButton'</code>
             </td>
             <td>1.0</td>
@@ -605,9 +604,10 @@
             <td>'rectangles'</td>
             <td>
               Display type in pagination mode:
-              <br>- 'rectangles'
-              <br>- 'dots'
-              <br>- 'numbers'
+              <br>- <b>'rectangles'</b>
+              <br>- <b>'dots'</b>
+              <br>- <b>'numbers'</b>
+              <br>
               <br>only for <code>galleryDisplayMode: 'pagination'</code>
             </td>
             <td>1.0</td>
@@ -618,6 +618,7 @@
             <td>2</td>
             <td>
               Maximum number of rows to display
+              <br>
               <br>Only for <code>galleryDisplayMode: 'rows'</code> or <code>galleryDisplayMode: 'pagination'</code>.
               <br>Not supported if <code>thumbnailHeight: 'auto'</code>
             </td>
@@ -629,6 +630,7 @@
             <td>10</td>
             <td>
               Maximum number of pagination items displayed
+              <br>
               <br>only for <code>galleryDisplayMode: 'pagination'</code> and <code>galleryPaginationMode: 'numbers'</code>
             </td>
             <td>1.0</td>
@@ -646,7 +648,11 @@
             <td>galleryLastRowFull</td>
             <td>boolean</td>
             <td>false</td>
-            <td>When enabled, the last thumbnail's row will not be displayed if it doesn't fill the full width.</td>
+            <td>
+              When enabled, the last thumbnail's row will not be displayed if it doesn't fill the full width.
+              <br><br>
+              Only for grid and justified layouts.
+            </td>
             <td>1.0</td>
           </tr>
           <tr>
@@ -656,7 +662,7 @@
             <td>
               Sort order. No sorting by default.
               <br>
-              Possible values: 'titlesasc', 'titledesc', 'reversed', 'random' (=shuffle).</td>
+              Possible values: <b>'titlesasc'</b>, <b>'titledesc'</b>, <b>'reversed'</b>, <b>'random'</b> (=shuffle).</td>
             <td>1.0</td>
           </tr>
           <tr>
@@ -670,7 +676,7 @@
             <td>galleryResizeAnimation</td>
             <td>boolean</td>
             <td>true</td>
-            <td>Moves the thumbnails to their new position when the gallery is resized.</td>
+            <td>Animate the moving of thumbnails to their new position when the gallery is resized.</td>
             <td>1.0</td>
           </tr>
           <tr>
@@ -688,12 +694,21 @@
             <td>1.0</td>
           </tr>
           <tr>
+            <td>colorScheme</td>
+            <td>string<br>object</td>
+            <td>'dark'</td>
+            <td>Gallery color scheme (thumbnails, navigation...).
+            <br>Possible values: <b>'dark'</b>, <b>'light'</b>
+            <br>Custom color schemes are supported.</td>
+            <td>1.0</td>
+          </tr>
+          <tr>
             <td>openOnStart</td>
             <td>string</td>
             <td></td>
             <td>
               Opens the specified album or display the specified image on library start.
-              <br>Syntax: 'albumID' or 'albumID/imageID'
+              <br>Syntax: <b>'albumID'</b> or <b>'albumID/imageID'</b>
             </td>
             <td>1.0</td>
           </tr>
@@ -701,7 +716,7 @@
             <td>thumbnailSelectable</td>
             <td>boolean</td>
             <td>false</td>
-            <td>Enable/disable the selection mode. Allows the user to select multiple thumbnails.</td>
+            <td>Enable/disable the selection mode. A checkbox is displayed over each thumbnail to allow the user to select multiple thumbnails.</td>
             <td>1.0</td>
           </tr>
           <tr>
@@ -722,48 +737,50 @@
         </table>
       </div>
 
+      
+      
     <div id="ngy2_gallery_layout"></div>
     <br><br><br><br><br><br><br>
-    <h3>Gallery layout style</h3>
+    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> GALLERY LAYOUT STYLE - THUMBNAILS SIZES</h3>
     <hr>
     <blockquote>
-      3 layout styles are available: <b>'grid'</b>, <b>'justified'</b> and <b>'cascading'</b>
+      3 basic layout styles are available: <b>'grid'</b>, <b>'justified'</b> and <b>'cascading'</b>
       <br>You don't need to specify the layout style, it is automatically set based on the size of the thumbnails.
       <br>&nbsp;
       <ul>
         <li>
           <b>grid layout</b>
           <div class="row" >
-            <div class="col-md-6">
-              Height and width is fixed for all thumbnails.
+            <div class="col-md-8">
+              Height and width is fixed and the same for all thumbnails.
               <br>&nbsp;&nbsp;Define the height and the width.
-              <br>&nbsp;&nbsp;example: <code>thumbnailWidth: 300, thumbnailHeight: 200</code>
+              <br>&nbsp;&nbsp;Example: <code>thumbnailWidth: 300, thumbnailHeight: 200</code>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
               <img src="img/ngy2_layout_grid2.png" >
             </div>
           </div>
         </li>
         <li><b>justified layout</b>
           <div class="row" >
-            <div class="col-md-6">
-              Width is automaticaly calculated to respect the image ratio.
-              <br>&nbsp;&nbsp;set the special value <code>'auto'</code> to <code>thumbnailWidth</code>
-              <br>&nbsp;&nbsp;example: <code>thumbnailWidth: <b>'auto'</b>, thumbnailHeight: 200</code>
+            <div class="col-md-8">
+              Width is calculated to respect the image ratio.
+              <br>&nbsp;&nbsp;Set the special value <code>'auto'</code> to <code>thumbnailWidth</code>
+              <br>&nbsp;&nbsp;Example: <code>thumbnailWidth: <b>'auto'</b>, thumbnailHeight: 200</code>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
               <img src="img/ngy2_layout_justified.png" >
             </div>
           </div>
         </li>
-        <li><b>cascading layout</b>
+        <li><b>cascading layout (also called masonry layout)</b>
           <div class="row" >
-            <div class="col-md-6">
-              Height is automaticaly calculated to respect the image ratio.
-              <br>&nbsp;&nbsp;set the special value <code>'auto'</code> to <code>thumbnailHeight</code>
-              <br>&nbsp;&nbsp;example: <code>thumbnailWidth: 300, thumbnailHeight: <b>'auto'</b></code>
+            <div class="col-md-8">
+              Height is calculated to respect the image ratio.
+              <br>&nbsp;&nbsp;Set the special value <code>'auto'</code> to <code>thumbnailHeight</code>
+              <br>&nbsp;&nbsp;Example: <code>thumbnailWidth: 300, thumbnailHeight: <b>'auto'</b></code>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
               <img src="img/ngy2_layout_cascading.png" >
             </div>
           </div>
@@ -771,9 +788,11 @@
       </ul>
     </blockquote>
 
+    
+    
     <div id="ngy2_gallery_thumbnails"></div>
     <br><br><br><br><br><br><br>
-    <h3>Thumbnails</h3>
+    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> THUMBNAILS</h3>
     <hr>
     <blockquote>
       Configure the layout and the content of the thumbnails.
@@ -798,8 +817,9 @@
           <td>integer<br>string</td>
           <td>300</td>
           <td>
+            <b>MANDATORY</b><br>
             Thumbnails image width in pixels, or 'auto'.
-            <br>Use 'auto' for justified layout.
+            <br>Use <b>'auto'</b> for <b>justified layout</b>.
           </td>
           <td>1.0</td>
         </tr>
@@ -808,8 +828,9 @@
           <td>integer<br>string</td>
           <td>200</td>
           <td>
+            <b>MANDATORY</b><br>
             Thumbnails image height in pixels, or 'auto'.
-            <br>Use 'auto' for cascading grid layout.
+            <br>Use <b>'auto'</b> for <b>cascading/masonry layout</b>.
           </td>
           <td>1.0</td>
         </tr>
@@ -818,8 +839,7 @@
           <td>boolean</td>
           <td>true</td>
           <td>
-            Thumbnail image will be cropped to avoid black borders (only for grid layout).<br>
-            Note: it is mandatory to set the thumbnail size.
+            If needed, thumbnail image will be cropped to avoid black borders (only for grid layout).<br>
           </td>
           <td>1.0</td>
         </tr>
@@ -840,7 +860,7 @@
           <td>'center'</td>
           <td>
             Sets the thumbnail alignment.
-            <br>Possible values: 'left', 'right', 'justified', 'center'.
+            <br>Possible values: <b>'left'</b>, <b>'right'</b>, <b>'justified'</b>, <b>'center'</b>.
             <br>Note: the parameter 'thumbnailGutterWidth' is ignored when <code>thumbnailAlignment: 'justified'</code>.
           </td>
           <td>1.0</td>
@@ -919,7 +939,7 @@
             <br>- <b>slideLeft</b>: VAL is the start distance in pixel (default is 150)
             <br>
           </td>
-          <td>1.0</td>
+          <td>1.0<br>1.3</td>
         </tr>
         <tr>
           <td>thumbnailDisplayTransitionDuration</td>
@@ -932,7 +952,7 @@
           <td>thumbnailStacks</td>
           <td>integer</td>
           <td>0</td>
-          <td>Add N stacks behin each thumbnail. Usefull for thumbnails hover effects</td>
+          <td>Add N stacks behind each thumbnail. Usefull for thumbnails hover effects</td>
           <td>1.2</td>
         </tr>
         <tr>
@@ -948,10 +968,10 @@
 
     <div id="ngy2_gallery_thumbnails_resp"></div>
     <br><br><br><br><br><br><br>
-    <h3>Thumbnail responsive sizes</h3>
+    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> THUMBNAIL RESPONSIVE SIZES</h3>
     <hr>
     <blockquote>
-      Define multiple thumbnail sizes for a fully responsive gallery.
+      For a fully responsive gallery, you can define multiple thumbnail sizes for each image.
       <br>The used sized is dependant of the screen resolution.
       <br>5 screen resolutions are supported: <b>XS</b> (extra-small), <b>SM</b> (small), <b>ME</b> (medium), <b>LA</b> (large), <b>XL</b> (extra-large)
       <br>&nbsp;
@@ -966,7 +986,7 @@
           <br><code>'defaultHeight XS<b>h1</b> SM<b>h2</b> ME<b>h3</b> LA<b>h4</b> XL<b>h5</b>'</code> where <b>h1</b> to <b>h5</b> are the heights for resolutions XS to XL.
           <br>&nbsp;
         </li>
-        <li>Not all values are mandatory. The default value will be used instead.
+        <li>Not all values are mandatory. The default value will be used if a value is missing.
         </li>
         <li>The value <b>auto</b> is supported.
         </li>
@@ -992,7 +1012,7 @@
     
     <div id="ngy2_gallery_thumbnails_label"></div>
     <br><br><br><br><br><br><br>
-    <h3>Thumbnail label</h3>
+    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> THUMBNAIL LABEL</h3>
     <hr>
     <blockquote>
       The <b>label</b> is composed by a <b>title</b> and a <b>description</b>. Set these settings to the <b><code>thumbnailLabel</code></b> parameter.
@@ -1029,7 +1049,7 @@
           <td>'overImageOnBottom'</td>
           <td>
             Position of the label on the thumbnail.
-            <br>Possible values: 'overImageOnBottom', 'overImageOnTop', 'overImageOnMiddle', 'onBottom'
+            <br>Possible values: <b>'overImageOnBottom'</b>, <b>'overImageOnTop'</b>, <b>'overImageOnMiddle'</b>, <b>'onBottom'</b>
             <br><br>
             <img src="img/ngy2_thumbnail_position.png">
           </td>
@@ -1041,7 +1061,7 @@
           <td>'center'</td>
           <td>
             Horizontal text alignment.
-            <br>Possible values: 'right', 'center', 'left'
+            <br>Possible values: <b>'right'</b>, <b>'center'</b>, <b>'left'</b>
           </td>
           <td>1.0</td>
         </tr>
@@ -1065,7 +1085,7 @@
           <td>'center'</td>
           <td>
             Horizontal text alignment.
-            <br>Possible values: 'right', 'center', 'left'
+            <br>Possible values: <b>'right'</b>, <b>'center'</b>, <b>'left'</b>
           </td>
           <td>1.0</td>
         </tr>
@@ -1097,8 +1117,8 @@
           <td>
             Variable to set the image title (undescores are replaced by spaces).
             <br>Possible values:
-            <br>- '%filename': use the filemanme without path
-            <br>- '%filenameNoExt': use the filemanme without path and without extension
+            <br>- <b>'%filename'</b>: use the filemanme without path
+            <br>- <b>'%filenameNoExt'</b>: use the filemanme without path and without extension
           </td>
           <td>1.0</td>
         </tr>
@@ -1150,13 +1170,14 @@
     
     <div id="ngy2_gallery_thumbnails_hover"></div>
     <br><br><br><br><br><br><br>
-    <h3>Thumbnail touch and hover effects</h3>
+    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> THUMBNAIL - TOUCH AND HOVER EFFECTS</h3>
     <hr>
     <blockquote>
-    These effects are triggered on mouse over or on touch-tap. They are defined with the <code><b>thumbnailHoverEffect2</b></code> parameter.
+    Hover effects are triggered on mouse over or on touch-tap. They are confugured with the <code><b>thumbnailHoverEffect2</b></code> parameter.
     <br><br>
       <img src="img/ngy2_thumbnail_hover.png" class="img-responsive center-block">
     </blockquote>
+    <br><br>
     <h4><i class="fa fa-circle-o"></i> Presets:</h4>
     <p>
       You can set one or multiple presets to the <code>thumbnailHoverEffect2</code> with the syntax <code><b>thumbnailHoverEffect2: 'preset1|preset2|...'</b></code>
@@ -1165,19 +1186,19 @@
       <u>Possible presets:</u>
       <ul>
         <li>
-          <b>Image:</b> 'imageBlurOn', 'imageBlurOff', 'imageGrayOn', 'imageGrayOff', imageSepiaOn', 'imageSepiaOff', 'imageScale150', 'imageScaleIn80', 'imageScale150Outside', 'imageSlideUp', 'imageSlideDown', 'imageSlideRight', 'imageSlideLeft'
+          <b>Effect on image:</b> 'imageBlurOn', 'imageBlurOff', 'imageGrayOn', 'imageGrayOff', imageSepiaOn', 'imageSepiaOff', 'imageScale150', 'imageScaleIn80', 'imageScale150Outside', 'imageSlideUp', 'imageSlideDown', 'imageSlideRight', 'imageSlideLeft'
         </li>
         <li>
-          <b>Tools:</b> 'toolsAppear', 'toolsSlideDown', 'toolsSlideUp'
+          <b>Effect on tools:</b> 'toolsAppear', 'toolsSlideDown', 'toolsSlideUp'
         </li>
         <li>
-          <b>Label:</b> 'labelAppear', 'labelAppear75', 'labelOpacity50', 'scaleLabelOverImage', 'descriptionAppear', 'labelSlideUpTop', 'labelSlideUp', 'labelSlideDown', 'descriptionSlideUp'
+          <b>Effect on label:</b> 'labelAppear', 'labelAppear75', 'labelOpacity50', 'scaleLabelOverImage', 'descriptionAppear', 'labelSlideUpTop', 'labelSlideUp', 'labelSlideDown', 'descriptionSlideUp'
         </li>
         <li>
-          <b>Thumbnail:</b> 'scale120'
+          <b>Effect on whole thumbnail:</b> 'scale120'
         </li>
         <li>
-          <b>Border:</b> 'borderLighter', 'borderDarker'
+          <b>Effect on thumbnail border:</b> 'borderLighter', 'borderDarker'
         </li>
         <li>
           <b>Misc:</b> 'overScale', 'overScaleOutside', 'slideUp', 'slideDown', 'slideRight', 'slideLeft'
@@ -1188,30 +1209,44 @@
       Usage example: <code>thumbnailHoverEffect2: 'borderDarker|labelAppear75'</code>
     </p>
     <br>
+    <br>
+    <br>
     <h4><i class="fa fa-circle-o"></i> Advanced usage</h4>
     <p>
-      For a full control of the effects, use the syntax <code>thumbnailHoverEffect2: 'effect1|effect2|...'</code>
+      For a full control of the effects, use the syntax <code>thumbnailHoverEffect2: 'effect1|effect2|...'</code><br><br>
       where <b>effectN</b> has the syntax <code> [element]_[property]_[fromValue]_[toValue]</code>
       <br>
-      <a href="http://codepen.io/Kris-B/pen/zZBxwB" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
     </p>
     <ul>
-      <li><b>[element]</b>: element to apply the transformation. Possible values: thumbnail, image, label, description, title, tools, customlayer</li>
-      <li><b>[property]</b>: any css proprety to transform</li>
+      <li>
+        <b>[element]</b>: element to apply the transformation.<br>
+        Possible values: <b>thumbnail</b>, <b>image</b>, <b>label</b>, <b>description</b>, <b>title</b>, <b>tools</b>, <b>customlayer</b>
+      </li>
+      <li><b>[property]</b>: </li>
       <ul>
-        <li>for CSS transform property, just use the <code>transform-function</code>. Limited to: translateX, translateY, rotateX, rotateY, rotateZ, scale
+        <li>
+          any CSS property to apply the animation value
+          <br>Example: <code>label_backgroundColor_rgba(255,255,255,0.80)_rgba(255,255,255,0.01)</code>
+        </li>
+        <li>for CSS transform property, just use the <code>transform-function</code>.
+          <br>Limited to: <b>translateX, translateY, rotateX, rotateY, rotateZ, scale</b>
           <br>Example: <code>image_rotateZ_0deg_15deg</code>
         </li>
-        <li>for CSS filters, just use the <code>visual effect</code>. Limited to: blur, brightness, grayscale, sepia, contrast, opacity, saturate
+        <li>for CSS filters, just use the <code>visual effect</code>.
+          <br>Limited to: <b>blur, brightness, grayscale, sepia, contrast, opacity, saturate</b>
           <br>Example: <code>'image_grayscale_0%_100%</code>
         </li>
       </ul>
       <li><b>[fromValue]</b>: initial value</li>
       <li><b>[toValue]</b>: value at the end of the transformation</li>
     </ul>
+      <br>
+      <br>
+      Live example on codepen: <a href="http://codepen.io/Kris-B/pen/zZBxwB" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> demo - advanced thumbnail hover effect</a>
+    <br><br>
     <p>Some examples:</p>
     <ul>
-      <li>One hover effect:</li>
+      <li><b>One hover effect:</b></li>
       <ul>
         <li>Remove the sepia filter on the image: <b><code>thumbnailHoverEffect2: 'image_sepia_100%_1%'</code></b></li>
         <li>Apply a blur filter on the image: <b><code>'image_blur_0.00px_2.00px'</code></b></li>
@@ -1225,8 +1260,7 @@
         <li>Change the image contrast: <b><code>image_contrast_1_4</code></b></li>
         <li>Change the image brightness: <b><code>image_brightness_1_2</code></b></li>
       </ul>
-      </ul>
-      <li>Two hover effects:</li>
+      <li><b>Two hover effects:</b></li>
       <ul>
         <li>Apply a grayscale filter and rotate the image: <b><code>thumbnailHoverEffect2:'image_grayscale_0%_100%|image_rotateZ_0deg_15deg'</code></b></li>
       </ul>
@@ -1238,10 +1272,25 @@
       <br>Example : <code>thumbnailBuildInit2: 'image_scale_1.20'</code>
     </p>
     <br>
+    <br>
+    <br>
     <h4><i class="fa fa-circle-o"></i> Additional tuning</h4>
     <p>
       Fine tuning settings: duration, delay, easing, back duration, back delay, beack easing, hoverin, hoverout, first keyframe
-      <br>syntax: <code>thumbnailHoverEffect2: { name: '[effectName]', delay: 0, duration: 400, easing: 'easeOutQuart', delayBack: 0, durationBack: 300, easingBack: 'easeOutQuart', hoverin: true, hoverout: true, firstKeyframe: true }</code>
+      <br>syntax:
+        <pre>
+    thumbnailHoverEffect2: { 
+      name:           '[effectName]',
+      delay:          0,
+      duration:       400,
+      easing:         'easeOutQuart',
+      delayBack:      0,
+      durationBack:   300,
+      easingBack:     'easeOutQuart',
+      hoverin:        true,
+      hoverout:       true,
+      firstKeyframe:  true
+    }</pre>
       <br>where:
       <ul>
         <li><b>duration</b>: the duration of the effect in ms</li>
@@ -1262,10 +1311,11 @@
       <ul>
         <li><code>thumbnailHoverEffect2: { name: 'imageBlurOn', duration: 800, easing: 'easeInCubic', delayBack: 0, durationBack: 300, easingBack: 'easeOutQuart' }</code></li>
         <li><code>thumbnailHoverEffect2: { name: 'image_rotateZ_0deg_15deg', duration: 800, durationBack: 500}</code></li>
-        <li>combination of 2 effects: <code>thumbnailHoverEffect2: [{ name: 'image_scale_1.00_1.20', duration: 500}, { name: 'image_rotateZ_0deg_15deg', delay: 500}]</code></li>
+        <li>combination of 2 effects: <br><code>thumbnailHoverEffect2: [{ name: 'image_scale_1.00_1.20', duration: 500}, { name: 'image_rotateZ_0deg_15deg', delay: 500}]</code></li>
       </ul>
     </p>
     
+    <br><br>
     <br><br>
     <h4><i class="fa fa-circle-o"></i> Stacks</h4>
     <p>
@@ -1279,13 +1329,13 @@
       <br>
       For the second stack, the percent will be 0.2, for the third one it will be -0,2, and so on.
       <br><br>
-      Possible parameters to set these percents: 'thumbnailStacksTranslateX', 'thumbnailStacksTranslateY', 'thumbnailStacksTranslateZ', 'thumbnailStacksRotateX', 'thumbnailStacksRotateY', 'thumbnailStacksRotateZ', 'thumbnailStacksScale'
+      Possible parameters to set these percents: <b>'thumbnailStacksTranslateX', 'thumbnailStacksTranslateY', 'thumbnailStacksTranslateZ', 'thumbnailStacksRotateX', 'thumbnailStacksRotateY', 'thumbnailStacksRotateZ', 'thumbnailStacksScale'</b>
     </p>
     
     
     <div id="ngy2_thumbnail_tools"></div>
     <br><br><br><br><br><br><br>
-    <h3>Thumbnail tools</h3>
+    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> THUMBNAIL - TOOLS</h3>
     <hr>
     <blockquote>
       Each corner of one thumbnail has a toolbar. You can customize each of these toolbars.
@@ -1311,7 +1361,7 @@
           <td>
             Image toolbars<br>
             Syntax: <code>thumbnailToolbarImage: { topLeft:'', topRight: '', bottomLeft: '', bottomRight: ''}</code><br>
-            Possible tools: 'select', 'share', 'featured', 'download', 'cart', 'info'<br>
+            Possible tools: <b>'select', 'share', 'featured', 'download', 'cart', 'info'</b><br>
             <br>
             Default:<br>
             <code>thumbnailToolbarImage : { topLeft: 'select', topRight : 'featured' }</code>
@@ -1325,7 +1375,7 @@
           <td>
             Album toolbars<br>
             Syntax: <code>thumbnailToolbarAlbum: { topLeft:'', topRight: '', bottomLeft: '', bottomRight: ''}</code><br>
-            Possible tools: 'select', 'share', 'counter', 'counter2', 'cart'<br>
+            Possible tools: <b>'select', 'share', 'counter', 'counter2', 'cart'</b><br>
             <br>
             Default:<br>
             <code>thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'counter' }</code>
@@ -1339,7 +1389,7 @@
     
     <div id="ngy2_navigation"></div>
     <br><br><br><br><br><br><br>
-    <h3>Navigation</h3>
+    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> NAVIGATION</h3>
     <hr>
     <blockquote>
       Configure how the user can navigate in albums, filter the thumbnails based on tags, and the touch/tap handling.
@@ -1393,10 +1443,10 @@
           <td>
             Display tags to filter the thumbnails.
             <br>Possible values:
-            <br>- false: disabled
-            <br>- true: enabled
-            <br>- 'title': extract the tags from the title (string starting with @)
-            <br>- 'description': extract the tags from the description (string starting with @)
+            <br>- <b>false</b>: disabled
+            <br>- <b>true</b>: enabled
+            <br>- <b>'title'</b>: extract the tags from the title (string starting with @)
+            <br>- <b>'description'</b>: extract the tags from the description (string starting with @)
           </td>
           <td>1.0</td>
         </tr>
@@ -1415,7 +1465,7 @@
             Enables hash tracking.
             <br>This will activate browser Back/Forward navigation (browser history support) and Deep Linking of images and photo albums.
             <br>Must be enabled to allow sharing of images/albums.
-            <br>Note: only one gallery per page should use this feature.
+            <br>Note: only one gallery per HTML page should use this feature.
           </td>
           <td>1.0</td>
         </tr>
@@ -1465,7 +1515,7 @@
 
     <div id="ngy2_navigation_first"></div>
     <br><br><br><br><br><br><br>
-    <h3>Gallery - first album level specific options</h3>
+    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> GALLERY - FIRST ALBUL LEVEL SPECIFIC OPTIONS</h3>
     <hr>
     <blockquote>
       Settings can be defined specificaly for the first album level (root level) and for the other ones.<br>
@@ -1558,15 +1608,17 @@
    
     <div id="ngy2_lightbox"></div>
     <br><br><br><br><br><br><br>
-    <h3>Image display - Lightbox</h3>
+    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> IMAGE DISPLAY - LIGHTBOX</h3>
     <hr>
     <blockquote>
       The lightbox is used to display images in full size.
       <br><br>
       <img src="img/ngy2_lightbox.png" class="img-responsive center-block">
       <br><br>
-      All available tools can be displaued in each of the 3 toolbar. Possible tools: 'previousButton', 'pageCounter', 'nextButton', 'playPauseButton', 'fullscreenButton', 'infoButton', 'linkOriginalButton', 'closeButton', 'downloadButton', 'label', 'customN'<br>
-      To add custom elements in a toolbar, use the label customN, where N is an integer (e.g. custom1, custom2...).
+      All available tools can be displaued in each of the 3 toolbar.
+      <br>
+      Possible tools: <b>'previousButton', 'pageCounter', 'nextButton', 'playPauseButton', 'fullscreenButton', 'infoButton', 'linkOriginalButton', 'closeButton', 'downloadButton', 'label', 'customN'</b><br>
+      To add custom elements in a toolbar, use the label <b>customN</b>, where <b>N</b> is an integer (e.g. custom1, custom2...).
     </blockquote>
     <div class="table-responsive">
       <table class="table table-striped table-hover">
@@ -1584,7 +1636,11 @@
             <td>imageTransition</td>
             <td>string</td>
             <td>'swipe'</td>
-            <td>Animation from one image to the next one. Possible values: 'slideAppear', 'swipe'.</td>
+            <td>
+              Animation from one image to the next one.
+              <br>
+              Possible values: <b>'slideAppear', 'swipe'</b>.
+            </td>
             <td>1.0</td>
           </tr>
           <tr>
@@ -1638,7 +1694,7 @@
             <td>string</td>
             <td>'bottomOverImage'</td>
             <td>Vertical position.<br>
-            Possible values: 'top', 'topOverImage', 'bottom', 'bottomOverImage'</td>
+            Possible values: <b>'top', 'topOverImage', 'bottom', 'bottomOverImage'</b></td>
             <td>1.0</td>
           </tr>
           <tr>
@@ -1646,7 +1702,7 @@
             <td>string</td>
             <td>'center'</td>
             <td>Horizontal alignement.<br>
-            Possible values: 'left', 'right', 'center'</td>
+            Possible values: <b>'left', 'right', 'center'</b></td>
             <td>1.0</td>
           </tr>
           <tr>
@@ -1669,7 +1725,7 @@
             <td></td>
             <td>
               List of items to display in the standard toolbar (comma separated).<br>
-              For this toolbar, 'minimizeButton' is additionally available.<br>
+              For this toolbar, <b>'minimizeButton'</b> is additionally available.<br>
               Default value:
               <br>
               <code>viewerToolbar: { standard :'minimizeButton, label'}</code><br>
@@ -1682,7 +1738,7 @@
             <td></td>
             <td>
               List of items to display in the minimized toolbar (comma separated).<br>
-              For this toolbar, 'minimizeButton' is additionally available.<br>
+              For this toolbar, <b>'minimizeButton'</b> is additionally available.<br>
               Default value:
               <br>
               <code>viewerToolbar: { standard :'minimizeButton, infoButton, downloadButton, linkOriginalButton, label, fullscreenButton'}</code><br>
@@ -1723,7 +1779,7 @@
             <td>string<br>object</td>
             <td>'dark'</td>
             <td>Image display color scheme.
-            <br>Possible values: 'dark', 'light', 'border'.
+            <br>Possible values: <b>'dark', 'light', 'border'</b>.
             <br>Custom color schemes are supported.</td>
             <td>1.0</td>
           </tr>
@@ -1731,7 +1787,7 @@
             <td>viewerDisplayLogo</td>
             <td>boolean</td>
             <td>false</td>
-            <td>To display a logo.</td>
+            <td>To display a logo over the image.</td>
             <td></td>
           </tr>
           <tr>
@@ -1747,7 +1803,7 @@
 
     <div id="ngy2_icons"></div>
     <br><br><br><br><br><br><br>
-    <h3>Custom icons</h3>
+    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> CUSTOM ICONS</h3>
     <hr>
     <blockquote>
       All icons used in the gallery can be customized. By default, an icon font is used.<br>
@@ -2130,7 +2186,7 @@
     
     <div id="ngy2_colorschemes"></div>
     <br><br><br><br><br><br><br>
-    <h3>Color schemes</h3>
+    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> COLOR SCHEMES</h3>
     <hr>
     <blockquote>
       Color schemes allow you to customize some elements without changing the CSS file.<br>
@@ -2171,7 +2227,7 @@
     
     <div id="ngy2_upgrade"></div>
     <br><br><br><br><br><br><br>
-    <h3>Upgrading from nanoGALLERY</h3>
+    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> UPGRADING FROM nanoGALLERY</h3>
     <hr>
     <blockquote>
       nanogallery2 comes with an interesting set of new features that should streamline your development experience.
@@ -2348,7 +2404,7 @@
 
     <div id="ngy2_faq"></div>
     <br><br><br><br><br><br><br>
-    <h3>Tips and tricks</h3>
+    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> TIPS AND TRICKS</h3>
     <hr>
     <blockquote>
       Recommandations / Performances / FAQ
@@ -2387,7 +2443,7 @@
 
     <div id="ngy2_security"></div>
     <br><br><br><br><br><br><br>
-    <h3>Security</h3>
+    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> SECURITY</h3>
     <hr>
     <blockquote>
       By default, HTML tags cannot be used in titles and descriptions of images.<br>
