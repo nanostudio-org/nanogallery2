@@ -37,6 +37,11 @@
         <button type="button" class="btn btn-primary" id="btnNGY2_source_demo3">Self hosted</button>
         <button type="button" class="btn btn-primary" id="btnNGY2_source_demo3a">Self hosted - albums</button>
         <br><br>
+        <button type="button" class="btn btn-primary" id="btnNGY2_source_npp2_demo1">nanoPhotosProvider (self hosted photos and albums)</button>
+        
+        nanoPhotosProvider2 is a PHP application available on 
+          <a href="https://github.com/nanostudio-org/nanoPhotosProvider2" type="button" class="btn btn-warning" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> &nbsp; Github</a>
+        <br><br>
         <button type="button" class="btn btn-primary" id="btnNGY2_source_demo1">Flickr - photostream</button>
         <button type="button" class="btn btn-primary" id="btnNGY2_source_demo1a">Flickr - albums</button>
         <button type="button" class="btn btn-primary" id="btnNGY2_source_demo1b">Flickr - one album</button>
@@ -180,8 +185,8 @@
       html_part1+='  &lt;head&gt;\n';
       html_part1+='    &lt;meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"&gt;\n\n';
       html_part1+='    &lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"&gt;&lt;/script&gt;\n\n';
-      html_part1+='    &lt;link href="https://unpkg.com/nanogallery2@1.2.1/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css"&gt;\n';
-      html_part1+='    &lt;script type="text/javascript" src="https://unpkg.com/nanogallery2@1.2.1/dist/jquery.nanogallery2.min.js"&gt;&lt;/script&gt;\n';
+      html_part1+='    &lt;link href="https://unpkg.com/nanogallery2@1.3.0/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css"&gt;\n';
+      html_part1+='    &lt;script type="text/javascript" src="https://unpkg.com/nanogallery2@1.3.0/dist/jquery.nanogallery2.min.js"&gt;&lt;/script&gt;\n';
       html_part1+='\n';
       html_part1+='  &lt;/head&gt;\n';
       html_part1+='  &lt;body&gt;\n\n';
@@ -216,10 +221,10 @@
             locationHash: false
           });
           var html=html_part1;
-          html+='        "kind": "flickr",\n';
-          html+='        "userID": "149035168@N08",\n';
+          html+='        "kind":            "flickr",\n';
+          html+='        "userID":          "149035168@N08",\n';
           html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
-          html+='        "album": "none"\n';
+          html+='        "album":           "none"\n';
           html+=html_part2+html_part3;
           jQuery('#ngy2_template').html(html);
           var html2=portable_part1;
@@ -236,8 +241,8 @@
             locationHash: false
           });
           var html=html_part1;
-          html+='        "kind": "flickr",\n';
-          html+='        "userID": "149035168@N08",\n';
+          html+='        "kind":            "flickr",\n';
+          html+='        "userID":          "149035168@N08",\n';
           html+='        "thumbnailHeight": 150, "thumbnailWidth": 150\n';
           html+=html_part2+html_part3;
           jQuery('#ngy2_template').html(html);
@@ -256,10 +261,10 @@
             locationHash: false
           });
           var html=html_part1;
-          html+='        "kind": "flickr",\n';
-          html+='        "userID": "149035168@N08",\n';
+          html+='        "kind":            "flickr",\n';
+          html+='        "userID":          "149035168@N08",\n';
           html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
-          html+='        "photoset": "72157675219521270"\n';
+          html+='        "photoset":        "72157675219521270"\n';
           html+=html_part2+html_part3;
           jQuery('#ngy2_template').html(html);
           var html2=portable_part1;
@@ -279,9 +284,9 @@
             locationHash: false
           });
           var html=html_part1;
-          html+='        "kind": "google",\n';
-          html+='        "userID": "111186676244625461692",\n';
-          html+='        "google2URL": "https://YOUR_WEB_SERVER/nanogp/nanogp.php",\n';
+          html+='        "kind":            "google2",\n';
+          html+='        "userID":          "111186676244625461692",\n';
+          html+='        "google2URL":      "https://YOUR_WEB_SERVER/nanogp/nanogp.php",\n';
           html+='        "thumbnailHeight": 150, "thumbnailWidth": 150\n';
           html+=html_part2+html_part3;
           jQuery('#ngy2_template').html(html);
@@ -301,10 +306,10 @@
             locationHash: false
           });
           var html=html_part1;
-          html+='        "kind": "google2",\n';
-          html+='        "userID": "111186676244625461692",\n';
-          html+='        "google2URL": "https://YOUR_WEB_SERVER/nanogp/nanogp.php",\n';
-          html+='        "album": "5852572882905112961",\n';
+          html+='        "kind":            "google2",\n';
+          html+='        "userID":          "111186676244625461692",\n';
+          html+='        "google2URL":      "https://YOUR_WEB_SERVER/nanogp/nanogp.php",\n';
+          html+='        "album":           "5852572882905112961",\n';
           html+='        "thumbnailHeight": 150, "thumbnailWidth": 150\n';
           html+=html_part2+html_part3;
           jQuery('#ngy2_template').html(html);
@@ -324,10 +329,10 @@
             locationHash: false
           });
           var html=html_part1;
-          html+='        "kind": "google2",\n';
-          html+='        "userID": "111186676244625461692",\n';
-          html+='        "google2URL": "https://YOUR_WEB_SERVER/nanogp/nanogp.php",\n';
-          html+='        "album": "5852572882905112961",\n';
+          html+='        "kind":            "google2",\n';
+          html+='        "userID":          "111186676244625461692",\n';
+          html+='        "google2URL":      "https://YOUR_WEB_SERVER/nanogp/nanogp.php",\n';
+          html+='        "album":           "5852572882905112961",\n';
           //html+='        "album": "5851968929721015169&authkey=CJSlhdKSgoiXtgE",\n';
           html+='        "thumbnailHeight": 150, "thumbnailWidth": 150\n';
           html+=html_part2+html_part3;
@@ -352,9 +357,9 @@
             ]
           });
           var html=html_part1;
-          html+='        "thumbnailHeight": 210, "thumbnailWidth": 210,\n';
-          html+='        "thumbnailL1GutterWidth": 90,\n';
-          html+='        "itemsBaseURL": "http://nanogallery2.nanostudio.org/samples/"\n';
+          html+='        "thumbnailHeight":         210, "thumbnailWidth": 210,\n';
+          html+='        "thumbnailL1GutterWidth":  90,\n';
+          html+='        "itemsBaseURL":            "http://nanogallery2.nanostudio.org/samples/"\n';
           html+=html_part2;
           html+='      \n';
           html+='      &lt;!-- IMAGES -->\n';
@@ -386,18 +391,40 @@
           html+=html_part2;
           html+='      \n';
           html+='      &lt;!-- FIRST ALBUM -->\n';
-          html+='      &lt;a href="" data-ngkind="album" data-ngid="1" data-ngthumb="berlin1t">Album A&lt;/a>\n';
-          html+='      &lt;a href="berlin1.jpg" data-ngid="10" data-ngalbumid="1" data-ngthumb="berlin1t">Image A1&lt;/a>\n';
-          html+='      &lt;a href="berlin1.jpg" data-ngid="11" data-ngalbumid="1" data-ngthumb="berlin1t">Image A2&lt;/a>\n';
+          html+='      &lt;a href="" data-ngkind="album" data-ngid="1"  data-ngthumb="berlin1t">Album A&lt;/a>\n';
+          html+='      &lt;a href="berlin1.jpg"          data-ngid="10" data-ngalbumid="1" data-ngthumb="berlin1t">Image A1&lt;/a>\n';
+          html+='      &lt;a href="berlin1.jpg"          data-ngid="11" data-ngalbumid="1" data-ngthumb="berlin1t">Image A2&lt;/a>\n';
           html+='      \n';
           html+='      &lt;!-- SECOND ALBUM -->\n';
-          html+='      &lt;a href="" data-ngkind="album" data-ngid="2" data-ngthumb="berlin2t">Album B&lt;/a>\n';
-          html+='      &lt;a href="berlin2.jpg" data-ngid="20" data-ngalbumid="2" data-ngthumb="berlin2t">Image B1&lt;/a>\n';
-          html+='      &lt;a href="berlin2.jpg" data-ngid="21" data-ngalbumid="2" data-ngthumb="berlin2t">Image B2&lt;/a>\n';
+          html+='      &lt;a href="" data-ngkind="album" data-ngid="2"  data-ngthumb="berlin2t">Album B&lt;/a>\n';
+          html+='      &lt;a href="berlin2.jpg"          data-ngid="20" data-ngalbumid="2" data-ngthumb="berlin2t">Image B1&lt;/a>\n';
+          html+='      &lt;a href="berlin2.jpg"          data-ngid="21" data-ngalbumid="2" data-ngthumb="berlin2t">Image B2&lt;/a>\n';
           html+=html_part3;
           jQuery('#ngy2_template').html(html);
           jQuery('#ngy2_description').text('Self hosted images. When usiung albums, IDs must be assigned to each element (images and albums).');
         },
+        
+        
+        // Self hosted - nanoPhotosProvider2
+        btnNGY2_source_npp2_demo1: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'nano_photos_provider2',
+            dataProvider: 'http://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
+            thumbnailHeight: 150, thumbnailWidth:'auto',
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='      "kind":             "nano_photos_provider2",\n';
+          html+='      "dataProvider":     "http://mywebsever.com/mypath/nano_photos_provider2/nano_photos_provider2.php",\n';
+          html+='      "thumbnailHeight":  150,\n';
+          html+='      "thumbnailWidth":   "auto"\n';
+          html+=html_part2;
+          html+='      \n';
+          html+=html_part3;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Self hosted images. When usiung albums, IDs must be assigned to each element (images and albums).');
+        },
+
         
         // ##################################################
         // THUMBNAIL HOVER EFFECTS
@@ -425,14 +452,14 @@
             ]
           });
           var html=html_part1;
-          html+='        "thumbnailHeight": 210, "thumbnailWidth": 210,\n';
-          html+='        "thumbnailL1GutterWidth": 90,\n';
+          html+='        "thumbnailHeight":         210, "thumbnailWidth": 210,\n';
+          html+='        "thumbnailL1GutterWidth":  90,\n';
           html+='        "thumbnailL1GutterHeight": 90,\n';
-          html+='        "itemsBaseURL": "http://nanogallery2.nanostudio.org/samples/",\n';
-          html+='        "thumbnailStacks": 4,\n';
-          html+='        "thumbnailStacksRotateZ": 0.4,\n';
-          html+='        "thumbnailBuildInit2": "thumbnail_transform-origin_50% 150%",\n';
-          html+='        "thumbnailHoverEffect2": "thumbnail_rotateZ_0deg_15deg_easeOutQuad_200_hoverin | thumbnail_rotateZ_15deg_-10deg_delay250_keyframe_hoverin_easeOutBack_400 | thumbnail_rotateZ_-10deg_0deg_keyframe_hoverout_easeOutBack_400"\n';
+          html+='        "itemsBaseURL":            "http://nanogallery2.nanostudio.org/samples/",\n';
+          html+='        "thumbnailStacks":         4,\n';
+          html+='        "thumbnailStacksRotateZ":  0.4,\n';
+          html+='        "thumbnailBuildInit2":     "thumbnail_transform-origin_50% 150%",\n';
+          html+='        "thumbnailHoverEffect2":   "thumbnail_rotateZ_0deg_15deg_easeOutQuad_200_hoverin | thumbnail_rotateZ_15deg_-10deg_delay250_keyframe_hoverin_easeOutBack_400 | thumbnail_rotateZ_-10deg_0deg_keyframe_hoverout_easeOutBack_400"\n';
           html+=html_part2;
           html+='      \n';
           html+='      &lt;!-- IMAGES -->\n';
@@ -465,14 +492,14 @@
             ]
           });
           var html=html_part1;
-          html+='        "thumbnailHeight": 210, "thumbnailWidth": 210,\n';
-          html+='        "thumbnailL1GutterWidth": 90,\n';
+          html+='        "thumbnailHeight": 210,    "thumbnailWidth": 210,\n';
+          html+='        "thumbnailL1GutterWidth":  90,\n';
           html+='        "thumbnailL1GutterHeight": 90,\n';
-          html+='        "itemsBaseURL": "http://nanogallery2.nanostudio.org/samples/",\n';
-          html+='        "thumbnailStacksRotateZ": 0.4,\n';
-          html+='        "thumbnailStacksRotateZ": 0.4,\n';
-          html+='        "galleryBuildInit2": "perspective-origin_50% 150%",\n';
-          html+='        "thumbnailHoverEffect2": "image_rotateZ_0deg_7deg_easeOutQuad_150_hoverin|image_rotateZ_7deg_-7deg_delay160_keyframe_hoverin_easeOutQuad_200|image_rotateZ_-7deg_0deg_delay320_keyframe_hoverin_easeOutQuad_150"\n';
+          html+='        "itemsBaseURL":            "http://nanogallery2.nanostudio.org/samples/",\n';
+          html+='        "thumbnailStacksRotateZ":  0.4,\n';
+          html+='        "thumbnailStacksRotateZ":  0.4,\n';
+          html+='        "galleryBuildInit2":       "perspective-origin_50% 150%",\n';
+          html+='        "thumbnailHoverEffect2":   "image_rotateZ_0deg_7deg_easeOutQuad_150_hoverin|image_rotateZ_7deg_-7deg_delay160_keyframe_hoverin_easeOutQuad_200|image_rotateZ_-7deg_0deg_delay320_keyframe_hoverin_easeOutQuad_150"\n';
           html+=html_part2;
           html+='      \n';
           html+='      &lt;!-- IMAGES -->\n';
@@ -511,14 +538,14 @@
             ]
           });
           var html=html_part1;
-          html+='        "thumbnailHeight": 210, "thumbnailWidth": 210,\n';
-          html+='        "thumbnailL1GutterWidth": 90,\n';
+          html+='        "thumbnailHeight":         210, "thumbnailWidth": 210,\n';
+          html+='        "thumbnailL1GutterWidth":  90,\n';
           html+='        "thumbnailL1GutterHeight": 90,\n';
-          html+='        "itemsBaseURL": "http://nanogallery2.nanostudio.org/samples/",\n';
-          html+='        "thumbnailStacksRotateZ": 0.4,\n';
-          html+='        "thumbnailBuildInit2": "title_translateY_10px",\n';
-          html+='        "galleryBuildInit2": "perspective_1000px",\n';
-          html+='        "thumbnailHoverEffect2": "thumbnail_rotateY_0deg_30deg_easeOutQuad_150_hoverin|thumbnail_rotateY_30deg_-30deg_delay160_keyframe_hoverin_easeOutQuad_200|thumbnail_rotateY_-30deg_0deg_delay320_keyframe_hoverin_easeOutQuad_150|title_translateX_0px_20px_easeOutQuad_150_hoverin|title_translateX_20px_-20px_delay160_keyframe_hoverin_easeOutQuad_200|title_translateX_-20px_0px_delay320_keyframe_hoverin_easeOutQuad_150|description_translateX_0px_12px_easeOutQuad_150_hoverin|description_translateX_12px_-12px_delay160_keyframe_hoverin_easeOutQuad_200|description_translateX_-12px_0px_delay320_keyframe_hoverin_easeOutQuad_150"\n';
+          html+='        "itemsBaseURL":            "http://nanogallery2.nanostudio.org/samples/",\n';
+          html+='        "thumbnailStacksRotateZ":  0.4,\n';
+          html+='        "thumbnailBuildInit2":     "title_translateY_10px",\n';
+          html+='        "galleryBuildInit2":       "perspective_1000px",\n';
+          html+='        "thumbnailHoverEffect2":   "thumbnail_rotateY_0deg_30deg_easeOutQuad_150_hoverin|thumbnail_rotateY_30deg_-30deg_delay160_keyframe_hoverin_easeOutQuad_200|thumbnail_rotateY_-30deg_0deg_delay320_keyframe_hoverin_easeOutQuad_150|title_translateX_0px_20px_easeOutQuad_150_hoverin|title_translateX_20px_-20px_delay160_keyframe_hoverin_easeOutQuad_200|title_translateX_-20px_0px_delay320_keyframe_hoverin_easeOutQuad_150|description_translateX_0px_12px_easeOutQuad_150_hoverin|description_translateX_12px_-12px_delay160_keyframe_hoverin_easeOutQuad_200|description_translateX_-12px_0px_delay320_keyframe_hoverin_easeOutQuad_150"\n';
           html+=html_part2;
           html+='      \n';
           html+='      &lt;!-- IMAGES -->\n';
@@ -553,15 +580,15 @@
             ]
           });
           var html=html_part1;
-          html+='        "thumbnailHeight": 210, "thumbnailWidth": 210,\n';
-          html+='        "thumbnailL1GutterWidth": 90,\n';
-          html+='        "thumbnailL1GutterHeight": 90,\n';
-          html+='        "itemsBaseURL": "http://nanogallery2.nanostudio.org/samples/",\n';
-          html+='        "thumbnailStacks": 4,\n';
+          html+='        "thumbnailHeight":           210, "thumbnailWidth": 210,\n';
+          html+='        "thumbnailL1GutterWidth":    90,\n';
+          html+='        "thumbnailL1GutterHeight":   90,\n';
+          html+='        "itemsBaseURL":              "http://nanogallery2.nanostudio.org/samples/",\n';
+          html+='        "thumbnailStacks":           4,\n';
           html+='        "thumbnailStacksTranslateZ": 0.3,\n';
-          html+='        "thumbnailStacksRotateX": 0.9,\n';
-          html+='        "galleryBuildInit2": "perspective_900px|perspective-origin_50% 150%",\n';
-          html+='        "thumbnailHoverEffect2": "thumbnail_translateZ_0px_100px_easeOutQuad_400 | thumbnail_rotateX_0deg_10deg_easeOutBack_200 | thumbnail_rotateX_10deg_0deg_delay250_keyframe_hoverin_easeOutBack_400"\n';
+          html+='        "thumbnailStacksRotateX":    0.9,\n';
+          html+='        "galleryBuildInit2":         "perspective_900px|perspective-origin_50% 150%",\n';
+          html+='        "thumbnailHoverEffect2":     "thumbnail_translateZ_0px_100px_easeOutQuad_400 | thumbnail_rotateX_0deg_10deg_easeOutBack_200 | thumbnail_rotateX_10deg_0deg_delay250_keyframe_hoverin_easeOutBack_400"\n';
           html+=html_part2;
           html+='      \n';
           html+='      &lt;!-- IMAGES -->\n';
@@ -586,10 +613,10 @@
             locationHash: false
           });
           var html=html_part1;
-          html+='        "kind": "flickr",\n';
-          html+='        "userID": "149035168@N08",\n';
+          html+='        "kind":            "flickr",\n';
+          html+='        "userID":          "149035168@N08",\n';
           html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
-          html+='        "album": "none"\n';
+          html+='        "album":           "none"\n';
           html+=html_part2+html_part3;
           jQuery('#ngy2_template').html(html);
           var html2=portable_part1;
@@ -610,12 +637,12 @@
             locationHash: false
           });
           var html=html_part1;
-          html+='        "kind": "flickr",\n';
-          html+='        "userID": "149035168@N08",\n';
-          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
-          html+='        "album": "none",\n';
-          html+='        "galleryDisplayMode": "moreButton",\n';
-          html+='        "galleryDisplayMoreStep": 2\n';
+          html+='        "kind":                    "flickr",\n';
+          html+='        "userID":                  "149035168@N08",\n';
+          html+='        "thumbnailHeight":         150, "thumbnailWidth": 150,\n';
+          html+='        "album":                   "none",\n';
+          html+='        "galleryDisplayMode":      "moreButton",\n';
+          html+='        "galleryDisplayMoreStep":  2\n';
           html+=html_part2+html_part3;
           //html+=html_part3;
           jQuery('#ngy2_template').html(html);
@@ -638,12 +665,12 @@
             locationHash: false
           });
           var html=html_part1;
-          html+='        "kind": "flickr",\n';
-          html+='        "userID": "149035168@N08",\n';
-          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
-          html+='        "album": "none",\n';
-          html+='        "galleryDisplayMode": "pagination",\n';
-          html+='        "galleryMaxRows": 2,\n';
+          html+='        "kind":                  "flickr",\n';
+          html+='        "userID":                "149035168@N08",\n';
+          html+='        "thumbnailHeight":       150, "thumbnailWidth": 150,\n';
+          html+='        "album":                 "none",\n';
+          html+='        "galleryDisplayMode":    "pagination",\n';
+          html+='        "galleryMaxRows":        2,\n';
           html+='        "galleryPaginationMode": "numbers"\n';
           html+=html_part2+html_part3;
           jQuery('#ngy2_template').html(html);
@@ -666,12 +693,12 @@
             locationHash: false
           });
           var html=html_part1;
-          html+='        "kind": "flickr",\n';
-          html+='        "userID": "149035168@N08",\n';
-          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
-          html+='        "album": "none",\n';
-          html+='        "galleryDisplayMode": "pagination",\n';
-          html+='        "galleryMaxRows": 2,\n';
+          html+='        "kind":                  "flickr",\n';
+          html+='        "userID":                "149035168@N08",\n';
+          html+='        "thumbnailHeight":       150, "thumbnailWidth": 150,\n';
+          html+='        "album":                 "none",\n';
+          html+='        "galleryDisplayMode":    "pagination",\n';
+          html+='        "galleryMaxRows":        2,\n';
           html+='        "galleryPaginationMode": "dots"\n';
           html+=html_part2+html_part3;
           jQuery('#ngy2_template').html(html);
@@ -694,11 +721,11 @@
           });
           var html=html_part1;
           html+='        "kind": "flickr",\n';
-          html+='        "userID": "149035168@N08",\n';
-          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
-          html+='        "album": "none",\n';
-          html+='        "galleryDisplayMode": "rows",\n';
-          html+='        "galleryMaxRows": 2\n';
+          html+='        "userID":              "149035168@N08",\n';
+          html+='        "thumbnailHeight":     150, "thumbnailWidth": 150,\n';
+          html+='        "album":               "none",\n';
+          html+='        "galleryDisplayMode":  "rows",\n';
+          html+='        "galleryMaxRows":      2\n';
           html+=html_part2+html_part3;
           jQuery('#ngy2_template').html(html);
           var html2=portable_part1;
@@ -723,11 +750,11 @@
             locationHash: false
           });
           var html=html_part1;
-          html+='        "kind": "flickr",\n';
-          html+='        "userID": "149035168@N08",\n';
-          html+='        "photoset": "72157675219521270",\n';
+          html+='        "kind":            "flickr",\n';
+          html+='        "userID":          "149035168@N08",\n';
+          html+='        "photoset":        "72157675219521270",\n';
           html+='        "thumbnailHeight": 150,\n';
-          html+='        "thumbnailWidth": "auto"\n';
+          html+='        "thumbnailWidth":  "auto"\n';
           html+=html_part2+html_part3;
           jQuery('#ngy2_template').html(html);
           var html2=portable_part1;
@@ -747,11 +774,11 @@
             locationHash: false
           });
           var html=html_part1;
-          html+='        "kind": "flickr",\n';
-          html+='        "userID": "149035168@N08",\n';
-          html+='        "photoset": "72157675219521270",\n';
+          html+='        "kind":            "flickr",\n';
+          html+='        "userID":          "149035168@N08",\n';
+          html+='        "photoset":        "72157675219521270",\n';
           html+='        "thumbnailHeight": 150,\n';
-          html+='        "thumbnailWidth": 150\n';
+          html+='        "thumbnailWidth":  150\n';
           html+=html_part2+html_part3;
           jQuery('#ngy2_template').html(html);
           var html2=portable_part1;
@@ -772,12 +799,12 @@
             locationHash: false
           });
           var html=html_part1;
-          html+='        "kind": "flickr",\n';
-          html+='        "userID": "149035168@N08",\n';
-          html+='        "photoset": "72157675219521270",\n';
-          html+='        "thumbnailLabel": { "position" : "onBottom" },\n';
+          html+='        "kind":            "flickr",\n';
+          html+='        "userID":          "149035168@N08",\n';
+          html+='        "photoset":        "72157675219521270",\n';
+          html+='        "thumbnailLabel":  { "position" : "onBottom" },\n';
           html+='        "thumbnailHeight": "auto",\n';
-          html+='        "thumbnailWidth": 200\n';
+          html+='        "thumbnailWidth":  200\n';
           html+=html_part2+html_part3;
           jQuery('#ngy2_template').html(html);
           var html2=portable_part1;
@@ -800,8 +827,8 @@
             locationHash: false
           });
           var html=html_part1;
-          html+='        "kind": "google",\n';
-          html+='        "userID": "111186676244625461692",\n';
+          html+='        "kind":    "google",\n';
+          html+='        "userID":  "111186676244625461692",\n';
           html+='        "breadcrumbAutoHideTopLevel": false\n';
           html+=html_part2+html_part3;
           jQuery('#ngy2_template').html(html);
@@ -823,10 +850,10 @@
             locationHash: false
           });
           var html=html_part1;
-          html+='        "kind": "google",\n';
-          html+='        "userID": "111186676244625461692",\n';
-          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
-          html+='        "thumbnailLevelUp": true,\n';
+          html+='        "kind":              "google",\n';
+          html+='        "userID":            "111186676244625461692",\n';
+          html+='        "thumbnailHeight":   150, "thumbnailWidth": 150,\n';
+          html+='        "thumbnailLevelUp":  true,\n';
           html+='        "displayBreadcrumb": false\n';
           html+=html_part2+html_part3;
           jQuery('#ngy2_template').html(html);
@@ -850,11 +877,11 @@
             
           });
           var html=html_part1;
-          html+='        "kind": "google",\n';
-          html+='        "userID": "111186676244625461692",\n';
-          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
-          html+='        "galleryFilterTags": "title",\n';
-          html+='        "displayBreadcrumb": false\n';
+          html+='        "kind":                "google",\n';
+          html+='        "userID":              "111186676244625461692",\n';
+          html+='        "thumbnailHeight":     150, "thumbnailWidth": 150,\n';
+          html+='        "galleryFilterTags":   "title",\n';
+          html+='        "displayBreadcrumb":   false\n';
           html+=html_part2+html_part3;
           jQuery('#ngy2_template').html(html);
           var html2=portable_part1;
