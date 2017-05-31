@@ -1,4 +1,4 @@
-/* nanogallery2 - v1.3.0 - 2017-05-11 - http://nanogallery2.nanostudio.org */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2017-05-31 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /**!
  * @preserve nanogallery2 - javascript image gallery
  * Homepage: http://nanogallery2.nanostudio.org
@@ -21,27 +21,10 @@
 
 /*
 
-v1.3.0
-- new: #3 Auto hide tools on image view after inactivity. Use the option viewerHideToolsDelay to define the delay in ms.
-- new: compatibility to nanoPhotosProvider2 (https://github.com/nanostudio-org/nanoPhotosProvider2)
-- new: possibility to display dominant color gradient (blurred images) during image load (on thumbnails, not supported by Google Photos or Flickr data source)
-- new: thumbnail display transitions, new possibilties: 'flipDown', 'flipUp', 'slideUp2', 'slideDown2', 'slideRight', 'slideLeft'
-- new: thumbnailDisplayTransition 'slideUp' and 'slideDown': distance can be defined (example: 'slideUp_200')
-- new: share to VK.com
-- new: #39 lightbox single tap/click to go to next/previous image (to remove the single tap delay, set option 'viewerZoom' to false)
-- new: album level 1 specific options: 'fnThumbnailL1DisplayEffect', 'thumbnailL1DisplayTransition', 'thumbnailL1DisplayTransitionDuration', 'thumbnailL1DisplayInterval'
-- new: #30 callbacks in HTML markup mode
-- new: enhanced compatibility to browser without CSS Transform support
-- new: ImagesLoaded now in version 4.1.1
-- new: screenfull.js now in version 3.2.0
-- changed: removed share button from to top right toolbar (can be changed with the option 'viewerTools')
-- fixed: low image quality in some cases
-- fixed: share to Google+
-- fixed: old Picasa albums not retrieved (for data before 09/02/2017)
-- fixed: #14 Slideshow stop on iPhone/android
-- fixex: #34 Image description - filename no more used in title by default
-- fixed: #37 Error using custom colors for colorSchemeViewer breaks nanoGallery2
-- fixed: #38 Fullscreen icon when opening in fullscreen
+v1.3.1 - BETA VERSION - DO NOT USE
+- new: option 'thumbnailWaitImageLoaded' for displaying thumbnail's image smoothly when fully downloaded
+- changed: default thumbnail background color to from black to gray
+- nanoPhotosProvider2 add-on: tags support
 
 */ 
  
@@ -270,8 +253,9 @@ v1.3.0
               width:  { l1: { xs: 0,  sm: 0, me: 0,  la: 0 , xl: 0  }, lN: { xs: 0 , sm: 0,  me: 0,  la: 0, xl: 0  } },
               height: { l1: { xs: 0,  sm: 0, me: 0,  la: 0 , xl: 0  }, lN: { xs: 0,  sm: 0,  me: 0,  la: 0, xl: 0  } }
             };
-            this.imageDominantColors    =  null;  // base64 GIF
-            this.imageDominantColor     =  null;  // HEX RGB
+            this.thumbnailImgRevealed   = false;  // thumbnail image already revealed
+            this.imageDominantColors    = null;   // base64 GIF
+            this.imageDominantColor     = null;   // HEX RGB
             this.featured =             false;    // featured element
             this.flickrThumbSizes =     {};       // store URLs for all available thumbnail sizes (flickr)
             this.picasaThumbs =         null;     // store URLs and sizes
@@ -649,6 +633,27 @@ v1.3.0
                 break;
             }
             return url;
+          };
+          
+          
+          //--- Reveal the thumbnail image with animation on opacity
+          NGY2Item.prototype.ThumbnailImageReveal = function () {
+
+            if( this.thumbnailImgRevealed == false ) {
+              this.thumbnailImgRevealed=true;
+              var tweenable = new NGTweenable();
+              tweenable.tween({
+                from:         { opacity: 0 },
+                to:           { opacity: 1 },
+                attachment:   { item: this },
+                delay:        0,
+                duration:     600,
+                easing:       'easeOutQuart',
+                step:         function (state, att) {
+                  att.item.$getElt('.nGY2TnImg').css('opacity', state.opacity);
+                }
+              });
+            }
           };
           
           
@@ -1048,6 +1053,7 @@ v1.3.0
     thumbnailStacksScale :        0,
     thumbnailL1StacksScale :      null,
     thumbnailDisplayOutsideScreen: false,
+    thumbnailWaitImageLoaded:     true,
     galleryBuildInit2 :           '',
     portable :                    false,
     
@@ -1938,7 +1944,7 @@ v1.3.0
       navigationBar :         { background: 'none', borderTop: '', borderBottom: '', borderRight: '', borderLeft: '' },
       navigationBreadcrumb :  { background: '#111', color: '#fff', colorHover: '#ccc', borderRadius: '6px' },
       navigationFilter :      { color: '#ddd', background: '#111', colorSelected: '#fff', backgroundSelected: '#111', borderRadius: '6px' },
-      thumbnail :             { background: '#000', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#aaa' },
+      thumbnail :             { background: '#444', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#aaa' },
       thumbnailIcon :         { padding: '5px', color: '#fff' },
       pagination :            { background: '#111', backgroundSelected: '#666', color: '#fff', borderRadius: '4px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
     };
@@ -1947,7 +1953,7 @@ v1.3.0
       navigationBar :         { background: 'none', borderTop: '', borderBottom: '', borderRight: '', borderLeft: '' },
       navigationBreadcrumb :  { background: '#eee', color: '#000', colorHover: '#333', borderRadius: '6px' },
       navigationFilter :      { background: '#eee', color: '#222', colorSelected: '#000', backgroundSelected: '#eee', borderRadius: '6px' },
-      thumbnail :             { background: '#000', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#888' },
+      thumbnail :             { background: '#444', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#888' },
       thumbnailIcon :         { padding: '5px', color: '#fff' },
       pagination :            { background: '#eee', backgroundSelected: '#aaa', color: '#000', borderRadius: '4px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
     };
@@ -2681,21 +2687,25 @@ v1.3.0
           },
           finish:   function (state, att) {
             G.$E.conNavigationBar.css({ 'opacity': 1 });
+            // display gallery
+            GalleryRenderPart2( albumIdx );
           }
         });
       }
+      else {
+        // display gallery
+        GalleryRenderPart2( albumIdx );
+      }
 
-      // display gallery
-      GalleryRenderPart2( albumIdx );
     }
     
     // Gallery render part 2 -> remove all thumbnails
     function GalleryRenderPart2(albumIdx) {
+      G.$E.conTnParent.css({'opacity': 0 });
       G.GOM.lastZIndex = parseInt(G.$E.base.css('z-index'));
       if( isNaN(G.GOM.lastZIndex) ) {
         G.GOM.lastZIndex=0;
       }
-      G.$E.conTnParent.css({'opacity': 0 });
       G.$E.conTn.off().empty();
       var l=G.I.length;
       for( var i=0; i < l ; i++ ) {
@@ -2712,6 +2722,7 @@ v1.3.0
         item.top=0;
         item.resizedContentWidth=0;
         item.resizedContentHeight=0;
+        item.thumbnailImgRevealed=false;
       }
 
       if( G.CSStransformName == null ) {
@@ -2721,7 +2732,7 @@ v1.3.0
         G.$E.conTn.css( G.CSStransformName , 'translateX('+0+'px)');
       }
       
-      G.$E.conTnParent.css({ left: 0, opacity: 1 });
+      G.$E.conTnParent.css({ opacity: 1 });
 
       GalleryRenderPart3(albumIdx);
 
@@ -2764,7 +2775,7 @@ v1.3.0
 
         // step 3: display gallery
         GalleryDisplay( false );
-        G.galleryResizeEventEnabled=true;
+        //G.galleryResizeEventEnabled=true;
       }
       else {
         G.galleryResizeEventEnabled=true;
@@ -2810,6 +2821,7 @@ v1.3.0
           var h=item.thumbImg().height;
           // if unknown image size and layout is not grid --> we need to retrieve the size of the images
           if( G.layout.prerequisite.imageSize && ( w == 0 || h == 0) ) {
+          // if( true ) {
             imageSizeRequested=true;
             preloadImages+='<img src="'+item.thumbImg().src+'" data-idx="'+cnt+'" data-albumidx="'+G.GOM.albumIdx+'">';
           }
@@ -2839,6 +2851,7 @@ v1.3.0
       }
       
       if( imageSizeRequested ) {
+      // if( true ) {
         // preload images to retrieve their size and then resize the gallery (=GallerySetLayout()+ GalleryDisplay())
         var $newImg=jQuery(preloadImages);
         var gi_imgLoad = ngimagesLoaded( $newImg );
@@ -3498,6 +3511,22 @@ v1.3.0
           item.$elt.css({ display: 'block', top: top , left: curTn.left });
         }
         newTop=top;
+        
+        // display the image of the thumbnail when fully loaded
+        if( G.O.thumbnailWaitImageLoaded === true ) {
+          var gi_imgLoad = ngimagesLoaded( item.$getElt('.nGY2TnImg') );
+          gi_imgLoad.on( 'progress', function( instance, image ) {
+            if( image.isLoaded ) {
+              var idx=image.img.getAttribute('data-idx');
+              var albumIdx=image.img.getAttribute('data-albumidx');
+              if( albumIdx == G.GOM.albumIdx ) {
+                // ignore event if not on current album
+                G.I[idx].ThumbnailImageReveal();
+              }
+            }
+          });
+        }
+        // display the thumbnail
         ThumbnailAppear(GOMidx, cnt);
 
         curTn.displayed=true;
@@ -3692,10 +3721,10 @@ v1.3.0
       sTitle=getThumbnailTitle(item),
       sDesc=getTumbnailDescription(item);
 
-      // dominant colorS -> background image
-      var imgBG='';
+      // dominant colorS (blurred preview image)
+      var imgBlurred=G.emptyGif;
       if( item.imageDominantColors != null ) {
-        imgBG="background: url('"+item.imageDominantColors+"') no-repeat; background-size: 100% 100%;";
+        imgBlurred=item.imageDominantColors;
       }
       // dominant color -> background color
       var bg=''
@@ -3703,18 +3732,34 @@ v1.3.0
         bg='background:'+item.imageDominantColor+';';
       }
       
+      var op='opacity:1;';
+      if( G.O.thumbnailWaitImageLoaded == true ) {
+        op='opacity:0;';
+      }
+      
       // image
       switch( G.layout.engine ) {
         case 'CASCADING':
-          newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="width:'+G.tn.settings.getW()+'px;'+bg+'"><img class="nGY2GThumbnailImg" src="'+src+'" alt="'+sTitle+'" style="'+imgBG+'max-width:'+G.tn.settings.getW()+'px;"></div>';
+          // fixed width
+          newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="width:'+G.tn.settings.getW()+'px;'+bg+'">';
+          newElt[newEltIdx++]='  <img class="nGY2GThumbnailImg nGY2TnPreview" src="'+imgBlurred+'" style="max-width:'+G.tn.settings.getW()+'px;">';
+          newElt[newEltIdx++]='  <img class="nGY2GThumbnailImg nGY2TnImg" src="'+src+'" alt="'+sTitle+'" style="max-width:'+G.tn.settings.getW()+'px;'+op+'" data-idx="'+idx+'" data-albumidx="'+G.GOM.albumIdx+'">';
+          newElt[newEltIdx++]='</div>';
           break;
         case 'JUSTIFIED':
-          newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="height:'+G.tn.settings.getH()+'px;'+bg+'"><img class="nGY2GThumbnailImg" src="'+src+'" alt="'+sTitle+'" style="'+imgBG+'"></div>';
+          // fixed height
+          newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="height:'+G.tn.settings.getH()+'px;'+bg+'">';
+          newElt[newEltIdx++]='  <img class="nGY2GThumbnailImg nGY2TnPreview" src="'+imgBlurred+'" >';
+          newElt[newEltIdx++]='  <img class="nGY2GThumbnailImg nGY2TnImg" src="'+src+'" alt="'+sTitle+'" style="'+op+'" data-idx="'+idx+'" data-albumidx="'+G.GOM.albumIdx+'">';
+          newElt[newEltIdx++]='</div>';
           break;
         default:    // GRID
+          // fixed width and height
           var imgSize='max-width:'+G.tn.settings.getW()+'px;max-height:'+G.tn.settings.getH()+'px;'
-          // crop images => no black border
+          var imgBWidth='';          
+          
           if( G.tn.opt.Get('crop') == true && item.thumbImg().height > 0 && item.thumbImg().width > 0 ) {
+            // crop images => no black border
             if( item.thumbImg().height > item.thumbImg().width ) {
               // portrait
               imgSize='width:'+G.tn.settings.getW()+'px;';
@@ -3733,6 +3778,7 @@ v1.3.0
                 // no adjustement
                 var d=-(item.thumbImg().width*r2-G.tn.settings.getW()) / 2;
                 imgSize='height:'+G.tn.settings.getH()+'px;left:'+d+'px;';
+                imgBWidth='width:'+item.thumbImg().width+'px;';     // set the width of the blurred preview image
               }
               else {
                 // yes, adjust width
@@ -3743,7 +3789,10 @@ v1.3.0
               }
             }
           }
-          newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="width:'+G.tn.settings.getW()+'px;height:'+G.tn.settings.getH()+'px;'+bg+'"><img class="nGY2GThumbnailImg" src="'+src+'" alt="'+sTitle+'" style="'+imgBG+imgSize+'" ></div>';
+          newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="width:'+G.tn.settings.getW()+'px;height:'+G.tn.settings.getH()+'px;'+bg+'">';
+          newElt[newEltIdx++]='  <img class="nGY2GThumbnailImg nGY2TnPreview" src="'+imgBlurred+'"  style="'+imgSize+imgBWidth+'">';
+          newElt[newEltIdx++]='  <img class="nGY2GThumbnailImg nGY2TnImg" src="'+src+'" alt="'+sTitle+'" style="'+imgSize+op+'" data-idx="'+idx+'" data-albumidx="'+G.GOM.albumIdx+'" >';
+          newElt[newEltIdx++]='</div>';
           break;
       }
 
@@ -4060,8 +4109,10 @@ v1.3.0
     }
     
     
-    // display thumbnail stacks at the end of the display animation
+    // displays thumbnail stacks at the end of the display animation
     function ThumbnailAppearFinish( item ) {
+    
+      // add stacks
       var ns=G.tn.opt.Get('stacks');
       if( ns > 0 ) {
         // display stacks
@@ -5610,7 +5661,7 @@ v1.3.0
     // convert preset hover effects to new ones (nanogallery2)
     function ThumbnailOverEffectsPreset( effects ) {
 
-      // COMPATIBILITY WITH NANOGALLERY1
+      // COMPATIBILITY WITH nanoGALLERY
       // OK:
       //  'borderLighter', 'borderDarker', 'scale120', 'labelAppear', 'labelAppear75', 'labelOpacity50', 'scaleLabelOverImage'
       //  'overScale', 'overScaleOutside', 'descriptionAppear'
@@ -6786,7 +6837,7 @@ v1.3.0
       var vimg=new VImg(imageIdx);
       G.VOM.items.push(vimg);
       items.push(G.I[imageIdx]);
-//TODO -> danger -> pourquoi reconstruire la liste si d�j� ouvert (back/forward)     
+//TODO -> danger? -> pourquoi reconstruire la liste si d�j� ouvert (back/forward)     
       var l=G.I.length;
       for( var idx=imageIdx+1; idx<l ; idx++) {
         var item=G.I[idx];
@@ -6868,7 +6919,7 @@ v1.3.0
       
       SetColorSchemeViewer();
 
-      G.VOM.$viewer=jQuery('<div class="nGY2Viewer" itemscope itemtype="http://schema.org/ImageObject"></div>').appendTo(G.VOM.$cont);
+      G.VOM.$viewer=jQuery('<div class="nGY2Viewer" style="opacity:0" itemscope itemtype="http://schema.org/ImageObject"></div>').appendTo(G.VOM.$cont);
 
       // avoid pinch zoom
       // TODO -> check if still required?
@@ -6898,7 +6949,7 @@ v1.3.0
       ViewerDisplayDominantColors(G.VOM.Item(vomIdx), G.VOM.$imgC.children());
       ViewerDisplayDominantColors(G.VOM.ItemPrevious(vomIdx), G.VOM.$imgP.children());
       ViewerDisplayDominantColors(G.VOM.ItemNext(vomIdx), G.VOM.$imgN.children());
-      
+
       // makes content unselectable --> avoid image drag effect during 'mouse swipe'
       G.VOM.$cont.find('*').attr('draggable', 'false').attr('unselectable', 'on');
       
@@ -6925,7 +6976,7 @@ v1.3.0
       var sTB='<div class="toolbarContainer nGEvent'+vtbBg1+'" style="visibility:'+(G.O.viewerToolbar.display ? "visible" : "hidden")+';'+vtbAlign+'"><div class="toolbar nGEvent'+vtbBg2+'">';
       sTB+='</div></div>';
       G.VOM.$toolbar=jQuery(sTB).appendTo(G.VOM.$viewer);
-      
+
       if( G.VOM.toolbarMode == 'min' || (G.O.viewerToolbar.autoMinimize > 0 && G.O.viewerToolbar.autoMinimize >= getViewport().w) ) {
         ViewerToolbarForVisibilityMin();
       }
@@ -6970,6 +7021,19 @@ v1.3.0
       setElementOnTop('', G.VOM.$viewer);
       ResizeInternalViewer(true);
       G.VOM.timeImgChanged=new Date().getTime();
+      
+      
+      var tweenable = new NGTweenable();
+      tweenable.tween({
+        from:         { opacity: 0 },
+        to:           { opacity: 1 },
+        delay:        0,
+        duration:     500,
+        easing:       'easeOutQuart',
+        step:         function (state) {
+          G.VOM.$viewer.css('opacity', state.opacity);
+        }
+      });
 
       // stop click propagation on image ==> if the user clicks outside of an image, the viewer is closed
       G.VOM.$viewer.find('img').on('click', function (e) {
@@ -7594,7 +7658,7 @@ v1.3.0
     
     // Display image (and run animation)
     function DisplayInternalViewer( vomIdx, displayType ) {
-      
+
       G.VOM.$imgC.children().eq(0).unbind('.imagesLoaded');
       if( G.VOM.playSlideshow ) {
         window.clearTimeout(G.VOM.playSlideshowTimerID);
@@ -8274,7 +8338,9 @@ v1.3.0
       
       // mouse mouse -> unhide lightbox toolbars
       jQuery(window).bind('mousemove', function(e){
-        ViewerToolsUnHide();
+        if( G.galleryResizeEventEnabled ) {
+          ViewerToolsUnHide();
+        }
       });
       
       // fullscreen mode on/off --> internal lightbox
@@ -12019,6 +12085,8 @@ if (typeof define === 'function' && define.amd) {
       url += '&wxl='+G.tn.settings.width[G.GOM.curNavLevel].xl;
       url += '&hxl='+G.tn.settings.height[G.GOM.curNavLevel].xl;
       
+      // console.dir(url);
+      
       PreloaderDisplay(true);
 
       jQuery.ajaxSetup({ cache: false });
@@ -12033,37 +12101,37 @@ if (typeof define === 'function' && define.amd) {
           NanoAlert('Could not retrieve AJAX data...');
         }, 60000 );
 
-        
-          jQuery.getJSON(url, function(data, status, xhr) {
-            clearTimeout(tId);
-            PreloaderDisplay(false);
-            JsonParseData(albumIdx, data);
-            if( data.nano_status == 'ok' ) {
-              AlbumPostProcess(albumID);
-              if( fnToCall !== null &&  fnToCall !== undefined) {
-                fnToCall( fnParam1, fnParam2, null );
-              }
+        // console.log(url);        
+        jQuery.getJSON(url, function(data, status, xhr) {
+          clearTimeout(tId);
+          PreloaderDisplay(false);
+          JsonParseData(albumIdx, data);
+          if( data.nano_status == 'ok' ) {
+            AlbumPostProcess(albumID);
+            if( fnToCall !== null &&  fnToCall !== undefined) {
+              fnToCall( fnParam1, fnParam2, null );
             }
-            else {
-              NanoAlert(G, 'Could not retrieve nanoPhotosProvider data. Error: ' + data.nano_status + ' - ' + data.nano_message);
-            }
-          })
-          .fail( function(jqxhr, textStatus, error) {
-            clearTimeout(tId);
-            PreloaderDisplay(false);
+          }
+          else {
+            NanoAlert(G, 'Could not retrieve nanoPhotosProvider2 data. Error: ' + data.nano_status + ' - ' + data.nano_message);
+          }
+        })
+        .fail( function(jqxhr, textStatus, error) {
+          clearTimeout(tId);
+          PreloaderDisplay(false);
 
-            var k=''
-            for(var key in jqxhr) {
-              k+= key + '=' + jqxhr[key] +'<br>';
-            }
-            var err = textStatus + ', ' + error + ' ' + k + '<br><br>URL:'+url;
-            NanoAlert(G, 'Could not retrieve nanoPhotosProvider data. Error: ' + err);
+          var k=''
+          for(var key in jqxhr) {
+            k+= key + '=' + jqxhr[key] +'<br>';
+          }
+          var err = textStatus + ', ' + error + ' ' + k + '<br><br>URL:'+url;
+          NanoAlert(G, 'Could not retrieve nanoPhotosProvider2 data. Error: ' + err);
 
-          });    
-        
+        });    
+      
       }
       catch(e) {
-        NanoAlert(G, 'Could not retrieve nanoPhotosProvider data. Error: ' + e);
+        NanoAlert(G, 'Could not retrieve nanoPhotosProvider2 data. Error: ' + e);
       }
     }
 
@@ -12089,6 +12157,7 @@ if (typeof define === 'function' && define.amd) {
     function JsonParseData(albumIdx, data) {
       var foundAlbumID=false;
       var nb=0;
+
       jQuery.each(data.album_content, function(i,item){
         var title=item.title;
         // title=GetI18nItem(item,'title');
@@ -12127,7 +12196,12 @@ if (typeof define === 'function' && define.amd) {
             foundAlbumID=true;
           }
 
-          var newItem=NGY2Item.New( G, title, description, ID, albumID, kind, '' );
+          var tags='';
+          if( item.tags !== undefined ) {
+            tags=item.tags;
+          }
+          
+          var newItem=NGY2Item.New( G, title, description, ID, albumID, kind, tags );
           newItem.src=src;
 
           // dominant colors as a gif
@@ -12148,6 +12222,12 @@ if (typeof define === 'function' && define.amd) {
             newItem.imageWidth=item.imgWidth;
             newItem.imageHeight=item.imgHeight;
           }
+          
+          if( item.originalURL != '' ) {
+            // newItem.downloadURL=item.download;
+            newItem.downloadURL=baseURL+JsonConvertCharset(item.originalURL);
+          }
+          
           
           // retrieve responsive thumbnails urls and sizes
           var cnl=G.GOM.curNavLevel;
@@ -12922,7 +13002,7 @@ if (typeof define === 'function' && define.amd) {
           itemTitle=GetImageTitleFromURL(imgUrl);
         }
 
-        tags='';
+        var tags='';
         if( item.tags !== undefined ) {
           tags=item.tags;
         }

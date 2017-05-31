@@ -176,7 +176,7 @@
           itemTitle=GetImageTitleFromURL(imgUrl);
         }
 
-        tags='';
+        var tags='';
         if( item.tags !== undefined ) {
           tags=item.tags;
         }
