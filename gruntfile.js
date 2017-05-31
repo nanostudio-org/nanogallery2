@@ -12,8 +12,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
     
   var banner = [
-        '/* <%= pkg.name %> - v<%= pkg.version %> - ',
-        '<%= grunt.template.today("yyyy-mm-dd") %> - <%= pkg.homepage %> */\n'
+        '/* <%= pkg.name %> - v<%= pkg.version %> - DEV DO NOT USE -',
+        '<%= grunt.template.today("yyyy-mm-dd") %> - <%= pkg.homepage %> - DEV DO NOT USE - */\n'
       ].join('');
 
     grunt.initConfig({
