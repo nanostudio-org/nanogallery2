@@ -1,10 +1,10 @@
+  
   <div class="container ngy2documentation">
   <div class="row" >
   <div class="col-md-10">
 
     <br><br>
-    <h1 id="ngy2_intro">nanogallery2 options - reference guide</h1>
-    <br><br><br>
+    <h1 id="ngy2_intro">nanogallery2 documentation - reference guide</h1>
     <br><br><br>
     <br><br><br>
     <blockquote>
@@ -13,12 +13,14 @@
         This page lists and describes the options accepted by nanogallery2 (<b>everything is CaSe sEnSiTiVe</b>).
       <br>
       <br>
+        Check also the doocumentation for <b><a href="datasource.html">content source</a></b> and for <b><a href="api.html">API</a></b>.
+      <br><br>
         You may also use the visual <b><a href="builder.html">BUILDER</a></b> to quickly test some of the available options.
       <br>
       <br>
     </blockquote>
     <p>
-      <br><br><br><br>
+      <br><br>
       Settings are passed to the gallery on initialization:
     </p>
     <div class="row" >
@@ -53,19 +55,28 @@
     </pre>
       </div>
     </div>
-    <br><br>
-  
-    <div class="row text-center" >
-      <div class="col-md-4" >&nbsp</div>
-      <div class="col-md-4 " style="background-color:#eee;border:15px solid #54840C;border-radius: 25px;">
-        <h3 style="color:#000;">Enjoy using nanogallery2? <!-- <i class="fa fa-question-circle-o" aria-hidden="true"></i>--> </h3>
-        
-        <button type="button" data-toggle="modal" data-target="#myModalEnjoyNo" class="btn btn-default btn-xs"><b>Not really</b></button>
-        <button type="button" data-toggle="modal" data-target="#myModalEnjoyYes" class="btn btn-success btn-xs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Yes!</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
-        <br><br>
-     </div>
-      <div class="col-md-4" >&nbsp</div>
+    <br><br><br><br>
+
+    <h3>The full nanogallery2 ecosystem</h3>
+    <img style="max-width: 75%;" src="img/ngy2_ecosystem.png" alt="nanogallery2 ecosystem">
+    
+    
+    
+    
+    <br><br><br><br>
+    <div class="row" >
+      <div class="col-md-8">&nbsp;</div>
+      <div class="col-md-4">
+        <div class="text-center" style="background-color:#eee;border:8px solid #499295;border-radius: 15px;">
+          <h4 style="color:#000;">Enjoy using nanogallery2? <!-- <i class="fa fa-question-circle-o" aria-hidden="true"></i>--> </h4>
+          
+          <button type="button" data-toggle="modal" data-target="#myModalEnjoyNo" class="btn btn-default btn-xs"><b>Not really</b></button>
+          <button type="button" data-toggle="modal" data-target="#myModalEnjoyYes" class="btn btn-success btn-xs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Yes!</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+          <br><br>
+        </div>
+      </div>
     </div>
+    
     <div class="modal fade" id="myModalEnjoyYes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -2003,9 +2014,27 @@
     <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> SECURITY</h3>
     <hr>
     <blockquote>
+      <br>
       By default, HTML tags cannot be used in titles and descriptions of images.<br>
       To enable HTML tags, set the option <code>allowHTMLinData: true</code>.<br>
       <b>Be aware that this could lead to XSS (cross site scripting) vulnerability.</b>
+      <br><br>
+    </blockquote>
+    
+
+
+
+    <div id="ngy2_browser"></div>
+    <br><br><br><br><br><br><br>
+    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> BROWSER SUPPORT</h3>
+    <hr>
+    <blockquote>
+      <p>
+      Firefox 6+ - Chrome 16+ - Edge 13+ - IE 10+ - Opera 12.1+ - Yandex 14.12+ - iPhone 5+ / iOS 6+ - Safari 6.2+
+      <br>(some features may not be available on every platform).
+      <br>
+      </p>
+      <p>Testing services provided by <a href="https://www.browserstack.com" target="_blank">BrowserStack</a><img src="img/browserstack3.png" alt="browserstack"></p>
     </blockquote>
     
 
@@ -2064,6 +2093,9 @@
       <li>
         <a href="#ngy2_security">Security</a>
       </li>
+      <li>
+        <a href="#ngy2_browser">Browser support</a>
+      </li>
       <!-- 
       <li>
         <a href="#test">test</a>
@@ -2100,3 +2132,4 @@
 
 
   </script>
+  
