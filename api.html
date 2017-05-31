@@ -62,34 +62,29 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js"></script>
 
-  <style>
     body { font-size:1.3em; color:#111; }
     p { font-size:1.3em; }
     td { font-size:1.2em; }
     .ngy2documentation p { font-size:1.1em; }
     .ngy2documentation td { font-size:1.1em; }
-    .ngy2documentation blockquote { font-size:1.3em; }
+    .ngy2documentation blockquote { font-size:1.1em; }
    
-    * { font-family: 'Source Sans Pro', sans-serif; }
-    h1, h2, h3, h4, h5, h6 { color : #54840C }
+    * { font-family: 'Signika Negative', sans-serif; }
     h1 {
-      border-left : 5px solid #54840C;
+      border-left : 5px solid #499195;
       padding-left: 10px;
     }
     .footer {
       margin: 0;
     }
     
-    .btn-primary {
-      color: #fff;
-      background-color: #3C4B5B;
-      border-color: #1C2B3B;
-    }
 
     blockquote {
       color: #000;
-      background-color: #f8f8f8;
-      border-left : 10px solid #d0d0d0;
+      background-color: #AEDADC;
+      border-color: #499195;
+      padding-top: 25px;
+      padding-bottom: 25px;
     }
     
     /***** TOP NAVIGATION BAR *****/
@@ -99,8 +94,8 @@
       padding-bottom: 5px;
     }
     .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
-      color: #B2E16A;
-      border-bottom: 2px solid #B2E16A;
+      color: #23CB99;
+      border-bottom: 2px solid #23CB99;
     }
     .navbar-inverse .navbar-brand {
       color: #fff;
@@ -108,74 +103,109 @@
       display: -webkit-inline-flex;
     }
 
+    .navbar-inverse {
+      background-color: #0F1934;
+    }
+    
+    .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
+      background-color: #0F1934;
+    }
     
     /***** NANOGALLERY2 COLORS *****/
-    .ngy2color1 {
-      color: #54840C;
-    }
-    .ngy2color2 {
-      color: #73A623;
-    }
-    .ngy2color3 {
-      color: #B2E16A;
-    }
-    .ngy2color4  {
-      color: #CFF19A;
-    }
 
-    .ngy2dark {
-      background: #1C2B3B;
-      /* #2C3B4B */
+    /* palette (bleuté)- fond clair
+
+    logo + menu + icon button : 23CB99 (plus clair: 46D6AB)
+    base: 499295
+    AEDADC
+    76B6B9
+    2E7C7F
+    19676B
+
+    0F4548
+    0E4144
+
+    background: #0F1934
+    buttons: #3C4B5B
+    */    
+    
+    .ngy2_bgdark {
+      background-color: #0F1934;
       margin: 0;
     }
-    
-    .ngy2_background_cell {
-      background: #eee;
+
+    .ngy2_bgdark p ,
+    .ngy2_bgdark .lead {
+      color : #fff;
     }
 
-    .svg-diag{
-      display: block;
-      width: 100%;
-      height: 90px;
-      index:-1;
+    h1, h2, h3, h4, h5, h6 {
+      color : #499295
+    }
+    .ngy2_bgdark h1, .ngy2_bgdark h2, .ngy2_bgdark h3, .ngy2_bgdark h4, .ngy2_bgdark h5, .ngy2_bgdark h6 {
+      color : #76B6B9;
+    }
+
+    a {
+      color: #499295;
+      text-decoration: none;
+    }    
+
+    .ngy2_color1 {
+      color: #499295;
+    }
+    .ngy2_color2 {
+      color: #23CB99;
+    }
+
+    .ngy2_bgdark .btn-primary {
+      color: #fff;
+      background-color: #3C4B5B;
+      border-color: #3C4B5B;
+    }
+    
+
+    /* BUTTON SUCCESS */
+    .btn-success, .btn-success:visited {
+      color: #fff;
+      background-color: #23CB99;
+      border-color: #23CB99;
+    }
+    .btn-success:hover, .btn-success:active, .btn-success:focus, .btn-success:active:focus {
+      color: #fff;
+      background-color: #46D6AB;
+      border-color: #46D6AB;
+    }
+
+    .ngy2_bgdark .btn-success, .ngy2_bgdark .btn-success:visited {
+      color: #fff;
+      background-color: #499295;
+      border-color: #499295;
+    }
+    .ngy2_bgdark .btn-success:hover, .ngy2_bgdark .btn-success:active, .ngy2_bgdark .btn-success:focus, .ngy2_bgdark .btn-success:active:focus {
+      color: #fff;
+      background-color: #76B6B9;
+      border-color: #76B6B9;
+    }
+    
+
+    
+    /* DIAGONALS */
+    .svg-diag {
+      display:  block;
+      width:    100%;
+      height:   90px;
+      index:    -1;
+      margin-bottom: -1px;
     }    
     
-    .ngy2version {
+    .ngy2_version {
       color: #ddd;
       font-size:0.6em; 
       padding: 0px;
     }
 
-    .circle-singleline {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      font-size: 1.5em;
-      line-height: 60px;
-      text-align: center;
-      background: #73A623;
-      color: white;
-      display: inline-block;
-  }    
     
-    
-    /***** RESPONSIVE SVG LOGO *****/
-    .svg-container {
-      display: inline-block;
-      position: relative;
-      width: 100%;
-      max-width: 350px;
-      /*padding-bottom: 100%;*/
-      vertical-align: middle;
-      overflow: hidden;
-    }
-    svg-content {
-      display: inline-block;
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-
     
     /***** TOP CUSTOM JUMBOTRON *****/
     .jumbotronNGY2 {
@@ -187,19 +217,12 @@
       margin-bottom: 0;
     }
     
-	  
-    /***** CODE *****/
-    pre {
-      background-color : #efe;
-      color: #000;
-    }
-
-	  
+    
     /***** VERTICAL NAVIGATION BAR (documentation) *****/
     #ngy2_vert_nav {
-      border-left: 4px solid #B2E16A;
+      border-left: 4px solid #499295;
     }
-
+    
     #ngy2_vert_nav_style .nav > li > a {
         position: relative;
         display: block;
@@ -208,11 +231,11 @@
     }    
     #ngy2_vert_nav_style .nav .active {
       font-weight: bold;
-      border-left: 4px solid #B2E16A;
+      border-left: 4px solid #499295;
       background-color: #f0f0f0;
     }
     #ngy2_vert_nav_style .nav .active a{
-      color:#54840C;
+      color:#499295;
       font-size:1.2em;
     }
 
@@ -257,26 +280,9 @@
         width: 263px;
       }         
     }    
-    
 
-    /* makes columns same height on one row */
-    .row.match-my-cols {
-      overflow: hidden; 
-    }
 
-    .row.match-my-cols [class*="col-"]{
-      margin-bottom: -99999px;
-      padding-bottom: 99999px;
-    }
-    
-    /* OWN CAROUSEL - NAVIGATION ONE ROW */
-    .owl-carousel .owl-nav .owl-next,
-    .owl-carousel .owl-nav .owl-prev
-    {
-      display: inline-block;
-    }
 
-    
     /*****************/
     /* BUILDER PANEL */
     /*****************/
