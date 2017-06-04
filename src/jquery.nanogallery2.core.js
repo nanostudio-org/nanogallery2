@@ -1281,10 +1281,12 @@ v1.4.0 - BETA VERSION - DO NOT USE
       var nG2=$(this).data('nanogallery2data').nG2;
       switch(args){
         case 'search':
-          return( nG2.Search(option) );
+          nG2.Search(option);
+          return nG2.CountItemsToDisplay();
           break;
         case 'searchTags':
-          return( nG2.SearchTags(option) );
+          nG2.SearchTags(option);
+          return nG2.CountItemsToDisplay();
           break;
         case 'refresh':
           nG2.Refresh();
@@ -1492,7 +1494,6 @@ v1.4.0 - BETA VERSION - DO NOT USE
     this.Search = function( search ) {
       G.GOM.albumSearch=search.toUpperCase();
       GalleryRender( G.GOM.albumIdx );
-      return CountItemsToDisplay();
     };
 
     /**
@@ -1501,7 +1502,6 @@ v1.4.0 - BETA VERSION - DO NOT USE
     this.SearchTags = function( search ) {
       G.GOM.albumSearchTags=search.toUpperCase();
       GalleryRender( G.GOM.albumIdx );
-      return CountItemsToDisplay();
     };
     
     
