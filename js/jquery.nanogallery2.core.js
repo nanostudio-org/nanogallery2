@@ -20,10 +20,27 @@
 
 /*
 
-v1.3.1 - BETA VERSION - DO NOT USE
-- new: option 'thumbnailWaitImageLoaded' for displaying thumbnail's image smoothly when fully downloaded
-- changed: default thumbnail background color to from black to gray
-- nanoPhotosProvider2 add-on: tags support
+v1.4.0 - BETA VERSION - DO NOT USE
+- new: display thumbnail's images smoothly when fully downloaded - option 'thumbnailWaitImageLoaded'
+- new: gallery display animations (options 'galleryDisplayTransition' and 'galleryDisplayTransitionDuration')
+- new: tags support with nanoPhotosProvider2
+- new: API function 'SearchTags'
+- enhanced: blurred image display during image download (thumbnails)
+- enhanced: thumbnails display animations
+- changed: default thumbnail background color from black to gray
+- fixed: image display quality in Chrome
+- fixed: #46 rotate internal viewer doesn't resize gallery
+- fixed: #46 hover effect 'toolsAppear' works only with one toolbar
+- fixed: #46 hover effect issue on touch/mobile device
+
+- DONE : npp2 - replace '_' with ' ' in title/description
+- CANCELED : npp2 - open original
+- TODO : mouse pointer not always changed on image
+- TODO : optimise thumbnail smooth appear
+- TODO : filter tags modes
+- TODO : click outside image to close viewer
+
+
 
 */ 
  
@@ -308,6 +325,10 @@ v1.3.1 - BETA VERSION - DO NOT USE
           // create new item (image, album or albumUp)
           NGY2Item.New = function( instance, title, description, ID, albumID, kind, tags ) {
             var album=NGY2Item.Get( instance, albumID );
+// console.log('---');
+// console.dir(album);            
+// console.dir(instance.I);
+            
             if( albumID != -1 && albumID != 0 && title !='image gallery by nanogallery2 [build]'  ) {
               if( instance.O.thumbnailLevelUp && album.getContentLength(false) == 0) {
                 // add navigation thumbnail (album up)
@@ -584,6 +605,27 @@ v1.3.1 - BETA VERSION - DO NOT USE
               return true;
           };
           
+          //--- check if 1 of current item's tags is found using API search
+          NGY2Item.prototype.isSearchTagFound = function() {
+            if( this.G.GOM.albumSearchTags == '' ) { return true; }
+            if( this.G.O.thumbnailLevelUp && this.kind=='albumUp' ) { return true; }
+
+            var lstTags=this.album().albumTagListSel;
+            for( var i=0; i<this.tags.length; i++ ) {
+              if( this.tags[i].toUpperCase().indexOf( this.G.GOM.albumSearchTags ) >= 0 ) {
+                return true;
+              }
+            }
+            return false;
+          };
+          
+          //--- check if current item can be displayed
+          NGY2Item.prototype.isToDisplay = function( albumID ) {
+            return this.albumID == albumID && this.checkTagFilter() && this.isSearchFound() && this.isSearchTagFound();
+          };
+          
+          
+          
           //--- returns the number of items of the current album
           //--- count using tags filter
           NGY2Item.prototype.getContentLength = function( filterTags ) {
@@ -596,7 +638,7 @@ v1.3.1 - BETA VERSION - DO NOT USE
               var albumID=this.GetID();
               for( var idx=0; idx<l; idx++ ) {
                 var item=this.G.I[idx];
-                if( item.albumID == albumID && item.checkTagFilter() && item.isSearchFound() ) {
+                if( item.isToDisplay(albumID) ) {
                   cnt++;
                 }
               }
@@ -741,9 +783,13 @@ v1.3.1 - BETA VERSION - DO NOT USE
           NGY2Item.prototype.CSSFilterApply = function ( eltClass ) {
             var obj=this.eltFilter[eltClass];
             var v = 'blur('+obj.blur+') brightness('+obj.brightness+') grayscale('+obj.grayscale+') sepia('+obj.sepia+') contrast('+obj.contrast+') opacity('+obj.opacity+') saturate('+obj.saturate+')';
-            if( obj.$elt != null && obj.$elt[0] != undefined ) {
-              obj.$elt[0].style.WebkitFilter= v;
-              obj.$elt[0].style.filter= v;
+            if( obj.$elt != null ) {
+              for( var n=0; n<obj.$elt.length; n++ ) {
+                if( obj.$elt[n] != undefined ) {
+                  obj.$elt[n].style.WebkitFilter= v;
+                  obj.$elt[n].style.filter= v;
+                }
+              }
             }
           };
 
@@ -1013,6 +1059,10 @@ v1.3.1 - BETA VERSION - DO NOT USE
     galleryL1MaxItems :           null,     // maximum number of items per gallery page --> only flickr, google+, nano_photos_provider2
     gallerySorting :              '',
     galleryL1Sorting :            null,
+    galleryDisplayTransition :    'none',
+    galleryL1DisplayTransition :  null,
+    galleryDisplayTransitionDuration :    1000,
+    galleryL1DisplayTransitionDuration :  null,
     galleryResizeAnimation :      true,
     galleryRenderDelay :          60,
 
@@ -1231,7 +1281,10 @@ v1.3.1 - BETA VERSION - DO NOT USE
       var nG2=$(this).data('nanogallery2data').nG2;
       switch(args){
         case 'search':
-          nG2.Search(option);
+          return( nG2.Search(option) );
+          break;
+        case 'searchTags':
+          return( nG2.SearchTags(option) );
           break;
         case 'refresh':
           nG2.Refresh();
@@ -1421,13 +1474,36 @@ v1.3.1 - BETA VERSION - DO NOT USE
       GalleryRender( G.GOM.albumIdx );
     };
     
+    this.CountItemsToDisplay = function() {
+      var albumID=G.I[G.GOM.albumIdx].GetID();
+      var l=G.I.length;
+      var cnt=0;
+      for( var idx=0; idx < l; idx++ ) {
+        var item=G.I[idx];
+        if( item.isToDisplay(albumID) ) {
+          cnt++;
+        }
+      }
+      return cnt;
+    };
     /**
      * Search in the displayed gallery (in thumbnails title)
      */
-    this.Search = function( search) {
+    this.Search = function( search ) {
       G.GOM.albumSearch=search.toUpperCase();
       GalleryRender( G.GOM.albumIdx );
+      return CountItemsToDisplay();
     };
+
+    /**
+     * Search in the displayed gallery (in thumbnails TAGS)
+     */
+    this.SearchTags = function( search ) {
+      G.GOM.albumSearchTags=search.toUpperCase();
+      GalleryRender( G.GOM.albumIdx );
+      return CountItemsToDisplay();
+    };
+    
     
     /**
      * Destroy the current gallery
@@ -1606,6 +1682,16 @@ v1.3.1 - BETA VERSION - DO NOT USE
         return G.gallerySorting[G.GOM.curNavLevel];
       }
     };
+    G.galleryDisplayTransition = { l1: 'none', lN: 'none',
+      Get: function() {
+        return G.galleryDisplayTransition[G.GOM.curNavLevel];
+      }
+    };
+    G.galleryDisplayTransitionDuration = { l1: 500, lN: 500,
+      Get: function() {
+        return G.galleryDisplayTransitionDuration[G.GOM.curNavLevel];
+      }
+    };
     G.$currentTouchedThumbnail = null;    
     
     // ##### GENERAL THUMBNAILS PROPERTIES -->
@@ -1763,7 +1849,8 @@ v1.3.1 - BETA VERSION - DO NOT USE
       hammertime:                 null,
       curNavLevel:                'l1',   // current navigation level (l1 or LN)
       curWidth:                   'me',
-      albumSearch:                '',     // current search string (used to filter the thumbnails on screen)
+      albumSearch:                '',     // current search string -> title (used to filter the thumbnails on screen)
+      albumSearchTags:            '',     // current search string -> tags
       lastZIndex:                 0,      // used to put a thumbnail on top of all others (for exemple for scale hover effect)
       lastRandomValue:            0
     };
@@ -2042,6 +2129,13 @@ v1.3.1 - BETA VERSION - DO NOT USE
             DisplayAlbum('-1', albumID);
           }
           else {
+            if( G.O.kind == "nano_photos_provider2") {
+              if( albumToDisplay == decodeURIComponent(albumToDisplay)) {
+                // album ID must be encoded
+                albumToDisplay=encodeURIComponent(albumToDisplay);
+                G.O.album=albumToDisplay;
+              }
+            }
             var nItm=NGY2Item.New( G, '', '', albumToDisplay, '-1', 'album' );
             DisplayAlbum('-1', albumToDisplay);
           }
@@ -2050,7 +2144,6 @@ v1.3.1 - BETA VERSION - DO NOT USE
       }
       
       // use full content
-      
       // add base album
       var itm=NGY2Item.New( G, G.i18nTranslations.breadcrumbHome, '', '0', '-1', 'album' );
 
@@ -2698,13 +2791,13 @@ v1.3.1 - BETA VERSION - DO NOT USE
 
     }
     
-    // Gallery render part 2 -> remove all thumbnails
+// Gallery render part 2 -> remove all thumbnails
     function GalleryRenderPart2(albumIdx) {
-      G.$E.conTnParent.css({'opacity': 0 });
       G.GOM.lastZIndex = parseInt(G.$E.base.css('z-index'));
       if( isNaN(G.GOM.lastZIndex) ) {
         G.GOM.lastZIndex=0;
       }
+      G.$E.conTnParent.css({'opacity': 0 });
       G.$E.conTn.off().empty();
       var l=G.I.length;
       for( var i=0; i < l ; i++ ) {
@@ -2721,7 +2814,6 @@ v1.3.1 - BETA VERSION - DO NOT USE
         item.top=0;
         item.resizedContentWidth=0;
         item.resizedContentHeight=0;
-        item.thumbnailImgRevealed=false;
       }
 
       if( G.CSStransformName == null ) {
@@ -2731,7 +2823,7 @@ v1.3.1 - BETA VERSION - DO NOT USE
         G.$E.conTn.css( G.CSStransformName , 'translateX('+0+'px)');
       }
       
-      G.$E.conTnParent.css({ opacity: 1 });
+      G.$E.conTnParent.css({ left: 0, opacity: 1 });
 
       GalleryRenderPart3(albumIdx);
 
@@ -2773,8 +2865,9 @@ v1.3.1 - BETA VERSION - DO NOT USE
         GallerySetLayout();
 
         // step 3: display gallery
+        GalleryAppear();
         GalleryDisplay( false );
-        //G.galleryResizeEventEnabled=true;
+        G.galleryResizeEventEnabled=true;
       }
       else {
         G.galleryResizeEventEnabled=true;
@@ -2815,7 +2908,7 @@ v1.3.1 - BETA VERSION - DO NOT USE
       for( var idx=0; idx < l; idx++ ) {
         var item=G.I[idx];
         // check album
-        if( item.albumID == albumID && item.checkTagFilter() && item.isSearchFound() ) {
+        if( item.isToDisplay(albumID) ) {
         var w=item.thumbImg().width;
           var h=item.thumbImg().height;
           // if unknown image size and layout is not grid --> we need to retrieve the size of the images
@@ -4148,8 +4241,8 @@ v1.3.1 - BETA VERSION - DO NOT USE
         
         var tweenable = new NGTweenable();
         tweenable.tween({
-          from:         { scale: 0.5, opacity:0  },
-          to:           { scale: f, opacity:1 },
+          from:         { scale: 0.5, opacity:0 },
+          to:           { scale: f,   opacity:1 },
           attachment:   { $e:item.$elt, item: item },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
@@ -4171,7 +4264,7 @@ v1.3.1 - BETA VERSION - DO NOT USE
 
         var tweenable = new NGTweenable();
         tweenable.tween({
-          from:         { scale: f, opacity:0  },
+          from:         { scale: f, opacity:0 },
           to:           { scale: 1, opacity:1 },
           attachment:   { $e:item.$elt, item: item },
           delay:        delay,
@@ -4193,7 +4286,7 @@ v1.3.1 - BETA VERSION - DO NOT USE
    
         var tweenable = new NGTweenable();
         tweenable.tween({
-          from:         { 'scale': f, 'opacity':0  },
+          from:         { 'scale': f, 'opacity':0 },
           to:           { 'scale': 1, 'opacity':1 },
           attachment:   { item: item },
           delay:        delay,
@@ -4218,8 +4311,10 @@ v1.3.1 - BETA VERSION - DO NOT USE
         if( f == 0 ) { f=50; }   // default value
         var tweenable = new NGTweenable();
         tweenable.tween({
-          from:         { 'opacity': 0, translateY: f, 'scale': 0.8  },
-          to:           { 'opacity': 1, translateY: 0, 'scale': 1 },
+          // from:         { 'opacity': 0, translateY: f, 'scale': 0.8  },
+          // to:           { 'opacity': 1, translateY: 0, 'scale': 1 },
+          from:         { 'opacity': 0, translateY: f },
+          to:           { 'opacity': 1, translateY: 0 },
           attachment:   { item: item },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
@@ -4227,7 +4322,7 @@ v1.3.1 - BETA VERSION - DO NOT USE
           step:         function (state, att) {
             att.item.$elt.css('opacity', state.opacity);
             att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+            // att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
@@ -4243,8 +4338,10 @@ v1.3.1 - BETA VERSION - DO NOT USE
         if( f == 0 ) { f=-50; }   // default value
         var tweenable = new NGTweenable();
         tweenable.tween({
-          from:         { opacity: 0, translateY: f, scale: 0.8  },
-          to:           { opacity: 1, translateY: 0, scale: 1 },
+          // from:         { opacity: 0, translateY: f, scale: 0.8  },
+          // to:           { opacity: 1, translateY: 0, scale: 1 },
+          from:         { opacity: 0, translateY: f },
+          to:           { opacity: 1, translateY: 0 },
           attachment:   { item: item },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
@@ -4252,7 +4349,7 @@ v1.3.1 - BETA VERSION - DO NOT USE
           step:         function (state, att) {
             att.item.$elt.css('opacity', state.opacity);
             att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+            // att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale); 
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
@@ -4268,8 +4365,10 @@ v1.3.1 - BETA VERSION - DO NOT USE
         if( f == 0 ) { f=100; }   // default value
         var tweenable = new NGTweenable();
         tweenable.tween({
-          from:         { opacity: 0, translateX: f, rotateX: 45, scale: 0.8  },
-          to:           { opacity: 1, translateX: 0, rotateX: 0, scale: 1 },
+          // from:         { opacity: 0, translateX: f, rotateX: 45, scale: 0.8  },
+          // to:           { opacity: 1, translateX: 0, rotateX: 0, scale: 1 },
+          from:         { opacity: 0, translateX: f, rotateX: 45 },
+          to:           { opacity: 1, translateX: 0, rotateX: 0  },
           attachment:   { item: item },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
@@ -4278,7 +4377,7 @@ v1.3.1 - BETA VERSION - DO NOT USE
             att.item.$elt.css('opacity', state.opacity);
             att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateX+'px');
             att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateX', state.rotateX+'deg');
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+            // att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
@@ -4293,8 +4392,10 @@ v1.3.1 - BETA VERSION - DO NOT USE
         if( f == 0 ) { f=-100; }   // default value
         var tweenable = new NGTweenable();
         tweenable.tween({
-          from:         { opacity: 0, translateX: f, rotateX: -45, scale: 0.8  },
-          to:           { opacity: 1, translateX: 0, rotateX: 0, scale: 1 },
+          // from:         { opacity: 0, translateX: f, rotateX: -45, scale: 0.8  },
+          // to:           { opacity: 1, translateX: 0, rotateX: 0, scale: 1 },
+          from:         { opacity: 0, translateX: f, rotateX: -45 },
+          to:           { opacity: 1, translateX: 0, rotateX: 0 },
           attachment:   { item: item },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
@@ -4303,7 +4404,7 @@ v1.3.1 - BETA VERSION - DO NOT USE
             att.item.$elt.css('opacity', state.opacity);
             att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateX+'px');
             att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateX', state.rotateX+'deg');
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+            // att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
@@ -4319,8 +4420,10 @@ v1.3.1 - BETA VERSION - DO NOT USE
         if( f == 0 ) { f=100; }   // default value
         var tweenable = new NGTweenable();
         tweenable.tween({
-          from:         { opacity: 0, translateY: f, rotateY: 40, scale: 0.8  },
-          to:           { opacity: 1, translateY: 0, rotateY: 0, scale: 1 },
+          // from:         { opacity: 0, translateY: f, rotateY: 40, scale: 0.8  },
+          // to:           { opacity: 1, translateY: 0, rotateY: 0, scale: 1 },
+          from:         { opacity: 0, translateY: f, rotateY: 40 },
+          to:           { opacity: 1, translateY: 0, rotateY: 0  },
           attachment:   { item: item },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
@@ -4329,7 +4432,7 @@ v1.3.1 - BETA VERSION - DO NOT USE
             att.item.$elt.css('opacity', state.opacity);
             att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
             att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateY', state.rotateY+'deg');
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+            // att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
@@ -4344,8 +4447,10 @@ v1.3.1 - BETA VERSION - DO NOT USE
         if( f == 0 ) { f=-100; }   // default value
         var tweenable = new NGTweenable();
         tweenable.tween({
-          from:         { opacity: 0, translateY: f, rotateY: 40, scale: 0.8  },
-          to:           { opacity: 1, translateY: 0, rotateY: 0, scale: 1 },
+          // from:         { opacity: 0, translateY: f, rotateY: 40, scale: 0.8  },
+          // to:           { opacity: 1, translateY: 0, rotateY: 0, scale: 1 },
+          from:         { opacity: 0, translateY: f, rotateY: 40 },
+          to:           { opacity: 1, translateY: 0, rotateY: 0  },
           attachment:   { item: item },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
@@ -4354,7 +4459,7 @@ v1.3.1 - BETA VERSION - DO NOT USE
             att.item.$elt.css('opacity', state.opacity);
             att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
             att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateY', state.rotateY+'deg');
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+            // att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
@@ -4434,8 +4539,51 @@ v1.3.1 - BETA VERSION - DO NOT USE
         });
       }
     }
+    
+    
+
+    // ######################################
+    // Gallery display animation
+    
+    function GalleryAppear() {
+      
+      // G.$E.conTnParent.css({ opacity: 1 });
+      
+      var d=G.galleryDisplayTransitionDuration.Get();
+      switch( G.galleryDisplayTransition.Get() ){
+        case 'ROTATEX':
+          G.$E.base.css({ perspective: '1000px', 'perspective-origin': '50% 0%' });
+          var tweenable = new NGTweenable();
+          tweenable.tween({
+            from:         { rotate: 50 },
+            to:           { rotate: 0  },
+            duration:     d,
+            easing:       'easeOutCirc',
+            step:         function (state, att) {
+              G.$E.conTnParent.css( G.CSStransformName , 'rotateX('+state.rotate+'deg)');
+            }
+          });
+          break;
+        case 'SLIDEUP':
+          var tweenable = new NGTweenable();
+          tweenable.tween({
+            from:         { y: 200 },
+            to:           { y: 0  },
+            duration:     d,
+            easing:       'easeOutCirc',
+            step:         function (state, att) {
+              G.$E.conTnParent.css( G.CSStransformName , 'translateY('+state.y+'px)');
+            }
+          });
+          break;
+        case 'NONE':
+        default:
+          break;
+      }
 
 
+    }
+    
     // ######################################
     // ##### THUMBNAIL HOVER MANAGEMENT #####
     // ######################################
@@ -4533,7 +4681,10 @@ v1.3.1 - BETA VERSION - DO NOT USE
       var l=G.GOM.items.length;
       for( var i=0; i < l ; i++ ) {
         ThumbnailOverInit(i);
+        // G.GOM.items[i].hovered=false;
+        G.I[G.GOM.items[i].thumbnailIdx].hovered=false;
       }
+      console.log("ok");
     }
 
 
@@ -4582,7 +4733,7 @@ v1.3.1 - BETA VERSION - DO NOT USE
           ThumbnailHoverOut(i);
         }
         else {
-          G.GOM.items[i].hovered=false;
+          G.I[G.GOM.items[i].thumbnailIdx].hovered
         }
       }
     }
@@ -4593,9 +4744,8 @@ v1.3.1 - BETA VERSION - DO NOT USE
       var curTn=G.GOM.items[GOMidx];
       var item=G.I[curTn.thumbnailIdx];
       if( item.kind == 'albumUp' || !item.hovered ) { return; }
-      if( item.$elt == null ) { return; }
-
       item.hovered=false;
+      if( item.$elt == null ) { return; }
 
       if( G.O.fnThumbnailHoverOut !== null ) {
         if( typeof G.O.fnThumbnailHoverOut == 'function' ) {
@@ -5239,6 +5389,19 @@ v1.3.1 - BETA VERSION - DO NOT USE
       G.gallerySorting.l1=G.gallerySorting.lN;
       if( G.O.galleryL1Sorting != null ) {
         G.gallerySorting.l1=G.O.galleryL1Sorting.toUpperCase();
+      }
+      
+      // gallery display transition
+      G.galleryDisplayTransition.lN=G.O.galleryDisplayTransition.toUpperCase();
+      G.galleryDisplayTransition.l1=G.galleryDisplayTransition.lN;
+      if( G.O.galleryL1DisplayTransition != null ) {
+        G.galleryDisplayTransition.l1=G.O.galleryL1DisplayTransition.toUpperCase();
+      }
+      // gallery display transition duration
+      G.galleryDisplayTransitionDuration.lN=G.O.galleryDisplayTransitionDuration;
+      G.galleryDisplayTransitionDuration.l1=G.galleryDisplayTransitionDuration.lN;
+      if( G.O.galleryL1DisplayTransitionDuration != null ) {
+        G.galleryDisplayTransitionDuration.l1=G.O.galleryL1DisplayTransitionDuration;
       }
       
       // gallery max items per album (not for inline/api defined items)
@@ -6840,7 +7003,7 @@ v1.3.1 - BETA VERSION - DO NOT USE
       var l=G.I.length;
       for( var idx=imageIdx+1; idx<l ; idx++) {
         var item=G.I[idx];
-        if( item.kind == 'image' && item.albumID == G.VOM.albumID && item.checkTagFilter() && item.isSearchFound() && item.destinationURL == '' ) {
+        if( item.kind == 'image' && item.isToDisplay(G.VOM.albumID) && item.destinationURL == '' ) {
           var vimg=new VImg(idx);
           G.VOM.items.push(vimg);
           items.push(item);
@@ -6850,7 +7013,7 @@ v1.3.1 - BETA VERSION - DO NOT USE
       var cnt=1;
       for( var idx=0; idx<imageIdx ; idx++) {
         var item=G.I[idx];
-        if( item.kind == 'image' && item.albumID == G.VOM.albumID && item.checkTagFilter() && item.isSearchFound() && item.destinationURL == '' ) {
+        if( item.kind == 'image' && item.isToDisplay(G.VOM.albumID) && item.destinationURL == '' ) {
           var vimg=new VImg(idx);
           vimg.imageNumber=cnt;
           G.VOM.items.push(vimg);
@@ -6883,7 +7046,7 @@ v1.3.1 - BETA VERSION - DO NOT USE
         G.VOM.$imgC.css({ opacity:0, left:0, visibility:'hidden' }).attr('src','');
         G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.Item(0).responsiveURL(), G.VOM.Item(0));
         G.VOM.$imgC.children().eq(0).attr('src',G.emptyGif).attr('src', G.VOM.Item(0).responsiveURL());
-        ViewerDisplayDominantColors(G.VOM.Item(0), G.VOM.$imgC.children());
+        // ViewerDisplayDominantColors(G.VOM.Item(0), G.VOM.$imgC.children());
         DisplayInternalViewer(0, '');
       }
     }
@@ -7097,12 +7260,17 @@ v1.3.1 - BETA VERSION - DO NOT USE
           G.VOM.hammertime.on('singletap', function(ev) {
             if( !G.VOM.viewerDisplayed ) { return; }
             StopPropagationPreventDefault(ev.srcEvent);
-            if( ev.target.className.indexOf('nGY2ViewerImage') !== -1 ) {
-              if( ev.srcEvent.pageX < (jQuery(window).width()/2) ) {
-                DisplayPreviousImage();
-              }
-              else {
-                DisplayNextImage();
+            if( G.VOM.toolbarsDisplayed == false ) {
+              ViewerToolsUnHide();
+            }
+            else {
+              if( ev.target.className.indexOf('nGY2ViewerImage') !== -1 ) {
+                if( ev.srcEvent.pageX < (jQuery(window).width()/2) ) {
+                  DisplayPreviousImage();
+                }
+                else {
+                  DisplayNextImage();
+                }
               }
             }
           });
@@ -7221,6 +7389,7 @@ v1.3.1 - BETA VERSION - DO NOT USE
       
       var $this=$(this);
       var ngy2action=$this.data('ngy2action');
+      if( ngy2action == undefined ) { return; }
       switch( ngy2action ) {
         case 'next':
           StopPropagationPreventDefault(e);
@@ -7700,12 +7869,15 @@ v1.3.1 - BETA VERSION - DO NOT USE
             easing:       'easeInOutSine',
             duration:     400,
             step:         function (state, att) {
-              G.VOM.$content.css( G.CSStransformName, 'scale('+state.scale+')').css('opacity', state.opacity);
+              // using scale is not a good idea on Chrome -> image will be blurred
+              // G.VOM.$content.css( G.CSStransformName, 'scale('+state.scale+')').css('opacity', state.opacity);
+              G.VOM.$content.css('opacity', state.opacity);
               ViewerImageOpacityOn(G.VOM.$imgC, att.item);
 
             },
             finish:       function (state, att) {
-              G.VOM.$content.css( G.CSStransformName, '').css('opacity', 1);
+              // G.VOM.$content.css( G.CSStransformName, '').css('opacity', 1);
+              G.VOM.$content.css('opacity', 1);
               ViewerImageOpacityOn(G.VOM.$imgC, att.item);
               ViewerToolsUnHide();
               DisplayInternalViewerComplete(att.idx, att.dT);
@@ -7826,11 +7998,13 @@ v1.3.1 - BETA VERSION - DO NOT USE
 
       if( G.O.fnImgDisplayed !== null ) {
         if( typeof G.O.fnImgDisplayed == 'function' ) {
-          if( !G.O.fnImgDisplayed(G.VOM.Item(vomIdx)) ) { return; }
+          // if( !G.O.fnImgDisplayed(G.VOM.Item(vomIdx)) ) { return; }
+          G.O.fnImgDisplayed(G.VOM.Item(vomIdx));
         }
         else {
           // defined in markup
-          if( !window[G.O.fnImgDisplayed](G.VOM.Item(vomIdx)) ) { return; }
+          //if( !window[G.O.fnImgDisplayed](G.VOM.Item(vomIdx)) ) { return; }
+          window[G.O.fnImgDisplayed](G.VOM.Item(vomIdx));
         }
       }
       
@@ -7917,6 +8091,7 @@ v1.3.1 - BETA VERSION - DO NOT USE
         // set scrollbar visible
         jQuery('body').css({overflow:'visible'});
         
+        
         if( G.VOM.playSlideshow ) {
           window.clearTimeout(G.VOM.playSlideshowTimerID);
           G.VOM.playSlideshow=false;
@@ -7941,6 +8116,7 @@ v1.3.1 - BETA VERSION - DO NOT USE
             DisplayAlbum( '', G.VOM.Item(vomIdx).albumID );
           }
           else {
+            GalleryResize();        
             SetLocationHash( G.VOM.Item(vomIdx).albumID, '' );
             ThumbnailHoverReInitAll();
           }
@@ -8252,7 +8428,6 @@ v1.3.1 - BETA VERSION - DO NOT USE
           else {
             // two touch scenario
             if( !G.I[G.GOM.items[r.GOMidx].thumbnailIdx].hovered ) {
-              // first touch
               ThumbnailHoverOutAll();
               ThumbnailHover(r.GOMidx);
             }
@@ -8406,7 +8581,7 @@ v1.3.1 - BETA VERSION - DO NOT USE
     function SetLocationHash(albumID, imageID ) {
       if( !G.O.locationHash ) { return false; }
 
-      if( albumID == '-1' || albumID == '0' ) {
+      if( imageID == '' && (albumID == '-1' || albumID == '0' || G.O.album == albumID ) ) {
         // root album level --> do not set top.location.hash if not already set
         if( location.hash != '' ) {
           // try to clear the hash if set

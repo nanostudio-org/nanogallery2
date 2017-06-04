@@ -22,8 +22,15 @@
 
 
       var albumIdx=NGY2Item.GetIdx(G, albumID);
-    
-      var url = G.O.dataProvider + '?albumID='+encodeURIComponent(albumID);
+
+      // title is identical to ID (only for albums)
+      if( instance.I[albumIdx].title == '' ) {
+        instance.I[albumIdx].title=JsonConvertCharset(albumID);
+      }
+
+
+      // var url = G.O.dataProvider + '?albumID='+encodeURIComponent(albumID);
+      var url = G.O.dataProvider + '?albumID='+albumID;
       url += '&wxs='+G.tn.settings.width[G.GOM.curNavLevel].xs;
       url += '&hxs='+G.tn.settings.height[G.GOM.curNavLevel].xs;
       url += '&wsm='+G.tn.settings.width[G.GOM.curNavLevel].sm;
@@ -108,7 +115,9 @@
       var foundAlbumID=false;
       var nb=0;
 
+      
       jQuery.each(data.album_content, function(i,item){
+      
         var title=item.title;
         // title=GetI18nItem(item,'title');
         // if( title === undefined ) { title=''; }
@@ -151,7 +160,7 @@
             tags=item.tags;
           }
           
-          var newItem=NGY2Item.New( G, title, description, ID, albumID, kind, tags );
+          var newItem=NGY2Item.New( G, title.split('_').join(' ') , description.split('_').join(' '), ID, albumID, kind, tags );
           newItem.src=src;
 
           // dominant colors as a gif
