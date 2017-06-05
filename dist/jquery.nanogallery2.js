@@ -1,4 +1,4 @@
-/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2017-06-04 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2017-06-05 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /**!
  * @preserve nanogallery2 - javascript image gallery
  * Homepage: http://nanogallery2.nanostudio.org
@@ -1283,7 +1283,7 @@ v1.4.0 - BETA VERSION - DO NOT USE
       switch(args){
         case 'search':
           nG2.Search(option);
-          return nG2.CountItemsToDisplay();
+          // return nG2.CountItemsToDisplay();
           break;
         case 'searchTags':
           nG2.SearchTags(option);
@@ -1495,6 +1495,16 @@ v1.4.0 - BETA VERSION - DO NOT USE
     this.Search = function( search ) {
       G.GOM.albumSearch=search.toUpperCase();
       GalleryRender( G.GOM.albumIdx );
+      var albumID=G.I[G.GOM.albumIdx].GetID();
+      var l=G.I.length;
+      var cnt=0;
+      for( var idx=0; idx < l; idx++ ) {
+        var item=G.I[idx];
+        if( item.isToDisplay(albumID) ) {
+          cnt++;
+        }
+      }
+      alert(cnt);
     };
 
     /**
