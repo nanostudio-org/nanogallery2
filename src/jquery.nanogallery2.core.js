@@ -1494,6 +1494,7 @@ v1.4.0 - BETA VERSION - DO NOT USE
     this.Search = function( search ) {
       G.GOM.albumSearch=search.toUpperCase();
       GalleryRender( G.GOM.albumIdx );
+      alert(G.GOM.albumIdx);
       var albumID=G.I[G.GOM.albumIdx].GetID();
       var l=G.I.length;
       var cnt=0;
