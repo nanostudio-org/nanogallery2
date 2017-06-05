@@ -29,18 +29,10 @@ v1.4.0 - BETA VERSION - DO NOT USE
 - enhanced: blurred image display during image download (thumbnails)
 - enhanced: thumbnails display animations
 - changed: default thumbnail background color from black to gray
-- fixed: image display quality in Chrome
 - fixed: #46 rotate internal viewer doesn't resize gallery
 - fixed: #46 hover effect 'toolsAppear' works only with one toolbar
 - fixed: #46 hover effect issue on touch/mobile device
-
-- DONE : npp2 - replace '_' with ' ' in title/description
-- CANCELED : npp2 - open original
-- TODO : mouse pointer not always changed on image
-- TODO : optimise thumbnail smooth appear
-- TODO : filter tags modes
-- TODO : click outside image to close viewer
-
+- fixed: image display quality in Chrome
 
 
 */ 
@@ -1282,12 +1274,10 @@ v1.4.0 - BETA VERSION - DO NOT USE
       var nG2=$(this).data('nanogallery2data').nG2;
       switch(args){
         case 'search':
-          nG2.Search(option);
-          // return nG2.CountItemsToDisplay();
+          return( nG2.Search(option));
           break;
         case 'searchTags':
-          nG2.SearchTags(option);
-          return nG2.CountItemsToDisplay();
+          return nG2.SearchTags(option);
           break;
         case 'refresh':
           nG2.Refresh();
@@ -1477,8 +1467,10 @@ v1.4.0 - BETA VERSION - DO NOT USE
       GalleryRender( G.GOM.albumIdx );
     };
     
-    this.CountItemsToDisplay = function() {
-      var albumID=G.I[G.GOM.albumIdx].GetID();
+      
+      
+    var CountItemsToDisplay = function( gIdx ) {
+      var albumID=G.I[gIdx].GetID();
       var l=G.I.length;
       var cnt=0;
       for( var idx=0; idx < l; idx++ ) {
@@ -1488,27 +1480,15 @@ v1.4.0 - BETA VERSION - DO NOT USE
         }
       }
       return cnt;
-    };
+    } 
     /**
      * Search in the displayed gallery (in thumbnails title)
      */
     this.Search = function( search ) {
       G.GOM.albumSearch=search.toUpperCase();
+      var gIdx=G.GOM.albumIdx;
       GalleryRender( G.GOM.albumIdx );
-console.dir(G);
-console.dir(G.GOM);
-      alert(G.GOM.albumIdx);
-      
-      var albumID=G.I[G.GOM.albumIdx].GetID();
-      var l=G.I.length;
-      var cnt=0;
-      for( var idx=0; idx < l; idx++ ) {
-        var item=G.I[idx];
-        if( item.isToDisplay(albumID) ) {
-          cnt++;
-        }
-      }
-      alert(cnt);
+      return CountItemsToDisplay(gIdx);
     };
 
     /**
@@ -1516,7 +1496,9 @@ console.dir(G.GOM);
      */
     this.SearchTags = function( search ) {
       G.GOM.albumSearchTags=search.toUpperCase();
+      var gIdx=G.GOM.albumIdx;
       GalleryRender( G.GOM.albumIdx );
+      return CountItemsToDisplay(gIdx);
     };
     
     
@@ -2829,6 +2811,7 @@ console.dir(G.GOM);
         item.top=0;
         item.resizedContentWidth=0;
         item.resizedContentHeight=0;
+        item.thumbnailImgRevealed=false;
       }
 
       if( G.CSStransformName == null ) {
@@ -2958,7 +2941,6 @@ console.dir(G.GOM);
       }
       
       if( imageSizeRequested ) {
-      // if( true ) {
         // preload images to retrieve their size and then resize the gallery (=GallerySetLayout()+ GalleryDisplay())
         var $newImg=jQuery(preloadImages);
         var gi_imgLoad = ngimagesLoaded( $newImg );
