@@ -602,7 +602,7 @@ v1.4.0 - BETA VERSION - DO NOT USE
             if( this.G.GOM.albumSearchTags == '' ) { return true; }
             if( this.G.O.thumbnailLevelUp && this.kind=='albumUp' ) { return true; }
 
-            var lstTags=this.album().albumTagListSel;
+            //var lstTags=this.album().albumTagListSel;
             for( var i=0; i<this.tags.length; i++ ) {
               if( this.tags[i].toUpperCase().indexOf( this.G.GOM.albumSearchTags ) >= 0 ) {
                 return true;
@@ -683,7 +683,9 @@ v1.4.0 - BETA VERSION - DO NOT USE
                 duration:     600,
                 easing:       'easeOutQuart',
                 step:         function (state, att) {
-                  att.item.$getElt('.nGY2TnImg').css('opacity', state.opacity);
+                  if( att.item.$getElt('.nGY2TnImg') != null ) {
+                    att.item.$getElt('.nGY2TnImg').css('opacity', state.opacity);
+                  }
                 }
               });
             }
@@ -1275,8 +1277,14 @@ v1.4.0 - BETA VERSION - DO NOT USE
         case 'search':
           return( nG2.Search(option));
           break;
-        case 'searchTags':
-          return nG2.SearchTags(option);
+        case 'searchSetTags':
+          return nG2.SearchSetTags(option);
+          break;
+        case 'searchSetTitle':
+          return nG2.SearchSetTitle(option);
+          break;
+        case 'searchExecute':
+        return nG2.SearchExecute();
           break;
         case 'refresh':
           nG2.Refresh();
@@ -1469,6 +1477,7 @@ v1.4.0 - BETA VERSION - DO NOT USE
       
       
     var CountItemsToDisplay = function( gIdx ) {
+      if( G.I[gIdx] == undefined ) { return 0; }
       var albumID=G.I[gIdx].GetID();
       var l=G.I.length;
       var cnt=0;
@@ -1491,10 +1500,23 @@ v1.4.0 - BETA VERSION - DO NOT USE
     };
 
     /**
-     * Search in the displayed gallery (in thumbnails TAGS)
+     * Search in tags - set search value
      */
-    this.SearchTags = function( search ) {
+    this.SearchSetTags = function( search ) {
       G.GOM.albumSearchTags=search.toUpperCase();
+      return CountItemsToDisplay(G.GOM.albumIdx);
+    };
+    /**
+     * Search in title - set search value
+     */
+    this.SearchSetTitle = function( search ) {
+      G.GOM.albumSearch=search.toUpperCase();
+      return CountItemsToDisplay(G.GOM.albumIdx);
+    };
+    /**
+     * Search - execute the search on title and tags
+     */
+    this.SearchExecute = function() {
       var gIdx=G.GOM.albumIdx;
       GalleryRender( G.GOM.albumIdx );
       return CountItemsToDisplay(gIdx);
@@ -2787,7 +2809,7 @@ v1.4.0 - BETA VERSION - DO NOT USE
 
     }
     
-// Gallery render part 2 -> remove all thumbnails
+    // Gallery render part 2 -> remove all thumbnails
     function GalleryRenderPart2(albumIdx) {
       G.GOM.lastZIndex = parseInt(G.$E.base.css('z-index'));
       if( isNaN(G.GOM.lastZIndex) ) {
