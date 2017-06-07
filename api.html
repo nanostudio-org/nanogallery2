@@ -461,7 +461,6 @@
   <!-- ##### END LOGO INDEX  ##### -->
   <!-- ########################### -->
 
-  
   <div class="container ngy2documentation">
     <br><br>
     <h1>nanogallery2 API - reference guide</h1>
@@ -822,11 +821,54 @@
               <td>search_string</td>
               <td>
                 Filter the displayed thumbnails based on a search string. Search is done in titles.<br>
-                Usage: <code>$('#your_nanogallery2').nanogallery2('search', search_string);</code>
+                Usage: <code>var cnt = $('#your_nanogallery2').nanogallery2('search', search_string);</code>
+                <br>
+                Returns the number of found items.
                 <br>
                 <a href="http://codepen.io/Kris-B/pen/ryOMov" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
               </td>
               <td>1.0</td>
+            </tr>
+            <tr>
+              <td>searchInTitle</td>
+              <td>search_string</td>
+              <td>
+                Set the filter value to search in titles.
+                <br>
+                Returns the number of found items.
+                <br>
+                Usage: <code>var cnt = $('#your_nanogallery2').nanogallery2('searchInTitle', search_string);</code>
+                <br>
+                <a href="http://codepen.io/Kris-B/pen/ryOMov" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+              </td>
+              <td>1.4</td>
+            </tr>
+            <tr>
+              <td>searchInTags</td>
+              <td>search_string</td>
+              <td>
+                Set the filter value to search in tags.
+                <br>
+                Returns the number of found items.
+                <br>
+                Usage: <code>var cnt = $('#your_nanogallery2').nanogallery2('searchInTags', search_string);</code>
+                <br>
+                <a href="http://codepen.io/Kris-B/pen/ryOMov" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+              </td>
+              <td>1.4</td>
+            </tr>
+            <tr>
+              <td>searchExecute</td>
+              <td>search_string</td>
+              <td>
+                Execute the search on title and tags and filters the displayed thumbnails.<br>
+                Set the filter value to search in tags.<br>
+                Returns the number of items to display.<br>
+                Usage: <code>var cnt = $('#your_nanogallery2').nanogallery2('searchExecute');</code>
+                <br>
+                <a href="http://codepen.io/Kris-B/pen/ryOMov" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+              </td>
+              <td>1.4</td>
             </tr>
             <tr>
               <td>instance</td>
@@ -1089,7 +1131,6 @@ items.forEach( function(curr) {
       $("#nanogallery2").on( 'pageChanged.nanogallery2 galleryRenderStart.nanogallery2 galleryRenderEnd.nanogallery2 galleryObjectModelBuilt.nanogallery2 galleryLayoutApplied.nanogallery2 galleryDisplayed.nanogallery2 lightboxNextImage.nanogallery2 lightboxPreviousImage.nanogallery2 lightboxImageDisplayed.nanogallery2 shoppingCartUpdated.nanogallery2 itemSelected.nanogallery2 itemUnSelected.nanogallery2', mylistener );
       
     });
-  
   </script>
 
   <!-- ######################## -->
