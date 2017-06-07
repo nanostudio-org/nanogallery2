@@ -484,10 +484,13 @@
         <div class="col-md-10" ></div>
         <div class="col-md-2" >
           <!-- <a href="https://github.com/nanostudio-org/nanogallery2" type="button" class="btn btn-primary btn-xs btn-block" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> &nbsp; view on Github</a> -->
-          
+
+          <!-- 
           <button type="button" class="btn btn-primary btn-xs " style="margin-bottom:15px;" id="btn_random_demo"> &nbsp; &nbsp; &nbsp; <i class="fa fa-refresh fa-spin ngy2_color2" aria-hidden="true"></i> &nbsp; inspiration &nbsp; &nbsp; &nbsp; </button>
+          -->
           <!--
           <input id="ngy2search" type="text" value="fun">
+          <input id="ngy2search2" type="text" value="test">
           <button type="button" class="btn btn-primary btn-xs btn-block" id="btnsearch">search</button>
           -->
        </div>
@@ -512,12 +515,12 @@
   
   <div class="container">
     <br><br><br><br>
-
     <div class="row text-center" >
       <div class="col-md-1" ></div>
       <div class="col-md-10" >
         <br><br><br><br><br>
-        <h1 style="border-left:0px;padding-left:0px;"><b>nanogallery2</b> is focused on performance and on providing the best experience for user with any device.</h1>
+        <!-- <h1 style="border-left:0px;padding-left:0px;"><b>nanogallery2</b> is focused on performance and on providing the best experience for user with any device.</h1> -->
+        <h1 style="border-left:0px;padding-left:0px;">Focused on providing the best experience to your visitors, <b>nanogallery2</b> is a highly customizable javascript library.</h1>
         <br><br><br><br>
       </div>
       <div class="col-md-1" ></div>
@@ -531,7 +534,7 @@
           Beautiful Image Gallery
         </h2>
         <p class="lead">
-          Style the layout to suit your personal needs.
+          Style the layout to suit your personal needs, and add eye-catching effects.
         </p>
       </div>
       <div class="col-md-4 text-left">
@@ -539,15 +542,15 @@
           Great Photo Display
         </h2>
         <p class="lead">
-          For great photo display and handy navigation. Fully configurable.
+          To highlight your photos and for handy navigation. Fully configurable.
         </p>
       </div>
       <div class="col-md-4 text-left">
         <h2>
-          Easy Builder
+          Visual Builder
         </h2>
         <p class="lead">
-          To generate your galleries without coding. You can also use HTML markup or scripting.
+          To generate your galleries without coding. You can also use HTML markup or javascript.
         </p>
       </div>
     </div>
@@ -566,6 +569,8 @@
         <div class="col-md-1" ></div>
         <div class="col-md-10" >
           <h2>ONE TOOL = UNLIMITED GALLERIES <i class="fa fa-arrow-right" aria-hidden="true"></i> BE CREATIVE <i class="fa fa-smile-o" aria-hidden="true"></i></h2>
+          <h2><span id="rotator"></span></h2>
+
           <br><br><br><br>
         </div>
         <div class="col-md-1" ></div>
@@ -623,41 +628,51 @@
         <p>
           nanogallery2 is fully configurable to suit your personal needs.
           <br>
-          Create beautiful interactions and hover effects combinations to capture the attention of your visitors. Use a preset or create complex effects very easily.
+          Create beautiful interactions and hover effects combinations to capture the attention of your visitors.
+          <!-- Use a preset or create complex effects very easily. -->
           <br>
           Natively touch enabled and responsive - unique user experience on all device types.
         </p>
       </div>
       <div class="col-md-6 text-justify" >
-        <h3>Focus on building your website, not configuring your tools.</h3>
+        <h3>Focus on building your website</h3>
         <!-- <h3>Instant ready with the BUILDER</h3> -->
         <p>
-          Just apply settings in the <a href="builder.html" style="background-color:#eee;">builder</a> and see the result directly on screen. No coding.
-          You can then generate <i class="fa fa-html5" aria-hidden="true"></i> HTML templates.<br>
+          Just apply settings in the <a href="builder.html" style="background-color:#eee;">visual builder</a> and see the result directly on screen. No coding.
+          You can then generate ready to use <i class="fa fa-html5" aria-hidden="true"></i> HTML templates.<br>
+          <br>
           <b>Designers and developers can of course do much more fine tuning</b> by writing their own gallery in HTML. Full detailed <a href="documentation.html" style="background-color:#eee;">documentation</a> is provided.
         </p>
       </div>
     </div>
-
+    <br><br><br>
+    
     <div class="row ">
       <div class="col-md-6 text-justify" >
         <h3>Content source</h3>
         <p>
-          Don't change anything on your current photo management. Just point nanogallery2 to your existing content on the web: on <b>your own web server</b>, but also on <b>Flickr</b> and on <b>Google Photos</b>.
+          Define each image individually or use the PHP add-on <a href="datasource.html#ngy2_npp2" style="background-color:#eee;"><b>nanoPhotosProvider2</b></a> to stream your photos automatically from your <b>own web server</b>.
+          <br>
+          <b>Flickr</b> and <b>Google Photos</b> storage also natively supported.
+          <br><br>
           Gallery customization is done regardless of your content source.
+          <!-- 
+          Don't change anything on your current photo management. Just point nanogallery2 to your existing content on the web: on <b>your own web server</b>, but also on <b>Flickr</b> and on <b>Google Photos</b>.
+          <br>
+          Use the PHP add-on <a href="datasource.html#ngy2_npp2" style="background-color:#eee;"><b>nanoPhotosProvider2</b></a> to stream your photos from your web server.
+          -->
         </p>
       </div>
       <div class="col-md-6 text-justify" >
-        <h3>What's new since nanoGALLERY?</h3>
+        <h3>What's new since the popular <a href="http://nanogallery.brisbois.fr" >nanoGALLERY?</a></h3>
         <p>
-          nanogallery2 is following the popular <a href="http://nanogallery.brisbois.fr" style="background-color:#eee;" >nanoGALLERY</a> script.
-          <br>
-          The display algorithm has been completely rewritten for improved user experience.
-          New features include filter by keywords, shopping cart, social sharing, advanced combinable and chainable hover effects, styling, tools on thumbnails, more button, thumbnail display transitions, info page with google maps location, pinch zoom, thumbnail dominant colors...
+          Improved display algorithm for better user experience and performances.
+          <br><br>
+          New features include filter by keywords, shopping cart, social sharing, combinable and chainable hover effects, tools on thumbnails, more button, thumbnail display transitions, location on google maps, pinch zoom, thumbnail dominant colors...
         </p>
       </div>
     </div>
-
+    <br><br><br>
 
     <!-- 
     <div class="row ">
@@ -1055,16 +1070,91 @@
 	<script type="text/javascript">
 		$(document).ready(function () {
 
+      
+      // ##### TEXT ROTATOR - display features
+      var rotatorlst=[ 'image gallery with multiple layouts', 'lightbox with customizable tools', 'responsive thumbnails sizes', 'display animations', 'gallery pagination',
+          'API', 'chainable hover effects', 'social sharing', 'customizable tools on thumbnails', 'pinch zoom',
+          'location on Google Maps', 'thumbnails with blurred preview', 'justified, grid and cascading layouts',
+          'filter by keywords', 'navigation in albums', 'self hosted images', 'google photos and flickr data sources',
+          'thumbnail selection mode with checkboxes', 'support gesture', 'hover effects on touchscreen', 'deep linking',
+          'highly customizable', 'browser back/forward navigation', 'slideshow', 'image lazy loading and pre-loading', 'color schemes',
+          'custom icons'
+        ];
+      
+      function RotatorNext(n) {
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:       { opacity: 1 },
+          to:         { opacity: 0 },
+          attachment: { n: n },
+          easing:     'easeInOutSine',
+          duration:   100,
+          step: function (state, att) {
+            jQuery('#rotator').css('opacity', state.opacity);
+          },
+          finish: function (state, att) {
+            jQuery('#rotator').text(rotatorlst[n]);
+            var tweenable = new NGTweenable();
+            tweenable.tween({
+              from:       { opacity: 0 },
+              to:         { opacity: 1 },
+              attachment: { n: n },
+              easing:     'easeInOutSine',
+              duration:   100,
+              step: function (state, att) {
+                jQuery('#rotator').css('opacity', state.opacity);
+              },
+              finish: function (state, att) {
+                var n=att.n;
+                n++;
+                if( n>= rotatorlst.length ) { n=0; }
+                setTimeout(function(){
+                    RotatorNext(n);
+                }, 1500);        
+              }
+            });
+          }
+        });
+      }
+      RotatorNext(0);
 
+    
+      function fnOpenNewTab(e) {
+        jQuery('.nGY2Viewer a').on( "click", function(e) {
+          window.open( $(this).attr("href"), '_blank');
+          e.stopPropagation();
+          e.preventDefault();
+          return true;
+        });
+      }
+
+      jQuery('#btnsearch').on('click', function() {
+       //alert(jQuery("#nanogallery").nanogallery2('search', jQuery('#ngy2search').val()) );
+       jQuery("#nanogallery").nanogallery2('searchSetTitle', jQuery('#ngy2search').val() );
+       jQuery("#nanogallery").nanogallery2('searchSetTags', jQuery('#ngy2search2').val() );
+       alert(jQuery("#nanogallery").nanogallery2('searchExecute'));
+      });
+
+      
+    
       jQuery("#nanogallery").nanogallery2({
         //kind: 'google',
         //userID: '111186676244625461692',
 kind: 'flickr',
 userID: '149035168@N08',    // nano studio
         // photoset: 'NONE',
+// allowHTMLinData: true,
+// fnImgDisplayed: fnOpenNewTab,
 
 kind: 'nano_photos_provider2',
 dataProvider: 'http://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
+
+      galleryDisplayTransition: 'rotateX',
+      galleryL1DisplayTransition: 'slideUp',
+ 
+//album: 'into%20the%20wild',
+// albumList2: ['into the wild', 'fun'],
+
 //dataProvider: 'http://localhost:12345/nano_photos_provider2/nano_photos_provider2.php',
         //kind : 'google2', 
         //userID : '111186676244625461692', 
@@ -1080,7 +1170,8 @@ dataProvider: 'http://nano.gallery/nano_photos_provider2/nano_photos_provider2.p
 
         blackList: 'forhomepage|scrapbook|profil',
 //        thumbnailDisplayTransition: 'scaleDown_1.5',
-        thumbnailL1DisplayTransition: 'flipDown',
+        thumbnailL1DisplayTransition: 'scaleUp',
+        thumbnailL1DisplayTransition: 'none',
         thumbnailL1DisplayTransitionDuration: 500,
         thumbnailL1DisplayInterval: 90,
 
@@ -1115,7 +1206,7 @@ dataProvider: 'http://nano.gallery/nano_photos_provider2/nano_photos_provider2.p
         thumbnailHoverEffect2: 'label_font-size_1em_1.5em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((35,203,153,0.8)|title_color_#000_#fff|image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
 
         // thumbnailToolbarImage : { topLeft: 'select', topRight : 'share,featured,download' },
-        thumbnailToolbarAlbum:null,
+//        thumbnailToolbarAlbum:null,
 
         thumbnailL1Label: { display: true, position:'overImageOnMiddle', hideIcons: true, titleFontSize: '1.5em', align: 'center'},
         thumbnailLabel: { display: true, position:'overImageOnBottom', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true},
@@ -1130,7 +1221,11 @@ dataProvider: 'http://nano.gallery/nano_photos_provider2/nano_photos_provider2.p
         gallerySorting: 'random',
 //        thumbnailDisplayInterval: 30,
 
-        colorScheme : { thumbnail: { titleShadow : 'none', descriptionShadow : 'none'} },
+        colorScheme : { 
+          thumbnail: { titleShadow : 'none', descriptionShadow : 'none' },
+          navigationBreadcrumb: { background : '#3C4B5B' },
+          navigationFilter: { background : '#2E7C7F', backgroundSelected: '#19676B', color: '#eee' }
+        },
         
         galleryFilterTags: true,
         galleryL1FilterTags: false,
@@ -1295,7 +1390,7 @@ dataProvider: 'http://nano.gallery/nano_photos_provider2/nano_photos_provider2.p
         //  rnd=randomIntFromInterval(0,4);
         // }
         // lastRnd=rnd;
-        // rnd=2;
+        // rnd=6;
         ga('send', 'event', 'click', 'index', 'random');
 
         switch ( rnd ) {
@@ -1338,6 +1433,7 @@ dataProvider: 'http://nano.gallery/nano_photos_provider2/nano_photos_provider2.p
               galleryDisplayMode: 'rows',
               galleryPaginationMode: 'numbers',
               galleryMaxRows: 2,
+              galleryDisplayTransition: 'rotateX',
               
               thumbnailHoverEffect2 : 'image_opacity_50%_100%|imageGrayOff|labelAppear|toolsSlideDown',
               
@@ -1487,6 +1583,7 @@ dataProvider: 'http://nano.gallery/nano_photos_provider2/nano_photos_provider2.p
               //fnThumbnailHover: myTnEffectHBlurHover,
               //fnThumbnailHoverOut: myTnEffectHBlurHoverOut,
               thumbnailOpenImage: false,
+              galleryDisplayTransition: 'slideup',
               locationHash: false
             });
             break;
@@ -1523,12 +1620,6 @@ dataProvider: 'http://nano.gallery/nano_photos_provider2/nano_photos_provider2.p
           rnd=0;
         }
       });
-      
-      jQuery('#btnsearch').on('click', function() {
-        //rnd++;
-        // jQuery("#nanogallery").nanogallery2('destroy');
-         jQuery("#nanogallery").nanogallery2('search', jQuery('#ngy2search').val() );
-       });
       
       function myTnInit( $e, item, GOMidx ) {
         var st='position:absolute;top:50%;left:10px;'
