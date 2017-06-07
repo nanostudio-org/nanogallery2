@@ -1,10 +1,12 @@
  
+
+  
   <div class="container">
     <br><br>
-    <h1>nanogallery2 - quick start</h1>
-    <hr>
+    <h1>nanogallery2 - get started</h1>
+    <br><br><br><br>
 
-        
+    <!--
     <div class="row match-my-cols" ><br><br><br><br>
       <div class="col-md-6 text-center" >
         &nbsp;
@@ -27,6 +29,7 @@
       </div>
     </div>
     <br><br><br><br>
+    -->
     
     <!-- 
     <div class="row" style="font-size:1.2em;">
@@ -80,16 +83,26 @@
     <div id='qs_html' >
     <!-- <div id='qs_html' style="display:none;"> -->
       <blockquote>
-        Learn the basics to build quickly a gallery from scratch. Just follow these simple steps.
+        nanogallery2 is available in two editions: a <b>javascript library</b> and a <b>portable version</b>.
+        <br><br>
+        The <b>portable</b> edition is the fastest way to use nanogallery2 in your favorite
+        <i class="fa fa-wordpress" aria-hidden="true"></i><i class="fa fa-drupal" aria-hidden="true"></i><i class="fa fa-joomla" aria-hidden="true"></i><i class="fa fa-github" aria-hidden="true"></i> 
+        CMS, without coding and without much technology or technical know how.
+        Check the <a href="https://nano.gallery"><font color="#FF0075"><b>nanogallery2 portable</b></font></a> dedicated website for more informations.
+        <br><br>
+        This page is focused on the javascript library. You will learn the basics to quickly build a gallery from scratch. Just follow these simple steps.
+        <br><br>
       </blockquote>
-      <br><br>
+      <br><br><br>
+      
+      
       <h3> 1. Get the script</h3>
       <p>
           - download it from <a href="https://github.com/nanostudio-org/nanogallery2/releases">Github</a><br>
           - or use npmjs: <code>npm install nanogallery2</code>
       </p>
       
-      <br>
+      <br><br><br>
 
       <h3>2. Include the files in the <code>&lt;head&gt;</code> of your page</h3>
       <blockquote>
@@ -97,20 +110,21 @@
       </blockquote>
       <pre>
         &lt;!-- jQuery --&gt;
-        &lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"&gt;&lt;/script&gt;
+        &lt;script  type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"&gt;&lt;/script&gt;
       
         &lt;!-- nanogallery2 --&gt;
-        &lt;link href="css/nanogallery2.min.css" rel="stylesheet" type="text/css"&gt;
-        &lt;script type="text/javascript" src="jquery.nanogallery2.min.js"&gt;&lt;/script&gt;
+        &lt;link    href="css/nanogallery2.min.css" rel="stylesheet" type="text/css"&gt;
+        &lt;script  type="text/javascript"  src="jquery.nanogallery2.min.js"&gt;&lt;/script&gt;
       </pre>
-      <br>
+
+      <br><br><br>
 
 
       <h3>3. To create the gallery, add the markup in the <code>&lt;body&gt;</code> of your page</h3>
       <p>Example 1 - self hosted images</p>
       <pre>
         &lt;body&gt;
-          &lt;div data-nanogallery2&gt;
+          &lt;div id="nanogallery2" data-nanogallery2&gt;
             &lt;a href="..../img1.jpg" data-ngThumb="..../thumbnail1.jpg">&lt;/a&gt;
             &lt;a href="..../img2.jpg" data-ngThumb="..../thumbnail2.jpg">&lt;/a&gt;
             &lt;a href="..../img3.jpg" data-ngThumb="..../thumbnail3.jpg">&lt;/a&gt;
@@ -122,23 +136,29 @@
       <p>Example 2 - images hosted on flickr</p>
       <pre>
         &lt;body&gt;
-          &lt;div id="my_nanogallery2" data-nanogallery2='{ "userID": "34858669@N00", "kind": "flickr" }' &gt;&lt;/div&gt;
+          &lt;div id="nanogallery2" data-nanogallery2='{ "userID": "34858669@N00", "kind": "flickr" }' &gt;&lt;/div&gt;
         &lt;/body&gt;
       </pre>
       
       <br><br>
-      <hr>
+      <br><br>
       <br><br>
       
       
       <h1>nanogallery2 - initialization and customization</h1>
       <p>Galleries can be initialized and configured in 2 ways:</p>
       
-      <h3>- with HTML</h3>
+      <h3>- with HTML markup</h3>
       <p>No javascript required. Options are configured with the <code>data-nanogallery2</code> attribute</p>
       <pre>
         &lt;body&gt;
-          &lt;div id="my_nanogallery2" data-nanogallery2='{ "userID": "34858669@N00", "kind": "flickr", "thumbnailHeight": 150, "thumbnailWidth": 150 }' &gt;&lt;/div&gt;
+          &lt;div id="nanogallery2" data-nanogallery2='{
+              "userID":           "34858669@N00",
+              "kind":             "flickr",
+              "thumbnailHeight":  150,
+              "thumbnailWidth":   150
+            }'&gt;
+          &lt;/div&gt;
         &lt;/body&gt;
       </pre>
       <blockquote>
@@ -154,18 +174,18 @@
           &lt;script&gt;
            jQuery(document).ready(function () {
 
-              jQuery("#my_nanogallery2").nanogallery2({
-                userID: '34858669@N00',
-                kind: 'flickr',
-                thumbnailHeight: 150,
-                thumbnailWidth: 150
+              jQuery("#nanogallery2").nanogallery2({
+                userID:           '34858669@N00',
+                kind:             'flickr',
+                thumbnailHeight:  150,
+                thumbnailWidth:   150
               });
 
             });
           &lt;/script&gt;
         &lt;/head&gt;
         &lt;body&gt;
-          &lt;div id="my_nanogallery2"&gt;gallery_made_with_nanogallery2&lt;/div&gt;
+          &lt;div id="nanogallery2"&gt;gallery_made_with_nanogallery2&lt;/div&gt;
         &lt;/body&gt;
       </pre>
     </div>
