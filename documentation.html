@@ -461,7 +461,6 @@
   <!-- ##### END LOGO INDEX  ##### -->
   <!-- ########################### -->
 
-  
   <div class="container ngy2documentation">
   <div class="row" >
   <div class="col-md-10">
@@ -772,6 +771,26 @@
             <td>Display or hide thumbnails which are displayed outside of the screen (display may impact performances)</td>
             <td>1.2</td>
           </tr>
+          <tr>
+            <td>galleryDisplayTransition</td>
+            <td>string</td>
+            <td>'none'</td>
+            <td>
+              Transition for displaing the gallery. Applied on the whole gallery.
+              <br>
+              Possible values: 'none', 'rotateX', 'slideUp'
+            </td>
+            <td>1.4</td>
+          </tr>
+          <tr>
+            <td>galleryDisplayTransitionDuration</td>
+            <td>integer</td>
+            <td>1000</td>
+            <td>
+              Duration of the gallery display transition, in milliseconds.
+            </td>
+            <td>1.4</td>
+          </tr>
         </tbody>
         </table>
       </div>
@@ -993,6 +1012,13 @@
           <td>0</td>
           <td>Add N stacks behind each thumbnail. Usefull for thumbnails hover effects</td>
           <td>1.2</td>
+        </tr>
+        <tr>
+          <td>thumbnailWaitImageLoaded</td>
+          <td>boolean</td>
+          <td>true</td>
+          <td>Wait until thumbails images are fully dwonloaded before displaying them smoothly.</td>
+          <td>1.4</td>
         </tr>
         <tr>
           <td></td>
@@ -1554,7 +1580,7 @@
 
     <div id="ngy2_navigation_first"></div>
     <br><br><br><br><br><br><br>
-    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> GALLERY - FIRST ALBUL LEVEL SPECIFIC OPTIONS</h3>
+    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> GALLERY - FIRST ALBUM LEVEL SPECIFIC OPTIONS</h3>
     <hr>
     <blockquote>
       Settings can be defined specificaly for the first album level (root level) and for the other ones.<br>
@@ -1636,6 +1662,14 @@
           <tr>
             <td>thumbnailL1DisplayInterval</td>
             <td>1.3</td>
+          </tr>
+          <tr>
+            <td>galleryDisplayTransition</td>
+            <td>1.4</td>
+          </tr>
+          <tr>
+            <td>galleryDisplayTransitionDuration</td>
+            <td>1.4</td>
           </tr>
           <tr>
             <td></td>
@@ -2592,10 +2626,7 @@
           }
       });
     });
-
-
   </script>
-  
 
   <!-- ######################## -->
   <!-- ##### START FOOTER ##### -->
