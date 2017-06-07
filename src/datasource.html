@@ -1,4 +1,4 @@
- <div class="container ngy2documentation">
+  <div class="container ngy2documentation">
   <div class="row" >
   <div class="col-md-10">
 
@@ -7,13 +7,18 @@
     <br><br><br>
     <br><br><br>
     <br><br><br>
-    <blockquote >
-      <br>
-      <span class="">
-      On this page we'll see how the data sources can be defined.<br><br>
+    <blockquote>
+      On this page, you will see how data sources are defined.<br><br>
       A data source is a place where your images and albums are stored. As for nanogallery2's settings, definition can be made with <b>HTML markup</b> or can be passed to the <code>nanogallery2()</code> function.<br>
-      </span>
       <br>
+      <br>
+      Multiple data sources are natively supported.<br>
+      <i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> <b>For self hosted photos:</b><br>
+      &nbsp; &nbsp; &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i> set parameters for each individual photo (see <b><a href="#ngy2_define_markup">markup</a></b> or <b><a href="#ngy2_define_javascript">javascript</a></b>)<br>
+      &nbsp; &nbsp; &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i> or use <b><a href="#ngy2_npp2">nanoPhotosProvider2</a></b> (just point to your web server)<br>
+      <i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> <b>For cloud storage:</b><br>
+      &nbsp; &nbsp; &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i> <b><a href="#ngy2_flickr">Flickr</a></b><br>
+      &nbsp; &nbsp; &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i> <b><a href="#ngy2_google">Google Photos</a></b><br>
     </blockquote>
     <br>
     <p>
@@ -778,11 +783,13 @@ $(document).ready(function () {
       nanoPhotosProvider2 is a PHP application for your webserver. It provides images and albums automatically to nanogallery2.
       <br>
       Thumbnails for all nanogallery2 layouts (grid, justified, cascading) are automatically generated.
+      <br>
+      Blurred preview images are used for a really nice effect.
       <br><br>
       <span class="lead">
-        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+        &nbsp; &nbsp; &nbsp; 
         <i class="fa fa-arrow-right" aria-hidden="true"></i>  nanoPhotosProvider2 is available on 
-        <a href="https://github.com/nanostudio-org/nanoPhotosProvider2" type="button" class="btn btn-primary " target="_blank"><i class="fa fa-github" aria-hidden="true"></i> &nbsp; Github</a>
+        <a href="https://github.com/nanostudio-org/nanoPhotosProvider2" type="button" class="btn btn-success " target="_blank"><i class="fa fa-github" aria-hidden="true"></i> &nbsp; Github</a>
       </span>
       <br><br>
       Usage example:
@@ -816,7 +823,7 @@ $(document).ready(function () {
               <b>MANDATORY</b><br>
               Storage type. Must be set to <code>'nano_photos_provider2'</code> to access nanoPhotosProvider2 data.
             </td>
-            <td>v1.3</td>
+            <td>1.3</td>
           </tr>
           <tr>
             <td>dataProvider</td>
@@ -830,7 +837,51 @@ $(document).ready(function () {
               <br>
               <code>dataProvider: 'http://mywebsever.com/mypath/nano_photos_provider2/nano_photos_provider2.php'</code>
             </td>
-            <td>v1.3</td>
+            <td>1.3</td>
+          </tr>
+          <tr>
+            <td>blackList</td>
+            <td>string</td>
+            <td></td>
+            <td>
+              List of keywords to ignore - album's name containing one of the keywords in the title will be ignored.<br>
+              Keyword separator is <b>|</b>
+            </td>
+            <td>1.4</td>
+          </tr>
+          <tr>
+            <td>whiteList</td>
+            <td>string</td>
+            <td></td>
+            <td>
+              List of keywords to authorize - album's name must contain one of the keywords to be displayed.<br>
+              Keyword separator is <b>|</b>
+            </td>
+            <td>1.4</td>
+          </tr>
+          <tr>
+            <td>album<br>photoset</td>
+            <td>string</td>
+            <td></td>
+            <td>
+              To display only the content (=the images) of one specific album/folder.<br>
+              <br>
+              note: 'photoset' is an alias of 'album'
+            </td>
+            <td>1.4</td>
+          </tr>
+          <tr>
+            <td>albumList2</td>
+            <td>string<br>array</td>
+            <td></td>
+            <td>
+              The list of albums to display.<br>
+              Use a string to set a single album, or an array for multiple albums.<br>
+              <b>Example:</b><br>
+              One album: <code>albumList2: 'architecture'</code><br>
+              Three albums: <code>albumList2: ['architecture', 'friends', 'into the wild']</code><br>
+            </td>
+            <td>1.4</td>
           </tr>
         </tbody>
       </table>
@@ -1173,6 +1224,4 @@ $(document).ready(function () {
           }
       });
     });
-
-
   </script>
