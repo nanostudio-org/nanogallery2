@@ -478,7 +478,8 @@
   <!-- ##### END LOGO INDEX  ##### -->
   <!-- ########################### -->
 
- <div class="jumbotron ngy2_bgdark">
+
+  <div class="jumbotron ngy2_bgdark">
     <div class="container ">
       <div class="row text-right" >
         <div class="col-md-10" ></div>
@@ -1077,10 +1078,35 @@
 	<script type="text/javascript">
 		$(document).ready(function () {
 
+    
+      // LOGO APPEAR
+      var tweenable = new NGTweenable();
+      tweenable.tween({
+        from:       { opacity: 0 },
+        to:         { opacity: 1 },
+        easing:     'easeInOutSine',
+        duration:   1000,
+        delay:      500,
+        step: function (state, att) {
+          jQuery('#ngy2logo').css('opacity', state.opacity);
+        }
+      });
+      var tweenable = new NGTweenable();
+      tweenable.tween({
+        from:       { opacity: 0 },
+        to:         { opacity: 1 },
+        easing:     'easeInOutSine',
+        duration:   1000,
+        delay:      1000,
+        step: function (state, att) {
+          jQuery('#ngy2logo2').css('opacity', state.opacity);
+        }
+      });
+    
       
       // ##### TEXT ROTATOR - display features
       var rotatorlst=[ 'photo gallery with multiple layouts', 'lightbox with customizable tools', 'responsive thumbnails sizes', 'display animations', 'gallery pagination',
-          'API', 'chainable hover effects', 'social sharing', 'customizable tools on thumbnails', 'pinch zoom',
+          'API', 'chainable hover effects', 'social sharing', 'retina and hi-dpi screen support', 'customizable tools on thumbnails', 'pinch zoom', 'swipe to paginate',
           'location on Google Maps', 'thumbnails with blurred preview', 'justified, grid and cascading layouts',
           'filter by keywords', 'navigation in albums', 'self hosted images', 'google photos and flickr data sources',
           'thumbnail selection mode with checkboxes', 'support gesture', 'hover effects on touchscreen', 'deep linking',
@@ -1138,9 +1164,9 @@
       jQuery('#btnsearch').on('click', function() {
         // jQuery("#nanogallery").nanogallery2('displayItem', 'fun/fun%2Fphoto%20by%20himanshu%20singh%20gurjar');
        //alert(jQuery("#nanogallery").nanogallery2('search', jQuery('#ngy2search').val()) );
-       jQuery("#nanogallery").nanogallery2('searchSetTitle', jQuery('#ngy2search').val() );
-       jQuery("#nanogallery").nanogallery2('searchSetTags', jQuery('#ngy2search2').val() );
-       alert(jQuery("#nanogallery").nanogallery2('searchExecute'));
+       jQuery("#nanogallery").nanogallery2('search2', jQuery('#ngy2search').val(), jQuery('#ngy2search2').val() );
+       // jQuery("#nanogallery").nanogallery2('searchSetTags', jQuery('#ngy2search2').val() );
+       alert(jQuery("#nanogallery").nanogallery2('search2Execute'));
       });
 
       
@@ -1170,7 +1196,7 @@
       
     
       jQuery("#nanogallery").nanogallery2({
-      // debugMode: true,
+        //debugMode: true,
         //kind: 'google',
         //userID: '111186676244625461692',
 kind: 'flickr',
@@ -1212,6 +1238,7 @@ dataProvider: 'http://nano.gallery/nano_photos_provider2/nano_photos_provider2.p
         thumbnailDisplayTransitionDuration: 600,
         thumbnailDisplayInterval: 60,
         thumbnailHeight: '200 XS150 SM150', thumbnailWidth: 'auto',
+        thumbnailHeight: '300 XS200 SM200', thumbnailWidth: 'auto',
         thumbnailL1Height: '200 XS100 SM150', thumbnailL1Width: '300 XS100 SM225',
         thumbnailL1Height: '200', thumbnailL1Width: '300',
         galleryL1MaxRows: 1,
@@ -1221,23 +1248,24 @@ dataProvider: 'http://nano.gallery/nano_photos_provider2/nano_photos_provider2.p
         galleryL1DisplayMode: 'pagination',
         galleryDisplayMode: 'rows',
         galleryPaginationMode: 'rectangles',
-        galleryMaxRows: 3,
+        galleryMaxRows: 4,
         
         
         //galleryBuildInit2 : 'transform-origin_top right',
         //thumbnailL1BuildInit2: 'thumbnail_transform-origin_50% 150%',
 
 
-thumbnailL1BuildInit2: 'image_transform-origin_50% 50% -100px|image_transform-style_preserve-3d|image_backface-visibility_hidden|\
-label_transform-origin_50% 50% -100px|label_transform-style_preserve-3d|label_backface-visibility_hidden|\
-thumbnail_perspective_250px|\
-thumbnail_overflow_visible|.nGY2GThumbnailSub_overflow_visible|\
-label_background_#23CB99|thumbnail_background-color_rgba(0,0,0,0)',
-thumbnailL1HoverEffect2 :'image_rotateX_0deg_89deg_800|label_rotateX_-89deg_0deg_800|image_opacity_1.00_0.00|label_opacity_0.00_1.00|thumbnail_scale_1.00_1.20',
+        thumbnailL1BuildInit2: '.nGY2GThumbnailAlbumTitle_border-left_5px solid #23CB99|.nGY2GThumbnailAlbumTitle_margin_20px|image_transform-origin_50% 50% -100px|image_transform-style_preserve-3d|image_backface-visibility_hidden|\
+              label_transform-origin_50% 50% -100px|label_transform-style_preserve-3d|label_backface-visibility_hidden|\
+              thumbnail_perspective_250px|\
+              thumbnail_overflow_visible|.nGY2GThumbnailSub_overflow_visible|\
+              label_background_url(img/thumbnail-background-pixabay-com.jpg)|label_background-size_100%|thumbnail_background-color_rgba(0,0,0,0)',
+
+        thumbnailL1HoverEffect2: 'image_rotateX_0deg_89deg_800|label_rotateX_-89deg_0deg_800|image_opacity_1.00_0.00|label_opacity_0.00_1.00|thumbnail_scale_1.00_1.20',
         
-          
+        
         thumbnailL2HoverEffect2: 'image_scale_1.00_1.20|labelAppear|customlayer_backgroundColor_rgba(35,203,153,0.0)_rgba(35,203,153,0.8)|\
-        thumbnail_translateZ_0px_150px_easeOutQuad_400| \
+                thumbnail_translateZ_0px_150px_easeOutQuad_400| \
                 thumbnail_rotateX_0deg_-10deg_easeOutBack_200| \
                 thumbnail_rotateX_-10deg_0deg_delay250_keyframe_hoverin_easeOutBack_400',
 
@@ -1250,6 +1278,7 @@ thumbnailL1HoverEffect2 :'image_rotateX_0deg_89deg_800|label_rotateX_-89deg_0deg
         thumbnailToolbarAlbum:null,
 
         thumbnailL1Label: { display: true, position:'overImageOnMiddle', hideIcons: true, titleFontSize: '1.5em', align: 'center'},
+        thumbnailL1Label: { display: true, position:'overImageOnTop', hideIcons: true, titleFontSize: '1.5em', align: 'left'},
         thumbnailLabel: { display: true, position:'overImageOnBottom', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true},
         thumbnailBorderHorizontal: 0,
         thumbnailBorderVertical: 0,
@@ -1263,7 +1292,7 @@ thumbnailL1HoverEffect2 :'image_rotateX_0deg_89deg_800|label_rotateX_-89deg_0deg
 //        thumbnailDisplayInterval: 30,
 
         colorScheme : { 
-          thumbnail: { titleShadow : 'none', descriptionShadow : 'none' },
+          thumbnail: { titleShadow : 'none', descriptionShadow : 'none', titleColor: '#000' },
           navigationBreadcrumb: { background : '#3C4B5B' },
           navigationFilter: { background : '#2E7C7F', backgroundSelected: '#19676B', color: '#eee' }
         },
@@ -1474,7 +1503,6 @@ thumbnailL1HoverEffect2 :'image_rotateX_0deg_89deg_800|label_rotateX_-89deg_0deg
               galleryDisplayMode: 'rows',
               galleryPaginationMode: 'numbers',
               galleryMaxRows: 2,
-              galleryDisplayTransition: 'rotateX',
               
               thumbnailHoverEffect2 : 'image_opacity_50%_100%|imageGrayOff|labelAppear|toolsSlideDown',
               
