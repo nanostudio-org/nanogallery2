@@ -68,9 +68,9 @@ Dual licenced:
 ## Requirements
 * Javascript must be enabled
 * jQuery 1.7.1+
-
-
-### Thanks
+  
+  
+## Thanks
 **Many thanks to these contributors for their work on [nanoGALLERY](http://nanogallery.brisbois.fr/), [nanogallery2](https://nanogallery2.nanostudio.org/), [nanoPhotosProvider](https://github.com/Kris-B/nanoPhotosProvider), [nanoPhotosProvider2](https://github.com/nanostudio-org/nano_photos_provider2) or [nanogp](https://github.com/nanostudio-org/nanogp):**
 - [Victor A. Banuelos](https://github.com/vbanuelos)
 - [Raphaël Renaudon](https://github.com/sevarg)
