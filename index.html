@@ -531,7 +531,7 @@
     <div class="row match-my-cols">
       <div class="col-md-4 text-left">
         <h2>
-          Beautiful Image Gallery
+          Beautiful Photo Gallery
         </h2>
         <p class="lead">
           Style the layout to suit your personal needs, and add eye-catching effects.
@@ -600,7 +600,7 @@
             For Everyone
           </h2>
           <p class="lead">
-            nanogallery2 is designed for everyone as the easiest and fastest way to create an image gallery.
+            nanogallery2 is designed for everyone as the easiest and fastest way to create engaging photo galleries.
           </p>
         </div>
       </div>
@@ -781,9 +781,9 @@
           <br><br>
           
         </p>
-      <!--
-        <a class="twitter-timeline" data-dnt="true" data-height="300" data-chrome="nofooter noborders" href="https://twitter.com/search?q=nanogallery2" data-widget-id="845297549401620483">Tweets sur nanogallery2</a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+        <!--
+          <a class="twitter-timeline" data-dnt="true" data-height="300" data-chrome="nofooter noborders" href="https://twitter.com/search?q=nanogallery2" data-widget-id="845297549401620483">Tweets sur nanogallery2</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
         -->
       </div>
       
@@ -839,7 +839,14 @@
           <a href="https://github.com/nanostudio-org/nanogallery2/blob/master/changelog.md" class="btn btn-success btn-lg btn-block" target="_blank"><i class="fa fa-newspaper-o" aria-hidden="true"></i> &nbsp; view changelog</a>
         </div>
         <div class="col-md-4 text-center">
-          <a href="https://github.com/nanostudio-org/nanogallery2" class="btn btn-primary btn-lg btn-block" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> view on github</a>
+          <div class="btn-group btn-group-justified">
+            <div class="btn-group">
+              <a href="https://github.com/nanostudio-org/nanogallery2" class="btn btn-primary btn-lg btn-block" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> view on github</a>
+            </div>
+            <div class="btn-group">
+              <a href="https://github.com/nanostudio-org/nanogallery2/tree/dev" class="btn btn-primary btn-lg btn-block" target="_blank">dev branch</a>
+            </div>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -1072,7 +1079,7 @@
 
       
       // ##### TEXT ROTATOR - display features
-      var rotatorlst=[ 'image gallery with multiple layouts', 'lightbox with customizable tools', 'responsive thumbnails sizes', 'display animations', 'gallery pagination',
+      var rotatorlst=[ 'photo gallery with multiple layouts', 'lightbox with customizable tools', 'responsive thumbnails sizes', 'display animations', 'gallery pagination',
           'API', 'chainable hover effects', 'social sharing', 'customizable tools on thumbnails', 'pinch zoom',
           'location on Google Maps', 'thumbnails with blurred preview', 'justified, grid and cascading layouts',
           'filter by keywords', 'navigation in albums', 'self hosted images', 'google photos and flickr data sources',
@@ -1129,6 +1136,7 @@
       }
 
       jQuery('#btnsearch').on('click', function() {
+        // jQuery("#nanogallery").nanogallery2('displayItem', 'fun/fun%2Fphoto%20by%20himanshu%20singh%20gurjar');
        //alert(jQuery("#nanogallery").nanogallery2('search', jQuery('#ngy2search').val()) );
        jQuery("#nanogallery").nanogallery2('searchSetTitle', jQuery('#ngy2search').val() );
        jQuery("#nanogallery").nanogallery2('searchSetTags', jQuery('#ngy2search2').val() );
@@ -1136,8 +1144,33 @@
       });
 
       
+// $('#nanogallery').nanogallery2({
+// kind: 'nano_photos_provider2',
+// dataProvider: 'http://127.0.0.1/sasasvintage/v21/nanoPhotosProvider2/nano_photos_provider2.php',
+// dataProvider: 'http://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
+// locationHash: false,
+// thumbnailWidth: '170',
+// thumbnailHeight: 'auto',
+// thumbnailBorderVertical: 0,
+// thumbnailBorderHorizontal: 0,
+// thumbnailDisplayInterval: 30,
+// thumbnailGutterWidth: 4,
+// thumbnailGutterHeight: 4,
+// thumbnailLabel: {
+// titleMultiLine: true
+// },
+// allowHTMLinData: false,
+// thumbnailHoverEffect2: 'labelAppear',
+// gallerySorting: 'random',
+// breadcrumbAutoHideTopLevel: false,
+// galleryFilterTags: true,
+// thumbnailLevelUp: false,
+// colorScheme: 'light'
+// });
+      
     
       jQuery("#nanogallery").nanogallery2({
+      debugMode: true,
         //kind: 'google',
         //userID: '111186676244625461692',
 kind: 'flickr',
@@ -1180,6 +1213,7 @@ dataProvider: 'http://nano.gallery/nano_photos_provider2/nano_photos_provider2.p
         thumbnailDisplayInterval: 60,
         thumbnailHeight: '200 XS150 SM150', thumbnailWidth: 'auto',
         thumbnailL1Height: '200 XS100 SM150', thumbnailL1Width: '300 XS100 SM225',
+        thumbnailL1Height: '200', thumbnailL1Width: '300',
         galleryL1MaxRows: 1,
 
 
@@ -1192,15 +1226,22 @@ dataProvider: 'http://nano.gallery/nano_photos_provider2/nano_photos_provider2.p
         
         //galleryBuildInit2 : 'transform-origin_top right',
         //thumbnailL1BuildInit2: 'thumbnail_transform-origin_50% 150%',
+
+
+thumbnailL1BuildInit2: 'image_transform-origin_50% 50% -100px|image_transform-style_preserve-3d|image_backface-visibility_hidden|\
+label_transform-origin_50% 50% -100px|label_transform-style_preserve-3d|label_backface-visibility_hidden|\
+thumbnail_perspective_250px|\
+thumbnail_overflow_visible|.nGY2GThumbnailSub_overflow_visible|\
+label_background_#23CB99|thumbnail_background-color_rgba(0,0,0,0)',
+thumbnailL1HoverEffect2 :'image_rotateX_0deg_89deg_800|label_rotateX_-89deg_0deg_800|image_opacity_1.00_0.00|label_opacity_0.00_1.00',
+        
           
-              //customlayer_translateY_0px_-50px
-          
-        thumbnailL1HoverEffect2: 'image_scale_1.00_1.20|labelAppear|customlayer_backgroundColor_rgba(35,203,153,0.0)_rgba(35,203,153,0.8)|\
+        thumbnailL2HoverEffect2: 'image_scale_1.00_1.20|labelAppear|customlayer_backgroundColor_rgba(35,203,153,0.0)_rgba(35,203,153,0.8)|\
         thumbnail_translateZ_0px_150px_easeOutQuad_400| \
                 thumbnail_rotateX_0deg_-10deg_easeOutBack_200| \
                 thumbnail_rotateX_-10deg_0deg_delay250_keyframe_hoverin_easeOutBack_400',
 
-        thumbnailL1BuildInit2: 'customlayer_scale_1.3|customlayer_translateY_-15px|customlayer_translateX_-60%|customlayer_rotateZ_10deg',
+        thumbnailL2BuildInit2: 'customlayer_scale_1.3|customlayer_translateY_-15px|customlayer_translateX_-60%|customlayer_rotateZ_10deg',
         //  galleryBuildInit2 : 'perspective_900px|perspective-origin_50% 150%',
 
         thumbnailHoverEffect2: 'label_font-size_1em_1.5em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((35,203,153,0.8)|title_color_#000_#fff|image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
