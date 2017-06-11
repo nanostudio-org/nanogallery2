@@ -491,30 +491,35 @@
 
   <div class="container">
     <br><br>
-    <h1>nanogallery2 builder <span style="color:#b00;">[BETA VERSION]</span></h1>
+    <h1>nanogallery2 builder</h1>
     <br><br><br>
     <blockquote>
-      Get a gallery up and running in minutes with the <b>builder</b>.
-      Just define the options and generate a full working HTML page.<br>
-      The builder is a good starting point to discover nanogallery2. But only a small subset of all features is available here. To go further, you can enhance the generated templates with settings from the documentation.
+      Get a gallery up and running in minutes with this <b>visual builder</b>.
+      <br><br>
+      Just define the options and generate a full working HTML page.
+      <br><br>
+      The builder is a good starting point to discover nanogallery2. But only a small subset of all features of nanogallery2 is available here. To go further, you can enhance the generated templates with settings from the documentation.
     </blockquote>
     You can also <button class="btn" disabled>modify a generated</button> gallery.
     <br><br>
+    <div class="row ">
+      <div class="col-md-12 text-right">
+        <label>[nanogallery builder v1.2.0beta - june 1, 2017]</label>
+      </div>
+    </div>
   </div>
 
     <br><br><br><br>
+  
+  
+
 
   <!-- ###################### -->
   <!-- #####   BUILDER  ##### -->
   <!-- ###################### -->
-<div class="jumbotron ngy2_background_cell">
+<div class="jumbotron ngy2_background_c<div class="jumbotron ngy2_background_cell">
   <div class="container ngy2-builder ">
 
-    <div class="row ">
-      <div class="col-md-12 text-right">
-        <label>[nanogallery builder v1.1.1 - february 27, 2017]</label>
-      </div>
-    </div>
     <label class="hide">Modify existing gallery</label><br>
     <textarea id="taGalleryModify" class="span12 hide" rows="20" placeholder="Paste a previous generated gallery here" style="min-width: 100%"></textarea>
     <button id="btnModify" class="btn btn-primary hide" >Edit</button>
@@ -720,8 +725,8 @@
                 
                   <label for="layoutEngine" class="control-label">Gallery layout</label>
                   <select name="layoutEngine" class="form-control" id="layoutEngine">
-                    <option value="grid" >Grid</option>
-                    <option value="justified" selected>Justified</option>
+                    <option value="grid" selected>Grid</option>
+                    <option value="justified" >Justified</option>
                     <option value="cascading">Cascading</option>
                   </select>
                   <br>
@@ -756,6 +761,12 @@
                     <option value="slideDown">slideDown</option>
                     <option value="scaleUp">scaleUp</option>
                     <option value="scaleDown">scaleDown</option>
+                    <option value="flipDown">flipDown</option>
+                    <option value="flipUp">flipUp</option>
+                    <option value="slideDown2">slideDown2</option>
+                    <option value="slideUp2">slideUp2</option>
+                    <option value="slideRight">slideRight</option>
+                    <option value="slideLeft">slideLeft</option>
                   </select>
                   <br>
                   <label for="thumbnailDisplayTransitionDuration" class="control-label">Display transition duration (ms)</label>
@@ -1363,16 +1374,32 @@
 
           <div class="row rowGoogleXXX rowGoogleOAuthGrant hide">
             <div class="col-md-12">
-              <label>To embed a gallery in your website, you need to authorize nanogallery2 portable:</label>
+              <br>
+              <label><u>IMPORTANT:</u> To embed a gallery in your website, you need to authorize nanogallery2 portable:</label><br>
               <button class="btn btn-primary" data-toggle="modal" data-target="#myGoogleGrant">authorize nanogallery2 to access my Google Photos content</button>
+              <label>Authorization is permanent until you revoke it.</label>
+              <br><br><br>
+              <p>
+                This service is provided "as-is". nanogallery2 displays albums and photos stored on Google Photos. nanogallery2 is not affiliated to Google. Changes by Google may affect your galleries. nanogallery2 can not be held responsible for any issue resulting from any change on Google Photos.
+              </p>
+              <br><br>
             </div>
           </div>
           <div class="row rowGoogleXXX rowGoogleOAuthRevoke hide">
             <div class="col-md-12">
-              <label>You have authorized <b>nanogallery2 portable</b> to access your Google Photos content.
               <br>
-              To stop using it in your web pages, you can revoke it:</label>
+              <label>
+                You have authorized <b>nanogallery2 portable</b> to access your Google Photos content.
+                <br>
+                To stop using it in your web pages, you can revoke it:
+              </label>
+              <br>
               <button id="btnGoogleOAuthRevoke" class="btn btn-primary" >stop using nanogallery2 on my web pages</button>
+              <br><br><br>
+              <p>
+                This service is provided "as-is". nanogallery2 displays albums and photos stored on Google Photos. nanogallery2 is not affiliated to Google. Changes by Google may affect your galleries. nanogallery2 can not be held responsible for any issue resulting from any change on Google Photos.
+              </p>
+              <br><br>
             </div>
           </div>
 
@@ -1565,9 +1592,12 @@
       });
       // add sample data
       var tabledata = [
-        {id: 1, title:"Berlin 1", description:"", srct:"berlin1t.jpg", src:"berlin1.jpg", width:"1280", height:"848"},
-        {id: 2, title:"Berlin 2", description:"", srct:"berlin2t.jpg", src:"berlin2.jpg", width:"847", height:"1280"},
-        {id: 3, title:"Berlin 3", description:"", srct:"berlin3t.jpg", src:"berlin3.jpg", width:"1260", height:"860"}
+        // {id: 1, title:"Berlin 1", description:"", srct:"berlin1t.jpg", src:"berlin1.jpg", width:"1280", height:"848"},
+        // {id: 2, title:"Berlin 2", description:"", srct:"berlin2t.jpg", src:"berlin2.jpg", width:"847", height:"1280"},
+        // {id: 3, title:"Berlin 3", description:"", srct:"berlin3t.jpg", src:"berlin3.jpg", width:"1260", height:"860"}
+        {id: 1, title:"Berlin 1", description:"", srct:"berlin1t.jpg", src:"berlin1.jpg", width:"", height:""},
+        {id: 2, title:"Berlin 2", description:"", srct:"berlin2t.jpg", src:"berlin2.jpg", width:"", height:""},
+        {id: 3, title:"Berlin 3", description:"", srct:"berlin3t.jpg", src:"berlin3.jpg", width:"", height:""}
       ];
       //load sample data into the table
       $("#table-images").tabulator("setData", tabledata);
@@ -1789,6 +1819,7 @@
         });
 
         function GooglePhotosCheckAuthorization() {
+
           jQuery.ajaxSetup({ cache: false });
           jQuery.support.cors = true;
           var url = 'https://nano.gallery/nanogp/authorize.php?user_info='+$('#googleUserID').val();
@@ -1832,7 +1863,9 @@
                 $('#googleOpenOriginal').prop('disabled', true);
               }
               else {
-                GooglePhotosCheckAuthorization();
+                if( portable ) {
+                  GooglePhotosCheckAuthorization();
+                }
               }
 
               break;
@@ -2090,8 +2123,7 @@
     
 		});
 	</script>
-  <script type="text/javascript" src="js/jquery.nanogallery2.builder.js"></script>
-
+  <script type="text/javascript" src="../js/jquery.nanogallery2.builder.js"></script>
   
 
   <!-- ######################## -->
