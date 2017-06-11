@@ -1,6 +1,39 @@
 nanogallery2 - ChangeLog
 ===========
 
+v1.4.0
+------
+- new: display thumbnail's images smoothly when fully downloaded (option 'thumbnailWaitImageLoaded')
+- new: gallery display animations (options 'galleryDisplayTransition' and 'galleryDisplayTransitionDuration')
+- new: tags support with nanoPhotosProvider2
+- new: API functions to search in title and tags ('search2', 'search2Execute')
+- enhanced: blurred image display during image download (thumbnails)
+- enhanced: thumbnails display animations
+- changed: default thumbnail background color from black to gray
+- fixed: #46 rotate internal viewer doesn't resize gallery
+- fixed: #46 hover effect 'toolsAppear' works only with one toolbar
+- fixed: #46 hover effect issue on touch/mobile device
+- fixed: #48 browser navigation back to root album doesn't work
+- fixed: #48 API function displayItem
+- fixed: image display quality in Chrome
+- fixed: misc small issues
+
+
+v1.3.0
+------
+- new: display thumbnail's images smoothly when fully downloaded - option 'thumbnailWaitImageLoaded'
+- new: gallery display animations (options 'galleryDisplayTransition' and 'galleryDisplayTransitionDuration')
+- new: tags support with nanoPhotosProvider2
+- new: API function 'SearchTags'
+- enhanced: blurred image display during image download (thumbnails)
+- enhanced: thumbnails display animations
+- changed: default thumbnail background color from black to gray
+- fixed: #46 rotate internal viewer doesn't resize gallery
+- fixed: #46 hover effect 'toolsAppear' works only with one toolbar
+- fixed: #46 hover effect issue on touch/mobile device
+- fixed: image display quality in Chrome
+
+
 v1.3.0
 ------
 - new: #3 Auto hide tools on image view after inactivity. Use the option viewerHideToolsDelay to define the delay in ms.
