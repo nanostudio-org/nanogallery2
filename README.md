@@ -61,7 +61,7 @@ HTML markup configuration example:
 
 ## Package managers
 
-npm: `npm install nanogallery2`
+[npmjs](https://www.npmjs.com/package/nanogallery2): `npm install nanogallery2`
 
 <br />
 
