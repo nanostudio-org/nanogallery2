@@ -1,4 +1,4 @@
-/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2017-06-05 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
+/* nanogallery2 - v1.4.0 - 2017-06-11 - http://nanogallery2.nanostudio.org */
 /**!
  * @preserve nanogallery2 - javascript image gallery
  * Homepage: http://nanogallery2.nanostudio.org
@@ -20,19 +20,6 @@
  */
 
 /*
-
-v1.4.0 - BETA VERSION - DO NOT USE
-- new: display thumbnail's images smoothly when fully downloaded - option 'thumbnailWaitImageLoaded'
-- new: gallery display animations (options 'galleryDisplayTransition' and 'galleryDisplayTransitionDuration')
-- new: tags support with nanoPhotosProvider2
-- new: API function 'SearchTags'
-- enhanced: blurred image display during image download (thumbnails)
-- enhanced: thumbnails display animations
-- changed: default thumbnail background color from black to gray
-- fixed: #46 rotate internal viewer doesn't resize gallery
-- fixed: #46 hover effect 'toolsAppear' works only with one toolbar
-- fixed: #46 hover effect issue on touch/mobile device
-- fixed: image display quality in Chrome
 
 
 */ 
@@ -376,15 +363,16 @@ v1.4.0 - BETA VERSION - DO NOT USE
             }
             
             // TAGS 
-            if( instance.galleryFilterTags.Get() != false ) {
-              if( instance.galleryFilterTags.Get() == true ) {
-                if( tags != '' && tags != undefined ) {
+            // if( instance.galleryFilterTags.Get() != false ) {
+              // if( instance.galleryFilterTags.Get() == true ) {
+                // if( tags != '' && tags != undefined ) {
                   // use set tags
-                  item.setTags(tags.split(' '));
-                }
-              }
-              else {
+                  // item.setTags(tags.split(' '));
+                // }
+              // }
+              // else {
                 // extract tags starting with # (in title)
+              if( typeof  instance.galleryFilterTags.Get() == 'string' ) {
                 switch( instance.galleryFilterTags.Get().toUpperCase() ) {
                   case 'TITLE':
                     var re = /(?:^|\W)#(\w+)(?!\w)/g, match, matches = [];
@@ -406,7 +394,14 @@ v1.4.0 - BETA VERSION - DO NOT USE
                     break;
                 }
               }
-            }
+                else {
+                  if( tags != '' && tags != undefined ) {
+                    // use set tags
+                    item.setTags(tags.split(' '));
+                  }
+                }
+              // }
+            // }
             
             // set (maybe modified) fields title and description
             item.title=escapeHtml(instance, title);
@@ -1192,7 +1187,7 @@ v1.4.0 - BETA VERSION - DO NOT USE
       breadcrumbSeparator:          '<i class="nGY2Icon icon-left-open"></i>',
       breadcrumbSeparatorRtl:       '<i class="nGY2Icon icon-right-open"></i>',
       navigationFilterSelected:     '<i style="color:#fff;" class="nGY2Icon icon-toggle-on"></i>',
-      navigationFilterUnselected:   '<i style="color:#aaa;" class="nGY2Icon icon-toggle-off"></i>',
+      navigationFilterUnselected:   '<i style="color:#ddd;" class="nGY2Icon icon-toggle-off"></i>',
       navigationFilterSelectedAll:  '<i class="nGY2Icon icon-toggle-on"></i><i class="nGY2Icon icon-ok"></i>',
       thumbnailSelected:            '<i style="color:#bff;" class="nGY2Icon icon-ok-circled"></i>',
       thumbnailUnselected:          '<i style="color:#bff;" class="nGY2Icon icon-circle-empty"></i>',
@@ -1275,17 +1270,17 @@ v1.4.0 - BETA VERSION - DO NOT USE
 
       var nG2=$(this).data('nanogallery2data').nG2;
       switch(args){
+        case 'displayItem':
+          nG2.DisplayItem(option);
+          break;
         case 'search':
           return( nG2.Search(option));
           break;
-        case 'searchSetTags':
-          return nG2.SearchSetTags(option);
+        case 'search2':
+          return nG2.Search2(option, value);
           break;
-        case 'searchSetTitle':
-          return nG2.SearchSetTitle(option);
-          break;
-        case 'searchExecute':
-        return nG2.SearchExecute();
+        case 'search2Execute':
+          return nG2.Search2Execute();
           break;
         case 'refresh':
           nG2.Refresh();
@@ -1474,6 +1469,22 @@ v1.4.0 - BETA VERSION - DO NOT USE
       // refresh the displayed gallery
       GalleryRender( G.GOM.albumIdx );
     };
+
+    /**
+     * display one item (image or gallery)
+     *   itemID syntax:
+     *    - albumID --> display one album
+     *    - albumID/imageID --> display one image
+    */
+    this.DisplayItem = function( itemID ) {
+      var IDs=parseIDs( itemID );
+      if( IDs.imageID != '0' ) {
+        DisplayPhoto( IDs.imageID, IDs.albumID );
+      }
+      else {
+        DisplayAlbum( '-1', IDs.albumID );
+      }
+    };
     
       
       
@@ -1501,23 +1512,28 @@ v1.4.0 - BETA VERSION - DO NOT USE
     };
 
     /**
-     * Search in tags - set search value
+     * Search2 in title and tags - set search values
      */
-    this.SearchSetTags = function( search ) {
-      G.GOM.albumSearchTags=search.toUpperCase();
+    this.Search2 = function( searchTitle, searchTags ) {
+      if( searchTitle != null && searchTitle != undefined ) {
+        G.GOM.albumSearch=searchTitle.toUpperCase();
+      }
+      else {
+        G.GOM.albumSearch='';
+      }
+      
+      if( searchTags != null && searchTags != undefined ) {
+        G.GOM.albumSearchTags=searchTags.toUpperCase();
+      }
+      else {
+        G.GOM.albumSearchTags='';
+      }
       return CountItemsToDisplay(G.GOM.albumIdx);
     };
     /**
-     * Search in title - set search value
+     * Search2 - execute the search on title and tags
      */
-    this.SearchSetTitle = function( search ) {
-      G.GOM.albumSearch=search.toUpperCase();
-      return CountItemsToDisplay(G.GOM.albumIdx);
-    };
-    /**
-     * Search - execute the search on title and tags
-     */
-    this.SearchExecute = function() {
+    this.Search2Execute = function() {
       var gIdx=G.GOM.albumIdx;
       GalleryRender( G.GOM.albumIdx );
       return CountItemsToDisplay(gIdx);
@@ -2047,8 +2063,8 @@ v1.4.0 - BETA VERSION - DO NOT USE
     // Color schemes - Gallery
     G.colorScheme_dark = {
       navigationBar :         { background: 'none', borderTop: '', borderBottom: '', borderRight: '', borderLeft: '' },
-      navigationBreadcrumb :  { background: '#111', color: '#fff', colorHover: '#ccc', borderRadius: '6px' },
-      navigationFilter :      { color: '#ddd', background: '#111', colorSelected: '#fff', backgroundSelected: '#111', borderRadius: '6px' },
+      navigationBreadcrumb :  { background: '#111', color: '#fff', colorHover: '#ccc', borderRadius: '4px' },
+      navigationFilter :      { color: '#ddd', background: '#111', colorSelected: '#fff', backgroundSelected: '#111', borderRadius: '4px' },
       thumbnail :             { background: '#444', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#aaa' },
       thumbnailIcon :         { padding: '5px', color: '#fff' },
       pagination :            { background: '#111', backgroundSelected: '#666', color: '#fff', borderRadius: '4px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
@@ -2056,8 +2072,8 @@ v1.4.0 - BETA VERSION - DO NOT USE
 
     G.colorScheme_light = {
       navigationBar :         { background: 'none', borderTop: '', borderBottom: '', borderRight: '', borderLeft: '' },
-      navigationBreadcrumb :  { background: '#eee', color: '#000', colorHover: '#333', borderRadius: '6px' },
-      navigationFilter :      { background: '#eee', color: '#222', colorSelected: '#000', backgroundSelected: '#eee', borderRadius: '6px' },
+      navigationBreadcrumb :  { background: '#eee', color: '#000', colorHover: '#333', borderRadius: '4px' },
+      navigationFilter :      { background: '#eee', color: '#222', colorSelected: '#000', backgroundSelected: '#eee', borderRadius: '4px' },
       thumbnail :             { background: '#444', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#888' },
       thumbnailIcon :         { padding: '5px', color: '#fff' },
       pagination :            { background: '#eee', backgroundSelected: '#aaa', color: '#000', borderRadius: '4px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
@@ -2115,7 +2131,6 @@ v1.4.0 - BETA VERSION - DO NOT USE
         G.$E.base.attr('id', G.baseEltID)
       }
       G.O.$markup =       [];
-      
       DefineVariables();
       SetPolyFills();
       BuildSkeleton();
@@ -2466,6 +2481,8 @@ v1.4.0 - BETA VERSION - DO NOT USE
 
       G.$E.conTnBottom.children().remove();
 
+      if( G.GOM.items.length == 0 ) { return; }   // no thumbnail to display
+
       // calculate the number of pages
       var nbPages=Math.ceil((G.GOM.items[G.GOM.items.length-1].row+1)/G.galleryMaxRows.Get());
 
@@ -2733,13 +2750,6 @@ v1.4.0 - BETA VERSION - DO NOT USE
         G.$E.conTnBottom.empty();
       }
 
-      // scroll to top of the gallery if needed
-      var wp=getViewport();
-      var galleryOTop=G.$E.base.offset().top;
-      if( galleryOTop < wp.t ) {
-        jQuery('html, body').animate({scrollTop: galleryOTop}, 200);
-      }
-
       // navigation toolbar (breadcrumb + tag filters)
       GalleryNavigationBar(albumIdx);
       
@@ -2772,6 +2782,12 @@ v1.4.0 - BETA VERSION - DO NOT USE
             G.$E.conTnParent.css({'opacity': 0});
             if( att.h ) {
               G.$E.conNavigationBar.css({ 'opacity': 0, 'display': 'none' });
+            }
+            // scroll to top of the gallery if needed
+            var wp=getViewport();
+            var galleryOTop=G.$E.base.offset().top;
+            if( galleryOTop < wp.t ) {
+              jQuery('html, body').animate({scrollTop: galleryOTop}, 200);
             }
             GalleryRenderPart1( albumIdx );
           }
@@ -4262,14 +4278,19 @@ v1.4.0 - BETA VERSION - DO NOT USE
         tweenable.tween({
           from:         { scale: 0.5, opacity:0 },
           to:           { scale: f,   opacity:1 },
-          attachment:   { $e:item.$elt, item: item },
+          attachment:   { $e:item.$elt, item: item, tw: tweenable },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
           easing:       { opacity: 'easeOutQuint', scale: G.tn.opt.Get('displayTransitionEasing') },
           step:         function (state, att) {
+            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
+              att.tw.stop(false);
+              return;
+            }
             att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity',state.opacity);
           },
           finish:       function (state, att) {
+            if( att.item.$elt === null ) { return; }
             att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity','');
             //att.$e.css( G.CSStransformName , '').css('opacity', '');
             ThumbnailAppearFinish(att.item);
@@ -4285,14 +4306,19 @@ v1.4.0 - BETA VERSION - DO NOT USE
         tweenable.tween({
           from:         { scale: f, opacity:0 },
           to:           { scale: 1, opacity:1 },
-          attachment:   { $e:item.$elt, item: item },
+          attachment:   { $e:item.$elt, item: item, tw: tweenable },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
           easing:       { opacity: 'easeOutQuint', scale: G.tn.opt.Get('displayTransitionEasing') },
           step:         function (state, att) {
+            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
+              att.tw.stop(false);
+              return;
+            }
             att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity',state.opacity);
           },
           finish:       function (state, att) {
+            if( att.item.$elt === null ) { return; }
             att.$e.css( G.CSStransformName , '').css('opacity', '');
             ThumbnailAppearFinish(att.item);
           }
@@ -4307,16 +4333,21 @@ v1.4.0 - BETA VERSION - DO NOT USE
         tweenable.tween({
           from:         { 'scale': f, 'opacity':0 },
           to:           { 'scale': 1, 'opacity':1 },
-          attachment:   { item: item },
+          attachment:   { item: item, tw: tweenable },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
           easing:       { opacity: 'easeOutQuint', scale: G.tn.opt.Get('displayTransitionEasing') },
           step:         function (state, att) {
+            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
+              att.tw.stop(false);
+              return;
+            }
             att.item.$elt.last().css('opacity', state.opacity);
             att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
+            if( att.item.$elt === null ) { return; }
             att.item.$elt.last().css('opacity', '');
             att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
             att.item.CSSTransformApply('.nGY2GThumbnail');
@@ -4334,17 +4365,22 @@ v1.4.0 - BETA VERSION - DO NOT USE
           // to:           { 'opacity': 1, translateY: 0, 'scale': 1 },
           from:         { 'opacity': 0, translateY: f },
           to:           { 'opacity': 1, translateY: 0 },
-          attachment:   { item: item },
+          attachment:   { item: item, tw: tweenable },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
           easing:       { opacity: 'easeOutQuint', scale: 'easeOutQuart', translateY: G.tn.opt.Get('displayTransitionEasing') },
           step:         function (state, att) {
+            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
+              att.tw.stop(false);
+              return;
+            }
             att.item.$elt.css('opacity', state.opacity);
             att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
             // att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
+            if( att.item.$elt === null ) { return; }
             this._step(state, att);
             att.item.$elt.css('opacity', '');
             ThumbnailAppearFinish(att.item);
@@ -4361,17 +4397,22 @@ v1.4.0 - BETA VERSION - DO NOT USE
           // to:           { opacity: 1, translateY: 0, scale: 1 },
           from:         { opacity: 0, translateY: f },
           to:           { opacity: 1, translateY: 0 },
-          attachment:   { item: item },
+          attachment:   { item: item, tw: tweenable },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
           easing:       { opacity: 'easeOutQuint', scale: 'easeOutQuart', translateY: G.tn.opt.Get('displayTransitionEasing') },
           step:         function (state, att) {
+            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
+              att.tw.stop(false);
+              return;
+            }
             att.item.$elt.css('opacity', state.opacity);
             att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
             // att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale); 
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
+            if( att.item.$elt === null ) { return; }
             this._step(state, att);
             att.item.$elt.css('opacity', '');
             ThumbnailAppearFinish(att.item);
@@ -4388,11 +4429,15 @@ v1.4.0 - BETA VERSION - DO NOT USE
           // to:           { opacity: 1, translateX: 0, rotateX: 0, scale: 1 },
           from:         { opacity: 0, translateX: f, rotateX: 45 },
           to:           { opacity: 1, translateX: 0, rotateX: 0  },
-          attachment:   { item: item },
+          attachment:   { item: item, tw: tweenable },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
           easing:       { opacity: 'easeOutQuint', scale: 'easeOutQuart', translateX: G.tn.opt.Get('displayTransitionEasing') },
           step:         function (state, att) {
+            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
+              att.tw.stop(false);
+              return;
+            }
             att.item.$elt.css('opacity', state.opacity);
             att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateX+'px');
             att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateX', state.rotateX+'deg');
@@ -4400,6 +4445,7 @@ v1.4.0 - BETA VERSION - DO NOT USE
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
+            if( att.item.$elt === null ) { return; }
             this._step(state, att);
             att.item.$elt.css('opacity', '');
             ThumbnailAppearFinish(att.item);
@@ -4415,11 +4461,15 @@ v1.4.0 - BETA VERSION - DO NOT USE
           // to:           { opacity: 1, translateX: 0, rotateX: 0, scale: 1 },
           from:         { opacity: 0, translateX: f, rotateX: -45 },
           to:           { opacity: 1, translateX: 0, rotateX: 0 },
-          attachment:   { item: item },
+          attachment:   { item: item, tw: tweenable },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
           easing:       { opacity: 'easeOutQuint', scale:'easeOutQuart', translateX: G.tn.opt.Get('displayTransitionEasing')},
           step:         function (state, att) {
+            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
+              att.tw.stop(false);
+              return;
+            }
             att.item.$elt.css('opacity', state.opacity);
             att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateX+'px');
             att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateX', state.rotateX+'deg');
@@ -4427,6 +4477,7 @@ v1.4.0 - BETA VERSION - DO NOT USE
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
+            if( att.item.$elt === null ) { return; }
             this._step(state, att);
             att.item.$elt.css('opacity', '');
             ThumbnailAppearFinish(att.item);
@@ -4443,11 +4494,15 @@ v1.4.0 - BETA VERSION - DO NOT USE
           // to:           { opacity: 1, translateY: 0, rotateY: 0, scale: 1 },
           from:         { opacity: 0, translateY: f, rotateY: 40 },
           to:           { opacity: 1, translateY: 0, rotateY: 0  },
-          attachment:   { item: item },
+          attachment:   { item: item, tw: tweenable },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
           easing:       { opacity: 'easeOutQuint', scale:'easeOutQuart', translateX: G.tn.opt.Get('displayTransitionEasing') },
           step:         function (state, att) {
+            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
+              att.tw.stop(false);
+              return;
+            }
             att.item.$elt.css('opacity', state.opacity);
             att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
             att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateY', state.rotateY+'deg');
@@ -4455,6 +4510,7 @@ v1.4.0 - BETA VERSION - DO NOT USE
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
+            if( att.item.$elt === null ) { return; }
             this._step(state, att);
             att.item.$elt.css('opacity', '');
             ThumbnailAppearFinish(att.item);
@@ -4470,11 +4526,15 @@ v1.4.0 - BETA VERSION - DO NOT USE
           // to:           { opacity: 1, translateY: 0, rotateY: 0, scale: 1 },
           from:         { opacity: 0, translateY: f, rotateY: 40 },
           to:           { opacity: 1, translateY: 0, rotateY: 0  },
-          attachment:   { item: item },
+          attachment:   { item: item, tw: tweenable },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
           easing:       { opacity: 'easeOutQuint', scale: 'easeOutQuart', translateY: G.tn.opt.Get('displayTransitionEasing') },
           step:         function (state, att) {
+            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
+              att.tw.stop(false);
+              return;
+            }
             att.item.$elt.css('opacity', state.opacity);
             att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
             att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateY', state.rotateY+'deg');
@@ -4496,17 +4556,22 @@ v1.4.0 - BETA VERSION - DO NOT USE
         tweenable.tween({
           from:         { opacity: 0, translateX: f, rotateZ: 10 },
           to:           { opacity: 1, translateX: 0, rotateZ: 0 },
-          attachment:   { item: item },
+          attachment:   { item: item, tw: tweenable },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
           easing:       { opacity: 'easeOutQuint', translateX: G.tn.opt.Get('displayTransitionEasing'), rotateZ:'easeOutQuart'},
           step:         function (state, att) {
+            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
+              att.tw.stop(false);
+              return;
+            }
             att.item.$elt.css('opacity', state.opacity);
             att.item.CSSTransformSet('.nGY2GThumbnail', 'translateX', state.translateX+'px');
             att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateZ', state.rotateZ+'deg');
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
+            if( att.item.$elt === null ) { return; }
             this._step(state, att);
             att.item.$elt.css('opacity', '');
             ThumbnailAppearFinish(att.item);
@@ -4520,17 +4585,22 @@ v1.4.0 - BETA VERSION - DO NOT USE
         tweenable.tween({
           from:         { opacity: 0, translateX: f, rotateZ: -10 },
           to:           { opacity: 1, translateX: 0, rotateZ: 0 },
-          attachment:   { item: item },
+          attachment:   { item: item, tw: tweenable },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
           easing:       { opacity: 'easeOutQuint', translateX: G.tn.opt.Get('displayTransitionEasing'), rotateZ:'easeOutQuart'},
           step:         function (state, att) {
+            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
+              att.tw.stop(false);
+              return;
+            }
             att.item.$elt.css('opacity', state.opacity);
             att.item.CSSTransformSet('.nGY2GThumbnail', 'translateX', state.translateX+'px');
             att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateZ', state.rotateZ+'deg');
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
+            if( att.item.$elt === null ) { return; }
             this._step(state, att);
             att.item.$elt.css('opacity', '');
             ThumbnailAppearFinish(att.item);
@@ -4543,14 +4613,19 @@ v1.4.0 - BETA VERSION - DO NOT USE
         tweenable.tween({
           from:         { 'opacity': 0 },
           to:           { 'opacity': 1 },
-          attachment:   { $e:item.$elt, item: item },
+          attachment:   { $e:item.$elt, item: item, tw: tweenable },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
           easing:       'easeInOutSine',
           step:         function (state, att) {
+            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
+              att.tw.stop(false);
+              return;
+            }
             att.$e.css(state);
           },
           finish:       function (state, att) {
+            if( att.item.$elt === null ) { return; }
             att.$e.css('opacity', '');
             // att.$e.css({'opacity':1 });
             ThumbnailAppearFinish(att.item);
@@ -4703,7 +4778,6 @@ v1.4.0 - BETA VERSION - DO NOT USE
         // G.GOM.items[i].hovered=false;
         G.I[G.GOM.items[i].thumbnailIdx].hovered=false;
       }
-      console.log("ok");
     }
 
 
@@ -5525,7 +5599,7 @@ v1.4.0 - BETA VERSION - DO NOT USE
       if( G.O.thumbnailL1BuildInit2 !== undefined ) {
       var t1=G.O.thumbnailL1BuildInit2.split('|');
         for( var i=0; i<t1.length; i++ ) {
-          var o1=t1[i].split('_');
+          var o1=t1[i].trim().split('_');
           if( o1.length == 3 ) {
             var i1=NewTBuildInit();
             i1.element=ThumbnailOverEffectsGetCSSElement(o1[0], '');
@@ -5539,7 +5613,7 @@ v1.4.0 - BETA VERSION - DO NOT USE
       if( G.O.thumbnailBuildInit2 !== undefined ) {
         var t1=G.O.thumbnailBuildInit2.split('|');
         for( var i=0; i<t1.length; i++ ) {
-          var o1=t1[i].split('_');
+          var o1=t1[i].trim().split('_');
           if( o1.length == 3 ) {
             var i1=NewTBuildInit();
             i1.element=ThumbnailOverEffectsGetCSSElement(o1[0], '');
@@ -7861,14 +7935,13 @@ v1.4.0 - BETA VERSION - DO NOT USE
       ResizeInternalViewer(true);
  
       var displayNext=true;
-
-      SetLocationHash( itemNew.albumID, itemNew.GetID() );
-      
       
       if( G.O.debugMode && console.timeline ) { console.timeline('nanogallery2_viewer'); }
 
       G.VOM.currItemIdx=vomIdx;
       var vP=getViewport();
+
+      SetLocationHash( itemNew.albumID, itemNew.GetID() );
       
       if( displayType == '' ) {
         // first image --> just appear / no slide animation
@@ -8462,7 +8535,7 @@ v1.4.0 - BETA VERSION - DO NOT USE
       // browser location hash management
       if( G.O.locationHash ) {
         jQuery(window).bind( 'hashchange', function() {
-          ProcessLocationHash(true);
+          ProcessLocationHash();
         });
       }
       
@@ -8564,14 +8637,18 @@ v1.4.0 - BETA VERSION - DO NOT USE
       var curGal='#nanogallery/'+G.baseEltID+'/',
       newLocationHash=location.hash;
       if( G.O.debugMode ) {
+        console.log('------------------------ PROCESS LOCATION HASH');
         console.log('newLocationHash1: ' +newLocationHash);
         console.log('G.locationHashLastUsed: ' +G.locationHashLastUsed);
       }
       
       if( newLocationHash == '' ) {
-        if( G.GOM.lastDisplayedIdx != -1 ) {
+        // if( G.GOM.lastDisplayedIdx != -1 ) {
+        if( G.locationHashLastUsed !== '' ) {
           // back button and no hash --> display first album
+          if( G.O.debugMode ) { console.log('display root album'  ); }
           G.locationHashLastUsed='';
+          if( G.O.debugMode ) { console.log('new3 G.locationHashLastUsed: '+G.locationHashLastUsed); }
           DisplayAlbum( '', '0');
           return true;
         }
@@ -8583,11 +8660,12 @@ v1.4.0 - BETA VERSION - DO NOT USE
         // item IDs detected
         var IDs=parseIDs( newLocationHash.substring(curGal.length) );
         if( IDs.imageID != '0' ) {
-          if( G.O.debugMode ) { console.log('display: ' + IDs.albumID +'-'+ IDs.imageID ); }
+          if( G.O.debugMode ) { console.log('display image: ' + IDs.albumID +'-'+ IDs.imageID ); }
           DisplayPhoto( IDs.imageID, IDs.albumID );
           return true;
         }
         else {
+          if( G.O.debugMode ) { console.log('display album: ' + IDs.albumID  ); }
           DisplayAlbum( '-1', IDs.albumID );
           return true;
         }
@@ -8600,6 +8678,10 @@ v1.4.0 - BETA VERSION - DO NOT USE
     function SetLocationHash(albumID, imageID ) {
       if( !G.O.locationHash ) { return false; }
 
+      if( G.O.debugMode ) {
+        console.log('------------------------ SET LOCATION HASH');
+      }
+      
       if( imageID == '' && (albumID == '-1' || albumID == '0' || G.O.album == albumID ) ) {
         // root album level --> do not set top.location.hash if not already set
         if( location.hash != '' ) {
@@ -8612,6 +8694,7 @@ v1.4.0 - BETA VERSION - DO NOT USE
           }
         }
         G.locationHashLastUsed='';
+        if( G.O.debugMode ) { console.log('new2 G.locationHashLastUsed: '+G.locationHashLastUsed); }
         return;
       }
       
@@ -8623,12 +8706,14 @@ v1.4.0 - BETA VERSION - DO NOT USE
       var lH=location.hash;
       if( G.O.debugMode ) {
         console.log('newLocationHash2: '+newLocationHash);
-        console.log('lH: '+lH);
+        console.log('location.hash: '+lH);
       }
+
+      G.locationHashLastUsed=newLocationHash;
+      if( G.O.debugMode ) { console.log('new G.locationHashLastUsed: '+G.locationHashLastUsed); }
+      
       if(  lH == '' || lH != newLocationHash ) {
         // G.locationHashLastUsed='#'+newLocationHash;
-        G.locationHashLastUsed=newLocationHash;
-        if( G.O.debugMode ) { console.log('new G.locationHashLastUsed: '+G.locationHashLastUsed); }
         try {
           top.location.hash=newLocationHash;
         }
@@ -12242,7 +12327,7 @@ if (typeof define === 'function' && define.amd) {
 
 
 /**!
- * @preserve nanogallery2 - NANOPHOTOSPROVIDER data provider
+ * @preserve nanogallery2 - NANOPHOTOSPROVIDER2 data provider
  * Homepage: http://nanogallery2.nanostudio.org
  * Sources:  https://github.com/nanostudio-org/nanogallery2
  *
@@ -12251,7 +12336,7 @@ if (typeof define === 'function' && define.amd) {
 */
  
 // ########################################################
-// ##### nanogallery2 - module for NANOPHOTOSPROVIDER #####
+// ##### nanogallery2 - module NANOPHOTOSPROVIDER2    #####
 // ########################################################
 
 
@@ -12298,7 +12383,7 @@ if (typeof define === 'function' && define.amd) {
         var tId = setTimeout( function() {
           // workaround to handle JSONP (cross-domain) errors
           PreloaderDisplay(false);
-          NanoAlert('Could not retrieve AJAX data...');
+          NanoAlert('Could not retrieve nanoPhotosProvider2 data (timeout).');
         }, 60000 );
 
         // console.log(url);        
@@ -12441,7 +12526,7 @@ if (typeof define === 'function' && define.amd) {
           }
          
           if( typeof G.O.fnProcessData == 'function' ) {
-            G.O.fnProcessData(newItem, 'nanophotosprovider', data);
+            G.O.fnProcessData(newItem, G.O.dataProvider, data);
           }
         }
       });

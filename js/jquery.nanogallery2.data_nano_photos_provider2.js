@@ -1,5 +1,5 @@
 /**!
- * @preserve nanogallery2 - NANOPHOTOSPROVIDER data provider
+ * @preserve nanogallery2 - NANOPHOTOSPROVIDER2 data provider
  * Homepage: http://nanogallery2.nanostudio.org
  * Sources:  https://github.com/nanostudio-org/nanogallery2
  *
@@ -8,7 +8,7 @@
 */
  
 // ########################################################
-// ##### nanogallery2 - module for NANOPHOTOSPROVIDER #####
+// ##### nanogallery2 - module NANOPHOTOSPROVIDER2    #####
 // ########################################################
 
 
@@ -55,7 +55,7 @@
         var tId = setTimeout( function() {
           // workaround to handle JSONP (cross-domain) errors
           PreloaderDisplay(false);
-          NanoAlert('Could not retrieve AJAX data...');
+          NanoAlert('Could not retrieve nanoPhotosProvider2 data (timeout).');
         }, 60000 );
 
         // console.log(url);        
@@ -198,7 +198,7 @@
           }
          
           if( typeof G.O.fnProcessData == 'function' ) {
-            G.O.fnProcessData(newItem, 'nanophotosprovider', data);
+            G.O.fnProcessData(newItem, G.O.dataProvider, data);
           }
         }
       });
