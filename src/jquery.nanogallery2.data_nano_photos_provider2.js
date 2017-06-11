@@ -1,5 +1,5 @@
 /**!
- * @preserve nanogallery2 - NANOPHOTOSPROVIDER data provider
+ * @preserve nanogallery2 - NANOPHOTOSPROVIDER2 data provider
  * Homepage: http://nanogallery2.nanostudio.org
  * Sources:  https://github.com/nanostudio-org/nanogallery2
  *
@@ -8,7 +8,7 @@
 */
  
 // ########################################################
-// ##### nanogallery2 - module for NANOPHOTOSPROVIDER #####
+// ##### nanogallery2 - module NANOPHOTOSPROVIDER2    #####
 // ########################################################
 
 
@@ -22,8 +22,15 @@
 
 
       var albumIdx=NGY2Item.GetIdx(G, albumID);
-    
-      var url = G.O.dataProvider + '?albumID='+encodeURIComponent(albumID);
+
+      // title is identical to ID (only for albums)
+      if( instance.I[albumIdx].title == '' ) {
+        instance.I[albumIdx].title=JsonConvertCharset(albumID);
+      }
+
+
+      // var url = G.O.dataProvider + '?albumID='+encodeURIComponent(albumID);
+      var url = G.O.dataProvider + '?albumID='+albumID;
       url += '&wxs='+G.tn.settings.width[G.GOM.curNavLevel].xs;
       url += '&hxs='+G.tn.settings.height[G.GOM.curNavLevel].xs;
       url += '&wsm='+G.tn.settings.width[G.GOM.curNavLevel].sm;
@@ -34,6 +41,8 @@
       url += '&hla='+G.tn.settings.height[G.GOM.curNavLevel].la;
       url += '&wxl='+G.tn.settings.width[G.GOM.curNavLevel].xl;
       url += '&hxl='+G.tn.settings.height[G.GOM.curNavLevel].xl;
+      
+      // console.dir(url);
       
       PreloaderDisplay(true);
 
@@ -46,40 +55,40 @@
         var tId = setTimeout( function() {
           // workaround to handle JSONP (cross-domain) errors
           PreloaderDisplay(false);
-          NanoAlert('Could not retrieve AJAX data...');
+          NanoAlert('Could not retrieve nanoPhotosProvider2 data (timeout).');
         }, 60000 );
 
-        
-          jQuery.getJSON(url, function(data, status, xhr) {
-            clearTimeout(tId);
-            PreloaderDisplay(false);
-            JsonParseData(albumIdx, data);
-            if( data.nano_status == 'ok' ) {
-              AlbumPostProcess(albumID);
-              if( fnToCall !== null &&  fnToCall !== undefined) {
-                fnToCall( fnParam1, fnParam2, null );
-              }
+        // console.log(url);        
+        jQuery.getJSON(url, function(data, status, xhr) {
+          clearTimeout(tId);
+          PreloaderDisplay(false);
+          JsonParseData(albumIdx, data);
+          if( data.nano_status == 'ok' ) {
+            AlbumPostProcess(albumID);
+            if( fnToCall !== null &&  fnToCall !== undefined) {
+              fnToCall( fnParam1, fnParam2, null );
             }
-            else {
-              NanoAlert(G, 'Could not retrieve nanoPhotosProvider data. Error: ' + data.nano_status + ' - ' + data.nano_message);
-            }
-          })
-          .fail( function(jqxhr, textStatus, error) {
-            clearTimeout(tId);
-            PreloaderDisplay(false);
+          }
+          else {
+            NanoAlert(G, 'Could not retrieve nanoPhotosProvider2 data. Error: ' + data.nano_status + ' - ' + data.nano_message);
+          }
+        })
+        .fail( function(jqxhr, textStatus, error) {
+          clearTimeout(tId);
+          PreloaderDisplay(false);
 
-            var k=''
-            for(var key in jqxhr) {
-              k+= key + '=' + jqxhr[key] +'<br>';
-            }
-            var err = textStatus + ', ' + error + ' ' + k + '<br><br>URL:'+url;
-            NanoAlert(G, 'Could not retrieve nanoPhotosProvider data. Error: ' + err);
+          var k=''
+          for(var key in jqxhr) {
+            k+= key + '=' + jqxhr[key] +'<br>';
+          }
+          var err = textStatus + ', ' + error + ' ' + k + '<br><br>URL:'+url;
+          NanoAlert(G, 'Could not retrieve nanoPhotosProvider2 data. Error: ' + err);
 
-          });    
-        
+        });    
+      
       }
       catch(e) {
-        NanoAlert(G, 'Could not retrieve nanoPhotosProvider data. Error: ' + e);
+        NanoAlert(G, 'Could not retrieve nanoPhotosProvider2 data. Error: ' + e);
       }
     }
 
@@ -105,7 +114,10 @@
     function JsonParseData(albumIdx, data) {
       var foundAlbumID=false;
       var nb=0;
+
+      
       jQuery.each(data.album_content, function(i,item){
+      
         var title=item.title;
         // title=GetI18nItem(item,'title');
         // if( title === undefined ) { title=''; }
@@ -143,7 +155,12 @@
             foundAlbumID=true;
           }
 
-          var newItem=NGY2Item.New( G, title, description, ID, albumID, kind, '' );
+          var tags='';
+          if( item.tags !== undefined ) {
+            tags=item.tags;
+          }
+          
+          var newItem=NGY2Item.New( G, title.split('_').join(' ') , description.split('_').join(' '), ID, albumID, kind, tags );
           newItem.src=src;
 
           // dominant colors as a gif
@@ -165,6 +182,12 @@
             newItem.imageHeight=item.imgHeight;
           }
           
+          if( item.originalURL != '' ) {
+            // newItem.downloadURL=item.download;
+            newItem.downloadURL=baseURL+JsonConvertCharset(item.originalURL);
+          }
+          
+          
           // retrieve responsive thumbnails urls and sizes
           var cnl=G.GOM.curNavLevel;
           var l=['xs', 'sm', 'me', 'la', 'xl'];
@@ -175,7 +198,7 @@
           }
          
           if( typeof G.O.fnProcessData == 'function' ) {
-            G.O.fnProcessData(newItem, 'nanophotosprovider', data);
+            G.O.fnProcessData(newItem, G.O.dataProvider, data);
           }
         }
       });
