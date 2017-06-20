@@ -151,7 +151,7 @@
           Create beautiful interactions and hover effects combinations to capture the attention of your visitors.
           <!-- Use a preset or create complex effects very easily. -->
           <br>
-          Natively touch enabled and responsive - unique user experience on all device types.
+          Natively responsive and with multi-touch gesture support - unique user experience on all device types.
         </p>
       </div>
       <div class="col-md-6 text-justify" >
@@ -186,8 +186,8 @@
       <div class="col-md-6 text-justify" >
         <h3>What's new since the popular <a href="http://nanogallery.brisbois.fr" >nanoGALLERY?</a></h3>
         <p>
-          Improved display algorithm for better user experience and performances.
-          <br><br>
+          The display algorithm has been improved for better user experience and performances.
+          <br>
           New features include filter by keywords, shopping cart, social sharing, combinable and chainable hover effects, tools on thumbnails, more button, thumbnail display transitions, location on google maps, pinch zoom, thumbnail dominant colors...
         </p>
       </div>
@@ -623,33 +623,36 @@
       tweenable.tween({
         from:       { opacity: 0 },
         to:         { opacity: 1 },
+        attachment: { $e: jQuery('#ngy2logo') },
         easing:     'easeInOutSine',
         duration:   1000,
         delay:      500,
         step: function (state, att) {
-          jQuery('#ngy2logo').css('opacity', state.opacity);
+          att.$e.css('opacity', state.opacity);
         }
       });
       var tweenable = new NGTweenable();
       tweenable.tween({
         from:       { opacity: 0 },
         to:         { opacity: 1 },
+        attachment: { $e: jQuery('#ngy2logo2') },
         easing:     'easeInOutSine',
         duration:   1000,
         delay:      1000,
         step: function (state, att) {
-          jQuery('#ngy2logo2').css('opacity', state.opacity);
+          att.$e.css('opacity', state.opacity);
         }
       });
     
       
       // ##### TEXT ROTATOR - display features
       var rotatorlst=[ 'photo gallery with multiple layouts', 'lightbox with customizable tools', 'responsive thumbnails sizes', 'display animations', 'gallery pagination',
-          'API', 'chainable hover effects', 'social sharing', 'retina and hi-dpi screen support', 'customizable tools on thumbnails', 'pinch zoom', 'swipe to paginate',
+          'javascript API', 'chainable hover effects', 'social sharing', 'retina and hi-dpi screen support', 'customizable tools on thumbnails', 'pinch zoom', 'swipe to paginate',
           'location on Google Maps', 'thumbnails with blurred preview', 'justified, grid and cascading layouts',
           'filter by keywords', 'navigation in albums', 'self hosted images', 'google photos and flickr data sources',
-          'thumbnail selection mode with checkboxes', 'support gesture', 'hover effects on touchscreen', 'deep linking',
-          'highly customizable', 'browser back/forward navigation', 'slideshow', 'image lazy loading and pre-loading', 'color schemes',
+          'thumbnail selection mode with checkboxes', 'support multi-touch gesture', 'hover effects on touchscreen', 'deep linking',
+          'highly customizable', 'browser back/forward navigation', 'slideshow', 'image lazy loading and pre-loading', 'keyboard support',
+          'inactive state detection', 'color schemes', 'multiple galleries',
           'custom icons'
         ];
       
@@ -744,11 +747,12 @@ userID: '149035168@N08',    // nano studio
 // allowHTMLinData: true,
 // fnImgDisplayed: fnOpenNewTab,
 
-kind: 'nano_photos_provider2',
-dataProvider: 'http://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
+//kind: 'nano_photos_provider2',
+//dataProvider: 'http://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
 
         galleryRenderDelay: 1200,
       galleryDisplayTransition: 'rotateX',
+      galleryDisplayTransitionDuration: 1500,
       galleryL1DisplayTransition: 'slideUp',
  
 //album: 'into%20the%20wild',
@@ -795,13 +799,16 @@ dataProvider: 'http://nano.gallery/nano_photos_provider2/nano_photos_provider2.p
         //thumbnailL1BuildInit2: 'thumbnail_transform-origin_50% 150%',
 
 
-thumbnailL1BuildInit2: '.nGY2GThumbnailAlbumTitle_border-left_5px solid #23CB99|.nGY2GThumbnailAlbumTitle_margin_20px|image_transform-origin_50% 50% -100px|image_transform-style_preserve-3d|image_backface-visibility_hidden|\
+thumbnailL1BuildInit2: '.nGY2GThumbnailAlbumTitle_border-left_5px solid #23CB99|.nGY2GThumbnailAlbumTitle_margin_20px|\
+image_transform-origin_50% 50% -100px|image_transform-style_preserve-3d|image_backface-visibility_hidden|\
 label_transform-origin_50% 50% -100px|label_transform-style_preserve-3d|label_backface-visibility_hidden|\
 thumbnail_perspective_250px|\
-thumbnail_overflow_visible|.nGY2GThumbnailSub_overflow_visible|\
+.nGY2GThumbnailSub_perspective_250px|\
+thumbnail_overflow_visible|\
+.nGY2GThumbnailSub_overflow_visible|\
 label_background_url(img/thumbnail-background-pixabay-com.jpg)|label_background-size_100%|thumbnail_background-color_rgba(0,0,0,0)|title_color_#000',
 
-        thumbnailL1HoverEffect2: 'image_rotateX_0deg_89deg_800|label_rotateX_-89deg_0deg_800|image_opacity_1.00_0.00|label_opacity_0.00_1.00|thumbnail_scale_1.00_1.20',
+        thumbnailL1HoverEffect2: 'image_rotateX_0deg_89deg_800|label_rotateX_-89deg_0deg_800|image_opacity_1.00_0.00|label_opacity_1.00_1.00|thumbnail_scale_1.00_1.20',
         
         
         thumbnailL2HoverEffect2: 'image_scale_1.00_1.20|labelAppear|customlayer_backgroundColor_rgba(35,203,153,0.0)_rgba(35,203,153,0.8)|\
@@ -1244,4 +1251,3 @@ label_background_url(img/thumbnail-background-pixabay-com.jpg)|label_background-
       
     });
   </script>
-
