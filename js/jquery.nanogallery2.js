@@ -1,4 +1,4 @@
-/* nanogallery2 - v1.4.0 - 2017-06-11 - http://nanogallery2.nanostudio.org */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2017-07-06 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /**!
  * @preserve nanogallery2 - javascript image gallery
  * Homepage: http://nanogallery2.nanostudio.org
@@ -20,6 +20,34 @@
  */
 
 /*
+v1.4.n BETA - DO NOT USE
+- new: option 'viewerImageDisplay' (use value 'upscale' to upscale small images)
+- fixed: #51 - thumbnail to navigate up not displayed correctly
+- fixed: thumbnail to navigate up displayed even without parent album
+- fixed: option 'photoset' not a real alias of 'album'
+- fixed: sorting for images/albums defined with HTML markup or javascript
+- fixed: package manager compatibility
+- fixed: cursor pointer when lightbox disabled
+- misc performance enhancements
+-
+- G.GOM.cache.areaWidth=G.$E.conTnParent.width();
+
+TODO:
+- use item background color for stacks
+- changer logo portable (violet)
+- API: custom sort
+- Thumbnail icon : sous le texte, en bas de l'imagette (1 nouvelle ligne sous le texte)
+- carr� autour num page pagination
+- location hash issue ==> markup/javascript data definition and not existing hash value -> endless loop
+- viewer : d�marrer pre-chargement des 2 images en d�call� (plus de bande passante pour la principale)
+- gallery: remove mouse pointer when no viewer
+- nanophotosprovider: get all pictures from all albums
+- berlin image : image open (hash) + close -> delay before gallery displayed
+- thumbnail +N -> slide next images on it (withouthover effect)
+- ouverture viewer -> slide from bottom transition
+- viewer : click outside image to close 
+- viewer : retrieve max zoom factor (2 at this time)
+- viewer started in fullscreen -> ESC should close the viewer, not the full screen mode
 
 
 */ 
@@ -305,12 +333,9 @@
           // create new item (image, album or albumUp)
           NGY2Item.New = function( instance, title, description, ID, albumID, kind, tags ) {
             var album=NGY2Item.Get( instance, albumID );
-// console.log('---');
-// console.dir(album);            
-// console.dir(instance.I);
             
             if( albumID != -1 && albumID != 0 && title !='image gallery by nanogallery2 [build]'  ) {
-              if( instance.O.thumbnailLevelUp && album.getContentLength(false) == 0) {
+              if( instance.O.thumbnailLevelUp && album.getContentLength(false) == 0 && instance.O.album == '' ) {
                 // add navigation thumbnail (album up)
                 var item=new NGY2Item('0');
                 instance.I.push(item);
@@ -717,15 +742,17 @@
               var pTranslateX=1;
               var pTranslateY=1;
               var pTranslateZ=1;
+              var pTranslate=1;
               var pRotateX=1;
               var pRotateY=1;
               var pRotateZ=1;
+              var pRotate=1;
               var pScale=1;
               for( var n=nbStacks; n>=0; n-- ) {
                 // units must be given with
-                var v = 'translateX('+ValueApplyPercent(obj.translateX,pTranslateX)+') translateY('+ValueApplyPercent(obj.translateY,pTranslateY)+') translateZ('+ValueApplyPercent(obj.translateZ,pTranslateZ)+') scale('+ValueApplyPercent(obj.scale,pScale)+')';
+                var v = 'translateX('+ValueApplyPercent(obj.translateX,pTranslateX)+') translateY('+ValueApplyPercent(obj.translateY,pTranslateY)+') translateZ('+ValueApplyPercent(obj.translateZ,pTranslateZ)+') scale('+ValueApplyPercent(obj.scale,pScale)+') translate('+ValueApplyPercent(obj.translate,pTranslate)+')';
                 if( !(this.G.IE <= 9) && !this.G.isGingerbread ) {
-                  v += ' rotateX('+ValueApplyPercent(obj.rotateX,pRotateX)+') rotateY('+ValueApplyPercent(obj.rotateY,pRotateY)+') rotateZ('+ValueApplyPercent(obj.rotateZ,pRotateZ)+')';
+                  v += ' rotateX('+ValueApplyPercent(obj.rotateX,pRotateX)+') rotateY('+ValueApplyPercent(obj.rotateY,pRotateY)+') rotateZ('+ValueApplyPercent(obj.rotateZ,pRotateZ)+') rotate('+ValueApplyPercent(obj.rotate,pRotate)+')';
                 }
                 else {
                   v += ' rotate('+ValueApplyPercent(obj.rotateZ,pRotateZ)+')';
@@ -748,9 +775,9 @@
               // thumbnail sub element
               if( obj.$elt[0] != undefined ) {
                 // units must be given with
-                var v = 'translateX('+obj.translateX+') translateY('+obj.translateY+') translateZ('+obj.translateY+') scale('+obj.scale+')';
+                var v = 'translateX('+obj.translateX+') translateY('+obj.translateY+') translateZ('+obj.translateY+') scale('+obj.scale+') translate('+obj.translate+')';
                 if( !(this.G.IE <= 9) && !this.G.isGingerbread ) {
-                  v += ' rotateX('+obj.rotateX+') rotateY('+obj.rotateY+') rotateZ('+obj.rotateZ+')';
+                  v += ' rotateX('+obj.rotateX+') rotateY('+obj.rotateY+') rotateZ('+obj.rotateZ+') rotate('+obj.rotate+')';
                 }
                 else {
                   v += ' rotate('+obj.rotateZ+')';
@@ -763,7 +790,7 @@
           //--- 2D/3D css transform - set a value in cache
           NGY2Item.prototype.CSSTransformSet = function ( eltClass, transform, value ) {
             if( this.eltTransform[eltClass] == undefined ) {
-              this.eltTransform[eltClass]={ translateX: 0, translateY: 0, translateZ: 0, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1 };
+              this.eltTransform[eltClass]={ translateX: 0, translateY: 0, translateZ: 0, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1, translate: '0px,0px', rotate: 0 };
               this.eltTransform[eltClass].$elt=this.$getElt(eltClass);
             }
             this.eltTransform[eltClass][transform]=value;
@@ -1130,6 +1157,7 @@
     viewerDisplayLogo :           false,
     imageTransition :             'swipe',
     viewerZoom :                  true,
+    viewerImageDisplay :          'upscale',
     openOnStart :                 '',
     viewerHideToolsDelay :        3000,
     viewerToolbar : {
@@ -1856,13 +1884,14 @@
     G.i18nLang =                  '';
     G.timeLastTouchStart =        0;
     G.custGlobals =               {};
+    G.markupOrApiProcessed =      false;
     
     //------------------------
     //--- Gallery Object Model
     G.GOM = {
       albumIdx :                  -1, // index (in G.I) of the currently displayed album
       clipArea :                  { top: 0, height: 0 }, // area of the GOM to display on screen
-      displayArea :               { width: 0 , height: 0 }, // size of the GOM area
+      displayArea :               { width: 0 , height: 0 }, // size of the GOM area (=used area, not available area)
       displayAreaLast :           { width: 0 , height: 0 }, // previous size of the GOM area
       displayedMoreSteps :        0, // current number of displayed steps (moreButton mode)
       items:                      [], // current items of the GOMS
@@ -1874,7 +1903,9 @@
         $newContent:              '' },
       cache :                     // cached data
         { viewport:               null,
-        containerOffset:          null },
+        containerOffset:          null,
+        areaWidth:                100         // available area width
+        },
       nbSelected :                0, // number of selected items
       pagination :                { currentPage: 0 }, // pagination data
       lastFullRow :               -1, // number of the last row without holes
@@ -1909,14 +1940,19 @@
     
     //------------------------
     //--- Viewer Object Model
+    
     G.VOM = {
       viewerDisplayed:            false,  // is the viewer currently displayed
       viewerIsFullscreen:         false,  // viewer in fullscreen mode
       infoDisplayed:              false,  // is the info box displayed
       toolbarsDisplayed:          true,   // the toolbars are displayed
       toolsHide:                  null,
-      currentZoom:                1,
-      isZooming:                  false,
+      zoom : {
+        posX:                     0,      // position to center zoom in/out
+        posY:                     0,
+        current:                  1,      // user zoom factor (applied to the baseZoom factor)
+        isZooming:                false
+      },
       padding:                    { H: 0, V: 0 }, // padding for the image
       window:                     { lastWidth: 0, lastHeight: 0 },
       $cont:                      null,   // viewer container
@@ -1925,6 +1961,7 @@
       $toolbarTL:                 null,   // viewer toolbar on top left
       $toolbarTR:                 null,   // viewer toolbar on top right
       $content:                   null,   // viewer content
+      
       $imgP:                      null,   // previous displayed image
       $imgC:                      null,   // currently displayed image
       $imgN:                      null,   // next image to display
@@ -1936,36 +1973,41 @@
       currItemIdx:                -1,
       viewerImageIsChanged:       false,  // image display is currently modified
       items:                      [],     // current list of images to be managed by the viewer
-      Item: function(idx) {
-        return G.I[this.items[idx].imageIdx];
+      NGY2Item: function( n ) {   // returns a NGY2Item
+        switch( n ) {
+          case -1:   // previous
+            var idx=this.IdxPrevious();
+            return G.I[this.items[idx].ngy2ItemIdx]
+            break;
+          case 1:   // next
+            var idx=this.IdxNext();
+            return G.I[this.items[idx].ngy2ItemIdx]
+            break;
+          case 0:   // current
+          default:
+            return G.I[this.items[G.VOM.currItemIdx].ngy2ItemIdx];
+            break;
+        }
       },
-      IdxNext: function(idx) {
+      IdxNext: function() {
         var n=0;
-        if( idx != G.VOM.items.length-1 ) {
-          n=idx+1;
+        if( G.VOM.currItemIdx != G.VOM.items.length-1 ) {
+          n=G.VOM.currItemIdx+1;
         }
         return n;
       },
-      IdxPrevious: function(idx) {
-        var n=idx-1;
-        if( idx == 0 ) {
+      IdxPrevious: function() {
+        var n=G.VOM.currItemIdx-1;
+        if( G.VOM.currItemIdx == 0 ) {
           n=G.VOM.items.length-1;
         }
         return n;
-      },
-      ItemNext: function(idx) {
-        return G.I[this.items[this.IdxNext(idx)].imageIdx]
-      },
-      ItemPrevious: function(idx) {
-        return G.I[this.items[this.IdxPrevious(idx)].imageIdx]
       },
       userEvents:         null,   // user events management
       hammertime:         null,   // hammer.js manager
       swipePosX:          0,      // current horizontal swip position
       panPosX:            0,      // manual pan position
       panPosY:            0,
-      zoomPosX:           0,      // position to center zoom in/out
-      zoomPosY:           0,
       colorSchemeLabel:   '',
       timeImgChanged:     0,
       ImageLoader: {
@@ -1974,14 +2016,14 @@
         list:             [],
         intervalHandle :  null,
 
-        loadImage : function (callback, url, ngitem) {
+        loadImage : function (callback, ngitem) {
           var img = new Image ();
-          img.src = url;
+          img.src = ngitem.responsiveURL();
           if (img.width && img.height) {
-            callback (img.width, img.height, url, ngitem, 0);
+            callback (img.width, img.height, ngitem, 0);
             }
           else {
-            var obj = {image: img, url: url, ngitem: ngitem, callback: callback, checks: 1};
+            var obj = {image: img, url: ngitem.responsiveURL(), ngitem: ngitem, callback: callback, checks: 1};
             var i;
             for (i=0; i < this.list.length; i++)    {
               if (this.list[i] == null)
@@ -1989,7 +2031,7 @@
               }
             this.list[i] = obj;
             if (!this.intervalHandle)
-              this.intervalHandle = setInterval(this.interval, 60);
+              this.intervalHandle = setInterval(this.interval, 50);
             }
           },
 
@@ -2001,12 +2043,12 @@
             item = list[i];
             if (item != null) {
               if (item.image.width && item.image.height) {
-                item.callback (item.image.width, item.image.height, item.url, item.ngitem, item.checks);
                 G.VOM.ImageLoader.list[i] = null;
+                item.callback (item.image.width, item.image.height, item.ngitem, item.checks);
                 }
               else if (item.checks > G.VOM.ImageLoader.maxChecks) {
-                item.callback (0, 0, item.url, item.ngitem, item.checks);
                 G.VOM.ImageLoader.list[i] = null;
+                item.callback (0, 0, item.ngitem, item.checks);
                 }
               else {
                 count++;
@@ -2024,9 +2066,13 @@
     }
     // One VOM item (image)
     function VImg(index) {
-      this.imageIdx = index;
-      this.imageNumber = 0;
+      this.$e = null;
+      this.ngy2ItemIdx = index;
+      this.imageNumber = 0;     
+      this.posX = 0;    // to center the element
+      this.posY = 0;
     }
+    
     
     //------------------------
     //--- popup
@@ -2140,6 +2186,7 @@
       var albumToDisplay=G.O.album;
       if( albumToDisplay == '' && G.O.photoset != '' ) {
         albumToDisplay=G.O.photoset;
+        G.O.album=G.O.photoset;
       }
       if( albumToDisplay != '' ) {
         G.O.displayBreadcrumb=false;    // no breadcrumb since only 1 album
@@ -2275,7 +2322,6 @@
     
       G.GOM.pagination.currentPage=0;
       SetLocationHash( albumID, '' );
-
       GalleryRender( albumIdx );
     
     }
@@ -2580,7 +2626,8 @@
         elt$.click(function(e) {
           G.GOM.pagination.currentPage=jQuery(this).data('pageNumber');
           TriggerCustomEvent('pageChanged');
-          GalleryDisplay( true );
+          GalleryDisplayPart1( true );
+          GalleryDisplayPart2( true );
         });
 
       }
@@ -2619,7 +2666,8 @@
       G.GOM.pagination.currentPage = pn;
       TriggerCustomEvent('pageChanged');
 
-      GalleryDisplay( true );
+      GalleryDisplayPart1( true );
+      GalleryDisplayPart2( true );
     }
     
     // pagination - previous page
@@ -2648,7 +2696,8 @@
 
       G.GOM.pagination.currentPage = pn;
       TriggerCustomEvent('pageChanged');
-      GalleryDisplay( true );
+      GalleryDisplayPart1( true );
+      GalleryDisplayPart2( true );
     }
 
     // retrieve the from/to intervall for gallery thumbnail render
@@ -2787,9 +2836,14 @@
             var wp=getViewport();
             var galleryOTop=G.$E.base.offset().top;
             if( galleryOTop < wp.t ) {
-              jQuery('html, body').animate({scrollTop: galleryOTop}, 200);
+              // jQuery('html, body').animate({scrollTop: galleryOTop}, 200);
+              jQuery('html, body').animate({scrollTop: galleryOTop}, 500, "linear", function() {
+                GalleryRenderPart1( albumIdx );
+              });
             }
-            GalleryRenderPart1( albumIdx );
+            else {
+              GalleryRenderPart1( albumIdx );
+            }
           }
         });
       }
@@ -2805,23 +2859,25 @@
         G.$E.conNavigationBar.css({ 'opacity': 0, 'display': 'block' });
         var tweenable = new NGTweenable();
         tweenable.tween({
-          from:     { 'opacity': 0 },
-          to:       { 'opacity': 1 },
+          from:     { o: 0 },
+          to:       { o: 1 },
           duration: 200,
           easing:   'easeInQuart',
-          step:     function (state, att) {
-            G.$E.conNavigationBar.css({ 'opacity': state.opacity });
+          step:     function (state) {
+            G.$E.conNavigationBar.css({ 'opacity': state.o });
           },
-          finish:   function (state, att) {
+          finish:   function (state) {
             G.$E.conNavigationBar.css({ 'opacity': 1 });
             // display gallery
-            GalleryRenderPart2( albumIdx );
+            // GalleryRenderPart2( albumIdx );
+            setTimeout(function(){ GalleryRenderPart2(albumIdx) }, 60);
           }
         });
       }
       else {
         // display gallery
-        GalleryRenderPart2( albumIdx );
+        // GalleryRenderPart2( albumIdx );
+            setTimeout(function(){ GalleryRenderPart2(albumIdx) }, 60);
       }
 
     }
@@ -2853,15 +2909,15 @@
       }
 
       if( G.CSStransformName == null ) {
-        G.$E.conTn.css( 'left' , '0px');
+        G.$E.conTn.css('left', '0px' );
       }
       else {
-        G.$E.conTn.css( G.CSStransformName , 'translateX('+0+'px)');
+        // G.$E.conTn.css( G.CSStransformName, 'translateX(0px)');
+        G.$E.conTn.css( G.CSStransformName, 'none');
       }
       
-      G.$E.conTnParent.css({ left: 0, opacity: 1 });
-
-      GalleryRenderPart3(albumIdx);
+      setTimeout(function(){ GalleryRenderPart3(albumIdx) }, 60);
+      // GalleryRenderPart3(albumIdx);
 
     }
     
@@ -2869,6 +2925,8 @@
     function GalleryRenderPart3(albumIdx) {
       var d=new Date();      
       
+      G.$E.conTnParent.css( 'opacity', 1);
+
       G.GOM.items = [];
       G.GOM.displayedMoreSteps=0;
       // retrieve annotation height      
@@ -2893,7 +2951,7 @@
           window[G.O.fnGalleryRenderEnd](albumIdx);
         }
       }
-      
+
       // Step 1: populate GOM
       if( GalleryPopulateGOM() ) {
 
@@ -2902,8 +2960,9 @@
 
         // step 3: display gallery
         GalleryAppear();
-        GalleryDisplay( false );
-        G.galleryResizeEventEnabled=true;
+        // GalleryDisplay( false );
+        GalleryDisplayPart1( false );
+        setTimeout(function(){ GalleryDisplayPart2( false ) }, 60);
       }
       else {
         G.galleryResizeEventEnabled=true;
@@ -2915,17 +2974,19 @@
     
     
     // Resize the gallery
-    function GalleryResize( GOMidx ) {
+    function GalleryResize() {
       var d=new Date();
       G.galleryResizeEventEnabled=false;
-      if( GallerySetLayout( GOMidx ) == false ) {
+      // G.GOM.cache.areaWidth=G.$E.conTnParent.width();
+      if( GallerySetLayout() == false ) {
         G.galleryResizeEventEnabled=true;
         if( G.O.debugMode ) { console.log('GalleryResize1: '+ (new Date()-d)); }
         return;
       }
       if( G.O.debugMode ) { console.log('GalleryResizeSetLayout: '+ (new Date()-d)); }
 
-      GalleryDisplay( false );
+      GalleryDisplayPart1( false );
+      GalleryDisplayPart2( false );
 
       if( G.O.debugMode ) { console.log('GalleryResizeFull: '+ (new Date()-d)); }
     }
@@ -3067,22 +3128,22 @@
     }
     
     //----- Calculate the layout of the thumbnails
-    function GallerySetLayout( GOMidx ) {
+    function GallerySetLayout() {
       var r = true;
-      // available area width
-      var areaWidth=G.$E.conTnParent.width();
+      // width of the available area
+      G.GOM.cache.areaWidth=G.$E.conTnParent.width();
       G.GOM.displayArea={ width:0, height:0 };
 
       switch( G.layout.engine ) {
         case 'JUSTIFIED':
-          r= GallerySetLayoutWidthtAuto( areaWidth, GOMidx );
+          r = GallerySetLayoutWidthtAuto();
           break;
         case 'CASCADING':
-          r= GallerySetLayoutHeightAuto( areaWidth, GOMidx );
+          r = GallerySetLayoutHeightAuto();
           break;
         case 'GRID':
         default:
-          r= GallerySetLayoutGrid( areaWidth, GOMidx );
+          r = GallerySetLayoutGrid();
           break;
       }
       
@@ -3102,9 +3163,9 @@
     
     
     //----- CASCADING LAYOUT
-    function GallerySetLayoutHeightAuto( areaWidth, GOMidx ) {
-      var areaW=G.$E.conTnParent.width(),
-      curCol =        0,
+    function GallerySetLayoutHeightAuto() {
+      var curCol =    0,
+      areaWidth=      G.GOM.cache.areaWidth,
       curRow =        0,
       colHeight =     [],
       maxCol =        NbThumbnailsPerRow(areaWidth),
@@ -3186,8 +3247,9 @@
     
     
     //----- JUSTIFIED LAYOUT
-    function GallerySetLayoutWidthtAuto( areaWidth, GOMidx ) {
+    function GallerySetLayoutWidthtAuto() {
       var curWidth=               0,
+      areaWidth=                  G.GOM.cache.areaWidth,
       lastPosX=                   0,
       curPosY=                    0,
       rowLastItem=                [],
@@ -3333,47 +3395,48 @@
         }
       }
       
-      var newTop=0;
-      if( typeof GOMidx !== 'undefined' ) {
-        // gallery hover effect
-        if( G.GOM.albumIdx != -1 ) {
-          var hoveredTn=G.GOM.items[GOMidx];
-          var item=G.I[hoveredTn.thumbnailIdx];
-          
-          // hovered thumbnail
-          hoveredTn.width+=40;
-          hoveredTn.height+=40;
-          // todo : left
-          
-          for( var i=0; i < nbTn ; i++ ) {
-            var curTn=G.GOM.items[i];
-            if( curTn.imageWidth > 0 ) {
-              if( curTn.row == hoveredTn.row ) {
-                // hovered row
-                newTop=40;
-                if( hoveredTn.thumbnailIdx != curTn.thumbnailIdx ) {
-                  // not hovered thumbnail
-                  // curTn.resizedContentWidth+=10;
-                  // curTn.resizedContentHeight+=20;
-                  // curTn.width+=10;
-                  curTn.top+=30;
-                  curTn.width-=20;
-                  curTn.height-=20;
-                }
-              }
-              else {
-                // not hovered row
-                if( curTn.row == 0 ) {
-                  // first row
+      if( false ) {
+        var newTop=0;
+        if( typeof GOMidx !== 'undefined' ) {
+          // gallery hover effect --> experimental / not used
+          if( G.GOM.albumIdx != -1 ) {
+            var hoveredTn=G.GOM.items[GOMidx];
+            var item=G.I[hoveredTn.thumbnailIdx];
+            
+            // hovered thumbnail
+            hoveredTn.width+=40;
+            hoveredTn.height+=40;
+            // todo : left
+            
+            for( var i=0; i < nbTn ; i++ ) {
+              var curTn=G.GOM.items[i];
+              if( curTn.imageWidth > 0 ) {
+                if( curTn.row == hoveredTn.row ) {
+                  // hovered row
+                  newTop=40;
+                  if( hoveredTn.thumbnailIdx != curTn.thumbnailIdx ) {
+                    // not hovered thumbnail
+                    // curTn.resizedContentWidth+=10;
+                    // curTn.resizedContentHeight+=20;
+                    // curTn.width+=10;
+                    curTn.top+=30;
+                    curTn.width-=20;
+                    curTn.height-=20;
+                  }
                 }
                 else {
-                  curTn.top+=newTop;
+                  // not hovered row
+                  if( curTn.row == 0 ) {
+                    // first row
+                  }
+                  else {
+                    curTn.top+=newTop;
+                  }
                 }
               }
             }
           }
         }
-        
       }
       
       G.GOM.displayArea.width=areaWidth;
@@ -3382,9 +3445,10 @@
     
 
     //----- GRID LAYOUT
-    function GallerySetLayoutGrid( areaWidth ) {
+    function GallerySetLayoutGrid() {
       var curPosX=      0,
       curPosY=          0,   
+      areaWidth=        G.GOM.cache.areaWidth,
       gutterWidth=      0,
       gutterHeight=     G.tn.opt.Get('gutterHeight'),
       maxCol=           NbThumbnailsPerRow(areaWidth),
@@ -3469,25 +3533,29 @@
 
 
     //----- Display the thumbnails according to the calculated layout
-    function GalleryDisplay( forceTransition ) {
-
+    function GalleryDisplayPart1( forceTransition ) {
       if( G.CSStransformName == null ) {
         G.$E.conTn.css( 'left' , '0px');
       }
       else {
-        G.$E.conTn.css( G.CSStransformName , 'translateX('+0+'px)');
+        G.$E.conTn.css( G.CSStransformName , 'none');
       }
+      
+      G.GOM.cache.viewport=getViewport();
+      G.GOM.cache.areaWidth=G.$E.conTnParent.width();
+      
+      // var containerOffset=G.$E.conTnParent.offset();
+      G.GOM.cache.containerOffset=G.$E.conTnParent.offset();
+    }
+    
+    function GalleryDisplayPart2( forceTransition ) {
+
 
       var nbTn=G.GOM.items.length;
       G.GOM.itemsDisplayed=0;
       var threshold = 50;
       var cnt=0;    // counter for delay between each thumbnail display
       
-      var vp=getViewport();
-      G.GOM.cache.viewport=vp;
-
-      var containerOffset=G.$E.conTnParent.offset();
-      G.GOM.cache.containerOffset=containerOffset;
 
       GalleryRenderGetInterval();
       
@@ -3527,9 +3595,9 @@
         
           if( curTn.neverDisplayed ) {
             // thumbnail is not displayed -> check if in viewport to display or not
-            var top=containerOffset.top+(curTn.top-G.GOM.clipArea.top);
+            var top=G.GOM.cache.containerOffset.top+(curTn.top-G.GOM.clipArea.top);
             // var left=containerOffset.left+curTn.left;
-            if( (top+curTn.height) >= (vp.t-threshold) && top <= (vp.t+vp.h+threshold) ) {
+            if( (top+curTn.height) >= (G.GOM.cache.viewport.t-threshold) && top <= (G.GOM.cache.viewport.t+G.GOM.cache.viewport.h+threshold) ) {
               // build thumbnail
               var item=G.I[curTn.thumbnailIdx];
               if( item.$elt == null ) {
@@ -3568,8 +3636,11 @@
       if( areaWidth != G.$E.conTnParent.width() ) {
         // gallery area width changed since layout calculation (for example when a scrollbar appeared)
         // so we need re-calculate the layout before displaying the thumbnails
+        G.GOM.cache.areaWidth=G.$E.conTnParent.width();
         GallerySetLayout();
-        GalleryDisplay( forceTransition );
+        GalleryDisplayPart1( forceTransition );
+        GalleryDisplayPart2( forceTransition );
+        return;
       }
 
       // counter of not displayed images (is displayed on the last thumbnail)
@@ -3606,16 +3677,16 @@
 
       if( G.tn.opt.Get('displayTransition') == 'NONE' ) {
         G.galleryResizeEventEnabled=true;
+        TriggerCustomEvent('galleryDisplayed');
       }
       else {
         setTimeout(function() {
           // change value after the end of the display transistion of the newly built thumbnails
           G.galleryResizeEventEnabled=true;
+          TriggerCustomEvent('galleryDisplayed');
         }, nbBuild * G.tn.opt.Get('displayInterval'));
       }
       
-      // G.$E.base.trigger('galleryDisplayed.nanogallery2', new Event('galleryDisplayed.nanogallery2'));
-      TriggerCustomEvent('galleryDisplayed');
     }
     
     
@@ -3806,14 +3877,20 @@
       var newElt= [],
       newEltIdx=  0;
       
-      newElt[newEltIdx++]=ThumbnailBuildStacks()+'<div class="nGY2GThumbnail" style="display:none;opacity:0;" >';
+      var mp='';
+      if( G.O.thumbnailOpenImage === false ) {
+        mp='cursor:default;'
+      }
+      
+      newElt[newEltIdx++]=ThumbnailBuildStacks()+'<div class="nGY2GThumbnail" style="display:none;opacity:0;'+mp+'" >';
       newElt[newEltIdx++]='  <div class="nGY2GThumbnailSub">';
 
       var h=G.tn.defaultSize.getHeight(),
       w=G.tn.defaultSize.getWidth();
 
       newElt[newEltIdx++]='    <div class="nGY2GThumbnailImage" style="width:'+w+'px;height:'+h+'px;"><img class="nGY2GThumbnailImg" src="'+G.emptyGif+'" alt="" style="max-width:'+w+'px;max-height:'+h+'px;" ></div>';
-      newElt[newEltIdx++]='    <div class="nGY2GThumbnailAlbumUp" style="width:'+w+'px;height:'+h+'px;">'+G.O.icons.thumbnailAlbumUp+'</div>';
+      // newElt[newEltIdx++]='    <div class="nGY2GThumbnailAlbumUp" style="width:'+w+'px;height:'+h+'px;">'+G.O.icons.thumbnailAlbumUp+'</div>';
+      newElt[newEltIdx++]='    <div class="nGY2GThumbnailAlbumUp" >'+G.O.icons.thumbnailAlbumUp+'</div>';
       newElt[newEltIdx++]='  </div>';
       newElt[newEltIdx++]='</div>';
       
@@ -3842,7 +3919,12 @@
       var newElt=[],
       newEltIdx=0;
 
-      newElt[newEltIdx++]=ThumbnailBuildStacks()+'<div class="nGY2GThumbnail" style="display:none;opacity:0;"><div class="nGY2GThumbnailSub '+(G.O.thumbnailSelectable && item.selected?"nGY2GThumbnailSubSelected":"")+'">';
+      var mp='';
+      if( G.O.thumbnailOpenImage === false ) {
+        mp='cursor:default;'
+      }
+
+      newElt[newEltIdx++]=ThumbnailBuildStacks()+'<div class="nGY2GThumbnail" style="display:none;opacity:0;'+mp+'"><div class="nGY2GThumbnailSub '+(G.O.thumbnailSelectable && item.selected?"nGY2GThumbnailSubSelected":"")+'">';
       
       var src=item.thumbImg().src,
       sTitle=getThumbnailTitle(item),
@@ -4304,8 +4386,8 @@
 
         var tweenable = new NGTweenable();
         tweenable.tween({
-          from:         { scale: f, opacity:0 },
-          to:           { scale: 1, opacity:1 },
+          from:         { scale: f, opacity: 0 },
+          to:           { scale: 1, opacity: 1 },
           attachment:   { $e:item.$elt, item: item, tw: tweenable },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
@@ -4331,8 +4413,8 @@
    
         var tweenable = new NGTweenable();
         tweenable.tween({
-          from:         { 'scale': f, 'opacity':0 },
-          to:           { 'scale': 1, 'opacity':1 },
+          from:         { scale: f, opacity: 0 },
+          to:           { scale: 1, opacity: 1 },
           attachment:   { item: item, tw: tweenable },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
@@ -4357,7 +4439,7 @@
       },
       
       SLIDEUP: function( item, delay ) {
-        var f=G.tn.opt.Get('displayTransitionStartVal');
+      var f=G.tn.opt.Get('displayTransitionStartVal');
         if( f == 0 ) { f=50; }   // default value
         var tweenable = new NGTweenable();
         tweenable.tween({
@@ -4375,7 +4457,7 @@
               return;
             }
             att.item.$elt.css('opacity', state.opacity);
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px,'+state.translateY+'px');
             // att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
@@ -4407,7 +4489,7 @@
               return;
             }
             att.item.$elt.css('opacity', state.opacity);
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px,'+state.translateY+'px');
             // att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale); 
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
@@ -4427,19 +4509,19 @@
         tweenable.tween({
           // from:         { opacity: 0, translateX: f, rotateX: 45, scale: 0.8  },
           // to:           { opacity: 1, translateX: 0, rotateX: 0, scale: 1 },
-          from:         { opacity: 0, translateX: f, rotateX: 45 },
-          to:           { opacity: 1, translateX: 0, rotateX: 0  },
+          from:         { opacity: 0, translateY: f, rotateX: 45 },
+          to:           { opacity: 1, translateY: 0, rotateX: 0  },
           attachment:   { item: item, tw: tweenable },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
-          easing:       { opacity: 'easeOutQuint', scale: 'easeOutQuart', translateX: G.tn.opt.Get('displayTransitionEasing') },
+          easing:       { opacity: 'easeOutQuint', scale: 'easeOutQuart', translateY: G.tn.opt.Get('displayTransitionEasing') },
           step:         function (state, att) {
             if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
               att.tw.stop(false);
               return;
             }
             att.item.$elt.css('opacity', state.opacity);
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateX+'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px,'+state.translateY+'px');
             att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateX', state.rotateX+'deg');
             // att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
             att.item.CSSTransformApply('.nGY2GThumbnail');
@@ -4459,19 +4541,19 @@
         tweenable.tween({
           // from:         { opacity: 0, translateX: f, rotateX: -45, scale: 0.8  },
           // to:           { opacity: 1, translateX: 0, rotateX: 0, scale: 1 },
-          from:         { opacity: 0, translateX: f, rotateX: -45 },
-          to:           { opacity: 1, translateX: 0, rotateX: 0 },
+          from:         { opacity: 0, translateY: f, rotateX: -45 },
+          to:           { opacity: 1, translateY: 0, rotateX: 0 },
           attachment:   { item: item, tw: tweenable },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
-          easing:       { opacity: 'easeOutQuint', scale:'easeOutQuart', translateX: G.tn.opt.Get('displayTransitionEasing')},
+          easing:       { opacity: 'easeOutQuint', scale:'easeOutQuart', translateY: G.tn.opt.Get('displayTransitionEasing')},
           step:         function (state, att) {
             if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
               att.tw.stop(false);
               return;
             }
             att.item.$elt.css('opacity', state.opacity);
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateX+'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px,'+state.translateY+'px');
             att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateX', state.rotateX+'deg');
             // att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
             att.item.CSSTransformApply('.nGY2GThumbnail');
@@ -4497,14 +4579,14 @@
           attachment:   { item: item, tw: tweenable },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
-          easing:       { opacity: 'easeOutQuint', scale:'easeOutQuart', translateX: G.tn.opt.Get('displayTransitionEasing') },
+          easing:       { opacity: 'easeOutQuint', scale:'easeOutQuart', translateY: G.tn.opt.Get('displayTransitionEasing') },
           step:         function (state, att) {
             if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
               att.tw.stop(false);
               return;
             }
             att.item.$elt.css('opacity', state.opacity);
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px,'+state.translateY+'px');
             att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateY', state.rotateY+'deg');
             // att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
             att.item.CSSTransformApply('.nGY2GThumbnail');
@@ -4536,7 +4618,7 @@
               return;
             }
             att.item.$elt.css('opacity', state.opacity);
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'translateY', state.translateY+'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px,'+state.translateY+'px');
             att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateY', state.rotateY+'deg');
             // att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
             att.item.CSSTransformApply('.nGY2GThumbnail');
@@ -4554,20 +4636,20 @@
         if( f == 0 ) { f=-150; }   // default value
         var tweenable = new NGTweenable();
         tweenable.tween({
-          from:         { opacity: 0, translateX: f, rotateZ: 10 },
-          to:           { opacity: 1, translateX: 0, rotateZ: 0 },
+          from:         { opacity: 0, translateX: f },
+          to:           { opacity: 1, translateX: 0 },
           attachment:   { item: item, tw: tweenable },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
-          easing:       { opacity: 'easeOutQuint', translateX: G.tn.opt.Get('displayTransitionEasing'), rotateZ:'easeOutQuart'},
+          easing:       { opacity: 'easeOutQuint', translateX: G.tn.opt.Get('displayTransitionEasing') },
           step:         function (state, att) {
             if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
               att.tw.stop(false);
               return;
             }
             att.item.$elt.css('opacity', state.opacity);
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'translateX', state.translateX+'px');
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateZ', state.rotateZ+'deg');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', state.translateX+'px,0px');
+            // att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateZ', state.rotateZ+'deg');
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
@@ -4583,20 +4665,20 @@
         if( f == 0 ) { f=150; }   // default value
         var tweenable = new NGTweenable();
         tweenable.tween({
-          from:         { opacity: 0, translateX: f, rotateZ: -10 },
-          to:           { opacity: 1, translateX: 0, rotateZ: 0 },
+          from:         { opacity: 0, translateX: f },
+          to:           { opacity: 1, translateX: 0 },
           attachment:   { item: item, tw: tweenable },
           delay:        delay,
           duration:     G.tn.opt.Get('displayTransitionDuration'),
-          easing:       { opacity: 'easeOutQuint', translateX: G.tn.opt.Get('displayTransitionEasing'), rotateZ:'easeOutQuart'},
+          easing:       { opacity: 'easeOutQuint', translateX: G.tn.opt.Get('displayTransitionEasing') },
           step:         function (state, att) {
             if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
               att.tw.stop(false);
               return;
             }
             att.item.$elt.css('opacity', state.opacity);
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'translateX', state.translateX+'px');
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateZ', state.rotateZ+'deg');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', state.translateX+'px,0px');
+            // att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateZ', state.rotateZ+'deg');
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
@@ -4641,7 +4723,6 @@
     
     function GalleryAppear() {
       
-      // G.$E.conTnParent.css({ opacity: 1 });
       
       var d=G.galleryDisplayTransitionDuration.Get();
       switch( G.galleryDisplayTransition.Get() ){
@@ -4659,14 +4740,16 @@
           });
           break;
         case 'SLIDEUP':
+          G.$E.conTnParent.css({ opacity: 0 });
           var tweenable = new NGTweenable();
           tweenable.tween({
-            from:         { y: 200 },
-            to:           { y: 0  },
+            from:         { y: 200, o: 0 },
+            to:           { y: 0,   o: 1 },
             duration:     d,
             easing:       'easeOutCirc',
             step:         function (state, att) {
-              G.$E.conTnParent.css( G.CSStransformName , 'translateY('+state.y+'px)');
+              // G.$E.conTnParent.css( G.CSStransformName , 'translateY('+state.y+'px)').css('opacity', state.o);
+              G.$E.conTnParent.css( G.CSStransformName , 'translate(0px,'+state.y+'px)').css('opacity', state.o);
             }
           });
           break;
@@ -4879,23 +4962,26 @@
       else {
         G.GOM.curNavLevel='lN';
       }
-      
+
       if( albumIdx == -1 ) {
         // get content of album on root level
-        NGY2Item.New( G, '', '', albumID, '0', 'album' );    // create empty album
-        albumIdx=G.I.length-1;
+        if( G.O.kind != '' ) {
+          // do not add adlbum if Markup or Javascript data
+          NGY2Item.New( G, '', '', albumID, '0', 'album' );    // create empty album
+          albumIdx=G.I.length-1;
+        }
       }
 
-      var imageIdx = NGY2Item.GetIdx(G, imageID);
-      if( imageIdx == -1 ) {
+      var ngy2ItemIdx = NGY2Item.GetIdx(G, imageID);
+      if( ngy2ItemIdx == -1 ) {
         // get content of the album
         AlbumGetContent( albumID, DisplayPhoto, imageID, albumID );
         return;
       }
       
-      if( G.O.debugMode ) { console.log('#DisplayPhoto : '+  imageIdx); }
+      if( G.O.debugMode ) { console.log('#DisplayPhoto : '+  ngy2ItemIdx); }
      
-      DisplayPhotoIdx(imageIdx);
+      DisplayPhotoIdx(ngy2ItemIdx);
     
     }
 
@@ -4966,6 +5052,12 @@
     
     function AlbumGetMarkupOrApi ( fnToCall, fnParam1, fnParam2 ) {
     
+      if( G.markupOrApiProcessed === true ) {
+        // already processed (maybe location hash to unknow reference) -> display root album
+        DisplayAlbum('-1', 0);
+        return;
+      }
+      
       if( G.O.items !== undefined && G.O.items !== null ) {
         // data defined as an object in an option parameter
         GetContentApiObject();
@@ -4981,7 +5073,8 @@
           return;
         }
       }
-
+      
+      G.markupOrApiProcessed = true;
       if( fnToCall !== null &&  fnToCall !== undefined) {
         fnToCall( fnParam1, fnParam2, null );
       }
@@ -5001,7 +5094,8 @@
     
     function GetContentApiObject() {
       var foundAlbumID=false;
-      
+      var AlbumPostProcess = NGY2Tools.AlbumPostProcess.bind(G);
+
       G.I[0].contentIsLoaded=true;
 
       jQuery.each(G.O.items, function(i,item){
@@ -5157,6 +5251,8 @@
             window[G.O.fnProcessData](newItem, 'api', item);
           }
         }
+        
+        AlbumPostProcess(albumID);
       });
       
       if( foundAlbumID ) {
@@ -5168,6 +5264,7 @@
     function GetContentMarkup( $elements ) {
       var foundAlbumID=false;
       var nbTitles=0;
+      var AlbumPostProcess = NGY2Tools.AlbumPostProcess.bind(G);
       
       G.I[0].contentIsLoaded=true;
 
@@ -5313,6 +5410,8 @@
           }
         }
         
+        AlbumPostProcess(albumID);
+
       });
       
       if( foundAlbumID ) {
@@ -7072,29 +7171,28 @@
     }
     
     // Display one photo (with internal or external viewer)
-    function DisplayPhotoIdx( imageIdx ) {
+    function DisplayPhotoIdx( ngy2ItemIdx ) {
 
       if( !G.O.thumbnailOpenImage ) { return; }
 
       if( G.O.thumbnailOpenOriginal ) {
         // Open link to original image
-        OpenOriginal( G.I[imageIdx] );
+        OpenOriginal( G.I[ngy2ItemIdx] );
         return;
       }
         
       var items=[];
       
-      // G.VOM.currItemIdx=imageIdx;
       G.VOM.currItemIdx=0;
       G.VOM.items=[];
-      G.VOM.albumID=G.I[imageIdx].albumID;
+      G.VOM.albumID=G.I[ngy2ItemIdx].albumID;
       
-      var vimg=new VImg(imageIdx);
+      var vimg=new VImg(ngy2ItemIdx);
       G.VOM.items.push(vimg);
-      items.push(G.I[imageIdx]);
+      items.push(G.I[ngy2ItemIdx]);
 //TODO -> danger? -> pourquoi reconstruire la liste si d�j� ouvert (back/forward)     
       var l=G.I.length;
-      for( var idx=imageIdx+1; idx<l ; idx++) {
+      for( var idx=ngy2ItemIdx+1; idx<l ; idx++) {
         var item=G.I[idx];
         if( item.kind == 'image' && item.isToDisplay(G.VOM.albumID) && item.destinationURL == '' ) {
           var vimg=new VImg(idx);
@@ -7104,7 +7202,7 @@
       }
       var last=G.VOM.items.length;
       var cnt=1;
-      for( var idx=0; idx<imageIdx ; idx++) {
+      for( var idx=0; idx<ngy2ItemIdx ; idx++) {
         var item=G.I[idx];
         if( item.kind == 'image' && item.isToDisplay(G.VOM.albumID) && item.destinationURL == '' ) {
           var vimg=new VImg(idx);
@@ -7128,18 +7226,20 @@
           // defined in markup
           window[G.O.fnThumbnailOpen](items);
         }
+        return;
       }
     
+      // use internal viewer
       if( !G.VOM.viewerDisplayed ) {
-        // build and display
-        OpenInternalViewer(0);
+        // build viewer and display
+        OpenInternalViewer();
       }
       else {
-        // display
+        // display in current viewer
         G.VOM.$imgC.css({ opacity:0, left:0, visibility:'hidden' }).attr('src','');
-        G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.Item(0).responsiveURL(), G.VOM.Item(0));
-        G.VOM.$imgC.children().eq(0).attr('src',G.emptyGif).attr('src', G.VOM.Item(0).responsiveURL());
-        // ViewerDisplayDominantColors(G.VOM.Item(0), G.VOM.$imgC.children());
+        G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.NGY2Item(0));
+        G.VOM.$imgC.children().eq(0).attr('src',G.emptyGif).attr('src', G.VOM.NGY2Item(0).responsiveURL());
+        // ViewerDisplayDominantColors(G.VOM.NGY2Item(0), G.VOM.$imgC.children());
         DisplayInternalViewer(0, '');
       }
     }
@@ -7150,22 +7250,126 @@
       // }
     }
 
+    
     // is callbacked as soon as the size of an image has been retrieved
-    function VieweImgSizeRetrieved(w,h, url, item, n) {
-
+    function VieweImgSizeRetrieved(w,h, item, n) {
       item.imageWidth=w;
       item.imageHeight=h;
 
-      if( G.VOM.$imgC !== null && G.VOM.$imgC.children().prop('src') === url ) {
-        ViewerImageSetSize(G.VOM.$imgC, item);
+      if( G.VOM.$imgC !== null && G.VOM.$imgC.children().attr('src') == item.responsiveURL() ) {
+        // ViewerImageSetSize(G.VOM.$imgC, item);
         G.VOM.$imgC.css('opacity', 1);
-      }
+        ViewerZoomStart();
+        //        ViewerImgRetrieveBaseZoom(item);
 
+      }
+      ViewerImageSetPosAndZoom();
+
+    }
+    
+
+    function ViewerZoomStart() {
+      if( G.O.viewerZoom && !G.VOM.viewerImageIsChanged ) {
+        var item=G.VOM.NGY2Item(0);
+        if( item.imageHeight > 0 && item.imageWidth > 0 ) {
+          if( G.VOM.zoom.isZooming === false ) {
+            // default zoom
+            G.VOM.zoom.current=1;
+            G.VOM.zoom.isZooming=true;
+          }
+          return true;
+        }
+      }
+    }
+          
+    function ViewerZoomIn( zoomIn ) {
+      if( zoomIn ) {
+        // zoom in
+        G.VOM.zoom.current+=0.1;
+        if( G.VOM.zoom.current > 3 ) {
+          G.VOM.zoom.current=3;
+        }
+      }
+      else {
+        // zoom out
+        G.VOM.zoom.current-=0.1;
+        if( G.VOM.zoom.current < 0.2 ) {
+          G.VOM.zoom.current=0.2;
+        }
+      }
+      ViewerImageSetPosAndZoom();
+    }
+    
+
+
+    function ViewerImageSetPosAndZoom() {
+    
+      if( !G.VOM.zoom.isZooming ) {
+        G.VOM.zoom.current=1;
+      }
+      
+      ViewerImageSetPosAndZoomOne( G.VOM.NGY2Item(0), G.VOM.$imgC, true );
+      ViewerImageSetPosAndZoomOne( G.VOM.NGY2Item(-1), G.VOM.$imgP, false );
+      ViewerImageSetPosAndZoomOne( G.VOM.NGY2Item(1), G.VOM.$imgN, false );
+    }
+    
+
+    function ViewerImageSetPosAndZoomOne(item, $img, isCurrent ) {
+
+      var zoomUserFactor=1;
+      if( isCurrent ) {
+        zoomUserFactor = G.VOM.zoom.current;
+      }
+    
+      if( item.imageHeight == 0 || item.imageWidth == 0 ) { 
+        $img.css('opacity', 0);
+        return;
+      }
+      
+      var h=G.VOM.window.lastHeight - item.imageHeight/window.devicePixelRatio;
+      var w=G.VOM.window.lastWidth - item.imageWidth/window.devicePixelRatio;
+      
+      // retrieve the base zoom factor (image fill screen)
+      var zoomBaseFactor = G.VOM.window.lastWidth / (item.imageWidth / window.devicePixelRatio);
+      if( h < w ) {
+        var zoomBaseFactor = G.VOM.window.lastHeight / (item.imageHeight / window.devicePixelRatio);
+      }
+      if( zoomBaseFactor > 1 && G.O.viewerImageDisplay != 'upscale' ) {
+        // no upscale
+        zoomBaseFactor=1;
+      }
+    
+      var imageCurrentHeight=(item.imageHeight / window.devicePixelRatio) * zoomUserFactor * zoomBaseFactor;
+      var imageCurrentWidth=(item.imageWidth / window.devicePixelRatio) * zoomUserFactor * zoomBaseFactor;
+      $img.children().eq(0).css( {'height': imageCurrentHeight, 'max-height': 'none' });
+      $img.children().eq(0).css( {'width': imageCurrentWidth, 'max-width': 'none' });
+
+      // retrieve posX/Y to center image
+      var posX=0;
+      if( imageCurrentWidth > G.VOM.window.lastWidth ) {
+        posX=-(imageCurrentWidth-G.VOM.window.lastWidth)/2;
+      }
+      var h = G.VOM.$viewer.height() - G.VOM.padding.H;
+      var posY = 0;
+      if( imageCurrentHeight > G.VOM.window.lastHeight ) {
+        posY = ( imageCurrentHeight - G.VOM.window.lastHeight ) / 2;
+      }
+      posY = 0;   // actually, it seems that the image is always centered vertically -> so no need to to anything
+
+      if( isCurrent ) {
+        G.VOM.zoom.posX=posX;
+        G.VOM.zoom.posY=posY;
+        ViewerImagePanSetPosition(G.VOM.panPosX, G.VOM.panPosY, $img[0], false);
+      }
+      else {
+        $img[0].style[G.CSStransformName]= 'translate3D('+ posX+'px, '+ posY+'px, 0) ';
+      }
+      
     }
 
 
       // display image with internal viewer
-    function OpenInternalViewer( vomIdx ) {
+    function OpenInternalViewer(  ) {
 
       G.VOM.viewerDisplayed=true;
       jQuery('body').css({overflow:'hidden'});  //avoid scrollbars
@@ -7180,30 +7384,31 @@
       // TODO -> check if still required?
       G.VOM.$viewer.css({msTouchAction:'none', touchAction:'none'});      
 
-      var sImg='',
-      l=G.I.length;
+
+      G.VOM.currItemIdx=0;
       
-      sImg+='<div class="nGY2ViewerImagePan"><img class="nGY2ViewerImage" src="'+G.VOM.ItemPrevious(vomIdx).responsiveURL()+'" alt=" " itemprop="contentURL"></div>';
-      sImg+='<div class="nGY2ViewerImagePan"><img class="nGY2ViewerImage" src="'+G.VOM.Item(vomIdx).responsiveURL()+'" alt=" " itemprop="contentURL"></div>';
-      sImg+='<div class="nGY2ViewerImagePan"><img class="nGY2ViewerImage" src="'+G.VOM.ItemNext(vomIdx).responsiveURL()+'" alt=" " itemprop="contentURL"></div>';
-      var sNav='';
+      var sImg = '';
+      sImg += '<div class="nGY2ViewerImagePan"><img class="nGY2ViewerImage" src="'+G.VOM.NGY2Item(-1).responsiveURL()+'" alt=" " itemprop="contentURL"></div>';
+      sImg += '<div class="nGY2ViewerImagePan"><img class="nGY2ViewerImage" src="'+G.VOM.NGY2Item(0).responsiveURL()+'" alt=" " itemprop="contentURL"></div>';
+      sImg += '<div class="nGY2ViewerImagePan"><img class="nGY2ViewerImage" src="'+G.VOM.NGY2Item(1).responsiveURL()+'" alt=" " itemprop="contentURL"></div>';
+      var sNav = '';
       if( G.O.icons.viewerImgPrevious != undefined && G.O.icons.viewerImgPrevious != '') {
-        sNav+='<div class="nGY2ViewerAreaPrevious ngy2viewerToolAction" data-ngy2action="previous">'+G.O.icons.viewerImgPrevious+'</div>';
+        sNav += '<div class="nGY2ViewerAreaPrevious ngy2viewerToolAction" data-ngy2action="previous">'+G.O.icons.viewerImgPrevious+'</div>';
       }
       if( G.O.icons.viewerImgNext != undefined && G.O.icons.viewerImgNext != '') {
-        sNav+='<div class="nGY2ViewerAreaNext ngy2viewerToolAction" data-ngy2action="next">'+G.O.icons.viewerImgNext+'</div>';
+        sNav += '<div class="nGY2ViewerAreaNext ngy2viewerToolAction" data-ngy2action="next">'+G.O.icons.viewerImgNext+'</div>';
       }
       G.VOM.$content=jQuery('<div class="nGY2ViewerContent">'+sImg+sNav+'</div>').appendTo(G.VOM.$viewer);
       G.VOM.$imgP=G.VOM.$content.find('.nGY2ViewerImagePan').eq(0);
       G.VOM.$imgC=G.VOM.$content.find('.nGY2ViewerImagePan').eq(1);
       G.VOM.$imgN=G.VOM.$content.find('.nGY2ViewerImagePan').eq(2);
-      G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.Item(vomIdx).responsiveURL(), G.VOM.Item(vomIdx));
-      G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.ItemPrevious(vomIdx).responsiveURL(), G.VOM.ItemPrevious(vomIdx));
-      G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.ItemNext(vomIdx).responsiveURL(), G.VOM.ItemNext(vomIdx));
+      G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.NGY2Item(0));
+      G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.NGY2Item(-1));
+      G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.NGY2Item(1));
       
-      ViewerDisplayDominantColors(G.VOM.Item(vomIdx), G.VOM.$imgC.children());
-      ViewerDisplayDominantColors(G.VOM.ItemPrevious(vomIdx), G.VOM.$imgP.children());
-      ViewerDisplayDominantColors(G.VOM.ItemNext(vomIdx), G.VOM.$imgN.children());
+      ViewerDisplayDominantColors(G.VOM.NGY2Item(0), G.VOM.$imgC.children());
+      ViewerDisplayDominantColors(G.VOM.NGY2Item(-1), G.VOM.$imgP.children());
+      ViewerDisplayDominantColors(G.VOM.NGY2Item(1), G.VOM.$imgN.children());
 
       // makes content unselectable --> avoid image drag effect during 'mouse swipe'
       G.VOM.$cont.find('*').attr('draggable', 'false').attr('unselectable', 'on');
@@ -7295,8 +7500,9 @@
         e.stopPropagation();
       });
       
-      ImageSwipeTranslateX(G.VOM.swipePosX);
-      DisplayInternalViewer(vomIdx, '');
+      // ImageSwipeTranslateX(G.VOM.swipePosX);
+      ImageSwipeTranslateX(0);
+      DisplayInternalViewer(0, '');
 
       // viewer gesture handling
       if( G.VOM.hammertime == null ) {
@@ -7314,8 +7520,8 @@
 
         G.VOM.hammertime.on('pan', function(ev) {
           if( !G.VOM.viewerDisplayed ) { return; }
-          if( G.VOM.isZooming ) {
-            ViewerImageSetPosition(G.VOM.panPosX+ev.deltaX, G.VOM.panPosY+ev.deltaY, false);
+          if( G.VOM.zoom.isZooming ) {
+            ViewerImagePanSetPosition(G.VOM.panPosX+ev.deltaX, G.VOM.panPosY+ev.deltaY, G.VOM.$imgC[0], false);
           }
           else {
             ImageSwipeTranslateX( ev.deltaX );
@@ -7324,9 +7530,9 @@
 
         G.VOM.hammertime.on('panend', function(ev) {
           if( !G.VOM.viewerDisplayed ) { return; }
-          if( G.VOM.isZooming ) {
+          if( G.VOM.zoom.isZooming ) {
             G.VOM.timeImgChanged=new Date().getTime();
-            ViewerImageSetPosition(G.VOM.panPosX+ev.deltaX, G.VOM.panPosY+ev.deltaY, true);
+            ViewerImagePanSetPosition(G.VOM.panPosX+ev.deltaX, G.VOM.panPosY+ev.deltaY, G.VOM.$imgC[0], true);
           }
           else {
             // next/previous image
@@ -7375,15 +7581,15 @@
             
             if( ev.target.className.indexOf('nGY2ViewerImage') !== -1 ) {
               // double tap only one image
-              if( G.VOM.isZooming ) {
-                G.VOM.isZooming=false;
-                G.VOM.currentZoom=1;
+              if( G.VOM.zoom.isZooming ) {
+                G.VOM.zoom.isZooming=false;
+                G.VOM.zoom.current=1;
                 ResizeInternalViewer(true);
               }
               else {
-                G.VOM.currentZoom=1.^5;
                 if( ViewerZoomStart() ) {
-                  ViewerZoomIn(true);
+                  G.VOM.zoom.current=1.5;
+                  ViewerImageSetPosAndZoom();
                 }
               }
             }
@@ -7399,16 +7605,16 @@
             ev.srcEvent.preventDefault();  // cancel  mouseenter event
             
             if( ViewerZoomStart() ) {
-              G.VOM.currentZoom=ev.scale;
-              if( G.VOM.currentZoom > 2 ) {
-                G.VOM.currentZoom=2;
+              G.VOM.zoom.current=ev.scale;
+              if( G.VOM.zoom.current > 3 ) {
+                G.VOM.zoom.current=3;
               }
-              if( G.VOM.currentZoom < 0.2 ) {
-                G.VOM.currentZoom=0.2;
+              if( G.VOM.zoom.current < 0.2 ) {
+                G.VOM.zoom.current=0.2;
               }
 
               // center image
-              ViewerZoomApply();
+              ViewerImageSetPosAndZoom();
             }
           });
         }
@@ -7527,7 +7733,7 @@
           break;
         case 'info':
           e.stopPropagation();
-          ItemDisplayInfo(G.VOM.Item(G.VOM.currItemIdx));
+          ItemDisplayInfo(G.VOM.NGY2Item(0));
           break;
         case 'close':
           StopPropagationPreventDefault(e);
@@ -7536,27 +7742,27 @@
           break;
         case 'download':
           StopPropagationPreventDefault(e);
-          DownloadImage(G.VOM.items[G.VOM.currItemIdx].imageIdx);
+          DownloadImage(G.VOM.items[G.VOM.currItemIdx].ngy2ItemIdx);
           break;
         case 'share':
           StopPropagationPreventDefault(e);
-          PopupShare(G.VOM.items[G.VOM.currItemIdx].imageIdx);
+          PopupShare(G.VOM.items[G.VOM.currItemIdx].ngy2ItemIdx);
           break;
         case 'custom':
           StopPropagationPreventDefault(e);
-          PopupShare(G.VOM.items[G.VOM.currItemIdx].imageIdx);
+          PopupShare(G.VOM.items[G.VOM.currItemIdx].ngy2ItemIdx);
           break;
         case 'linkOriginal':
           // $closeB.on( (G.isIOS ? "touchstart" : "click") ,function(e){     // IPAD
           StopPropagationPreventDefault(e);
-          OpenOriginal( G.VOM.Item(G.VOM.currItemIdx) );
+          OpenOriginal( G.VOM.NGY2Item(0) );
           if( G.O.kind == 'google' || G.O.kind == 'google2') {
-            var sU='https://plus.google.com/photos/'+G.O.userID+'/albums/'+G.VOM.Item(G.VOM.currItemIdx).albumID+'/'+G.VOM.Item(G.VOM.currItemIdx).GetID();
+            var sU='https://plus.google.com/photos/'+G.O.userID+'/albums/'+G.VOM.NGY2Item(0).albumID+'/'+G.VOM.NGY2Item(0).GetID();
             window.open(sU,'_blank');
           }
           
           if( G.O.kind == 'flickr') {
-            var sU='https://www.flickr.com/photos/'+G.O.userID+'/'+G.VOM.Item(G.VOM.currItemIdx).GetID();
+            var sU='https://www.flickr.com/photos/'+G.O.userID+'/'+G.VOM.NGY2Item(0).GetID();
             window.open(sU,'_blank');
           }
           break;
@@ -7565,20 +7771,17 @@
       // custom button
       if( ngy2action.indexOf('custom') == 0  && G.O.fnImgToolbarCustClick !== null ) {
         if( typeof G.O.fnImgToolbarCustClick == 'function' ) {
-          G.O.fnImgToolbarCustClick(ngy2action, $this, G.VOM.Item(G.VOM.currItemIdx));
+          G.O.fnImgToolbarCustClick(ngy2action, $this, G.VOM.NGY2Item(0));
         }
         else {
           // defined in markup
-          window[G.O.fnImgToolbarCustClick](ngy2action, $this, G.VOM.Item(G.VOM.currItemIdx));
+          window[G.O.fnImgToolbarCustClick](ngy2action, $this, G.VOM.NGY2Item(0));
         }
       }
     }
      
 
-
-    
     // Display photo infos
-    //function ViewerInfoSet() {
     function ItemDisplayInfo( item) {
 
       var content='<div class="nGY2PopupOneItemText">'+item.title+'</div>';
@@ -7590,21 +7793,11 @@
         content+='<div class="nGY2PopupOneItemText">'+G.O.icons.config+' '+item.exif.model+'</div>';
       }
       var sexif='';
-      if( item.exif.flash != '' ) {
-        sexif+= ' &nbsp; '+item.exif.flash;
-      }
-      if( item.exif.focallength != '' ) {
-        sexif+= ' &nbsp; '+item.exif.focallength+'mm';
-      }
-      if( item.exif.fstop != '' ) {
-        sexif+= ' &nbsp; f'+item.exif.fstop;
-      }
-      if( item.exif.exposure != '' ) {
-        sexif+= ' &nbsp; '+item.exif.exposure+'s';
-      }
-      if( item.exif.iso != '' ) {
-        sexif+= ' &nbsp; '+item.exif.iso+' ISO';
-      }
+      sexif += item.exif.flash == '' ? '' : ' &nbsp; '+item.exif.flash;
+      sexif += item.exif.focallength == '' ? '' : ' &nbsp; '+item.exif.focallength+'mm';
+      sexif += item.exif.fstop == '' ? '' : ' &nbsp; f'+item.exif.fstop;
+      sexif += item.exif.exposure == '' ? '' : ' &nbsp; '+item.exif.exposure+'s';
+      sexif += item.exif.iso == '' ? '' : ' &nbsp; '+item.exif.iso+' ISO';
       if( item.exif.time != '' ) {
         var date = new Date(parseInt(item.exif.time));
         sexif+= ' &nbsp; '+date.toLocaleDateString();
@@ -7700,72 +7893,10 @@
             r='<div class="ngbt ngy2viewerToolAction ngy2CustomBtn '+e+' nGEvent" data-ngy2action="'+e+'">' + t + '</div>';
           }
           break;
-        }
+      }
       return r;
     }
     
-    function ViewerZoomStart() {
-      if( G.O.viewerZoom && !G.VOM.viewerImageIsChanged ) {
-      var item=G.VOM.Item(G.VOM.currItemIdx);
-        if( item.imageHeight > 0 && item.imageWidth > 0 ) {
-          if( G.VOM.isZooming === false ) {
-            // default zoom
-            var h=G.VOM.$viewer.height()-G.VOM.padding.H;
-            G.VOM.currentZoom=h/item.imageHeight;
-            G.VOM.isZooming=true;
-          }
-          return true;
-        }
-      }
-    }
-          
-    function ViewerZoomIn( zoomIn ) {
-      if( zoomIn ) {
-        // zoom in
-        G.VOM.currentZoom+=0.1;
-        if( G.VOM.currentZoom > 2 ) {
-          G.VOM.currentZoom=2;
-        }
-      }
-      else {
-        // zoom out
-        G.VOM.currentZoom-=0.1;
-        if( G.VOM.currentZoom < 0.2 ) {
-          G.VOM.currentZoom=0.2;
-        }
-      }
-      ViewerZoomApply();
-    }
-
-
-    function ViewerZoomApply() {
-          
-      // var curZ=G.VOM.currentZoom;
-      var item=G.VOM.Item(G.VOM.currItemIdx);
-        // if( item.imageHeight > 0 && item.imageWidth > 0 ) {
-
-      var imageCurrentHeight=(item.imageHeight/window.devicePixelRatio) * G.VOM.currentZoom;
-      var imageCurrentWidth=(item.imageWidth/window.devicePixelRatio) * G.VOM.currentZoom;
-      G.VOM.$imgC.children().eq(0).css( {'height': imageCurrentHeight, 'max-height': 'none' });
-      G.VOM.$imgC.children().eq(0).css( {'width': imageCurrentWidth, 'max-width': 'none' });
-
-      // center image
-      var posX=0;
-      if( imageCurrentWidth > G.VOM.window.lastWidth ) {
-        posX=-(imageCurrentWidth-G.VOM.window.lastWidth)/2;
-      }
-      var h=G.VOM.$viewer.height()-G.VOM.padding.H;
-      var posY=0;
-      if( imageCurrentHeight > G.VOM.window.lastHeight ) {
-        posY=(imageCurrentHeight-G.VOM.window.lastHeight)/2;
-      }
-      posY=0;   // actually it seems that the image is always centered vertically -> so no need to to anything
-      G.VOM.zoomPosX=posX;
-      G.VOM.zoomPosY=posY;
-
-      ResizeInternalViewer(true);
-    }
-
     
     // toggle slideshow mode on/off
     function SlideshowToggle(){
@@ -7814,7 +7945,7 @@
       var vomIdx=G.VOM.currItemIdx;
       if( vomIdx == null ) { return; }
       
-      var item=G.VOM.Item(vomIdx);
+      var item=G.VOM.NGY2Item(0);
     
       // LABEL
       var setTxt=false;
@@ -7872,25 +8003,19 @@
         // G.VOM.$imgC.css({ left: posX }); 
       }
       else {
-        G.VOM.$imgC[0].style[G.CSStransformName]= 'translateX('+posX+'px)';
+        G.VOM.$imgC[0].style[G.CSStransformName]= 'translate('+posX+'px,0px)';
         if(  G.O.imageTransition == 'swipe' ) {
           if( posX > 0 ) {
-            var $new=G.VOM.$imgP;
-            // var dir=getViewport().w;
             var dir=G.VOM.$viewer.width();
-            // G.VOM.$imgP.css({visibility:'visible', left:0, opacity:1});
             G.VOM.$imgP.css({visibility:'visible', opacity:1});
-            G.VOM.$imgP[0].style[G.CSStransformName]= 'translateX('+(-dir+posX)+'px) '
-            G.VOM.$imgN[0].style[G.CSStransformName]= 'translateX('+(-dir)+'px) '
+            G.VOM.$imgP[0].style[G.CSStransformName]= 'translate('+(-dir+posX)+'px,0px) '
+            G.VOM.$imgN[0].style[G.CSStransformName]= 'translate('+(-dir)+'px,0px) '
           }
           else {
-            var $new=G.VOM.$imgN;
-            // var dir=-getViewport().w;
             var dir=-G.VOM.$viewer.width();
-            // G.VOM.$imgN.css({visibility:'visible', left:0, opacity:1});
             G.VOM.$imgN.css({visibility:'visible', opacity:1});
-            G.VOM.$imgN[0].style[G.CSStransformName]= 'translateX('+(-dir+posX)+'px) '
-            G.VOM.$imgP[0].style[G.CSStransformName]= 'translateX('+(-dir)+'px) '
+            G.VOM.$imgN[0].style[G.CSStransformName]= 'translate('+(-dir+posX)+'px,0px) '
+            G.VOM.$imgP[0].style[G.CSStransformName]= 'translate('+(-dir)+'px,0px) '
           }
         }
       }
@@ -7898,47 +8023,44 @@
     
     // Display next image
     function DisplayNextImage() {
-      if( G.VOM.viewerImageIsChanged ) { return; }
-      if( (new Date().getTime()) - G.VOM.timeImgChanged < 300 ) { return; }
+      if( G.VOM.viewerImageIsChanged || ((new Date().getTime()) - G.VOM.timeImgChanged < 300) ) { return; }
       
       TriggerCustomEvent('lightboxNextImage');
-      DisplayInternalViewer(G.VOM.IdxNext(G.VOM.currItemIdx), 'nextImage');
+      DisplayInternalViewer(G.VOM.IdxNext(), 'nextImage');
     };
     
     // Display previous image
     function DisplayPreviousImage() {
-      if( G.VOM.viewerImageIsChanged ) { return; }
-      if( (new Date().getTime()) - G.VOM.timeImgChanged < 300 ) { return; }
+      if( G.VOM.viewerImageIsChanged || ((new Date().getTime()) - G.VOM.timeImgChanged < 300) ) { return; }
       if( G.VOM.playSlideshow ) {
         SlideshowToggle();
       }
       
       TriggerCustomEvent('lightboxPreviousImage');
-      DisplayInternalViewer(G.VOM.IdxPrevious(G.VOM.currItemIdx), 'previousImage');
+      DisplayInternalViewer(G.VOM.IdxPrevious(), 'previousImage');
     };
     
     // Display image (and run animation)
-    function DisplayInternalViewer( vomIdx, displayType ) {
+    function DisplayInternalViewer( newVomIdx, displayType ) {
 
       G.VOM.$imgC.children().eq(0).unbind('.imagesLoaded');
       if( G.VOM.playSlideshow ) {
         window.clearTimeout(G.VOM.playSlideshowTimerID);
       }
       
-      var item=G.VOM.Item(G.VOM.currItemIdx);
-      var itemNew=G.VOM.Item(vomIdx);
+      var itemOld=G.VOM.NGY2Item(0);
+      var itemNew=G.I[G.VOM.items[newVomIdx].ngy2ItemIdx];
       var $new=(displayType == 'nextImage' ? G.VOM.$imgN : G.VOM.$imgP);
+      var $unused=(displayType == 'nextImage' ? G.VOM.$imgP : G.VOM.$imgN);
+      $unused[0].style.opacity=0;
 
       G.VOM.timeImgChanged=new Date().getTime();
       G.VOM.viewerImageIsChanged=true;
-      G.VOM.isZooming=false;
+      G.VOM.zoom.isZooming=false;
       ResizeInternalViewer(true);
  
-      var displayNext=true;
-      
       if( G.O.debugMode && console.timeline ) { console.timeline('nanogallery2_viewer'); }
 
-      G.VOM.currItemIdx=vomIdx;
       var vP=getViewport();
 
       SetLocationHash( itemNew.albumID, itemNew.GetID() );
@@ -7949,30 +8071,29 @@
         if( G.CSStransformName == null ) {
           // no CSS transform support -> no animation
           $new.css({ opacity: 1, visibility: 'visible'});
-          DisplayInternalViewerComplete(vomIdx,displayType);
+          DisplayInternalViewerComplete(displayType, newVomIdx);
         }
         else {
           $new.css({ opacity:0, visibility:'visible'});
           var tweenable = new NGTweenable();
           tweenable.tween({
-            from:         { scale: 0.8, opacity: 0 },
-            to:           { scale: 1,   opacity: 1 },
-            attachment:   { idx: vomIdx, dT: displayType, item: item },
+            from:         { opacity: 0 },
+            to:           { opacity: 1 },
+            attachment:   { dT: displayType, item: itemOld },
             easing:       'easeInOutSine',
+            delay:        30,
             duration:     400,
             step:         function (state, att) {
               // using scale is not a good idea on Chrome -> image will be blurred
-              // G.VOM.$content.css( G.CSStransformName, 'scale('+state.scale+')').css('opacity', state.opacity);
               G.VOM.$content.css('opacity', state.opacity);
               ViewerImageOpacityOn(G.VOM.$imgC, att.item);
 
             },
             finish:       function (state, att) {
-              // G.VOM.$content.css( G.CSStransformName, '').css('opacity', 1);
               G.VOM.$content.css('opacity', 1);
               ViewerImageOpacityOn(G.VOM.$imgC, att.item);
               ViewerToolsUnHide();
-              DisplayInternalViewerComplete(att.idx, att.dT);
+              DisplayInternalViewerComplete(att.dT, newVomIdx);
             }
           });
         }
@@ -7988,7 +8109,8 @@
               from:       { o: 0 },
               to:         { o: 1 },
               easing:     'easeInOutSine',
-              attachment: { idx:vomIdx, dT:displayType, $e:$new },
+              attachment: { dT:displayType, $e:$new },
+              delay:      30,
               duration:   300,
               step:       function (state, att) {
                 G.VOM.$imgC.css({ opacity: 1-state.o }); 
@@ -7997,7 +8119,7 @@
               finish:     function (state, att) {
                 G.VOM.$imgC.css({ opacity: 0 });
                 att.$e.css({ opacity: 1 });
-                DisplayInternalViewerComplete(att.idx, att.dT);
+                DisplayInternalViewerComplete(att.dT, newVomIdx);
               }
             });
             break;
@@ -8006,27 +8128,28 @@
             if( G.CSStransformName == null  ) {
               // no CSS transform support -> no animation
               $new.css({ opacity: 1, visibility: 'visible' });
-              G.VOM.$imgC.css({ opacity:1 });
-              DisplayInternalViewerComplete(vomIdx, displayType);
+              G.VOM.$imgC.css({ opacity: 1 });
+              DisplayInternalViewerComplete(displayType, newVomIdx);
             }
             else {
               var dir=(displayType == 'nextImage' ? - vP.w : vP.w);
               $new.css({ visibility:'visible'});
-              $new[0].style[G.CSStransformName]= 'translateX('+(-dir)+'px) '
+              $new[0].style[G.CSStransformName]= 'translate('+(-dir)+'px, 0px) '
               var tweenable = new NGTweenable();
               tweenable.tween({
                 from:         { t: G.VOM.swipePosX  },
                 to:           { t: (displayType == 'nextImage' ? - vP.w : vP.w) },
-                attachment:   { idx:vomIdx, dT:displayType, $e:$new, item: item, itemNew: itemNew, dir:dir },
+                attachment:   { dT:displayType, $e:$new, item: itemOld, itemNew: itemNew, dir:dir },
+                delay:        30,
                 duration:     300,
                 easing:       'easeInOutSine',
                 step:         function (state, att) {
                   // current image
                   ViewerImageOpacityOn(G.VOM.$imgC, att.item);
-                  G.VOM.$imgC[0].style[G.CSStransformName]= 'translateX('+state.t+'px)';
+                  G.VOM.$imgC[0].style[G.CSStransformName]= 'translate('+state.t+'px,0px)';
                   // new image
                   ViewerImageOpacityOn(att.$e, att.itemNew);
-                  att.$e[0].style[G.CSStransformName]= 'translateX('+(-att.dir+state.t)+'px) ';
+                  att.$e[0].style[G.CSStransformName]= 'translate('+(-att.dir+state.t)+'px, 0px) ';
                 },
                 finish:       function (state, att) {
                   // current image
@@ -8035,7 +8158,7 @@
                   // new image
                   ViewerImageOpacityOn(att.$e, att.itemNew);
                   att.$e[0].style[G.CSStransformName]= '';
-                  DisplayInternalViewerComplete(att.idx, att.dT);
+                  DisplayInternalViewerComplete(att.dT, newVomIdx);
                 }
               });
             }
@@ -8047,7 +8170,7 @@
               // no CSS transform support -> no animation
               $new.css({ opacity: 1, visibility: 'visible' });
               G.VOM.$imgC.css({ opacity:1 });
-              DisplayInternalViewerComplete(vomIdx, displayType);
+              DisplayInternalViewerComplete(displayType, newVomIdx);
             }
             else {
               var dir=(displayType == 'nextImage' ? - vP.w : vP.w);
@@ -8056,16 +8179,17 @@
               tweenable.tween({
                 from:         { o: 0, t: G.VOM.swipePosX },
                 to:           { o: 1, t: (displayType == 'nextImage' ? - vP.w : vP.w) },
-                attachment:   { idx:vomIdx, dT:displayType, $e:$new, item: item, itemNew: itemNew, dir: dir },
+                attachment:   { dT:displayType, $e:$new, item: itemOld, itemNew: itemNew, dir: dir },
+                delay:        30,
                 duration:     300,
                 easing:       'easeInOutSine',
                 step:         function (state, att) {
                   // current image - translate
                   ViewerImageOpacityOn(G.VOM.$imgC, att.item);
-                  G.VOM.$imgC[0].style[G.CSStransformName]= 'translateX('+state.t+'px)';
+                  G.VOM.$imgC[0].style[G.CSStransformName]= 'translate('+state.t+'px,0px)';
                   // new image - opacity
                   att.$e.css({ opacity: state.o });
-                  ViewerImageSetSize(att.$e, att.itemNew);
+//                  ViewerImageSetSize(att.$e, att.itemNew);
                 },
                 finish:       function (state, att) {
                   // current image
@@ -8073,7 +8197,7 @@
                   G.VOM.$imgC[0].style[G.CSStransformName]= '';
                   // new image
                   att.$e.css({ opacity: 1 });
-                  DisplayInternalViewerComplete(att.idx, att.dT);
+                  DisplayInternalViewerComplete(att.dT, newVomIdx);
                 }
               });
             }
@@ -8083,20 +8207,19 @@
     }
   
 
-    function DisplayInternalViewerComplete( vomIdx, displayType ) {
+    function DisplayInternalViewerComplete( displayType, newVomIdx ) {
+      G.VOM.currItemIdx=newVomIdx;
 
       ViewerToolbarElementContent();
       if( G.O.debugMode && console.timeline ) { console.timelineEnd('nanogallery2_viewer'); }
 
       if( G.O.fnImgDisplayed !== null ) {
         if( typeof G.O.fnImgDisplayed == 'function' ) {
-          // if( !G.O.fnImgDisplayed(G.VOM.Item(vomIdx)) ) { return; }
-          G.O.fnImgDisplayed(G.VOM.Item(vomIdx));
+          G.O.fnImgDisplayed(G.VOM.NGY2Item(0));
         }
         else {
           // defined in markup
-          //if( !window[G.O.fnImgDisplayed](G.VOM.Item(vomIdx)) ) { return; }
-          window[G.O.fnImgDisplayed](G.VOM.Item(vomIdx));
+          window[G.O.fnImgDisplayed](G.VOM.NGY2Item(0));
         }
       }
       
@@ -8117,25 +8240,26 @@
           break;
       }
       G.VOM.$imgC.addClass('imgCurrent');
-      G.VOM.$imgC.css({ opacity: 1 });
+      if( G.VOM.NGY2Item(0).imageWidth > 0 ) {
+        G.VOM.$imgC.css({ opacity: 1 });
+      }
+      else {
+        G.VOM.$imgC.css({ opacity: 0 });
+      }
       
       // new next image
-      // G.VOM.$imgN.css({ opacity:0, left:0, visibility:'hidden' }).attr('src','');
-      // G.VOM.$imgN.css({ opacity: 0 }).attr('src', '');
       G.VOM.$imgN.css({ opacity: 0 });
-      G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.ItemNext(vomIdx).responsiveURL(), G.VOM.ItemNext(vomIdx));
+      G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.NGY2Item(1));
       G.VOM.$imgN.children().eq(0).attr('src', '');
-      G.VOM.$imgN.children().eq(0).attr('src',G.emptyGif).attr('src', G.VOM.ItemNext(vomIdx).responsiveURL());
-      ViewerDisplayDominantColors(G.VOM.ItemNext(vomIdx), G.VOM.$imgN.children());
+      G.VOM.$imgN.children().eq(0).attr('src',G.emptyGif).attr('src', G.VOM.NGY2Item(1).responsiveURL());
+      ViewerDisplayDominantColors(G.VOM.NGY2Item(1), G.VOM.$imgN.children());
 
       // new previous image
-      // G.VOM.$imgP.css({ opacity:0, left:0, visibility:'hidden'}).attr('src', '');
-      // G.VOM.$imgP.css({ opacity: 0 }).attr('src', '');
       G.VOM.$imgP.css({ opacity: 0 });
       G.VOM.$imgP.children().eq(0).attr('src', '');
-      G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.ItemPrevious(vomIdx).responsiveURL(), G.VOM.ItemPrevious(vomIdx));
-      G.VOM.$imgP.children().eq(0).attr('src',G.emptyGif).attr('src',G.VOM.ItemPrevious(vomIdx).responsiveURL());
-      ViewerDisplayDominantColors(G.VOM.ItemPrevious(vomIdx), G.VOM.$imgP.children());
+      G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.NGY2Item(-1));
+      G.VOM.$imgP.children().eq(0).attr('src',G.emptyGif).attr('src',G.VOM.NGY2Item(-1).responsiveURL());
+      ViewerDisplayDominantColors(G.VOM.NGY2Item(-1), G.VOM.$imgP.children());
 
 
       // slideshow mode - wait until image is loaded to start the delay for next image
@@ -8153,7 +8277,7 @@
         e.stopPropagation();
         if( (new Date().getTime()) - G.VOM.timeImgChanged < 400 ) { return; }
         StopPropagationPreventDefault(e);
-        CloseInternalViewer(vomIdx);
+        CloseInternalViewer(G.VOM.currItemIdx);
         return false;
       });
 
@@ -8168,11 +8292,13 @@
     function ViewerImageOpacityOn( $img, item ) {
       if( $img[0].style.opacity == 0 && item.imageWidth != 0 ) {
         // display it when the size is knowed
-        ViewerImageSetSize($img, item);
+        // ViewerImageSetSize($img, item);
+        ViewerImageSetPosAndZoom();
         $img[0].style.opacity=1;
       }
     }
 
+    
     // Close the internal lightbox
     function CloseInternalViewer( vomIdx ) {
 
@@ -8205,11 +8331,11 @@
         if( vomIdx != null ) {
           if( G.GOM.albumIdx == -1 ) {
             // album not displayed --> display gallery
-            DisplayAlbum( '', G.VOM.Item(vomIdx).albumID );
+            DisplayAlbum( '', G.I[G.VOM.items[vomIdx].ngy2ItemIdx].albumID );
           }
           else {
             GalleryResize();        
-            SetLocationHash( G.VOM.Item(vomIdx).albumID, '' );
+            SetLocationHash( G.I[G.VOM.items[vomIdx].ngy2ItemIdx].albumID, '' );
             ThumbnailHoverReInitAll();
           }
         }
@@ -8217,9 +8343,13 @@
       }
     }
 
+    
     // Internal viewer resized -> reposition elements
     function ResizeInternalViewer( forceUpdate ) {
       forceUpdate = typeof forceUpdate !== 'undefined' ? forceUpdate : false;
+      
+      if( G.VOM.$toolbar === null ) { return; }   // viewer build not finished
+      
       
       // window.requestAnimationFrame( function() {    // synchronize with screen
       var windowsW=G.VOM.$viewer.width();
@@ -8262,51 +8392,35 @@
           break;
       }
 
-      if( !G.VOM.viewerImageIsChanged && G.VOM.isZooming ) {
-        ViewerImageSetPosition(G.VOM.panPosX, G.VOM.panPosY, false);
+      if( !G.VOM.viewerImageIsChanged && G.VOM.zoom.isZooming ) {
+        ViewerImageSetPosAndZoom();
       }
       else {
-        G.VOM.isZooming=false;
+        G.VOM.zoom.current=1;
+        G.VOM.zoom.isZooming=false;
         G.VOM.panPosX=0;
         G.VOM.panPosY=0;
-        G.VOM.zoomPosX=0;
-        G.VOM.zoomPosY=0;
+        G.VOM.zoom.posX=0;
+        G.VOM.zoom.posY=0;
         G.VOM.$imgC[0].style[G.CSStransformName]= 'translate3D(0,0,0) ';
-        
-        var maxW=windowsW-G.VOM.padding.H;
-        
-        var item=G.VOM.Item(G.VOM.currItemIdx);
-        ViewerImageSetSize(G.VOM.$imgC, item);
-        ViewerImageSetSize(G.VOM.$imgN, G.VOM.ItemNext(G.VOM.currItemIdx));
-        ViewerImageSetSize(G.VOM.$imgP, G.VOM.ItemPrevious(G.VOM.currItemIdx));
+        ViewerImageSetPosAndZoom();        
       }
     }
-    
-    function ViewerImageSetSize( $img, item) {
-      var maxW=G.VOM.window.lastWidth-G.VOM.padding.H;
-    
-      if( item.imageWidth > 0 &&  window.devicePixelRatio > 1 ) {
-        var w=item.imageWidth/window.devicePixelRatio;
-        if( maxW > w ) {
-          maxW=w;
-        }
-      }
 
-      $img.find('img').css({'max-width':(maxW), 'max-height':(G.VOM.window.lastHeight-G.VOM.padding.V), 'height':'auto', 'width':'auto' });
-    }
+
     
     // position the image depending on the zoom factor and the pan X/Y position
-    function ViewerImageSetPosition(posX, posY, savePosition ) {
+    function ViewerImagePanSetPosition(posX, posY, img, savePosition ) {
 
       if( savePosition ) {
         G.VOM.panPosX=posX;
         G.VOM.panPosY=posY;
       }
 
-      posX+=G.VOM.zoomPosX;
-      posY+=G.VOM.zoomPosY;
+      posX+=G.VOM.zoom.posX;
+      posY+=G.VOM.zoom.posY;
     
-      G.VOM.$imgC[0].style[G.CSStransformName]= 'translate3D('+ posX+'px, '+ posY+'px, 0) ';
+      img.style[G.CSStransformName]= 'translate3D('+ posX+'px, '+ posY+'px, 0) ';
     }
     
 
@@ -8470,14 +8584,14 @@
       
       G.GOM.hammertime.on('pan', function(ev) {
         if( G.O.paginationSwipe && G.layout.support.rows && G.galleryDisplayMode.Get() == 'PAGINATION' ) {
-          G.$E.conTn.css( G.CSStransformName , 'translateX('+(ev.deltaX)+'px)');
+          G.$E.conTn.css( G.CSStransformName , 'translate('+(ev.deltaX)+'px,0px)');
         }
       });
       G.GOM.hammertime.on('panend', function(ev) {
         if( G.O.paginationSwipe && G.layout.support.rows && G.galleryDisplayMode.Get() == 'PAGINATION' ) {
           if( Math.abs(ev.deltaY) > 100 ) {
             // user moved vertically -> cancel pagination
-            G.$E.conTn.css( G.CSStransformName , 'translateX(0px)');
+            G.$E.conTn.css( G.CSStransformName , 'translate(0px,0px)');
             return;
           }
           if( ev.deltaX > 50 ) {
@@ -8488,7 +8602,7 @@
             paginationNextPage();
             return;
           }
-          G.$E.conTn.css( G.CSStransformName , 'translateX(0px)');
+          G.$E.conTn.css( G.CSStransformName , 'translate(0px,0px)');
           // pX=0;
         }
       });
@@ -8604,7 +8718,7 @@
       
       // mouse mouse -> unhide lightbox toolbars
       jQuery(window).bind('mousemove', function(e){
-        if( G.galleryResizeEventEnabled ) {
+        if( G.VOM.viewerDisplayed ) {
           ViewerToolsUnHide();
         }
       });
@@ -8758,7 +8872,6 @@
       }
       
       G.scrollTimeOut = setTimeout(function () {
-      
         if( !G.VOM.viewerDisplayed ) {
           if( G.galleryResizeEventEnabled ) {
             GalleryResize();
@@ -8953,6 +9066,7 @@
 // replace "ImagesLoaded" with "ngImagesLoaded"
 // replace "EvEmitter" with "ngEvEmitter"
 // replace "var $ = window.jQuery" with "var $ = jQuery;"
+// 2x (global.ngEvEmitter and window.ngimagesLoaded = f...)ignore package manager and set browser global
 
 /*!
  * imagesLoaded PACKAGED v4.1.1
@@ -8971,16 +9085,16 @@
 ( function( global, factory ) {
   // universal module definition
   /* jshint strict: false */ /* globals define, module, window */
-  if ( typeof define == 'function' && define.amd ) {
+//  if ( typeof define == 'function' && define.amd ) {
     // AMD - RequireJS
-    define( 'ev-emitter/ev-emitter',factory );
-  } else if ( typeof module == 'object' && module.exports ) {
+//    define( 'ev-emitter/ev-emitter',factory );
+//  } else if ( typeof module == 'object' && module.exports ) {
     // CommonJS - Browserify, Webpack
-    module.exports = factory();
-  } else {
+//    module.exports = factory();
+//  } else {
     // Browser globals
     global.ngEvEmitter = factory();
-  }
+//  }
 
 }( typeof window != 'undefined' ? window : this, function() {
 
@@ -9081,26 +9195,26 @@ return ngEvEmitter;
 
   /*global define: false, module: false, require: false */
 
-  if ( typeof define == 'function' && define.amd ) {
+//  if ( typeof define == 'function' && define.amd ) {
     // AMD
-    define( [
-      'ev-emitter/ev-emitter'
-    ], function( ngEvEmitter ) {
-      return factory( window, ngEvEmitter );
-    });
-  } else if ( typeof module == 'object' && module.exports ) {
+//    define( [
+//      'ev-emitter/ev-emitter'
+//    ], function( ngEvEmitter ) {
+//      return factory( window, ngEvEmitter );
+//    });
+//  } else if ( typeof module == 'object' && module.exports ) {
     // CommonJS
-    module.exports = factory(
-      window,
-      require('ev-emitter')
-    );
-  } else {
+//    module.exports = factory(
+//      window,
+//      require('ev-emitter')
+//    );
+//  } else {
     // browser global
     window.ngimagesLoaded = factory(
       window,
       window.ngEvEmitter
     );
-  }
+  //}
 
 })( window,
 
@@ -9623,9 +9737,1657 @@ return ngImagesLoaded;
 // 
 // replace "Tweenable" with "NGTweenable"
 // replace "define.amd" with "define.amdDISABLED"
-/*! shifty - v1.5.0 - 2015-05-31 - http://jeremyckahn.github.io/shifty */
-(function(){var t=this,n=function(){"use strict";function n(){}function e(t,n){var e;for(e in t)Object.hasOwnProperty.call(t,e)&&n(e)}function i(t,n){return e(n,function(e){t[e]=n[e]}),t}function r(t,n){e(n,function(e){t[e]===void 0&&(t[e]=n[e])})}function o(t,n,e,i,r,o,u){var s,c,h,p=o>t?0:(t-o)/r;for(s in n)n.hasOwnProperty(s)&&(c=u[s],h="function"==typeof c?c:f[c],n[s]=a(e[s],i[s],h,p));return n}function a(t,n,e,i){return t+(n-t)*e(i)}function u(t,n){var i=h.prototype.filter,r=t._filterArgs;e(i,function(e){i[e][n]!==void 0&&i[e][n].apply(t,r)})}function s(t,n,e,i,r,a,s,c,h,f,p){g=n+e+i,y=Math.min(p||d(),g),v=y>=g,M=i-(g-y),t.isPlaying()&&!v?(t._scheduleId=f(t._timeoutHandler,m),u(t,"beforeTween"),n+e>y?o(1,r,a,s,1,1,c):o(y,r,a,s,i,n+e,c),u(t,"afterTween"),h(r,t._attachment,M)):t.isPlaying()&&v&&(h(s,t._attachment,M),t.stop(!0))}function c(t,n){var i={},r=typeof n;return"string"===r||"function"===r?e(t,function(t){i[t]=n}):e(t,function(t){i[t]||(i[t]=n[t]||l)}),i}function h(t,n){this._currentState=t||{},this._configured=!1,this._scheduleFunction=p,n!==void 0&&this.setConfig(n)}var f,p,l="linear",_=500,m=1e3/60,w=Date.now?Date.now:function(){return+new Date},d="undefined"!=typeof SHIFTY_DEBUG_NOW?SHIFTY_DEBUG_NOW:w;p="undefined"!=typeof window?window.requestAnimationFrame||window.webkitRequestAnimationFrame||window.oRequestAnimationFrame||window.msRequestAnimationFrame||window.mozCancelRequestAnimationFrame&&window.mozRequestAnimationFrame||setTimeout:setTimeout;var g,y,v,M;return h.prototype.tween=function(t){return this._isTweening?this:(void 0===t&&this._configured||this.setConfig(t),this._timestamp=d(),this._start(this.get(),this._attachment),this.resume())},h.prototype.setConfig=function(t){t=t||{},this._configured=!0,this._attachment=t.attachment,this._pausedAtTime=null,this._scheduleId=null,this._delay=t.delay||0,this._start=t.start||n,this._step=t.step||n,this._finish=t.finish||n,this._duration=t.duration||_,this._currentState=i({},t.from)||this.get(),this._originalState=this.get(),this._targetState=i({},t.to)||this.get();var e=this;this._timeoutHandler=function(){s(e,e._timestamp,e._delay,e._duration,e._currentState,e._originalState,e._targetState,e._easing,e._step,e._scheduleFunction)};var o=this._currentState,a=this._targetState;return r(a,o),this._easing=c(o,t.easing||l),this._filterArgs=[o,this._originalState,a,this._easing],u(this,"tweenCreated"),this},h.prototype.get=function(){return i({},this._currentState)},h.prototype.set=function(t){this._currentState=t},h.prototype.pause=function(){return this._pausedAtTime=d(),this._isPaused=!0,this},h.prototype.resume=function(){return this._isPaused&&(this._timestamp+=d()-this._pausedAtTime),this._isPaused=!1,this._isTweening=!0,this._timeoutHandler(),this},h.prototype.seek=function(t){t=Math.max(t,0);var n=d();return 0===this._timestamp+t?this:(this._timestamp=n-t,this.isPlaying()||(this._isTweening=!0,this._isPaused=!1,s(this,this._timestamp,this._delay,this._duration,this._currentState,this._originalState,this._targetState,this._easing,this._step,this._scheduleFunction,n),this.pause()),this)},h.prototype.stop=function(e){return this._isTweening=!1,this._isPaused=!1,this._timeoutHandler=n,(t.cancelAnimationFrame||t.webkitCancelAnimationFrame||t.oCancelAnimationFrame||t.msCancelAnimationFrame||t.mozCancelRequestAnimationFrame||t.clearTimeout)(this._scheduleId),e&&(u(this,"beforeTween"),o(1,this._currentState,this._originalState,this._targetState,1,0,this._easing),u(this,"afterTween"),u(this,"afterTweenEnd"),this._finish.call(this,this._currentState,this._attachment)),this},h.prototype.isPlaying=function(){return this._isTweening&&!this._isPaused},h.prototype.setScheduleFunction=function(t){this._scheduleFunction=t},h.prototype.dispose=function(){var t;for(t in this)this.hasOwnProperty(t)&&delete this[t]},h.prototype.filter={},h.prototype.formula={linear:function(t){return t}},f=h.prototype.formula,i(h,{now:d,each:e,tweenProps:o,tweenProp:a,applyFilter:u,shallowCopy:i,defaults:r,composeEasingObject:c}),"function"==typeof SHIFTY_DEBUG_NOW&&(t.timeoutHandler=s),"object"==typeof exports?module.exports=h:"function"==typeof define&&define.amdDISABLED?define(function(){return h}):t.NGTweenable===void 0&&(t.NGTweenable=h),h}();(function(){n.shallowCopy(n.prototype.formula,{easeInQuad:function(t){return Math.pow(t,2)},easeOutQuad:function(t){return-(Math.pow(t-1,2)-1)},easeInOutQuad:function(t){return 1>(t/=.5)?.5*Math.pow(t,2):-.5*((t-=2)*t-2)},easeInCubic:function(t){return Math.pow(t,3)},easeOutCubic:function(t){return Math.pow(t-1,3)+1},easeInOutCubic:function(t){return 1>(t/=.5)?.5*Math.pow(t,3):.5*(Math.pow(t-2,3)+2)},easeInQuart:function(t){return Math.pow(t,4)},easeOutQuart:function(t){return-(Math.pow(t-1,4)-1)},easeInOutQuart:function(t){return 1>(t/=.5)?.5*Math.pow(t,4):-.5*((t-=2)*Math.pow(t,3)-2)},easeInQuint:function(t){return Math.pow(t,5)},easeOutQuint:function(t){return Math.pow(t-1,5)+1},easeInOutQuint:function(t){return 1>(t/=.5)?.5*Math.pow(t,5):.5*(Math.pow(t-2,5)+2)},easeInSine:function(t){return-Math.cos(t*(Math.PI/2))+1},easeOutSine:function(t){return Math.sin(t*(Math.PI/2))},easeInOutSine:function(t){return-.5*(Math.cos(Math.PI*t)-1)},easeInExpo:function(t){return 0===t?0:Math.pow(2,10*(t-1))},easeOutExpo:function(t){return 1===t?1:-Math.pow(2,-10*t)+1},easeInOutExpo:function(t){return 0===t?0:1===t?1:1>(t/=.5)?.5*Math.pow(2,10*(t-1)):.5*(-Math.pow(2,-10*--t)+2)},easeInCirc:function(t){return-(Math.sqrt(1-t*t)-1)},easeOutCirc:function(t){return Math.sqrt(1-Math.pow(t-1,2))},easeInOutCirc:function(t){return 1>(t/=.5)?-.5*(Math.sqrt(1-t*t)-1):.5*(Math.sqrt(1-(t-=2)*t)+1)},easeOutBounce:function(t){return 1/2.75>t?7.5625*t*t:2/2.75>t?7.5625*(t-=1.5/2.75)*t+.75:2.5/2.75>t?7.5625*(t-=2.25/2.75)*t+.9375:7.5625*(t-=2.625/2.75)*t+.984375},easeInBack:function(t){var n=1.70158;return t*t*((n+1)*t-n)},easeOutBack:function(t){var n=1.70158;return(t-=1)*t*((n+1)*t+n)+1},easeInOutBack:function(t){var n=1.70158;return 1>(t/=.5)?.5*t*t*(((n*=1.525)+1)*t-n):.5*((t-=2)*t*(((n*=1.525)+1)*t+n)+2)},elastic:function(t){return-1*Math.pow(4,-8*t)*Math.sin((6*t-1)*2*Math.PI/2)+1},swingFromTo:function(t){var n=1.70158;return 1>(t/=.5)?.5*t*t*(((n*=1.525)+1)*t-n):.5*((t-=2)*t*(((n*=1.525)+1)*t+n)+2)},swingFrom:function(t){var n=1.70158;return t*t*((n+1)*t-n)},swingTo:function(t){var n=1.70158;return(t-=1)*t*((n+1)*t+n)+1},bounce:function(t){return 1/2.75>t?7.5625*t*t:2/2.75>t?7.5625*(t-=1.5/2.75)*t+.75:2.5/2.75>t?7.5625*(t-=2.25/2.75)*t+.9375:7.5625*(t-=2.625/2.75)*t+.984375},bouncePast:function(t){return 1/2.75>t?7.5625*t*t:2/2.75>t?2-(7.5625*(t-=1.5/2.75)*t+.75):2.5/2.75>t?2-(7.5625*(t-=2.25/2.75)*t+.9375):2-(7.5625*(t-=2.625/2.75)*t+.984375)},easeFromTo:function(t){return 1>(t/=.5)?.5*Math.pow(t,4):-.5*((t-=2)*Math.pow(t,3)-2)},easeFrom:function(t){return Math.pow(t,4)},easeTo:function(t){return Math.pow(t,.25)}})})(),function(){function t(t,n,e,i,r,o){function a(t){return((l*t+_)*t+m)*t}function u(t){return((w*t+d)*t+g)*t}function s(t){return(3*l*t+2*_)*t+m}function c(t){return 1/(200*t)}function h(t,n){return u(p(t,n))}function f(t){return t>=0?t:0-t}function p(t,n){var e,i,r,o,u,c;for(r=t,c=0;8>c;c++){if(o=a(r)-t,n>f(o))return r;if(u=s(r),1e-6>f(u))break;r-=o/u}if(e=0,i=1,r=t,e>r)return e;if(r>i)return i;for(;i>e;){if(o=a(r),n>f(o-t))return r;t>o?e=r:i=r,r=.5*(i-e)+e}return r}var l=0,_=0,m=0,w=0,d=0,g=0;return m=3*n,_=3*(i-n)-m,l=1-m-_,g=3*e,d=3*(r-e)-g,w=1-g-d,h(t,c(o))}function e(n,e,i,r){return function(o){return t(o,n,e,i,r,1)}}n.setBezierFunction=function(t,i,r,o,a){var u=e(i,r,o,a);return u.displayName=t,u.x1=i,u.y1=r,u.x2=o,u.y2=a,n.prototype.formula[t]=u},n.unsetBezierFunction=function(t){delete n.prototype.formula[t]}}(),function(){function t(t,e,i,r,o,a){return n.tweenProps(r,e,t,i,1,a,o)}var e=new n;e._filterArgs=[],n.interpolate=function(i,r,o,a,u){var s=n.shallowCopy({},i),c=u||0,h=n.composeEasingObject(i,a||"linear");e.set({});var f=e._filterArgs;f.length=0,f[0]=s,f[1]=i,f[2]=r,f[3]=h,n.applyFilter(e,"tweenCreated"),n.applyFilter(e,"beforeTween");var p=t(i,s,r,o,h,c);return n.applyFilter(e,"afterTween"),p}}(),function(t){function n(t,n){var e,i=[],r=t.length;for(e=0;r>e;e++)i.push("_"+n+"_"+e);return i}function e(t){var n=t.match(M);return n?(1===n.length||t[0].match(v))&&n.unshift(""):n=["",""],n.join(O)}function i(n){t.each(n,function(t){var e=n[t];"string"==typeof e&&e.match(S)&&(n[t]=r(e))})}function r(t){return s(S,t,o)}function o(t){var n=a(t);return"rgb("+n[0]+","+n[1]+","+n[2]+")"}function a(t){return t=t.replace(/#/,""),3===t.length&&(t=t.split(""),t=t[0]+t[0]+t[1]+t[1]+t[2]+t[2]),b[0]=u(t.substr(0,2)),b[1]=u(t.substr(2,2)),b[2]=u(t.substr(4,2)),b}function u(t){return parseInt(t,16)}function s(t,n,e){var i=n.match(t),r=n.replace(t,O);if(i)for(var o,a=i.length,u=0;a>u;u++)o=i.shift(),r=r.replace(O,e(o));return r}function c(t){return s(T,t,h)}function h(t){for(var n=t.match(F),e=n.length,i=t.match(I)[0],r=0;e>r;r++)i+=parseInt(n[r],10)+",";return i=i.slice(0,-1)+")"}function f(i){var r={};return t.each(i,function(t){var o=i[t];if("string"==typeof o){var a=d(o);r[t]={formatString:e(o),chunkNames:n(a,t)}}}),r}function p(n,e){t.each(e,function(t){for(var i=n[t],r=d(i),o=r.length,a=0;o>a;a++)n[e[t].chunkNames[a]]=+r[a];delete n[t]})}function l(n,e){t.each(e,function(t){var i=n[t],r=_(n,e[t].chunkNames),o=m(r,e[t].chunkNames);i=w(e[t].formatString,o),n[t]=c(i)})}function _(t,n){for(var e,i={},r=n.length,o=0;r>o;o++)e=n[o],i[e]=t[e],delete t[e];return i}function m(t,n){k.length=0;for(var e=n.length,i=0;e>i;i++)k.push(t[n[i]]);return k}function w(t,n){for(var e=t,i=n.length,r=0;i>r;r++)e=e.replace(O,+n[r].toFixed(4));return e}function d(t){return t.match(F)}function g(n,e){t.each(e,function(t){var i,r=e[t],o=r.chunkNames,a=o.length,u=n[t];if("string"==typeof u){var s=u.split(" "),c=s[s.length-1];for(i=0;a>i;i++)n[o[i]]=s[i]||c}else for(i=0;a>i;i++)n[o[i]]=u;delete n[t]})}function y(n,e){t.each(e,function(t){var i=e[t],r=i.chunkNames,o=r.length,a=n[r[0]],u=typeof a;if("string"===u){for(var s="",c=0;o>c;c++)s+=" "+n[r[c]],delete n[r[c]];n[t]=s.substr(1)}else n[t]=a})}var v=/(\d|\-|\.)/,M=/([^\-0-9\.]+)/g,F=/[0-9.\-]+/g,T=RegExp("rgb\\("+F.source+/,\s*/.source+F.source+/,\s*/.source+F.source+"\\)","g"),I=/^.*\(/,S=/#([0-9]|[a-f]){3,6}/gi,O="VAL",b=[],k=[];t.prototype.filter.token={tweenCreated:function(t,n,e){i(t),i(n),i(e),this._tokenData=f(t)},beforeTween:function(t,n,e,i){g(i,this._tokenData),p(t,this._tokenData),p(n,this._tokenData),p(e,this._tokenData)},afterTween:function(t,n,e,i){l(t,this._tokenData),l(n,this._tokenData),l(e,this._tokenData),y(i,this._tokenData)}}}(n)}).call(null);
+/* shifty - v1.5.3 - 2016-11-29 - http://jeremyckahn.github.io/shifty */
+;(function () {
+  var root = this || Function('return this')();
 
+/**
+ * Shifty Core
+ * By Jeremy Kahn - jeremyckahn@gmail.com
+ */
+
+var NGTweenable = (function () {
+
+  'use strict';
+
+  // Aliases that get defined later in this function
+  var formula;
+
+  // CONSTANTS
+  var DEFAULT_SCHEDULE_FUNCTION;
+  var DEFAULT_EASING = 'linear';
+  var DEFAULT_DURATION = 500;
+  var UPDATE_TIME = 1000 / 60;
+
+  var _now = Date.now
+       ? Date.now
+       : function () {return +new Date();};
+
+  var now = typeof SHIFTY_DEBUG_NOW !== 'undefined' ? SHIFTY_DEBUG_NOW : _now;
+
+  if (typeof window !== 'undefined') {
+    // requestAnimationFrame() shim by Paul Irish (modified for Shifty)
+    // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+    DEFAULT_SCHEDULE_FUNCTION = window.requestAnimationFrame
+       || window.webkitRequestAnimationFrame
+       || window.oRequestAnimationFrame
+       || window.msRequestAnimationFrame
+       || (window.mozCancelRequestAnimationFrame
+       && window.mozRequestAnimationFrame)
+       || setTimeout;
+  } else {
+    DEFAULT_SCHEDULE_FUNCTION = setTimeout;
+  }
+
+  function noop () {
+    // NOOP!
+  }
+
+  /**
+   * Handy shortcut for doing a for-in loop. This is not a "normal" each
+   * function, it is optimized for Shifty.  The iterator function only receives
+   * the property name, not the value.
+   * @param {Object} obj
+   * @param {Function(string)} fn
+   * @private
+   */
+  function each (obj, fn) {
+    var key;
+    for (key in obj) {
+      if (Object.hasOwnProperty.call(obj, key)) {
+        fn(key);
+      }
+    }
+  }
+
+  /**
+   * Perform a shallow copy of Object properties.
+   * @param {Object} targetObject The object to copy into
+   * @param {Object} srcObject The object to copy from
+   * @return {Object} A reference to the augmented `targetObj` Object
+   * @private
+   */
+  function shallowCopy (targetObj, srcObj) {
+    each(srcObj, function (prop) {
+      targetObj[prop] = srcObj[prop];
+    });
+
+    return targetObj;
+  }
+
+  /**
+   * Copies each property from src onto target, but only if the property to
+   * copy to target is undefined.
+   * @param {Object} target Missing properties in this Object are filled in
+   * @param {Object} src
+   * @private
+   */
+  function defaults (target, src) {
+    each(src, function (prop) {
+      if (typeof target[prop] === 'undefined') {
+        target[prop] = src[prop];
+      }
+    });
+  }
+
+  /**
+   * Calculates the interpolated tween values of an Object for a given
+   * timestamp.
+   * @param {Number} forPosition The position to compute the state for.
+   * @param {Object} currentState Current state properties.
+   * @param {Object} originalState: The original state properties the Object is
+   * tweening from.
+   * @param {Object} targetState: The destination state properties the Object
+   * is tweening to.
+   * @param {number} duration: The length of the tween in milliseconds.
+   * @param {number} timestamp: The UNIX epoch time at which the tween began.
+   * @param {Object} easing: This Object's keys must correspond to the keys in
+   * targetState.
+   * @private
+   */
+  function tweenProps (forPosition, currentState, originalState, targetState,
+    duration, timestamp, easing) {
+    var normalizedPosition =
+        forPosition < timestamp ? 0 : (forPosition - timestamp) / duration;
+
+
+    var prop;
+    var easingObjectProp;
+    var easingFn;
+    for (prop in currentState) {
+      if (currentState.hasOwnProperty(prop)) {
+        easingObjectProp = easing[prop];
+        easingFn = typeof easingObjectProp === 'function'
+          ? easingObjectProp
+          : formula[easingObjectProp];
+
+        currentState[prop] = tweenProp(
+          originalState[prop],
+          targetState[prop],
+          easingFn,
+          normalizedPosition
+        );
+      }
+    }
+
+    return currentState;
+  }
+
+  /**
+   * Tweens a single property.
+   * @param {number} start The value that the tween started from.
+   * @param {number} end The value that the tween should end at.
+   * @param {Function} easingFunc The easing curve to apply to the tween.
+   * @param {number} position The normalized position (between 0.0 and 1.0) to
+   * calculate the midpoint of 'start' and 'end' against.
+   * @return {number} The tweened value.
+   * @private
+   */
+  function tweenProp (start, end, easingFunc, position) {
+    return start + (end - start) * easingFunc(position);
+  }
+
+  /**
+   * Applies a filter to NGTweenable instance.
+   * @param {NGTweenable} tweenable The `NGTweenable` instance to call the filter
+   * upon.
+   * @param {String} filterName The name of the filter to apply.
+   * @private
+   */
+  function applyFilter (tweenable, filterName) {
+    var filters = NGTweenable.prototype.filter;
+    var args = tweenable._filterArgs;
+
+    each(filters, function (name) {
+      if (typeof filters[name][filterName] !== 'undefined') {
+        filters[name][filterName].apply(tweenable, args);
+      }
+    });
+  }
+
+  var timeoutHandler_endTime;
+  var timeoutHandler_currentTime;
+  var timeoutHandler_isEnded;
+  var timeoutHandler_offset;
+  /**
+   * Handles the update logic for one step of a tween.
+   * @param {NGTweenable} tweenable
+   * @param {number} timestamp
+   * @param {number} delay
+   * @param {number} duration
+   * @param {Object} currentState
+   * @param {Object} originalState
+   * @param {Object} targetState
+   * @param {Object} easing
+   * @param {Function(Object, *, number)} step
+   * @param {Function(Function,number)}} schedule
+   * @param {number=} opt_currentTimeOverride Needed for accurate timestamp in
+   * NGTweenable#seek.
+   * @private
+   */
+  function timeoutHandler (tweenable, timestamp, delay, duration, currentState,
+    originalState, targetState, easing, step, schedule,
+    opt_currentTimeOverride) {
+
+    timeoutHandler_endTime = timestamp + delay + duration;
+
+    timeoutHandler_currentTime =
+    Math.min(opt_currentTimeOverride || now(), timeoutHandler_endTime);
+
+    timeoutHandler_isEnded =
+      timeoutHandler_currentTime >= timeoutHandler_endTime;
+
+    timeoutHandler_offset = duration - (
+      timeoutHandler_endTime - timeoutHandler_currentTime);
+
+    if (tweenable.isPlaying()) {
+      if (timeoutHandler_isEnded) {
+        step(targetState, tweenable._attachment, timeoutHandler_offset);
+        tweenable.stop(true);
+      } else {
+        tweenable._scheduleId =
+          schedule(tweenable._timeoutHandler, UPDATE_TIME);
+
+        applyFilter(tweenable, 'beforeTween');
+
+        // If the animation has not yet reached the start point (e.g., there was
+        // delay that has not yet completed), just interpolate the starting
+        // position of the tween.
+        if (timeoutHandler_currentTime < (timestamp + delay)) {
+          tweenProps(1, currentState, originalState, targetState, 1, 1, easing);
+        } else {
+          tweenProps(timeoutHandler_currentTime, currentState, originalState,
+            targetState, duration, timestamp + delay, easing);
+        }
+
+        applyFilter(tweenable, 'afterTween');
+
+        step(currentState, tweenable._attachment, timeoutHandler_offset);
+      }
+    }
+  }
+
+
+  /**
+   * Creates a usable easing Object from a string, a function or another easing
+   * Object.  If `easing` is an Object, then this function clones it and fills
+   * in the missing properties with `"linear"`.
+   * @param {Object.<string|Function>} fromTweenParams
+   * @param {Object|string|Function} easing
+   * @return {Object.<string|Function>}
+   * @private
+   */
+  function composeEasingObject (fromTweenParams, easing) {
+    var composedEasing = {};
+    var typeofEasing = typeof easing;
+
+    if (typeofEasing === 'string' || typeofEasing === 'function') {
+      each(fromTweenParams, function (prop) {
+        composedEasing[prop] = easing;
+      });
+    } else {
+      each(fromTweenParams, function (prop) {
+        if (!composedEasing[prop]) {
+          composedEasing[prop] = easing[prop] || DEFAULT_EASING;
+        }
+      });
+    }
+
+    return composedEasing;
+  }
+
+  /**
+   * NGTweenable constructor.
+   * @class NGTweenable
+   * @param {Object=} opt_initialState The values that the initial tween should
+   * start at if a `from` object is not provided to `{{#crossLink
+   * "NGTweenable/tween:method"}}{{/crossLink}}` or `{{#crossLink
+   * "NGTweenable/setConfig:method"}}{{/crossLink}}`.
+   * @param {Object=} opt_config Configuration object to be passed to
+   * `{{#crossLink "NGTweenable/setConfig:method"}}{{/crossLink}}`.
+   * @module NGTweenable
+   * @constructor
+   */
+  function NGTweenable (opt_initialState, opt_config) {
+    this._currentState = opt_initialState || {};
+    this._configured = false;
+    this._scheduleFunction = DEFAULT_SCHEDULE_FUNCTION;
+
+    // To prevent unnecessary calls to setConfig do not set default
+    // configuration here.  Only set default configuration immediately before
+    // tweening if none has been set.
+    if (typeof opt_config !== 'undefined') {
+      this.setConfig(opt_config);
+    }
+  }
+
+  /**
+   * Configure and start a tween.
+   * @method tween
+   * @param {Object=} opt_config Configuration object to be passed to
+   * `{{#crossLink "NGTweenable/setConfig:method"}}{{/crossLink}}`.
+   * @chainable
+   */
+  NGTweenable.prototype.tween = function (opt_config) {
+    if (this._isTweening) {
+      return this;
+    }
+
+    // Only set default config if no configuration has been set previously and
+    // none is provided now.
+    if (opt_config !== undefined || !this._configured) {
+      this.setConfig(opt_config);
+    }
+
+    this._timestamp = now();
+    this._start(this.get(), this._attachment);
+    return this.resume();
+  };
+
+  /**
+   * Configure a tween that will start at some point in the future.
+   *
+   * @method setConfig
+   * @param {Object} config The following values are valid:
+   * - __from__ (_Object=_): Starting position.  If omitted, `{{#crossLink
+   *   "NGTweenable/get:method"}}get(){{/crossLink}}` is used.
+   * - __to__ (_Object=_): Ending position.
+   * - __duration__ (_number=_): How many milliseconds to animate for.
+   * - __delay__ (_delay=_): How many milliseconds to wait before starting the
+   *   tween.
+   * - __start__ (_Function(Object, *)_): Function to execute when the tween
+   *   begins.  Receives the state of the tween as the first parameter and
+   *   `attachment` as the second parameter.
+   * - __step__ (_Function(Object, *, number)_): Function to execute on every
+   *   tick.  Receives `{{#crossLink
+   *   "NGTweenable/get:method"}}get(){{/crossLink}}` as the first parameter,
+   *   `attachment` as the second parameter, and the time elapsed since the
+   *   start of the tween as the third. This function is not called on the
+   *   final step of the animation, but `finish` is.
+   * - __finish__ (_Function(Object, *)_): Function to execute upon tween
+   *   completion.  Receives the state of the tween as the first parameter and
+   *   `attachment` as the second parameter.
+   * - __easing__ (_Object.<string|Function>|string|Function=_): Easing curve
+   *   name(s) or function(s) to use for the tween.
+   * - __attachment__ (_*_): Cached value that is passed to the
+   *   `step`/`start`/`finish` methods.
+   * @chainable
+   */
+  NGTweenable.prototype.setConfig = function (config) {
+    config = config || {};
+    this._configured = true;
+
+    // Attach something to this NGTweenable instance (e.g.: a DOM element, an
+    // object, a string, etc.);
+    this._attachment = config.attachment;
+
+    // Init the internal state
+    this._pausedAtTime = null;
+    this._scheduleId = null;
+    this._delay = config.delay || 0;
+    this._start = config.start || noop;
+    this._step = config.step || noop;
+    this._finish = config.finish || noop;
+    this._duration = config.duration || DEFAULT_DURATION;
+    this._currentState = shallowCopy({}, config.from || this.get());
+    this._originalState = this.get();
+    this._targetState = shallowCopy({}, config.to || this.get());
+
+    var self = this;
+    this._timeoutHandler = function () {
+      timeoutHandler(self,
+        self._timestamp,
+        self._delay,
+        self._duration,
+        self._currentState,
+        self._originalState,
+        self._targetState,
+        self._easing,
+        self._step,
+        self._scheduleFunction
+      );
+    };
+
+    // Aliases used below
+    var currentState = this._currentState;
+    var targetState = this._targetState;
+
+    // Ensure that there is always something to tween to.
+    defaults(targetState, currentState);
+
+    this._easing = composeEasingObject(
+      currentState, config.easing || DEFAULT_EASING);
+
+    this._filterArgs =
+      [currentState, this._originalState, targetState, this._easing];
+
+    applyFilter(this, 'tweenCreated');
+    return this;
+  };
+
+  /**
+   * @method get
+   * @return {Object} The current state.
+   */
+  NGTweenable.prototype.get = function () {
+    return shallowCopy({}, this._currentState);
+  };
+
+  /**
+   * @method set
+   * @param {Object} state The current state.
+   */
+  NGTweenable.prototype.set = function (state) {
+    this._currentState = state;
+  };
+
+  /**
+   * Pause a tween.  Paused tweens can be resumed from the point at which they
+   * were paused.  This is different from `{{#crossLink
+   * "NGTweenable/stop:method"}}{{/crossLink}}`, as that method
+   * causes a tween to start over when it is resumed.
+   * @method pause
+   * @chainable
+   */
+  NGTweenable.prototype.pause = function () {
+    this._pausedAtTime = now();
+    this._isPaused = true;
+    return this;
+  };
+
+  /**
+   * Resume a paused tween.
+   * @method resume
+   * @chainable
+   */
+  NGTweenable.prototype.resume = function () {
+    if (this._isPaused) {
+      this._timestamp += now() - this._pausedAtTime;
+    }
+
+    this._isPaused = false;
+    this._isTweening = true;
+
+    this._timeoutHandler();
+
+    return this;
+  };
+
+  /**
+   * Move the state of the animation to a specific point in the tween's
+   * timeline.  If the animation is not running, this will cause the `step`
+   * handlers to be called.
+   * @method seek
+   * @param {millisecond} millisecond The millisecond of the animation to seek
+   * to.  This must not be less than `0`.
+   * @chainable
+   */
+  NGTweenable.prototype.seek = function (millisecond) {
+    millisecond = Math.max(millisecond, 0);
+    var currentTime = now();
+
+    if ((this._timestamp + millisecond) === 0) {
+      return this;
+    }
+
+    this._timestamp = currentTime - millisecond;
+
+    if (!this.isPlaying()) {
+      this._isTweening = true;
+      this._isPaused = false;
+
+      // If the animation is not running, call timeoutHandler to make sure that
+      // any step handlers are run.
+      timeoutHandler(this,
+        this._timestamp,
+        this._delay,
+        this._duration,
+        this._currentState,
+        this._originalState,
+        this._targetState,
+        this._easing,
+        this._step,
+        this._scheduleFunction,
+        currentTime
+      );
+
+      this.pause();
+    }
+
+    return this;
+  };
+
+  /**
+   * Stops and cancels a tween.
+   * @param {boolean=} gotoEnd If `false` or omitted, the tween just stops at
+   * its current state, and the `finish` handler is not invoked.  If `true`,
+   * the tweened object's values are instantly set to the target values, and
+   * `finish` is invoked.
+   * @method stop
+   * @chainable
+   */
+  NGTweenable.prototype.stop = function (gotoEnd) {
+    this._isTweening = false;
+    this._isPaused = false;
+    this._timeoutHandler = noop;
+
+    (root.cancelAnimationFrame            ||
+    root.webkitCancelAnimationFrame     ||
+    root.oCancelAnimationFrame          ||
+    root.msCancelAnimationFrame         ||
+    root.mozCancelRequestAnimationFrame ||
+    root.clearTimeout)(this._scheduleId);
+
+    if (gotoEnd) {
+      applyFilter(this, 'beforeTween');
+      tweenProps(
+        1,
+        this._currentState,
+        this._originalState,
+        this._targetState,
+        1,
+        0,
+        this._easing
+      );
+      applyFilter(this, 'afterTween');
+      applyFilter(this, 'afterTweenEnd');
+      this._finish.call(this, this._currentState, this._attachment);
+    }
+
+    return this;
+  };
+
+  /**
+   * @method isPlaying
+   * @return {boolean} Whether or not a tween is running.
+   */
+  NGTweenable.prototype.isPlaying = function () {
+    return this._isTweening && !this._isPaused;
+  };
+
+  /**
+   * Set a custom schedule function.
+   *
+   * If a custom function is not set,
+   * [`requestAnimationFrame`](https://developer.mozilla.org/en-US/docs/Web/API/window.requestAnimationFrame)
+   * is used if available, otherwise
+   * [`setTimeout`](https://developer.mozilla.org/en-US/docs/Web/API/Window.setTimeout)
+   * is used.
+   * @method setScheduleFunction
+   * @param {Function(Function,number)} scheduleFunction The function to be
+   * used to schedule the next frame to be rendered.
+   */
+  NGTweenable.prototype.setScheduleFunction = function (scheduleFunction) {
+    this._scheduleFunction = scheduleFunction;
+  };
+
+  /**
+   * `delete` all "own" properties.  Call this when the `NGTweenable` instance
+   * is no longer needed to free memory.
+   * @method dispose
+   */
+  NGTweenable.prototype.dispose = function () {
+    var prop;
+    for (prop in this) {
+      if (this.hasOwnProperty(prop)) {
+        delete this[prop];
+      }
+    }
+  };
+
+  /**
+   * Filters are used for transforming the properties of a tween at various
+   * points in a NGTweenable's life cycle.  See the README for more info on this.
+   * @private
+   */
+  NGTweenable.prototype.filter = {};
+
+  /**
+   * This object contains all of the tweens available to Shifty.  It is
+   * extensible - simply attach properties to the `NGTweenable.prototype.formula`
+   * Object following the same format as `linear`.
+   *
+   * `pos` should be a normalized `number` (between 0 and 1).
+   * @property formula
+   * @type {Object(function)}
+   */
+  NGTweenable.prototype.formula = {
+    linear: function (pos) {
+      return pos;
+    }
+  };
+
+  formula = NGTweenable.prototype.formula;
+
+  shallowCopy(NGTweenable, {
+    'now': now
+    ,'each': each
+    ,'tweenProps': tweenProps
+    ,'tweenProp': tweenProp
+    ,'applyFilter': applyFilter
+    ,'shallowCopy': shallowCopy
+    ,'defaults': defaults
+    ,'composeEasingObject': composeEasingObject
+  });
+
+  // `root` is provided in the intro/outro files.
+
+  // A hook used for unit testing.
+  if (typeof SHIFTY_DEBUG_NOW === 'function') {
+    root.timeoutHandler = timeoutHandler;
+  }
+
+  // Bootstrap NGTweenable appropriately for the environment.
+  if (typeof exports === 'object') {
+    // CommonJS
+    module.exports = NGTweenable;
+  } else if (typeof define === 'function' && define.amdDISABLED) {
+    // AMD
+    define(function () {return NGTweenable;});
+  } else if (typeof root.NGTweenable === 'undefined') {
+    // Browser: Make `NGTweenable` globally accessible.
+    root.NGTweenable = NGTweenable;
+  }
+
+  return NGTweenable;
+
+} ());
+
+/*!
+ * All equations are adapted from Thomas Fuchs'
+ * [Scripty2](https://github.com/madrobby/scripty2/blob/master/src/effects/transitions/penner.js).
+ *
+ * Based on Easing Equations (c) 2003 [Robert
+ * Penner](http://www.robertpenner.com/), all rights reserved. This work is
+ * [subject to terms](http://www.robertpenner.com/easing_terms_of_use.html).
+ */
+
+/*!
+ *  TERMS OF USE - EASING EQUATIONS
+ *  Open source under the BSD License.
+ *  Easing Equations (c) 2003 Robert Penner, all rights reserved.
+ */
+
+;(function () {
+
+  NGTweenable.shallowCopy(NGTweenable.prototype.formula, {
+    easeInQuad: function (pos) {
+      return Math.pow(pos, 2);
+    },
+
+    easeOutQuad: function (pos) {
+      return -(Math.pow((pos - 1), 2) - 1);
+    },
+
+    easeInOutQuad: function (pos) {
+      if ((pos /= 0.5) < 1) {return 0.5 * Math.pow(pos,2);}
+      return -0.5 * ((pos -= 2) * pos - 2);
+    },
+
+    easeInCubic: function (pos) {
+      return Math.pow(pos, 3);
+    },
+
+    easeOutCubic: function (pos) {
+      return (Math.pow((pos - 1), 3) + 1);
+    },
+
+    easeInOutCubic: function (pos) {
+      if ((pos /= 0.5) < 1) {return 0.5 * Math.pow(pos,3);}
+      return 0.5 * (Math.pow((pos - 2),3) + 2);
+    },
+
+    easeInQuart: function (pos) {
+      return Math.pow(pos, 4);
+    },
+
+    easeOutQuart: function (pos) {
+      return -(Math.pow((pos - 1), 4) - 1);
+    },
+
+    easeInOutQuart: function (pos) {
+      if ((pos /= 0.5) < 1) {return 0.5 * Math.pow(pos,4);}
+      return -0.5 * ((pos -= 2) * Math.pow(pos,3) - 2);
+    },
+
+    easeInQuint: function (pos) {
+      return Math.pow(pos, 5);
+    },
+
+    easeOutQuint: function (pos) {
+      return (Math.pow((pos - 1), 5) + 1);
+    },
+
+    easeInOutQuint: function (pos) {
+      if ((pos /= 0.5) < 1) {return 0.5 * Math.pow(pos,5);}
+      return 0.5 * (Math.pow((pos - 2),5) + 2);
+    },
+
+    easeInSine: function (pos) {
+      return -Math.cos(pos * (Math.PI / 2)) + 1;
+    },
+
+    easeOutSine: function (pos) {
+      return Math.sin(pos * (Math.PI / 2));
+    },
+
+    easeInOutSine: function (pos) {
+      return (-0.5 * (Math.cos(Math.PI * pos) - 1));
+    },
+
+    easeInExpo: function (pos) {
+      return (pos === 0) ? 0 : Math.pow(2, 10 * (pos - 1));
+    },
+
+    easeOutExpo: function (pos) {
+      return (pos === 1) ? 1 : -Math.pow(2, -10 * pos) + 1;
+    },
+
+    easeInOutExpo: function (pos) {
+      if (pos === 0) {return 0;}
+      if (pos === 1) {return 1;}
+      if ((pos /= 0.5) < 1) {return 0.5 * Math.pow(2,10 * (pos - 1));}
+      return 0.5 * (-Math.pow(2, -10 * --pos) + 2);
+    },
+
+    easeInCirc: function (pos) {
+      return -(Math.sqrt(1 - (pos * pos)) - 1);
+    },
+
+    easeOutCirc: function (pos) {
+      return Math.sqrt(1 - Math.pow((pos - 1), 2));
+    },
+
+    easeInOutCirc: function (pos) {
+      if ((pos /= 0.5) < 1) {return -0.5 * (Math.sqrt(1 - pos * pos) - 1);}
+      return 0.5 * (Math.sqrt(1 - (pos -= 2) * pos) + 1);
+    },
+
+    easeOutBounce: function (pos) {
+      if ((pos) < (1 / 2.75)) {
+        return (7.5625 * pos * pos);
+      } else if (pos < (2 / 2.75)) {
+        return (7.5625 * (pos -= (1.5 / 2.75)) * pos + 0.75);
+      } else if (pos < (2.5 / 2.75)) {
+        return (7.5625 * (pos -= (2.25 / 2.75)) * pos + 0.9375);
+      } else {
+        return (7.5625 * (pos -= (2.625 / 2.75)) * pos + 0.984375);
+      }
+    },
+
+    easeInBack: function (pos) {
+      var s = 1.70158;
+      return (pos) * pos * ((s + 1) * pos - s);
+    },
+
+    easeOutBack: function (pos) {
+      var s = 1.70158;
+      return (pos = pos - 1) * pos * ((s + 1) * pos + s) + 1;
+    },
+
+    easeInOutBack: function (pos) {
+      var s = 1.70158;
+      if ((pos /= 0.5) < 1) {
+        return 0.5 * (pos * pos * (((s *= (1.525)) + 1) * pos - s));
+      }
+      return 0.5 * ((pos -= 2) * pos * (((s *= (1.525)) + 1) * pos + s) + 2);
+    },
+
+    elastic: function (pos) {
+      // jshint maxlen:90
+      return -1 * Math.pow(4,-8 * pos) * Math.sin((pos * 6 - 1) * (2 * Math.PI) / 2) + 1;
+    },
+
+    swingFromTo: function (pos) {
+      var s = 1.70158;
+      return ((pos /= 0.5) < 1) ?
+          0.5 * (pos * pos * (((s *= (1.525)) + 1) * pos - s)) :
+          0.5 * ((pos -= 2) * pos * (((s *= (1.525)) + 1) * pos + s) + 2);
+    },
+
+    swingFrom: function (pos) {
+      var s = 1.70158;
+      return pos * pos * ((s + 1) * pos - s);
+    },
+
+    swingTo: function (pos) {
+      var s = 1.70158;
+      return (pos -= 1) * pos * ((s + 1) * pos + s) + 1;
+    },
+
+    bounce: function (pos) {
+      if (pos < (1 / 2.75)) {
+        return (7.5625 * pos * pos);
+      } else if (pos < (2 / 2.75)) {
+        return (7.5625 * (pos -= (1.5 / 2.75)) * pos + 0.75);
+      } else if (pos < (2.5 / 2.75)) {
+        return (7.5625 * (pos -= (2.25 / 2.75)) * pos + 0.9375);
+      } else {
+        return (7.5625 * (pos -= (2.625 / 2.75)) * pos + 0.984375);
+      }
+    },
+
+    bouncePast: function (pos) {
+      if (pos < (1 / 2.75)) {
+        return (7.5625 * pos * pos);
+      } else if (pos < (2 / 2.75)) {
+        return 2 - (7.5625 * (pos -= (1.5 / 2.75)) * pos + 0.75);
+      } else if (pos < (2.5 / 2.75)) {
+        return 2 - (7.5625 * (pos -= (2.25 / 2.75)) * pos + 0.9375);
+      } else {
+        return 2 - (7.5625 * (pos -= (2.625 / 2.75)) * pos + 0.984375);
+      }
+    },
+
+    easeFromTo: function (pos) {
+      if ((pos /= 0.5) < 1) {return 0.5 * Math.pow(pos,4);}
+      return -0.5 * ((pos -= 2) * Math.pow(pos,3) - 2);
+    },
+
+    easeFrom: function (pos) {
+      return Math.pow(pos,4);
+    },
+
+    easeTo: function (pos) {
+      return Math.pow(pos,0.25);
+    }
+  });
+
+}());
+
+// jshint maxlen:100
+/**
+ * The Bezier magic in this file is adapted/copied almost wholesale from
+ * [Scripty2](https://github.com/madrobby/scripty2/blob/master/src/effects/transitions/cubic-bezier.js),
+ * which was adapted from Apple code (which probably came from
+ * [here](http://opensource.apple.com/source/WebCore/WebCore-955.66/platform/graphics/UnitBezier.h)).
+ * Special thanks to Apple and Thomas Fuchs for much of this code.
+ */
+
+/**
+ *  Copyright (c) 2006 Apple Computer, Inc. All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are met:
+ *
+ *  1. Redistributions of source code must retain the above copyright notice,
+ *  this list of conditions and the following disclaimer.
+ *
+ *  2. Redistributions in binary form must reproduce the above copyright notice,
+ *  this list of conditions and the following disclaimer in the documentation
+ *  and/or other materials provided with the distribution.
+ *
+ *  3. Neither the name of the copyright holder(s) nor the names of any
+ *  contributors may be used to endorse or promote products derived from
+ *  this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ *  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ *  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ *  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ *  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ *  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ *  POSSIBILITY OF SUCH DAMAGE.
+ */
+;(function () {
+  // port of webkit cubic bezier handling by http://www.netzgesta.de/dev/
+  function cubicBezierAtTime(t,p1x,p1y,p2x,p2y,duration) {
+    var ax = 0,bx = 0,cx = 0,ay = 0,by = 0,cy = 0;
+    function sampleCurveX(t) {
+      return ((ax * t + bx) * t + cx) * t;
+    }
+    function sampleCurveY(t) {
+      return ((ay * t + by) * t + cy) * t;
+    }
+    function sampleCurveDerivativeX(t) {
+      return (3.0 * ax * t + 2.0 * bx) * t + cx;
+    }
+    function solveEpsilon(duration) {
+      return 1.0 / (200.0 * duration);
+    }
+    function solve(x,epsilon) {
+      return sampleCurveY(solveCurveX(x, epsilon));
+    }
+    function fabs(n) {
+      if (n >= 0) {
+        return n;
+      } else {
+        return 0 - n;
+      }
+    }
+    function solveCurveX(x, epsilon) {
+      var t0,t1,t2,x2,d2,i;
+      for (t2 = x, i = 0; i < 8; i++) {
+        x2 = sampleCurveX(t2) - x;
+        if (fabs(x2) < epsilon) {
+          return t2;
+        }
+        d2 = sampleCurveDerivativeX(t2);
+        if (fabs(d2) < 1e-6) {
+          break;
+        }
+        t2 = t2 - x2 / d2;
+      }
+      t0 = 0.0;
+      t1 = 1.0;
+      t2 = x;
+      if (t2 < t0) {
+        return t0;
+      }
+      if (t2 > t1) {
+        return t1;
+      }
+      while (t0 < t1) {
+        x2 = sampleCurveX(t2);
+        if (fabs(x2 - x) < epsilon) {
+          return t2;
+        }
+        if (x > x2) {
+          t0 = t2;
+        }else {
+          t1 = t2;
+        }
+        t2 = (t1 - t0) * 0.5 + t0;
+      }
+      return t2; // Failure.
+    }
+    cx = 3.0 * p1x;
+    bx = 3.0 * (p2x - p1x) - cx;
+    ax = 1.0 - cx - bx;
+    cy = 3.0 * p1y;
+    by = 3.0 * (p2y - p1y) - cy;
+    ay = 1.0 - cy - by;
+    return solve(t, solveEpsilon(duration));
+  }
+  /**
+   *  getCubicBezierTransition(x1, y1, x2, y2) -> Function
+   *
+   *  Generates a transition easing function that is compatible
+   *  with WebKit's CSS transitions `-webkit-transition-timing-function`
+   *  CSS property.
+   *
+   *  The W3C has more information about CSS3 transition timing functions:
+   *  http://www.w3.org/TR/css3-transitions/#transition-timing-function_tag
+   *
+   *  @param {number} x1
+   *  @param {number} y1
+   *  @param {number} x2
+   *  @param {number} y2
+   *  @return {function}
+   *  @private
+   */
+  function getCubicBezierTransition (x1, y1, x2, y2) {
+    return function (pos) {
+      return cubicBezierAtTime(pos,x1,y1,x2,y2,1);
+    };
+  }
+  // End ported code
+
+  /**
+   * Create a Bezier easing function and attach it to `{{#crossLink
+   * "NGTweenable/formula:property"}}NGTweenable#formula{{/crossLink}}`.  This
+   * function gives you total control over the easing curve.  Matthew Lein's
+   * [Ceaser](http://matthewlein.com/ceaser/) is a useful tool for visualizing
+   * the curves you can make with this function.
+   * @method setBezierFunction
+   * @param {string} name The name of the easing curve.  Overwrites the old
+   * easing function on `{{#crossLink
+   * "NGTweenable/formula:property"}}NGTweenable#formula{{/crossLink}}` if it
+   * exists.
+   * @param {number} x1
+   * @param {number} y1
+   * @param {number} x2
+   * @param {number} y2
+   * @return {function} The easing function that was attached to
+   * NGTweenable.prototype.formula.
+   */
+  NGTweenable.setBezierFunction = function (name, x1, y1, x2, y2) {
+    var cubicBezierTransition = getCubicBezierTransition(x1, y1, x2, y2);
+    cubicBezierTransition.displayName = name;
+    cubicBezierTransition.x1 = x1;
+    cubicBezierTransition.y1 = y1;
+    cubicBezierTransition.x2 = x2;
+    cubicBezierTransition.y2 = y2;
+
+    return NGTweenable.prototype.formula[name] = cubicBezierTransition;
+  };
+
+
+  /**
+   * `delete` an easing function from `{{#crossLink
+   * "NGTweenable/formula:property"}}NGTweenable#formula{{/crossLink}}`.  Be
+   * careful with this method, as it `delete`s whatever easing formula matches
+   * `name` (which means you can delete standard Shifty easing functions).
+   * @method unsetBezierFunction
+   * @param {string} name The name of the easing function to delete.
+   * @return {function}
+   */
+  NGTweenable.unsetBezierFunction = function (name) {
+    delete NGTweenable.prototype.formula[name];
+  };
+
+})();
+
+;(function () {
+
+  function getInterpolatedValues (
+    from, current, targetState, position, easing, delay) {
+    return NGTweenable.tweenProps(
+      position, current, from, targetState, 1, delay, easing);
+  }
+
+  // Fake a NGTweenable and patch some internals.  This approach allows us to
+  // skip uneccessary processing and object recreation, cutting down on garbage
+  // collection pauses.
+  var mockNGTweenable = new NGTweenable();
+  mockNGTweenable._filterArgs = [];
+
+  /**
+   * Compute the midpoint of two Objects.  This method effectively calculates a
+   * specific frame of animation that `{{#crossLink
+   * "NGTweenable/tween:method"}}{{/crossLink}}` does many times over the course
+   * of a full tween.
+   *
+   *     var interpolatedValues = NGTweenable.interpolate({
+   *       width: '100px',
+   *       opacity: 0,
+   *       color: '#fff'
+   *     }, {
+   *       width: '200px',
+   *       opacity: 1,
+   *       color: '#000'
+   *     }, 0.5);
+   *
+   *     console.log(interpolatedValues);
+   *     // {opacity: 0.5, width: "150px", color: "rgb(127,127,127)"}
+   *
+   * @static
+   * @method interpolate
+   * @param {Object} from The starting values to tween from.
+   * @param {Object} targetState The ending values to tween to.
+   * @param {number} position The normalized position value (between `0.0` and
+   * `1.0`) to interpolate the values between `from` and `to` for.  `from`
+   * represents `0` and `to` represents `1`.
+   * @param {Object.<string|Function>|string|Function} easing The easing
+   * curve(s) to calculate the midpoint against.  You can reference any easing
+   * function attached to `NGTweenable.prototype.formula`, or provide the easing
+   * function(s) directly.  If omitted, this defaults to "linear".
+   * @param {number=} opt_delay Optional delay to pad the beginning of the
+   * interpolated tween with.  This increases the range of `position` from (`0`
+   * through `1`) to (`0` through `1 + opt_delay`).  So, a delay of `0.5` would
+   * increase all valid values of `position` to numbers between `0` and `1.5`.
+   * @return {Object}
+   */
+  NGTweenable.interpolate = function (
+    from, targetState, position, easing, opt_delay) {
+
+    var current = NGTweenable.shallowCopy({}, from);
+    var delay = opt_delay || 0;
+    var easingObject = NGTweenable.composeEasingObject(
+      from, easing || 'linear');
+
+    mockNGTweenable.set({});
+
+    // Alias and reuse the _filterArgs array instead of recreating it.
+    var filterArgs = mockNGTweenable._filterArgs;
+    filterArgs.length = 0;
+    filterArgs[0] = current;
+    filterArgs[1] = from;
+    filterArgs[2] = targetState;
+    filterArgs[3] = easingObject;
+
+    // Any defined value transformation must be applied
+    NGTweenable.applyFilter(mockNGTweenable, 'tweenCreated');
+    NGTweenable.applyFilter(mockNGTweenable, 'beforeTween');
+
+    var interpolatedValues = getInterpolatedValues(
+      from, current, targetState, position, easingObject, delay);
+
+    // Transform values back into their original format
+    NGTweenable.applyFilter(mockNGTweenable, 'afterTween');
+
+    return interpolatedValues;
+  };
+
+}());
+
+/**
+ * This module adds string interpolation support to Shifty.
+ *
+ * The Token extension allows Shifty to tween numbers inside of strings.  Among
+ * other things, this allows you to animate CSS properties.  For example, you
+ * can do this:
+ *
+ *     var tweenable = new NGTweenable();
+ *     tweenable.tween({
+ *       from: { transform: 'translateX(45px)' },
+ *       to: { transform: 'translateX(90xp)' }
+ *     });
+ *
+ * `translateX(45)` will be tweened to `translateX(90)`.  To demonstrate:
+ *
+ *     var tweenable = new NGTweenable();
+ *     tweenable.tween({
+ *       from: { transform: 'translateX(45px)' },
+ *       to: { transform: 'translateX(90px)' },
+ *       step: function (state) {
+ *         console.log(state.transform);
+ *       }
+ *     });
+ *
+ * The above snippet will log something like this in the console:
+ *
+ *     translateX(60.3px)
+ *     ...
+ *     translateX(76.05px)
+ *     ...
+ *     translateX(90px)
+ *
+ * Another use for this is animating colors:
+ *
+ *     var tweenable = new NGTweenable();
+ *     tweenable.tween({
+ *       from: { color: 'rgb(0,255,0)' },
+ *       to: { color: 'rgb(255,0,255)' },
+ *       step: function (state) {
+ *         console.log(state.color);
+ *       }
+ *     });
+ *
+ * The above snippet will log something like this:
+ *
+ *     rgb(84,170,84)
+ *     ...
+ *     rgb(170,84,170)
+ *     ...
+ *     rgb(255,0,255)
+ *
+ * This extension also supports hexadecimal colors, in both long (`#ff00ff`)
+ * and short (`#f0f`) forms.  Be aware that hexadecimal input values will be
+ * converted into the equivalent RGB output values.  This is done to optimize
+ * for performance.
+ *
+ *     var tweenable = new NGTweenable();
+ *     tweenable.tween({
+ *       from: { color: '#0f0' },
+ *       to: { color: '#f0f' },
+ *       step: function (state) {
+ *         console.log(state.color);
+ *       }
+ *     });
+ *
+ * This snippet will generate the same output as the one before it because
+ * equivalent values were supplied (just in hexadecimal form rather than RGB):
+ *
+ *     rgb(84,170,84)
+ *     ...
+ *     rgb(170,84,170)
+ *     ...
+ *     rgb(255,0,255)
+ *
+ * ## Easing support
+ *
+ * Easing works somewhat differently in the Token extension.  This is because
+ * some CSS properties have multiple values in them, and you might need to
+ * tween each value along its own easing curve.  A basic example:
+ *
+ *     var tweenable = new NGTweenable();
+ *     tweenable.tween({
+ *       from: { transform: 'translateX(0px) translateY(0px)' },
+ *       to: { transform:   'translateX(100px) translateY(100px)' },
+ *       easing: { transform: 'easeInQuad' },
+ *       step: function (state) {
+ *         console.log(state.transform);
+ *       }
+ *     });
+ *
+ * The above snippet will create values like this:
+ *
+ *     translateX(11.56px) translateY(11.56px)
+ *     ...
+ *     translateX(46.24px) translateY(46.24px)
+ *     ...
+ *     translateX(100px) translateY(100px)
+ *
+ * In this case, the values for `translateX` and `translateY` are always the
+ * same for each step of the tween, because they have the same start and end
+ * points and both use the same easing curve.  We can also tween `translateX`
+ * and `translateY` along independent curves:
+ *
+ *     var tweenable = new NGTweenable();
+ *     tweenable.tween({
+ *       from: { transform: 'translateX(0px) translateY(0px)' },
+ *       to: { transform:   'translateX(100px) translateY(100px)' },
+ *       easing: { transform: 'easeInQuad bounce' },
+ *       step: function (state) {
+ *         console.log(state.transform);
+ *       }
+ *     });
+ *
+ * The above snippet will create values like this:
+ *
+ *     translateX(10.89px) translateY(82.35px)
+ *     ...
+ *     translateX(44.89px) translateY(86.73px)
+ *     ...
+ *     translateX(100px) translateY(100px)
+ *
+ * `translateX` and `translateY` are not in sync anymore, because `easeInQuad`
+ * was specified for `translateX` and `bounce` for `translateY`.  Mixing and
+ * matching easing curves can make for some interesting motion in your
+ * animations.
+ *
+ * The order of the space-separated easing curves correspond the token values
+ * they apply to.  If there are more token values than easing curves listed,
+ * the last easing curve listed is used.
+ * @submodule NGTweenable.token
+ */
+
+// token function is defined above only so that dox-foundation sees it as
+// documentation and renders it.  It is never used, and is optimized away at
+// build time.
+
+;(function (NGTweenable) {
+
+  /**
+   * @typedef {{
+   *   formatString: string
+   *   chunkNames: Array.<string>
+   * }}
+   * @private
+   */
+  var formatManifest;
+
+  // CONSTANTS
+
+  var R_NUMBER_COMPONENT = /(\d|\-|\.)/;
+  var R_FORMAT_CHUNKS = /([^\-0-9\.]+)/g;
+  var R_UNFORMATTED_VALUES = /[0-9.\-]+/g;
+  var R_RGB = new RegExp(
+    'rgb\\(' + R_UNFORMATTED_VALUES.source +
+    (/,\s*/.source) + R_UNFORMATTED_VALUES.source +
+    (/,\s*/.source) + R_UNFORMATTED_VALUES.source + '\\)', 'g');
+  var R_RGB_PREFIX = /^.*\(/;
+  var R_HEX = /#([0-9]|[a-f]){3,6}/gi;
+  var VALUE_PLACEHOLDER = 'VAL';
+
+  // HELPERS
+
+  /**
+   * @param {Array.number} rawValues
+   * @param {string} prefix
+   *
+   * @return {Array.<string>}
+   * @private
+   */
+  function getFormatChunksFrom (rawValues, prefix) {
+    var accumulator = [];
+
+    var rawValuesLength = rawValues.length;
+    var i;
+
+    for (i = 0; i < rawValuesLength; i++) {
+      accumulator.push('_' + prefix + '_' + i);
+    }
+
+    return accumulator;
+  }
+
+  /**
+   * @param {string} formattedString
+   *
+   * @return {string}
+   * @private
+   */
+  function getFormatStringFrom (formattedString) {
+    var chunks = formattedString.match(R_FORMAT_CHUNKS);
+
+    if (!chunks) {
+      // chunks will be null if there were no tokens to parse in
+      // formattedString (for example, if formattedString is '2').  Coerce
+      // chunks to be useful here.
+      chunks = ['', ''];
+
+      // If there is only one chunk, assume that the string is a number
+      // followed by a token...
+      // NOTE: This may be an unwise assumption.
+    } else if (chunks.length === 1 ||
+      // ...or if the string starts with a number component (".", "-", or a
+      // digit)...
+    formattedString.charAt(0).match(R_NUMBER_COMPONENT)) {
+      // ...prepend an empty string here to make sure that the formatted number
+      // is properly replaced by VALUE_PLACEHOLDER
+      chunks.unshift('');
+    }
+
+    return chunks.join(VALUE_PLACEHOLDER);
+  }
+
+  /**
+   * Convert all hex color values within a string to an rgb string.
+   *
+   * @param {Object} stateObject
+   *
+   * @return {Object} The modified obj
+   * @private
+   */
+  function sanitizeObjectForHexProps (stateObject) {
+    NGTweenable.each(stateObject, function (prop) {
+      var currentProp = stateObject[prop];
+
+      if (typeof currentProp === 'string' && currentProp.match(R_HEX)) {
+        stateObject[prop] = sanitizeHexChunksToRGB(currentProp);
+      }
+    });
+  }
+
+  /**
+   * @param {string} str
+   *
+   * @return {string}
+   * @private
+   */
+  function  sanitizeHexChunksToRGB (str) {
+    return filterStringChunks(R_HEX, str, convertHexToRGB);
+  }
+
+  /**
+   * @param {string} hexString
+   *
+   * @return {string}
+   * @private
+   */
+  function convertHexToRGB (hexString) {
+    var rgbArr = hexToRGBArray(hexString);
+    return 'rgb(' + rgbArr[0] + ',' + rgbArr[1] + ',' + rgbArr[2] + ')';
+  }
+
+  var hexToRGBArray_returnArray = [];
+  /**
+   * Convert a hexadecimal string to an array with three items, one each for
+   * the red, blue, and green decimal values.
+   *
+   * @param {string} hex A hexadecimal string.
+   *
+   * @returns {Array.<number>} The converted Array of RGB values if `hex` is a
+   * valid string, or an Array of three 0's.
+   * @private
+   */
+  function hexToRGBArray (hex) {
+
+    hex = hex.replace(/#/, '');
+
+    // If the string is a shorthand three digit hex notation, normalize it to
+    // the standard six digit notation
+    if (hex.length === 3) {
+      hex = hex.split('');
+      hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+    }
+
+    hexToRGBArray_returnArray[0] = hexToDec(hex.substr(0, 2));
+    hexToRGBArray_returnArray[1] = hexToDec(hex.substr(2, 2));
+    hexToRGBArray_returnArray[2] = hexToDec(hex.substr(4, 2));
+
+    return hexToRGBArray_returnArray;
+  }
+
+  /**
+   * Convert a base-16 number to base-10.
+   *
+   * @param {Number|String} hex The value to convert
+   *
+   * @returns {Number} The base-10 equivalent of `hex`.
+   * @private
+   */
+  function hexToDec (hex) {
+    return parseInt(hex, 16);
+  }
+
+  /**
+   * Runs a filter operation on all chunks of a string that match a RegExp
+   *
+   * @param {RegExp} pattern
+   * @param {string} unfilteredString
+   * @param {function(string)} filter
+   *
+   * @return {string}
+   * @private
+   */
+  function filterStringChunks (pattern, unfilteredString, filter) {
+    var pattenMatches = unfilteredString.match(pattern);
+    var filteredString = unfilteredString.replace(pattern, VALUE_PLACEHOLDER);
+
+    if (pattenMatches) {
+      var pattenMatchesLength = pattenMatches.length;
+      var currentChunk;
+
+      for (var i = 0; i < pattenMatchesLength; i++) {
+        currentChunk = pattenMatches.shift();
+        filteredString = filteredString.replace(
+          VALUE_PLACEHOLDER, filter(currentChunk));
+      }
+    }
+
+    return filteredString;
+  }
+
+  /**
+   * Check for floating point values within rgb strings and rounds them.
+   *
+   * @param {string} formattedString
+   *
+   * @return {string}
+   * @private
+   */
+  function sanitizeRGBChunks (formattedString) {
+    return filterStringChunks(R_RGB, formattedString, sanitizeRGBChunk);
+  }
+
+  /**
+   * @param {string} rgbChunk
+   *
+   * @return {string}
+   * @private
+   */
+  function sanitizeRGBChunk (rgbChunk) {
+    var numbers = rgbChunk.match(R_UNFORMATTED_VALUES);
+    var numbersLength = numbers.length;
+    var sanitizedString = rgbChunk.match(R_RGB_PREFIX)[0];
+
+    for (var i = 0; i < numbersLength; i++) {
+      sanitizedString += parseInt(numbers[i], 10) + ',';
+    }
+
+    sanitizedString = sanitizedString.slice(0, -1) + ')';
+
+    return sanitizedString;
+  }
+
+  /**
+   * @param {Object} stateObject
+   *
+   * @return {Object} An Object of formatManifests that correspond to
+   * the string properties of stateObject
+   * @private
+   */
+  function getFormatManifests (stateObject) {
+    var manifestAccumulator = {};
+
+    NGTweenable.each(stateObject, function (prop) {
+      var currentProp = stateObject[prop];
+
+      if (typeof currentProp === 'string') {
+        var rawValues = getValuesFrom(currentProp);
+
+        manifestAccumulator[prop] = {
+          'formatString': getFormatStringFrom(currentProp)
+          ,'chunkNames': getFormatChunksFrom(rawValues, prop)
+        };
+      }
+    });
+
+    return manifestAccumulator;
+  }
+
+  /**
+   * @param {Object} stateObject
+   * @param {Object} formatManifests
+   * @private
+   */
+  function expandFormattedProperties (stateObject, formatManifests) {
+    NGTweenable.each(formatManifests, function (prop) {
+      var currentProp = stateObject[prop];
+      var rawValues = getValuesFrom(currentProp);
+      var rawValuesLength = rawValues.length;
+
+      for (var i = 0; i < rawValuesLength; i++) {
+        stateObject[formatManifests[prop].chunkNames[i]] = +rawValues[i];
+      }
+
+      delete stateObject[prop];
+    });
+  }
+
+  /**
+   * @param {Object} stateObject
+   * @param {Object} formatManifests
+   * @private
+   */
+  function collapseFormattedProperties (stateObject, formatManifests) {
+    NGTweenable.each(formatManifests, function (prop) {
+      var currentProp = stateObject[prop];
+      var formatChunks = extractPropertyChunks(
+        stateObject, formatManifests[prop].chunkNames);
+      var valuesList = getValuesList(
+        formatChunks, formatManifests[prop].chunkNames);
+      currentProp = getFormattedValues(
+        formatManifests[prop].formatString, valuesList);
+      stateObject[prop] = sanitizeRGBChunks(currentProp);
+    });
+  }
+
+  /**
+   * @param {Object} stateObject
+   * @param {Array.<string>} chunkNames
+   *
+   * @return {Object} The extracted value chunks.
+   * @private
+   */
+  function extractPropertyChunks (stateObject, chunkNames) {
+    var extractedValues = {};
+    var currentChunkName, chunkNamesLength = chunkNames.length;
+
+    for (var i = 0; i < chunkNamesLength; i++) {
+      currentChunkName = chunkNames[i];
+      extractedValues[currentChunkName] = stateObject[currentChunkName];
+      delete stateObject[currentChunkName];
+    }
+
+    return extractedValues;
+  }
+
+  var getValuesList_accumulator = [];
+  /**
+   * @param {Object} stateObject
+   * @param {Array.<string>} chunkNames
+   *
+   * @return {Array.<number>}
+   * @private
+   */
+  function getValuesList (stateObject, chunkNames) {
+    getValuesList_accumulator.length = 0;
+    var chunkNamesLength = chunkNames.length;
+
+    for (var i = 0; i < chunkNamesLength; i++) {
+      getValuesList_accumulator.push(stateObject[chunkNames[i]]);
+    }
+
+    return getValuesList_accumulator;
+  }
+
+  /**
+   * @param {string} formatString
+   * @param {Array.<number>} rawValues
+   *
+   * @return {string}
+   * @private
+   */
+  function getFormattedValues (formatString, rawValues) {
+    var formattedValueString = formatString;
+    var rawValuesLength = rawValues.length;
+
+    for (var i = 0; i < rawValuesLength; i++) {
+      formattedValueString = formattedValueString.replace(
+        VALUE_PLACEHOLDER, +rawValues[i].toFixed(4));
+    }
+
+    return formattedValueString;
+  }
+
+  /**
+   * Note: It's the duty of the caller to convert the Array elements of the
+   * return value into numbers.  This is a performance optimization.
+   *
+   * @param {string} formattedString
+   *
+   * @return {Array.<string>|null}
+   * @private
+   */
+  function getValuesFrom (formattedString) {
+    return formattedString.match(R_UNFORMATTED_VALUES);
+  }
+
+  /**
+   * @param {Object} easingObject
+   * @param {Object} tokenData
+   * @private
+   */
+  function expandEasingObject (easingObject, tokenData) {
+    NGTweenable.each(tokenData, function (prop) {
+      var currentProp = tokenData[prop];
+      var chunkNames = currentProp.chunkNames;
+      var chunkLength = chunkNames.length;
+
+      var easing = easingObject[prop];
+      var i;
+
+      if (typeof easing === 'string') {
+        var easingChunks = easing.split(' ');
+        var lastEasingChunk = easingChunks[easingChunks.length - 1];
+
+        for (i = 0; i < chunkLength; i++) {
+          easingObject[chunkNames[i]] = easingChunks[i] || lastEasingChunk;
+        }
+
+      } else {
+        for (i = 0; i < chunkLength; i++) {
+          easingObject[chunkNames[i]] = easing;
+        }
+      }
+
+      delete easingObject[prop];
+    });
+  }
+
+  /**
+   * @param {Object} easingObject
+   * @param {Object} tokenData
+   * @private
+   */
+  function collapseEasingObject (easingObject, tokenData) {
+    NGTweenable.each(tokenData, function (prop) {
+      var currentProp = tokenData[prop];
+      var chunkNames = currentProp.chunkNames;
+      var chunkLength = chunkNames.length;
+
+      var firstEasing = easingObject[chunkNames[0]];
+      var typeofEasings = typeof firstEasing;
+
+      if (typeofEasings === 'string') {
+        var composedEasingString = '';
+
+        for (var i = 0; i < chunkLength; i++) {
+          composedEasingString += ' ' + easingObject[chunkNames[i]];
+          delete easingObject[chunkNames[i]];
+        }
+
+        easingObject[prop] = composedEasingString.substr(1);
+      } else {
+        easingObject[prop] = firstEasing;
+      }
+    });
+  }
+
+  NGTweenable.prototype.filter.token = {
+    'tweenCreated': function (currentState, fromState, toState, easingObject) {
+      sanitizeObjectForHexProps(currentState);
+      sanitizeObjectForHexProps(fromState);
+      sanitizeObjectForHexProps(toState);
+      this._tokenData = getFormatManifests(currentState);
+    },
+
+    'beforeTween': function (currentState, fromState, toState, easingObject) {
+      expandEasingObject(easingObject, this._tokenData);
+      expandFormattedProperties(currentState, this._tokenData);
+      expandFormattedProperties(fromState, this._tokenData);
+      expandFormattedProperties(toState, this._tokenData);
+    },
+
+    'afterTween': function (currentState, fromState, toState, easingObject) {
+      collapseFormattedProperties(currentState, this._tokenData);
+      collapseFormattedProperties(fromState, this._tokenData);
+      collapseFormattedProperties(toState, this._tokenData);
+      collapseEasingObject(easingObject, this._tokenData);
+    }
+  };
+
+} (NGTweenable));
+
+}).call(null);
 
 //##########################################################################################################################
 //##########################################################################################################################
@@ -12349,30 +14111,30 @@ if (typeof define === 'function' && define.amd) {
     var AlbumGetContent = function(albumID, fnToCall, fnParam1, fnParam2) {
 
 
-      var albumIdx=NGY2Item.GetIdx(G, albumID);
+      var albumIdx = NGY2Item.GetIdx(G, albumID);
 
       // title is identical to ID (only for albums)
       if( instance.I[albumIdx].title == '' ) {
-        instance.I[albumIdx].title=JsonConvertCharset(albumID);
+        instance.I[albumIdx].title = JsonConvertCharset(albumID);
       }
 
 
       // var url = G.O.dataProvider + '?albumID='+encodeURIComponent(albumID);
       var url = G.O.dataProvider + '?albumID='+albumID;
-      url += '&wxs='+G.tn.settings.width[G.GOM.curNavLevel].xs;
-      url += '&hxs='+G.tn.settings.height[G.GOM.curNavLevel].xs;
-      url += '&wsm='+G.tn.settings.width[G.GOM.curNavLevel].sm;
-      url += '&hsm='+G.tn.settings.height[G.GOM.curNavLevel].sm;
-      url += '&wme='+G.tn.settings.width[G.GOM.curNavLevel].me;
-      url += '&hme='+G.tn.settings.height[G.GOM.curNavLevel].me;
-      url += '&wla='+G.tn.settings.width[G.GOM.curNavLevel].la;
-      url += '&hla='+G.tn.settings.height[G.GOM.curNavLevel].la;
-      url += '&wxl='+G.tn.settings.width[G.GOM.curNavLevel].xl;
-      url += '&hxl='+G.tn.settings.height[G.GOM.curNavLevel].xl;
+      url += '&wxs=' + G.tn.settings.width[G.GOM.curNavLevel].xs;
+      url += '&hxs=' + G.tn.settings.height[G.GOM.curNavLevel].xs;
+      url += '&wsm=' + G.tn.settings.width[G.GOM.curNavLevel].sm;
+      url += '&hsm=' + G.tn.settings.height[G.GOM.curNavLevel].sm;
+      url += '&wme=' + G.tn.settings.width[G.GOM.curNavLevel].me;
+      url += '&hme=' + G.tn.settings.height[G.GOM.curNavLevel].me;
+      url += '&wla=' + G.tn.settings.width[G.GOM.curNavLevel].la;
+      url += '&hla=' + G.tn.settings.height[G.GOM.curNavLevel].la;
+      url += '&wxl=' + G.tn.settings.width[G.GOM.curNavLevel].xl;
+      url += '&hxl=' + G.tn.settings.height[G.GOM.curNavLevel].xl;
       
       // console.dir(url);
       
-      PreloaderDisplay(true);
+      PreloaderDisplay( true );
 
       jQuery.ajaxSetup({ cache: false });
       jQuery.support.cors = true;
@@ -12388,11 +14150,13 @@ if (typeof define === 'function' && define.amd) {
 
         // console.log(url);        
         jQuery.getJSON(url, function(data, status, xhr) {
-          clearTimeout(tId);
-          PreloaderDisplay(false);
+          clearTimeout( tId );
+          PreloaderDisplay( false );
+          
           JsonParseData(albumIdx, data);
+          
           if( data.nano_status == 'ok' ) {
-            AlbumPostProcess(albumID);
+            AlbumPostProcess( albumID );
             if( fnToCall !== null &&  fnToCall !== undefined) {
               fnToCall( fnParam1, fnParam2, null );
             }
@@ -12402,8 +14166,8 @@ if (typeof define === 'function' && define.amd) {
           }
         })
         .fail( function(jqxhr, textStatus, error) {
-          clearTimeout(tId);
-          PreloaderDisplay(false);
+          clearTimeout( tId );
+          PreloaderDisplay( false );
 
           var k=''
           for(var key in jqxhr) {
@@ -12440,8 +14204,8 @@ if (typeof define === 'function' && define.amd) {
     }
 
     function JsonParseData(albumIdx, data) {
-      var foundAlbumID=false;
-      var nb=0;
+      var foundAlbumID = false;
+      var nb = 0;
 
       
       jQuery.each(data.album_content, function(i,item){
@@ -12450,20 +14214,20 @@ if (typeof define === 'function' && define.amd) {
         // title=GetI18nItem(item,'title');
         // if( title === undefined ) { title=''; }
 
-        var baseURL=G.O.dataProvider.substring(0, G.O.dataProvider.indexOf('nano_photos_provider2.php'));
-        var src=baseURL+JsonConvertCharset(item.src);
+        var baseURL = G.O.dataProvider.substring(0, G.O.dataProvider.indexOf('nano_photos_provider2.php'));
+        var src = baseURL+JsonConvertCharset( item.src );
 
         if( G.O.thumbnailLabel.get('title') != '' ) {
-          title=GetImageTitle((item.src));
+          title = GetImageTitle( item.src );
         }
 
         var description=item.description;     //'&nbsp;';
         // description=GetI18nItem(item,'description');
         // if( description === undefined ) { description=''; }
 
-        var kind='image';
+        var kind = 'image';
         if( item.kind !== undefined && item.kind.length > 0 ) {
-          kind=item.kind;
+          kind = item.kind;
         }
 
         var ID=null;
@@ -12471,22 +14235,19 @@ if (typeof define === 'function' && define.amd) {
           ID=(item.ID);
         }
 
-        var ok=true;
+        var ok = true;
         if( kind == 'album' ) {
           if( !FilterAlbumName(title, ID) ) { ok=false; }
         }
 
         if( ok ) {
-          var albumID=0;
+          var albumID = 0;
           if( item.albumID !== undefined  ) {
-            albumID=item.albumID;
-            foundAlbumID=true;
+            albumID = item.albumID;
+            foundAlbumID = true;
           }
 
-          var tags='';
-          if( item.tags !== undefined ) {
-            tags=item.tags;
-          }
+          var tags = (item.tags === undefined) ? '' : item.tags;
           
           var newItem=NGY2Item.New( G, title.split('_').join(' ') , description.split('_').join(' '), ID, albumID, kind, tags );
           newItem.src=src;
@@ -12511,7 +14272,6 @@ if (typeof define === 'function' && define.amd) {
           }
           
           if( item.originalURL != '' ) {
-            // newItem.downloadURL=item.download;
             newItem.downloadURL=baseURL+JsonConvertCharset(item.originalURL);
           }
           
