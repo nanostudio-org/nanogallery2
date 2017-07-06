@@ -2,7 +2,7 @@
   "name": "nanogallery2",
   "description": "Everything you need to add beautiful, modern and high quality photo galleries to your website.",
   "author": {
-    "Christophe Brisbois",
+    "name" : "Christophe Brisbois",
     "email" : "chr@brisbois.fr",
     "url" : "http://brisbois.fr"
   },
