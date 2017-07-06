@@ -17,16 +17,16 @@
     "url" : "https://github.com/nanostudio-org/nanogallery2/issues"
   },
   "devDependencies": {
-    "grunt": "latest",
-    "grunt-bump": "latest",
-    "grunt-codepainter": "latest",
-    "grunt-contrib-concat": "latest",
-    "grunt-contrib-copy": "latest",
-    "grunt-contrib-jshint": "latest",
-    "grunt-contrib-qunit": "latest",
-    "grunt-contrib-uglify": "latest",
-    "grunt-contrib-cssmin": "latest",
-    "grunt-gh-pages": "latest"
+    "grunt": "*",
+    "grunt-bump": "*",
+    "grunt-codepainter": "*",
+    "grunt-contrib-concat": "*",
+    "grunt-contrib-copy": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-qunit": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-cssmin": "*",
+    "grunt-gh-pages": "*"
   },
   "scripts": {
     "test": "grunt build-nanogallery2"
