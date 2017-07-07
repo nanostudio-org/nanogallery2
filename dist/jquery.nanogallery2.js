@@ -1,4 +1,4 @@
-/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2017-07-06 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2017-07-07 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /**!
  * @preserve nanogallery2 - javascript image gallery
  * Homepage: http://nanogallery2.nanostudio.org
@@ -22,33 +22,35 @@
 /*
 v1.4.n BETA - DO NOT USE
 - new: option 'viewerImageDisplay' (use value 'upscale' to upscale small images)
+- new: use thumbnail image dominant color in stacks
+- enhanced: lightbox image zoom
 - fixed: #51 - thumbnail to navigate up not displayed correctly
 - fixed: thumbnail to navigate up displayed even without parent album
 - fixed: option 'photoset' not a real alias of 'album'
 - fixed: sorting for images/albums defined with HTML markup or javascript
 - fixed: package manager compatibility
 - fixed: cursor pointer when lightbox disabled
+- fixed: endless loop if image/gallery in location hash does not exit (markup or javascript content)
 - misc performance enhancements
 -
 - G.GOM.cache.areaWidth=G.$E.conTnParent.width();
 
 TODO:
-- use item background color for stacks
 - changer logo portable (violet)
 - API: custom sort
 - Thumbnail icon : sous le texte, en bas de l'imagette (1 nouvelle ligne sous le texte)
 - carr� autour num page pagination
-- location hash issue ==> markup/javascript data definition and not existing hash value -> endless loop
 - viewer : d�marrer pre-chargement des 2 images en d�call� (plus de bande passante pour la principale)
-- gallery: remove mouse pointer when no viewer
 - nanophotosprovider: get all pictures from all albums
 - berlin image : image open (hash) + close -> delay before gallery displayed
 - thumbnail +N -> slide next images on it (withouthover effect)
 - ouverture viewer -> slide from bottom transition
 - viewer : click outside image to close 
-- viewer : retrieve max zoom factor (2 at this time)
-- viewer started in fullscreen -> ESC should close the viewer, not the full screen mode
-
+- viewer : retrieve max zoom factor (3 at this time)
+- font size in viewerColorScheme? change option name -> styleProfil
+- colorScheme : rond + couleur  autour thumbnail tool
+- flickr: disable orginal size
+    
 
 */ 
  
@@ -886,7 +888,6 @@ TODO:
                 break;
               }
             }
-
             // handle some special cases
             if( hoverIn && effect.element == '.nGY2GThumbnail' && ( effect.type == 'scale' || effect.type == 'rotateX') ) {
               this.G.GOM.lastZIndex++;
@@ -1157,7 +1158,7 @@ TODO:
     viewerDisplayLogo :           false,
     imageTransition :             'swipe',
     viewerZoom :                  true,
-    viewerImageDisplay :          'upscale',
+    viewerImageDisplay :          '',
     openOnStart :                 '',
     viewerHideToolsDelay :        3000,
     viewerToolbar : {
@@ -3859,15 +3860,13 @@ TODO:
       return h;
     }
     
-    function ThumbnailBuildStacks () {
+    function ThumbnailBuildStacks( bgColor ) {
       var ns=G.tn.opt.Get('stacks');
-      if( ns == 0 ) {
-        return '';
-      }
+      if( ns == 0 ) { return ''; }
      
       var s='';
       for( var i=0; i<ns; i++ ) {
-        s='<div class="nGY2GThumbnailStack " style="display:none;"></div>'+s;
+        s='<div class="nGY2GThumbnailStack " style="display:none;'+bgColor+'"></div>'+s;
       }
       return s;
     }
@@ -3882,7 +3881,7 @@ TODO:
         mp='cursor:default;'
       }
       
-      newElt[newEltIdx++]=ThumbnailBuildStacks()+'<div class="nGY2GThumbnail" style="display:none;opacity:0;'+mp+'" >';
+      newElt[newEltIdx++]=ThumbnailBuildStacks('')+'<div class="nGY2GThumbnail" style="display:none;opacity:0;'+mp+'" >';
       newElt[newEltIdx++]='  <div class="nGY2GThumbnailSub">';
 
       var h=G.tn.defaultSize.getHeight(),
@@ -3924,7 +3923,6 @@ TODO:
         mp='cursor:default;'
       }
 
-      newElt[newEltIdx++]=ThumbnailBuildStacks()+'<div class="nGY2GThumbnail" style="display:none;opacity:0;'+mp+'"><div class="nGY2GThumbnailSub '+(G.O.thumbnailSelectable && item.selected?"nGY2GThumbnailSubSelected":"")+'">';
       
       var src=item.thumbImg().src,
       sTitle=getThumbnailTitle(item),
@@ -3945,6 +3943,8 @@ TODO:
       if( G.O.thumbnailWaitImageLoaded == true ) {
         op='opacity:0;';
       }
+
+      newElt[newEltIdx++]=ThumbnailBuildStacks(bg)+'<div class="nGY2GThumbnail" style="display:none;opacity:0;'+mp+'"><div class="nGY2GThumbnailSub '+(G.O.thumbnailSelectable && item.selected?"nGY2GThumbnailSubSelected":"")+'">';
       
       // image
       switch( G.layout.engine ) {
@@ -8675,7 +8675,7 @@ TODO:
           if( G.VOM.viewerDisplayed ) {
             ViewerToolsUnHide();
             switch( e.keyCode) {
-              case 27:    // Esc key
+              case 27:    // Escape key
                 CloseInternalViewer(G.VOM.currItemIdx);
                 break;
               case 32:    // SPACE
@@ -15015,14 +15015,6 @@ if (typeof define === 'function' && define.amd) {
 
     
     function FlickrParsePhotos( albumIdx, source ) {
-      // var source = '';
-      // if( G.O.photoset.toUpperCase() == 'NONE' || G.O.album.toUpperCase() == 'NONE' ) {
-        // source = data.photos.photo;
-      // }
-      // else {
-        // source = data.photoset.photo;
-      // }
-
       var albumID=G.I[albumIdx].GetID();
       jQuery.each(source, function(i,item){
         //Get the title
@@ -15031,9 +15023,13 @@ if (typeof define === 'function' && define.amd) {
         itemDescription=item.description._content;    // Get the description
         
         var imgUrl=item.url_sq;  //fallback size
-        for(var i=Flickr.photoSize; i>=0; i-- ) {
+        // for(var i=Flickr.photoSize; i>=0; i-- ) {
+        var imgW=0, imgH=0;
+        for(var i = Flickr.photoAvailableSizesStr.length; i>=0 ; i-- ) {
           if( item['url_'+Flickr.photoAvailableSizesStr[i]] != undefined ) {
             imgUrl=item['url_'+Flickr.photoAvailableSizesStr[i]];
+            imgW=item['width_'+Flickr.photoAvailableSizesStr[i]];
+            imgH=item['height_'+Flickr.photoAvailableSizesStr[i]];
             break;
           }
         }
@@ -15056,16 +15052,13 @@ if (typeof define === 'function' && define.amd) {
 
         // var newItem=NGAddItem(itemTitle, '', imgUrl, itemDescription, '', 'image', '', itemID, albumID );
         var newItem=NGY2Item.New( G, itemTitle, itemDescription, itemID, albumID, 'image', tags );
-        newItem.src=imgUrl;
-        if( item.url_o !== undefined ) {
-          newItem.imageWidth=item.width_o;
-          newItem.imageHeight=item.height_o;
-        }
-        else {
-          newItem.imageWidth=item.width_z;
-          newItem.imageHeight=item.height_z;
-        }
 
+        // image
+        newItem.src=imgUrl;
+        newItem.imageWidth=imgW;
+        newItem.imageHeight=imgH;
+
+        // thumbnails
         var tn = {
           url:    { l1 : { xs:'', sm:'', me:'', la:'', xl:'' }, lN : { xs:'', sm:'', me:'', la:'', xl:'' } },
           width:  { l1 : { xs:0, sm:0, me:0, la:0, xl:0 }, lN : { xs:0, sm:0, me:0, la:0, xl:0 } },
