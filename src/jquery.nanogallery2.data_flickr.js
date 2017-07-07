@@ -142,14 +142,6 @@
 
     
     function FlickrParsePhotos( albumIdx, source ) {
-      // var source = '';
-      // if( G.O.photoset.toUpperCase() == 'NONE' || G.O.album.toUpperCase() == 'NONE' ) {
-        // source = data.photos.photo;
-      // }
-      // else {
-        // source = data.photoset.photo;
-      // }
-
       var albumID=G.I[albumIdx].GetID();
       jQuery.each(source, function(i,item){
         //Get the title
@@ -158,9 +150,13 @@
         itemDescription=item.description._content;    // Get the description
         
         var imgUrl=item.url_sq;  //fallback size
-        for(var i=Flickr.photoSize; i>=0; i-- ) {
+        // for(var i=Flickr.photoSize; i>=0; i-- ) {
+        var imgW=0, imgH=0;
+        for(var i = Flickr.photoAvailableSizesStr.length; i>=0 ; i-- ) {
           if( item['url_'+Flickr.photoAvailableSizesStr[i]] != undefined ) {
             imgUrl=item['url_'+Flickr.photoAvailableSizesStr[i]];
+            imgW=item['width_'+Flickr.photoAvailableSizesStr[i]];
+            imgH=item['height_'+Flickr.photoAvailableSizesStr[i]];
             break;
           }
         }
@@ -183,16 +179,13 @@
 
         // var newItem=NGAddItem(itemTitle, '', imgUrl, itemDescription, '', 'image', '', itemID, albumID );
         var newItem=NGY2Item.New( G, itemTitle, itemDescription, itemID, albumID, 'image', tags );
-        newItem.src=imgUrl;
-        if( item.url_o !== undefined ) {
-          newItem.imageWidth=item.width_o;
-          newItem.imageHeight=item.height_o;
-        }
-        else {
-          newItem.imageWidth=item.width_z;
-          newItem.imageHeight=item.height_z;
-        }
 
+        // image
+        newItem.src=imgUrl;
+        newItem.imageWidth=imgW;
+        newItem.imageHeight=imgH;
+
+        // thumbnails
         var tn = {
           url:    { l1 : { xs:'', sm:'', me:'', la:'', xl:'' }, lN : { xs:'', sm:'', me:'', la:'', xl:'' } },
           width:  { l1 : { xs:0, sm:0, me:0, la:0, xl:0 }, lN : { xs:0, sm:0, me:0, la:0, xl:0 } },
