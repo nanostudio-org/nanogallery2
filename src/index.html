@@ -35,7 +35,7 @@
   </svg>
 
   
-  <div class="container">
+  <div class="container" id="ngy2_discover">
     <br><br><br><br>
     <div class="row text-center" >
       <div class="col-md-1" ></div>
@@ -308,7 +308,7 @@
       </div>
       <div class="row">
         <div class="col-md-12 text-center">
-          <p class="text-center"><br><b>latest release: nanogallery <span itemprop="softwareVersion">v1.4.0</span> - <span itemprop="datePublished" content="2017-06-11">june 11 2017</span>
+          <p class="text-center"><br><b>latest release: nanogallery2 <span itemprop="softwareVersion">v1.4.0</span> - <span itemprop="datePublished" content="2017-06-11">june 11 2017</span>
             <br>
             <br>
             Get new release alerts by following @nanostudio_org &nbsp; 
@@ -787,19 +787,29 @@
 // colorScheme: 'light'
 // });
 
-    
+
+
+
+      
       jQuery("#nanogallery").nanogallery2({
-        //debugMode: true,
+        // imageTransition : 'slideAppear',
+      // debugMode: true,
         //kind: 'google',
         //userID: '111186676244625461692',
-kind: 'flickr',
-userID: '149035168@N08',    // nano studio
         // photoset: 'NONE',
         // allowHTMLinData: true,
         // fnImgDisplayed: fnOpenNewTab,
-
+        itemsBaseURL:     '../samples/',
+        items: [
+            { src: 'berlin1_t.jpg', srct: 'berlin1_t.jpg', title: 'Berlin 1' },
+            { src: 'berlin2_t.jpg', srct: 'berlin2_t.jpg', title: 'Berlin 2' },
+            { src: 'berlin3.jpg', srct: 'berlin3_t.jpg', title: 'Berlin 3' }
+          ],
 kind: 'nano_photos_provider2',
 dataProvider: 'http://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
+// kind: 'flickr',
+// userID: '149035168@N08',    // nano studio
+ // flickrSkipOriginal: false,
       //album: 'into%20the%20wild',
       // albumList2: ['into the wild', 'fun'],
       //dataProvider: 'http://localhost:12345/nano_photos_provider2/nano_photos_provider2.php',
