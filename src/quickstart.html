@@ -1,9 +1,6 @@
- 
-
-  
   <div class="container">
     <br><br>
-    <h1>nanogallery2 - get started</h1>
+    <h1>nanogallery2 - quick start</h1>
     <br><br><br><br>
 
     <!--
@@ -83,6 +80,7 @@
     <div id='qs_html' >
     <!-- <div id='qs_html' style="display:none;"> -->
       <blockquote>
+        <!--
         nanogallery2 is available in two editions: a <b>javascript library</b> and a <b>portable version</b>.
         <br><br>
         The <b>portable</b> edition is the fastest way to use nanogallery2 in your favorite
@@ -91,12 +89,16 @@
         Check the <a href="https://nano.gallery"><font color="#FF0075"><b>nanogallery2 portable</b></font></a> dedicated website for more informations.
         <br><br>
         This page is focused on the javascript library. You will learn the basics to quickly build a gallery from scratch. Just follow these simple steps.
+        -->
+        <br>
+        Follow these simple steps to learn the basics for quickly building a photo gallery from scratch.
+        
         <br><br>
       </blockquote>
       <br><br><br>
       
       
-      <h3> 1. Get the script</h3>
+      <h3>1 <i class="fa fa-arrow-right" aria-hidden="true"></i>  Get the script</h3>
       <p>
           - download it from <a href="https://github.com/nanostudio-org/nanogallery2/releases">Github</a><br>
           - or use npmjs: <code>npm install nanogallery2</code>
@@ -104,90 +106,99 @@
       
       <br><br><br>
 
-      <h3>2. Include the files in the <code>&lt;head&gt;</code> of your page</h3>
+      <h3>2 <i class="fa fa-arrow-right" aria-hidden="true"></i> Include the files in the <code>&lt;head&gt;</code> of your page</h3>
       <blockquote>
         Please note that jQuery is required to run the script. It must be loaded before nanogallery2.
       </blockquote>
-      <pre>
+      <pre><code class="language-markup">
         &lt;!-- jQuery --&gt;
         &lt;script  type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"&gt;&lt;/script&gt;
       
         &lt;!-- nanogallery2 --&gt;
-        &lt;link    href="css/nanogallery2.min.css" rel="stylesheet" type="text/css"&gt;
-        &lt;script  type="text/javascript"  src="jquery.nanogallery2.min.js"&gt;&lt;/script&gt;
-      </pre>
+        &lt;link    href=<mark aria-label="Set the path to point to your web server.">"css/nanogallery2.min.css"</mark> rel="stylesheet" type="text/css"&gt;
+        &lt;script  type="text/javascript">src=<mark aria-label="Set the path to point to your web server.">"jquery.nanogallery2.min.js"</mark>&gt;&lt;/script&gt;
+      </code></pre>
 
       <br><br><br>
 
 
-      <h3>3. To create the gallery, add the markup in the <code>&lt;body&gt;</code> of your page</h3>
+      <h3>3 <i class="fa fa-arrow-right" aria-hidden="true"></i> To create the gallery, add the markup in the <code>&lt;body&gt;</code> of your page</h3>
       <p>Example 1 - self hosted images</p>
       <pre>
+        <code class="language-markup">
         &lt;body&gt;
-          &lt;div id="nanogallery2" data-nanogallery2&gt;
-            &lt;a href="..../img1.jpg" data-ngThumb="..../thumbnail1.jpg">&lt;/a&gt;
-            &lt;a href="..../img2.jpg" data-ngThumb="..../thumbnail2.jpg">&lt;/a&gt;
-            &lt;a href="..../img3.jpg" data-ngThumb="..../thumbnail3.jpg">&lt;/a&gt;
-            ...
+          &lt;div <mark aria-label="The ID is mandatory and must be unique.">id="nanogallery2"</mark> data-nanogallery2&gt;
+            &lt;a <mark aria-label="Image to display with the lightbox."> href="..../img1.jpg"</mark> data-ngThumb="..../thumbnail1.jpg"> Title photo 1 &lt;/a&gt;
+            &lt;a href="..../img2.jpg" <mark aria-label="Image for the thumbnail.">data-ngThumb="..../thumbnail2.jpg"</mark>> Title photo 2 &lt;/a&gt;
+            &lt;a href="..../img3.jpg" data-ngThumb="..../thumbnail3.jpg"> <mark aria-label="Title of the image (optional)">Title photo 3</mark> &lt;/a&gt;
           &lt;/div&gt;
         &lt;/body&gt;
+        </code>
       </pre>
       
       <p>Example 2 - images hosted on flickr</p>
-      <pre>
+      <pre><code class="language-markup">
         &lt;body&gt;
-          &lt;div id="nanogallery2" data-nanogallery2='{ "userID": "34858669@N00", "kind": "flickr" }' &gt;&lt;/div&gt;
+          &lt;div id="nanogallery2" <mark aria-label="gallery settings: data source type and Flickr user ID">data-nanogallery2='{ "userID": "34858669@N00", "kind": "flickr" }'</mark> &gt;&lt;/div&gt;
         &lt;/body&gt;
-      </pre>
+      </code></pre>
       
-      <br><br>
-      <br><br>
-      <br><br>
-      
+      <br><br><br><br><br><br><br><br><br><br><br><br>
+
+
       
       <h1>nanogallery2 - initialization and customization</h1>
-      <p>Galleries can be initialized and configured in 2 ways:</p>
+      <br><br>
+      <blockquote>
+        <br>
+        Galleries can be initialized and configured in 2 ways: with HTML markup or with Javascript.
+        <br><br>
+      </blockquote>
+      <br><br>
       
       <h3>- with HTML markup</h3>
       <p>No javascript required. Options are configured with the <code>data-nanogallery2</code> attribute</p>
-      <pre>
+      <pre><code class="language-markup">
         &lt;body&gt;
           &lt;div id="nanogallery2" data-nanogallery2='{
-              "userID":           "34858669@N00",
-              "kind":             "flickr",
-              "thumbnailHeight":  150,
-              "thumbnailWidth":   150
-            }'&gt;
+                  "thumbnailHeight":  150,
+                  "thumbnailWidth":   150,
+                  "itemsBaseURL":     "http://nanogallery2.nanostudio.org/samples/"
+                }'
+            &lt;a href="berlin1.jpg" data-ngThumb="berlin1_t.jpg"> Berlin 1 &lt;/a&gt;
+            &lt;a href="berlin2.jpg" data-ngThumb="berlin1_t.jpg"> Berlin 2 &lt;/a&gt;
+            &lt;a href="berlin3.jpg" data-ngThumb="berlin1_t.jpg"> Berlin 3 &lt;/a&gt;
           &lt;/div&gt;
         &lt;/body&gt;
-      </pre>
+      </code></pre>
       <blockquote>
-        <i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#b00;"></i> Options must respect the JSON format (and <u>not</u> the javascript object syntax). Property names and string values must be between double-quotes <code>"</code>.
+        <i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#b00;"></i> Options must respect the JSON format (and <u>not</u> the javascript object syntax).
+        <br>
+        Property names and string values must be between double-quotes <code style="background:whitesmoke;">"</code>.
       </blockquote>
       
       <br>
       <h3>- with javascript</h3>
-      <pre>
-        &lt;head&gt;
-          .....
+      <pre><code class="language-markup">
+        &lt;body&gt;
+          &lt;div id="nanogallery2"&gt;gallery_made_with_nanogallery2&lt;/div&gt;
           
           &lt;script&gt;
            jQuery(document).ready(function () {
-
               jQuery("#nanogallery2").nanogallery2({
-                userID:           '34858669@N00',
-                kind:             'flickr',
                 thumbnailHeight:  150,
-                thumbnailWidth:   150
+                thumbnailWidth:   150,
+                itemsBaseURL:     'http://nanogallery2.nanostudio.org/samples/',
+                items: [
+                    { src: 'berlin1.jpg', srct: 'berlin1_t.jpg', title: 'Berlin 1' },
+                    { src: 'berlin2.jpg', srct: 'berlin2_t.jpg', title: 'Berlin 2' },
+                    { src: 'berlin3.jpg', srct: 'berlin3_t.jpg', title: 'Berlin 3' }
+                  ]
               });
-
             });
           &lt;/script&gt;
-        &lt;/head&gt;
-        &lt;body&gt;
-          &lt;div id="nanogallery2"&gt;gallery_made_with_nanogallery2&lt;/div&gt;
         &lt;/body&gt;
-      </pre>
+      </code></pre>
     </div>
 
     
@@ -226,4 +237,3 @@
     
     });
   </script>
-  
