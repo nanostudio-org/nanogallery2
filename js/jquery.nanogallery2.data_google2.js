@@ -92,8 +92,9 @@
         }
       }
 
+      if( G.O.debugMode ) { console.log('Google Photos URL: ' + url); }
+      
       PreloaderDisplay(true);
-
       jQuery.ajaxSetup({ cache: false });
       jQuery.support.cors = true;
       try {
@@ -188,6 +189,12 @@
     // Retrieve items from a Google Photos (ex Picasa) data stream
     // items can be images or albums
     function GoogleParseData(albumIdx, kind, data) {
+
+      if( G.O.debugMode ) { 
+        console.log('Google Photos data:');
+        console.dir(data);    
+      }
+
       var albumID=G.I[albumIdx].GetID();
 
       if( G.I[albumIdx].title == '' ) {

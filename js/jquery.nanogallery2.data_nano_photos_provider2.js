@@ -21,30 +21,30 @@
     var AlbumGetContent = function(albumID, fnToCall, fnParam1, fnParam2) {
 
 
-      var albumIdx=NGY2Item.GetIdx(G, albumID);
+      var albumIdx = NGY2Item.GetIdx(G, albumID);
 
       // title is identical to ID (only for albums)
       if( instance.I[albumIdx].title == '' ) {
-        instance.I[albumIdx].title=JsonConvertCharset(albumID);
+        instance.I[albumIdx].title = JsonConvertCharset(albumID);
       }
 
 
       // var url = G.O.dataProvider + '?albumID='+encodeURIComponent(albumID);
       var url = G.O.dataProvider + '?albumID='+albumID;
-      url += '&wxs='+G.tn.settings.width[G.GOM.curNavLevel].xs;
-      url += '&hxs='+G.tn.settings.height[G.GOM.curNavLevel].xs;
-      url += '&wsm='+G.tn.settings.width[G.GOM.curNavLevel].sm;
-      url += '&hsm='+G.tn.settings.height[G.GOM.curNavLevel].sm;
-      url += '&wme='+G.tn.settings.width[G.GOM.curNavLevel].me;
-      url += '&hme='+G.tn.settings.height[G.GOM.curNavLevel].me;
-      url += '&wla='+G.tn.settings.width[G.GOM.curNavLevel].la;
-      url += '&hla='+G.tn.settings.height[G.GOM.curNavLevel].la;
-      url += '&wxl='+G.tn.settings.width[G.GOM.curNavLevel].xl;
-      url += '&hxl='+G.tn.settings.height[G.GOM.curNavLevel].xl;
+      url += '&wxs=' + G.tn.settings.width[G.GOM.curNavLevel].xs;
+      url += '&hxs=' + G.tn.settings.height[G.GOM.curNavLevel].xs;
+      url += '&wsm=' + G.tn.settings.width[G.GOM.curNavLevel].sm;
+      url += '&hsm=' + G.tn.settings.height[G.GOM.curNavLevel].sm;
+      url += '&wme=' + G.tn.settings.width[G.GOM.curNavLevel].me;
+      url += '&hme=' + G.tn.settings.height[G.GOM.curNavLevel].me;
+      url += '&wla=' + G.tn.settings.width[G.GOM.curNavLevel].la;
+      url += '&hla=' + G.tn.settings.height[G.GOM.curNavLevel].la;
+      url += '&wxl=' + G.tn.settings.width[G.GOM.curNavLevel].xl;
+      url += '&hxl=' + G.tn.settings.height[G.GOM.curNavLevel].xl;
       
       // console.dir(url);
       
-      PreloaderDisplay(true);
+      PreloaderDisplay( true );
 
       jQuery.ajaxSetup({ cache: false });
       jQuery.support.cors = true;
@@ -60,11 +60,13 @@
 
         // console.log(url);        
         jQuery.getJSON(url, function(data, status, xhr) {
-          clearTimeout(tId);
-          PreloaderDisplay(false);
+          clearTimeout( tId );
+          PreloaderDisplay( false );
+          
           JsonParseData(albumIdx, data);
+          
           if( data.nano_status == 'ok' ) {
-            AlbumPostProcess(albumID);
+            AlbumPostProcess( albumID );
             if( fnToCall !== null &&  fnToCall !== undefined) {
               fnToCall( fnParam1, fnParam2, null );
             }
@@ -74,8 +76,8 @@
           }
         })
         .fail( function(jqxhr, textStatus, error) {
-          clearTimeout(tId);
-          PreloaderDisplay(false);
+          clearTimeout( tId );
+          PreloaderDisplay( false );
 
           var k=''
           for(var key in jqxhr) {
@@ -112,8 +114,8 @@
     }
 
     function JsonParseData(albumIdx, data) {
-      var foundAlbumID=false;
-      var nb=0;
+      var foundAlbumID = false;
+      var nb = 0;
 
       
       jQuery.each(data.album_content, function(i,item){
@@ -122,20 +124,20 @@
         // title=GetI18nItem(item,'title');
         // if( title === undefined ) { title=''; }
 
-        var baseURL=G.O.dataProvider.substring(0, G.O.dataProvider.indexOf('nano_photos_provider2.php'));
-        var src=baseURL+JsonConvertCharset(item.src);
+        var baseURL = G.O.dataProvider.substring(0, G.O.dataProvider.indexOf('nano_photos_provider2.php'));
+        var src = baseURL+JsonConvertCharset( item.src );
 
         if( G.O.thumbnailLabel.get('title') != '' ) {
-          title=GetImageTitle((item.src));
+          title = GetImageTitle( item.src );
         }
 
         var description=item.description;     //'&nbsp;';
         // description=GetI18nItem(item,'description');
         // if( description === undefined ) { description=''; }
 
-        var kind='image';
+        var kind = 'image';
         if( item.kind !== undefined && item.kind.length > 0 ) {
-          kind=item.kind;
+          kind = item.kind;
         }
 
         var ID=null;
@@ -143,22 +145,19 @@
           ID=(item.ID);
         }
 
-        var ok=true;
+        var ok = true;
         if( kind == 'album' ) {
           if( !FilterAlbumName(title, ID) ) { ok=false; }
         }
 
         if( ok ) {
-          var albumID=0;
+          var albumID = 0;
           if( item.albumID !== undefined  ) {
-            albumID=item.albumID;
-            foundAlbumID=true;
+            albumID = item.albumID;
+            foundAlbumID = true;
           }
 
-          var tags='';
-          if( item.tags !== undefined ) {
-            tags=item.tags;
-          }
+          var tags = (item.tags === undefined) ? '' : item.tags;
           
           var newItem=NGY2Item.New( G, title.split('_').join(' ') , description.split('_').join(' '), ID, albumID, kind, tags );
           newItem.src=src;
@@ -183,7 +182,6 @@
           }
           
           if( item.originalURL != '' ) {
-            // newItem.downloadURL=item.download;
             newItem.downloadURL=baseURL+JsonConvertCharset(item.originalURL);
           }
           
