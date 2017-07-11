@@ -29,7 +29,7 @@
 
       // Build the URL
       var url = G.O.dataProvider + '?albumID='+albumID;             // which album
-      // responsive thumbnails sizes
+      // all thumbnails sizes (for responsive display)
       url += '&wxs=' + G.tn.settings.width[G.GOM.curNavLevel].xs;
       url += '&hxs=' + G.tn.settings.height[G.GOM.curNavLevel].xs;
       url += '&wsm=' + G.tn.settings.width[G.GOM.curNavLevel].sm;
@@ -147,7 +147,7 @@
           if( !FilterAlbumName(title, ID) ) { filterAlbum = true; }
         }
 
-        if( kind == 'album' && !FilterAlbumName(title, ID) ) {
+        if( kind == 'image' || (kind == 'album' && FilterAlbumName(title, ID)) ) {
           var albumID = 0;
           if( item.albumID !== undefined  ) {
             albumID = item.albumID;
@@ -201,7 +201,7 @@
       });
 
       G.I[albumIdx].contentIsLoaded = true;   // album's content is ready
-
+console.log(G.I);
     }    
     
 
