@@ -84,7 +84,7 @@ TODO:
 
           // check album name - albumList/blackList/whiteList
           NGY2Tools.FilterAlbumName = function( title, ID ) {
-          var s=title.toUpperCase();
+            var s=title.toUpperCase();
             if( this.albumList.length > 0 ) {
               for( var j=0; j < this.albumList.length; j++) {
                 if( s === this.albumList[j].toUpperCase() || ID === this.albumList[j] ) {
@@ -7387,9 +7387,9 @@ TODO:
         G.VOM.zoom.posY = posY;
         ViewerImagePanSetPosition(G.VOM.panPosX, G.VOM.panPosY, $img[0], false);
       }
-      else {
-        $img[0].style[G.CSStransformName]= 'translate3D('+ posX+'px, '+ posY+'px, 0) ';
-      }
+      // else {
+        //$img[0].style[G.CSStransformName]= 'translate3D('+ posX+'px, '+ posY+'px, 0) ';
+      // }
       
     }
 
@@ -7557,6 +7557,9 @@ TODO:
           if( !G.VOM.viewerDisplayed ) { return; }
           if( G.VOM.zoom.isZooming ) {
             ViewerImagePanSetPosition(G.VOM.panPosX+ev.deltaX, G.VOM.panPosY+ev.deltaY, G.VOM.$imgC[0], false);
+            if( G.VOM.toolbarsDisplayed == true ) {
+              G.VOM.toolsHide();
+            }
           }
           else {
             ImageSwipeTranslateX( ev.deltaX );
@@ -7595,7 +7598,7 @@ TODO:
             if( !G.VOM.viewerDisplayed ) { return; }
             StopPropagationPreventDefault(ev.srcEvent);
             if( G.VOM.toolbarsDisplayed == false ) {
-              ViewerToolsUnHide();
+              debounce( ViewerToolsUnHide, 400, false)();
             }
             else {
               if( ev.target.className.indexOf('nGY2ViewerImage') !== -1 ) {
@@ -7654,7 +7657,7 @@ TODO:
             StopPropagationPreventDefault(ev.srcEvent);
             if( G.VOM.toolbarsDisplayed == false  ){
               // display tools on tap if hidden
-              ViewerToolsUnHide();
+              debounce( ViewerToolsUnHide, 400, false)();
             }
             else {
               // display next/previous image if tools not hidden
@@ -7693,7 +7696,7 @@ TODO:
     }
     
     function ViewerToolsUnHide() {
-      if( G.VOM.viewerDisplayed ) {
+    if( G.VOM.viewerDisplayed ) {
         G.VOM.toolbarsDisplayed=true;
         ViewerToolsOpacity(1);
         G.VOM.toolsHide();
@@ -8718,7 +8721,7 @@ TODO:
       // mouse mouse -> unhide lightbox toolbars
       jQuery(window).bind('mousemove', function(e){
         if( G.VOM.viewerDisplayed ) {
-          ViewerToolsUnHide();
+          debounce( ViewerToolsUnHide, 400, false )();
         }
       });
       

@@ -1,4 +1,4 @@
-/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2017-07-10 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2017-07-11 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /**!
  * @preserve nanogallery2 - javascript image gallery
  * Homepage: http://nanogallery2.nanostudio.org
@@ -85,7 +85,7 @@ TODO:
 
           // check album name - albumList/blackList/whiteList
           NGY2Tools.FilterAlbumName = function( title, ID ) {
-          var s=title.toUpperCase();
+            var s=title.toUpperCase();
             if( this.albumList.length > 0 ) {
               for( var j=0; j < this.albumList.length; j++) {
                 if( s === this.albumList[j].toUpperCase() || ID === this.albumList[j] ) {
@@ -7388,9 +7388,9 @@ TODO:
         G.VOM.zoom.posY = posY;
         ViewerImagePanSetPosition(G.VOM.panPosX, G.VOM.panPosY, $img[0], false);
       }
-      else {
-        $img[0].style[G.CSStransformName]= 'translate3D('+ posX+'px, '+ posY+'px, 0) ';
-      }
+      // else {
+        //$img[0].style[G.CSStransformName]= 'translate3D('+ posX+'px, '+ posY+'px, 0) ';
+      // }
       
     }
 
@@ -7558,6 +7558,9 @@ TODO:
           if( !G.VOM.viewerDisplayed ) { return; }
           if( G.VOM.zoom.isZooming ) {
             ViewerImagePanSetPosition(G.VOM.panPosX+ev.deltaX, G.VOM.panPosY+ev.deltaY, G.VOM.$imgC[0], false);
+            if( G.VOM.toolbarsDisplayed == true ) {
+              G.VOM.toolsHide();
+            }
           }
           else {
             ImageSwipeTranslateX( ev.deltaX );
@@ -7596,7 +7599,7 @@ TODO:
             if( !G.VOM.viewerDisplayed ) { return; }
             StopPropagationPreventDefault(ev.srcEvent);
             if( G.VOM.toolbarsDisplayed == false ) {
-              ViewerToolsUnHide();
+              debounce( ViewerToolsUnHide, 400, false)();
             }
             else {
               if( ev.target.className.indexOf('nGY2ViewerImage') !== -1 ) {
@@ -7655,7 +7658,7 @@ TODO:
             StopPropagationPreventDefault(ev.srcEvent);
             if( G.VOM.toolbarsDisplayed == false  ){
               // display tools on tap if hidden
-              ViewerToolsUnHide();
+              debounce( ViewerToolsUnHide, 400, false)();
             }
             else {
               // display next/previous image if tools not hidden
@@ -7694,7 +7697,7 @@ TODO:
     }
     
     function ViewerToolsUnHide() {
-      if( G.VOM.viewerDisplayed ) {
+    if( G.VOM.viewerDisplayed ) {
         G.VOM.toolbarsDisplayed=true;
         ViewerToolsOpacity(1);
         G.VOM.toolsHide();
@@ -8719,7 +8722,7 @@ TODO:
       // mouse mouse -> unhide lightbox toolbars
       jQuery(window).bind('mousemove', function(e){
         if( G.VOM.viewerDisplayed ) {
-          ViewerToolsUnHide();
+          debounce( ViewerToolsUnHide, 400, false )();
         }
       });
       
@@ -14110,7 +14113,6 @@ if (typeof define === 'function' && define.amd) {
     /** @function AlbumGetContent */
     var AlbumGetContent = function(albumID, fnToCall, fnParam1, fnParam2) {
 
-
       var albumIdx = NGY2Item.GetIdx(G, albumID);
 
       // title is identical to ID (only for albums)
@@ -14118,9 +14120,9 @@ if (typeof define === 'function' && define.amd) {
         instance.I[albumIdx].title = JsonConvertCharset(albumID);
       }
 
-
-      // var url = G.O.dataProvider + '?albumID='+encodeURIComponent(albumID);
-      var url = G.O.dataProvider + '?albumID='+albumID;
+      // Build the URL
+      var url = G.O.dataProvider + '?albumID='+albumID;             // which album
+      // responsive thumbnails sizes
       url += '&wxs=' + G.tn.settings.width[G.GOM.curNavLevel].xs;
       url += '&hxs=' + G.tn.settings.height[G.GOM.curNavLevel].xs;
       url += '&wsm=' + G.tn.settings.width[G.GOM.curNavLevel].sm;
@@ -14132,15 +14134,10 @@ if (typeof define === 'function' && define.amd) {
       url += '&wxl=' + G.tn.settings.width[G.GOM.curNavLevel].xl;
       url += '&hxl=' + G.tn.settings.height[G.GOM.curNavLevel].xl;
       
-      // console.dir(url);
-      
       PreloaderDisplay( true );
-
       jQuery.ajaxSetup({ cache: false });
       jQuery.support.cors = true;
       try {
-        
-        
         
         var tId = setTimeout( function() {
           // workaround to handle JSONP (cross-domain) errors
@@ -14148,7 +14145,8 @@ if (typeof define === 'function' && define.amd) {
           NanoAlert('Could not retrieve nanoPhotosProvider2 data (timeout).');
         }, 60000 );
 
-        // console.log(url);        
+        if( G.O.debugMode ) { console.log('nanoPhotosProvider2 URL: ' + url); }
+        
         jQuery.getJSON(url, function(data, status, xhr) {
           clearTimeout( tId );
           PreloaderDisplay( false );
@@ -14204,43 +14202,45 @@ if (typeof define === 'function' && define.amd) {
     }
 
     function JsonParseData(albumIdx, data) {
+      if( G.O.debugMode ) { 
+        console.log('nanoPhotosProvider2 parse data:');
+        console.dir(data);    
+      }
+
       var foundAlbumID = false;
       var nb = 0;
 
+      // loop each item
+      jQuery.each( data.album_content, function( i, item ){
       
-      jQuery.each(data.album_content, function(i,item){
-      
-        var title=item.title;
-        // title=GetI18nItem(item,'title');
-        // if( title === undefined ) { title=''; }
-
+        // base URL where the images are stored
         var baseURL = G.O.dataProvider.substring(0, G.O.dataProvider.indexOf('nano_photos_provider2.php'));
-        var src = baseURL+JsonConvertCharset( item.src );
+        
+        // image URL
+        var src = baseURL + JsonConvertCharset( item.src );
 
-        if( G.O.thumbnailLabel.get('title') != '' ) {
-          title = GetImageTitle( item.src );
-        }
+        // item title
+        var title = item.title;
 
-        var description=item.description;     //'&nbsp;';
-        // description=GetI18nItem(item,'description');
-        // if( description === undefined ) { description=''; }
+        // item description ( '_' are replaced with ' ' )
+        var description = item.description.split('_').join(' ');
 
+        // item kind ('album' or 'image')
         var kind = 'image';
         if( item.kind !== undefined && item.kind.length > 0 ) {
           kind = item.kind;
         }
 
-        var ID=null;
-        if( item.ID !== undefined ) {
-          ID=(item.ID);
-        }
+        // item ID
+        var ID=item.ID;
 
-        var ok = true;
+        var filterAlbum = false;
         if( kind == 'album' ) {
-          if( !FilterAlbumName(title, ID) ) { ok=false; }
+          // check if 
+          if( !FilterAlbumName(title, ID) ) { filterAlbum = true; }
         }
 
-        if( ok ) {
+        if( kind == 'album' && !FilterAlbumName(title, ID) ) {
           var albumID = 0;
           if( item.albumID !== undefined  ) {
             albumID = item.albumID;
@@ -14249,10 +14249,10 @@ if (typeof define === 'function' && define.amd) {
 
           var tags = (item.tags === undefined) ? '' : item.tags;
           
-          var newItem=NGY2Item.New( G, title.split('_').join(' ') , description.split('_').join(' '), ID, albumID, kind, tags );
+          var newItem=NGY2Item.New( G, title.split('_').join(' ') , description, ID, albumID, kind, tags );
           newItem.src=src;
 
-          // dominant colors as a gif
+          // dominant colorS as a gif
           if( item.dcGIF !== undefined ) {
             newItem.imageDominantColors='data:image/gif;base64,'+item.dcGIF;
           }
@@ -14263,35 +14263,37 @@ if (typeof define === 'function' && define.amd) {
           
           if( kind == 'album' ) {
             // number of items in album
-            newItem.numberItems=item.cnt;
+            newItem.numberItems = item.cnt;
           }
           else {
             // image size
-            newItem.imageWidth=item.imgWidth;
-            newItem.imageHeight=item.imgHeight;
+            newItem.imageWidth = item.imgWidth;
+            newItem.imageHeight = item.imgHeight;
           }
           
+          // item download URL
           if( item.originalURL != '' ) {
-            newItem.downloadURL=baseURL+JsonConvertCharset(item.originalURL);
+            newItem.downloadURL = baseURL+JsonConvertCharset(item.originalURL);
           }
-          
           
           // retrieve responsive thumbnails urls and sizes
-          var cnl=G.GOM.curNavLevel;
+          var cnl = G.GOM.curNavLevel;      // current navigation level ('L1' or 'LN');
           var l=['xs', 'sm', 'me', 'la', 'xl'];
-          for( var n=0; n<l.length; n++ ) {
+          for( var n = 0; n < l.length; n++ ) {
             newItem.thumbs.url[cnl][l[n]]     = baseURL + JsonConvertCharset(item.t_url[n]);
             newItem.thumbs.width[cnl][l[n]]   = parseInt(item.t_width[n]);
             newItem.thumbs.height[cnl][l[n]]  = parseInt(item.t_height[n]);
           }
          
+          // post-process callback
           if( typeof G.O.fnProcessData == 'function' ) {
             G.O.fnProcessData(newItem, G.O.dataProvider, data);
           }
+          
         }
       });
 
-      G.I[albumIdx].contentIsLoaded=true;   // album's content is ready
+      G.I[albumIdx].contentIsLoaded = true;   // album's content is ready
 
     }    
     
