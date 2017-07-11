@@ -484,11 +484,11 @@
       <li id="catHoverEffects">
         <!-- <p>Thumbnail hover effects</p> -->
         <p>
-          <button type="button" class="btn btn-success" id="btnNGY2_hover_demo2">Popout thumbnails</button>
+          <button type="button" class="btn btn-success" id="btnNGY2_hover_demo1">Shuffle thumbnails</button>
           <button type="button" class="btn btn-primary" id="btnNGY2_hover_demo5">3D rotate</button>
           <button type="button" class="btn btn-primary" id="btnNGY2_hover_demo4">Parallax</button>
-          <button type="button" class="btn btn-primary" id="btnNGY2_hover_demo1">Shuffle thumbnails</button>
           <button type="button" class="btn btn-primary" id="btnNGY2_hover_demo3">Image rotate</button>
+          <button type="button" class="btn btn-primary" id="btnNGY2_hover_demo2">Popout thumbnails</button>
           <!-- 
           <button type="button" class="btn btn-primary" disabled id="btnNGY2_hover_demo1">image: zoom in</button>
           <button type="button" class="btn btn-primary" disabled id="btnNGY2_hover_demo2">image: zoom in + blur</button>
@@ -856,6 +856,8 @@
                   thumbnail_rotateZ_-10deg_0deg_keyframe_hoverout_easeOutBack_400',
             thumbnailL1GutterWidth: 90,
             thumbnailL1GutterHeight: 90,
+            thumbnailBorderVertical: 0,
+            thumbnailBorderHorizontal: 0,
             colorScheme: {thumbnail: {stackBackground: '#889'}},
             items:[
               { src: 'berlin1.jpg', srct: 'berlin1t.jpg', title: 'Berlin 1', imageDominantColor: '#78785b' },
@@ -867,6 +869,8 @@
           html+='        "thumbnailHeight":         210, "thumbnailWidth": 210,\n';
           html+='        "thumbnailL1GutterWidth":  90,\n';
           html+='        "thumbnailL1GutterHeight": 90,\n';
+          html+='        "thumbnailBorderVertical": 0,\n';
+          html+='        "thumbnailBorderHorizontal": 0,\n';
           html+='        "itemsBaseURL":            "http://nanogallery2.nanostudio.org/samples/",\n';
           html+='        "thumbnailStacks":         4,\n';
           html+='        "thumbnailStacksRotateZ":  0.4,\n';
@@ -979,10 +983,10 @@
             thumbnailStacksTranslateZ: 0.3,
             thumbnailStacksRotateX: 0.9,
             galleryBuildInit2 : 'perspective_900px|perspective-origin_50% 150%',
-            thumbnailL1HoverEffect2: 'thumbnail_translateZ_0px_100px_easeOutQuad_4000',
-//            thumbnailL1HoverEffect2: 'thumbnail_translateZ_0px_100px_easeOutQuad_400| \
-//                thumbnail_rotateX_0deg_10deg_easeOutBack_200| \
-//                thumbnail_rotateX_10deg_0deg_delay250_keyframe_hoverin_easeOutBack_400',
+//            thumbnailL1HoverEffect2: 'thumbnail_translateZ_0px_100px_easeOutQuad_4000',
+            thumbnailL1HoverEffect2: 'thumbnail_translateZ_0px_100px_easeOutQuad_400| \
+                thumbnail_rotateX_0deg_10deg_easeOutBack_200| \
+                thumbnail_rotateX_10deg_0deg_delay250_keyframe_hoverin_easeOutBack_400',
             thumbnailL1GutterWidth: 40,
             thumbnailL1GutterHeight: 40,
             colorScheme: {thumbnail: {stackBackground: '#889'}},
@@ -1394,7 +1398,7 @@
         case '#thumbnail_hover_effects':
         default:
           $('select[name=demoCat]').trigger('change');
-          mydemos.btnNGY2_hover_demo2();
+          mydemos.btnNGY2_hover_demo1();
           break;
       }
    
