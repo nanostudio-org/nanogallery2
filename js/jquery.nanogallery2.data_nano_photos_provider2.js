@@ -147,7 +147,7 @@
           if( !FilterAlbumName(title, ID) ) { filterAlbum = true; }
         }
 
-        if( kind == 'album' && !FilterAlbumName(title, ID) ) {
+        if( kind == 'image' || (kind == 'album' && FilterAlbumName(title, ID)) ) {
           var albumID = 0;
           if( item.albumID !== undefined  ) {
             albumID = item.albumID;
@@ -201,7 +201,7 @@
       });
 
       G.I[albumIdx].contentIsLoaded = true;   // album's content is ready
-
+console.log(G.I);
     }    
     
 
