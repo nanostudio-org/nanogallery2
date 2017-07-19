@@ -759,6 +759,12 @@
         <div ID="ngy2_changelog" style="overflow-y: auto;max-height: 470px;background-color:#f8f8f8;">
           <!-- Jan. Feb. Mar. Apr. May. Jun. Jul. Aug. Sep. Oct. Nov. Dec. -->
 
+          <div class="ngy2_changelog_title"><b><i class="fa fa-asterisk" aria-hidden="true"></i> <span class="ngy2_changelog_tool">nanogp v1.3.0</span> [Jul. 19, 2017]</b></div>
+          <div class="ngy2_changelog_version">
+            <span class="label label-success">NEW</span> better privacy protection
+            <br><a href="https://github.com/nanostudio-org/nanogp/releases/tag/v1.3.0" target="_blank">[more...]</a>
+          </div>
+
           <div class="ngy2_changelog_title"><b><i class="fa fa-asterisk" aria-hidden="true"></i> <span class="ngy2_changelog_tool">nanogallery2 v1.4.0</span> [June 11, 2017]</b></div>
           <div class="ngy2_changelog_version">
             <span class="label label-success">NEW</span> display thumbnail's images smoothly when fully downloaded
@@ -1223,7 +1229,7 @@
       
       jQuery("#nanogallery").nanogallery2({
         // imageTransition : 'slideAppear',
-      // debugMode: true,
+      debugMode: true,
         //kind: 'google',
         //userID: '111186676244625461692',
         // photoset: 'NONE',
@@ -1237,8 +1243,9 @@
           ],
 kind: 'nano_photos_provider2',
 dataProvider: 'http://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
-// kind: 'flickr',
+//kind: 'flickr',
 // userID: '149035168@N08',    // nano studio
+ // userID: '148691806@N05',  
  // flickrSkipOriginal: false,
       //album: 'into%20the%20wild',
       // albumList2: ['into the wild', 'fun'],
@@ -1290,15 +1297,9 @@ dataProvider: 'http://nano.gallery/nano_photos_provider2/nano_photos_provider2.p
 
 
 thumbnailL1BuildInit2: '.nGY2GThumbnailAlbumTitle_border-left_5px solid #23CB99|.nGY2GThumbnailAlbumTitle_margin_20px|\
-image_transform-origin_50% 50% -100px|image_transform-style_preserve-3d|image_backface-visibility_hidden|\
-label_transform-origin_50% 50% -100px|label_transform-style_preserve-3d|label_backface-visibility_hidden|\
-thumbnail_perspective_250px|\
-.nGY2GThumbnailSub_perspective_250px|\
-thumbnail_overflow_visible|\
-.nGY2GThumbnailSub_overflow_visible|\
-label_background_url(img/thumbnail-background-pixabay-com.jpg)|label_background-size_100%|thumbnail_background-color_rgba(0,0,0,0)|title_color_#000',
+title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
 
-        thumbnailL1HoverEffect2: 'image_rotateX_0deg_89deg_800|label_rotateX_-89deg_0deg_800|image_opacity_1.00_0.00|label_opacity_1.00_1.00|thumbnail_scale_1.00_1.20',
+        thumbnailL1HoverEffect2: 'label_left_-100%_0%|thumbnail_scale_1.00_1.20',
         
         
         thumbnailL2HoverEffect2: 'image_scale_1.00_1.20|labelAppear|customlayer_backgroundColor_rgba(35,203,153,0.0)_rgba(35,203,153,0.8)|\
