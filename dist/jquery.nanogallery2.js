@@ -1,4 +1,4 @@
-/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2017-07-11 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2017-07-26 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /**!
  * @preserve nanogallery2 - javascript image gallery
  * Homepage: http://nanogallery2.nanostudio.org
@@ -14275,6 +14275,11 @@ if (typeof define === 'function' && define.amd) {
           if( item.originalURL != '' ) {
             newItem.downloadURL = baseURL+JsonConvertCharset(item.originalURL);
           }
+
+	      // custom data
+	      if( item.customData !== null ) {
+		      newItem.customData=item.customData;
+	      }
           
           // retrieve responsive thumbnails urls and sizes
           var cnl = G.GOM.curNavLevel;      // current navigation level ('L1' or 'LN');
