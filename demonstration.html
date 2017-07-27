@@ -256,7 +256,42 @@
     .jumbotron {
       margin-bottom: 0;
     }
-    
+
+
+    /***** REVIEW / rating *****/
+    .ngy2_review_rating {
+      width: 200px;
+      display: inline-block;
+      padding: 0px 5px;
+    }
+    .ngy2_review_card_title {
+      /* background-color: #AEDADC; */
+      border: 5px solid #eee;
+      border-top-left-radius: 25px;
+      padding: 20px;
+      font-size: 1.2em;
+    }
+    .ngy2_review_card_title .ngy2_stars_on{
+      color: #ffc000;
+      font-size: 1.8em;
+    }
+    .ngy2_review_card_title .ngy2_stars_off{
+      color: #888;
+      font-size: 1.8em;
+    }
+    .ngy2_review_card_title .ngy2_label{
+        font-size: 1.5em;
+    }
+    .ngy2_review_card_user_label {
+      color: #19676B;
+      font-size: 1.4em;
+    }
+    .ngy2_review_card_body {
+      background-color: #eee;
+      padding: 15px;
+      font-size: 1.2em;
+    }
+        
     
     /***** VERTICAL NAVIGATION BAR (documentation) *****/
     #ngy2_vert_nav {
@@ -310,6 +345,8 @@
       display: none;
     }
 
+
+
     .affix {
       top: 60px;
       width: 213px;
@@ -321,7 +358,158 @@
       }         
     }    
     
-    </style>
+
+    /***** BOOTSTRAP ROW - COLUMNS SAME HEIGHT *****/
+    .equal {
+      display: flex;
+      display: -webkit-flex;
+      flex-wrap: wrap;
+    }    
+
+    
+    /**
+     * Syntax highlighting
+     */
+    pre code {
+      font-size:1.6rem;
+      line-height: 1.7;
+    }
+
+    mark, .mark {
+      background-color: #ff0;
+    }
+     
+    .token.comment,
+    .token.prolog,
+    .token.doctype,
+    .token.cdata {
+      color: slategray; }
+
+    .token.punctuation {
+      color: #999; }
+
+    .namespace {
+      opacity: .7; }
+
+    .token.property,
+    .token.tag,
+    .token.boolean,
+    .token.number,
+    .token.constant,
+    .token.symbol,
+    .token.deleted {
+      color: #ec0278; }
+
+    .token.selector,
+    .token.attr-name,
+    .token.string,
+    .token.char,
+    .token.builtin,
+    .token.inserted {
+      color: #23cb99; }
+
+    .token.operator,
+    .token.entity,
+    .token.url,
+    .language-css .token.string,
+    .style .token.string {
+      color: #a67f59;
+      background: rgba(255, 255, 255, 0.5); }
+
+    .token.atrule,
+    .token.attr-value,
+    .token.keyword {
+      color: #086290; }
+
+    .token.function {
+      color: #DD4A68; }
+
+    .token.regex,
+    .token.important,
+    .token.variable {
+      color: #e90; }
+
+    .token.important,
+    .token.bold {
+      font-weight: bold; }
+
+    .token.italic {
+      font-style: italic; }
+
+    .token.entity {
+      cursor: help; }    
+
+      
+    code[class*="language-"], pre[class*="language-"] {
+      line-height: 1.7;
+      background: #f9fafb;
+      font-family: sans-serif; 
+    }
+
+    pre, code {
+      background: whitesmoke;
+      -moz-tab-size: 4;
+      tab-size: 4;
+      -webkit-hyphens: none;
+      -ms-hyphens: none;
+      hyphens: none;
+      white-space: pre; }
+
+    /* Code blocks */
+    pre {
+      padding: 1em 1.5em;
+      margin: .5em -1.5em;
+      /* overflow: auto; */
+      overflow: visible;
+      background: #f9fafb;
+      }
+        pre {
+          border-radius: .5em; }
+      pre > code {
+        background: transparent; }
+
+    :not(pre) > code {
+      background: transparent;
+      font-weight: bold;
+      color: #505662; }
+
+    pre > code a[aria-label],
+    pre > code mark[aria-label] {
+      position: relative;
+      /* background: rgba(255, 255, 0, 0.55); */
+      background: rgb(243, 243, 16);
+      padding: .16em .666ch .1em;
+      border-radius: .3em;
+      color: inherit;
+      text-shadow: 0 1px 1px white; }
+    pre > code a[aria-label]:hover, pre > code a[aria-label]:focus,
+    pre > code mark[aria-label]:hover,
+    pre > code mark[aria-label]:focus {
+      background: rgba(255, 149, 0, 0.2);
+      border-color: rgba(255, 149, 0, 0.2);
+      text-decoration: none; }
+    pre > code a[aria-label]:hover::after, pre > code a[aria-label]:focus::after,
+    pre > code mark[aria-label]:hover::after,
+    pre > code mark[aria-label]:focus::after {
+      content: attr(aria-label);
+      position: absolute;
+      top: -2.5em;
+      left: 0;
+      z-index: 1;
+      white-space: normal;
+      width: 30em;
+      padding: .2em 1.0em;
+      background: #eee;
+      border: 2px solid #800;
+      border-radius: .4em;
+      box-shadow: 0.1em 0.1em 0.5em rgba(0, 0, 0, 0.2);
+      color: black;
+      font-weight: 400;
+      /* font-family: Roboto, "Helvetica Neue", sans-serif; */
+    }    
+        
+
+  </style>
 
 
   <!-- Asynchronous Google Analytics snippet -->
