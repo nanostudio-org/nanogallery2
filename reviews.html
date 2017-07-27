@@ -1,0 +1,1166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html>
+
+<head>
+
+  <title>User reviews</title>
+  <meta name="description" content="See what users says about nanogallery2.">
+  <meta property="og:title" content="User reviews">
+  <meta property="og:description" content="See what users says about nanogallery2.">
+  <meta name="twitter:title" content="User reviews">
+  <meta name="twitter:description" content="See what users says about nanogallery2.">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="http://nanogallery2.nanostudio.org/img/nanogallery2_logo2.png">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:image" content="http://nanogallery2.nanostudio.org/img/nanogallery2_logo2.png">
+
+  <META name="keywords" content="image gallery html, image gallery css, image gallery jquery, html photo gallery code, photo gallery javascript, image gallery bootstrap, image gallery code, javascript image gallery, image gallery script, image gallery plugin, image web gallery, imagegallery">
+  
+  <link rel="icon" href="img/favicon.ico" />
+
+  <link href="https://fonts.googleapis.com/css?family=Signika+Negative" rel="stylesheet">
+  <!-- 
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+  -->
+ 
+  <!-- #################################################################################################################### -->
+  <!-- jQuery                                                                                                               -->
+  <script type="text/javascript" src="vendors/jquery-1.12.4.min.js"></script>
+  <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>  -->
+  <!-- #################################################################################################################### -->
+
+
+  <!-- BOOTSTRAP -->
+  <link href="vendors/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <script src="vendors/bootstrap/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="vendors/font-awesome/css/font-awesome.min.css" />
+
+
+  <!-- ######################## -->
+  <!-- ##### END HEADER-2 ##### -->
+  <!-- ######################## -->
+
+  <!-- #################################################################################################################### -->
+  <!-- nanogallery2 CSS files                                                                                               -->
+	<link href="css/nanogallery2.min.css" rel="stylesheet" type="text/css">
+  <!-- #################################################################################################################### -->
+
+  <!-- #################################################################################################################### -->
+	<!-- nanogallery2 javascript                                                                                              -->
+	<script type="text/javascript" src="js/jquery.nanogallery2.min.js"></script>
+  <!--
+  <script type="text/javascript" src="js/jquery.nanogallery2.core.js"></script>
+	<script type="text/javascript" src="js/jquery.nanogallery2.data_google.js"></script>
+	<script type="text/javascript" src="js/jquery.nanogallery2.data_flickr.js"></script>
+  -->
+	<!-- 
+  <script type="text/javascript" src="js/jquery.nanogallery2.builder.js"></script>
+  -->
+  <!-- #################################################################################################################### -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js"></script>
+
+  <style>
+    body { font-size:1.3em; color:#111; }
+    p { font-size:1.3em; }
+    td { font-size:1.2em; }
+    .ngy2documentation p { font-size:1.1em; }
+    .ngy2documentation td { font-size:1.1em; }
+    .ngy2documentation blockquote { font-size:1.1em; }
+   
+    * { font-family: 'Signika Negative', sans-serif; }
+    h1 {
+      border-left : 5px solid #499195;
+      padding-left: 10px;
+    }
+    .footer {
+      margin: 0;
+    }
+    
+
+    blockquote {
+      color: #000;
+      background-color: #AEDADC;
+      border-color: #499195;
+      padding-top: 25px;
+      padding-bottom: 25px;
+    }
+    
+    /***** TOP NAVIGATION BAR *****/
+    .navbar * { font-weight: bold; }
+    .navbar-inverse .navbar-nav>li>a { 
+      color: #fff;
+      padding-bottom: 5px;
+    }
+    .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
+      color: #23CB99;
+      border-bottom: 2px solid #23CB99;
+    }
+    .navbar-inverse .navbar-brand {
+      color: #fff;
+      display: inline-flex;
+      display: -webkit-inline-flex;
+    }
+
+    .navbar-inverse {
+      background-color: #0F1934;
+    }
+    
+    .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
+      background-color: #0F1934;
+    }
+    
+    /***** NANOGALLERY2 COLORS *****/
+
+    
+    /* palette (bleuté)- fond clair
+
+    logo + menu + icon button : 23CB99 (plus clair: 46D6AB)
+    base: 499295
+    AEDADC
+    76B6B9
+    2E7C7F
+    19676B
+
+    0F4548
+    0E4144
+
+    background: #0F1934
+    buttons: #3C4B5B
+    */    
+    
+    .ngy2_bgdark {
+      background-color: #0F1934;
+      margin: 0;
+    }
+
+    .ngy2_bgdark p ,
+    .ngy2_bgdark .lead {
+      color : #fff;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      color : #499295
+    }
+    .ngy2_bgdark h1, .ngy2_bgdark h2, .ngy2_bgdark h3, .ngy2_bgdark h4, .ngy2_bgdark h5, .ngy2_bgdark h6 {
+      color : #76B6B9;
+    }
+
+    a {
+      color: #499295;
+      text-decoration: none;
+    }    
+
+    .ngy2_color1 {
+      color: #499295;
+    }
+    .ngy2_color2 {
+      color: #23CB99;
+    }
+
+    .ngy2_bgdark .btn-primary {
+      color: #fff;
+      background-color: #3C4B5B;
+      border-color: #3C4B5B;
+    }
+
+    /* ### LOGO ### */
+    .ngy2_logo {
+      border-left : none;
+      padding-left: 0;
+      color: #fff !important;
+      font-weight: bold;
+    }
+
+    /* ### BUTTON SUCCESS ### */
+    .btn-success, .btn-success:visited {
+      color: #fff;
+      background-color: #23CB99;
+      border-color: #23CB99;
+    }
+    .btn-success:hover, .btn-success:active, .btn-success:focus, .btn-success:active:focus {
+      color: #fff;
+      background-color: #46D6AB;
+      border-color: #46D6AB;
+    }
+
+    .ngy2_bgdark .btn-success, .ngy2_bgdark .btn-success:visited {
+      color: #fff;
+      background-color: #499295;
+      border-color: #499295;
+    }
+    .ngy2_bgdark .btn-success:hover, .ngy2_bgdark .btn-success:active, .ngy2_bgdark .btn-success:focus, .ngy2_bgdark .btn-success:active:focus {
+      color: #fff;
+      background-color: #76B6B9;
+      border-color: #76B6B9;
+    }
+    
+
+    
+    /* DIAGONALS */
+    .svg-diag {
+      display:  block;
+      width:    100%;
+      height:   90px;
+      index:    -1;
+      margin-bottom: -1px;
+    }    
+    
+    .ngy2_version {
+      color: #ddd;
+      font-size:0.6em; 
+      padding: 0px;
+    }
+
+
+    /***** CHANGELOG *****/
+    #ngy2_changelog {
+      font-size: 1.2em;
+    }
+    .ngy2_changelog_version {
+      margin: 0px 20px 20px 20px;
+      padding: 0px;
+    }
+
+    #ngy2_changelog .ngy2_changelog_title {
+      color:#499295;
+      display: inline-block;
+      background-color: #ddd;
+      border: 0px solid #499295;
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+      padding: 4px 10px 4px 5px;
+      margin: 15px 0px;
+    }
+    #ngy2_changelog .ngy2_changelog_tool {
+      color: #000;
+    }
+    
+    #ngy2_changelog .label {
+      padding: .2em .6em .2em;
+    }
+    
+    
+    /***** TOP CUSTOM JUMBOTRON *****/
+    .jumbotronNGY2 {
+      padding-top:0px;
+    }
+    
+    /***** CUSTOM JUMBOTRON *****/
+    .jumbotron {
+      margin-bottom: 0;
+    }
+
+
+    /***** REVIEW / rating *****/
+    .ngy2_review_rating {
+      width: 200px;
+      display: inline-block;
+      padding: 0px 5px;
+    }
+    .ngy2_review_card_title {
+      /* background-color: #AEDADC; */
+      border: 5px solid #eee;
+      border-top-left-radius: 25px;
+      padding: 20px;
+      font-size: 1.2em;
+    }
+    .ngy2_review_card_title .ngy2_stars_on{
+      color: #ffc000;
+      font-size: 1.8em;
+    }
+    .ngy2_review_card_title .ngy2_stars_off{
+      color: #888;
+      font-size: 1.8em;
+    }
+    .ngy2_review_card_title .ngy2_label{
+        font-size: 1.5em;
+    }
+    .ngy2_review_card_user_label {
+      color: #19676B;
+      font-size: 1.4em;
+    }
+    .ngy2_review_card_body {
+      background-color: #eee;
+      padding: 15px;
+      font-size: 1.2em;
+    }
+        
+    
+    /***** VERTICAL NAVIGATION BAR (documentation) *****/
+    #ngy2_vert_nav {
+      border-left: 4px solid #499295;
+    }
+    
+    #ngy2_vert_nav_style .nav > li > a {
+        position: relative;
+        display: block;
+        padding: 2px 5px;
+        color:#000;
+    }    
+    #ngy2_vert_nav_style .nav .active {
+      font-weight: bold;
+      border-left: 4px solid #499295;
+      background-color: #f0f0f0;
+    }
+    #ngy2_vert_nav_style .nav .active a{
+      color:#499295;
+      font-size:1.2em;
+    }
+
+    #ngy2_vert_nav_style .nav .nav {
+      display: none;
+    }
+
+    #ngy2_vert_nav_style .nav .active .nav {
+      display: block;
+    }
+
+    #ngy2_vert_nav_style .nav .nav a {
+      font-weight: normal;
+      font-size: .85em;
+    }
+
+    #ngy2_vert_nav_style .nav .nav span {
+      margin: 0 5px 0 2px;
+    }
+
+    #ngy2_vert_nav_style.nav .nav .active a,
+    #ngy2_vert_nav_style .nav .nav .active:hover a,
+    #ngy2_vert_nav_style .nav .nav .active:focus a {
+      font-weight: bold;
+      padding-left: 30px;
+      border-left: 5px solid black;
+    }
+
+    #ngy2_vert_nav_style .nav .nav .active span,
+    #ngy2_vert_nav_style .nav .nav .active:hover span,
+    #ngy2_vert_nav_style .nav .nav .active:focus span {
+      display: none;
+    }
+
+
+
+    .affix {
+      top: 60px;
+      width: 213px;
+    }
+
+    @media (min-width: 1200px) {
+      .affix {
+        width: 263px;
+      }         
+    }    
+    
+
+    /***** BOOTSTRAP ROW - COLUMNS SAME HEIGHT *****/
+    .equal {
+      display: flex;
+      display: -webkit-flex;
+      flex-wrap: wrap;
+    }    
+
+    
+    /**
+     * Syntax highlighting
+     */
+    pre code {
+      font-size:1.6rem;
+      line-height: 1.7;
+    }
+
+    mark, .mark {
+      background-color: #ff0;
+    }
+     
+    .token.comment,
+    .token.prolog,
+    .token.doctype,
+    .token.cdata {
+      color: slategray; }
+
+    .token.punctuation {
+      color: #999; }
+
+    .namespace {
+      opacity: .7; }
+
+    .token.property,
+    .token.tag,
+    .token.boolean,
+    .token.number,
+    .token.constant,
+    .token.symbol,
+    .token.deleted {
+      color: #ec0278; }
+
+    .token.selector,
+    .token.attr-name,
+    .token.string,
+    .token.char,
+    .token.builtin,
+    .token.inserted {
+      color: #23cb99; }
+
+    .token.operator,
+    .token.entity,
+    .token.url,
+    .language-css .token.string,
+    .style .token.string {
+      color: #a67f59;
+      background: rgba(255, 255, 255, 0.5); }
+
+    .token.atrule,
+    .token.attr-value,
+    .token.keyword {
+      color: #086290; }
+
+    .token.function {
+      color: #DD4A68; }
+
+    .token.regex,
+    .token.important,
+    .token.variable {
+      color: #e90; }
+
+    .token.important,
+    .token.bold {
+      font-weight: bold; }
+
+    .token.italic {
+      font-style: italic; }
+
+    .token.entity {
+      cursor: help; }    
+
+      
+    code[class*="language-"], pre[class*="language-"] {
+      line-height: 1.7;
+      background: #f9fafb;
+      font-family: sans-serif; 
+    }
+
+    pre, code {
+      background: whitesmoke;
+      -moz-tab-size: 4;
+      tab-size: 4;
+      -webkit-hyphens: none;
+      -ms-hyphens: none;
+      hyphens: none;
+      white-space: pre; }
+
+    /* Code blocks */
+    pre {
+      padding: 1em 1.5em;
+      margin: .5em -1.5em;
+      /* overflow: auto; */
+      overflow: visible;
+      background: #f9fafb;
+      }
+        pre {
+          border-radius: .5em; }
+      pre > code {
+        background: transparent; }
+
+    :not(pre) > code {
+      background: transparent;
+      font-weight: bold;
+      color: #505662; }
+
+    pre > code a[aria-label],
+    pre > code mark[aria-label] {
+      position: relative;
+      /* background: rgba(255, 255, 0, 0.55); */
+      background: rgb(243, 243, 16);
+      padding: .16em .666ch .1em;
+      border-radius: .3em;
+      color: inherit;
+      text-shadow: 0 1px 1px white; }
+    pre > code a[aria-label]:hover, pre > code a[aria-label]:focus,
+    pre > code mark[aria-label]:hover,
+    pre > code mark[aria-label]:focus {
+      background: rgba(255, 149, 0, 0.2);
+      border-color: rgba(255, 149, 0, 0.2);
+      text-decoration: none; }
+    pre > code a[aria-label]:hover::after, pre > code a[aria-label]:focus::after,
+    pre > code mark[aria-label]:hover::after,
+    pre > code mark[aria-label]:focus::after {
+      content: attr(aria-label);
+      position: absolute;
+      top: -2.5em;
+      left: 0;
+      z-index: 1;
+      white-space: normal;
+      width: 30em;
+      padding: .2em 1.0em;
+      background: #eee;
+      border: 2px solid #800;
+      border-radius: .4em;
+      box-shadow: 0.1em 0.1em 0.5em rgba(0, 0, 0, 0.2);
+      color: black;
+      font-weight: 400;
+      /* font-family: Roboto, "Helvetica Neue", sans-serif; */
+    }    
+        
+
+  </style>
+
+
+  <!-- Asynchronous Google Analytics snippet -->
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-39069349-8', 'auto');
+      // ga('require', 'GTM-NNSW2KX');
+      ga('send', 'pageview');
+
+    </script>
+
+  
+</head>
+
+
+<body data-spy="scroll" data-target=".scrollspy" style="position: relative;">
+
+  <!-- ############## -->
+  <!-- ### NAVBAR ### -->
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand form-horizontal" href="http://nanogallery2.nanostudio.org/" rel="home" title="nanogallery2">
+          <img src="img/nanogallery2s.png" alt="nanogallery2" style="height:30px;"> &nbsp; <span class="ngy2version">v1.4.0</span>
+        </a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav navbar-right text-uppercase">
+          <li><a href="index.html">Intro</a></li>
+          <li><a href="quickstart.html">Get started</a></li>
+          <li><a href="demonstration.html">Showcase</a></li>
+          <li><a href="builder.html"><i class="fa fa-wrench ngy2_color2" aria-hidden="true"></i> Visual Builder</a></li>
+          <li><a href="documentation.html">Guide</a></li>
+          <li><a href="datasource.html">Data source</a></li>
+          <li><a href="api.html">API</a></li>
+          <li><a href="https://github.com/nanostudio-org/nanogallery2" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> github</a></li>
+          <!-- <li><a href="modules.html">Modules</a></li> -->
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+  <script>
+    $(document).ready(function () {
+      var p=location.pathname.substring(location.pathname.lastIndexOf("/") + 1);
+      $('.navbar a[href="'+p+'"]').parent().addClass('active');
+    });
+  </script>
+  <!-- ### NAVBAR ### -->
+  <!-- ############## -->
+
+  <!-- ######################## -->
+  <!-- ##### END HEADER-3 ##### -->
+  <!-- ######################## -->
+
+  <!-- ### LOGO ### -->
+  <div class="jumbotron ngy2_bgdark">
+    <div class="container ">
+      <div class="row" >
+        <br><br><br><br>
+        <div class="col-md-12 text-center">
+          <!-- <img itemprop="image" src="img/nanogallery2.png" alt="nanogallery2" style="max-width:80%;"> -->
+          <h1 class="ngy2_logo">nanogallery2 <img src="img/nanogallery2s.png" alt="nanogallery2" style="max-width:15%;"></h1>
+
+          <!--
+            <h4 style="color:#eee;"><span itemprop="name">nanogallery2</span> creates beautiful, modern and high-quality image galleries for your website</h4>
+          -->
+        </div>
+      </div>
+      <br>
+    </div>
+  </div>
+  <!-- ### LOGO ### -->
+
+  
+  <!-- ########################### -->
+  <!-- ##### END LOGO INDEX  ##### -->
+  <!-- ########################### -->
+
+  <div class="container">
+    <br><br>
+    <h1>nanogallery2 reviews - what users says...</h1>
+    <br><br><br><br>
+
+
+
+      <div class="row equal" style="background-color:#efefef;">
+        <div class="col-md-3 text-center" itemscope itemtype="http://schema.org/Product">
+          <br>
+          <span style="font-size:1.5em;" itemprop="name">
+            nanogallery2
+          </span>
+          <br>
+          <span style="font-size:1em;" itemprop="description">
+            beautiful and modern photo gallery
+          </span>
+          <br>
+          <span itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+            <span style="font-size:6em;">
+              <span itemprop="ratingValue">4.82</span>
+            </span>
+            <br>
+            <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+            <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+            <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+            <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+            <i class="ngy2_stars_on fa fa-star-half-o fa-2x" aria-hidden="true"></i>
+            <br>
+            <i class="fa fa-user fa-1x" aria-hidden="true"></i> <span itemprop="ratingCount">11</span> total
+          </span>
+          <br><br>
+        </div>
+        <div class="col-md-3" style="font-size:1.2em;color:#555;">
+          <br><br><br><br>
+          <i class="ngy2_stars_on fa fa-star fa" aria-hidden="true"></i> 5 &nbsp; <div class="ngy2_review_rating" style="background: linear-gradient(90deg, #9ec35c 82%, #eee 0%);">9</div><br>
+          <i class="ngy2_stars_on fa fa-star fa" aria-hidden="true"></i> 4 &nbsp; <div class="ngy2_review_rating" style="background: linear-gradient(90deg, #aed635 18%, #eee 0%);">2</div><br>
+          <i class="ngy2_stars_on fa fa-star fa" aria-hidden="true"></i> 3 &nbsp; <div class="ngy2_review_rating" style="background: linear-gradient(90deg, #fdda36 01%, #eee 0%);">0</div><br>
+          <i class="ngy2_stars_on fa fa-star fa" aria-hidden="true"></i> 2 &nbsp; <div class="ngy2_review_rating" style="background: linear-gradient(90deg, #ffb332 01%, #eee 0%);">0</div><br>
+          <i class="ngy2_stars_on fa fa-star fa" aria-hidden="true"></i> 1 &nbsp; <div class="ngy2_review_rating" style="background: linear-gradient(90deg, #ff8a57 01%, #eee 0%);">0</div>
+        </div>
+        <div class="col-md-6">
+          <div class="text-center" style="">
+            <br><br><br>
+            <h3 style="color:#000;font-size:2.5em;">Enjoy using nanogallery2?</h3>
+            <button type="button" data-toggle="modal" data-target="#myModalEnjoyNo" class="btn btn-default btn"><b>Not really</b></button>
+            <button type="button" data-toggle="modal" data-target="#myModalEnjoyYes" class="btn btn-success btn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-chevron-right" aria-hidden="true"></i> <b>Yes!</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+            <br>
+          </div>
+          
+          <div class="modal fade" id="myModalEnjoyYes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h3 class="modal-title" id="myModalLabel">nanogallery2</h3>
+                </div>
+                <div class="modal-body">
+                  <h3>How about a rating, then?</h3>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">No, thanks</button>
+                  <button type="button" class="btn btn-primary" id="btn_enjoy_yes">Ok, sure</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <script type="text/javascript">
+            jQuery(document).ready(function () {
+              jQuery('#btn_enjoy_yes').on('click', function() {
+                window.open('https://nanostudio.typeform.com/to/zyHSZD', '_blank');
+                $('#myModalEnjoyYes').modal('hide');
+              });
+            });
+          </script>
+
+          <div class="modal fade" id="myModalEnjoyNo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h3 class="modal-title" id="myModalLabel">nanogallery2</h3>
+                </div>
+                <div class="modal-body">
+                  <h3>Would you mind giving us some feedback?</h3>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">No, thanks</button>
+                  <button type="button" class="btn btn-primary" id="btn_enjoy_no">Ok, sure</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <script type="text/javascript">
+            jQuery(document).ready(function () {
+              jQuery('#btn_enjoy_no').on('click', function() {
+                window.open('https://nanostudio.typeform.com/to/wHRN2N', '_blank');
+                $('#myModalEnjoyNo').modal('hide');
+              });
+            });
+          </script>
+        </div>
+      </div>
+
+      <br><br><br><br><br><br><br>
+      
+      
+      <div class="row equal">
+        <div class="col-md-2">&nbsp;</div>
+        <div class="col-md-2 text-center ngy2_review_card_title">
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <br>
+          2017-07-20
+          <br><br>
+            <img src="reviews/mika_kaakinen_org.jpg" style="max-width:60px;">
+            <br><br>
+          <span class="ngy2_label">
+            <a href="http://mikakaakinen.fi/index-koulu.html" target="_blank">Mika Kaakinen</a>
+          </span>
+        </div>
+        <div class="col-md-6 ngy2_review_card_body">
+          <i class="fa fa-quote-left" aria-hidden="true"></i>
+          <span class="ngy2_review_card_user_label">
+            I have used Nanogallery in updating the webpage of the school where I work. I find Nanogallery easy to use, meticulously documentated and very good looking software. I also find the different grid options and animation options very appealing. And the end result (gallery at webpage) is fabulous! Simply put a wonderful software.
+          </span>
+          <i class="fa fa-quote-right" aria-hidden="true"></i>
+          <br><br>
+          Recommand nanogallery to other people:
+          <i class="fa fa-check" aria-hidden="true" style="color:#080;"></i> <span class="ngy2_review_card_user_label">Yes</span>
+          <br>
+          If you could change one thing what would it be: 
+          <span class="ngy2_review_card_user_label">
+            I can not name anything. 
+          </span>
+        </div>
+        <div class="col-md-2">&nbsp;</div>
+      </div>
+      <br><br><br><br><br>
+
+
+
+      
+      <div class="row equal">
+        <div class="col-md-2">&nbsp;</div>
+        <div class="col-md-2 text-center ngy2_review_card_title">
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <br>
+          2017-07-10
+          <br><br>
+            <img src="reviews/razvan_nuc_org.jpg" style="max-width:60px;">
+            <br><br>
+          <span class="ngy2_label">
+            <a href="http://amazephotography.ro/fashion-photography.html" target="_blank">Razvan Nuc</a>
+          </span>
+        </div>
+        <div class="col-md-6 ngy2_review_card_body">
+          <i class="fa fa-quote-left" aria-hidden="true"></i>
+          <span class="ngy2_review_card_user_label">
+            Just incredible!
+          </span>
+          <i class="fa fa-quote-right" aria-hidden="true"></i>
+          <br><br>
+          Recommand nanogallery to other people:
+          <i class="fa fa-check" aria-hidden="true" style="color:#080;"></i> <span class="ngy2_review_card_user_label">Yes</span>
+          <br>
+          If you could change one thing what would it be: 
+          <span class="ngy2_review_card_user_label">
+            Animations.
+          </span>
+        </div>
+        <div class="col-md-2">&nbsp;</div>
+      </div>
+      <br><br><br><br><br>
+
+
+
+      
+
+
+
+      <div class="row equal">
+        <div class="col-md-2">&nbsp;</div>
+        <div class="col-md-2 text-center ngy2_review_card_title">
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <br>
+          2017-06-18
+          <br><br>
+          <i class="fa fa-user fa-3x" aria-hidden="true"></i>
+          <br><br>
+          <span class="ngy2_label">
+            <a href="http://humus-macht-leben.com/bilder/" target="_blank">Peter Polz</a>
+          </span>
+        </div>
+        <div class="col-md-6 ngy2_review_card_body">
+          <i class="fa fa-quote-left" aria-hidden="true"></i>
+          <span class="ngy2_review_card_user_label">
+            Best gallery I every get
+          </span>
+          <i class="fa fa-quote-right" aria-hidden="true"></i>
+          <br><br>
+          Recommand nanogallery to other people:
+          <i class="fa fa-check" aria-hidden="true" style="color:#080;"></i> <span class="ngy2_review_card_user_label">Yes</span>
+          <br>
+          If you could change one thing what would it be: 
+          <span class="ngy2_review_card_user_label">
+            More intuitive customization.
+          </span>
+        </div>
+        <div class="col-md-2">&nbsp;</div>
+      </div>
+      <br><br><br><br><br>
+
+
+
+      
+
+      <div class="row equal">
+        <div class="col-md-2">&nbsp;</div>
+        <div class="col-md-2 text-center ngy2_review_card_title">
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <br>
+          2017-06-15
+          <br><br>
+          <img src="reviews/jack_org.jpg" style="max-width:60px;">
+          <br><br>
+          <span class="ngy2_label">
+            <a href="http://www.radiopratica.com" target="_blank">Jack</a>
+          </span>
+        </div>
+        <div class="col-md-6 ngy2_review_card_body">
+          <i class="fa fa-quote-left" aria-hidden="true"></i>
+          <span class="ngy2_review_card_user_label">
+            So,I said that Nano is a wonderful experience about pic galleries ! Goooood work,my friends !
+          </span>
+          <i class="fa fa-quote-right" aria-hidden="true"></i>
+          <br><br>
+          Recommand nanogallery to other people:
+          <i class="fa fa-check" aria-hidden="true" style="color:#080;"></i> <span class="ngy2_review_card_user_label">Yes</span>
+          <br>
+          If you could change one thing what would it be: 
+          <span class="ngy2_review_card_user_label">
+            I don't know but I like so much everything !
+          </span>
+        </div>
+        <div class="col-md-2">&nbsp;</div>
+      </div>
+      <br><br><br><br><br>
+
+
+
+      
+      <div class="row equal">
+        <div class="col-md-2">&nbsp;</div>
+        <div class="col-md-2 text-center ngy2_review_card_title">
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <br>
+          2017-05-28
+          <br><br>
+          <img src="reviews/piet_hazewinkel_org.png" style="max-width:60px;">
+          <br><br>
+          <span class="ngy2_label">
+            <a href="http://francetastique.eu" target="_blank">Piet Hazewinkel</a>
+          </span>
+        </div>
+        <div class="col-md-6 ngy2_review_card_body">
+          <i class="fa fa-quote-left" aria-hidden="true"></i>
+          <span class="ngy2_review_card_user_label">
+            I like nanogallery2 because of the many options to show your pictures.
+          </span>
+          <i class="fa fa-quote-right" aria-hidden="true"></i>
+          <br><br>
+          Recommand nanogallery to other people:
+          <i class="fa fa-check" aria-hidden="true" style="color:#080;"></i> <span class="ngy2_review_card_user_label">Yes</span>
+          <br>
+          If you could change one thing what would it be: 
+          <span class="ngy2_review_card_user_label">
+            To get more freedom to host your own pictures
+          </span>
+        </div>
+        <div class="col-md-2">&nbsp;</div>
+      </div>
+      <br><br><br><br><br>
+
+
+
+      
+      <div class="row equal">
+        <div class="col-md-2">&nbsp;</div>
+        <div class="col-md-2 text-center ngy2_review_card_title">
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <br>
+          2017-05-28
+          <br><br>
+          <img src="reviews/engoku_joseph_org.jpg" style="max-width:60px;">
+          <br><br>
+          <span class="ngy2_label">
+            <a href="http://www.ntungamoyouthfoundation.org/gallery.php" target="_blank">Engoku Joseph</a>
+          </span>
+        </div>
+        <div class="col-md-6 ngy2_review_card_body">
+          <i class="fa fa-quote-left" aria-hidden="true"></i>
+          <span class="ngy2_review_card_user_label">
+            This thing is just wow i no longer get to worry about galleries it has it all !
+          </span>
+          <i class="fa fa-quote-right" aria-hidden="true"></i>
+          <br><br>
+          Recommand nanogallery to other people:
+          <i class="fa fa-check" aria-hidden="true" style="color:#080;"></i> <span class="ngy2_review_card_user_label">Yes</span>
+          <br>
+          If you could change one thing what would it be: 
+          <span class="ngy2_review_card_user_label">
+            -
+          </span>
+        </div>
+        <div class="col-md-2">&nbsp;</div>
+      </div>
+      <br><br><br><br><br>
+
+
+
+      <div class="row equal">
+        <div class="col-md-2">&nbsp;</div>
+        <div class="col-md-2 text-center ngy2_review_card_title">
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_off fa fa-star fa-2x" aria-hidden="true"></i>
+          <br>
+          2017-05-14
+          <br><br>
+          <i class="fa fa-user fa-3x" aria-hidden="true"></i>
+          <br><br>
+          <span class="ngy2_label">
+            <a href="" target="_blank">Alex</a>
+          </span>
+        </div>
+        <div class="col-md-6 ngy2_review_card_body">
+          <i class="fa fa-quote-left" aria-hidden="true"></i>
+          <span class="ngy2_review_card_user_label">
+            An amazing amount of options, wow!
+          </span>
+          <i class="fa fa-quote-right" aria-hidden="true"></i>
+          <br><br>
+          Recommand nanogallery to other people:
+          <i class="fa fa-check" aria-hidden="true" style="color:#080;"></i> <span class="ngy2_review_card_user_label">Yes</span>
+          <br>
+          If you could change one thing what would it be: 
+          <span class="ngy2_review_card_user_label">
+            -
+          </span>
+        </div>
+        <div class="col-md-2">&nbsp;</div>
+      </div>
+      <br><br><br><br><br>
+
+
+
+      <div class="row equal">
+        <div class="col-md-2">&nbsp;</div>
+        <div class="col-md-2 text-center ngy2_review_card_title">
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <br>
+          2017-03-21
+          <br><br>
+          <i class="fa fa-user fa-3x" aria-hidden="true"></i>
+          <br><br>
+          <span class="ngy2_label">
+            <a href="http://leonovaphoto.ru/" target="_blank">Sergey</a>
+          </span>
+        </div>
+        <div class="col-md-6 ngy2_review_card_body">
+          <i class="fa fa-quote-left" aria-hidden="true"></i>
+          <span class="ngy2_review_card_user_label">
+            Thanks for your great job
+          </span>
+          <i class="fa fa-quote-right" aria-hidden="true"></i>
+          <br><br>
+          Recommand nanogallery to other people:
+          <i class="fa fa-check" aria-hidden="true" style="color:#080;"></i> <span class="ngy2_review_card_user_label">Yes</span>
+          <br>
+          If you could change one thing what would it be: 
+          <span class="ngy2_review_card_user_label">
+            Would connect Yandex.photos (https://fotki.yandex.ru/next/)
+          </span>
+        </div>
+        <div class="col-md-2">&nbsp;</div>
+      </div>
+      <br><br><br><br><br>
+
+
+
+      <div class="row equal">
+        <div class="col-md-2">&nbsp;</div>
+        <div class="col-md-2 text-center ngy2_review_card_title">
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_off fa fa-star fa-2x" aria-hidden="true"></i>
+          <br>
+          2017-03-07
+          <br><br>
+          <i class="fa fa-user fa-3x" aria-hidden="true"></i>
+          <br><br>
+          <span class="ngy2_label">
+            <a href="http://chasse.autreches.free.fr" target="_blank">Jean-Jacques Bertin</a>
+          </span>
+        </div>
+        <div class="col-md-6 ngy2_review_card_body">
+          <i class="fa fa-quote-left" aria-hidden="true"></i>
+          <span class="ngy2_review_card_user_label">
+            1&deg; avantage, l'aspect Responsive<br>
+            2&deg; Jolie pr&eacute;sentation des miniatures<br>
+            3&deg; Grandes possibilit&eacute;s de personnalisation
+          </span>
+          <i class="fa fa-quote-right" aria-hidden="true"></i>
+          <br><br>
+          Recommand nanogallery to other people:
+          <i class="fa fa-check" aria-hidden="true" style="color:#080;"></i> <span class="ngy2_review_card_user_label">Yes</span>
+          <br>
+          If you could change one thing what would it be: 
+          <span class="ngy2_review_card_user_label">
+            Parfait pour moi
+          </span>
+        </div>
+        <div class="col-md-2">&nbsp;</div>
+      </div>
+      <br><br><br><br><br>
+
+
+
+      
+      <div class="row equal">
+        <div class="col-md-2">&nbsp;</div>
+        <div class="col-md-2 text-center ngy2_review_card_title">
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <br>
+          2017-03-05
+          <br><br>
+          <i class="fa fa-user fa-3x" aria-hidden="true"></i>
+          <br><br>
+          <span class="ngy2_label">
+            <a href="" target="_blank">Walid</a>
+          </span>
+        </div>
+        <div class="col-md-6 ngy2_review_card_body">
+          <i class="fa fa-quote-left" aria-hidden="true"></i>
+          <span class="ngy2_review_card_user_label">
+            I like everything in it. 
+          </span>
+          <i class="fa fa-quote-right" aria-hidden="true"></i>
+          <br><br>
+          Recommand nanogallery to other people:
+          <i class="fa fa-check" aria-hidden="true" style="color:#080;"></i> <span class="ngy2_review_card_user_label">Yes</span>
+          <br>
+          If you could change one thing what would it be: 
+          <span class="ngy2_review_card_user_label">
+            -
+          </span>
+        </div>
+        <div class="col-md-2">&nbsp;</div>
+      </div>
+      <br><br><br><br><br>
+
+
+
+      
+      <div class="row equal">
+        <div class="col-md-2">&nbsp;</div>
+        <div class="col-md-2 text-center ngy2_review_card_title">
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+          <br>
+          2017-03-02
+          <br><br>
+          <i class="fa fa-user fa-3x" aria-hidden="true"></i>
+          <br><br>
+          <span class="ngy2_label">
+            <a href="https://www.avantilope.nl" target="_blank">Hans Looijen</a>
+          </span>
+        </div>
+        <div class="col-md-6 ngy2_review_card_body">
+          <i class="fa fa-quote-left" aria-hidden="true"></i>
+          <span class="ngy2_review_card_user_label">
+            Adjustable and useable in plain html/js/php. It is fully intergrated in the website.
+          </span>
+          <i class="fa fa-quote-right" aria-hidden="true"></i>
+          <br><br>
+          Recommand nanogallery to other people:
+          <i class="fa fa-check" aria-hidden="true" style="color:#080;"></i> <span class="ngy2_review_card_user_label">Yes</span>
+          <br>
+          If you could change one thing what would it be: 
+          <span class="ngy2_review_card_user_label">
+            -
+          </span>
+        </div>
+        <div class="col-md-2">&nbsp;</div>
+      </div>
+      <br><br><br><br><br>
+
+      <h2><i class="fa fa-quote-left" aria-hidden="true"></i> <span style="color:#000;">Many thanks to all reviewers for their valuable comments !!!</span> <i class="fa fa-quote-right" aria-hidden="true"></i> , <a href="https://github.com/Kris-B" target="_blank">Chris</a></h2>
+
+      
+    </div>
+
+  <!-- ######################## -->
+  <!-- ##### START FOOTER ##### -->
+  <!-- ######################## -->
+
+  <br><br><br><br><br><br><br><br>
+  <svg class="svg-diag" style="background-color:#fff;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10" preserveAspectRatio="none">
+    <polygon points="100 0 100 10 -50 10" style="fill:#1d1731;"/>
+  </svg>
+
+  <footer class="footer text-center lead" style="background-color:#1d1731;">
+    <div class="container" style="color:#fff;">
+      <div class="row text-right">
+        <a href="https://github.com/nanostudio-org/nanogallery2/tree/dev-gh-pages/src" class="btn btn-default btn-x" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> edit this page on github</a>
+      </div>
+      <br>
+      nanogallery2 by <a style="color:#fff;" href="http://brisbois.fr" itemprop="author">christophe brisbois</a>
+      
+      <a class="typeform-share link" style="color:#fff;" href="https://krisb1.typeform.com/to/AZEb6k" data-mode="1" target="_blank"><b>[contact form]</b></a>
+      <script>(function(){var qs,js,q,s,d=document,gi=d.getElementById,ce=d.createElement,gt=d.getElementsByTagName,id='typef_orm_share',b='https://s3-eu-west-1.amazonaws.com/share.typeform.com/';if(!gi.call(d,id)){js=ce.call(d,'script');js.id=id;js.src=b+'share.js';q=gt.call(d,'script')[0];q.parentNode.insertBefore(js,q)}})()</script>
+      <br><br>
+    </div>
+  </footer>
+  </span>
+</body>
+</html>
+
