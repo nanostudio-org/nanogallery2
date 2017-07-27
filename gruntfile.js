@@ -88,6 +88,18 @@ module.exports = function(grunt) {
           ],
           dest: 'build/quickstart.html'
         },
+        reviews: {
+          src: [
+            'template/header-1.html',
+            'src/reviews_meta.html',
+            'template/header-2.html',
+            'template/header-3.html',
+            'template/logo.html',
+            'src/reviews.html',
+            'template/footer.html'
+          ],
+          dest: 'build/reviews.html'
+        },
         demonstration: {
           src: [
             'template/header-1.html',
