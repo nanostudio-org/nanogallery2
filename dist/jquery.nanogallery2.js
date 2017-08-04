@@ -1,4 +1,4 @@
-/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2017-07-27 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2017-08-04 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /**!
  * @preserve nanogallery2 - javascript image gallery
  * Homepage: http://nanogallery2.nanostudio.org
@@ -20,11 +20,17 @@
  */
 
 /*
-v1.4.1 BETA - DO NOT USE
-- new: thumbnail image dominant color now used in stacks
-- new: option 'viewerImageDisplay' (use value 'upscale' to upscale small images)
+v1.5.0 BETA - DO NOT USE
+- new: image slider on last thumbnail (see option 'thumbnailLastImgSliderDelay')
+- new: thumbnail image dominant color in stacks
+- new: thumbnail gradient color during image download (see galleryTheme)
+- new: lightbox option 'viewerImageDisplay'
+  Possible values : 'upscale' to upscale small images, 'useDevicePixelRatio' to use highest quality on high DPI screen like retina
 - enhanced: lightbox image zoom
+- changed: rename option 'colorScheme' to 'galleryTheme'
+- changed: rename option 'colorSchemeViewer' to 'viewerTheme'
 - fixed: #51 - thumbnail to navigate up not displayed correctly
+- fixed: Flickr incorrect image resolution
 - fixed: thumbnail to navigate up displayed even without parent album
 - fixed: option 'photoset' not a real alias of 'album'
 - fixed: sorting for images/albums defined with HTML markup or javascript
@@ -32,23 +38,23 @@ v1.4.1 BETA - DO NOT USE
 - fixed: cursor pointer when lightbox disabled
 - fixed: endless loop if image/gallery in location hash does not exit (markup or javascript content)
 - misc performance enhancements
+  
+Important note: options colorScheme and colorSchemeViewer have been renamed.
+
 
 TODO:
-- changer logo portable (violet)
+- slider on last thumbnail and resize event
 - API: custom sort
 - Thumbnail icon : sous le texte, en bas de l'imagette (1 nouvelle ligne sous le texte)
-- carr� autour num page pagination
 - viewer : d�marrer pre-chargement des 2 images en d�call� (plus de bande passante pour la principale)
 - nanophotosprovider: get all pictures from all albums
-- last thumbnail +N -> slide next images on it (withouthover effect)
 - viewer : click outside image to close 
 - viewer : retrieve max zoom factor (3 at this time)
 - font size in viewerColorScheme? change option name -> styleProfil
-- colorScheme : rond + couleur  autour thumbnail tool
 - thumbnail tools:
     - plus de possibilit� de localisation en particulier par rapport au label
     - rating avec 5 �toiles
-    
+- pan down close lightbox    
 
 */ 
  
@@ -1043,8 +1049,8 @@ TODO:
     breadcrumbOnlyCurrentLevel :  true,
     breadcrumbHideIcons :         true,
     theme :                       'nGY2',
-    colorScheme :                 'dark',
-    colorSchemeViewer :           'dark',
+    galleryTheme :                'dark',
+    viewerTheme :                 'dark',
     items :                       null,
     itemsBaseURL :                '',
     thumbnailSelectable :         false,
@@ -1119,6 +1125,7 @@ TODO:
     thumbnailL1StacksScale :      null,
     thumbnailDisplayOutsideScreen: false,
     thumbnailWaitImageLoaded:     true,
+    thumbnailLastImgSliderDelay:  2000,
     galleryBuildInit2 :           '',
     portable :                    false,
     
@@ -1895,14 +1902,15 @@ TODO:
       $imgPreloader:              [],
       itemsDisplayed :            0, // number of currently displayed thumbnails
       firstDisplay :              true,
-      navigationBar :             // content of the navigation bar (for breadcrumb and filter tags)
-        { displayed:              false,
-        $newContent:              '' },
-      cache :                     // cached data
-        { viewport:               null,
+      navigationBar : {           // content of the navigation bar (for breadcrumb and filter tags)
+        displayed:                false,
+        $newContent:              ''
+      },
+      cache : {                   // cached data
+        viewport:                 null,
         containerOffset:          null,
         areaWidth:                100         // available area width
-        },
+      },
       nbSelected :                0, // number of selected items
       pagination :                { currentPage: 0 }, // pagination data
       lastFullRow :               -1, // number of the last row without holes
@@ -1915,7 +1923,19 @@ TODO:
       albumSearch:                '',     // current search string -> title (used to filter the thumbnails on screen)
       albumSearchTags:            '',     // current search string -> tags
       lastZIndex:                 0,      // used to put a thumbnail on top of all others (for exemple for scale hover effect)
-      lastRandomValue:            0
+      lastRandomValue:            0,
+      lastTn : {
+        startIdx:   0,
+        startItem:  null,
+        currentIdx: 0,
+        initiated:  false,
+        timerID:    0,
+        enabled:    false
+      },
+      NGY2Item: function( idx ) {   // returns a NGY2Item
+        var i= G.GOM.items[idx].thumbnailIdx;
+        return G.I[i]
+      }
     };
     
     // One GOM item (thumbnail)
@@ -1933,6 +1953,7 @@ TODO:
       this.displayed =            false;
       this.neverDisplayed =       true;
       this.inDisplayArea =        false;
+     
     }
     
     //------------------------
@@ -2005,7 +2026,7 @@ TODO:
       swipePosX:          0,      // current horizontal swip position
       panPosX:            0,      // manual pan position
       panPosY:            0,
-      colorSchemeLabel:   '',
+      viewerTheme:        '',
       timeImgChanged:     0,
       ImageLoader: {
         // inspired by ROB - http://stackoverflow.com/users/226507/rob
@@ -2104,26 +2125,26 @@ TODO:
     
     
     // Color schemes - Gallery
-    G.colorScheme_dark = {
+    G.galleryTheme_dark = {
       navigationBar :         { background: 'none', borderTop: '', borderBottom: '', borderRight: '', borderLeft: '' },
       navigationBreadcrumb :  { background: '#111', color: '#fff', colorHover: '#ccc', borderRadius: '4px' },
       navigationFilter :      { color: '#ddd', background: '#111', colorSelected: '#fff', backgroundSelected: '#111', borderRadius: '4px' },
-      thumbnail :             { background: '#444', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#aaa' },
+      thumbnail :             { background: '#444', backgroundImage: 'linear-gradient(315deg, #111 0%, #667 90%)', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#aaa' },
       thumbnailIcon :         { padding: '5px', color: '#fff' },
-      pagination :            { background: '#111', backgroundSelected: '#666', color: '#fff', borderRadius: '4px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
+      pagination :            { background: '#181818', backgroundSelected: '#666', color: '#fff', borderRadius: '2px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
     };
 
-    G.colorScheme_light = {
+    G.galleryTheme_light = {
       navigationBar :         { background: 'none', borderTop: '', borderBottom: '', borderRight: '', borderLeft: '' },
       navigationBreadcrumb :  { background: '#eee', color: '#000', colorHover: '#333', borderRadius: '4px' },
       navigationFilter :      { background: '#eee', color: '#222', colorSelected: '#000', backgroundSelected: '#eee', borderRadius: '4px' },
-      thumbnail :             { background: '#444', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#888' },
+      thumbnail :             { background: '#444', backgroundImage: 'linear-gradient(315deg, #111 0%, #667 90%)', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#888' },
       thumbnailIcon :         { padding: '5px', color: '#fff' },
-      pagination :            { background: '#eee', backgroundSelected: '#aaa', color: '#000', borderRadius: '4px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
+      pagination :            { background: '#eee', backgroundSelected: '#aaa', color: '#000', borderRadius: '2px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
     };
 
     // Color schemes - lightbox
-    G.colorSchemeViewer_dark = {
+    G.viewerTheme_dark = {
       background:             '#000',
       imageBorder:            'none',
       imageBoxShadow:         'none',
@@ -2132,7 +2153,7 @@ TODO:
       barColor:               '#eee',
       barDescriptionColor:    '#aaa'
     };
-    G.colorSchemeViewer_border = {
+    G.viewerTheme_border = {
       background:             'rgba(1, 1, 1, 0.75)',
       imageBorder:            '4px solid #f8f8f8',
       imageBoxShadow:         '#888 0px 0px 20px',
@@ -2141,7 +2162,7 @@ TODO:
       barColor:               '#eee',
       barDescriptionColor:    '#aaa'
     };
-    G.colorSchemeViewer_light = {
+    G.viewerTheme_light = {
       background:             '#f8f8f8',
       imageBorder:            'none',
       imageBoxShadow:         'none',
@@ -2177,6 +2198,13 @@ TODO:
       DefineVariables();
       SetPolyFills();
       BuildSkeleton();
+      
+      if( typeof G.O.colorScheme  !== 'undefined' ) {
+          NanoAlert(G, 'option colorScheme has been renamed. Please rename it to galleryTheme.' );
+      }
+      if( typeof G.O.colorSchemeViewer  !== 'undefined' ) {
+          NanoAlert(G, 'option colorSchemeViewer has been renamed. Please rename it to viewerTheme.' );
+      }
       SetGlobalEvents();
       
       // check if only one specific album will be used
@@ -2775,6 +2803,10 @@ TODO:
     function GalleryRender( albumIdx ) {
 
       TriggerCustomEvent('galleryRenderStart');
+      
+      clearTimeout(G.GOM.lastTn.timerID);
+      G.GOM.lastTn.enabled=false;
+      
       if( G.O.fnGalleryRenderStart !== null ) {
         if( typeof G.O.fnGalleryRenderStart == 'function' ) {
           G.O.fnGalleryRenderStart(albumIdx);
@@ -3673,13 +3705,14 @@ TODO:
 
       if( G.tn.opt.Get('displayTransition') == 'NONE' ) {
         G.galleryResizeEventEnabled=true;
+        GalleryLastThumbnailSlideImage();  // image slider on last displayed thumbnail
         TriggerCustomEvent('galleryDisplayed');
       }
       else {
         setTimeout(function() {
           // change value after the end of the display transistion of the newly built thumbnails
           G.galleryResizeEventEnabled=true;
-          // GalleryLastThumbnailSlideImage();  -- EXPERIMENTAL
+          GalleryLastThumbnailSlideImage();  // image slider on last displayed thumbnail
           TriggerCustomEvent('galleryDisplayed');
         }, nbBuild * G.tn.opt.Get('displayInterval'));
       }
@@ -3748,7 +3781,7 @@ TODO:
                   attachment: { $e: item.$elt },
                   duration:   300,
                   delay:      cnt * G.tn.opt.Get('displayInterval'),
-                  easing:     'easeOutQuart',
+                  easing:     'easeInOutQuart',
                   step:       function (state, att) {
                     att.$e.css(state);
                   },
@@ -3813,36 +3846,218 @@ TODO:
             nb--;
           }
         }
-        if( G.O.thumbnailOpenImage && nb > 0 ) {
-          item.$getElt('.nGY2GThumbnailIconsFullThumbnail').html('+'+nb);
+
+        if( nb > 0 ) {
+          if( G.O.thumbnailOpenImage || G.O.thumbnailLastImgSliderDelay > 0  ) {
+            item.$getElt('.nGY2GThumbnailIconsFullThumbnail').html('+'+nb);
+          }
+
+          if( G.layout.engine == 'GRID' && G.GOM.lastTn.startItem != G.GOM.NGY2Item(GOMidx) ) {
+            // image slider on last displayed thumbnail
+            G.GOM.lastTn.startIdx=GOMidx;
+            G.GOM.lastTn.startItem=G.GOM.NGY2Item(GOMidx);
+            G.GOM.lastTn.nextIdx=GOMidx;
+            G.GOM.lastTn.currentIdx=GOMidx;
+            G.GOM.lastTn.initiated=false;
+            G.GOM.lastTn.enabled=true;
+          }
         }
         G.GOM.lastDisplayedIdx=GOMidx;
       }
 
     }
     
-    // replace image on last thumbnails with not displayed ones (mode ROWS or FULLCONTENT with latsLineFull)
-    // TODO - experimental
+    // ---------------------
+    // replace image on last thumbnails with not displayed ones (mode ROWS or FULLCONTENT with galleryLastRowFull enabled)
     function GalleryLastThumbnailSlideImage() {
-      G.GOM.thumbnailAutoSlideIdx=G.GOM.lastDisplayedIdx;
-      GalleryLastThumbnailSlideImage2();
+
+      if( G.O.thumbnailLastImgSliderDelay == 0 || G.GOM.lastTn.initiated || !G.GOM.lastTn.enabled ) {
+        return;
+      }
+      
+      G.GOM.lastTn.initiated=true;
+      
+      var item=G.GOM.lastTn.startItem;
+      if( item.$getElt('.nGY2TnPreview2').length == 0 ) {
+        // create new DIVs for next item's image and blurred preview
+        item.$getElt('.nGY2TnPreview').clone().removeClass('nGY2TnPreview').addClass('nGY2TnPreview2').appendTo(item.$getElt('.nGY2GThumbnailImage'));
+        item.$getElt('.nGY2TnImg').clone().removeClass('nGY2TnImg').addClass('nGY2TnImg2').appendTo(item.$getElt('.nGY2GThumbnailImage'));
+        item.$getElt('.nGY2TnPreview2', true).css({ opacity: 1 });
+        item.$getElt('.nGY2TnImg2').css({ opacity: 1 });
+        item.CSSTransformSet('.nGY2TnPreview2', 'translateX', item.thumbImg().width +'px');
+        item.CSSTransformApply( '.nGY2TnPreview2' );
+        item.CSSTransformSet('.nGY2TnImg2', 'translateX', item.thumbImg().width +'px');
+        item.CSSTransformApply( '.nGY2TnImg2' );
+      }
+
+      GalleryLastThumbnailSlideImageSetNext();
+      
+      clearTimeout(G.GOM.lastTn.timerID);
+      G.GOM.lastTn.timerID=setTimeout(function(){ GalleryLastThumbnailSlideImage2( false ) }, G.O.thumbnailLastImgSliderDelay);
+    }
+
+    
+    function GalleryLastThumbnailSlideImageSetNext() {
+
+      G.GOM.lastTn.nextIdx++;
+      if( G.GOM.lastTn.nextIdx >= G.GOM.items.length ) {
+        G.GOM.lastTn.nextIdx=G.GOM.lastTn.startIdx;
+      }
+      
+      // new image
+      var newItem=G.GOM.NGY2Item(G.GOM.lastTn.nextIdx);
+      var imgBlurred=G.emptyGif;
+      if( newItem.imageDominantColors != null ) {
+        imgBlurred=newItem.imageDominantColors;
+      }
+      G.GOM.lastTn.startItem.$getElt('.nGY2TnPreview2').attr('src',imgBlurred);
+      G.GOM.lastTn.startItem.$getElt('.nGY2TnImg2').attr('src', newItem.thumbImg().src );
+      
+      GalleryLastThumbnailSlideSetImage(newItem, '.nGY2TnImg2', '.nGY2TnPreview2');
+
+    }
+    
+    function GalleryLastThumbnailSlideSetImage( newItem, img, imgPreview ) {
+      var item=G.GOM.lastTn.startItem;
+    
+      if( G.layout.engine == 'GRID' ) {
+        // fixed width and height
+        // var imgSize='max-width:'+G.tn.settings.getW()+'px;max-height:'+G.tn.settings.getH()+'px;'
+        // var imgBWidth='';
+        
+        if( G.tn.opt.Get('crop') == true && newItem.thumbImg().height > 0 && newItem.thumbImg().width > 0 ) {
+
+        // crop images => no black border
+        if( newItem.thumbImg().height > newItem.thumbImg().width ) {
+            // portrait
+            // imgSize='width:'+G.tn.settings.getW()+'px;';
+            item.$getElt(imgPreview).css({ 'width': G.tn.settings.getW()+'px;' });
+            item.$getElt(img).css({ 'width': G.tn.settings.getW()+'px;' });
+          }
+          else {
+            // landscape
+
+            // step 1: adjust height
+            var r2=G.tn.settings.getH()/newItem.thumbImg().height;
+            
+            var newH= G.tn.settings.getH();
+            var newW= newItem.thumbImg().width*r2;
+            
+            // step 2: check if width needs to be adjusted
+            if( newW >= G.tn.settings.getW() ) {
+              // no adjustement
+              var d=-(newItem.thumbImg().width*r2-G.tn.settings.getW()) / 2;
+              // imgSize='height:'+G.tn.settings.getH()+'px;left:'+d+'px;';
+              item.$getElt(imgPreview).css({ 'height': G.tn.settings.getH()+'px;', 'left': d+'px;', 'width': newItem.thumbImg().width+'px;' });
+              item.$getElt(img).css({ 'height': G.tn.settings.getH()+'px;', 'left': d+'px;' });
+            }
+            else {
+              // yes, adjust width
+              // after scaling to adjust the height, the width is too narrow => upscale again to fit width
+              var rW=G.tn.settings.getW()/newItem.thumbImg().width;
+              var w=newItem.thumbImg().width*rW;
+              item.$getElt(imgPreview).css({ 'width': w+'px;' });
+              item.$getElt(img).css({ 'width': w+'px;' });
+            }
+          }
+        }
+        else {
+          item.$getElt(imgPreview).css({ 'max-width': G.tn.settings.getW()+'px;', 'max-height': G.tn.settings.getH()+'px;' });
+          item.$getElt(img).css({ 'max-width': G.tn.settings.getW()+'px;', 'max-height': G.tn.settings.getH()+'px;' });
+        }
+      }      
     }
     
     function GalleryLastThumbnailSlideImage2() {
       
-      G.GOM.thumbnailAutoSlideIdx++;
-      if( G.GOM.thumbnailAutoSlideIdx >= G.GOM.items.length ) {
-        G.GOM.thumbnailAutoSlideIdx=G.GOM.lastDisplayedIdx;
+      var item=G.GOM.lastTn.startItem;
+      if( item.$getElt() != null ) {
+
+        var context = {};
+        context.item = item;
+
+        // animation
+        var tweenable = new NGTweenable();
+        context.tweenable=tweenable;
+        tweenable.tween({
+          attachment:   context,
+          from:         { 'left': item.thumbImg().width },
+          to:           { 'left': 0 },
+          duration:     1000,
+          delay:        0,
+          easing:       'easeInOutQuart',
+          
+          step: function (state, att) {
+            if( att.item.$getElt() == null ) {
+              // the thumbnail may be destroyed since the start of the animation
+              att.tweenable.stop(false);
+              return;
+            }
+
+            // if( att.G.VOM.viewerDisplayed ) {
+              // att.tweenable.stop(false);
+              // return;
+            // }
+            
+            // current image
+            att.item.CSSTransformSet('.nGY2TnPreview', 'translateX', -(att.item.thumbImg().width-state.left)+'px');
+            att.item.CSSTransformApply( '.nGY2TnPreview' );
+            att.item.CSSTransformSet('.nGY2TnImg', 'translateX', -(att.item.thumbImg().width-state.left)+'px');
+            att.item.CSSTransformApply( '.nGY2TnImg' );
+            // new image
+            att.item.CSSTransformSet('.nGY2TnPreview2', 'translateX', state.left+'px');
+            att.item.CSSTransformApply( '.nGY2TnPreview2' );
+            att.item.CSSTransformSet('.nGY2TnImg2', 'translateX', state.left+'px');
+            att.item.CSSTransformApply( '.nGY2TnImg2' );
+            
+          },
+          finish: function (state, att) {
+            if( att.item.$getElt() == null ) {
+              // the thumbnail may be destroyed since the start of the animation
+              return;
+            }
+            // if( att.G.VOM.viewerDisplayed ) {
+              // return;
+            // }
+            
+            att.item.$getElt('.nGY2TnPreview').attr('src', att.item.$getElt('.nGY2TnPreview2').attr('src') );
+            att.item.$getElt('.nGY2TnImg').attr('src', att.item.$getElt('.nGY2TnImg2').attr('src') );
+            
+            GalleryLastThumbnailSlideSetImage(att.item, '.nGY2TnImg', '.nGY2TnPreview');
+
+            att.item.CSSTransformSet('.nGY2TnPreview', 'translateX', '0px');
+            att.item.CSSTransformApply( '.nGY2TnPreview' );
+            att.item.CSSTransformSet('.nGY2TnImg', 'translateX', '0px');
+            att.item.CSSTransformApply( '.nGY2TnImg' );
+            att.item.CSSTransformSet('.nGY2TnPreview2', 'translateX', item.thumbImg().width +'px');
+            att.item.CSSTransformApply( '.nGY2TnPreview2' );
+            att.item.CSSTransformSet('.nGY2TnImg2', 'translateX', item.thumbImg().width +'px');
+            att.item.CSSTransformApply( '.nGY2TnImg2' );
+
+            G.GOM.lastTn.currentIdx=G.GOM.lastTn.nextIdx;
+            
+            // set title and description
+            var newItem=G.GOM.NGY2Item(G.GOM.lastTn.currentIdx);
+            if( G.O.thumbnailLabel.get('display') == true ) {
+              var icons=G.O.icons.thumbnailAlbum;
+              if( newItem.kind != 'album' ) {
+                icons=G.O.icons.thumbnailImage;
+              }
+              att.item.$getElt('.nGY2GThumbnailTitle').html(icons + getThumbnailTitle(newItem));
+              att.item.$getElt('.nGY2GThumbnailDescription').html(icons + getTumbnailDescription(newItem));
+            }
+            
+            GalleryLastThumbnailSlideImageSetNext();
+            
+            clearTimeout(G.GOM.lastTn.timerID);
+            G.GOM.lastTn.timerID=setTimeout(function(){ GalleryLastThumbnailSlideImage2( false ) }, G.O.thumbnailLastImgSliderDelay);
+          }
+        });
+        
+        
       }
-      var idx=      G.GOM.items[G.GOM.lastDisplayedIdx].thumbnailIdx;
-      var item=     G.I[idx];
-      console.dir(G.GOM.items[G.GOM.thumbnailAutoSlideIdx]);      
-      if( item.$getElt('.nGY2TnImg') != null ) {
-        console.dir(G.I[G.GOM.items[G.GOM.thumbnailAutoSlideIdx].thumbnailIdx].thumbImg().src);
-        item.$getElt('.nGY2TnImg').attr('src',G.I[G.GOM.items[G.GOM.thumbnailAutoSlideIdx].thumbnailIdx].thumbImg().src);
-      }
-        setTimeout(function(){ GalleryLastThumbnailSlideImage2( false ) }, 3000);
     }
+    
     
     
    
@@ -3955,7 +4170,7 @@ TODO:
         imgBlurred=item.imageDominantColors;
       }
       // dominant color -> background color
-      var bg=''
+      var bg='';
       if( item.imageDominantColor != null ) {
         bg='background:'+item.imageDominantColor+';';
       }
@@ -3965,6 +4180,7 @@ TODO:
         op='opacity:0;';
       }
 
+      // thumbnail containers 
       newElt[newEltIdx++]=ThumbnailBuildStacks(bg)+'<div class="nGY2GThumbnail" style="display:none;opacity:0;'+mp+'"><div class="nGY2GThumbnailSub '+(G.O.thumbnailSelectable && item.selected?"nGY2GThumbnailSubSelected":"")+'">';
       
       // image
@@ -3995,7 +4211,7 @@ TODO:
               imgSize='width:'+G.tn.settings.getW()+'px;';
             }
             else {
-              // paysage
+              // landscape
 
               // step 1: adjust height
               var r2=G.tn.settings.getH()/item.thumbImg().height;
@@ -4043,11 +4259,12 @@ TODO:
         newElt[newEltIdx++]= '  </div>';
       }
 
-      // Tool layer
+      // Tools layer
       newElt[newEltIdx++]=ThumbnailBuildTools(item, lastOne);
       
-      newElt[newEltIdx++]='</div>';
-      newElt[newEltIdx++]='</div>';
+      
+      // close containers
+      newElt[newEltIdx++]='</div></div>';
       
       var $newDiv =jQuery(newElt.join('')).appendTo(G.$E.conTn);
 
@@ -5467,7 +5684,7 @@ TODO:
     
     /** @function DefineVariables */
     function DefineVariables() {
-
+    
       // change 'picasa' to 'google' for compatibility reason
       if( G.O.kind.toUpperCase() == 'PICASA' ) {
         G.O.kind='google2';
@@ -6054,12 +6271,12 @@ TODO:
       for( var i=0; i< effects.length; i++ ) {
         switch( effects[i].name.toUpperCase() ) {
           case 'BORDERLIGHTER':
-            var color=tinycolor(ColorSchemeGetCurrent().thumbnail.borderColor);
+            var color=tinycolor(GalleryThemeGetCurrent().thumbnail.borderColor);
             name='thumbnail_borderColor_'+color.toRgbString()+'_'+color.lighten(50).toRgbString();
             newEffects.push(ThumbnailHoverEffectExtract(name, effects[i]));
             break;
           case 'BORDERDARKER':
-            var color=tinycolor(ColorSchemeGetCurrent().thumbnail.borderColor);
+            var color=tinycolor(GalleryThemeGetCurrent().thumbnail.borderColor);
             name='thumbnail_borderColor_'+color.toRgbString()+'_'+color.darken(50).toRgbString();
             newEffects.push(ThumbnailHoverEffectExtract(name, effects[i]));
             break;
@@ -6491,62 +6708,62 @@ TODO:
 
 
     //
-    function ColorSchemeGetCurrent() {
+    function GalleryThemeGetCurrent() {
       var cs=null;
-      switch(toType(G.O.colorScheme)) {
+      switch(toType(G.O.galleryTheme)) {
         case 'object':    // user custom color scheme object 
-          cs=G.colorScheme_dark;  // default color scheme
-          jQuery.extend(true,cs,G.O.colorScheme);
+          cs=G.galleryTheme_dark;  // default color scheme
+          jQuery.extend(true,cs,G.O.galleryTheme);
           break;
         case 'string':    // name of an internal defined color scheme
-          switch( G.O.colorScheme ) {
+          switch( G.O.galleryTheme ) {
             case 'light':
-              cs=G.colorScheme_light;
+              cs=G.galleryTheme_light;
               break;
             case 'default':
             case 'dark':
             case 'none':
             default:
-              cs=G.colorScheme_dark;
+              cs=G.galleryTheme_dark;
           }
           break;
         default:
-          cs=G.colorScheme_dark;
+          cs=G.galleryTheme_dark;
       }
       return cs;
     }
     
     // ##### BREADCRUMB/THUMBNAIL COLOR SCHEME #####
-    function SetColorScheme() {
+    function SetGalleryTheme() {
       var cs=null;
-      var colorSchemeLabel='';
-      switch(toType(G.O.colorScheme)) {
+      var galleryTheme='';
+      switch(toType(G.O.galleryTheme)) {
         case 'object':    // user custom color scheme object 
-          cs=G.colorScheme_dark;  // default color scheme
-          jQuery.extend(true,cs,G.O.colorScheme);
-          colorSchemeLabel='nanogallery_colorscheme_custom_'+G.baseEltID;
+          cs=G.galleryTheme_dark;  // default color scheme
+          jQuery.extend(true,cs,G.O.galleryTheme);
+          galleryTheme='nanogallery_gallerytheme_custom_'+G.baseEltID;
           break;
         case 'string':    // name of an internal defined color scheme
-          switch( G.O.colorScheme ) {
+          switch( G.O.galleryTheme ) {
             case 'light':
-              cs=G.colorScheme_light;
-              colorSchemeLabel='nanogallery_colorscheme_light_'+G.baseEltID;
+              cs=G.galleryTheme_light;
+              galleryTheme='nanogallery_gallerytheme_light_'+G.baseEltID;
               break;
             case 'default':
             case 'dark':
             case 'none':
             default:
-              cs=G.colorScheme_dark;
-              colorSchemeLabel='nanogallery_colorscheme_dark_'+G.baseEltID;
+              cs=G.galleryTheme_dark;
+              galleryTheme='nanogallery_gallerytheme_dark_'+G.baseEltID;
           }
           break;
         default:
-          NanoAlert(G, 'Error in colorScheme parameter.');
+          NanoAlert(G, 'Error in galleryTheme parameter.');
           return;
       }
 
       //var s1='.nanogallery_theme_'+G.O.theme+' ';
-      var s1='.' + colorSchemeLabel + ' ';
+      var s1='.' + galleryTheme + ' ';
     
       // navigation bar
       var s=s1+'.nGY2Navigationbar { background:'+cs.navigationBar.background+'; }'+'\n';
@@ -6569,8 +6786,8 @@ TODO:
       // thumbnails
       s+=s1+'.nGY2GThumbnail { background:'+cs.thumbnail.background+'; border-color:'+cs.thumbnail.borderColor+'; border-top-width:'+G.O.thumbnailBorderVertical+'px; border-right-width:'+G.O.thumbnailBorderHorizontal+'px; border-bottom-width:'+G.O.thumbnailBorderVertical+'px; border-left-width:'+G.O.thumbnailBorderHorizontal+'px;}'+'\n';
       s+=s1+'.nGY2GThumbnailStack { background:'+cs.thumbnail.stackBackground+'; }'+'\n';
-      s+=s1+'.nGY2GThumbnailImage { background:'+cs.thumbnail.background+'; }'+'\n';
-      s+=s1+'.nGY2GThumbnailAlbumUp { background:'+cs.thumbnail.background+'; color:'+cs.thumbnail.titleColor+'; }'+'\n';
+      s+=s1+'.nGY2GThumbnailImage { background:'+cs.thumbnail.background+'; background-image:'+cs.thumbnail.backgroundImage+'; }'+'\n';
+      s+=s1+'.nGY2GThumbnailAlbumUp { background:'+cs.thumbnail.background+'; background-image:'+cs.thumbnail.backgroundImage+'; color:'+cs.thumbnail.titleColor+'; }'+'\n';
       s+=s1+'.nGY2GThumbnailIconsFullThumbnail { color:'+cs.thumbnail.titleColor+'; }\n';
       s+=s1+'.nGY2GThumbnailLabel { background:'+cs.thumbnail.labelBackground+'; opacity:'+cs.thumbnail.labelOpacity+'; }'+'\n';
       s+=s1+'.nGY2GThumbnailImageTitle  { color:'+cs.thumbnail.titleColor+'; background-color:'+cs.thumbnail.titleBgColor+'; '+(cs.thumbnail.titleShadow =='' ? '': 'Text-Shadow:'+cs.thumbnail.titleShadow+';')+' }'+'\n';
@@ -6601,51 +6818,51 @@ TODO:
       s+=s1+'.nGY2GalleryMoreButtonAnnotation  { color:'+cs.thumbnail.titleColor+'; '+(cs.thumbnail.titleShadow =='' ? '': 'Text-Shadow:'+cs.thumbnail.titleShadow)+'; }\n';
       
       jQuery('head').append('<style id="ngycs_'+G.baseEltID+'">'+s+'</style>');
-      G.$E.base.addClass(colorSchemeLabel);
+      G.$E.base.addClass(galleryTheme);
 
     };
     
     // ##### VIEWER COLOR SCHEME #####
-    function SetColorSchemeViewer( ) {
+    function SetViewerTheme( ) {
 
-      if( G.VOM.colorSchemeLabel != '' ) {
-        G.VOM.$cont.addClass(G.VOM.colorSchemeLabel);
+      if( G.VOM.viewerThemeLabel != '' ) {
+        G.VOM.$cont.addClass(G.VOM.viewerTheme);
         return;
       }
 
       var cs=null;
-      switch(toType(G.O.colorSchemeViewer)) {
+      switch(toType(G.O.viewerTheme)) {
         case 'object':    // user custom color scheme object 
-          cs=G.colorSchemeViewer_dark;
-          jQuery.extend(true,cs,G.O.colorSchemeViewer);
-          G.VOM.colorSchemeLabel='nanogallery_colorschemeviewer_custom_'+G.baseEltID;
+          cs=G.viewerTheme_dark;
+          jQuery.extend(true,cs,G.O.viewerTheme);
+          G.VOM.viewerTheme='nanogallery_viewertheme_custom_'+G.baseEltID;
           break;
         case 'string':    // name of an internal defined color scheme
-          switch( G.O.colorSchemeViewer ) {
+          switch( G.O.viewerTheme ) {
             case 'none':
               return;
               break;
             case 'light':
-              cs=G.colorSchemeViewer_light;
-              G.VOM.colorSchemeLabel='nanogallery_colorschemeviewer_light_'+G.baseEltID;
+              cs=G.viewerTheme_light;
+              G.VOM.viewerTheme='nanogallery_viewertheme_light_'+G.baseEltID;
               break;
             case 'border':
-              cs=G.colorSchemeViewer_border;
-              G.VOM.colorSchemeLabel='nanogallery_colorschemeviewer_border_'+G.baseEltID;
+              cs=G.viewerTheme_border;
+              G.VOM.viewerTheme='nanogallery_viewertheme_border_'+G.baseEltID;
               break;
             case 'dark':
             case 'default':
-              cs=G.colorSchemeViewer_dark;
-              G.VOM.colorSchemeLabel='nanogallery_colorschemeviewer_dark_'+G.baseEltID;
+              cs=G.viewerTheme_dark;
+              G.VOM.viewerTheme='nanogallery_viewertheme_dark_'+G.baseEltID;
               break;
           }
           break;
         default:
-          NanoAlert(G, 'Error in colorSchemeViewer parameter.');
+          NanoAlert(G, 'Error in viewerTheme parameter.');
           return;
       }
 
-      var s1 = '.' + G.VOM.colorSchemeLabel + ' ';
+      var s1 = '.' + G.VOM.viewerTheme + ' ';
       var s = s1+'.nGY2Viewer { background:'+cs.background+'; }'+'\n';
       s += s1+'.nGY2ViewerImage { border:'+cs.imageBorder+'; box-shadow:'+cs.imageBoxShadow+'; }'+'\n';
       s += s1+'.nGY2Viewer .toolbarBackground { background:'+cs.barBackground+'; }'+'\n';
@@ -6656,7 +6873,7 @@ TODO:
       s += s1+'.nGY2Viewer .toolbar .label .title { color:'+cs.barColor+'; }'+'\n';
       s += s1+'.nGY2Viewer .toolbar .label .description { color:'+cs.barDescriptionColor+'; }'+'\n';
       jQuery('head').append('<style>'+s+'</style>');
-      G.VOM.$cont.addClass(G.VOM.colorSchemeLabel);
+      G.VOM.$cont.addClass(G.VOM.viewerTheme);
     };
 
     /** @function SetPolyFills */
@@ -6776,6 +6993,10 @@ TODO:
       }
       
       var idx=G.GOM.items[r.GOMidx].thumbnailIdx;
+      if( G.GOM.lastTn.enabled && G.GOM.lastTn.startIdx == r.GOMidx ) {
+        // slider on last image -> open the displayed image
+        idx=G.GOM.items[G.GOM.lastTn.currentIdx].thumbnailIdx;
+      }
       switch( r.action ) {
         case 'OPEN':
           ThumbnailOpen(idx, false);
@@ -7352,9 +7573,14 @@ TODO:
       // part 1: set the image size
       var zoomUserFactor = isCurrent == true ? G.VOM.zoom.userFactor : 1;
       
+      var dpr=1;
+      if( G.O.viewerImageDisplay == 'useDevicePixelRatio' ) {
+        dpr=window.devicePixelRatio;
+      }
+      
       // retrieve the base zoom factor (image fill screen)
-      var zoomBaseFactorW = (G.VOM.window.lastWidth - G.VOM.padding.V) / (item.imageWidth / window.devicePixelRatio);
-      var zoomBaseFactorH = (G.VOM.window.lastHeight - G.VOM.padding.H) / (item.imageHeight / window.devicePixelRatio);
+      var zoomBaseFactorW = (G.VOM.window.lastWidth - G.VOM.padding.V) / (item.imageWidth / dpr);
+      var zoomBaseFactorH = (G.VOM.window.lastHeight - G.VOM.padding.H) / (item.imageHeight / dpr);
       var zoomBaseFactor = Math.min(zoomBaseFactorW,zoomBaseFactorH);
       if( zoomBaseFactor > 1 && G.O.viewerImageDisplay != 'upscale' ) {
         // no upscale
@@ -7362,8 +7588,8 @@ TODO:
       }
         
 
-      var imageCurrentHeight = (item.imageHeight / window.devicePixelRatio) * zoomUserFactor * zoomBaseFactor;
-      var imageCurrentWidth = (item.imageWidth / window.devicePixelRatio) * zoomUserFactor * zoomBaseFactor;
+      var imageCurrentHeight = (item.imageHeight / dpr) * zoomUserFactor * zoomBaseFactor;
+      var imageCurrentWidth = (item.imageWidth / dpr) * zoomUserFactor * zoomBaseFactor;
       $img.children().eq(0).css( {'height': imageCurrentHeight });
       $img.children().eq(0).css( {'width': imageCurrentWidth });
 
@@ -7418,7 +7644,7 @@ TODO:
 
       G.VOM.$cont = jQuery('<div  class="nGY2 nGY2ViewerContainer" style="opacity:1"></div>').appendTo('body');
       
-      SetColorSchemeViewer();
+      SetViewerTheme();
 
       G.VOM.$viewer = jQuery('<div class="nGY2Viewer" style="opacity:0" itemscope itemtype="http://schema.org/ImageObject"></div>').appendTo( G.VOM.$cont );
       G.VOM.$viewer.css({ msTouchAction: 'none', touchAction: 'none' });            // avoid pinch zoom
@@ -8448,7 +8674,7 @@ TODO:
       // theme
       G.$E.base.addClass(G.O.theme)
       // gallery color scheme
-      SetColorScheme();
+      SetGalleryTheme();
 
       // Hide icons (thumbnails and breadcrumb)
       if( G.O.thumbnailLabel.get('hideIcons') ) {
@@ -8522,7 +8748,8 @@ TODO:
       if( G.O.portable ) {
         // http://www.picresize.com/
         // http://base64encode.net/base64-image-encoder
-        var logo='data:image/png;base64,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';
+        // var logo='data:image/png;base64,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';
+        var logo='data:image/png;base64,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';
         G.$E.ngy2i=jQuery('<div class="nGY2PortInfo"><a href="http://nano.gallery" target="_blank" title="nanogallery2 | easy photo gallery for your website" style="font-weight: bold !important;color: #888 !important;font-size: 11px !important;"><img src="'+logo+'" style="height:16px !important;box-shadow: none !important;vertical-align: middle !important;"/> &nbsp; nanogallery2</a></div>').appendTo(G.$E.base);
         
         G.$E.ngy2i.find('a').on({
@@ -14150,7 +14377,7 @@ if (typeof define === 'function' && define.amd) {
         jQuery.getJSON(url, function(data, status, xhr) {
           clearTimeout( tId );
           PreloaderDisplay( false );
-          
+
           JsonParseData(albumIdx, data);
           
           if( data.nano_status == 'ok' ) {
@@ -14294,7 +14521,6 @@ if (typeof define === 'function' && define.amd) {
       });
 
       G.I[albumIdx].contentIsLoaded = true;   // album's content is ready
-console.log(G.I);
     }    
     
 
