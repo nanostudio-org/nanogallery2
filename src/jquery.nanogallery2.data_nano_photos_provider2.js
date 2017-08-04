@@ -57,7 +57,7 @@
         jQuery.getJSON(url, function(data, status, xhr) {
           clearTimeout( tId );
           PreloaderDisplay( false );
-          
+
           JsonParseData(albumIdx, data);
           
           if( data.nano_status == 'ok' ) {
@@ -201,7 +201,6 @@
       });
 
       G.I[albumIdx].contentIsLoaded = true;   // album's content is ready
-console.log(G.I);
     }    
     
 
