@@ -10,7 +10,6 @@ nanogallery2 is a javascript library for building beautiful, modern and high-qua
   
   
 [![Build Status](https://travis-ci.org/nanostudio-org/nanogallery2.svg?branch=dev-gh-pages)](https://travis-ci.org/nanostudio-org/nanogallery2)
-[![npm](https://img.shields.io/npm/v/npm.svg)](https://www.npmjs.com/package/nanogallery2)
 [![Twitter](https://img.shields.io/twitter/url/https/github.com/nanostudio-org/nanogallery2.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=%5Bobject%20Object%5D)
   
 ## Documentation, Demonstrations and Tutorials
