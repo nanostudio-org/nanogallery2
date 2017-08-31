@@ -1,6 +1,10 @@
 nanogallery2 - ChangeLog
 ===========
 
+v1.4.1
+------
+- fixed: incorrect font embedded in nanogallery2.woff.css
+
 v1.4.0
 ------
 - new: display thumbnail's images smoothly when fully downloaded (option 'thumbnailWaitImageLoaded')
