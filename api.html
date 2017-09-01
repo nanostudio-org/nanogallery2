@@ -1226,6 +1226,51 @@ items.forEach( function(curr) {
 
 
   <!-- ######################## -->
+  <!-- ##### JS FOR PAGE  ##### -->
+  <!-- ######################## -->
+  
+  <script type="text/javascript">
+		$(document).ready(function () {
+
+      // console.dir(ngy2data);
+      var $eD=$("#eventsDisplay");
+      function mylistener(e) {
+        $eD.append(new Date().toLocaleTimeString() + ' - ' + e.type + '<br>').scrollTop($eD[0].scrollHeight);
+        console.log(e.type);
+      }
+      
+      $('#nanogallery2').nanogallery2({
+        kind: 'flickr',
+        userID: '149035168@N08',
+        thumbnailHeight: 150, thumbnailWidth: 150,
+        thumbnailLabel: { display: false },
+        galleryDisplayMode: 'pagination',
+        galleryMaxRows: 1,
+        locationHash: false,
+        thumbnailHoverEffect2: null,
+        thumbnailToolbarImage: { topLeft: 'select', topRight : 'featured,cart', bottomRight: 'display' },
+        thumbnailToolbarAlbum: { topLeft: 'select', topRight : 'counter', bottomRight: 'display' },
+        thumbnailSelectable : true
+      });
+
+      // add one item
+      jQuery('#btn_add').on('click', function() {
+        var ngy2data=$("#nanogallery2").nanogallery2('data');
+        var instance=$("#nanogallery2").nanogallery2('instance');
+        var newItem=NGY2Item.New(instance, 'title', 'description', 5, 0, 'image', '' );
+        // define thumbnail
+        newItem.thumbSet('samples/berlin1t.jpg', 200,200); // w,h
+        // define URL to image
+        newItem.src='samples/berlin1.jpg';
+        $("#nanogallery2").nanogallery2('refresh');
+      });
+
+      $("#nanogallery2").on( 'pageChanged.nanogallery2 galleryRenderStart.nanogallery2 galleryRenderEnd.nanogallery2 galleryObjectModelBuilt.nanogallery2 galleryLayoutApplied.nanogallery2 galleryDisplayed.nanogallery2 lightboxNextImage.nanogallery2 lightboxPreviousImage.nanogallery2 lightboxImageDisplayed.nanogallery2 shoppingCartUpdated.nanogallery2 itemSelected.nanogallery2 itemUnSelected.nanogallery2', mylistener );
+      
+    });
+  </script>
+
+  <!-- ######################## -->
   <!-- ##### START FOOTER ##### -->
   <!-- ######################## -->
 
