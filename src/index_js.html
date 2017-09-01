@@ -1,0 +1,696 @@
+  <!-- ######################## -->
+  <!-- ##### JS FOR PAGE  ##### -->
+  <!-- ######################## -->
+	<script type="text/javascript">
+		$(document).ready(function () {
+
+      // typeform review
+      jQuery('#btn_enjoy_yes').on('click', function() {
+        window.open('https://nanostudio.typeform.com/to/zyHSZD', '_blank');
+        $('#myModalEnjoyYes').modal('hide');
+      });
+      jQuery('#btn_enjoy_no').on('click', function() {
+        window.open('https://nanostudio.typeform.com/to/wHRN2N', '_blank');
+        $('#myModalEnjoyNo').modal('hide');
+      });
+
+    
+      // LOGO APPEAR
+      var tweenable = new NGTweenable();
+      tweenable.tween({
+        from:       { opacity: 0 },
+        to:         { opacity: 1 },
+        attachment: { $e: jQuery('#ngy2logo') },
+        easing:     'easeInOutSine',
+        duration:   1000,
+        delay:      500,
+        step: function (state, att) {
+          att.$e.css('opacity', state.opacity);
+        }
+      });
+      var tweenable = new NGTweenable();
+      tweenable.tween({
+        from:       { opacity: 0 },
+        to:         { opacity: 1 },
+        attachment: { $e: jQuery('#ngy2logo2') },
+        easing:     'easeInOutSine',
+        duration:   1000,
+        delay:      1000,
+        step: function (state, att) {
+          att.$e.css('opacity', state.opacity);
+        }
+      });
+    
+      
+      // ##### TEXT ROTATOR - display features
+      var rotatorlst=[ 'photo gallery with multiple layouts', 'lightbox with customizable tools', 'responsive thumbnails sizes', 'display animations', 'gallery pagination',
+          'javascript API', 'chainable hover effects', 'social sharing', 'retina and hi-dpi screen support', 'customizable tools on thumbnails', 'pinch zoom', 'swipe to paginate',
+          'location on Google Maps', 'thumbnails with blurred preview', 'justified, grid and cascading layouts',
+          'filter by keywords', 'navigation in albums', 'self hosted images', 'google photos and flickr data sources',
+          'thumbnail selection mode with checkboxes', 'support multi-touch gesture', 'hover effects on touchscreen', 'deep linking',
+          'highly customizable', 'browser back/forward navigation', 'slideshow', 'image lazy loading and pre-loading', 'keyboard support',
+          'inactive state detection', 'themes', 'multiple galleries',
+          'custom icons'
+        ];
+      
+      function RotatorNext(n) {
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          from:       { opacity: 1 },
+          to:         { opacity: 0 },
+          attachment: { n: n },
+          easing:     'easeInOutSine',
+          duration:   100,
+          step: function (state, att) {
+            jQuery('#rotator').css('opacity', state.opacity);
+          },
+          finish: function (state, att) {
+            jQuery('#rotator').text(rotatorlst[n]);
+            var tweenable = new NGTweenable();
+            tweenable.tween({
+              from:       { opacity: 0 },
+              to:         { opacity: 1 },
+              attachment: { n: n },
+              easing:     'easeInOutSine',
+              duration:   100,
+              step: function (state, att) {
+                jQuery('#rotator').css('opacity', state.opacity);
+              },
+              finish: function (state, att) {
+                var n=att.n;
+                n++;
+                if( n>= rotatorlst.length ) { n=0; }
+                setTimeout(function(){
+                    RotatorNext(n);
+                }, 1500);        
+              }
+            });
+          }
+        });
+      }
+      RotatorNext(0);
+
+
+
+      // ##### LICENSES TAB
+      jQuery('#ngy2_lic1').on( "click", function(e) {
+        jQuery('#ngy2_lic1_desc').css({ 'display': 'block' });
+        jQuery('#ngy2_lic2_desc').css({ 'display': 'none' });
+        jQuery('#ngy2_lic1').css({ 'text-decoration': 'underline', 'color': '#fff' });
+        jQuery('#ngy2_lic2').css({ 'text-decoration': 'none', 'color':'' });
+      });
+      jQuery('#ngy2_lic2').on( "click", function(e) {
+        jQuery('#ngy2_lic2_desc').css({ 'display': 'block' });
+        jQuery('#ngy2_lic1_desc').css({ 'display': 'none' });
+        jQuery('#ngy2_lic2').css({ 'text-decoration': 'underline', 'color': '#fff' });
+        jQuery('#ngy2_lic1').css({ 'text-decoration': 'none', 'color':'' });
+      });
+      $('#ngy2_lic1').trigger('click');
+
+      
+      function fnOpenNewTab(e) {
+        jQuery('.nGY2Viewer a').on( "click", function(e) {
+          window.open( $(this).attr("href"), '_blank');
+          e.stopPropagation();
+          e.preventDefault();
+          return true;
+        });
+      }
+
+      jQuery('#btnsearch').on('click', function() {
+        // jQuery("#nanogallery").nanogallery2('displayItem', 'fun/fun%2Fphoto%20by%20himanshu%20singh%20gurjar');
+       //alert(jQuery("#nanogallery").nanogallery2('search', jQuery('#ngy2search').val()) );
+       jQuery("#nanogallery").nanogallery2('search2', jQuery('#ngy2search').val(), jQuery('#ngy2search2').val() );
+       // jQuery("#nanogallery").nanogallery2('searchSetTags', jQuery('#ngy2search2').val() );
+       alert(jQuery("#nanogallery").nanogallery2('search2Execute'));
+      });
+
+      
+      jQuery("#nanogallery").nanogallery2({
+        // imageTransition : 'slideAppear',
+        // debugMode: true,
+        
+        //kind: 'google',
+        //userID: '111186676244625461692',
+        // photoset: 'NONE',
+        // allowHTMLinData: true,
+        // fnImgDisplayed: fnOpenNewTab,
+        itemsBaseURL:     '../samples/',
+        items: [
+            { src: 'berlin1_t.jpg', srct: 'berlin1_t.jpg', title: 'Berlin 1' },
+            { src: 'berlin2_t.jpg', srct: 'berlin2_t.jpg', title: 'Berlin 2' },
+            { src: 'berlin3.jpg', srct: 'berlin3_t.jpg', title: 'Berlin 3' }
+          ],
+
+        kind: 'nano_photos_provider2',
+        dataProvider: 'http://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
+        //kind: 'flickr',
+        // userID: '149035168@N08',    // nano studio
+        // userID: '148691806@N05',  
+        // flickrSkipOriginal: false,
+        //album: 'into%20the%20wild',
+        // albumList2: ['into the wild', 'fun'],
+        // dataProvider: 'http://localhost:12345/nano_photos_provider2/dist/nano_photos_provider2.php',
+               
+        galleryRenderDelay: 1200,
+        galleryDisplayTransition: 'rotateX',
+        galleryDisplayTransitionDuration: 1500,
+        galleryL1DisplayTransition: 'slideUp',
+      
+
+        //kind : 'google2', 
+        //userID : '111186676244625461692', 
+        //google2URL : 'http://lvh.me:12345/nanogp/nanogp.php',
+        google2URL : 'https://nano.gallery/nanogp/nanogp.php',
+        //album: '6325352440922789105',
+        //albumList2:['6137218671601042145','5851968929721015169','5851895073106049313'],
+        
+        //userID: '143414466@N06',
+        
+        //        userID: '68188170@N06',   //--> huge albums+photos collection
+        //        photoset: '72157656850365463',
+
+        blackList: 'forhomepage|scrapbook|profil',
+        //thumbnailL1DisplayTransition: 'scaleUp',
+        thumbnailL1DisplayTransition: 'none',
+        thumbnailL1DisplayTransitionDuration: 500,
+        thumbnailL1DisplayInterval: 90,
+
+        thumbnailDisplayTransition: 'SLIDERIGHT',
+        thumbnailDisplayTransitionDuration: 600,
+        thumbnailDisplayInterval: 60,
+        thumbnailHeight: '200 XS150 SM150', thumbnailWidth: 'auto',
+        thumbnailL1Height: '200 XS100 SM150', thumbnailL1Width: '300 XS100 SM225',
+        // thumbnailL1Height: '200', thumbnailL1Width: '300',
+        galleryL1MaxRows: 1,
+
+
+
+        galleryL1DisplayMode: 'pagination',
+        galleryDisplayMode: 'rows',
+        galleryPaginationMode: 'rectangles',
+        galleryMaxRows: 4,
+        
+        
+        //galleryBuildInit2 : 'transform-origin_top right',
+        //thumbnailL1BuildInit2: 'thumbnail_transform-origin_50% 150%',
+
+
+thumbnailL1BuildInit2: '.nGY2GThumbnailAlbumTitle_border-left_5px solid #23CB99|.nGY2GThumbnailAlbumTitle_margin_20px|\
+title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
+
+        thumbnailL1HoverEffect2: 'label_left_-100%_0%|thumbnail_scale_1.00_1.20',
+        
+        
+        thumbnailL2HoverEffect2: 'image_scale_1.00_1.20|labelAppear|customlayer_backgroundColor_rgba(35,203,153,0.0)_rgba(35,203,153,0.8)|\
+                thumbnail_translateZ_0px_150px_easeOutQuad_400| \
+                thumbnail_rotateX_0deg_-10deg_easeOutBack_200| \
+                thumbnail_rotateX_-10deg_0deg_delay250_keyframe_hoverin_easeOutBack_400',
+
+        thumbnailL2BuildInit2: 'customlayer_scale_1.3|customlayer_translateY_-15px|customlayer_translateX_-60%|customlayer_rotateZ_10deg',
+        //  galleryBuildInit2 : 'perspective_900px|perspective-origin_50% 150%',
+
+        thumbnailHoverEffect2: 'label_font-size_1em_1.5em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((35,203,153,0.8)|title_color_#000_#fff|image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
+
+        // thumbnailToolbarImage : { topLeft: 'select', topRight : 'share,featured,download' },
+        thumbnailToolbarAlbum:null,
+
+        thumbnailL1Label: { display: true, position:'overImageOnMiddle', hideIcons: true, titleFontSize: '1.5em', align: 'center'},
+        thumbnailL1Label: { display: true, position:'overImageOnTop', hideIcons: true, titleFontSize: '1.5em', align: 'left'},
+        thumbnailLabel: { display: true, position:'overImageOnBottom', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true},
+        thumbnailBorderHorizontal: 0,
+        thumbnailBorderVertical: 0,
+        thumbnailL1GutterWidth: 40,
+        thumbnailL1GutterHeight: 20,
+        
+        thumbnailSelectable: false,
+        breadcrumbHideIcons: true,
+        navigationFontSize: '1.2em',
+        gallerySorting: 'random',
+//        thumbnailDisplayInterval: 30,
+
+        galleryTheme : { 
+          thumbnail: { titleShadow : 'none', descriptionShadow : 'none', titleColor: '#fff' },
+          navigationBreadcrumb: { background : '#3C4B5B' },
+          navigationFilter: { background : '#2E7C7F', backgroundSelected: '#19676B', color: '#eee' }
+        },
+        
+        galleryFilterTags: true,
+        galleryL1FilterTags: false,
+        paginationSwipe: true,
+        // fnImgToolbarCustInit: fnImgToolbarCustClick,
+        // fnImgToolbarCustDisplay: myImgToolbarCustDisplay,
+        // fnImgToolbarCustClick: myImgToolbarCustClick,
+        locationHash: true
+      });
+      
+      
+      
+      var listAlbums = ['motors', 'people', 'architecture'];
+      var displayAlbum = listAlbums[Math.floor(Math.random() * listAlbums.length)];
+      
+      jQuery("#nanogallery4").nanogallery2({
+
+        kind: 'nano_photos_provider2',
+        dataProvider: 'http://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
+        album: displayAlbum,
+
+        thumbnailLastImgSliderDelay: 1000,
+        
+        galleryRenderDelay: 4000,
+        galleryDisplayTransitionDuration: 1500,
+
+        thumbnailDisplayTransition: 'none',
+        thumbnailDisplayInterval: 90,
+
+        thumbnailHeight: 200, thumbnailWidth: 200,
+
+        galleryDisplayMode: 'rows',
+        galleryMaxRows: 2,
+        thumbnailOpenImage: false,
+
+        thumbnailHoverEffect2: 'imageGrayOn',
+
+        
+        // thumbnailToolbarImage : { topLeft: 'select', topRight : 'share,featured,download' },
+
+        thumbnailLabel: { display: false, position:'overImageOnBottom', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true},
+        thumbnailBorderHorizontal: 0,
+        thumbnailBorderVertical: 0,
+        thumbnailL1GutterWidth: 5,
+        thumbnailL1GutterHeight: 5,
+        
+        thumbnailSelectable: false,
+        breadcrumbHideIcons: true,
+        navigationFontSize: '1.2em',
+        gallerySorting: 'random',
+
+        galleryTheme : { 
+          thumbnail: { titleShadow : 'none', descriptionShadow : 'none', titleColor: '#fff' },
+          navigationBreadcrumb: { background : '#3C4B5B' },
+          navigationFilter: { background : '#2E7C7F', backgroundSelected: '#19676B', color: '#eee' }
+        }
+      });      
+
+      
+      
+      
+      function fnImgToolbarCustClick(e) {
+        console.dir(e);
+      }
+      
+      function myImgToolbarCustDisplay( $cu, item ) {
+        console.dir($cu);
+      }
+      
+      function myImgToolbarCustClick(action, $elt , item) {
+        console.log(action);
+        console.dir($elt);
+      
+      }
+    
+      function myTnEffectHBlurInit( $thumbnail, item, counter ) {
+        // add an SVG element to each thumbnail with a unique ID
+        var svg='<svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="filters" style="display:hidden;">';
+        svg+='<defs>';
+        svg+='<filter id="ngy2-hblur'+counter+'">';
+        svg+='<feGaussianBlur in="SourceGraphic" stdDeviation="20,0" />'
+        svg+='</filter>';
+        svg+='</defs>';
+        svg+='<defs>';
+        //svg+='<filter id="ngy2-hblurl'+counter+'">';
+        //svg+='<feGaussianBlur in="SourceGraphic" stdDeviation="20,0" />'
+        //svg+='</filter>';
+        //svg+='</defs>';
+        svg+='</svg>';
+        $thumbnail.append(svg);
+        // hblur on image
+        $thumbnail.find('.nGY2GThumbnailImg').css('-webkit-filter','url(#ngy2-hblur'+counter+')');
+        $thumbnail.find('.nGY2GThumbnailImg').css('filter','url(#ngy2-hblur'+counter+')');
+        // hblur on label
+        //$thumbnail.find('.nGY2GThumbnailLabel').css('-webkit-filter','url(#ngy2-hblurl'+counter+')');
+        //$thumbnail.find('.nGY2GThumbnailLabel').css('filter','url(#ngy2-hblurl'+counter+')');
+      }
+      
+      function myTnEffectHBlurHover( $thumbnail, item, counter ) {
+        var context={};
+        context.item=item;
+        context.$svg=$thumbnail.children('svg').find('feGaussianBlur')[0];
+        // context.$svg2=$thumbnail.children('svg').find('feGaussianBlur')[1];
+
+        // animation
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          attachment:   context,
+          from:         { 'v': 20 },
+          to:           { 'v': 0 },
+          duration:     1000,
+          delay:        0,
+          easing:       'easeOutQuart',
+          step: function (state, att) {
+            if( item.$getElt() == null || !att.item.hovered) {
+              // the thumbnail may be destroyed since the start of the animation
+              // or thumbnail no more hovered
+              return;
+            }
+            att.$svg.stdDeviationX.baseVal=state.v;
+            // att.$svg2.stdDeviationX.baseVal=20-state.v;
+          }
+        });
+
+      }
+      
+      function myTnEffectHBlurHoverOut( $thumbnail, item, counter ) {
+        var context={};
+        context.item=item;
+        context.$svg=$thumbnail.children('svg').find('feGaussianBlur')[0];
+        //context.$svg2=$thumbnail.children('svg').find('feGaussianBlur')[1];
+        
+        // animation
+        var tweenable = new NGTweenable();
+        tweenable.tween({
+          attachment:   context,
+          from:         { 'v': 0 },
+          to:           { 'v': 20 },
+          duration:     1000,
+          delay:        0,
+          easing:       'easeOutQuart',
+          
+          step: function (state, att) {
+            if( item.$getElt() == null ) { return; }
+            att.$svg.stdDeviationX.baseVal=state.v;
+            //att.$svg2.stdDeviationX.baseVal=20-state.v;
+          }
+        });
+
+      }
+      
+      jQuery("#nanogallery2XXX").nanogallery2({
+        kind: 'flickr',
+        userID: '34858669@N00',
+        thumbnailDisplayTransition: 'slideUp',
+        thumbnailDisplayInterval: 15,
+        thumbnailHeight: 60, thumbnailWidth: 60,
+        album: 'none',
+        galleryDisplayMode: 'rows',
+        thumbnailToolbarImage:null,
+        thumbnailToolbarAlbum:null,
+        galleryMaxRows: 2,
+        gallerySorting: 'random',
+        thumbnailLabel: { display: false},
+        thumbnailBorderHorizontal: 0,
+        thumbnailBorderVertical: 0,
+        thumbnailGutterWidth : 0,
+        thumbnailGutterHeight : 0,
+        //fnThumbnailInit: myTnEffectHBlurInit,
+        //fnThumbnailHover: myTnEffectHBlurHover,
+        //fnThumbnailHoverOut: myTnEffectHBlurHoverOut,
+        galleryRenderDelay: 2000,
+        thumbnailOpenImage: false,
+        locationHash: false
+      });
+      
+      
+      jQuery("#nanogallery3XXX").nanogallery2({
+        kind: 'flickr',
+        userID: '149035168@N08',
+        //userID: '34858669@N00',
+        thumbnailHeight: 170, thumbnailWidth: 170,
+        breadcrumbOnlyCurrentLevel: true,
+        //album: '30788454896',
+        photoset: '72157675219521270',
+        thumbnailToolbarAlbum:null,
+        gallerySorting: 'random',
+        thumbnailToolbarImage: null,
+        
+        galleryDisplayMode: 'rows',
+        galleryMaxRows: 2,
+        thumbnailLabel: { display: false, position: 'onBottom', align: 'left'},
+        thumbnailHoverEffect2 : 'image_brightness_50%_100%|title_color_#888_#fff|thumbnail_scale_1.00_1.10_1500',
+        thumbnailBorderHorizontal: 0,
+        thumbnailBorderVertical: 0,
+        thumbnailGutterWidth : 1,
+        thumbnailGutterHeight : 1,
+        galleryRenderDelay: 3000,
+        locationHash: false
+      });
+
+
+      
+      //  RANDOM DEMO
+      var lastRnd=-1;
+      var demos=[0, 1, 2, 3, 4, 5, 6, 7, 8]
+      var rnd=randomIntFromInterval(0,demos.length-1);
+      jQuery('#btn_random_demo').on('click', function() {
+        //rnd++;
+        jQuery("#nanogallery").nanogallery2('destroy');
+        window.location.hash = "_";
+        // while( rnd == lastRnd ) {
+        //  rnd=randomIntFromInterval(0,4);
+        // }
+        // lastRnd=rnd;
+        //rnd=8;
+        ga('send', 'event', 'click', 'index', 'random');
+
+        switch ( rnd ) {
+          case 0:
+            jQuery("#nanogallery").nanogallery2({
+              kind: 'flickr',
+              userID: '149035168@N08',    // nano studio
+              photoset: 'NONE',
+              thumbnailDisplayTransition: 'randomScale',
+              thumbnailHeight: '200', thumbnailWidth: 'auto',
+              galleryDisplayMode: 'rows',
+              galleryPaginationMode: 'rectangles',
+              galleryMaxRows: 10,
+              thumbnailHoverEffect2 : 'image_scale_1.0_1.1_1500',
+              thumbnailToolbarImage : { topRight : '', bottomRight : '' },
+              thumbnailLabel: { display: false, position:'overImageOnBottom', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true},
+              thumbnailBorderHorizontal: 5,
+              thumbnailBorderVertical: 5,
+              navigationFontSize: '1.0em',
+              gallerySorting: 'random',
+              galleryTheme : { thumbnail: {titleShadow : 'none', descriptionShadow : 'none'} },
+              galleryLastRowFull: true,
+              locationHash: false
+            });
+            break;
+            
+          case 6:
+            jQuery("#nanogallery").nanogallery2({
+              kind: 'flickr',
+              userID: '149035168@N08',    // nano studio
+              photoset: '72157673359560333',
+              blackList: 'forhomepage|scrapbook|profil',
+              thumbnailDisplayTransition: 'slideUp',
+              thumbnailHeight: '450', thumbnailWidth: 'auto',
+              thumbnailGutterWidth: 0,
+              thumbnailGutterHeight: 0,
+              thumbnailBorderHorizontal: 0,
+              thumbnailBorderVertical: 0,
+              //galleryLastRowFull: true,
+              galleryDisplayMode: 'rows',
+              galleryPaginationMode: 'numbers',
+              galleryMaxRows: 4,
+              
+              thumbnailHoverEffect2 : 'image_opacity_100%_80%|imageGrayOn|labelAppear|toolsSlideDown',
+              
+              thumbnailToolbarImage : { topRight : '', bottomRight : '' },
+              thumbnailLabel: { display: true, position:'onBottomOverImage', titleFontSize: '1.0em', align: 'left', titleMultiLine:true, displayDescription: true},
+              gallerySorting: 'random',
+              //galleryTheme : { thumbnail: { labelBackground: '#eef', titleShadow : 'none', descriptionShadow : 'none', titleColor: '#000', descriptionColor: '#000'} },
+              locationHash: false
+            });
+            break;
+            
+          case 2:
+            jQuery("#nanogallery").nanogallery2({
+              kind: 'flickr',
+              userID: '149035168@N08',    // nano studio
+              photoset: 'NONE',
+              blackList: 'forhomepage|scrapbook|profil',
+              thumbnailDisplayTransition: 'slideUp',
+              thumbnailHeight: 'auto', thumbnailWidth: '180',
+              thumbnailGutterWidth: 15,
+              thumbnailGutterHeight: 15,
+              thumbnailBorderHorizontal: 0,
+              thumbnailBorderVertical: 0,
+              thumbnailOpenImage: false,
+              
+              //thumbnailHoverEffect2 : 'toolsSlideUp|labelAppear',
+              //thumbnailToolbarImage : { topRight : '', bottomRight : 'share,featured,download' },
+              thumbnailLabel: { display: true, position:'onBottom', titleFontSize: '1.0em', align: 'left', titleMultiLine:true, displayDescription: true},
+              gallerySorting: 'random',
+              galleryTheme : { thumbnail: { labelBackground: '#eef', titleShadow : 'none', descriptionShadow : 'none', titleColor: '#000', descriptionColor: '#000'} },
+              locationHash: false
+            });
+            break;
+          case 3:
+            jQuery("#nanogallery").nanogallery2({
+              kind: 'flickr',
+              userID: '149035168@N08',    // nano studio
+              photoset: 'NONE',
+              blackList: 'forhomepage|scrapbook|profil',
+              //thumbnailDisplayTransition: 'randomScale',
+              thumbnailHeight: '200', thumbnailWidth: '200',
+              galleryDisplayMode: 'pagination',
+              galleryPaginationMode: 'numbers',
+              galleryMaxRows: 2,
+              thumbnailHoverEffect2 : 'toolsSlideUp|labelAppear',
+              thumbnailToolbarImage : { topRight : '', bottomRight : 'share,featured,download' },
+              thumbnailLabel: { display: true, position:'overImageOnMiddle', titleFontSize: '1.5em', align: 'center', titleMultiLine:true},
+              gallerySorting: 'random',
+              galleryTheme : { thumbnail: { labelBackground: 'rgba(34, 34, 34, .3)', titleShadow : 'none'} },
+              locationHash: false
+            });
+            break;
+            
+          case 4:
+            jQuery("#nanogallery").nanogallery2({
+              kind: 'flickr',
+              userID: '149035168@N08',    // nano studio
+              photoset: 'NONE',
+              blackList: 'forhomepage|scrapbook|profil',
+              thumbnailDisplayTransition: 'scaleUp',
+              thumbnailHeight: '200', thumbnailWidth: '200',
+              galleryDisplayMode: 'moreButton',
+              galleryDisplayMoreStep: 2,
+              thumbnailBorderVertical: 5,
+              thumbnailBorderHorizontal: 5,
+              thumbnailGutterWidth: 10,
+              thumbnailGutterHeight: 10,
+              thumbnailHoverEffect2 : 'title_backgroundColor_rgba(255,255,255,0.34)_rgba(((84,84,84,0.8)|image_saturate_200%_100%|image_blur_1px_0px|labelAppear',
+              thumbnailToolbarImage : { topRight : '', bottomRight : '' },
+              //thumbnailLabel: { display: true, position:'overImageOnMiddle', titleFontSize: '1.5em', align: 'left', titleMultiLine:true},
+              thumbnailLabel: { display: true, position:'overImageOnTop', hideIcons: false, titleFontSize: '1.2em', align: 'left', titleMultiLine:true},
+              gallerySorting: 'random',
+              galleryTheme : { thumbnail: { labelBackground: 'rgba(34, 34, 34, .0)', titleShadow : 'none', borderColor: '#fff'} },
+              locationHash: false
+            });
+            break;
+            
+          case 5:
+            jQuery("#nanogallery").nanogallery2({
+              kind: 'flickr',
+              userID: '149035168@N08',    // nano studio
+              photoset: '72157675219521270',
+              blackList: 'forhomepage|scrapbook|profil',
+              thumbnailDisplayTransition: 'scaleUp',
+              thumbnailHeight: '200', thumbnailWidth: '200',
+              galleryDisplayMode: 'fullContent',
+              galleryDisplayMoreStep: 2,
+              thumbnailBorderVertical: 0,
+              thumbnailBorderHorizontal: 0,
+              thumbnailGutterWidth: 0,
+              thumbnailGutterHeight: 0,
+              thumbnailHoverEffect2 : 'image_scale_1.00_1.10_5000|title_color_rgba(0,0,0,1)_rgba(0,0,0,0)|customlayer_backgroundColor_rgba(73,146,149,0.90)_rgba(((73,146,149,0.0)',
+              thumbnailToolbarImage : { topRight : '', bottomRight : '' },
+              //thumbnailLabel: { display: true, position:'overImageOnMiddle', titleFontSize: '1.5em', align: 'left', titleMultiLine:true},
+              thumbnailLabel: { display: true, position:'overImageOnMiddle', hideIcons: true, titleFontSize: '1.2em', align: 'center', titleMultiLine:true},
+              gallerySorting: 'random',
+              galleryTheme : { thumbnail: { labelBackground: 'rgba(34, 34, 34, .0)', titleShadow : 'none', borderColor: '#54840C'} },
+              locationHash: false
+            });
+            break;
+          
+          case 1:
+            jQuery("#nanogallery").nanogallery2({
+              kind: 'flickr',
+              userID: '149035168@N08',    // nano studio
+              photoset: '72157675219521270',
+              blackList: 'forhomepage|scrapbook|profil',
+              thumbnailDisplayTransition: 'scaleUp',
+              thumbnailHeight: '200', thumbnailWidth: '250',
+              galleryDisplayMode: 'fullContent',
+              galleryDisplayMoreStep: 2,
+              thumbnailBorderVertical: 2,
+              thumbnailBorderHorizontal: 2,
+              thumbnailGutterWidth: 10,
+              thumbnailGutterHeight: 10,
+              thumbnailHoverEffect2 : '.ngy2plusbutton_opacity_0_1|.ngy2plusbutton2_opacity_0_1|image_opacity_100%_60%|label_background_#000000_#2C3B4B|image_scale_1.10_1.00',
+              thumbnailBuildInit2: '.ngy2plusbutton_translateY_-50%|.ngy2plusbutton_translateX_-50%',
+              thumbnailToolbarImage : { topRight : '', bottomRight : '' },
+              thumbnailLabel: { display: true, position:'onBottom', hideIcons: true, titleFontSize: '1.2em', align: 'center', titleMultiLine:true},
+              gallerySorting: 'random',
+              //galleryTheme : { thumbnail: { labelBackground: 'rgba(34, 34, 34, .0)', titleShadow : 'none'} },
+              galleryLastRowFull: true,
+              locationHash: false,
+              fnThumbnailInit: myTnInit
+            });
+            break;
+            
+          case 7:
+            jQuery("#nanogallery").nanogallery2({
+              kind: 'flickr',
+              userID: '34858669@N00',
+              thumbnailDisplayTransition: 'slideUp',
+              thumbnailDisplayInterval: 15,
+              thumbnailHeight: 60, thumbnailWidth: 60,
+              album: 'none',
+              galleryDisplayMode: 'rows',
+              thumbnailToolbarImage:null,
+              thumbnailToolbarAlbum:null,
+              galleryMaxRows: 6,
+              gallerySorting: 'random',
+              thumbnailLabel: { display: false},
+              thumbnailBorderHorizontal: 0,
+              thumbnailBorderVertical: 0,
+              thumbnailGutterWidth : 0,
+              thumbnailGutterHeight : 0,
+              //fnThumbnailInit: myTnEffectHBlurInit,
+              //fnThumbnailHover: myTnEffectHBlurHover,
+              //fnThumbnailHoverOut: myTnEffectHBlurHoverOut,
+              thumbnailOpenImage: false,
+              galleryDisplayTransition: 'slideup',
+              locationHash: false
+            });
+            break;
+            
+          case 8:
+            jQuery("#nanogallery").nanogallery2({
+              kind: 'flickr',
+              userID: '149035168@N08',
+              //userID: '34858669@N00',
+              thumbnailHeight: 200, thumbnailWidth: 200,
+              breadcrumbOnlyCurrentLevel: true,
+              //album: '30788454896',
+              photoset: '72157675219521270',
+              thumbnailToolbarAlbum:null,
+              gallerySorting: 'random',
+              thumbnailToolbarImage: null,
+              
+              galleryDisplayMode: 'rows',
+              galleryMaxRows: 1,
+              thumbnailLabel: { display: true, position: 'overImageOnBottom', align: 'left'},
+              thumbnailHoverEffect2 : 'image_brightness_130%_100%|title_color_#499295_#ffffff|thumbnail_scale_1.00_1.10_1500',
+              thumbnailBorderHorizontal: 0,
+              thumbnailBorderVertical: 0,
+              thumbnailGutterWidth : 1,
+              thumbnailGutterHeight : 1,
+              locationHash: false
+            });
+            break;
+          default:
+            break;
+        }
+        rnd++;
+        if( rnd >= demos.length ) {
+          rnd=0;
+        }
+      });
+      
+      function myTnInit( $e, item, GOMidx ) {
+        var st='position:absolute;top:50%;left:10px;'
+        $e.find('.nGY2GThumbnailSub').append('<div class="ngy2plusbutton" style="'+st+'"><button data-ngy2action="DISPLAY" type="button" class="btn btn-success btn-lg" ><i class="fa fa-search" aria-hidden="true"></i> &nbsp; display</button></div>');
+        st='position:absolute;top:50%;right:10px;'
+        $e.find('.nGY2GThumbnailSub').append('<div class="ngy2plusbutton2" style="'+st+'"><button data-ngy2action="SHARE" type="button" class="btn btn-success btn-lg" ><i class="fa fa-share-alt" aria-hidden="true"></i> &nbsp; share</button></div>');
+      }
+
+      
+      function randomIntFromInterval(min,max) {
+        return Math.floor(Math.random()*(max-min+1)+min);
+      }
+      
+    });
+  </script>
+
