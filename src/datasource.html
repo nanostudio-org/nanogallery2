@@ -71,7 +71,7 @@ $("#my_nanogallery2").nanogallery2({
             <th class=" text-center" style="font-size:1.2em;">cloud<br>Google Photos</th>
             <th class=" text-center" style="font-size:1.2em;">cloud<br>Flickr</th>
             <th class=" text-center" style="font-size:1.2em;">self hosted<br>markup or javascript</th>
-            <th class=" text-center" style="font-size:1.2em;"><a href="https://github.com/nanostudio-org/nano_photos_provider2" target="_blank">self hosted<br>nanoPhotosProvider2 <i class="fa fa-external-link" aria-hidden="true"></i></a></th>
+            <th class=" text-center" style="font-size:1.2em;"><a href="http://nanophotosprovider2.nanostudio.org/" target="_blank">self hosted<br>nanoPhotosProvider2 <i class="fa fa-external-link" aria-hidden="true"></i></a></th>
           </tr>
         </thead>
         <tbody>
@@ -788,8 +788,7 @@ $(document).ready(function () {
       <br><br>
       <span class="lead">
         &nbsp; &nbsp; &nbsp; 
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>  nanoPhotosProvider2 is available on 
-        <a href="https://github.com/nanostudio-org/nano_photos_provider2" type="button" class="btn btn-success " target="_blank"><i class="fa fa-github" aria-hidden="true"></i> &nbsp; Github</a>
+        <a href="http://nanophotosprovider2.nanostudio.org/" type="button" class="btn btn-success " target="_blank"><i class="fa fa-arrow-right" aria-hidden="true"></i> <b>visit nanoPhotosProvider2 homepage</b></a>
       </span>
       <br><br>
       Usage example:
@@ -1144,21 +1143,16 @@ $(document).ready(function () {
             <td>flickrSkipOriginal</td>
             <td>boolean</td>
             <td>true</td>
-            <td>Do not display the original uploaded image (e.g. to avoid rotation issue).</td>
+            <td>
+              Do not display the original uploaded image (e.g. to <b>avoid rotation issue</b>).
+            </td>
             <td>1.0</td>
           </tr>
           <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>1.0</td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>thumbnailOpenOriginal</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Displays the original image in Flickr, without opening the lightbox.</td>
             <td>1.0</td>
           </tr>
         </tbody>
@@ -1214,14 +1208,3 @@ $(document).ready(function () {
   </div>
   </div>
   </div>
-
-  <script>
-    $(document).ready(function () {
-      $('#ngy2_vert_nav').affix({
-        offset: {
-            top: $('#ngy2_vert_nav').offset().top,
-            bottom: ($('footer').outerHeight(true)) + 40
-          }
-      });
-    });
-  </script>
