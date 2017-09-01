@@ -603,9 +603,11 @@ items.forEach( function(curr) {
 
     
     <br><br><br>
-    <h3>Examples</h3>
+    <h3>Some API examples</h3>
     <hr>
-    <blockquote>
+    <blockquote style="font-size:1.5em;">
+      - integrate Youtube videos with fancyBox3: <a href="https://codepen.io/Kris-B/pen/zZNMJj" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+      <br>
       - add items dynamically to an existing gallery: <a href="http://codepen.io/Kris-B/pen/wJKowg" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
       <br>
       - thumbnails: add custom tool and custom button: <a href="http://codepen.io/Kris-B/pen/RpWKMJ" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
@@ -614,44 +616,3 @@ items.forEach( function(curr) {
     
     
   </div>    
-  
-  <script type="text/javascript">
-		$(document).ready(function () {
-
-      // console.dir(ngy2data);
-      var $eD=$("#eventsDisplay");
-      function mylistener(e) {
-        $eD.append(new Date().toLocaleTimeString() + ' - ' + e.type + '<br>').scrollTop($eD[0].scrollHeight);
-        console.log(e.type);
-      }
-      
-      $('#nanogallery2').nanogallery2({
-        kind: 'flickr',
-        userID: '149035168@N08',
-        thumbnailHeight: 150, thumbnailWidth: 150,
-        thumbnailLabel: { display: false },
-        galleryDisplayMode: 'pagination',
-        galleryMaxRows: 1,
-        locationHash: false,
-        thumbnailHoverEffect2: null,
-        thumbnailToolbarImage: { topLeft: 'select', topRight : 'featured,cart', bottomRight: 'display' },
-        thumbnailToolbarAlbum: { topLeft: 'select', topRight : 'counter', bottomRight: 'display' },
-        thumbnailSelectable : true
-      });
-
-      // add one item
-      jQuery('#btn_add').on('click', function() {
-        var ngy2data=$("#nanogallery2").nanogallery2('data');
-        var instance=$("#nanogallery2").nanogallery2('instance');
-        var newItem=NGY2Item.New(instance, 'title', 'description', 5, 0, 'image', '' );
-        // define thumbnail
-        newItem.thumbSet('samples/berlin1t.jpg', 200,200); // w,h
-        // define URL to image
-        newItem.src='samples/berlin1.jpg';
-        $("#nanogallery2").nanogallery2('refresh');
-      });
-
-      $("#nanogallery2").on( 'pageChanged.nanogallery2 galleryRenderStart.nanogallery2 galleryRenderEnd.nanogallery2 galleryObjectModelBuilt.nanogallery2 galleryLayoutApplied.nanogallery2 galleryDisplayed.nanogallery2 lightboxNextImage.nanogallery2 lightboxPreviousImage.nanogallery2 lightboxImageDisplayed.nanogallery2 shoppingCartUpdated.nanogallery2 itemSelected.nanogallery2 itemUnSelected.nanogallery2', mylistener );
-      
-    });
-  </script>
