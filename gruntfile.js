@@ -37,6 +37,8 @@ module.exports = function(grunt) {
             'template/header-3.html',
             'template/logo.html',
             'src/api.html',
+            'template/javascript.html',
+            'src/api_js.html',
             'template/footer.html'
           ],
           dest: 'build/api.html'
@@ -50,6 +52,8 @@ module.exports = function(grunt) {
             'template/header-3.html',
             'template/logo.html',
             'src/builder.html',
+            'template/javascript.html',
+            'src/builder_js.html',
             'template/footer.html'
           ],
           dest: 'build/builder.html'
@@ -62,6 +66,8 @@ module.exports = function(grunt) {
             'template/header-3.html',
             'template/logo.html',
             'src/datasource.html',
+            'template/javascript.html',
+            'src/datasource_js.html',
             'template/footer.html'
           ],
           dest: 'build/datasource.html'
@@ -74,6 +80,8 @@ module.exports = function(grunt) {
             'template/header-3.html',
             'template/logo.html',
             'src/documentation.html',
+            'template/javascript.html',
+            'src/documentation_js.html',
             'template/footer.html'
           ],
           dest: 'build/documentation.html'
@@ -86,6 +94,8 @@ module.exports = function(grunt) {
             'template/header-3.html',
             'template/logo.html',
             'src/quickstart.html',
+            'template/javascript.html',
+            'src/quickstart_js.html',
             'template/footer.html'
           ],
           dest: 'build/quickstart.html'
@@ -98,6 +108,8 @@ module.exports = function(grunt) {
             'template/header-3.html',
             'template/logo.html',
             'src/reviews.html',
+            'template/javascript.html',
+            'src/reviews_js.html',
             'template/footer.html'
           ],
           dest: 'build/reviews.html'
@@ -110,6 +122,8 @@ module.exports = function(grunt) {
             'template/header-3.html',
             'template/logo.html',
             'src/demonstration.html',
+            'template/javascript.html',
+            'src/demonstration_js.html',
             'template/footer.html'
           ],
           dest: 'build/demonstration.html'
