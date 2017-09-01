@@ -52,7 +52,7 @@
 
   <!-- #################################################################################################################### -->
 	<!-- nanogallery2 javascript                                                                                              -->
-	<script type="text/javascript" src="js/jquery.nanogallery2.min.js"></script>
+	<!-- <script type="text/javascript" src="js/jquery.nanogallery2.min.js"></script> -->
   <!--
   <script type="text/javascript" src="js/jquery.nanogallery2.core.js"></script>
 	<script type="text/javascript" src="js/jquery.nanogallery2.data_google.js"></script>
@@ -63,7 +63,6 @@
   -->
   <!-- #################################################################################################################### -->
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js"></script>
 
   <style>
     body { font-size:1.3em; color:#111; }
@@ -576,9 +575,10 @@
     </div>
   </nav>
   <script>
-    $(document).ready(function () {
+    document.addEventListener("DOMContentLoaded", function() {
       var p=location.pathname.substring(location.pathname.lastIndexOf("/") + 1);
-      $('.navbar a[href="'+p+'"]').parent().addClass('active');
+      var current=document.querySelectorAll('.navbar a[href="'+p+'"]');
+      current[0].parentNode.classList.add('active');
     });
   </script>
   <!-- ### NAVBAR ### -->
