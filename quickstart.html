@@ -802,6 +802,51 @@
     </div>
 
   <!-- ######################## -->
+  <!-- #####  INCLUDE JS  ##### -->
+  <!-- ######################## -->
+  <script type="text/javascript" src="../vendors/jquery-1.12.4.min.js"></script>
+  <script src="../vendors/bootstrap/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="../js/jquery.nanogallery2.js"></script>
+
+
+  <!-- ######################## -->
+  <!-- ##### JS FOR PAGE  ##### -->
+  <!-- ######################## -->
+  <script src="../vendors/prism/prism.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+
+      jQuery('#btn_portable').on('click', function() {
+        $('#qs_portable').css('display','block');
+        $('#qs_html').css('display','none');
+        $('#fa_portable').addClass('fa-spin');
+        $('#fa_html').removeClass('fa-spin');
+        $('#btn_portable').addClass('btn-lg');
+        $('#btn_html').removeClass('btn-lg');
+        $('#btn_portable').addClass('btn-primary');
+        $('#btn_html').removeClass('btn-primary');
+        $('#bg_portable').css({ 'background-color': '#CFF19A', 'color': '#000'  });
+        $('#bg_html').css({ 'background-color': '#eee', 'color': '#888' });
+      });
+
+      jQuery('#btn_html').on('click', function() {
+        $('#qs_portable').css('display','none');
+        $('#qs_html').css('display','block');
+        $('#fa_portable').removeClass('fa-spin');
+        $('#fa_html').addClass('fa-spin');
+        $('#btn_portable').removeClass('btn-lg');
+        $('#btn_html').addClass('btn-lg');
+        $('#btn_portable').removeClass('btn-primary');
+        $('#btn_html').addClass('btn-primary');
+        $('#bg_html').css({ 'background-color': '#CFF19A', 'color': '#000' });
+        $('#bg_portable').css({ 'background-color': '#eee', 'color': '#888' });
+      });
+
+    
+    });
+  </script>
+
+  <!-- ######################## -->
   <!-- ##### START FOOTER ##### -->
   <!-- ######################## -->
 
