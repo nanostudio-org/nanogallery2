@@ -1,0 +1,827 @@
+  <!-- ######################## -->
+  <!-- ##### JS FOR PAGE  ##### -->
+  <!-- ######################## -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js"></script>
+	<script type="text/javascript">
+  
+		$(document).ready(function () {
+    
+      new Clipboard('#copyclipboard');
+      new Clipboard('#copyclipboard2');
+    
+    
+    
+    
+      var html_part1='&lt;html&gt;\n';
+      html_part1+='  &lt;head&gt;\n';
+      html_part1+='    &lt;meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"&gt;\n\n';
+      html_part1+='    &lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"&gt;&lt;/script&gt;\n\n';
+      html_part1+='    &lt;link href="https://unpkg.com/nanogallery2@1.4.0/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css"&gt;\n';
+      html_part1+='    &lt;script type="text/javascript" src="https://unpkg.com/nanogallery2@1.4.0/dist/jquery.nanogallery2.min.js"&gt;&lt;/script&gt;\n';
+      html_part1+='\n';
+      html_part1+='  &lt;/head&gt;\n';
+      html_part1+='  &lt;body&gt;\n\n';
+      html_part1+='    &lt;h1&gt;gallery made with nanogallery2&lt;/h1&gt;\n';
+      html_part1+='\n';
+      html_part1+="    &lt;div id=\"nanogallery2\" data-nanogallery2='{\n";
+      var html_part2="      }'&gt;\n";
+      var html_part3='    &lt;/div&gt;\n';
+      html_part3+='  &lt;/body&gt;\n';
+      html_part3+='&lt;/html&gt;\n';
+
+      var portable_part1='&lt;!-- nanogallery2 portable - http://nano.gallery -->\n';
+      portable_part1+='&lt;div id="ngy2" data-nanogallery2-portable=\'{';
+      var portable_part2='}\'>nanogallery2&lt;/div>\n';
+      portable_part2+="&lt;script> var st = document.createElement('script'); st.type = 'text/javascript'; st.src = '//nano.gallery/portable.php?u='+encodeURI(window.location.href); document.getElementsByTagName('head')[0].appendChild(st); &lt;/script>\n";
+      portable_part2+='&lt;noscript>Please enable javascript to view the &lt;a href="//nano.gallery">gallery powered by nanogallery2.&lt;/a>&lt;/noscript>\n';
+      portable_part2+='&lt;!-- end nanogallery2 -->';
+      
+      var mydemos = {
+        
+      
+        // ##################################################
+        // CONTENT SOURCE
+        // ##################################################
+      
+        btnNGY2_source_demo1: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'flickr',
+            userID: '149035168@N08',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            album: 'none',
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind":            "flickr",\n';
+          html+='        "userID":          "149035168@N08",\n';
+          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
+          html+='        "album":           "none"\n';
+          html+=html_part2+html_part3;
+          jQuery('#ngy2_template').html(html);
+          var html2=portable_part1;
+          html2+=' "kind": "flickr", "userID": "149035168@N08", "thumbnailHeight": 150, "thumbnailWidth": 150, "album": "none"';
+          html2+=portable_part2;
+          jQuery('#ngy2_portable').html(html2);
+          jQuery('#ngy2_description').text('Content source = Flickr. Display the full photostream.');
+        },
+        btnNGY2_source_demo1a: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'flickr',
+            userID: '149035168@N08',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind":            "flickr",\n';
+          html+='        "userID":          "149035168@N08",\n';
+          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150\n';
+          html+=html_part2+html_part3;
+          jQuery('#ngy2_template').html(html);
+          var html2=portable_part1;
+          html2+=' "kind": "flickr", "userID": "149035168@N08", "thumbnailHeight": 150, "thumbnailWidth": 150';
+          html2+=portable_part2;
+          jQuery('#ngy2_portable').html(html2);
+          jQuery('#ngy2_description').text('Content source = Flickr. Display photo albums.');
+        },
+        btnNGY2_source_demo1b: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'flickr',
+            userID: '149035168@N08',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            photoset: '72157675219521270',
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind":            "flickr",\n';
+          html+='        "userID":          "149035168@N08",\n';
+          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
+          html+='        "photoset":        "72157675219521270"\n';
+          html+=html_part2+html_part3;
+          jQuery('#ngy2_template').html(html);
+          var html2=portable_part1;
+          html2+=' "kind": "flickr", "userID": "149035168@N08", "thumbnailHeight": 150, "thumbnailWidth": 150, "photoset": "72157675219521270"';
+          html2+=portable_part2;
+          jQuery('#ngy2_portable').html(html2);
+          jQuery('#ngy2_description').text('Content source = Flickr. Display the photos contained in one specific album.');
+        },
+     
+        btnNGY2_source_demo2: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'google2',
+            userID: '111186676244625461692',
+            google2URL: 'https://nano.gallery/nanogp/nanogp.php',
+            whiteList: 'nature|life|traditions|people',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind":            "google2",\n';
+          html+='        "userID":          "111186676244625461692",\n';
+          html+='        "google2URL":      "https://YOUR_WEB_SERVER/nanogp/nanogp.php",\n';
+          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150\n';
+          html+=html_part2+html_part3;
+          jQuery('#ngy2_template').html(html);
+          var html2=portable_part1;
+          html2+=' "kind": "google", "userID": "111186676244625461692", "thumbnailHeight": 150, "thumbnailWidth": 150';
+          html2+=portable_part2;
+          jQuery('#ngy2_portable').html(html2);
+          jQuery('#ngy2_description').text('Content source = Google Photos. Displays the list of public albums. Requires the server module NANOGP.');
+        },
+        btnNGY2_source_demo2a: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'google2',
+            userID: '111186676244625461692',
+            album: '5852572882905112961',
+            google2URL: 'https://nano.gallery/nanogp/nanogp.php',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind":            "google2",\n';
+          html+='        "userID":          "111186676244625461692",\n';
+          html+='        "google2URL":      "https://YOUR_WEB_SERVER/nanogp/nanogp.php",\n';
+          html+='        "album":           "5852572882905112961",\n';
+          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150\n';
+          html+=html_part2+html_part3;
+          jQuery('#ngy2_template').html(html);
+          var html2=portable_part1;
+          html2+=' "kind": "google", "userID": "111186676244625461692", "album": "5852572882905112961", "thumbnailHeight": 150, "thumbnailWidth": 150';
+          html2+=portable_part2;
+          jQuery('#ngy2_portable').html(html2);
+          jQuery('#ngy2_description').text('Content source = Google Photos. Displays the photos contained in one specific public album. Requires the server module NANOGP.');
+        },
+        btnNGY2_source_demo2b: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'google2',
+            google2URL: 'https://nano.gallery/nanogp/nanogp.php',
+            userID: '111186676244625461692',
+            albumList2: ['Traditions', 'People'],
+            thumbnailHeight: 150, thumbnailWidth:150,
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind":            "google2",\n';
+          html+='        "userID":          "111186676244625461692",\n';
+          html+='        "google2URL":      "https://YOUR_WEB_SERVER/nanogp/nanogp.php",\n';
+          html+='        "album":           "5852572882905112961",\n';
+          //html+='        "album": "5851968929721015169&authkey=CJSlhdKSgoiXtgE",\n';
+          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150\n';
+          html+=html_part2+html_part3;
+          jQuery('#ngy2_template').html(html);
+          var html2=portable_part1;
+          html2+=' "kind": "google", "userID": "111186676244625461692", "album": "5851968929721015169&authkey=CJSlhdKSgoiXtgE", "thumbnailHeight": 150, "thumbnailWidth": 150';
+          html2+=portable_part2;
+          jQuery('#ngy2_portable').html(html2);
+          jQuery('#ngy2_description').text('Content source = Google Photos. Displays 2 specified albums.  Requires the server module NANOGP.');
+        },
+        
+        // Self hosted images - one album
+        btnNGY2_source_demo3: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            thumbnailHeight: 210, thumbnailWidth:210,
+            itemsBaseURL: 'http://nanogallery2.nanostudio.org/samples/',
+            locationHash: false,
+            items:[
+              { src: 'berlin1.jpg', srct: 'berlin1t.jpg', title: 'Berlin 1' },
+              { src: 'berlin2.jpg', srct: 'berlin2t.jpg', title: 'Berlin 2' },
+              { src: 'berlin3.jpg', srct: 'berlin3t.jpg', title: 'Berlin 3' }            
+            ]
+          });
+          var html=html_part1;
+          html+='        "thumbnailHeight":         210, "thumbnailWidth": 210,\n';
+          html+='        "thumbnailL1GutterWidth":  90,\n';
+          html+='        "itemsBaseURL":            "http://nanogallery2.nanostudio.org/samples/"\n';
+          html+=html_part2;
+          html+='      \n';
+          html+='      &lt;!-- IMAGES -->\n';
+          html+='      &lt;a href="berlin1.jpg" data-ngthumb="berlin1_t.jpg">Berlin 1&lt;/a>\n';
+          html+='      &lt;a href="berlin2.jpg" data-ngthumb="berlin2_t.jpg">Berlin 2&lt;/a>\n';
+          html+='      &lt;a href="berlin3.jpg" data-ngthumb="berlin3_t.jpg">Berlin 3&lt;/a>\n';
+          html+=html_part3;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Self hosted images. Note the use of the parameter "itemsBaseURL" to avoid full URL for each image and thumbnail.');
+        },
+        // Self hosted images - 2 albums
+        btnNGY2_source_demo3a: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            thumbnailHeight: 210, thumbnailWidth:210,
+            itemsBaseURL: 'http://nanogallery2.nanostudio.org/samples/',
+            locationHash: false,
+            items:[
+              { kind: 'album', ID: 1, srct: 'berlin1t.jpg', title: 'Album A' },
+              { src: 'berlin1.jpg', ID: 10, albumID: 1, srct: 'berlin1t.jpg', title: 'Image A1' },
+              { src: 'berlin1.jpg', ID: 11, albumID: 1, srct: 'berlin1t.jpg', title: 'Image A2' },
+              { kind: 'album', ID: 2, srct: 'berlin2t.jpg', title: 'Album B' },
+              { src: 'berlin2.jpg', ID: 20, albumID: 2, srct: 'berlin2t.jpg', title: 'Image B1' },
+              { src: 'berlin2.jpg', ID: 21, albumID: 2, srct: 'berlin2t.jpg', title: 'Image B2' },
+            ]
+          });
+          var html=html_part1;
+          html+='        "thumbnailHeight": 210, "thumbnailWidth": 210,\n';
+          html+='        "itemsBaseURL": "http://nanogallery2.nanostudio.org/samples/"\n';
+          html+=html_part2;
+          html+='      \n';
+          html+='      &lt;!-- FIRST ALBUM -->\n';
+          html+='      &lt;a href="" data-ngkind="album" data-ngid="1"  data-ngthumb="berlin1_t.jpg">Album A&lt;/a>\n';
+          html+='      &lt;a href="berlin1.jpg"          data-ngid="10" data-ngalbumid="1" data-ngthumb="berlin1_t.jpg">Image A1&lt;/a>\n';
+          html+='      &lt;a href="berlin1.jpg"          data-ngid="11" data-ngalbumid="1" data-ngthumb="berlin1_t.jpg">Image A2&lt;/a>\n';
+          html+='      \n';
+          html+='      &lt;!-- SECOND ALBUM -->\n';
+          html+='      &lt;a href="" data-ngkind="album" data-ngid="2"  data-ngthumb="berlin2t">Album B&lt;/a>\n';
+          html+='      &lt;a href="berlin2.jpg"          data-ngid="20" data-ngalbumid="2" data-ngthumb="berlin2_t.jpg">Image B1&lt;/a>\n';
+          html+='      &lt;a href="berlin2.jpg"          data-ngid="21" data-ngalbumid="2" data-ngthumb="berlin2_t.jpg">Image B2&lt;/a>\n';
+          html+=html_part3;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Self hosted images. When using albums, IDs must be assigned to each element (images and albums).');
+        },
+        
+        
+        // Self hosted - nanoPhotosProvider2
+        btnNGY2_source_npp2_demo1: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'nano_photos_provider2',
+            dataProvider: 'http://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
+            thumbnailHeight: 150, thumbnailWidth:'auto',
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='      "kind":             "nano_photos_provider2",\n';
+          html+='      "dataProvider":     "http://mywebsever.com/mypath/nano_photos_provider2/nano_photos_provider2.php",\n';
+          html+='      "thumbnailHeight":  150,\n';
+          html+='      "thumbnailWidth":   "auto"\n';
+          html+=html_part2;
+          html+='      \n';
+          html+=html_part3;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Self hosted images with nanoPhotosProvider2.');
+        },
+
+        
+        // ##################################################
+        // THUMBNAIL HOVER EFFECTS
+        // ##################################################
+
+        // THUMBNAIL SHUFFLE
+        btnNGY2_hover_demo1: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            thumbnailHeight: 210, thumbnailWidth:210,
+            itemsBaseURL: 'http://nanogallery2.nanostudio.org/samples/',
+            locationHash: false,
+            thumbnailStacks:4,
+            thumbnailStacksRotateZ: 0.4,
+            thumbnailBuildInit2: 'thumbnail_transform-origin_50% 150%',
+            thumbnailHoverEffect2: 'thumbnail_rotateZ_0deg_15deg_easeOutQuad_200_hoverin|\
+                  thumbnail_rotateZ_15deg_-10deg_delay250_keyframe_hoverin_easeOutBack_400|\
+                  thumbnail_rotateZ_-10deg_0deg_keyframe_hoverout_easeOutBack_400',
+            thumbnailL1GutterWidth: 90,
+            thumbnailL1GutterHeight: 90,
+            thumbnailBorderVertical: 0,
+            thumbnailBorderHorizontal: 0,
+            galleryTheme: {thumbnail: {stackBackground: '#889'}},
+            items:[
+              { src: 'berlin1.jpg', srct: 'berlin1t.jpg', title: 'Berlin 1', imageDominantColor: '#78785b' },
+              { src: 'berlin2.jpg', srct: 'berlin2t.jpg', title: 'Berlin 2', imageDominantColor: '#e1be7a' },
+              { src: 'berlin3.jpg', srct: 'berlin3t.jpg', title: 'Berlin 3', imageDominantColor: '#a0a0a0' }
+            ]
+          });
+          var html=html_part1;
+          html+='        "thumbnailHeight":         210, "thumbnailWidth": 210,\n';
+          html+='        "thumbnailL1GutterWidth":  90,\n';
+          html+='        "thumbnailL1GutterHeight": 90,\n';
+          html+='        "thumbnailBorderVertical": 0,\n';
+          html+='        "thumbnailBorderHorizontal": 0,\n';
+          html+='        "itemsBaseURL":            "http://nanogallery2.nanostudio.org/samples/",\n';
+          html+='        "thumbnailStacks":         4,\n';
+          html+='        "thumbnailStacksRotateZ":  0.4,\n';
+          html+='        "thumbnailBuildInit2":     "thumbnail_transform-origin_50% 150%",\n';
+          html+='        "thumbnailHoverEffect2":   "thumbnail_rotateZ_0deg_15deg_easeOutQuad_200_hoverin | thumbnail_rotateZ_15deg_-10deg_delay250_keyframe_hoverin_easeOutBack_400 | thumbnail_rotateZ_-10deg_0deg_keyframe_hoverout_easeOutBack_400"\n';
+          html+=html_part2;
+          html+='      \n';
+          html+='      &lt;!-- IMAGES -->\n';
+          html+='      &lt;a href="berlin1.jpg" data-ngthumb="berlin1_t.jpg">Berlin 1&lt;/a>\n';
+          html+='      &lt;a href="berlin2.jpg" data-ngthumb="berlin2_t.jpg">Berlin 2&lt;/a>\n';
+          html+='      &lt;a href="berlin3.jpg" data-ngthumb="berlin3_t.jpg">Berlin 3&lt;/a>\n';
+          html+=html_part3;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Move the mouse over a thumbnail or touch a thumbnail to see the hover effect (requires v1.2.0+).');
+        },
+        
+        // IMAGE ROTATE
+        btnNGY2_hover_demo3: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            thumbnailHeight: 210, thumbnailWidth:210,
+            itemsBaseURL: 'http://nanogallery2.nanostudio.org/samples/',
+            locationHash: false,
+            thumbnailBuildInit2: 'image_scale_1.1',
+            galleryBuildInit2 : 'perspective-origin_50% 150%',
+            thumbnailHoverEffect2: 'image_rotateZ_0deg_7deg_easeOutQuad_150_hoverin|\
+                  image_rotateZ_7deg_-7deg_delay160_keyframe_hoverin_easeOutQuad_200|\
+                  image_rotateZ_-7deg_0deg_delay320_keyframe_hoverin_easeOutQuad_150',
+            thumbnailL1GutterWidth: 90,
+            thumbnailL1GutterHeight: 90,
+            thumbnailLabel: {titleFontSize: '2.5em'},
+            items:[
+              { src: 'berlin1.jpg', srct: 'berlin1t.jpg', title: 'Berlin 1', description:'Brandenburg Gate', imageDominantColor: '#78785b' },
+              { src: 'berlin2.jpg', srct: 'berlin2t.jpg', title: 'Berlin 2', description:'Alltag in der DDR', imageDominantColor: '#e1be7a' },
+              { src: 'berlin3.jpg', srct: 'berlin3t.jpg', title: 'Berlin 3', description:'Fernsehturm', imageDominantColor: '#a0a0a0' }
+            ]
+          });
+          var html=html_part1;
+          html+='        "thumbnailHeight": 210,    "thumbnailWidth": 210,\n';
+          html+='        "thumbnailL1GutterWidth":  90,\n';
+          html+='        "thumbnailL1GutterHeight": 90,\n';
+          html+='        "itemsBaseURL":            "http://nanogallery2.nanostudio.org/samples/",\n';
+          html+='        "thumbnailStacksRotateZ":  0.4,\n';
+          html+='        "thumbnailStacksRotateZ":  0.4,\n';
+          html+='        "galleryBuildInit2":       "perspective-origin_50% 150%",\n';
+          html+='        "thumbnailHoverEffect2":   "image_rotateZ_0deg_7deg_easeOutQuad_150_hoverin|image_rotateZ_7deg_-7deg_delay160_keyframe_hoverin_easeOutQuad_200|image_rotateZ_-7deg_0deg_delay320_keyframe_hoverin_easeOutQuad_150"\n';
+          html+=html_part2;
+          html+='      \n';
+          html+='      &lt;!-- IMAGES -->\n';
+          html+='      &lt;a href="berlin1.jpg" data-ngthumb="berlin1_t.jpg">Berlin 1&lt;/a>\n';
+          html+='      &lt;a href="berlin2.jpg" data-ngthumb="berlin2_t.jpg">Berlin 2&lt;/a>\n';
+          html+='      &lt;a href="berlin3.jpg" data-ngthumb="berlin3_t.jpg">Berlin 3&lt;/a>\n';
+          html+=html_part3;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Move the mouse over a thumbnail or touch a thumbnail to see the hover effect (requires v1.2.0+).');
+        },
+
+        // PARALLAX EFFECT
+        btnNGY2_hover_demo4: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            thumbnailHeight: 210, thumbnailWidth:210,
+            itemsBaseURL: 'http://nanogallery2.nanostudio.org/samples/',
+            locationHash: false,
+            thumbnailBuildInit2: 'title_translateY_10px',
+            galleryBuildInit2 : 'perspective_1000px',
+            thumbnailHoverEffect2: 'thumbnail_rotateY_0deg_30deg_easeOutQuad_150_hoverin|\
+                  thumbnail_rotateY_30deg_-30deg_delay160_keyframe_hoverin_easeOutQuad_200|\
+                  thumbnail_rotateY_-30deg_0deg_delay320_keyframe_hoverin_easeOutQuad_150|\
+                  title_translateX_0px_20px_easeOutQuad_150_hoverin|\
+                  title_translateX_20px_-20px_delay160_keyframe_hoverin_easeOutQuad_200|\
+                  title_translateX_-20px_0px_delay320_keyframe_hoverin_easeOutQuad_150|\
+                  description_translateX_0px_12px_easeOutQuad_150_hoverin|\
+                  description_translateX_12px_-12px_delay160_keyframe_hoverin_easeOutQuad_200|\
+                  description_translateX_-12px_0px_delay320_keyframe_hoverin_easeOutQuad_150',
+            thumbnailL1GutterWidth: 90,
+            thumbnailL1GutterHeight: 90,
+            thumbnailLabel: {displayDescription: true, titleFontSize: '1.8em', descriptionFontSize: '1.5em', descriptionMultiLine: true},
+            items:[
+              { src: 'berlin1.jpg', srct: 'berlin1t.jpg', title: 'Berlin 1', description:'Brandenburg Gate', imageDominantColor: '#78785b' },
+              { src: 'berlin2.jpg', srct: 'berlin2t.jpg', title: 'Berlin 2', description:'Alltag in der DDR', imageDominantColor: '#e1be7a' },
+              { src: 'berlin3.jpg', srct: 'berlin3t.jpg', title: 'Berlin 3', description:'Fernsehturm', imageDominantColor: '#a0a0a0' }
+            ]
+          });
+          var html=html_part1;
+          html+='        "thumbnailHeight":         210, "thumbnailWidth": 210,\n';
+          html+='        "thumbnailL1GutterWidth":  90,\n';
+          html+='        "thumbnailL1GutterHeight": 90,\n';
+          html+='        "itemsBaseURL":            "http://nanogallery2.nanostudio.org/samples/",\n';
+          html+='        "thumbnailStacksRotateZ":  0.4,\n';
+          html+='        "thumbnailBuildInit2":     "title_translateY_10px",\n';
+          html+='        "galleryBuildInit2":       "perspective_1000px",\n';
+          html+='        "thumbnailHoverEffect2":   "thumbnail_rotateY_0deg_30deg_easeOutQuad_150_hoverin|thumbnail_rotateY_30deg_-30deg_delay160_keyframe_hoverin_easeOutQuad_200|thumbnail_rotateY_-30deg_0deg_delay320_keyframe_hoverin_easeOutQuad_150|title_translateX_0px_20px_easeOutQuad_150_hoverin|title_translateX_20px_-20px_delay160_keyframe_hoverin_easeOutQuad_200|title_translateX_-20px_0px_delay320_keyframe_hoverin_easeOutQuad_150|description_translateX_0px_12px_easeOutQuad_150_hoverin|description_translateX_12px_-12px_delay160_keyframe_hoverin_easeOutQuad_200|description_translateX_-12px_0px_delay320_keyframe_hoverin_easeOutQuad_150"\n';
+          html+=html_part2;
+          html+='      \n';
+          html+='      &lt;!-- IMAGES -->\n';
+          html+='      &lt;a href="berlin1.jpg" data-ngthumb="berlin1_t.jpg" data-ngdescription="Brandenburg Gate">Berlin 1&lt;/a>\n';
+          html+='      &lt;a href="berlin2.jpg" data-ngthumb="berlin2_t.jpg" data-ngdescription="Alltag in der DDR">Berlin 2&lt;/a>\n';
+          html+='      &lt;a href="berlin3.jpg" data-ngthumb="berlin3_t.jpg" data-ngdescription="Fernsehturm">Berlin 3&lt;/a>\n';
+          html+=html_part3;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Move the mouse over a thumbnail or touch a thumbnail to see the hover effect (requires v1.2.0+).');
+        },
+
+        // THUMBNAIL POPOUT
+        btnNGY2_hover_demo2: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            thumbnailHeight: 210, thumbnailWidth:210,
+            itemsBaseURL: 'http://nanogallery2.nanostudio.org/samples/',
+            locationHash: false,
+            thumbnailStacks: 4,
+            thumbnailStacksTranslateZ: 0.3,
+            thumbnailStacksRotateX: 0.9,
+            galleryBuildInit2 : 'perspective_900px|perspective-origin_50% 150%',
+//            thumbnailL1HoverEffect2: 'thumbnail_translateZ_0px_100px_easeOutQuad_4000',
+            thumbnailL1HoverEffect2: 'thumbnail_translateZ_0px_100px_easeOutQuad_400| \
+                thumbnail_rotateX_0deg_10deg_easeOutBack_200| \
+                thumbnail_rotateX_10deg_0deg_delay250_keyframe_hoverin_easeOutBack_400',
+            thumbnailL1GutterWidth: 40,
+            thumbnailL1GutterHeight: 40,
+            galleryTheme: {thumbnail: {stackBackground: '#889'}},
+            items:[
+              { src: 'berlin1.jpg', srct: 'berlin1t.jpg', title: 'Berlin 1', imageDominantColor: '#78785b' },
+              { src: 'berlin2.jpg', srct: 'berlin2t.jpg', title: 'Berlin 2', imageDominantColor: '#e1be7a' },
+              { src: 'berlin3.jpg', srct: 'berlin3t.jpg', title: 'Berlin 3', imageDominantColor: '#a0a0a0' }
+            ]
+          });
+          var html=html_part1;
+          html+='        "thumbnailHeight":           210, "thumbnailWidth": 210,\n';
+          html+='        "thumbnailL1GutterWidth":    40,\n';
+          html+='        "thumbnailL1GutterHeight":   40,\n';
+          html+='        "itemsBaseURL":              "http://nanogallery2.nanostudio.org/samples/",\n';
+          html+='        "thumbnailStacks":           4,\n';
+          html+='        "thumbnailStacksTranslateZ": 0.3,\n';
+          html+='        "thumbnailStacksRotateX":    0.9,\n';
+          html+='        "galleryBuildInit2":         "perspective_900px|perspective-origin_50% 150%",\n';
+          html+='        "thumbnailHoverEffect2":     "thumbnail_translateZ_0px_100px_easeOutQuad_400 | thumbnail_rotateX_0deg_10deg_easeOutBack_200 | thumbnail_rotateX_10deg_0deg_delay250_keyframe_hoverin_easeOutBack_400"\n';
+          html+=html_part2;
+          html+='      \n';
+          html+='      &lt;!-- IMAGES -->\n';
+          html+='      &lt;a href="berlin1.jpg" data-ngthumb="berlin1_t.jpg">Berlin 1&lt;/a>\n';
+          html+='      &lt;a href="berlin2.jpg" data-ngthumb="berlin2_t.jpg">Berlin 2&lt;/a>\n';
+          html+='      &lt;a href="berlin3.jpg" data-ngthumb="berlin3_t.jpg">Berlin 3&lt;/a>\n';
+          html+=html_part3;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Move the mouse over a thumbnail or touch a thumbnail to see the hover effect. (requires v1.2.0+)');
+        },
+
+        // THUMBNAIL 3D ROTATE
+        btnNGY2_hover_demo5: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            thumbnailHeight: 200, thumbnailWidth:300,
+            itemsBaseURL: 'http://nanogallery2.nanostudio.org/samples/',
+            locationHash: false,
+            //galleryBuildInit2 : 'perspective_900px|perspective-origin_50% 150%',
+            thumbnailBuildInit2: '.nGY2GThumbnailImageTitle_border-left_5px solid #23CB99|.nGY2GThumbnailImageTitle_margin_20px|\
+                image_transform-origin_50% 50% -100px|image_transform-style_preserve-3d|image_backface-visibility_hidden|\
+                label_transform-origin_50% 50% -100px|label_transform-style_preserve-3d|label_backface-visibility_hidden|\
+                thumbnail_perspective_250px|\
+                .nGY2GThumbnailSub_perspective_250px|\
+                thumbnail_overflow_visible|\
+                .nGY2GThumbnailSub_overflow_visible|\
+                label_background_url(img/thumbnail-background-pixabay-com.jpg)|label_background-size_100%|thumbnail_background-color_rgba(0,0,0,0)|title_color_#000',
+            thumbnailHoverEffect2: 'image_rotateX_0deg_89deg_800|label_rotateX_-89deg_0deg_800|image_opacity_1.00_0.00|label_opacity_1.00_1.00|thumbnail_scale_1.00_1.20',
+            thumbnailLabel: { display: true, position:'overImageOnMiddle', hideIcons: true, titleFontSize: '1.5em', align: 'left'},
+            thumbnailBorderHorizontal: 0,
+            thumbnailBorderVertical: 0,
+            thumbnailGutterWidth: 40,
+            thumbnailGutterHeight: 40,
+            galleryTheme : { 
+              thumbnail: { titleShadow : 'none', descriptionShadow : 'none' },
+            },
+            items:[
+              { src: 'berlin1.jpg', srct: 'berlin1t.jpg', title: 'Berlin 1' },
+              { src: 'berlin2.jpg', srct: 'berlin2t.jpg', title: 'Berlin 2' },
+              { src: 'berlin3.jpg', srct: 'berlin3t.jpg', title: 'Berlin 3' }            
+            ]
+          });
+          var html=html_part1;
+          html+='        "thumbnailHeight":           200, "thumbnailWidth": 300,\n';
+          html+='        "itemsBaseURL":              "http://nanogallery2.nanostudio.org/samples/",\n';
+          html+='        "thumbnailL1GutterWidth":    40,\n';
+          html+='        "thumbnailL1GutterHeight":   40,\n';
+          html+='        "thumbnailBorderHorizontal": 0,\n';
+          html+='        "thumbnailBorderVertical":   0,\n';
+          html+='        "thumbnailBuildInit2":       ".nGY2GThumbnailImageTitle_border-left_5px solid #23CB99|.nGY2GThumbnailImageTitle_margin_20px|image_transform-origin_50% 50% -100px|image_transform-style_preserve-3d|image_backface-visibility_hidden|label_transform-origin_50% 50% -100px|label_transform-style_preserve-3d|label_backface-visibility_hidden|thumbnail_perspective_250px|.nGY2GThumbnailSub_perspective_250px|thumbnail_overflow_visible|.nGY2GThumbnailSub_overflow_visible|label_background_url(img/thumbnail-background-pixabay-com.jpg)|label_background-size_100%|thumbnail_background-color_rgba(0,0,0,0)|title_color_#000",\n';
+          html+='        "thumbnailHoverEffect2":     "image_rotateX_0deg_89deg_800|label_rotateX_-89deg_0deg_800 | image_opacity_1.00_0.00 | label_opacity_1.00_1.00 | thumbnail_scale_1.00_1.20"\n';
+          html+='        "thumbnailLabel":            { "display": true, position: "overImageOnMiddle", "hideIcons": true, "titleFontSize": "1.5em", "align": "left" },\n';
+          html+=html_part2;
+          html+='      \n';
+          html+='      &lt;!-- IMAGES -->\n';
+          html+='      &lt;a href="berlin1.jpg" data-ngthumb="berlin1_t.jpg">Berlin 1&lt;/a>\n';
+          html+='      &lt;a href="berlin2.jpg" data-ngthumb="berlin2_t.jpg">Berlin 2&lt;/a>\n';
+          html+='      &lt;a href="berlin3.jpg" data-ngthumb="berlin3_t.jpg">Berlin 3&lt;/a>\n';
+          html+=html_part3;
+          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_description').text('Move the mouse over a thumbnail or touch a thumbnail to see the hover effect.');
+        },
+
+        // ##################################################
+        // DISPLAY MODES
+        // ##################################################
+
+        btnNGY2_displaymode_demo1: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'flickr',
+            userID: '149035168@N08',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            album: 'none',
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind":            "flickr",\n';
+          html+='        "userID":          "149035168@N08",\n';
+          html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
+          html+='        "album":           "none"\n';
+          html+=html_part2+html_part3;
+          jQuery('#ngy2_template').html(html);
+          var html2=portable_part1;
+          html2+=' "kind": "flickr", "userID": "149035168@N08", "thumbnailHeight": 150, "thumbnailWidth": 150, "album": "none"';
+          html2+=portable_part2;
+          jQuery('#ngy2_portable').html(html2);
+          jQuery('#ngy2_description').text('Display all thumbnails.');
+        },
+        
+        btnNGY2_displaymode_demo2: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'flickr',
+            userID: '149035168@N08',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            album: 'none',
+            galleryDisplayMode: 'moreButton',
+            galleryDisplayMoreStep: 2,
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind":                    "flickr",\n';
+          html+='        "userID":                  "149035168@N08",\n';
+          html+='        "thumbnailHeight":         150, "thumbnailWidth": 150,\n';
+          html+='        "album":                   "none",\n';
+          html+='        "galleryDisplayMode":      "moreButton",\n';
+          html+='        "galleryDisplayMoreStep":  2\n';
+          html+=html_part2+html_part3;
+          //html+=html_part3;
+          jQuery('#ngy2_template').html(html);
+          var html2=portable_part1;
+          html2+=' "kind": "flickr", "userID": "149035168@N08", "thumbnailHeight": 150, "thumbnailWidth": 150, "album": "none", "galleryDisplayMode": "moreButton", "galleryDisplayMoreStep": 2';
+          html2+=portable_part2;
+          jQuery('#ngy2_portable').html(html2);
+          jQuery('#ngy2_description').text('Display 2 rows of thumbnails. Click the "more button" to show 2 more rows.');
+        },
+
+        btnNGY2_displaymode_demo3: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'flickr',
+            userID: '149035168@N08',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            album: 'none',
+            galleryDisplayMode: 'pagination',
+            galleryMaxRows: 2,
+            galleryPaginationMode: 'numbers',
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind":                  "flickr",\n';
+          html+='        "userID":                "149035168@N08",\n';
+          html+='        "thumbnailHeight":       150, "thumbnailWidth": 150,\n';
+          html+='        "album":                 "none",\n';
+          html+='        "galleryDisplayMode":    "pagination",\n';
+          html+='        "galleryMaxRows":        2,\n';
+          html+='        "galleryPaginationMode": "numbers"\n';
+          html+=html_part2+html_part3;
+          jQuery('#ngy2_template').html(html);
+          var html2=portable_part1;
+          html2+=' "kind": "flickr", "userID": "149035168@N08", "thumbnailHeight": 150, "thumbnailWidth": 150, "album": "none", "galleryDisplayMode": "pagination", "galleryMaxRows": 2, "galleryPaginationMode": "numbers"';
+          html2+=portable_part2;
+          jQuery('#ngy2_portable').html(html2);
+          jQuery('#ngy2_description').text('Display 2 rows of thumbnails and numbers below to paginate.');
+        },
+
+        btnNGY2_displaymode_demo4: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'flickr',
+            userID: '149035168@N08',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            album: 'none',
+            galleryDisplayMode: 'pagination',
+            galleryMaxRows: 2,
+            galleryPaginationMode: 'dots',
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind":                  "flickr",\n';
+          html+='        "userID":                "149035168@N08",\n';
+          html+='        "thumbnailHeight":       150, "thumbnailWidth": 150,\n';
+          html+='        "album":                 "none",\n';
+          html+='        "galleryDisplayMode":    "pagination",\n';
+          html+='        "galleryMaxRows":        2,\n';
+          html+='        "galleryPaginationMode": "dots"\n';
+          html+=html_part2+html_part3;
+          jQuery('#ngy2_template').html(html);
+          var html2=portable_part1;
+          html2+=' "kind": "flickr", "userID": "149035168@N08", "thumbnailHeight": 150, "thumbnailWidth": 150, "album": "none", "galleryDisplayMode": "pagination", "galleryMaxRows": 2, "galleryPaginationMode": "dots"';
+          html2+=portable_part2;
+          jQuery('#ngy2_portable').html(html2);
+          jQuery('#ngy2_description').text('Display 2 rows of thumbnails and dots below to paginate.');
+        },
+
+        btnNGY2_displaymode_demo5: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'flickr',
+            userID: '149035168@N08',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            album: 'none',
+            galleryDisplayMode: 'rows',
+            galleryMaxRows: 2,
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind": "flickr",\n';
+          html+='        "userID":              "149035168@N08",\n';
+          html+='        "thumbnailHeight":     150, "thumbnailWidth": 150,\n';
+          html+='        "album":               "none",\n';
+          html+='        "galleryDisplayMode":  "rows",\n';
+          html+='        "galleryMaxRows":      2\n';
+          html+=html_part2+html_part3;
+          jQuery('#ngy2_template').html(html);
+          var html2=portable_part1;
+          html2+=' "kind": "flickr", "userID": "149035168@N08", "thumbnailHeight": 150, "thumbnailWidth": 150, "album": "none", "galleryDisplayMode": "rows", "galleryMaxRows": 2';
+          html2+=portable_part2;
+          jQuery('#ngy2_portable').html(html2);
+          jQuery('#ngy2_description').text('Display 2 rows of thumbnails.');
+        },
+
+        
+        // #############################################################
+        // ## LAYOUTS
+        // #############################################################
+
+        btnNGY2_layout_demo1: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'flickr',
+            userID: '149035168@N08',
+            photoset: '72157675219521270',
+            thumbnailHeight: 150, thumbnailWidth:'auto',
+            gallerySorting: 'random',
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind":            "flickr",\n';
+          html+='        "userID":          "149035168@N08",\n';
+          html+='        "photoset":        "72157675219521270",\n';
+          html+='        "thumbnailHeight": 150,\n';
+          html+='        "thumbnailWidth":  "auto"\n';
+          html+=html_part2+html_part3;
+          jQuery('#ngy2_template').html(html);
+          var html2=portable_part1;
+          html2+=' "kind": "flickr", "userID": "149035168@N08", "photoset": "72157675219521270", "thumbnailHeight": 150, "thumbnailWidth": "auto"';
+          html2+=portable_part2;
+          jQuery('#ngy2_portable').html(html2);
+          jQuery('#ngy2_description').text('Display an album with the justified layout. The thumbnail width is set to "auto".');
+        },
+        
+        btnNGY2_layout_demo2: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'flickr',
+            userID: '149035168@N08',
+            photoset: '72157675219521270',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            gallerySorting: 'random',
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind":            "flickr",\n';
+          html+='        "userID":          "149035168@N08",\n';
+          html+='        "photoset":        "72157675219521270",\n';
+          html+='        "thumbnailHeight": 150,\n';
+          html+='        "thumbnailWidth":  150\n';
+          html+=html_part2+html_part3;
+          jQuery('#ngy2_template').html(html);
+          var html2=portable_part1;
+          html2+=' "kind": "flickr", "userID": "149035168@N08", "photoset": "72157675219521270", "thumbnailHeight": 150, "thumbnailWidth": 150';
+          html2+=portable_part2;
+          jQuery('#ngy2_portable').html(html2);
+          jQuery('#ngy2_description').text('Display an album the grid layout. Thumbnail width and height are fixed.');
+        },
+        
+        btnNGY2_layout_demo3: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'flickr',
+            userID: '149035168@N08',
+            photoset: '72157675219521270',
+            thumbnailHeight: 'auto', thumbnailWidth:200,
+            thumbnailLabel : { position : 'onBottom' },
+            gallerySorting: 'random',
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind":            "flickr",\n';
+          html+='        "userID":          "149035168@N08",\n';
+          html+='        "photoset":        "72157675219521270",\n';
+          html+='        "thumbnailLabel":  { "position" : "onBottom" },\n';
+          html+='        "thumbnailHeight": "auto",\n';
+          html+='        "thumbnailWidth":  200\n';
+          html+=html_part2+html_part3;
+          jQuery('#ngy2_template').html(html);
+          var html2=portable_part1;
+          html2+=' "kind": "flickr", "userID": "149035168@N08", "photoset": "72157675219521270", "thumbnailLabel": { "position" : "onBottom" }, "thumbnailHeight": "auto", "thumbnailWidth": 200';
+          html2+=portable_part2;
+          jQuery('#ngy2_portable').html(html2);
+          jQuery('#ngy2_description').text('Display an album the cascading layout. Label is positioned under the thumbnail. The thumbnail height is set to "auto".');
+        },
+        
+        // #############################################################
+        // ## NAVIGATION IN ALBUMS
+        // #############################################################
+
+        btnNGY2_nav_demo1: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'google',
+            userID: '111186676244625461692',
+            blackList: 'forhomepage|scrapbook|profil',
+            breadcrumbAutoHideTopLevel: false,
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind":    "google",\n';
+          html+='        "userID":  "111186676244625461692",\n';
+          html+='        "breadcrumbAutoHideTopLevel": false\n';
+          html+=html_part2+html_part3;
+          jQuery('#ngy2_template').html(html);
+          var html2=portable_part1;
+          html2+=' "kind": "google", "userID": "111186676244625461692", "breadcrumbAutoHideTopLevel": false';
+          html2+=portable_part2;
+          jQuery('#ngy2_portable').html(html2);
+          jQuery('#ngy2_description').text('Display a breadcrumb for navigation in the albums.');
+        },
+        
+        btnNGY2_nav_demo2: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'google',
+            userID: '111186676244625461692',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            blackList: 'forhomepage|scrapbook|profil',
+            thumbnailLevelUp: true,
+            displayBreadcrumb: false,
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind":              "google",\n';
+          html+='        "userID":            "111186676244625461692",\n';
+          html+='        "thumbnailHeight":   150, "thumbnailWidth": 150,\n';
+          html+='        "thumbnailLevelUp":  true,\n';
+          html+='        "displayBreadcrumb": false\n';
+          html+=html_part2+html_part3;
+          jQuery('#ngy2_template').html(html);
+          var html2=portable_part1;
+          html2+=' "kind": "google", "userID": "111186676244625461692", "thumbnailHeight": 150, "thumbnailWidth": 150, "thumbnailLevelUp": true, "displayBreadcrumb": false';
+          html2+=portable_part2;
+          jQuery('#ngy2_portable').html(html2);
+          jQuery('#ngy2_description').text('No breadcrumb for navigation in the albums. User can instead use the first thumbnail to go to upper level.');
+        },
+        
+        btnNGY2_nav_demo3: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'google',
+            userID: '111186676244625461692',
+            album: '5911699288924070209',
+            thumbnailHeight: 150, thumbnailWidth:150,
+            blackList: 'forhomepage|scrapbook|profil',
+            galleryFilterTags: 'title',
+            displayBreadcrumb: false,
+            locationHash: false
+            
+          });
+          var html=html_part1;
+          html+='        "kind":                "google",\n';
+          html+='        "userID":              "111186676244625461692",\n';
+          html+='        "thumbnailHeight":     150, "thumbnailWidth": 150,\n';
+          html+='        "galleryFilterTags":   "title",\n';
+          html+='        "displayBreadcrumb":   false\n';
+          html+=html_part2+html_part3;
+          jQuery('#ngy2_template').html(html);
+          var html2=portable_part1;
+          html2+=' "kind": "google", "userID": "111186676244625461692", "thumbnailHeight": 150, "thumbnailWidth": 150, "galleryFilterTags": "title", "displayBreadcrumb": false';
+          html2+=portable_part2;
+          jQuery('#ngy2_portable').html(html2);
+          jQuery('#ngy2_description').text('Filter thumbnails by tags. Tags are extracted from the title (words starting with @).');
+        },
+        
+      }
+    
+      // select list
+      $('select[name=demoCat]').on("change",function(){
+        //alert(this.value);
+        $('#demos').find('li').css('display','none');
+        $('#'+this.value).css('display','inline');
+      });
+
+      // click on a button
+      jQuery('.btn').on('click', function() {
+        jQuery("#nanogallery2").nanogallery2('destroy');
+        jQuery('.btn').addClass('btn-primary').removeClass('btn-success');
+        jQuery('#'+this.id).removeClass('btn-primary').addClass('btn-success');
+        mydemos[this.id]();
+        ga('send', 'event', 'click', 'demonstration', jQuery('#'+this.id).text());
+      });
+      
+      var hash = window.location.hash;
+      switch( hash ) {
+        case '#gallery_layouts':
+          $('select[name=demoCat]').val('catLayout').trigger('change');
+          mydemos.btnNGY2_layout_demo1();
+          break;
+        case '#gallery_display_modes':
+          $('select[name=demoCat]').val('catDisplayMode').trigger('change');
+          mydemos.btnNGY2_displaymode_demo1();
+          break;
+        case '#navigation_in_albums':
+          $('select[name=demoCat]').val('catNavigation').trigger('change');
+          mydemos.btnNGY2_nav_demo1();
+          break;
+        case '#content_source':
+          $('select[name=demoCat]').val('catContentSource').trigger('change');
+          mydemos.btnNGY2_source_demo3();
+          break;
+        case '#thumbnail_hover_effects':
+        default:
+          $('select[name=demoCat]').trigger('change');
+          mydemos.btnNGY2_hover_demo1();
+          break;
+      }
+   
+    });
+    
+    
+  </script>
