@@ -22,8 +22,8 @@ module.exports = function(grunt) {
             'template/header-2.html',
             'template/header-3.html',
             'template/logo_index.html',
-            'template/javascript.html',
             'src/index.html',
+            'template/javascript.html',
             'src/index_js.html',
             'template/footer.html'
           ],
