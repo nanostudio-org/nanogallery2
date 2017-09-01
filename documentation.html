@@ -693,14 +693,6 @@
         </div>
       </div>
     </div>
-    <script type="text/javascript">
-      jQuery(document).ready(function () {
-        jQuery('#btn_enjoy_yes').on('click', function() {
-          window.open('https://nanostudio.typeform.com/to/zyHSZD', '_blank');
-          $('#myModalEnjoyYes').modal('hide');
-        });
-      });
-    </script>
 
     <div class="modal fade" id="myModalEnjoyNo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
@@ -719,15 +711,6 @@
         </div>
       </div>
     </div>
-    <script type="text/javascript">
-      jQuery(document).ready(function () {
-        jQuery('#btn_enjoy_no').on('click', function() {
-          window.open('https://nanostudio.typeform.com/to/wHRN2N', '_blank');
-          $('#myModalEnjoyNo').modal('hide');
-        });
-      });
-    </script>
-
     
     
     <div id="ngy2_gallery"></div>
@@ -855,13 +838,6 @@
             <td>1.0</td>
           </tr>
           <tr>
-            <td>thumbnailOpenOriginal</td>
-            <td>boolean</td>
-            <td>false</td>
-            <td>Displays the original image (for example in Flickr or Google Photos), without opening the lightbox.</td>
-            <td>1.0</td>
-          </tr>
-          <tr>
             <td>thumbnailOpenImage</td>
             <td>boolean</td>
             <td>true</td>
@@ -869,12 +845,17 @@
             <td>1.0</td>
           </tr>
           <tr>
-            <td>colorScheme</td>
+            <td>galleryTheme<br>colorScheme</td>
             <td>string<br>object</td>
             <td>'dark'</td>
-            <td>Gallery color scheme (thumbnails, navigation...).
-            <br>Possible values: <b>'dark'</b>, <b>'light'</b>
-            <br>Custom color schemes are supported.</td>
+            <td>
+              Gallery theme (thumbnails, navigation...).
+              <br>Possible values: <b>'dark'</b>, <b>'light'</b>
+              <br>Custom themes are supported.
+              <br>
+              <br>
+              <b>since v1.5, properties 'colorScheme' and 'galleryTheme' are synonymous</b>
+            </td>
             <td>1.0</td>
           </tr>
           <tr>
@@ -1158,11 +1139,21 @@
           <td>1.4</td>
         </tr>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>1.2</td>
+          <td>thumbnailLastImgSliderDelay</td>
+          <td>integer</td>
+          <td>2000</td>
+          <td>
+            Image slider last displayed thumbnail.
+            <br>
+            Delay in ms between the display of images.
+            <br>
+            Set it to <b>0</b> to disable it.
+            <br>
+            Supported in grid layout with <b>galleryDisplayMode</b> set to <b>'rows'</b> or to <b>'fullContent'</b> with <b>galleryLastRowFull</b> enabled.
+            <br>
+            Thumbnail image sizes must be defined.
+          </td>
+          <td>1.5</td>
         </tr>
       </tbody>
       </table>
@@ -1521,7 +1512,7 @@
     <br><br>
     <h4><i class="fa fa-circle-o"></i> Stacks</h4>
     <p>
-      Stacks can be added behind thumbnails to create nice hover effects. Their color is defined in the colorScheme.
+      Stacks can be added behind thumbnails to create nice hover effects. Their color is defined in the galleryTheme.
       <br>
       Use <code>thumbnailStacks</code> and <code>thumbnailL1Stacks</code> to define then number of stacks.
       <br><br>
@@ -1875,7 +1866,7 @@
             <td>viewerHideToolsDelay</td>
             <td>integre</td>
             <td>3000</td>
-            <td>Displays images in fullscreen (on supported browser).</td>
+            <td>Delay of inactivity before hidding the tools and labels.</td>
             <td>1.3</td>
           </tr>
           <tr>
@@ -1985,12 +1976,16 @@
             <td>1.0</td>
           </tr>
           <tr>
-            <td>colorSchemeViewer</td>
+            <td>viewerTheme<br>colorSchemeViewer</td>
             <td>string<br>object</td>
             <td>'dark'</td>
-            <td>Image display color scheme.
-            <br>Possible values: <b>'dark', 'light', 'border'</b>.
-            <br>Custom color schemes are supported.</td>
+            <td>
+              Image display theme.
+              <br>Possible values: <b>'dark', 'light', 'border'</b>.
+              <br>Custom themes are supported.
+              <br><br>
+              <b>since v1.5, properties 'colorSchemeViewer' and 'viewerTheme' are synonymous</b>
+            </td>
             <td>1.0</td>
           </tr>
           <tr>
@@ -1998,14 +1993,24 @@
             <td>boolean</td>
             <td>false</td>
             <td>To display a logo over the image.</td>
-            <td></td>
+            <td>1.0</td>
           </tr>
           <tr>
+            <td>viewerImageDisplay</td>
+            <td>string</td>
             <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>
+              Manage the image display zoom factor.
+              <br><br>
+              Possible values:
+              <br>
+              &nbsp; - '': no not apply any zoom factor
+              <br>
+              &nbsp; - '<b>bestImageQuality</b>': display images smaller for a better quality (on high DPI screens like Retina, etc.) 
+              <br>
+              &nbsp; - '<b>upscale</b>': upscale image to screen size
+            </td>
+            <td>1.5</td>
           </tr>
         </tbody>
       </table>
@@ -2396,40 +2401,40 @@
     
     <div id="ngy2_colorschemes"></div>
     <br><br><br><br><br><br><br>
-    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> COLOR SCHEMES</h3>
+    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> THEMES</h3>
     <hr>
     <blockquote>
-      Color schemes allow you to customize some elements without changing the CSS file.<br>
-      Two separated color schemes can be set: one for the gallery (<code>colorScheme</code>), and one for the lightbox (<code>colorSchemeViewer</code>).<br>
+      Themes allow you to customize some elements without changing the CSS file.<br>
+      Two separated themes can be set: one for the gallery (<code>galleryTheme</code>), and one for the lightbox (<code>viewerTheme</code>).<br>
       For each one, 2 templates can be used: <code>dark</code> (default valude) and <code>light</code>.
-      You can create your own color scheme.<br><br>
+      You can define your own customized theme.<br><br>
       Example:<br>
-      To change the backrgound and the boder color of the thumbnails<br>
-      1. define one color scheme: <code>var myCS= { thumbnail : { background: '#F00', borderColor: '#F00' } };</code><br>
-      2. assign it to the gallery: <code>colorScheme: myCS</code>
+      To change the background and the boder color of the thumbnails<br>
+      1. define one theme: <code>var myCS= { thumbnail : { background: '#F00', borderColor: '#F00' } };</code><br>
+      2. assign it to the gallery: <code>galleryTheme: myCS</code>
     </blockquote>
     <p>
-      Gallery color scheme format (with default values):
+      Gallery theme format (with default values):
     </p>
     <pre>
 {
-  navigationBar : { background: 'none', borderTop: '', borderBottom: '', borderRight: '', borderLeft: '' },
-  navigationBreadcrumb : { background: '#111', color: '#fff', colorHover: '#ccc', borderRadius: '6px' },
-  navigationFilter : { color: '#ddd', background: '#111', colorSelected: '#fff', backgroundSelected: '#111', borderRadius: '6px' },
-  thumbnail : { background: '#000', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#eee', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#aaa' },
-  thumbnailIcon : { padding: '5px', color: '#fff' },
-  pagination : { background: '#111', backgroundSelected: '#666', color: '#fff', borderRadius: '4px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
+  navigationBar:        { background: 'none', borderTop: '', borderBottom: '', borderRight: '', borderLeft: '' },
+  navigationBreadcrumb: { background: '#111', color: '#fff', colorHover: '#ccc', borderRadius: '6px' },
+  navigationFilter :    { color: '#ddd', background: '#111', colorSelected: '#fff', backgroundSelected: '#111', borderRadius: '6px' },
+  thumbnail:            { background: '#444', backgroundImage: 'linear-gradient(315deg, #111 0%, #557 90%)', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#eee', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#aaa' },
+  thumbnailIcon:        { padding: '5px', color: '#fff' },
+  pagination:           { background: '#111', backgroundSelected: '#666', color: '#fff', borderRadius: '2px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
 }
     </pre>
 
     <br>
     <p>
-      Lightbox color scheme format (with default values):
+      Lightbox theme format (with default values):
     </p>
     <pre>
 {
-  background: '#000', imageBorder: 'none', imageBoxShadow: 'none',
-  barBackground: 'rgba(4, 4, 4, 0.7)', barBorder: '0px solid #111', barColor: '#eee', barDescriptionColor: '#aaa'
+  background:     '#000', imageBorder: 'none', imageBoxShadow: 'none',
+  barBackground:  'rgba(4, 4, 4, 0.7)', barBorder: '0px solid #111', barColor: '#eee', barDescriptionColor: '#aaa'
 }
     </pre>
     
@@ -2716,7 +2721,7 @@
         <a href="#ngy2_icons">Custom icons</a>
       </li>
       <li>
-        <a href="#ngy2_colorschemes">Color schemes</a>
+        <a href="#ngy2_colorschemes">Themes</a>
       </li>
       <li>
         <a href="#ngy2_upgrade">Upgrading nanoGALLERY</a>
@@ -2754,16 +2759,7 @@
   </div>
   </div>
 
-  <script>
-    $(document).ready(function () {
-      $('#ngy2_vert_nav').affix({
-        offset: {
-            top: $('#ngy2_vert_nav').offset().top,
-            bottom: ($('footer').outerHeight(true)) + 40
-          }
-      });
-    });
-  </script>
+  
 
   <!-- ######################## -->
   <!-- #####  INCLUDE JS  ##### -->
