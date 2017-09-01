@@ -1,4 +1,4 @@
-/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2017-08-04 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2017-09-01 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /**!
  * @preserve nanogallery2 - javascript image gallery
  * Homepage: http://nanogallery2.nanostudio.org
@@ -25,22 +25,20 @@ v1.5.0 BETA - DO NOT USE
 - new: thumbnail image dominant color in stacks
 - new: thumbnail gradient color during image download (see galleryTheme)
 - new: lightbox option 'viewerImageDisplay'
-  Possible values : 'upscale' to upscale small images, 'useDevicePixelRatio' to use highest quality on high DPI screen like retina
+  Possible values : 'upscale' to upscale images, 'bestImageQuality' for highest quality on high DPI screens like retina
 - enhanced: lightbox image zoom
-- changed: rename option 'colorScheme' to 'galleryTheme'
-- changed: rename option 'colorSchemeViewer' to 'viewerTheme'
+- removed: open image in Google Photos (broken since changes by Google)
 - fixed: #51 - thumbnail to navigate up not displayed correctly
 - fixed: Flickr incorrect image resolution
 - fixed: thumbnail to navigate up displayed even without parent album
 - fixed: option 'photoset' not a real alias of 'album'
 - fixed: sorting for images/albums defined with HTML markup or javascript
 - fixed: package manager compatibility
-- fixed: cursor pointer when lightbox disabled
+- fixed: incorrect cursor pointer when lightbox disabled
 - fixed: endless loop if image/gallery in location hash does not exit (markup or javascript content)
-- misc performance enhancements
+- fixed: internal lightbox started although third party lightbox defined
+- misc performance enhancements and bugfixes
   
-Important note: options colorScheme and colorSchemeViewer have been renamed.
-
 
 TODO:
 - slider on last thumbnail and resize event
@@ -55,6 +53,15 @@ TODO:
     - plus de possibilit� de localisation en particulier par rapport au label
     - rating avec 5 �toiles
 - pan down close lightbox    
+- pb de delay
+- define responsive thumbnails (2 m�thodes)
+- viewer : double touch -> zoom to remove black borders
+- viewer: loading animation not working
+- transitions plus r�actives
+- slider last image : pb sur images non carr�es
+- slider: pb sur demo page flickr full images
+- delay dans l'affichage des imagettes par fade-in (et affichage par lot)
+- viewer - apparition/disparition des icones
 
 */ 
  
@@ -1067,14 +1074,14 @@ TODO:
     galleryDisplayMode :          'fullContent',
     galleryL1DisplayMode :        null,
     galleryPaginationMode :       'rectangles',   // 'dots', 'rectangles', 'numbers'
-    galleryThumbnailsDisplayDelay :     2000,
+    // galleryThumbnailsDisplayDelay : 2000,
     galleryMaxRows :              2,
     galleryL1MaxRows :            null,
     galleryLastRowFull:           false,
     galleryLayoutEngine :         'default',
     paginationSwipe:              true,
     paginationVisiblePages :      10,
-    paginationSwipeSensibilityVert : 10,
+    // paginationSwipeSensibilityVert : 10,
     galleryFilterTags :           false,    // possible values: false, true, 'title', 'description'
     galleryL1FilterTags :         null,     // possible values: false, true, 'title', 'description'
     galleryMaxItems :             0,        // maximum number of items per album  --> only flickr, google+, nano_photos_provider2
@@ -2199,12 +2206,6 @@ TODO:
       SetPolyFills();
       BuildSkeleton();
       
-      if( typeof G.O.colorScheme  !== 'undefined' ) {
-          NanoAlert(G, 'option colorScheme has been renamed. Please rename it to galleryTheme.' );
-      }
-      if( typeof G.O.colorSchemeViewer  !== 'undefined' ) {
-          NanoAlert(G, 'option colorSchemeViewer has been renamed. Please rename it to viewerTheme.' );
-      }
       SetGlobalEvents();
       
       // check if only one specific album will be used
@@ -3765,9 +3766,9 @@ TODO:
         var top=G.GOM.cache.containerOffset.top+(curTn.top-G.GOM.clipArea.top);
         newTop=curTn.top-G.GOM.clipArea.top;
         var vp=G.GOM.cache.viewport;
-        if( G.O.thumbnailDisplayOutsideScreen || ( ( (topOld+curTn.height) >= (vp.t-vp.h) && topOld <= (vp.t+vp.h*2) ) ||
-              ( (top+curTn.height) >= (vp.t-vp.h) && top <= (vp.t+vp.h*2) ) )  ) {
-          // thumbnail positioned in enlarged viewport (viewport + 2 x viewport height)
+        if( G.O.thumbnailDisplayOutsideScreen || ( ( (topOld+curTn.height) >= (vp.t-vp.h) && topOld <= (vp.t+vp.h*4) ) ||
+              ( (top+curTn.height) >= (vp.t-vp.h) && top <= (vp.t+vp.h*4) ) )  ) {
+          // thumbnail positioned in enlarged viewport (viewport + 4 x viewport height) (v1.5: changed from 2 to 4)
           if( curTn.displayed ) {
             // thumbnail is displayed
             if( item.top != curTn.top || item.left != curTn.left ) {
@@ -5344,29 +5345,32 @@ TODO:
         
         var src='';
         if( item['src'+RetrieveCurWidth().toUpperCase()] !== undefined ) {
-          src+=item['src'+RetrieveCurWidth().toUpperCase()];
+          src = item['src'+RetrieveCurWidth().toUpperCase()];
         }
         else {
-          src+=item.src;
+          src = item.src;
         }
         if( !StartsWithProtocol(src) ) {
-          src=G.O.itemsBaseURL + src;
+          src = G.O.itemsBaseURL + src;
         }
 
         var thumbsrc='';
         if( item.srct !== undefined && item.srct.length>0 ) {
-          thumbsrc=item.srct;
+          thumbsrc = item.srct;
+          if( !StartsWithProtocol(thumbsrc) ) {
+            thumbsrc = G.O.itemsBaseURL + thumbsrc;
+          }
         }
         else {
-          thumbsrc=src;
-        }
-        if( !StartsWithProtocol(thumbsrc) ) {
-          thumbsrc=G.O.itemsBaseURL + thumbsrc;
+          thumbsrc = src;
         }
         
         var thumbsrcX2='';
         if( item.srct2x !== undefined && item.srct2x.length>0 ) {
           thumbsrcX2=item.srct2x;
+          if( !StartsWithProtocol(thumbsrcX2) ) {
+            thumbsrcX2=G.O.itemsBaseURL + thumbsrcX2;
+          }
         }
         else {
           if( thumbsrc != '' ) {
@@ -5375,9 +5379,6 @@ TODO:
           else {
             thumbsrcX2=src;
           }
-        }
-        if( !StartsWithProtocol(thumbsrcX2) ) {
-          thumbsrcX2=G.O.itemsBaseURL + thumbsrcX2;
         }
 
         if( G.O.thumbnailLabel.get('title') != '' ) {
@@ -5535,33 +5536,38 @@ TODO:
           data[attr.name.toLowerCase()]=attr.value;
         });
 
+        // responsive image source
+        var src='',
+        st=RetrieveCurWidth().toUpperCase();
+        if( data.hasOwnProperty('data-ngsrc'+st) ) {
+          src = data['data-ngsrc'+st];
+        }
+        if( src == '' ) {
+          src = data['href'];
+        }
+        if( !StartsWithProtocol(src) ) {
+          src=G.O.itemsBaseURL + src;
+        }
+
+        // thumbnail
         var thumbsrc='';
         if( data.hasOwnProperty('data-ngthumb') ) {
           thumbsrc=data['data-ngthumb'];
           if( !StartsWithProtocol(thumbsrc) ) {
-            thumbsrc=G.O.itemsBaseURL + thumbsrc;
+            thumbsrc = G.O.itemsBaseURL + thumbsrc;
           }
+        }
+        else {
+          thumbsrc = src;
         }
         var thumbsrcX2='';
         if( data.hasOwnProperty('data-ngthumb2x') ) {
           thumbsrcX2=data['data-ngthumb2x'];
           if( !StartsWithProtocol(thumbsrcX2) ) {
-            thumbsrcX2=G.O.itemsBaseURL + thumbsrcX2;
+            thumbsrcX2 = G.O.itemsBaseURL + thumbsrcX2;
           }
         }
 
-        // responsive image source
-        var src='',
-        st=RetrieveCurWidth().toUpperCase();
-        if( data.hasOwnProperty('data-ngsrc'+st) ) {
-          src=data['data-ngsrc'+st];
-        }
-        if( src == '' ) {
-          src=data['href'];
-        }
-        if( !StartsWithProtocol(src) ) {
-          src=G.O.itemsBaseURL + src;
-        }
         
         //newObj.description=jQuery(item).attr('data-ngdesc');
         var description=data['data-ngdesc'];
@@ -6709,6 +6715,7 @@ TODO:
 
     //
     function GalleryThemeGetCurrent() {
+
       var cs=null;
       switch(toType(G.O.galleryTheme)) {
         case 'object':    // user custom color scheme object 
@@ -6735,6 +6742,11 @@ TODO:
     
     // ##### BREADCRUMB/THUMBNAIL COLOR SCHEME #####
     function SetGalleryTheme() {
+    
+      if( typeof G.O.colorScheme  !== 'undefined' ) {
+        G.O.galleryTheme = G.O.colorScheme;
+      }
+
       var cs=null;
       var galleryTheme='';
       switch(toType(G.O.galleryTheme)) {
@@ -6825,9 +6837,13 @@ TODO:
     // ##### VIEWER COLOR SCHEME #####
     function SetViewerTheme( ) {
 
-      if( G.VOM.viewerThemeLabel != '' ) {
+      if( G.VOM.viewerTheme != '' ) {
         G.VOM.$cont.addClass(G.VOM.viewerTheme);
         return;
+      }
+
+      if( typeof G.O.colorSchemeViewer  !== 'undefined' ) {
+        G.VOM.viewerTheme=G.O.colorSchemeViewer;
       }
 
       var cs=null;
@@ -7400,16 +7416,19 @@ TODO:
         case 'flickr':
           var sU='https://www.flickr.com/photos/'+G.O.userID+'/'+item.GetID();
           window.open(sU,'_blank');
+          return true;
           break;
         case 'picasa':
         case 'google':
         case 'google2':
-          var sU='https://plus.google.com/photos/'+G.O.userID+'/albums/'+item.albumID+'/'+item.GetID();
-          window.open(sU,'_blank');
+          // no more working since Google changed the access to Google Photos in 2017
+          // var sU='https://plus.google.com/photos/'+G.O.userID+'/albums/'+item.albumID+'/'+item.GetID();
+          // window.open(sU,'_blank');
           break;
         default:
           break;
       }
+      return false;
     }
     
     // Display one photo (with internal or external viewer)
@@ -7419,8 +7438,9 @@ TODO:
 
       if( G.O.thumbnailOpenOriginal ) {
         // Open link to original image
-        OpenOriginal( G.I[ngy2ItemIdx] );
-        return;
+        if( OpenOriginal( G.I[ngy2ItemIdx] ) ) {
+          return;
+        }
       }
         
       var items=[];
@@ -7574,7 +7594,7 @@ TODO:
       var zoomUserFactor = isCurrent == true ? G.VOM.zoom.userFactor : 1;
       
       var dpr=1;
-      if( G.O.viewerImageDisplay == 'useDevicePixelRatio' ) {
+      if( G.O.viewerImageDisplay == 'bestImageQuality' ) {
         dpr=window.devicePixelRatio;
       }
       
@@ -8024,15 +8044,6 @@ TODO:
           // $closeB.on( (G.isIOS ? "touchstart" : "click") ,function(e){     // IPAD
           StopPropagationPreventDefault(e);
           OpenOriginal( G.VOM.NGY2Item(0) );
-          if( G.O.kind == 'google' || G.O.kind == 'google2') {
-            var sU='https://plus.google.com/photos/'+G.O.userID+'/albums/'+G.VOM.NGY2Item(0).albumID+'/'+G.VOM.NGY2Item(0).GetID();
-            window.open(sU,'_blank');
-          }
-          
-          if( G.O.kind == 'flickr') {
-            var sU='https://www.flickr.com/photos/'+G.O.userID+'/'+G.VOM.NGY2Item(0).GetID();
-            window.open(sU,'_blank');
-          }
           break;
       }
       
@@ -8126,7 +8137,8 @@ TODO:
           // }
           break;
         case 'linkOriginalButton':
-          if( G.O.kind == 'flickr' || G.O.kind == 'google' || G.O.kind == 'google2' ) {
+          // if( G.O.kind == 'flickr' || G.O.kind == 'google' || G.O.kind == 'google2' ) {
+          if( G.O.kind == 'flickr' ) {
             r='<div class="ngbt ngy2viewerToolAction linkOriginalButton nGEvent" data-ngy2action="linkOriginal">'+G.O.icons.viewerLinkOriginal+'</div>';
           }
           break;
@@ -9092,23 +9104,20 @@ TODO:
       }
     }
     
-    
-
-
-    
+     
     function OnScrollEvent() {
-      if( G.scrollTimeOut ) {
-        clearTimeout(G.scrollTimeOut);
-      }
+      // if( G.scrollTimeOut ) {
+        // clearTimeout(G.scrollTimeOut);
+      // }
       
-      G.scrollTimeOut = setTimeout(function () {
+      // G.scrollTimeOut = setTimeout(function () {
         if( !G.VOM.viewerDisplayed ) {
           if( G.galleryResizeEventEnabled ) {
             GalleryResize();
           }
           return;
         }
-      }, 10);
+      // }, 100);
     }
 
     
