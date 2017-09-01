@@ -2770,6 +2770,33 @@
 
 
   <!-- ######################## -->
+  <!-- ##### JS FOR PAGE  ##### -->
+  <!-- ######################## -->
+  <script>
+    $(document).ready(function () {
+
+      $('#ngy2_vert_nav').affix({
+        offset: {
+            top: $('#ngy2_vert_nav').offset().top,
+            bottom: ($('footer').outerHeight(true)) + 40
+          }
+      });
+      
+      // typeform review
+      jQuery('#btn_enjoy_no').on('click', function() {
+        window.open('https://nanostudio.typeform.com/to/wHRN2N', '_blank');
+        $('#myModalEnjoyNo').modal('hide');
+      });
+      jQuery('#btn_enjoy_yes').on('click', function() {
+        window.open('https://nanostudio.typeform.com/to/zyHSZD', '_blank');
+        $('#myModalEnjoyYes').modal('hide');
+      });
+
+    });
+  </script>
+  
+
+  <!-- ######################## -->
   <!-- ##### START FOOTER ##### -->
   <!-- ######################## -->
 
