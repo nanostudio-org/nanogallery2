@@ -47,7 +47,7 @@
 
   <!-- #################################################################################################################### -->
   <!-- nanogallery2 CSS files                                                                                               -->
-	<link href="css/nanogallery2.min.css" rel="stylesheet" type="text/css">
+	<link href="https://nanogallery2.nanostudio.org/css/nanogallery2.min.css" rel="stylesheet" type="text/css">
   <!-- #################################################################################################################### -->
 
   <style>
@@ -564,7 +564,12 @@
     document.addEventListener("DOMContentLoaded", function() {
       var p=location.pathname.substring(location.pathname.lastIndexOf("/") + 1);
       var current=document.querySelectorAll('.navbar a[href="'+p+'"]');
-      current[0].parentNode.classList.add('active');
+      if( current[0] == undefined ) {
+        document.querySelectorAll('.navbar a[href="index.html"]')[0].parentNode.classList.add('active');
+      }
+      else {
+        current[0].parentNode.classList.add('active');
+      }
     });
   </script>
   <!-- ### NAVBAR ### -->
