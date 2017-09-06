@@ -1,4 +1,4 @@
-/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2017-09-01 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2017-09-06 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /**!
  * @preserve nanogallery2 - javascript image gallery
  * Homepage: http://nanogallery2.nanostudio.org
@@ -21,11 +21,12 @@
 
 /*
 v1.5.0 BETA - DO NOT USE
-- new: image slider on last thumbnail (see option 'thumbnailLastImgSliderDelay')
+- new: image slider on last thumbnail (see option 'thumbnailLastImgSliderDelay') -> NO
 - new: thumbnail image dominant color in stacks
 - new: thumbnail gradient color during image download (see galleryTheme)
 - new: lightbox option 'viewerImageDisplay'
-  Possible values : 'upscale' to upscale images, 'bestImageQuality' for highest quality on high DPI screens like retina
+  Possible values : 'upscale' to upscale images to fullscreen, 'bestImageQuality' for highest quality on high DPI screens like retina
+- new: define multiple thumbnails per item (url and size) - API et markup content source
 - enhanced: lightbox image zoom
 - removed: open image in Google Photos (broken since changes by Google)
 - fixed: #51 - thumbnail to navigate up not displayed correctly
@@ -53,7 +54,6 @@ TODO:
     - plus de possibilit� de localisation en particulier par rapport au label
     - rating avec 5 �toiles
 - pan down close lightbox    
-- pb de delay
 - define responsive thumbnails (2 m�thodes)
 - viewer : double touch -> zoom to remove black borders
 - viewer: loading animation not working
@@ -62,6 +62,8 @@ TODO:
 - slider: pb sur demo page flickr full images
 - delay dans l'affichage des imagettes par fade-in (et affichage par lot)
 - viewer - apparition/disparition des icones
+- imagette : crop incorrect si size non d�fini
+- viewer swipe -> duree en fonction de la distance restante
 
 */ 
  
@@ -313,6 +315,7 @@ TODO:
             this.selected =             false;
             this.imageWidth =           0;        // image natural (real) width
             this.imageHeight =          0;        // image natural (real) height
+            this.imageOpacity =         0;        // cache for image opacity 
             this.$elt =                 null;     // pointer to the corresponding DOM element
             this.$Elts =                [];       // cached pointers to the thumbnail content -> to avoid jQuery().find()
             this.tags =                 [];       // list of tags of the current item
@@ -576,7 +579,7 @@ TODO:
         
           //--- Returns Thumbnail image (depending of the screen resolution)
           NGY2Item.prototype.thumbImg = function () {   
-            var tnImg = { src:'', width:0, height:0 };
+            var tnImg = { src: '', width: 0, height: 0 };
 
             if( this.title == 'image gallery by nanogallery2 [build]' ) {
               tnImg.src = this.G.emptyGif;
@@ -710,15 +713,16 @@ TODO:
               this.thumbnailImgRevealed=true;
               var tweenable = new NGTweenable();
               tweenable.tween({
-                from:         { opacity: 0 },
-                to:           { opacity: 1 },
+                from:         { o: 0 },
+                to:           { o: 1 },
                 attachment:   { item: this },
                 delay:        0,
-                duration:     600,
+                duration:     500,
                 easing:       'easeOutQuart',
                 step:         function (state, att) {
-                  if( att.item.$getElt('.nGY2TnImg') != null ) {
-                    att.item.$getElt('.nGY2TnImg').css('opacity', state.opacity);
+                  var $e=att.item.$getElt('.nGY2TnImg');
+                  if( $e != null ) {
+                    $e.css('opacity', state.o);
                   }
                 }
               });
@@ -777,10 +781,10 @@ TODO:
                   pTranslateX -= this.G.tn.opt.Get('stacksTranslateX');
                   pTranslateY -= this.G.tn.opt.Get('stacksTranslateY');
                   pTranslateZ -= this.G.tn.opt.Get('stacksTranslateZ');
-                  pRotateX -= this.G.tn.opt.Get('stacksRotateX');
-                  pRotateY -= this.G.tn.opt.Get('stacksRotateY');
-                  pRotateZ -= this.G.tn.opt.Get('stacksRotateZ');
-                  pScale -= this.G.tn.opt.Get('stacksScale');
+                  pRotateX    -= this.G.tn.opt.Get('stacksRotateX');
+                  pRotateY    -= this.G.tn.opt.Get('stacksRotateY');
+                  pRotateZ    -= this.G.tn.opt.Get('stacksRotateZ');
+                  pScale      -= this.G.tn.opt.Get('stacksScale');
                 }
               }
             }
@@ -951,7 +955,7 @@ TODO:
                     break;
                   default:
                     var v=state.v;
-                    if( state.v.substring(0,3) == 'rgb(' || state.v.substring(0,5) == 'rgba(' ) {
+                    if( state.v.substring(0,3) == 'rgb(' || state.v.substring(0,4) == 'rgba(' ) {
                       // to remove values after the dot (not supported by RGB/RGBA)
                       v=tinycolor(state.v).toRgbString();
                     }
@@ -1132,7 +1136,7 @@ TODO:
     thumbnailL1StacksScale :      null,
     thumbnailDisplayOutsideScreen: false,
     thumbnailWaitImageLoaded:     true,
-    thumbnailLastImgSliderDelay:  2000,
+    thumbnailLastImgSliderDelay:  0,      // 2000
     galleryBuildInit2 :           '',
     portable :                    false,
     
@@ -1153,7 +1157,7 @@ TODO:
     },
 
     thumbnailToolbarImage :       { topLeft: 'select', topRight : 'featured' },
-    thumbnailToolbarAlbum :       { topLeft: 'select', topRight : 'counter' },
+    thumbnailToolbarAlbum :       { topLeft: 'select', topRight : 'counter'  },
     thumbnailDisplayInterval :    15,
     thumbnailL1DisplayInterval :  null,
     thumbnailDisplayTransition :  'fadeIn',
@@ -1376,14 +1380,9 @@ TODO:
               nG2.shoppingCart[i].cnt=cnt;
             }
           }
-          if( G.O.fnShoppingCartUpdated !== null ) {
-            if( typeof G.O.fnShoppingCartUpdated == 'function' ) {
-              G.O.fnShoppingCartUpdated(nG2.shoppingCart);
-            }
-            else {
-              // defined in markup
-              window[G.O.fnShoppingCartUpdated](nG2.shoppingCart);
-            }
+          var fu=G.O.fnShoppingCartUpdated;
+          if( fu !== null ) {
+            fu == 'function' ? fu(nG2.shoppingCart) : window[fu](nG2.shoppingCart);
           }
           return nG2.shoppingCart;
           break;
@@ -1398,14 +1397,9 @@ TODO:
               break;
             }
           }
-          if( G.O.fnShoppingCartUpdated !== null ) {
-            if( typeof G.O.fnShoppingCartUpdated == 'function' ) {
-              G.O.fnShoppingCartUpdated(nG2.shoppingCart);
-            }
-            else {
-              // defined in markup
-              window[G.O.fnShoppingCartUpdated](nG2.shoppingCart);
-            }
+          var fu=G.O.fnShoppingCartUpdated;
+          if( fu !== null ) {
+            fu == 'function' ? fu(nG2.shoppingCart) : window[fu](nG2.shoppingCart);
           }
           return nG2.shoppingCart;
           break;
@@ -1605,11 +1599,13 @@ TODO:
       $('#ngycs_' + G.baseEltID).remove()
       
       G.GOM.items = [];
+      var itm=NGY2Item.New( G, G.i18nTranslations.breadcrumbHome, '', '0', '-1', 'album' );
       G.GOM.navigationBar.$newContent = null;
       G.$E.base.empty();
       G.$E.base.removeData();
 
       jQuery(window).off('resize.nanogallery2.'+G.baseEltID);
+      jQuery(window).off('orientationChange.nanogallery2.'+G.baseEltID);
       jQuery(window).off('scroll.nanogallery2.'+G.baseEltID);
       G.GOM.firstDisplay=false;
     };
@@ -1904,11 +1900,12 @@ TODO:
       clipArea :                  { top: 0, height: 0 }, // area of the GOM to display on screen
       displayArea :               { width: 0 , height: 0 }, // size of the GOM area (=used area, not available area)
       displayAreaLast :           { width: 0 , height: 0 }, // previous size of the GOM area
-      displayedMoreSteps :        0, // current number of displayed steps (moreButton mode)
+      displayedMoreSteps :        0,  // current number of displayed steps (moreButton mode)
       items:                      [], // current items of the GOMS
       $imgPreloader:              [],
       itemsDisplayed :            0, // number of currently displayed thumbnails
       firstDisplay :              true,
+      firstDisplayTime :          0,      // in conjunction with galleryRenderDelay
       navigationBar : {           // content of the navigation bar (for breadcrumb and filter tags)
         displayed:                false,
         $newContent:              ''
@@ -1931,7 +1928,7 @@ TODO:
       albumSearchTags:            '',     // current search string -> tags
       lastZIndex:                 0,      // used to put a thumbnail on top of all others (for exemple for scale hover effect)
       lastRandomValue:            0,
-      lastTn : {
+      lastTn : {                          // slider on last thumbnail
         startIdx:   0,
         startItem:  null,
         currentIdx: 0,
@@ -1987,9 +1984,9 @@ TODO:
       $toolbarTR:                 null,   // viewer toolbar on top right
       $content:                   null,   // viewer content
       
-      $imgP:                      null,   // previous displayed image
-      $imgC:                      null,   // currently displayed image
-      $imgN:                      null,   // next image to display
+      $imgP:                      null,   // previous image
+      $imgC:                      null,   // current image
+      $imgN:                      null,   // next image
       toolbarMode:                'std',  // current toolbar mode (standard, minimized)
       playSlideshow :             false,  // slide show mode status
       playSlideshowTimerID:       0,      // slideshow mode time
@@ -2031,11 +2028,12 @@ TODO:
       userEvents:         null,   // user events management
       hammertime:         null,   // hammer.js manager
       swipePosX:          0,      // current horizontal swip position
-      panPosX:            0,      // manual pan position
+      panPosX:            0,      // position for manual pan
       panPosY:            0,
       viewerTheme:        '',
       timeImgChanged:     0,
       ImageLoader: {
+        // fires a callback when image size is know (during download)
         // inspired by ROB - http://stackoverflow.com/users/226507/rob
         maxChecks:        1000,
         list:             [],
@@ -2205,17 +2203,18 @@ TODO:
       DefineVariables();
       SetPolyFills();
       BuildSkeleton();
+      G.GOM.firstDisplayTime=Date.now();
       
       SetGlobalEvents();
       
       // check if only one specific album will be used
-      var albumToDisplay=G.O.album;
+      var albumToDisplay = G.O.album;
       if( albumToDisplay == '' && G.O.photoset != '' ) {
-        albumToDisplay=G.O.photoset;
-        G.O.album=G.O.photoset;
+        albumToDisplay = G.O.photoset;
+        G.O.album = G.O.photoset;
       }
       if( albumToDisplay != '' ) {
-        G.O.displayBreadcrumb=false;    // no breadcrumb since only 1 album
+        G.O.displayBreadcrumb = false;    // no breadcrumb since only 1 album
         if( albumToDisplay.toUpperCase() != 'NONE' ) {
           // open specific album
         
@@ -2253,6 +2252,7 @@ TODO:
       // use full content
       // add base album
       var itm=NGY2Item.New( G, G.i18nTranslations.breadcrumbHome, '', '0', '-1', 'album' );
+
 
       processStartOptions();
       
@@ -2808,14 +2808,9 @@ TODO:
       clearTimeout(G.GOM.lastTn.timerID);
       G.GOM.lastTn.enabled=false;
       
-      if( G.O.fnGalleryRenderStart !== null ) {
-        if( typeof G.O.fnGalleryRenderStart == 'function' ) {
-          G.O.fnGalleryRenderStart(albumIdx);
-        }
-        else {
-          // defined in markup
-          window[G.O.fnGalleryRenderStart](albumIdx);
-        }
+      var fu=G.O.fnGalleryRenderStart;
+      if( fu !== null ) {
+        fu == 'function' ? fu(albumIdx) : window[fu](albumIdx);
       }
 
       G.layout.SetEngine();
@@ -2834,8 +2829,15 @@ TODO:
       
       if( G.GOM.firstDisplay ) {
         G.GOM.firstDisplay=false;
-        // GalleryRenderPart1( albumIdx );
-        setTimeout( function() { GalleryRenderPart1( albumIdx )}, G.O.galleryRenderDelay);
+        var d=Date.now()-G.GOM.firstDisplayTime;
+        if( d < G.O.galleryRenderDelay ) {
+          setTimeout( function() { GalleryRenderPart1( albumIdx )}, G.O.galleryRenderDelay-d );
+        }
+        else {
+          GalleryRenderPart1( albumIdx );
+        }
+        G.O.galleryRenderDelay=0;
+        
       }
       else {
         var hideNavigationBar=false;
@@ -2863,9 +2865,8 @@ TODO:
               G.$E.conNavigationBar.css({ 'opacity': 0, 'display': 'none' });
             }
             // scroll to top of the gallery if needed
-            var wp=getViewport();
             var galleryOTop=G.$E.base.offset().top;
-            if( galleryOTop < wp.t ) {
+            if( galleryOTop < G.GOM.cache.viewport.t ) {
               // jQuery('html, body').animate({scrollTop: galleryOTop}, 200);
               jQuery('html, body').animate({scrollTop: galleryOTop}, 500, "linear", function() {
                 GalleryRenderPart1( albumIdx );
@@ -2972,14 +2973,9 @@ TODO:
       G.GOM.albumIdx=albumIdx;
 
       TriggerCustomEvent('galleryRenderEnd');
-      if( G.O.fnGalleryRenderEnd !== null ) {
-        if( typeof G.O.fnGalleryRenderEnd == 'function' ) {
-          G.O.fnGalleryRenderEnd(albumIdx);
-        }
-        else {
-          // defined in markup
-          window[G.O.fnGalleryRenderEnd](albumIdx);
-        }
+      var fu=G.O.fnGalleryRenderEnd;
+      if( fu !== null ) {
+        fu == 'function' ? fu(albumIdx) : window[fu](albumIdx);
       }
 
       // Step 1: populate GOM
@@ -3059,14 +3055,9 @@ TODO:
       }
 
       TriggerCustomEvent('galleryObjectModelBuilt');
-      if( G.O.fnGalleryObjectModelBuilt !== null ) {
-        if( typeof G.O.fnGalleryObjectModelBuilt == 'function' ) {
-          G.O.fnGalleryObjectModelBuilt();
-        }
-        else {
-          // defined in markup
-          window[G.O.fnGalleryObjectModelBuilt]();
-        }
+      var fu=G.O.fnGalleryObjectModelBuilt;
+      if( fu !== null ) {
+        fu == 'function' ? fu() : window[fu]();
       }
       
       if( imageSizeRequested ) {
@@ -3178,14 +3169,9 @@ TODO:
       }
       
       TriggerCustomEvent('galleryLayoutApplied');
-      if( G.O.fnGalleryLayoutApplied !== null ) {
-        if( typeof G.O.fnGalleryLayoutApplied == 'function' ) {
-          G.O.fnGalleryLayoutApplied();
-        }
-        else {
-          // defined in markup
-          window[G.O.fnGalleryLayoutApplied]();
-        }
+      var fu=G.O.fnGalleryLayoutApplied;
+      if( fu !== null ) {
+        fu == 'function' ? fu() : window[fu]();
       }
       return r;
 
@@ -3570,11 +3556,12 @@ TODO:
       else {
         G.$E.conTn.css( G.CSStransformName , 'none');
       }
-      
+      CacheViewport();
+    }
+    
+    function CacheViewport() {
       G.GOM.cache.viewport=getViewport();
       G.GOM.cache.areaWidth=G.$E.conTnParent.width();
-      
-      // var containerOffset=G.$E.conTnParent.offset();
       G.GOM.cache.containerOffset=G.$E.conTnParent.offset();
     }
     
@@ -4275,14 +4262,9 @@ TODO:
 
       
       // Custom init function
-      if( G.O.fnThumbnailInit !== null ) {
-        if( typeof G.O.fnThumbnailInit == 'function' ) {
-          G.O.fnThumbnailInit($newDiv, item, GOMidx);
-        }
-        else {
-          // defined in markup
-          window[G.O.fnThumbnailInit]($newDiv, item, GOMidx);
-        }
+      var fu=G.O.fnThumbnailInit;
+      if( fu !== null ) {
+        fu == 'function' ? fu($newDiv, item, GOMidx) : window[fu]($newDiv, item, GOMidx);
       }
 
       if( item.title != 'image gallery by nanogallery2 [build]' ) {
@@ -4297,13 +4279,13 @@ TODO:
     function ThumbnailBuildTools( item, lastThumbnail ) {
     
       // toolbars
-      var tb=ThumbnailBuildToolbarOne(item, 'topLeft');
-      tb+=ThumbnailBuildToolbarOne(item, 'topRight');
-      tb+=ThumbnailBuildToolbarOne(item, 'bottomLeft');
-      tb+=ThumbnailBuildToolbarOne(item, 'bottomRight');
+      var tb = ThumbnailBuildToolbarOne(item, 'topLeft');
+      tb    += ThumbnailBuildToolbarOne(item, 'topRight');
+      tb    += ThumbnailBuildToolbarOne(item, 'bottomLeft');
+      tb    += ThumbnailBuildToolbarOne(item, 'bottomRight');
       
       // counter of not displayed images
-      tb+='<div class="nGY2GThumbnailIconsFullThumbnail"></div>';
+      tb += '<div class="nGY2GThumbnailIconsFullThumbnail"></div>';
 
       return tb;
     
@@ -4370,7 +4352,6 @@ TODO:
               case 'SHARE':
                 toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="'+tIcon+'">';
                 toolbar+= '      <div>'+G.O.icons.thumbnailShare+'</div>';
-                //toolbar+= '      <div class="nGY2GThumbnailIconText">'+sp+'</div>';
                 toolbar+= '    </li>';
                 cnt++;
                 break;
@@ -4458,8 +4439,9 @@ TODO:
         if( G.i18nTranslations.thumbnailImageTitle != '' ) {
           sTitle=G.i18nTranslations.thumbnailImageTitle;
         }
-        if( G.O.thumbnailLabel.get('titleMaxLength') > 3 && sTitle.length > G.O.thumbnailLabel.get('titleMaxLength') ){
-          sTitle=sTitle.substring(0,G.O.thumbnailLabel.get('titleMaxLength'))+'...';
+        var ml = G.O.thumbnailLabel.get('titleMaxLength');
+        if( ml > 3 && sTitle.length > ml ){
+          sTitle=sTitle.substring(0, ml) + '...';
         }
       }
       
@@ -4485,8 +4467,9 @@ TODO:
             sDesc=item.description;
           }
         }
-        if( G.O.thumbnailLabel.get('descriptionMaxLength') > 3 && sDesc.length > G.O.thumbnailLabel.get('descriptionMaxLength') ){
-          sDesc=sDesc.substring(0,G.O.thumbnailLabel.get('descriptionMaxLength'))+'...';
+        var ml=G.O.thumbnailLabel.get('descriptionMaxLength');
+        if( ml > 3 && sDesc.length > ml ){
+          sDesc=sDesc.substring(0, ml) + '...';
         }
         if( sDesc.length == 0 ) {
           sDesc='&nbsp;';
@@ -4612,8 +4595,7 @@ TODO:
           },
           finish:       function (state, att) {
             if( att.item.$elt === null ) { return; }
-            att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity','');
-            //att.$e.css( G.CSStransformName , '').css('opacity', '');
+            att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity', '');
             ThumbnailAppearFinish(att.item);
           }
         });
@@ -4682,8 +4664,6 @@ TODO:
         if( f == 0 ) { f=50; }   // default value
         var tweenable = new NGTweenable();
         tweenable.tween({
-          // from:         { 'opacity': 0, translateY: f, 'scale': 0.8  },
-          // to:           { 'opacity': 1, translateY: 0, 'scale': 1 },
           from:         { 'opacity': 0, translateY: f },
           to:           { 'opacity': 1, translateY: 0 },
           attachment:   { item: item, tw: tweenable },
@@ -4696,8 +4676,7 @@ TODO:
               return;
             }
             att.item.$elt.css('opacity', state.opacity);
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px,'+state.translateY+'px');
-            // att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px, '+state.translateY + 'px');
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
@@ -4714,8 +4693,6 @@ TODO:
         if( f == 0 ) { f=-50; }   // default value
         var tweenable = new NGTweenable();
         tweenable.tween({
-          // from:         { opacity: 0, translateY: f, scale: 0.8  },
-          // to:           { opacity: 1, translateY: 0, scale: 1 },
           from:         { opacity: 0, translateY: f },
           to:           { opacity: 1, translateY: 0 },
           attachment:   { item: item, tw: tweenable },
@@ -4729,7 +4706,6 @@ TODO:
             }
             att.item.$elt.css('opacity', state.opacity);
             att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px,'+state.translateY+'px');
-            // att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale); 
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
@@ -4746,8 +4722,6 @@ TODO:
         if( f == 0 ) { f=100; }   // default value
         var tweenable = new NGTweenable();
         tweenable.tween({
-          // from:         { opacity: 0, translateX: f, rotateX: 45, scale: 0.8  },
-          // to:           { opacity: 1, translateX: 0, rotateX: 0, scale: 1 },
           from:         { opacity: 0, translateY: f, rotateX: 45 },
           to:           { opacity: 1, translateY: 0, rotateX: 0  },
           attachment:   { item: item, tw: tweenable },
@@ -4762,7 +4736,6 @@ TODO:
             att.item.$elt.css('opacity', state.opacity);
             att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px,'+state.translateY+'px');
             att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateX', state.rotateX+'deg');
-            // att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
@@ -4778,8 +4751,6 @@ TODO:
         if( f == 0 ) { f=-100; }   // default value
         var tweenable = new NGTweenable();
         tweenable.tween({
-          // from:         { opacity: 0, translateX: f, rotateX: -45, scale: 0.8  },
-          // to:           { opacity: 1, translateX: 0, rotateX: 0, scale: 1 },
           from:         { opacity: 0, translateY: f, rotateX: -45 },
           to:           { opacity: 1, translateY: 0, rotateX: 0 },
           attachment:   { item: item, tw: tweenable },
@@ -4794,7 +4765,6 @@ TODO:
             att.item.$elt.css('opacity', state.opacity);
             att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px,'+state.translateY+'px');
             att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateX', state.rotateX+'deg');
-            // att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
@@ -4811,8 +4781,6 @@ TODO:
         if( f == 0 ) { f=100; }   // default value
         var tweenable = new NGTweenable();
         tweenable.tween({
-          // from:         { opacity: 0, translateY: f, rotateY: 40, scale: 0.8  },
-          // to:           { opacity: 1, translateY: 0, rotateY: 0, scale: 1 },
           from:         { opacity: 0, translateY: f, rotateY: 40 },
           to:           { opacity: 1, translateY: 0, rotateY: 0  },
           attachment:   { item: item, tw: tweenable },
@@ -4827,7 +4795,6 @@ TODO:
             att.item.$elt.css('opacity', state.opacity);
             att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px,'+state.translateY+'px');
             att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateY', state.rotateY+'deg');
-            // att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
@@ -4843,8 +4810,6 @@ TODO:
         if( f == 0 ) { f=-100; }   // default value
         var tweenable = new NGTweenable();
         tweenable.tween({
-          // from:         { opacity: 0, translateY: f, rotateY: 40, scale: 0.8  },
-          // to:           { opacity: 1, translateY: 0, rotateY: 0, scale: 1 },
           from:         { opacity: 0, translateY: f, rotateY: 40 },
           to:           { opacity: 1, translateY: 0, rotateY: 0  },
           attachment:   { item: item, tw: tweenable },
@@ -4857,9 +4822,8 @@ TODO:
               return;
             }
             att.item.$elt.css('opacity', state.opacity);
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px,'+state.translateY+'px');
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateY', state.rotateY+'deg');
-            // att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px, '+state.translateY + 'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateY', state.rotateY + 'deg');
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
@@ -4887,8 +4851,7 @@ TODO:
               return;
             }
             att.item.$elt.css('opacity', state.opacity);
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', state.translateX+'px,0px');
-            // att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateZ', state.rotateZ+'deg');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', state.translateX + 'px, 0px');
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
@@ -4916,8 +4879,7 @@ TODO:
               return;
             }
             att.item.$elt.css('opacity', state.opacity);
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', state.translateX+'px,0px');
-            // att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateZ', state.rotateZ+'deg');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', state.translateX + 'px, 0px');
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
@@ -4948,7 +4910,6 @@ TODO:
           finish:       function (state, att) {
             if( att.item.$elt === null ) { return; }
             att.$e.css('opacity', '');
-            // att.$e.css({'opacity':1 });
             ThumbnailAppearFinish(att.item);
           }
         });
@@ -4959,9 +4920,7 @@ TODO:
 
     // ######################################
     // Gallery display animation
-    
     function GalleryAppear() {
-      
       
       var d=G.galleryDisplayTransitionDuration.Get();
       switch( G.galleryDisplayTransition.Get() ){
@@ -4969,12 +4928,12 @@ TODO:
           G.$E.base.css({ perspective: '1000px', 'perspective-origin': '50% 0%' });
           var tweenable = new NGTweenable();
           tweenable.tween({
-            from:         { rotate: 50 },
-            to:           { rotate: 0  },
+            from:         { r: 50 },
+            to:           { r: 0  },
             duration:     d,
             easing:       'easeOutCirc',
             step:         function (state, att) {
-              G.$E.conTnParent.css( G.CSStransformName , 'rotateX('+state.rotate+'deg)');
+              G.$E.conTnParent.css( G.CSStransformName , 'rotateX('+state.r+'deg)');
             }
           });
           break;
@@ -4987,8 +4946,7 @@ TODO:
             duration:     d,
             easing:       'easeOutCirc',
             step:         function (state, att) {
-              // G.$E.conTnParent.css( G.CSStransformName , 'translateY('+state.y+'px)').css('opacity', state.o);
-              G.$E.conTnParent.css( G.CSStransformName , 'translate(0px,'+state.y+'px)').css('opacity', state.o);
+              G.$E.conTnParent.css( G.CSStransformName , 'translate( 0px, '+state.y + 'px)').css('opacity', state.o);
             }
           });
           break;
@@ -5015,20 +4973,16 @@ TODO:
 
       if( item.$elt == null ) { return; } // zombie
       
-      if( G.O.fnThumbnailHoverInit !== null ) {
-        if( typeof G.O.fnThumbnailHoverInit == 'function' ) {
-          G.O.fnThumbnailHoverInit($e, item, GOMidx);
-        }
-        else {
-          // defined in markup
-          window[G.O.fnThumbnailHoverInit]($e, item, GOMidx);
-        }
+      var fu=G.O.fnThumbnailHoverInit;
+      if( fu !== null ) {
+        fu == 'function' ? fu($e, item, GOMidx) : window[fu]($e, item, GOMidx);
       }
 
       // build initialization
       var inits=G.tn.buildInit.get();
       for( var j=0; j<inits.length; j++) {
         switch( inits[j].property ) {
+          // CSS Transform
           case 'scale':
           case 'rotateX':
           case 'rotateY':
@@ -5039,6 +4993,7 @@ TODO:
             item.CSSTransformSet(inits[j].element, inits[j].property, inits[j].value);
             item.CSSTransformApply(inits[j].element);
             break;
+          // CSS filter
           case 'blur':
           case 'brightness':
           case 'grayscale':
@@ -5107,20 +5062,13 @@ TODO:
       if( G.GOM.albumIdx == -1 || !G.galleryResizeEventEnabled ) { return; };
       var curTn=G.GOM.items[GOMidx];
       var item=G.I[curTn.thumbnailIdx];
-      if( item.kind == 'albumUp' ) { return; }
-
-      if( item.$elt == null ) { return; }
+      if( item.kind == 'albumUp' || item.$elt == null ) { return; }
 
       item.hovered=true;
 
-      if( G.O.fnThumbnailHover !== null ) {
-        if( typeof G.O.fnThumbnailHover == 'function' ) {
-          G.O.fnThumbnailHover(item.$elt, item, GOMidx);
-        }
-        else {
-          // defined in markup
-          window[G.O.fnThumbnailHover](item.$elt, item, GOMidx);
-        }
+      var fu=G.O.fnThumbnailHover;
+      if( fu !== null ) {
+        fu == 'function' ? fu(item.$elt, item, GOMidx) : window[fu](item.$elt, item, GOMidx);
       }
       var effects=G.tn.hoverEffects.get();
 
@@ -5148,7 +5096,7 @@ TODO:
           ThumbnailHoverOut(i);
         }
         else {
-          G.I[G.GOM.items[i].thumbnailIdx].hovered
+          G.I[G.GOM.items[i].thumbnailIdx].hovered=false;
         }
       }
     }
@@ -5162,14 +5110,9 @@ TODO:
       item.hovered=false;
       if( item.$elt == null ) { return; }
 
-      if( G.O.fnThumbnailHoverOut !== null ) {
-        if( typeof G.O.fnThumbnailHoverOut == 'function' ) {
-          G.O.fnThumbnailHoverOut(item.$elt, item, GOMidx);
-        }
-        else {
-          // defined in markup
-          window[G.O.fnThumbnailHoverOut](item.$elt, item, GOMidx);
-        }
+      var fu=G.O.fnThumbnailHoverOut;
+      if( fu !== null ) {
+        fu == 'function' ? fu(item.$elt, item, GOMidx) : window[fu](item.$elt, item, GOMidx);
       }
 
       var effects=G.tn.hoverEffects.get();
@@ -5320,6 +5263,7 @@ TODO:
     }
     
     function StartsWithProtocol ( path ) {
+      if( path == null || path == undefined ) { return false; }
       path=path.toLowerCase();
       switch( path ) {
         case 'http://':
@@ -5445,12 +5389,39 @@ TODO:
           //newItem.thumbImgHeight=th;
         }
 
+        // default thumbnail URL and size
         newItem.thumbs = {
           url:    { l1 : { xs:thumbsrc, sm:thumbsrc, me:thumbsrc, la:thumbsrc, xl:thumbsrc }, lN : { xs:thumbsrc, sm:thumbsrc, me:thumbsrc, la:thumbsrc, xl:thumbsrc } },
           width:  { l1 : { xs:tw, sm:tw, me:tw, la:tw, xl:tw }, lN : { xs:tw, sm:tw, me:tw, la:tw, xl:tw } },
           height: { l1 : { xs:th, sm:th, me:th, la:th, xl:th }, lN : { xs:th, sm:th, me:th, la:th, xl:th } }
         };
 
+        // responsive thumbnails URL and size
+        var lst=['xs','sm','me','la','xl'];
+        for( var i=0; i< lst.length; i++ ) {
+          // url
+          var turl=item['srct' + lst[i].toUpperCase()];
+          if( turl !== undefined ) {
+            if( !StartsWithProtocol(turl) ) {
+              turl = G.O.itemsBaseURL + turl;
+            }
+            newItem.url.l1[lst[i]]=turl;
+            newItem.url.lN[lst[i]]=turl;
+          }
+          // width
+          var tw=item['imgt' + lst[i].toUpperCase() + 'Width'];
+          if( tw != undefined ) {
+            newItem.width.l1[lst[i]]=parseInt(tw);
+            newItem.width.lN[lst[i]]=parseInt(tw);
+          }
+          // height
+          var th=item['imgt' + lst[i].toUpperCase() + 'Height'];
+          if( th != undefined ) {
+            newItem.height.l1[lst[i]]=parseInt(th);
+            newItem.height.lN[lst[i]]=parseInt(th);
+          }
+        }
+        
         // image size
         if( item.imageWidth !== undefined ) { newItem.imageWidth=item.width; }
         if( item.imageHeight !== undefined ) { newItem.imageHeight=item.height; }
@@ -5481,14 +5452,9 @@ TODO:
 
         newItem.contentIsLoaded=true;
         
-        if( G.O.fnProcessData !== null ) {
-          if( typeof G.O.fnProcessData == 'function' ) {
-            G.O.fnProcessData(newItem, 'api', item);
-          }
-          else {
-            // defined in markup
-            window[G.O.fnProcessData](newItem, 'api', item);
-          }
+        var fu=G.O.fnProcessData;
+        if( fu !== null ) {
+          fu == 'function' ? fu(newItem, 'api', item) : window[fu](newItem, 'api', item);
         }
         
         AlbumPostProcess(albumID);
@@ -5603,7 +5569,7 @@ TODO:
         newItem.destinationURL=data['data-ngdest'];
         newItem.downloadURL=data['data-ngdownloadurl'];
 
-        // thumbnail image size
+        // default thumbnail image URL and size
         var tw=parseInt(data['data-ngthumbimgwidth']);
         var th=parseInt(data['data-ngthumbimgheight']);
         newItem.thumbs = {
@@ -5612,6 +5578,34 @@ TODO:
           height: { l1 : { xs:th, sm:th, me:th, la:th, xl:th }, lN : { xs:th, sm:th, me:th, la:th, xl:th } }
         };
 
+        // responsive thumbnails URL and size
+        var lst=['xs','sm','me','la','xl'];
+        for( var i=0; i< lst.length; i++ ) {
+          // url
+          if( data.hasOwnProperty('data-ngthumb'+lst[i]) ) {
+            var turl=data['data-ngthumb'+lst[i]];
+            if( !StartsWithProtocol(turl) ) {
+              turl = G.O.itemsBaseURL + turl;
+            }
+            newItem.url.l1[lst[i]]=turl;
+            newItem.url.lN[lst[i]]=turl;
+          }
+
+          // width
+          if( data.hasOwnProperty('data-ngthumb' + lst[i] + 'width') ) {
+            var tw=parseInt( data.hasOwnProperty('data-ngthumb' + lst[i] + 'width') );
+            newItem.width.l1[lst[i]]=tw;
+            newItem.width.lN[lst[i]]=tw;
+          }
+          // height
+          if( data.hasOwnProperty('data-ngthumb' + lst[i] + 'height') ) {
+            var th=parseInt( data.hasOwnProperty('data-ngthumb' + lst[i] + 'height') );
+            newItem.height.l1[lst[i]]=th;
+            newItem.height.lN[lst[i]]=th;
+          }
+        }
+        
+        
         // image size
         newItem.imageWidth=parseInt(data['data-ngimagewidth']);
         newItem.imageHeight=parseInt(data['data-ngimageheight']);
@@ -5644,14 +5638,9 @@ TODO:
           newItem.customData=cloneJSObject(jQuery(item).data('ngcustomdata'));
         }
 
-        if( G.O.fnProcessData !== null ) {
-          if( typeof G.O.fnProcessData == 'function' ) {
-            G.O.fnProcessData(newItem, 'markup', item);
-          }
-          else {
-            // defined in markup
-            window[G.O.fnProcessData](newItem, 'markup', item);
-          }
+        var fu=G.O.fnProcessData;
+        if( fu !== null ) {
+          fu == 'function' ? fu(newItem, 'markup', item) : window[fu](newItem, 'markup', item);
         }
         
         AlbumPostProcess(albumID);
@@ -5700,6 +5689,7 @@ TODO:
       }
     
       // management of screen width
+      G.GOM.cache.viewport=getViewport();
       G.GOM.curWidth=RetrieveCurWidth();
 
       // tumbnail toolbar
@@ -6634,7 +6624,7 @@ TODO:
 
       // default thumbnail sizes levels l1 and lN
       var lst=['xs','sm','me','la','xl'];
-      for( var i=0; i< lst.length; i++ ) {
+      for( var i=0; i < lst.length; i++ ) {
         var w=G.tn.settings.width['lN'][lst[i]];
         if( w != 'auto' ) {
           G.tn.defaultSize.width['lN'][lst[i]]=w;
@@ -6646,7 +6636,7 @@ TODO:
           G.tn.defaultSize.width['l1'][lst[i]]=h;      // dynamic width --> set height value as default
         }
       }
-      for( var i=0; i< lst.length; i++ ) {
+      for( var i=0; i < lst.length; i++ ) {
         var h=G.tn.settings.height['lN'][lst[i]];
         if( h != 'auto' ) {
           // grid or justified layout
@@ -7045,14 +7035,9 @@ TODO:
           break;
         default:
           // all other actions (custom1..10, or anything else)
-          if( G.O.fnThumbnailToolCustAction !== null ) {
-            if( typeof G.O.fnThumbnailToolCustAction == 'function' ) {
-              G.O.fnThumbnailToolCustAction(r.action, G.I[idx]);
-            }
-            else {
-              // defined in markup
-              window[G.O.fnThumbnailToolCustAction](r.action, G.I[idx]);
-            }
+          var fu=G.O.fnThumbnailToolCustAction;
+          if( fu !== null ) {
+            fu == 'function' ? fu(r.action, G.I[idx]) : window[fu](r.action, G.I[idx]);
           }
           break;
       }
@@ -7082,14 +7067,9 @@ TODO:
       for( var i=0; i<G.shoppingCart.length; i++ ) {
         if( G.shoppingCart[i].idx == idx ) {
           G.shoppingCart[i].cnt++;
-          if( G.O.fnShoppingCartUpdated !== null ) {
-            if( typeof G.O.fnShoppingCartUpdated == 'function' ) {
-              G.O.fnShoppingCartUpdated(G.shoppingCart);
-            }
-            else {
-              // defined in markup
-              window[G.O.fnShoppingCartUpdated](G.shoppingCart);
-            }
+          var fu=G.O.fnShoppingCartUpdated;
+          if( fu !== null ) {
+            fu == 'function' ? fu(G.shoppingCart) : window[fu](G.shoppingCart);
           }
           TriggerCustomEvent('shoppingCartUpdated');
           return;
@@ -7099,14 +7079,9 @@ TODO:
       // add to shopping cart
       if( !found) {
         G.shoppingCart.push( { idx:idx, ID:G.I[idx].GetID(), cnt:1} );
-        if( G.O.fnShoppingCartUpdated !== null ) {
-          if( typeof G.O.fnShoppingCartUpdated == 'function' ) {
-            G.O.fnShoppingCartUpdated(G.shoppingCart);
-          }
-          else {
-            // defined in markup
-            window[G.O.fnShoppingCartUpdated](G.shoppingCart);
-          }
+        var fu=G.O.fnShoppingCartUpdated;
+        if( fu !== null ) {
+          fu == 'function' ? fu(G.shoppingCart) : window[fu](G.shoppingCart);
         }
         TriggerCustomEvent('shoppingCartUpdated');
       }
@@ -7115,27 +7090,21 @@ TODO:
     
     function ThumbnailSelectionClear() {
       G.GOM.nbSelected=0;
-      var nbTn=G.GOM.items.length;
-      for( var i=0; i < nbTn ; i++ ) {
+      for( var i=0, nbTn=G.GOM.items.length; i < nbTn ; i++ ) {
         var item=G.I[G.GOM.items[i].thumbnailIdx];
         if( item.selected ) {
           item.selected=false;
-          if( G.O.fnThumbnailSelection !== null ) {
-            if( typeof G.O.fnThumbnailSelection == 'function' ) {
-              G.O.fnThumbnailSelection(item.$elt, item, G.I);
-            }
-            else {
-              // defined in markup
-              window[G.O.fnThumbnailSelection](item.$elt, item, G.I);
-            }
+          var fu=G.O.fnThumbnailSelection;
+          if( fu !== null ) {
+            fu == 'function' ? fu(item.$elt, item, G.I) : window[fu](item.$elt, item, G.I);
           }
         }
         item.selected=false;
       }
     }
     
-    function ThumbnailSelectionToggle(idx){
-      var item=G.I[idx];
+    function ThumbnailSelectionToggle( idx ){
+      var item = G.I[idx];
       if( item.selected === true ) {
         ThumbnailSelectionSet(item, false);
         G.GOM.nbSelected--;
@@ -7152,19 +7121,14 @@ TODO:
     // this replaces ThumbnailSelection()
     function ThumbnailSelectionSet(item, selected ){
       
-      item.selected=selected;
+      item.selected = selected;
       
       ThumbnailSelectionSetIcon( item );
       
       // called when the selection status of an item changed
-      if( G.O.fnThumbnailSelection !== null ) {
-        if( typeof G.O.fnThumbnailSelection == 'function' ) {
-          G.O.fnThumbnailSelection(item.$elt, item, G.I);
-        }
-        else {
-          // defined in markup
-          window[G.O.fnThumbnailSelection](item.$elt, item, G.I);
-        }
+      var fu=G.O.fnThumbnailSelection;
+      if( fu !== null ) {
+        fu == 'function' ? fu(item.$elt, item, G.I) : window[fu](item.$elt, item, G.I);
       }
     
     }
@@ -7197,7 +7161,6 @@ TODO:
       // SEE SAMPLES: https://gist.github.com/chrisjlee/5196139
       // https://github.com/Julienh/Sharrre
     
-    
       var item=G.I[idx];
 
       var currentURL=document.location.protocol +'//'+document.location.hostname + document.location.pathname;
@@ -7210,15 +7173,15 @@ TODO:
       }
     
       var content ='';
-      content+='<div class="nGY2PopupOneItem" style="text-align:center;" data-share="facebook">'+G.O.icons.shareFacebook+'</div>';
-      content+='<div class="nGY2PopupOneItem" style="text-align:center;" data-share="pinterest">'+G.O.icons.sharePinterest+'</div>';
-      content+='<div class="nGY2PopupOneItem" style="text-align:center;" data-share="tumblr">'+G.O.icons.shareTumblr+'</div>';
-      content+='<div class="nGY2PopupOneItem" style="text-align:center;" data-share="twitter">'+G.O.icons.shareTwitter+'</div>';
-      content+='<div class="nGY2PopupOneItem" style="text-align:center;" data-share="googleplus">'+G.O.icons.shareGooglePlus+'</div>';
-      content+='<div class="nGY2PopupOneItem" style="text-align:center;" data-share="vk">'+G.O.icons.shareVK+'</div>';
-      content+='<div class="nGY2PopupOneItem" style="text-align:center;" data-share="mail">'+G.O.icons.shareMail+'</div>';
+      content+='<div class="nGY2PopupOneItem" style="text-align:center;" data-share="facebook">'   + G.O.icons.shareFacebook +   '</div>';
+      content+='<div class="nGY2PopupOneItem" style="text-align:center;" data-share="pinterest">'  + G.O.icons.sharePinterest +  '</div>';
+      content+='<div class="nGY2PopupOneItem" style="text-align:center;" data-share="tumblr">'     + G.O.icons.shareTumblr +     '</div>';
+      content+='<div class="nGY2PopupOneItem" style="text-align:center;" data-share="twitter">'    + G.O.icons.shareTwitter +    '</div>';
+      content+='<div class="nGY2PopupOneItem" style="text-align:center;" data-share="googleplus">' + G.O.icons.shareGooglePlus + '</div>';
+      content+='<div class="nGY2PopupOneItem" style="text-align:center;" data-share="vk">'         + G.O.icons.shareVK +         '</div>';
+      content+='<div class="nGY2PopupOneItem" style="text-align:center;" data-share="mail">'       + G.O.icons.shareMail +       '</div>';
       content+='<div class="nGY2PopupOneItem" style="text-align:center;"></div>';
-      content+='<input class="nGY2PopupOneItemText" readonly type="text" value="'+currentURL+newLocationHash+'" style="width:100%;text-align:center;">';
+      content+='<input class="nGY2PopupOneItemText" readonly type="text" value="' + currentURL+newLocationHash + '" style="width:100%;text-align:center;">';
       content+='<br>';
 
       currentURL=encodeURIComponent(document.location.protocol +'//'+document.location.hostname + document.location.pathname + newLocationHash);
@@ -7267,7 +7230,7 @@ TODO:
         }
         
         if( found ) {
-          window.open(shareURL,"","height=550,width=500,left=100,top=100,menubar=0");          window.open(shareURL,"","height=550,width=500,left=100,top=100,menubar=0");
+          window.open(shareURL, "" , "height=550,width=500,left=100,top=100,menubar=0" );
           G.popup.close();
           // $popup.remove();
         }
@@ -7277,11 +7240,11 @@ TODO:
     
     // build a modal popup
     function Popup(title, content, align) {
-      var pp =  '<div class="nGY2Popup" style="opacity:0;"><div class="nGY2PopupContent'+align+'">';
-      pp +=     '<div class="nGY2PopupCloseButton">'+G.O.icons.buttonClose+'</div>';
-      pp +=     '<div class="nGY2PopupTitle">'+title+'</div>';
-      pp +=     content;
-      pp +=     '</div></div>';
+      var pp =  '<div class="nGY2Popup" style="opacity:0;"><div class="nGY2PopupContent' + align + '">';
+      pp    +=  '<div class="nGY2PopupCloseButton">' + G.O.icons.buttonClose + '</div>';
+      pp    +=  '<div class="nGY2PopupTitle">' + title + '</div>';
+      pp    +=  content;
+      pp    +=  '</div></div>';
       
       G.popup.$elt=jQuery(pp).appendTo('body');
       setElementOnTop( G.VOM.$viewer, G.popup.$elt);
@@ -7290,15 +7253,12 @@ TODO:
       
       var tweenable = new NGTweenable();
       tweenable.tween({
-        from:       { opacity:0  },
-        to:         { opacity:1 },
+        from:       { o: 0 },
+        to:         { o: 1 },
         easing:     'easeInOutSine',
-        duration:   180,
+        duration:   250,
         step:       function (state, att) {
-          G.popup.$elt.css('opacity',state.opacity);
-        },
-        finish:     function (state, att) {
-          G.popup.$elt.css('opacity',1);
+          G.popup.$elt.css('opacity',state.o);
         }
       });
       
@@ -7368,14 +7328,9 @@ TODO:
     function ThumbnailOpen( idx, ignoreSelected ) {
       var item=G.I[idx];
 
-      if( G.O.fnThumbnailClicked !== null ) {
-        if( typeof G.O.fnThumbnailClicked == 'function' ) {
-          G.O.fnThumbnailClicked(item.$elt, item);
-        }
-        else {
-          // defined in markup
-          window[G.O.fnThumbnailClicked](item.$elt, item);
-        }
+      var fu=G.O.fnThumbnailClicked;
+      if( fu !== null ) {
+        fu == 'function' ? fu(item.$elt, item) : window[fu](item.$elt, item);
       }
       
       // open URL
@@ -7480,15 +7435,9 @@ TODO:
       }
     
       // opens image with external viewer
-      if( G.O.fnThumbnailOpen !== null ) {
-        if( typeof G.O.fnThumbnailOpen == 'function' ) {
-          G.O.fnThumbnailOpen(items);
-        }
-        else {
-          // defined in markup
-          window[G.O.fnThumbnailOpen](items);
-        }
-        return;
+      var fu=G.O.fnThumbnailOpen;
+      if( fu !== null ) {
+        fu == 'function' ? fu(items) : window[fu](items);
       }
     
       // use internal viewer
@@ -7497,8 +7446,7 @@ TODO:
         OpenInternalViewer();
       }
       else {
-        // display in current viewer
-        // G.VOM.$imgC.css({ opacity:0, left:0, visibility:'hidden' }).attr('src','');
+        // viewer already displayed -> display in current one
         G.VOM.$imgC.css({ opacity:0 }).attr('src','');
         G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.NGY2Item(0));
         G.VOM.$imgC.children().eq(0).attr('src',G.emptyGif).attr('src', G.VOM.NGY2Item(0).responsiveURL());
@@ -7599,24 +7547,24 @@ TODO:
       }
       
       // retrieve the base zoom factor (image fill screen)
-      var zoomBaseFactorW = (G.VOM.window.lastWidth - G.VOM.padding.V) / (item.imageWidth / dpr);
+      var zoomBaseFactorW = (G.VOM.window.lastWidth  - G.VOM.padding.V) / (item.imageWidth  / dpr);
       var zoomBaseFactorH = (G.VOM.window.lastHeight - G.VOM.padding.H) / (item.imageHeight / dpr);
-      var zoomBaseFactor = Math.min(zoomBaseFactorW,zoomBaseFactorH);
+      var zoomBaseFactor = Math.min(zoomBaseFactorW, zoomBaseFactorH);
       if( zoomBaseFactor > 1 && G.O.viewerImageDisplay != 'upscale' ) {
         // no upscale
-        zoomBaseFactor=1;
+        zoomBaseFactor = 1;
       }
         
 
       var imageCurrentHeight = (item.imageHeight / dpr) * zoomUserFactor * zoomBaseFactor;
-      var imageCurrentWidth = (item.imageWidth / dpr) * zoomUserFactor * zoomBaseFactor;
+      var imageCurrentWidth  = (item.imageWidth / dpr)  * zoomUserFactor * zoomBaseFactor;
       $img.children().eq(0).css( {'height': imageCurrentHeight });
-      $img.children().eq(0).css( {'width': imageCurrentWidth });
+      $img.children().eq(0).css( {'width':  imageCurrentWidth  });
 
       // retrieve posX/Y to center image
       var posX = 0;
       if( imageCurrentWidth > G.VOM.window.lastWidth ) {
-        posX = -(imageCurrentWidth-G.VOM.window.lastWidth)/2;
+        posX = -(imageCurrentWidth - G.VOM.window.lastWidth)/2;
       }
       var posY = 0;
       if( imageCurrentHeight > G.VOM.window.lastHeight ) {
@@ -7655,7 +7603,7 @@ TODO:
     }
     
 
-      // display image with internal viewer
+    // display image with internal viewer
     function OpenInternalViewer(  ) {
 
       G.VOM.viewerDisplayed=true;
@@ -7671,23 +7619,23 @@ TODO:
 
       G.VOM.currItemIdx=0;
       
-      var sImg = '<div class="nGY2ViewerImagePan"><img class="nGY2ViewerImage" src="'+G.VOM.NGY2Item(-1).responsiveURL()+'" alt=" " itemprop="contentURL"></div>';
-      sImg += '<div class="nGY2ViewerImagePan"><img class="nGY2ViewerImage" src="'+G.VOM.NGY2Item(0).responsiveURL()+'" alt=" " itemprop="contentURL"></div>';
-      sImg += '<div class="nGY2ViewerImagePan"><img class="nGY2ViewerImage" src="'+G.VOM.NGY2Item(1).responsiveURL()+'" alt=" " itemprop="contentURL"></div>';
+      var sImg = '<div class="nGY2ViewerImagePan"><img class="nGY2ViewerImage" src="' + G.VOM.NGY2Item(-1).responsiveURL() + '" alt=" " itemprop="contentURL"></div>';
+      sImg    += '<div class="nGY2ViewerImagePan"><img class="nGY2ViewerImage" src="' + G.VOM.NGY2Item(0).responsiveURL()  + '" alt=" " itemprop="contentURL"></div>';
+      sImg    += '<div class="nGY2ViewerImagePan"><img class="nGY2ViewerImage" src="' + G.VOM.NGY2Item(1).responsiveURL()  + '" alt=" " itemprop="contentURL"></div>';
       var sNav = '';
       if( G.O.icons.viewerImgPrevious != undefined && G.O.icons.viewerImgPrevious != '') {
-        sNav += '<div class="nGY2ViewerAreaPrevious ngy2viewerToolAction" data-ngy2action="previous">'+G.O.icons.viewerImgPrevious+'</div>';
+        sNav += '<div class="nGY2ViewerAreaPrevious ngy2viewerToolAction" data-ngy2action="previous">' + G.O.icons.viewerImgPrevious + '</div>';
       }
       if( G.O.icons.viewerImgNext != undefined && G.O.icons.viewerImgNext != '') {
-        sNav += '<div class="nGY2ViewerAreaNext ngy2viewerToolAction" data-ngy2action="next">'+G.O.icons.viewerImgNext+'</div>';
+        sNav += '<div class="nGY2ViewerAreaNext ngy2viewerToolAction" data-ngy2action="next">' + G.O.icons.viewerImgNext + '</div>';
       }
-      G.VOM.$content = jQuery('<div class="nGY2ViewerContent">'+sImg+sNav+'</div>').appendTo( G.VOM.$viewer );
+      G.VOM.$content = jQuery('<div class="nGY2ViewerContent">' + sImg + sNav + '</div>').appendTo( G.VOM.$viewer );
       G.VOM.$imgP = G.VOM.$content.find('.nGY2ViewerImagePan').eq(0);
       G.VOM.$imgC = G.VOM.$content.find('.nGY2ViewerImagePan').eq(1);
       G.VOM.$imgN = G.VOM.$content.find('.nGY2ViewerImagePan').eq(2);
-      G.VOM.ImageLoader.loadImage( VieweImgSizeRetrieved, G.VOM.NGY2Item(0) );
+      G.VOM.ImageLoader.loadImage( VieweImgSizeRetrieved, G.VOM.NGY2Item(0)  );
       G.VOM.ImageLoader.loadImage( VieweImgSizeRetrieved, G.VOM.NGY2Item(-1) );
-      G.VOM.ImageLoader.loadImage( VieweImgSizeRetrieved, G.VOM.NGY2Item(1) );
+      G.VOM.ImageLoader.loadImage( VieweImgSizeRetrieved, G.VOM.NGY2Item(1)  );
       
       ViewerDisplayDominantColors(G.VOM.NGY2Item(0), G.VOM.$imgC.children());
       ViewerDisplayDominantColors(G.VOM.NGY2Item(-1), G.VOM.$imgP.children());
@@ -7719,7 +7667,7 @@ TODO:
       sTB+='</div></div>';
       G.VOM.$toolbar=jQuery(sTB).appendTo(G.VOM.$viewer);
 
-      if( G.VOM.toolbarMode == 'min' || (G.O.viewerToolbar.autoMinimize > 0 && G.O.viewerToolbar.autoMinimize >= getViewport().w) ) {
+      if( G.VOM.toolbarMode == 'min' || (G.O.viewerToolbar.autoMinimize > 0 && G.O.viewerToolbar.autoMinimize >= G.GOM.cache.viewport.w) ) {
         ViewerToolbarForVisibilityMin();
       }
       else {
@@ -7734,7 +7682,7 @@ TODO:
           sTopLeft+=ToolbarAddElt( sTL[i] );
         }
         sTopLeft+='</div></div>';
-        G.VOM.$toolbarTL=jQuery(sTopLeft).appendTo(G.VOM.$viewer);
+        G.VOM.$toolbarTL = jQuery(sTopLeft).appendTo(G.VOM.$viewer);
       }
       // top-right toolbar
       if( G.O.viewerTools.topRight != '' ) {
@@ -7744,13 +7692,11 @@ TODO:
           sTopRight+=ToolbarAddElt( sTR[i] );
         }
         sTopRight+='</div></div>';
-        G.VOM.$toolbarTR=jQuery(sTopRight).appendTo(G.VOM.$viewer);
+        G.VOM.$toolbarTR = jQuery(sTopRight).appendTo(G.VOM.$viewer);
       }
 
       // Go to fullscreen mode
-      if( ngscreenfull.enabled && G.O.viewerFullscreen ) {
-        ngscreenfull.request();
-      }
+      if( ngscreenfull.enabled && G.O.viewerFullscreen ) { ngscreenfull.request(); }
 
       // set the events handler for toolbars
       ViewerToolsOn();
@@ -7774,18 +7720,32 @@ TODO:
         easing:       'easeOutQuart',
         step:         function (state) {
           G.VOM.$viewer.css('opacity', state.opacity);
-          G.VOM.$viewer[0].style[G.CSStransformName] = 'translateY('+(state.posY)+'px) ';
+          G.VOM.$viewer[0].style[G.CSStransformName] = 'translateY(' + (state.posY) + 'px) ';
         }
       });
 
       // stop click propagation on image ==> if the user clicks outside of an image, the viewer is closed
-      G.VOM.$viewer.find('img').on('click', function (e) {
-        e.stopPropagation();
-      });
+      G.VOM.$viewer.find('img').on('click', function (e) { e.stopPropagation(); });
       
       ImageSwipeTranslateX(0);
-      DisplayInternalViewer(0, '');
+      ViewerSetEvents();
 
+      DisplayInternalViewer(0, '');
+      
+      if( G.O.slideshowAutoStart ) {
+        G.VOM.playSlideshow=false;
+        SlideshowToggle();
+      }
+    }
+    
+    function ViewerEvents() {
+      if( !G.VOM.viewerDisplayed || G.VOM.viewerImageIsChanged ) { 
+        return false;
+      }
+      return true
+    }
+    
+    function ViewerSetEvents() {
       // viewer gesture handling
       if( G.VOM.hammertime == null ) {
       
@@ -7801,7 +7761,8 @@ TODO:
         // G.VOM.hammertime.get('pinch').set({ enable: true });        
 
         G.VOM.hammertime.on('pan', function(ev) {
-          if( !G.VOM.viewerDisplayed ) { return; }
+          if( !ViewerEvents() ) { return; }
+
           if( G.VOM.zoom.isZooming ) {
             ViewerImagePanSetPosition(G.VOM.panPosX+ev.deltaX, G.VOM.panPosY+ev.deltaY, G.VOM.$imgC[0], false);
             if( G.VOM.toolbarsDisplayed == true ) {
@@ -7814,7 +7775,7 @@ TODO:
         });
 
         G.VOM.hammertime.on('panend', function(ev) {
-          if( !G.VOM.viewerDisplayed ) { return; }
+          if( !ViewerEvents() ) { return; }
           if( G.VOM.zoom.isZooming ) {
             G.VOM.timeImgChanged=new Date().getTime();
             ViewerImagePanSetPosition(G.VOM.panPosX+ev.deltaX, G.VOM.panPosY+ev.deltaY, G.VOM.$imgC[0], true);
@@ -7842,14 +7803,14 @@ TODO:
 
           // single tap -> next/previous image
           G.VOM.hammertime.on('singletap', function(ev) {
-            if( !G.VOM.viewerDisplayed ) { return; }
+            if( !ViewerEvents() ) { return; }
             StopPropagationPreventDefault(ev.srcEvent);
             if( G.VOM.toolbarsDisplayed == false ) {
               debounce( ViewerToolsUnHide, 400, false)();
             }
             else {
               if( ev.target.className.indexOf('nGY2ViewerImage') !== -1 ) {
-                if( ev.srcEvent.pageX < (jQuery(window).width()/2) ) {
+                if( ev.srcEvent.pageX < (G.GOM.cache.viewport.w/2) ) {
                   DisplayPreviousImage();
                 }
                 else {
@@ -7861,7 +7822,7 @@ TODO:
           
           // double tap -> zoom
           G.VOM.hammertime.on('doubletap', function(ev) {
-            if( !G.VOM.viewerDisplayed ) { return; }
+            if( !ViewerEvents() ) { return; }
             StopPropagationPreventDefault(ev.srcEvent);
             
             if( ev.target.className.indexOf('nGY2ViewerImage') !== -1 ) {
@@ -7900,7 +7861,7 @@ TODO:
         else {
           // no zoom -> click/tap on image to go to next/previous one
           G.VOM.hammertime.on('tap', function(ev) {
-            if( !G.VOM.viewerDisplayed ) { return; }
+            if( !ViewerEvents() ) { return; }
             StopPropagationPreventDefault(ev.srcEvent);
             if( G.VOM.toolbarsDisplayed == false  ){
               // display tools on tap if hidden
@@ -7909,7 +7870,7 @@ TODO:
             else {
               // display next/previous image if tools not hidden
               if( ev.target.className.indexOf('nGY2ViewerImage') !== -1 ) {
-                if( ev.srcEvent.pageX < (jQuery(window).width()/2) ) {
+                if( ev.srcEvent.pageX < (G.GOM.cache.viewport.w/2) ) {
                   DisplayPreviousImage();
                 }
                 else {
@@ -7920,12 +7881,6 @@ TODO:
             
           });
         }
-      }
-
-      
-      if( G.O.slideshowAutoStart ) {
-        G.VOM.playSlideshow=false;
-        SlideshowToggle();
       }
     }
     
@@ -7968,6 +7923,7 @@ TODO:
       G.VOM.$viewer.on("touchstart click", '.ngy2viewerToolAction', ViewerToolsAction); 
     }
 
+    
     // Actions of the buttton/elements
     function ViewerToolsAction(e) {
       // delay to avoid twice handling on smartphone/tablet (both touchstart click events are fired)
@@ -7992,15 +7948,11 @@ TODO:
           break;
         case 'zoomIn':
           StopPropagationPreventDefault(e);
-          if( ViewerZoomStart() ) {
-            ViewerZoomIn( true );
-          }
+          if( ViewerZoomStart() ) { ViewerZoomIn( true ); }
           break;
         case 'zoomOut':
           StopPropagationPreventDefault(e);
-          if( ViewerZoomStart() ) {
-            ViewerZoomIn( false );
-          }
+          if( ViewerZoomStart() ) { ViewerZoomIn( false ); }
           break;
         case 'minimize':
           // toggle toolbar visibility
@@ -8048,14 +8000,9 @@ TODO:
       }
       
       // custom button
-      if( ngy2action.indexOf('custom') == 0  && G.O.fnImgToolbarCustClick !== null ) {
-        if( typeof G.O.fnImgToolbarCustClick == 'function' ) {
-          G.O.fnImgToolbarCustClick(ngy2action, $this, G.VOM.NGY2Item(0));
-        }
-        else {
-          // defined in markup
-          window[G.O.fnImgToolbarCustClick](ngy2action, $this, G.VOM.NGY2Item(0));
-        }
+      var fu=G.O.fnImgToolbarCustClick;
+      if( ngy2action.indexOf('custom') == 0  && fu !== null ) {
+        fu == 'function' ? fu(ngy2action, $this, G.VOM.NGY2Item(0)) : window[fu](ngy2action, $this, G.VOM.NGY2Item(0));
       }
     }
      
@@ -8156,14 +8103,9 @@ TODO:
           if( e.indexOf('custom') == 0 ) {
             var t='';
             // content to display from custom script
-            if( G.O.fnImgToolbarCustInit !== null ) {
-              if( typeof G.O.fnImgToolbarCustInit == 'function' ) {
-                G.O.fnImgToolbarCustInit(e);
-              }
-              else {
-                // defined in markup
-                window[G.O.fnImgToolbarCustInit](e);
-              }
+            var fu=G.O.fnImgToolbarCustInit;
+            if( fu !== null ) {
+              fu == 'function' ? fu(e) : window[fu](e);
             }
             if( t == undefined || t == '' ) {
               // content from icons
@@ -8261,14 +8203,9 @@ TODO:
       
       // custom elements
       var $cu=G.VOM.$viewer.find('.ngy2CustomBtn');
-      if( $cu.length > 0 && G.O.fnImgToolbarCustDisplay !== null ) {
-        if( typeof G.O.fnImgToolbarCustDisplay == 'function' ) {
-          G.O.fnImgToolbarCustDisplay($cu, item);
-        }
-        else {
-          // defined in markup
-          window[G.O.fnImgToolbarCustDisplay]($cu, item);
-        }
+      var fu=G.O.fnImgToolbarCustDisplay;
+      if( $cu.length > 0 && fu !== null ) {
+        fu == 'function' ? fu($cu, item) : window[fu]($cu, item);
       }
       
       // set event handlers again
@@ -8277,25 +8214,27 @@ TODO:
     
     // Scroll the image in the lightbox (left/right)
     function ImageSwipeTranslateX( posX ) {
-      G.VOM.swipePosX=posX;
+      G.VOM.swipePosX = posX;
       if( G.CSStransformName == null ) {
         // no pan if CSS transform not supported
         // G.VOM.$imgC.css({ left: posX }); 
       }
       else {
-        G.VOM.$imgC[0].style[G.CSStransformName]= 'translate('+posX+'px,0px)';
+        G.VOM.$imgC[0].style[G.CSStransformName]= 'translate(' + posX + 'px, 0px)';
         if(  G.O.imageTransition == 'swipe' ) {
-          G.VOM.$imgP.css({ opacity:1 });
-          G.VOM.$imgN.css({ opacity:1 });
+          G.VOM.$imgP.css({ opacity: 1 });
+          G.VOM.NGY2Item(-1).imageOpacity = 1;
+          G.VOM.$imgN.css({ opacity: 1 });
+          G.VOM.NGY2Item(1).imageOpacity = 1;
           if( posX > 0 ) {
             var dir=G.VOM.window.lastWidth;
-            G.VOM.$imgP[0].style[G.CSStransformName] = 'translate('+(-dir+posX)+'px,0px)';
-            G.VOM.$imgN[0].style[G.CSStransformName] = 'translate('+(-dir)+'px,0px)';
+            G.VOM.$imgP[0].style[G.CSStransformName] = 'translate(' + (-dir+posX) + 'px,0px)';
+            G.VOM.$imgN[0].style[G.CSStransformName] = 'translate(' + (-dir) + 'px, 0px)';
           }
           else {
             var dir=-G.VOM.window.lastWidth;
-            G.VOM.$imgN[0].style[G.CSStransformName] = 'translate('+(-dir+posX)+'px,0px)';
-            G.VOM.$imgP[0].style[G.CSStransformName] = 'translate('+(-dir)+'px,0px)';
+            G.VOM.$imgN[0].style[G.CSStransformName] = 'translate(' + (-dir+posX) + 'px,0px)';
+            G.VOM.$imgP[0].style[G.CSStransformName] = 'translate(' + (-dir) + 'px,0px)';
           }
         }
       }
@@ -8331,8 +8270,15 @@ TODO:
       var itemOld=G.VOM.NGY2Item(0);
       var itemNew=G.I[G.VOM.items[newVomIdx].ngy2ItemIdx];
       var $new=(displayType == 'nextImage' ? G.VOM.$imgN : G.VOM.$imgP);
-      var $unused=(displayType == 'nextImage' ? G.VOM.$imgP : G.VOM.$imgN);
-      $unused[0].style.opacity=0;
+      if( displayType == 'nextImage' ) {
+        G.VOM.$imgP[0].style.opacity=0;
+        G.VOM.NGY2Item(-1).imageOpacity=0;
+      }
+      else {
+        G.VOM.$imgN[0].style.opacity=0;
+        G.VOM.NGY2Item(1).imageOpacity=0;
+      }
+
 
       G.VOM.timeImgChanged=new Date().getTime();
       G.VOM.viewerImageIsChanged=true;
@@ -8341,9 +8287,15 @@ TODO:
  
       if( G.O.debugMode && console.timeline ) { console.timeline('nanogallery2_viewer'); }
 
-      var vP=getViewport();
 
       SetLocationHash( itemNew.albumID, itemNew.GetID() );
+      
+      
+      // duration is proportinal of the remaining distance
+      var vP=G.GOM.cache.viewport;
+      var dur = 400 * (vP.w-Math.abs(G.VOM.swipePosX)) / vP.w;
+      
+      ViewerImageOpacityOn(G.VOM.$imgC, itemOld);
       
       if( displayType == '' ) {
         // first image --> just appear / no slide animation
@@ -8381,6 +8333,7 @@ TODO:
       }
       else {
         // animate the image change
+        ViewerImageOpacityOn($new, itemNew);
         switch( G.O.imageTransition.toUpperCase() ) {
           case 'SWIPE':
             if( G.CSStransformName == null  ) {
@@ -8398,15 +8351,15 @@ TODO:
                 to:           { t: (displayType == 'nextImage' ? - vP.w : vP.w) },
                 attachment:   { dT:displayType, $e:$new, item: itemOld, itemNew: itemNew, dir:dir },
                 delay:        30,
-                duration:     300,
+                duration:     dur,
                 easing:       'easeInOutSine',
                 step:         function (state, att) {
                   // current image
                   ViewerImageOpacityOn(G.VOM.$imgC, att.item);
-                  G.VOM.$imgC[0].style[G.CSStransformName]= 'translate('+state.t+'px,0px)';
+                  G.VOM.$imgC[0].style[G.CSStransformName]= 'translate('+state.t+'px, 0px)';
                   // new image
                   ViewerImageOpacityOn(att.$e, att.itemNew);
-                  att.$e[0].style[G.CSStransformName]= 'translate('+(-att.dir+state.t)+'px, 0px) ';
+                  att.$e[0].style[G.CSStransformName]= 'translate('+(-att.dir+state.t)+'px, 0px)';
                 },
                 finish:       function (state, att) {
                   // current image
@@ -8437,12 +8390,12 @@ TODO:
                 to:           { o: 1, t: (displayType == 'nextImage' ? - vP.w : vP.w) },
                 attachment:   { dT:displayType, $e:$new, item: itemOld, itemNew: itemNew, dir: dir },
                 delay:        30,
-                duration:     300,
+                duration:     dur,
                 easing:       'easeInOutSine',
                 step:         function (state, att) {
                   // current image - translate
                   ViewerImageOpacityOn(G.VOM.$imgC, att.item);
-                  G.VOM.$imgC[0].style[G.CSStransformName]= 'translate('+state.t+'px,0px)';
+                  G.VOM.$imgC[0].style[G.CSStransformName]= 'translate('+state.t+'px, 0px)';
                   // new image - opacity
                   att.$e.css({ opacity: state.o });
 //                  ViewerImageSetSize(att.$e, att.itemNew);
@@ -8453,6 +8406,7 @@ TODO:
                   G.VOM.$imgC[0].style[G.CSStransformName]= '';
                   // new image
                   att.$e.css({ opacity: 1 });
+                  att.ietmNew.imageOpacity=0;
                   DisplayInternalViewerComplete(att.dT, newVomIdx);
                 }
               });
@@ -8469,14 +8423,9 @@ TODO:
       ViewerToolbarElementContent();
       if( G.O.debugMode && console.timeline ) { console.timelineEnd('nanogallery2_viewer'); }
 
-      if( G.O.fnImgDisplayed !== null ) {
-        if( typeof G.O.fnImgDisplayed == 'function' ) {
-          G.O.fnImgDisplayed(G.VOM.NGY2Item(0));
-        }
-        else {
-          // defined in markup
-          window[G.O.fnImgDisplayed](G.VOM.NGY2Item(0));
-        }
+      var fu=G.O.fnImgDisplayed;
+      if( fu !== null ) {
+        fu == 'function' ? fu(G.VOM.NGY2Item(0)) : window[fu](G.VOM.NGY2Item(0));
       }
       
       G.VOM.swipePosX=0;
@@ -8497,14 +8446,17 @@ TODO:
       }
       G.VOM.$imgC.addClass('imgCurrent');
       if( G.VOM.NGY2Item(0).imageWidth > 0 ) {
+        G.VOM.NGY2Item(0).imageOpacity=1;
         G.VOM.$imgC.css({ opacity: 1 });
       }
       else {
+        G.VOM.NGY2Item(0).imageOpacity=0;
         G.VOM.$imgC.css({ opacity: 0 });
       }
       
       // new next image
       G.VOM.$imgN.css({ opacity: 0 });
+      G.VOM.NGY2Item(1).imageOpacity=0;
       G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.NGY2Item(1));
       G.VOM.$imgN.children().eq(0).attr('src', '');
       G.VOM.$imgN.children().eq(0).attr('src',G.emptyGif).attr('src', G.VOM.NGY2Item(1).responsiveURL());
@@ -8512,6 +8464,7 @@ TODO:
 
       // new previous image
       G.VOM.$imgP.css({ opacity: 0 });
+      G.VOM.NGY2Item(-1).imageOpacity=0;
       G.VOM.$imgP.children().eq(0).attr('src', '');
       G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.NGY2Item(-1));
       G.VOM.$imgP.children().eq(0).attr('src',G.emptyGif).attr('src',G.VOM.NGY2Item(-1).responsiveURL());
@@ -8546,11 +8499,13 @@ TODO:
 
     // display image only when the size is knowed
     function ViewerImageOpacityOn( $img, item ) {
-      if( $img[0].style.opacity == 0 && item.imageWidth != 0 ) {
+      // if( $img[0].style.opacity == 0 && item.imageWidth != 0 ) {
+      if( item.imageOpacity == 0 && item.imageWidth != 0 ) {
         // display it when the size is knowed
         // ViewerImageSetSize($img, item);
         ViewerImageSetPosAndZoom();
         $img[0].style.opacity=1;
+        item.imageOpacity=1;
       }
     }
 
@@ -8680,7 +8635,7 @@ TODO:
       // RTL or LTR
       var sRTL='';
       if( G.O.RTL ) {
-        sRTL='style="text-align:right;direction:rtl;"';
+        sRTL = 'style="text-align:right;direction:rtl;"';
       }
     
       // theme
@@ -8690,8 +8645,8 @@ TODO:
 
       // Hide icons (thumbnails and breadcrumb)
       if( G.O.thumbnailLabel.get('hideIcons') ) {
-        G.O.icons.thumbnailAlbum='';
-        G.O.icons.thumbnailImage='';
+        G.O.icons.thumbnailAlbum = '';
+        G.O.icons.thumbnailImage = '';
       }
 
       // Navigation bar
@@ -8699,14 +8654,14 @@ TODO:
       if( G.O.navigationFontSize != undefined && G.O.navigationFontSize != '' ) {
         styleNavigation=' style="font-size:'+G.O.navigationFontSize+';"';
       }      
-      G.$E.conNavigationBar=jQuery('<div class="nGY2Navigationbar" '+styleNavigation+'></div>').appendTo(G.$E.base);
+      G.$E.conNavigationBar = jQuery('<div class="nGY2Navigationbar" '+styleNavigation+'></div>').appendTo(G.$E.base);
 
       // pre-loader
-      G.$E.conLoadingB=jQuery('<div class="nanoGalleryLBarOff"><div></div><div></div><div></div><div></div><div></div></div>').appendTo(G.$E.base);
+      G.$E.conLoadingB = jQuery('<div class="nanoGalleryLBarOff"><div></div><div></div><div></div><div></div><div></div></div>').appendTo(G.$E.base);
 
       // gallery
-      G.$E.conTnParent=jQuery('<div class="nGY2Gallery"></div>').appendTo(G.$E.base);
-      G.$E.conTn=jQuery('<div class="nGY2GallerySub"></div>').appendTo(G.$E.conTnParent);
+      G.$E.conTnParent = jQuery('<div class="nGY2Gallery"></div>').appendTo( G.$E.base );
+      G.$E.conTn = jQuery('<div class="nGY2GallerySub"></div>').appendTo( G.$E.conTnParent );
 
       // configure gallery
       switch( G.O.thumbnailAlignment ) {
@@ -8754,9 +8709,9 @@ TODO:
       }
       
       // Gallery bottom container
-      G.$E.conTnBottom=jQuery('<div class="nGY2GalleryBottom" '+styleNavigation+'></div>').appendTo(G.$E.conTnParent);
+      G.$E.conTnBottom = jQuery('<div class="nGY2GalleryBottom" '+styleNavigation+'></div>').appendTo( G.$E.conTnParent );
       
-      // portable
+      // portable edition
       if( G.O.portable ) {
         // http://www.picresize.com/
         // http://base64encode.net/base64-image-encoder
@@ -8775,7 +8730,7 @@ TODO:
       }
       
       // Error console
-      G.$E.conConsole=jQuery('<div class="nGY2ConsoleParent"></div>').appendTo(G.$E.base);
+      G.$E.conConsole = jQuery('<div class="nGY2ConsoleParent"></div>').appendTo(G.$E.base);
 
       // i18n translations
       i18n();
@@ -8818,70 +8773,76 @@ TODO:
       G.$E.conTnParent.on({
         mouseenter: GalleryMouseEnter,
         mouseleave: GalleryMouseLeave
-      }, ".nGY2GThumbnail"); //pass the element as an argument to .on
+      }, ".nGY2GThumbnail");    //pass the element as an argument to .on
       
       // G.GOM.hammertime = new NGHammer(G.$E.conTn[0], { touchAction: 'none' });
-      G.GOM.hammertime = new NGHammer(G.$E.conTn[0]);
+      G.GOM.hammertime = new NGHammer( G.$E.conTn[0] );
       // G.GOM.hammertime.domEvents = true;
       
       G.GOM.hammertime.on('pan', function(ev) {
-        if( G.O.paginationSwipe && G.layout.support.rows && G.galleryDisplayMode.Get() == 'PAGINATION' ) {
-          G.$E.conTn.css( G.CSStransformName , 'translate('+(ev.deltaX)+'px,0px)');
+        if( !G.VOM.viewerDisplayed ) {
+          if( G.O.paginationSwipe && G.layout.support.rows && G.galleryDisplayMode.Get() == 'PAGINATION' ) {
+            G.$E.conTn.css( G.CSStransformName , 'translate('+(ev.deltaX)+'px,0px)');
+          }
         }
       });
       G.GOM.hammertime.on('panend', function(ev) {
-        if( G.O.paginationSwipe && G.layout.support.rows && G.galleryDisplayMode.Get() == 'PAGINATION' ) {
-          if( Math.abs(ev.deltaY) > 100 ) {
-            // user moved vertically -> cancel pagination
+        if( !G.VOM.viewerDisplayed ) {
+          if( G.O.paginationSwipe && G.layout.support.rows && G.galleryDisplayMode.Get() == 'PAGINATION' ) {
+            if( Math.abs(ev.deltaY) > 100 ) {
+              // user moved vertically -> cancel pagination
+              G.$E.conTn.css( G.CSStransformName , 'translate(0px,0px)');
+              return;
+            }
+            if( ev.deltaX > 50 ) {
+              paginationPreviousPage();
+              return;
+            }
+            if(  ev.deltaX < -50 ) {
+              paginationNextPage();
+              return;
+            }
             G.$E.conTn.css( G.CSStransformName , 'translate(0px,0px)');
-            return;
+            // pX=0;
           }
-          if( ev.deltaX > 50 ) {
-            paginationPreviousPage();
-            return;
-          }
-          if(  ev.deltaX < -50 ) {
-            paginationNextPage();
-            return;
-          }
-          G.$E.conTn.css( G.CSStransformName , 'translate(0px,0px)');
-          // pX=0;
         }
       });
       G.GOM.hammertime.on('tap', function(ev) {
-        ev.srcEvent.stopPropagation();
-        ev.srcEvent.preventDefault();  // cancel  mouseenter event
+        if( !G.VOM.viewerDisplayed ) {
+          ev.srcEvent.stopPropagation();
+          ev.srcEvent.preventDefault();  // cancel  mouseenter event
 
-        if( ev.pointerType == 'mouse') {
-          if( GalleryClicked(ev.srcEvent) == 'exit' ) { return; }
-        }
-        else {
-          var r=GalleryEventRetrieveElementl(ev.srcEvent, false);
-          if( r.GOMidx == -1 ) { return; }
-          if( r.action != 'NONE' && r.action != 'OPEN' ) {
-            // toolbar touched --> execute action
-            GalleryClicked(ev.srcEvent);
-            return;
-          }
-          if( G.O.touchAutoOpenDelay > 0 ) {
-            // one touch scenario
-            ThumbnailHoverOutAll();
-            ThumbnailHover( r.GOMidx );
-            window.clearInterval( G.touchAutoOpenDelayTimerID );
-            G.touchAutoOpenDelayTimerID = window.setInterval(function(){
-              window.clearInterval( G.touchAutoOpenDelayTimerID );
-              ThumbnailOpen( G.GOM.items[r.GOMidx].thumbnailIdx, true );
-            }, G.O.touchAutoOpenDelay );
+          if( ev.pointerType == 'mouse') {
+            if( GalleryClicked(ev.srcEvent) == 'exit' ) { return; }
           }
           else {
-            // two touch scenario
-            if( !G.I[G.GOM.items[r.GOMidx].thumbnailIdx].hovered ) {
+            var r=GalleryEventRetrieveElementl(ev.srcEvent, false);
+            if( r.GOMidx == -1 ) { return; }
+            if( r.action != 'NONE' && r.action != 'OPEN' ) {
+              // toolbar touched --> execute action
+              GalleryClicked(ev.srcEvent);
+              return;
+            }
+            if( G.O.touchAutoOpenDelay > 0 ) {
+              // one touch scenario
               ThumbnailHoverOutAll();
-              ThumbnailHover(r.GOMidx);
+              ThumbnailHover( r.GOMidx );
+              window.clearInterval( G.touchAutoOpenDelayTimerID );
+              G.touchAutoOpenDelayTimerID = window.setInterval(function(){
+                window.clearInterval( G.touchAutoOpenDelayTimerID );
+                ThumbnailOpen( G.GOM.items[r.GOMidx].thumbnailIdx, true );
+              }, G.O.touchAutoOpenDelay );
             }
             else {
-              // second touch
-              ThumbnailOpen(G.GOM.items[r.GOMidx].thumbnailIdx, true);
+              // two touch scenario
+              if( !G.I[G.GOM.items[r.GOMidx].thumbnailIdx].hovered ) {
+                ThumbnailHoverOutAll();
+                ThumbnailHover(r.GOMidx);
+              }
+              else {
+                // second touch
+                ThumbnailOpen(G.GOM.items[r.GOMidx].thumbnailIdx, true);
+              }
             }
           }
         }
@@ -8895,11 +8856,11 @@ TODO:
         });
       }
       
-      // Page resize
-      jQuery(window).on('resize.nanogallery2.'+G.baseEltID, debounce( ResizeWindowEvent, 100, false) );
+      // Page resize / orientation change
+      jQuery(window).on('resize.nanogallery2.' + G.baseEltID + ' orientationChange.nanogallery2.' + G.baseEltID, debounce( ResizeWindowEvent, 100, false) );
       
       // Event page scrolled
-      $(window).on('scroll.nanogallery2.'+G.baseEltID,  debounce( OnScrollEvent, 100, false) );
+      jQuery(window).on('scroll.nanogallery2.' + G.baseEltID, debounce( OnScrollEvent, 50, false) );
       
       // Debounced function to hide the toolbars on the viewer
       G.VOM.toolsHide=debounce( ViewerToolsHide, G.O.viewerHideToolsDelay, false );
@@ -9082,6 +9043,10 @@ TODO:
     
     
     function ResizeWindowEvent() {
+      G.GOM.cache.viewport=getViewport();
+      G.GOM.cache.areaWidth=G.$E.conTnParent.width();
+      G.GOM.cache.containerOffset=G.$E.conTnParent.offset();
+
       if( G.VOM.viewerDisplayed ) {
         ResizeInternalViewer();
       }
@@ -9159,7 +9124,7 @@ TODO:
 
     
     function RetrieveCurWidth() {
-      var vpW= getViewport().w;
+      var vpW= G.GOM.cache.viewport.w;
       
       if( G.O.breakpointSizeSM > 0 && vpW < G.O.breakpointSizeSM) { return 'xs'; }
       if( G.O.breakpointSizeME > 0 && vpW < G.O.breakpointSizeME) { return 'sm'; }
@@ -9172,11 +9137,11 @@ TODO:
     
     /** @function browserNotification */
     function browserNotification() {
-      var m='Your browser version is not supported anymore. The image gallery cannot be displayed. <br><br>Please update to a more recent one. Download:<br>';
-      m+='&nbsp;&nbsp;&nbsp; <a href="http://www.google.com/chrome/?hl=en-US)">Chrome</a><br>';
-      m+='&nbsp;&nbsp;&nbsp; <a href="http://www.mozilla.com/firefox/)">Firefox</a><br>';
-      m+='&nbsp;&nbsp;&nbsp; <a href="http://www.microsoft.com/windows/internet-explorer/default.aspx">Internet Explorer</a><br>';
-      m+='&nbsp;&nbsp;&nbsp; <a href="http://www.apple.com/safari/download/">Safari</a>';
+      var m = 'Your browser version is not supported anymore. The image gallery cannot be displayed. <br><br>Please update to a more recent one. Download:<br>';
+      m    += '&nbsp;&nbsp;&nbsp; <a href="http://www.google.com/chrome/?hl=en-US)">Chrome</a><br>';
+      m    += '&nbsp;&nbsp;&nbsp; <a href="http://www.mozilla.com/firefox/)">Firefox</a><br>';
+      m    += '&nbsp;&nbsp;&nbsp; <a href="http://www.microsoft.com/windows/internet-explorer/default.aspx">Internet Explorer</a><br>';
+      m    += '&nbsp;&nbsp;&nbsp; <a href="http://www.apple.com/safari/download/">Safari</a>';
       NanoAlert(G,  m, false);
     }
 
