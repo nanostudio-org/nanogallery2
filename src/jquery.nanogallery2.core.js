@@ -4263,7 +4263,7 @@ TODO:
       // Custom init function
       var fu=G.O.fnThumbnailInit;
       if( fu !== null ) {
-        fu == 'function' ? fu($newDiv, item, GOMidx) : window[fu]($newDiv, item, GOMidx);
+        typeof fu == 'function' ? fu($newDiv, item, GOMidx) : window[fu]($newDiv, item, GOMidx);
       }
 
       if( item.title != 'image gallery by nanogallery2 [build]' ) {
@@ -4974,7 +4974,7 @@ TODO:
       
       var fu=G.O.fnThumbnailHoverInit;
       if( fu !== null ) {
-        fu == 'function' ? fu($e, item, GOMidx) : window[fu]($e, item, GOMidx);
+        typeof fu == 'function' ? fu($e, item, GOMidx) : window[fu]($e, item, GOMidx);
       }
 
       // build initialization
@@ -5067,7 +5067,7 @@ TODO:
 
       var fu=G.O.fnThumbnailHover;
       if( fu !== null ) {
-        fu == 'function' ? fu(item.$elt, item, GOMidx) : window[fu](item.$elt, item, GOMidx);
+        typeof fu == 'function' ? fu(item.$elt, item, GOMidx) : window[fu](item.$elt, item, GOMidx);
       }
       var effects=G.tn.hoverEffects.get();
 
@@ -5111,7 +5111,7 @@ TODO:
 
       var fu=G.O.fnThumbnailHoverOut;
       if( fu !== null ) {
-        fu == 'function' ? fu(item.$elt, item, GOMidx) : window[fu](item.$elt, item, GOMidx);
+        typeof fu == 'function' ? fu(item.$elt, item, GOMidx) : window[fu](item.$elt, item, GOMidx);
       }
 
       var effects=G.tn.hoverEffects.get();
@@ -5453,7 +5453,7 @@ TODO:
         
         var fu=G.O.fnProcessData;
         if( fu !== null ) {
-          fu == 'function' ? fu(newItem, 'api', item) : window[fu](newItem, 'api', item);
+          typeof fu == 'function' ? fu(newItem, 'api', item) : window[fu](newItem, 'api', item);
         }
         
         AlbumPostProcess(albumID);
@@ -5639,7 +5639,7 @@ TODO:
 
         var fu=G.O.fnProcessData;
         if( fu !== null ) {
-          fu == 'function' ? fu(newItem, 'markup', item) : window[fu](newItem, 'markup', item);
+          typeof fu == 'function' ? fu(newItem, 'markup', item) : window[fu](newItem, 'markup', item);
         }
         
         AlbumPostProcess(albumID);
@@ -7036,7 +7036,7 @@ TODO:
           // all other actions (custom1..10, or anything else)
           var fu=G.O.fnThumbnailToolCustAction;
           if( fu !== null ) {
-            fu == 'function' ? fu(r.action, G.I[idx]) : window[fu](r.action, G.I[idx]);
+            typeof fu == 'function' ? fu(r.action, G.I[idx]) : window[fu](r.action, G.I[idx]);
           }
           break;
       }
@@ -7068,7 +7068,7 @@ TODO:
           G.shoppingCart[i].cnt++;
           var fu=G.O.fnShoppingCartUpdated;
           if( fu !== null ) {
-            fu == 'function' ? fu(G.shoppingCart) : window[fu](G.shoppingCart);
+            typeof fu == 'function' ? fu(G.shoppingCart) : window[fu](G.shoppingCart);
           }
           TriggerCustomEvent('shoppingCartUpdated');
           return;
@@ -7080,7 +7080,7 @@ TODO:
         G.shoppingCart.push( { idx:idx, ID:G.I[idx].GetID(), cnt:1} );
         var fu=G.O.fnShoppingCartUpdated;
         if( fu !== null ) {
-          fu == 'function' ? fu(G.shoppingCart) : window[fu](G.shoppingCart);
+          typeof fu == 'function' ? fu(G.shoppingCart) : window[fu](G.shoppingCart);
         }
         TriggerCustomEvent('shoppingCartUpdated');
       }
@@ -7095,7 +7095,7 @@ TODO:
           item.selected=false;
           var fu=G.O.fnThumbnailSelection;
           if( fu !== null ) {
-            fu == 'function' ? fu(item.$elt, item, G.I) : window[fu](item.$elt, item, G.I);
+            typeof fu == 'function' ? fu(item.$elt, item, G.I) : window[fu](item.$elt, item, G.I);
           }
         }
         item.selected=false;
@@ -7127,7 +7127,7 @@ TODO:
       // called when the selection status of an item changed
       var fu=G.O.fnThumbnailSelection;
       if( fu !== null ) {
-        fu == 'function' ? fu(item.$elt, item, G.I) : window[fu](item.$elt, item, G.I);
+        typeof fu == 'function' ? fu(item.$elt, item, G.I) : window[fu](item.$elt, item, G.I);
       }
     
     }
@@ -7329,7 +7329,7 @@ TODO:
 
       var fu=G.O.fnThumbnailClicked;
       if( fu !== null ) {
-        fu == 'function' ? fu(item.$elt, item) : window[fu](item.$elt, item);
+        typeof fu == 'function' ? fu(item.$elt, item) : window[fu](item.$elt, item);
       }
       
       // open URL
@@ -7436,7 +7436,7 @@ TODO:
       // opens image with external viewer
       var fu=G.O.fnThumbnailOpen;
       if( fu !== null ) {
-        fu == 'function' ? fu(items) : window[fu](items);
+        typeof fu == 'function' ? fu(items) : window[fu](items);
       }
     
       // use internal viewer
@@ -8001,7 +8001,7 @@ TODO:
       // custom button
       var fu=G.O.fnImgToolbarCustClick;
       if( ngy2action.indexOf('custom') == 0  && fu !== null ) {
-        fu == 'function' ? fu(ngy2action, $this, G.VOM.NGY2Item(0)) : window[fu](ngy2action, $this, G.VOM.NGY2Item(0));
+        typeof fu == 'function' ? fu(ngy2action, $this, G.VOM.NGY2Item(0)) : window[fu](ngy2action, $this, G.VOM.NGY2Item(0));
       }
     }
      
@@ -8104,7 +8104,7 @@ TODO:
             // content to display from custom script
             var fu=G.O.fnImgToolbarCustInit;
             if( fu !== null ) {
-              fu == 'function' ? fu(e) : window[fu](e);
+              typeof fu == 'function' ? fu(e) : window[fu](e);
             }
             if( t == undefined || t == '' ) {
               // content from icons
@@ -8204,7 +8204,7 @@ TODO:
       var $cu=G.VOM.$viewer.find('.ngy2CustomBtn');
       var fu=G.O.fnImgToolbarCustDisplay;
       if( $cu.length > 0 && fu !== null ) {
-        fu == 'function' ? fu($cu, item) : window[fu]($cu, item);
+        typeof fu == 'function' ? fu($cu, item) : window[fu]($cu, item);
       }
       
       // set event handlers again
@@ -8424,7 +8424,7 @@ TODO:
 
       var fu=G.O.fnImgDisplayed;
       if( fu !== null ) {
-        fu == 'function' ? fu(G.VOM.NGY2Item(0)) : window[fu](G.VOM.NGY2Item(0));
+        typeof fu == 'function' ? fu(G.VOM.NGY2Item(0)) : window[fu](G.VOM.NGY2Item(0));
       }
       
       G.VOM.swipePosX=0;
