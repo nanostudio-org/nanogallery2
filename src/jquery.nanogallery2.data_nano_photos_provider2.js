@@ -20,37 +20,31 @@
     /** @function AlbumGetContent */
     var AlbumGetContent = function(albumID, fnToCall, fnParam1, fnParam2) {
 
-
-      var albumIdx=NGY2Item.GetIdx(G, albumID);
+      var albumIdx = NGY2Item.GetIdx(G, albumID);
 
       // title is identical to ID (only for albums)
       if( instance.I[albumIdx].title == '' ) {
-        instance.I[albumIdx].title=JsonConvertCharset(albumID);
+        instance.I[albumIdx].title = JsonConvertCharset(albumID);
       }
 
-
-      // var url = G.O.dataProvider + '?albumID='+encodeURIComponent(albumID);
-      var url = G.O.dataProvider + '?albumID='+albumID;
-      url += '&wxs='+G.tn.settings.width[G.GOM.curNavLevel].xs;
-      url += '&hxs='+G.tn.settings.height[G.GOM.curNavLevel].xs;
-      url += '&wsm='+G.tn.settings.width[G.GOM.curNavLevel].sm;
-      url += '&hsm='+G.tn.settings.height[G.GOM.curNavLevel].sm;
-      url += '&wme='+G.tn.settings.width[G.GOM.curNavLevel].me;
-      url += '&hme='+G.tn.settings.height[G.GOM.curNavLevel].me;
-      url += '&wla='+G.tn.settings.width[G.GOM.curNavLevel].la;
-      url += '&hla='+G.tn.settings.height[G.GOM.curNavLevel].la;
-      url += '&wxl='+G.tn.settings.width[G.GOM.curNavLevel].xl;
-      url += '&hxl='+G.tn.settings.height[G.GOM.curNavLevel].xl;
+      // Build the URL
+      var url = G.O.dataProvider + '?albumID='+albumID;             // which album
+      // all thumbnails sizes (for responsive display)
+      url += '&wxs=' + G.tn.settings.width[G.GOM.curNavLevel].xs;
+      url += '&hxs=' + G.tn.settings.height[G.GOM.curNavLevel].xs;
+      url += '&wsm=' + G.tn.settings.width[G.GOM.curNavLevel].sm;
+      url += '&hsm=' + G.tn.settings.height[G.GOM.curNavLevel].sm;
+      url += '&wme=' + G.tn.settings.width[G.GOM.curNavLevel].me;
+      url += '&hme=' + G.tn.settings.height[G.GOM.curNavLevel].me;
+      url += '&wla=' + G.tn.settings.width[G.GOM.curNavLevel].la;
+      url += '&hla=' + G.tn.settings.height[G.GOM.curNavLevel].la;
+      url += '&wxl=' + G.tn.settings.width[G.GOM.curNavLevel].xl;
+      url += '&hxl=' + G.tn.settings.height[G.GOM.curNavLevel].xl;
       
-      // console.dir(url);
-      
-      PreloaderDisplay(true);
-
+      PreloaderDisplay( true );
       jQuery.ajaxSetup({ cache: false });
       jQuery.support.cors = true;
       try {
-        
-        
         
         var tId = setTimeout( function() {
           // workaround to handle JSONP (cross-domain) errors
@@ -58,13 +52,16 @@
           NanoAlert('Could not retrieve nanoPhotosProvider2 data (timeout).');
         }, 60000 );
 
-        // console.log(url);        
+        if( G.O.debugMode ) { console.log('nanoPhotosProvider2 URL: ' + url); }
+        
         jQuery.getJSON(url, function(data, status, xhr) {
-          clearTimeout(tId);
-          PreloaderDisplay(false);
+          clearTimeout( tId );
+          PreloaderDisplay( false );
+
           JsonParseData(albumIdx, data);
+          
           if( data.nano_status == 'ok' ) {
-            AlbumPostProcess(albumID);
+            AlbumPostProcess( albumID );
             if( fnToCall !== null &&  fnToCall !== undefined) {
               fnToCall( fnParam1, fnParam2, null );
             }
@@ -74,8 +71,8 @@
           }
         })
         .fail( function(jqxhr, textStatus, error) {
-          clearTimeout(tId);
-          PreloaderDisplay(false);
+          clearTimeout( tId );
+          PreloaderDisplay( false );
 
           var k=''
           for(var key in jqxhr) {
@@ -112,58 +109,57 @@
     }
 
     function JsonParseData(albumIdx, data) {
-      var foundAlbumID=false;
-      var nb=0;
+      if( G.O.debugMode ) { 
+        console.log('nanoPhotosProvider2 parse data:');
+        console.dir(data);    
+      }
 
+      var foundAlbumID = false;
+      var nb = 0;
+
+      // loop each item
+      jQuery.each( data.album_content, function( i, item ){
       
-      jQuery.each(data.album_content, function(i,item){
-      
-        var title=item.title;
-        // title=GetI18nItem(item,'title');
-        // if( title === undefined ) { title=''; }
+        // base URL where the images are stored
+        var baseURL = G.O.dataProvider.substring(0, G.O.dataProvider.indexOf('nano_photos_provider2.php'));
+        
+        // image URL
+        var src = baseURL + JsonConvertCharset( item.src );
 
-        var baseURL=G.O.dataProvider.substring(0, G.O.dataProvider.indexOf('nano_photos_provider2.php'));
-        var src=baseURL+JsonConvertCharset(item.src);
+        // item title
+        var title = item.title;
 
-        if( G.O.thumbnailLabel.get('title') != '' ) {
-          title=GetImageTitle((item.src));
-        }
+        // item description ( '_' are replaced with ' ' )
+        var description = item.description.split('_').join(' ');
 
-        var description=item.description;     //'&nbsp;';
-        // description=GetI18nItem(item,'description');
-        // if( description === undefined ) { description=''; }
-
-        var kind='image';
+        // item kind ('album' or 'image')
+        var kind = 'image';
         if( item.kind !== undefined && item.kind.length > 0 ) {
-          kind=item.kind;
+          kind = item.kind;
         }
 
-        var ID=null;
-        if( item.ID !== undefined ) {
-          ID=(item.ID);
-        }
+        // item ID
+        var ID=item.ID;
 
-        var ok=true;
+        var filterAlbum = false;
         if( kind == 'album' ) {
-          if( !FilterAlbumName(title, ID) ) { ok=false; }
+          // check if 
+          if( !FilterAlbumName(title, ID) ) { filterAlbum = true; }
         }
 
-        if( ok ) {
-          var albumID=0;
+        if( kind == 'image' || (kind == 'album' && FilterAlbumName(title, ID)) ) {
+          var albumID = 0;
           if( item.albumID !== undefined  ) {
-            albumID=item.albumID;
-            foundAlbumID=true;
+            albumID = item.albumID;
+            foundAlbumID = true;
           }
 
-          var tags='';
-          if( item.tags !== undefined ) {
-            tags=item.tags;
-          }
+          var tags = (item.tags === undefined) ? '' : item.tags;
           
-          var newItem=NGY2Item.New( G, title.split('_').join(' ') , description.split('_').join(' '), ID, albumID, kind, tags );
+          var newItem=NGY2Item.New( G, title.split('_').join(' ') , description, ID, albumID, kind, tags );
           newItem.src=src;
 
-          // dominant colors as a gif
+          // dominant colorS as a gif
           if( item.dcGIF !== undefined ) {
             newItem.imageDominantColors='data:image/gif;base64,'+item.dcGIF;
           }
@@ -174,37 +170,37 @@
           
           if( kind == 'album' ) {
             // number of items in album
-            newItem.numberItems=item.cnt;
+            newItem.numberItems = item.cnt;
           }
           else {
             // image size
-            newItem.imageWidth=item.imgWidth;
-            newItem.imageHeight=item.imgHeight;
+            newItem.imageWidth = item.imgWidth;
+            newItem.imageHeight = item.imgHeight;
           }
           
+          // item download URL
           if( item.originalURL != '' ) {
-            // newItem.downloadURL=item.download;
-            newItem.downloadURL=baseURL+JsonConvertCharset(item.originalURL);
+            newItem.downloadURL = baseURL+JsonConvertCharset(item.originalURL);
           }
-          
           
           // retrieve responsive thumbnails urls and sizes
-          var cnl=G.GOM.curNavLevel;
+          var cnl = G.GOM.curNavLevel;      // current navigation level ('L1' or 'LN');
           var l=['xs', 'sm', 'me', 'la', 'xl'];
-          for( var n=0; n<l.length; n++ ) {
+          for( var n = 0; n < l.length; n++ ) {
             newItem.thumbs.url[cnl][l[n]]     = baseURL + JsonConvertCharset(item.t_url[n]);
             newItem.thumbs.width[cnl][l[n]]   = parseInt(item.t_width[n]);
             newItem.thumbs.height[cnl][l[n]]  = parseInt(item.t_height[n]);
           }
          
+          // post-process callback
           if( typeof G.O.fnProcessData == 'function' ) {
             G.O.fnProcessData(newItem, G.O.dataProvider, data);
           }
+          
         }
       });
 
-      G.I[albumIdx].contentIsLoaded=true;   // album's content is ready
-
+      G.I[albumIdx].contentIsLoaded = true;   // album's content is ready
     }    
     
 
