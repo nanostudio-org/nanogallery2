@@ -1,10 +1,33 @@
 nanogallery2 - ChangeLog
 ===========
 
+v1.5.0
+------
+- new: swipe down to close lightbox
+- new: thumbnail image dominant color in stacks
+- new: thumbnail gradient color during image download (see galleryTheme)
+- new: lightbox option 'viewerImageDisplay'
+  Possible values : 'upscale' to upscale images to fullscreen, 'bestImageQuality' for highest quality on high DPI screens like retina
+- new: define multiple thumbnails per item (url and size) - API and markup content source
+- enhanced: lightbox image zoom and swipe
+- removed: open image in Google Photos (broken since changes by Google)
+- fixed: #51 - thumbnail to navigate up not displayed correctly
+- fixed: Flickr incorrect image resolution
+- fixed: thumbnail to navigate up displayed even without parent album
+- fixed: option 'photoset' not a real alias of 'album'
+- fixed: sorting for images/albums defined with HTML markup or javascript
+- fixed: package manager compatibility
+- fixed: incorrect cursor pointer when lightbox disabled
+- fixed: endless loop if image/gallery in location hash does not exit (markup or javascript content)
+- fixed: internal lightbox started although third party lightbox defined
+- misc performance enhancements and bugfixes
+  
+  
 v1.4.1
 ------
 - fixed: incorrect font embedded in nanogallery2.woff.css
-
+  
+  
 v1.4.0
 ------
 - new: display thumbnail's images smoothly when fully downloaded (option 'thumbnailWaitImageLoaded')
