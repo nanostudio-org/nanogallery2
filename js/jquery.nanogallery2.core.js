@@ -26,6 +26,7 @@ v1.5.0 BETA - DO NOT USE
 - new: lightbox option 'viewerImageDisplay'
   Possible values : 'upscale' to upscale images to fullscreen, 'bestImageQuality' for highest quality on high DPI screens like retina
 - new: define multiple thumbnails per item (url and size) - API et markup content source
+- new: swipe down to close lightbox
 - enhanced: lightbox image zoom
 - removed: open image in Google Photos (broken since changes by Google)
 - fixed: #51 - thumbnail to navigate up not displayed correctly
@@ -954,7 +955,7 @@ TODO:
                     break;
                   default:
                     var v=state.v;
-                    if( state.v.substring(0,3) == 'rgb(' || state.v.substring(0,4) == 'rgba(' ) {
+                    if( state.v.substring(0,4) == 'rgb(' || state.v.substring(0,5) == 'rgba(' ) {
                       // to remove values after the dot (not supported by RGB/RGBA)
                       v=tinycolor(state.v).toRgbString();
                     }
@@ -7763,13 +7764,26 @@ TODO:
           if( !ViewerEvents() ) { return; }
 
           if( G.VOM.zoom.isZooming ) {
+            // pan zoomed image
             ViewerImagePanSetPosition(G.VOM.panPosX+ev.deltaX, G.VOM.panPosY+ev.deltaY, G.VOM.$imgC[0], false);
             if( G.VOM.toolbarsDisplayed == true ) {
               G.VOM.toolsHide();
             }
           }
           else {
-            ImageSwipeTranslateX( ev.deltaX );
+            if( ev.deltaY > 50 ) {
+              // pan viewer down
+              ImageSwipeTranslateX( 0 );
+              var dist=Math.min(ev.deltaY, 200);
+              G.VOM.$viewer[0].style[G.CSStransformName] = 'translateY(' + dist + 'px) ';
+              G.VOM.$viewer.css('opacity', 1-dist/200/2);
+            }
+            else {
+              // pan image left/right
+              ImageSwipeTranslateX( ev.deltaX );
+              G.VOM.$viewer[0].style[G.CSStransformName] = 'translateY(0px)';
+              G.VOM.$viewer.css('opacity', 1);
+            }
           }
         });
 
@@ -7780,16 +7794,22 @@ TODO:
             ViewerImagePanSetPosition(G.VOM.panPosX+ev.deltaX, G.VOM.panPosY+ev.deltaY, G.VOM.$imgC[0], true);
           }
           else {
-            // next/previous image
-            if( ev.deltaX > 50 ) {
-              DisplayPreviousImage();
-              return;
+            if( ev.deltaY > 50 ) {
+              // close viewer
+              CloseInternalViewer(G.VOM.currItemIdx);
             }
-            if(  ev.deltaX < -50 ) {
-              DisplayNextImage();
-              return;
+            else {
+              // next/previous image
+              if( ev.deltaX > 50 ) {
+                DisplayPreviousImage();
+                return;
+              }
+              if( ev.deltaX < -50 ) {
+                DisplayNextImage();
+                return;
+              }
+              ImageSwipeTranslateX(0);
             }
-            ImageSwipeTranslateX(0);
           }
         });
         
