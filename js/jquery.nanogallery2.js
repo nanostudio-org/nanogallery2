@@ -1,4 +1,4 @@
-/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2017-09-07 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2017-09-18 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /**!
  * @preserve nanogallery2 - javascript image gallery
  * Homepage: http://nanogallery2.nanostudio.org
@@ -20,52 +20,26 @@
  */
 
 /*
-v1.5.0 BETA - DO NOT USE
-- new: image slider on last thumbnail (see option 'thumbnailLastImgSliderDelay') -> NO
-- new: thumbnail image dominant color in stacks
-- new: thumbnail gradient color during image download (see galleryTheme)
-- new: lightbox option 'viewerImageDisplay'
-  Possible values : 'upscale' to upscale images to fullscreen, 'bestImageQuality' for highest quality on high DPI screens like retina
-- new: define multiple thumbnails per item (url and size) - API et markup content source
-- new: swipe down to close lightbox
-- enhanced: lightbox image zoom
-- removed: open image in Google Photos (broken since changes by Google)
-- fixed: #51 - thumbnail to navigate up not displayed correctly
-- fixed: Flickr incorrect image resolution
-- fixed: thumbnail to navigate up displayed even without parent album
-- fixed: option 'photoset' not a real alias of 'album'
-- fixed: sorting for images/albums defined with HTML markup or javascript
-- fixed: package manager compatibility
-- fixed: incorrect cursor pointer when lightbox disabled
-- fixed: endless loop if image/gallery in location hash does not exit (markup or javascript content)
-- fixed: internal lightbox started although third party lightbox defined
-- misc performance enhancements and bugfixes
+v1.2.0beta - DO NOT USE
+- new: mosaic layout
+- new: value 'fillWidth' for option 'thumbnailAlignment' (also new default value)
+- new: option 'thumbnailBaseGridHeight' for cascading layout
+- enhanced: added keyword 'auto backup' to default value for 'blackList'
+
+Todo:
+- gallery margin left/right
+- revoir image.isLoaded
+- thumbail CROP toujours actif  -> supprimer/ignorer option crop
+- label onBottom -> support for multi-line title and description
+- video support
+- gallery header -> image / navigation / filter
+- API function and callback to load custom JSON
+- option touchAnimation not implemented
+- theme pas vraiment synonyme
+- nanoPhotosProvider2: add header with version number
+- pagination: rectangles/dots/numbers -> check themes dark/light
+
   
-
-TODO:
-- slider on last thumbnail and resize event
-- API: custom sort
-- Thumbnail icon : sous le texte, en bas de l'imagette (1 nouvelle ligne sous le texte)
-- viewer : d�marrer pre-chargement des 2 images en d�call� (plus de bande passante pour la principale)
-- nanophotosprovider: get all pictures from all albums
-- viewer : click outside image to close 
-- viewer : retrieve max zoom factor (3 at this time)
-- font size in viewerColorScheme? change option name -> styleProfil
-- thumbnail tools:
-    - plus de possibilit� de localisation en particulier par rapport au label
-    - rating avec 5 �toiles
-- pan down close lightbox    
-- define responsive thumbnails (2 m�thodes)
-- viewer : double touch -> zoom to remove black borders
-- viewer: loading animation not working
-- transitions plus r�actives
-- slider last image : pb sur images non carr�es
-- slider: pb sur demo page flickr full images
-- delay dans l'affichage des imagettes par fade-in (et affichage par lot)
-- viewer - apparition/disparition des icones
-- imagette : crop incorrect si size non d�fini
-- viewer swipe -> duree en fonction de la distance restante
-
 */ 
  
 
@@ -494,90 +468,6 @@ TODO:
             return this.G.I[NGY2Item.GetIdx(this.G, this.albumID)];
           };
 
-          //--- set one image (url and size)
-          NGY2Item.prototype.imageSet = function( src, w, h ) {
-            this.src = src;
-            this.width = w;
-            this.height = h;
-          };
-          
-          //--- set one thumbnail (url and size) - screenSize and level are optionnal
-          NGY2Item.prototype.thumbSet = function( src, w, h, screenSize, level ) {
-            var lst=['xs','sm','me','la','xl'];
-            if( typeof screenSize === 'undefined' || screenSize == '' || screenSize == null ) {
-              for( var i=0; i< lst.length; i++ ) {
-                if( typeof level === 'undefined' || level == '' ) {
-                  this.thumbs.url.l1[lst[i]]=src;
-                  this.thumbs.height.l1[lst[i]]=h;
-                  this.thumbs.width.l1[lst[i]]=w;
-                  this.thumbs.url.lN[lst[i]]=src;
-                  this.thumbs.height.lN[lst[i]]=h;
-                  this.thumbs.width.lN[lst[i]]=w;
-                }
-                else {
-                  this.thumbs.url[level][lst[i]]=src;
-                  this.thumbs.height[level][lst[i]]=h;
-                  this.thumbs.width[level][lst[i]]=w;
-                }
-              }
-            }
-            else {
-              if( typeof level === 'undefined' || level == '' || level == null ) {
-                this.thumbs.url.l1[screenSize]=src;
-                this.thumbs.height.l1[screenSize]=h;
-                this.thumbs.width.l1[screenSize]=w;
-                this.thumbs.url.lN[screenSize]=src;
-                this.thumbs.height.lN[screenSize]=h;
-                this.thumbs.width.lN[screenSize]=w;
-              }
-              else {
-                this.thumbs.url[level][screenSize]=src;
-                this.thumbs.height[level][screenSize]=h;
-                this.thumbs.width[level][screenSize]=w;
-              }
-            }
-          
-            var lst=['xs','sm','me','la','xl'];
-            for( var i=0; i< lst.length; i++ ) {
-              this.thumbs.height.l1[lst[i]]=h;
-            }
-            for( var i=0; i< lst.length; i++ ) {
-              if( this.G.tn.settings.height.lN[lst[i]] == this.G.tn.settings.getH() && this.G.tn.settings.width.l1[lst[i]] == this.G.tn.settings.getW() ) {
-                this.thumbs.height.lN[lst[i]]=h;
-              }
-            }
-          };
-
-          //--- set thumbnail image real height for current level/resolution, and for all others level/resolutions having the same settings
-          NGY2Item.prototype.thumbSetImgHeight = function( h ) {              
-            var lst=['xs','sm','me','la','xl'];
-            for( var i=0; i< lst.length; i++ ) {
-              if( this.G.tn.settings.height.l1[lst[i]] == this.G.tn.settings.getH() && this.G.tn.settings.width.l1[lst[i]] == this.G.tn.settings.getW() ) {
-                this.thumbs.height.l1[lst[i]]=h;
-              }
-            }
-            for( var i=0; i< lst.length; i++ ) {
-              if( this.G.tn.settings.height.lN[lst[i]] == this.G.tn.settings.getH() && this.G.tn.settings.width.l1[lst[i]] == this.G.tn.settings.getW() ) {
-                this.thumbs.height.lN[lst[i]]=h;
-              }
-            }
-          };
-
-          //--- set thumbnail image real width for current level/resolution, and for all others level/resolutions having the same settings
-          NGY2Item.prototype.thumbSetImgWidth = function( w ) {              
-            var lst=['xs','sm','me','la','xl'];
-            for( var i=0; i< lst.length; i++ ) {
-              if( this.G.tn.settings.height.l1[lst[i]] == this.G.tn.settings.getH() && this.G.tn.settings.width.l1[lst[i]] == this.G.tn.settings.getW() ) {
-                this.thumbs.width.l1[lst[i]]=w;
-              }
-            }
-            for( var i=0; i< lst.length; i++ ) {
-              if( this.G.tn.settings.height.lN[lst[i]] == this.G.tn.settings.getH() && this.G.tn.settings.width.l1[lst[i]] == this.G.tn.settings.getW() ) {
-                this.thumbs.width.lN[lst[i]]=w;
-              }
-            }
-          };
-        
           //--- Returns Thumbnail image (depending of the screen resolution)
           NGY2Item.prototype.thumbImg = function () {   
             var tnImg = { src: '', width: 0, height: 0 };
@@ -711,19 +601,19 @@ TODO:
           NGY2Item.prototype.ThumbnailImageReveal = function () {
 
             if( this.thumbnailImgRevealed == false ) {
-              this.thumbnailImgRevealed=true;
+              this.thumbnailImgRevealed = true;
               var tweenable = new NGTweenable();
               tweenable.tween({
-                from:         { o: 0 },
-                to:           { o: 1 },
+                from:         { opacity: 0 },
+                to:           { opacity: 1 },
                 attachment:   { item: this },
-                delay:        0,
-                duration:     500,
+                delay:        30,
+                duration:     400,
                 easing:       'easeOutQuart',
                 step:         function (state, att) {
                   var $e=att.item.$getElt('.nGY2TnImg');
                   if( $e != null ) {
-                    $e.css('opacity', state.o);
+                    $e.css( state );
                   }
                 }
               });
@@ -791,16 +681,21 @@ TODO:
             }
             else {
               // thumbnail sub element
-              if( obj.$elt[0] != undefined ) {
-                // units must be given with
-                var v = 'translateX('+obj.translateX+') translateY('+obj.translateY+') translateZ('+obj.translateY+') scale('+obj.scale+') translate('+obj.translate+')';
-                if( !(this.G.IE <= 9) && !this.G.isGingerbread ) {
-                  v += ' rotateX('+obj.rotateX+') rotateY('+obj.rotateY+') rotateZ('+obj.rotateZ+') rotate('+obj.rotate+')';
+              if( obj.$elt != null ) {
+                for( var n = 0; n < obj.$elt.length; n++ ) {
+                  if( obj.$elt[n] != undefined ) {
+                    obj.$elt[n].style.WebkitFilter = v;
+                    // units must be given with
+                    var v = 'translateX('+obj.translateX+') translateY('+obj.translateY+') translateZ('+obj.translateY+') scale('+obj.scale+') translate('+obj.translate+')';
+                    if( !(this.G.IE <= 9) && !this.G.isGingerbread ) {
+                      v += ' rotateX('+obj.rotateX+') rotateY('+obj.rotateY+') rotateZ('+obj.rotateZ+') rotate('+obj.rotate+')';
+                    }
+                    else {
+                      v += ' rotate('+obj.rotateZ+')';
+                    }
+                    obj.$elt[n].style[this.G.CSStransformName] = v;
+                  }
                 }
-                else {
-                  v += ' rotate('+obj.rotateZ+')';
-                }
-                obj.$elt[0].style[this.G.CSStransformName] = v;
               }
             }
           };
@@ -1049,7 +944,7 @@ TODO:
     userID :                      '',
     photoset :                    '',
     album:                        '',
-    blackList :                   'scrapbook|profil',
+    blackList :                   'scrapbook|profil|auto backup',
     whiteList :                   '',
     albumList :                   '',
     albumList2 :                  null,
@@ -1104,11 +999,13 @@ TODO:
     thumbnailL1Crop :             null,
     thumbnailCropScaleFactor :    1.5,
     thumbnailLevelUp :            false,
-    thumbnailAlignment :          'center',
+    thumbnailAlignment :          'fillWidth',
     thumbnailWidth :              300,
     thumbnailL1Width :            null,
     thumbnailHeight :             200,
     thumbnailL1Height :           null,
+    thumbnailBaseGridHeight :     0,
+    thumbnailL1BaseGridHeight :   null,
     thumbnailGutterWidth :        2,
     thumbnailL1GutterWidth :      null,
     thumbnailGutterHeight :       2,
@@ -1600,7 +1497,7 @@ TODO:
       $('#ngycs_' + G.baseEltID).remove()
       
       G.GOM.items = [];
-      var itm=NGY2Item.New( G, G.i18nTranslations.breadcrumbHome, '', '0', '-1', 'album' );
+      NGY2Item.New( G, G.i18nTranslations.breadcrumbHome, '', '0', '-1', 'album' );
       G.GOM.navigationBar.$newContent = null;
       G.$E.base.empty();
       G.$E.base.removeData();
@@ -1697,17 +1594,27 @@ TODO:
       support :                 { rows: false },
       prerequisite :            { imageSize: false },
       SetEngine: function() {
-        if( G.layout.internal ) {
-          if( G.tn.settings.getW() == 'auto' || G.tn.settings.getW() == '' ) {
+
+      if( G.layout.internal ) {
+          if( G.tn.settings.width[G.GOM.curNavLevel][G.GOM.curWidth] == 'auto' || G.tn.settings.width[G.GOM.curNavLevel][G.GOM.curWidth] == '' ) {
+            // do not use getH() / getW() here!
             G.layout.engine='JUSTIFIED';
             G.layout.support.rows=true;
             G.layout.prerequisite.imageSize=true;
             return;
           }
-          if( G.tn.settings.getH() == 'auto' || G.tn.settings.getH() == '' ) {
+          if( G.tn.settings.height[G.GOM.curNavLevel][G.GOM.curWidth] == 'auto' || G.tn.settings.height[G.GOM.curNavLevel][G.GOM.curWidth] == '' ) {
+            // do not use getH() / getW() here!
             G.layout.engine='CASCADING';
             G.layout.support.rows=false;
             G.layout.prerequisite.imageSize=true;
+            return;
+          }
+
+          if( G.tn.settings.getMosaic() != null ) {
+            G.layout.engine='MOSAIC';
+            G.layout.support.rows=true;
+            G.layout.prerequisite.imageSize=false;
             return;
           }
           
@@ -1769,8 +1676,8 @@ TODO:
     G.tn = {
       // levell specific options
       opt:  {
-        l1: { crop: true, stacks: 0, stacksTranslateX: 0, stacksTranslateY: 0, stacksTranslateZ: 0, stacksRotateX: 0, stacksRotateY: 0, stacksRotateZ: 0, stacksScale: 0, gutterHeight: 0, gutterWidth: 0, displayTransition: 'FADEIN', displayTransitionStartVal: 0, displayTransitionEasing: 'easeOutQuart', displayTransitionDuration: 240, displayInterval: 15 },
-        lN: { crop: true, stacks: 0, stacksTranslateX: 0, stacksTranslateY: 0, stacksTranslateZ: 0, stacksRotateX: 0, stacksRotateY: 0, stacksRotateZ: 0, stacksScale: 0, gutterHeight: 0, gutterWidth: 0, displayTransition: 'FADEIN', displayTransitionStartVal: 0, displayTransitionEasing: 'easeOutQuart', displayTransitionDuration: 240, displayInterval: 15 },
+        l1: { crop: true, stacks: 0, stacksTranslateX: 0, stacksTranslateY: 0, stacksTranslateZ: 0, stacksRotateX: 0, stacksRotateY: 0, stacksRotateZ: 0, stacksScale: 0, gutterHeight: 0, gutterWidth: 0, baseGridHeight: 0, displayTransition: 'FADEIN', displayTransitionStartVal: 0, displayTransitionEasing: 'easeOutQuart', displayTransitionDuration: 240, displayInterval: 15 },
+        lN: { crop: true, stacks: 0, stacksTranslateX: 0, stacksTranslateY: 0, stacksTranslateZ: 0, stacksRotateX: 0, stacksRotateY: 0, stacksRotateZ: 0, stacksScale: 0, gutterHeight: 0, gutterWidth: 0, baseGridHeight: 0, displayTransition: 'FADEIN', displayTransitionStartVal: 0, displayTransitionEasing: 'easeOutQuart', displayTransitionDuration: 240, displayInterval: 15 },
         Get: function(opt) {
           return G.tn.opt[G.GOM.curNavLevel][opt];
         }
@@ -1785,7 +1692,7 @@ TODO:
         }
       },
       defaultSize: {                  // default thumbnail size
-                                      // annotation height is not included
+                                      // label height is not included
         width: {  l1 : { xs:0, sm:0, me:0, la:0, xl:0 }, lN : { xs:0, sm:0, me:0, la:0, xl:0 } },
         height: { l1 : { xs:0, sm:0, me:0, la:0, xl:0 }, lN : { xs:0, sm:0, me:0, la:0, xl:0 } },
         getWidth: function() {
@@ -1806,11 +1713,45 @@ TODO:
                   lN : { xs:0, sm:0, me:0, la:0, xl:0, xsc:'u', smc:'u', mec:'u', lac:'u', xlc:'u' } },
         height: { l1 : { xs:0, sm:0, me:0, la:0, xl:0, xsc:'u', smc:'u', mec:'u', lac:'u', xlc:'u' }, 
                   lN : { xs:0, sm:0, me:0, la:0, xl:0, xsc:'u', smc:'u', mec:'u', lac:'u', xlc:'u' } },
-        getH: function() {
-          return G.tn.settings.height[G.GOM.curNavLevel][G.GOM.curWidth];
+        getH: function(l, w) {
+          var cl = (l == undefined ? G.GOM.curNavLevel : l);
+          var cw = (w == undefined ? G.GOM.curWidth : w);
+          if( G.layout.engine == 'MOSAIC' ) {
+            return G.tn.settings.height[cl][cw] * G.tn.settings.mosaic[cl+'Factor']['h'][cw];
+          }
+          else {
+            return G.tn.settings.height[cl][cw];
+          }
         },
-        getW: function() {
-          return G.tn.settings.width[G.GOM.curNavLevel][G.GOM.curWidth];
+        getW: function(l, w) {
+          var cl = (l == undefined ? G.GOM.curNavLevel : l);
+          var cw = (w == undefined ? G.GOM.curWidth : w);
+          if( G.layout.engine == 'MOSAIC' ) {
+            return G.tn.settings.width[cl][cw] * G.tn.settings.mosaic[cl+'Factor']['w'][cw];
+          }
+          else {
+            return G.tn.settings.width[cl][cw];
+            // return G.tn.settings.width[G.GOM.curNavLevel][G.GOM.curWidth];
+          }
+        },
+        mosaic: { l1 : { xs: null, sm: null, me: null, la: null, xl: null },
+                  lN : { xs: null, sm: null, me: null, la: null, xl: null },
+                  l1Factor : { h :{ xs: 1, sm: 1, me: 1, la: 1, xl: 1 }, w :{ xs: 1, sm: 1, me: 1, la: 1, xl: 1 }},
+                  lNFactor : { h :{ xs: 1, sm: 1, me: 1, la: 1, xl: 1 }, w :{ xs: 1, sm: 1, me: 1, la: 1, xl: 1 }}
+                  },
+        getMosaic: function() {
+          return G.tn.settings.mosaic[G.GOM.curNavLevel][G.GOM.curWidth];
+        },
+        mosaicCalcFactor: function(l, w) {
+            // retrieve max size multiplicator
+            var maxW=1;
+            var maxH=1;
+            for( var n=0; n< G.tn.settings.mosaic[l][w].length; n++ ) {
+              maxW=Math.max(maxW, G.tn.settings.mosaic[l][w][n]['w']);
+              maxH=Math.max(maxH, G.tn.settings.mosaic[l][w][n]['h']);
+            }
+            G.tn.settings.mosaic[l+'Factor']['h'][w]=maxH;
+            G.tn.settings.mosaic[l+'Factor']['w'][w]=maxW;
         }
       },
       // thumbnail hover effects
@@ -1850,22 +1791,18 @@ TODO:
       },
       style: {
         // inline CSS
-        l1 : { annotation: '', label: '', title: '', desc: '' },
-        lN : { annotation: '', label: '', title: '', desc: '' },
+        l1 : { label: '', title: '', desc: '' },
+        lN : { label: '', title: '', desc: '' },
         getTitle : function() {
           return ('style="' + G.tn.style[G.GOM.curNavLevel].title + '"');
         },
         getDesc : function() {
           return ('style="' + G.tn.style[G.GOM.curNavLevel].desc + '"');
         },
-        getAnnotation: function() {
-          var s='style="' + G.tn.style[G.GOM.curNavLevel].annotation;
+        getLabel: function() {
+          var s='style="'+ G.tn.style[G.GOM.curNavLevel].label;
           s+= (G.O.RTL ? '"direction:RTL;"' :'');
           s+='"';
-          return s;
-        },
-        getLabel: function() {
-          var s='style="'+ G.tn.style[G.GOM.curNavLevel].label + '"';
           return s;
         }
       }
@@ -2243,7 +2180,7 @@ TODO:
                 G.O.album=albumToDisplay;
               }
             }
-            var nItm=NGY2Item.New( G, '', '', albumToDisplay, '-1', 'album' );
+            NGY2Item.New( G, '', '', albumToDisplay, '-1', 'album' );
             DisplayAlbum('-1', albumToDisplay);
           }
           return;
@@ -2252,7 +2189,7 @@ TODO:
       
       // use full content
       // add base album
-      var itm=NGY2Item.New( G, G.i18nTranslations.breadcrumbHome, '', '0', '-1', 'album' );
+      NGY2Item.New( G, G.i18nTranslations.breadcrumbHome, '', '0', '-1', 'album' );
 
 
       processStartOptions();
@@ -2318,7 +2255,6 @@ TODO:
 
     /** @function DisplayAlbum */
     function DisplayAlbum( imageID, albumID ) {
-
       // close viewer if already displayed
       if( G.VOM.viewerDisplayed ) {
         CloseInternalViewer(null);
@@ -2332,6 +2268,7 @@ TODO:
       else {
         G.GOM.curNavLevel='lN';
       }
+      G.layout.SetEngine();
       G.galleryResizeEventEnabled=false;
 
       if( albumIdx == -1 ) {
@@ -2552,6 +2489,7 @@ TODO:
     // Display pagination
     function ManagePagination( albumIdx ) {
 
+      G.$E.conTnBottom.css('opacity', 0);
       G.$E.conTnBottom.children().remove();
 
       if( G.GOM.items.length == 0 ) { return; }   // no thumbnail to display
@@ -2628,7 +2566,7 @@ TODO:
       }
 
       // render pagination items
-      for(var i=firstPage; i < lastPage; i++ ) {
+      for(var i = firstPage; i < lastPage; i++ ) {
         var c='';
         var p='';
 
@@ -2650,7 +2588,7 @@ TODO:
 
         var elt$=jQuery('<div class="'+c+'">'+p+'</div>').appendTo(G.$E.conTnBottom);
         elt$.data('pageNumber', i );
-        elt$.click(function(e) {
+        elt$.click( function(e) {
           G.GOM.pagination.currentPage=jQuery(this).data('pageNumber');
           TriggerCustomEvent('pageChanged');
           GalleryDisplayPart1( true );
@@ -2662,10 +2600,12 @@ TODO:
       // display "next"
       if( G.O.galleryPaginationMode == 'NUMBERS' && (G.GOM.pagination.currentPage+1) < nbPages ) {
         var $eltNext=jQuery('<div class="nGY2PaginationNext">'+G.O.icons.paginationNext+'</div>').appendTo(G.$E.conTnBottom);
-        $eltNext.click(function(e) {
+        $eltNext.click( function(e) {
           paginationNextPage();
         });
       }
+
+      G.$E.conTnBottom.css('opacity', 1);
 
     }
     function isOdd(num) { return (num % 2) == 1;}
@@ -2803,7 +2743,6 @@ TODO:
     
     // RENDER THE GALLERY
     function GalleryRender( albumIdx ) {
-
       TriggerCustomEvent('galleryRenderStart');
       
       clearTimeout(G.GOM.lastTn.timerID);
@@ -2851,7 +2790,7 @@ TODO:
         tweenable.tween({
           from:         { 'opacity': 1 },
           to:           { 'opacity': 0 },
-          duration:     200,
+          duration:     300,
           easing:       'easeInQuart',
           attachment:   { h: hideNavigationBar },
           step:         function (state, att) {
@@ -2891,12 +2830,12 @@ TODO:
         G.$E.conNavigationBar.css({ 'opacity': 0, 'display': 'block' });
         var tweenable = new NGTweenable();
         tweenable.tween({
-          from:     { o: 0 },
-          to:       { o: 1 },
+          from:     { opacity: 0 },
+          to:       { opacity: 1 },
           duration: 200,
           easing:   'easeInQuart',
           step:     function (state) {
-            G.$E.conNavigationBar.css({ 'opacity': state.o });
+            G.$E.conNavigationBar.css( state );
           },
           finish:   function (state) {
             G.$E.conNavigationBar.css({ 'opacity': 1 });
@@ -2925,23 +2864,23 @@ TODO:
       var l=G.I.length;
       for( var i=0; i < l ; i++ ) {
         // reset each item
-        var item=G.I[i];
-        item.hovered=false;
-        item.$elt=null;
-        item.$Elts=[];
-        item.eltTransform=[];
-        item.eltFilter=[];
-        item.width=0;
-        item.height=0;
-        item.left=0;
-        item.top=0;
-        item.resizedContentWidth=0;
-        item.resizedContentHeight=0;
-        item.thumbnailImgRevealed=false;
+        var item = G.I[i];
+        item.hovered = false;
+        item.$elt = null;
+        item.$Elts = [];
+        item.eltTransform = [];
+        item.eltFilter = [];
+        item.width = 0;
+        item.height = 0;
+        item.left = 0;
+        item.top = 0;
+        item.resizedContentWidth = 0;
+        item.resizedContentHeight = 0;
+        item.thumbnailImgRevealed = false;
       }
 
       if( G.CSStransformName == null ) {
-        G.$E.conTn.css('left', '0px' );
+        G.$E.conTn.css('left', '0px');
       }
       else {
         // G.$E.conTn.css( G.CSStransformName, 'translateX(0px)');
@@ -2960,13 +2899,11 @@ TODO:
       G.$E.conTnParent.css( 'opacity', 1);
 
       G.GOM.items = [];
-      G.GOM.displayedMoreSteps=0;
-      // retrieve annotation height      
-      var annotationHeight = 0;
+      G.GOM.displayedMoreSteps = 0;
+      // retrieve label height      
       if( G.O.thumbnailLabel.get('position') == 'onBottom' ) {
         // retrieve height each time because size can change depending on thumbnail's settings
-        annotationHeight=ThumbnailGetAnnotationHeight();
-        G.tn.labelHeight[G.GOM.curNavLevel]=annotationHeight;
+        G.tn.labelHeight[G.GOM.curNavLevel]=ThumbnailGetLabelHeight();
       }
       else {
         G.tn.labelHeight[G.GOM.curNavLevel]=0;
@@ -3080,37 +3017,6 @@ TODO:
               item.thumbs.width[G.GOM.curNavLevel][G.GOM.curWidth]=curTn.imageWidth;
               item.thumbs.height[G.GOM.curNavLevel][G.GOM.curWidth]=curTn.imageHeight;
  
-              if( G.layout.engine == 'GRID' && G.tn.opt.Get('crop') === true && item.$getElt('.nGY2GThumbnailImg') !== null ) {
-                // special case (GRID + cropped thumbnails) -> just reposition the image in the thumbnail
-                if( item.thumbImg().height > item.thumbImg().width ) {
-                  // portrait
-                  item.$getElt('.nGY2GThumbnailImg').css({ width: G.tn.settings.getW()+'px' });
-                }
-                else {
-                  // paysage
-
-                  // step 1: adjust height
-                  var r2=G.tn.settings.getH()/item.thumbImg().height;
-                  
-                  var newH= G.tn.settings.getH();
-                  var newW= item.thumbImg().width*r2;
-                  
-                  // step 2: check if width needs to be adjusted
-                  if( newW >= G.tn.settings.getW() ) {
-                    // no adjustement
-                    var d=(item.thumbImg().width*r2-G.tn.settings.getW()) / 2;
-                    item.$getElt('.nGY2GThumbnailImg').css({ height: G.tn.settings.getH()+'px',left: d+'px' });
-                  }
-                  else {
-                    // yes, adjust width
-                    // after scaling to adjust the height, the width is too narrow => upscale again to fit width
-                    var rW=G.tn.settings.getW()/item.thumbImg().width;
-                    var w=item.thumbImg().width*rW;
-                    item.$getElt('.nGY2GThumbnailImg').css({ width: w+'px' });
-                  }
-                }
-              }
-
               // resize the gallery
               G.GalleryResizeThrottled();
               
@@ -3163,6 +3069,9 @@ TODO:
         case 'CASCADING':
           r = GallerySetLayoutHeightAuto();
           break;
+        case 'MOSAIC':
+          r = GallerySetLayoutMosaic();
+          break;
         case 'GRID':
         default:
           r = GallerySetLayoutGrid();
@@ -3181,84 +3090,107 @@ TODO:
     
     //----- CASCADING LAYOUT
     function GallerySetLayoutHeightAuto() {
-      var curCol =    0,
-      areaWidth=      G.GOM.cache.areaWidth,
-      curRow =        0,
-      colHeight =     [],
-      maxCol =        NbThumbnailsPerRow(areaWidth),
-      gutterWidth =   0,
-      gutterHeight =  G.tn.opt.Get('gutterHeight');
-
-      var tnWidth =   G.tn.defaultSize.getOuterWidth();
-      var nbTn =      G.GOM.items.length;
+      var curCol =      0,
+      areaWidth=        G.GOM.cache.areaWidth,
+      curRow =          0,
+      colHeight =       [],
+      maxCol =          NbThumbnailsPerRow(areaWidth),
+      gutterWidth =     0,
+      gutterHeight =    G.tn.opt.Get('gutterHeight');
+      var w =           0;
+      var scaleFactor = 1;
+      var tnWidth =     G.tn.defaultSize.getOuterWidth();
+      var nbTn =        G.GOM.items.length;
+      var curPosY = 0;
 
       if( G.O.thumbnailAlignment == 'justified' ) {
-        maxCol=Math.min(maxCol,nbTn);
-        gutterWidth=( maxCol == 1 ? 0 : (areaWidth-(maxCol*tnWidth))/(maxCol-1) );
+        maxCol = Math.min(maxCol, nbTn);
+        gutterWidth = ( maxCol == 1 ? 0 : (areaWidth - (maxCol * tnWidth) ) / (maxCol - 1) );
       }
       else {
         gutterWidth=G.tn.opt.Get('gutterWidth');
       }
 
-      curRow=0;
-      curCol=0;
 
-      var borderWidth=G.tn.borderWidth*2;
-      var borderHeight=G.tn.borderHeight*2;
+      var borderWidth = G.tn.borderWidth * 2;
+      var borderHeight = G.tn.borderHeight * 2;
 
       G.GOM.lastFullRow=-1;   // feature disabled
 
-      // loop to position the thumbnails
-      for( var i=0; i < nbTn ; i++ ) {
-        var curTn=G.GOM.items[i];
-        if( curTn.imageHeight > 0 && curTn.imageWidth > 0 ) {
-          var curPosX=0,
-          curPosY=0;
-          var imageRatio=curTn.imageHeight/curTn.imageWidth;
-          curTn.resizedContentWidth=tnWidth-borderWidth;
-          curTn.resizedContentHeight=curTn.resizedContentWidth*imageRatio;
+      // Retrieve the real used width of the area (the evaluation is based on the content of the first line)
+      if( G.O.thumbnailAlignment == 'fillWidth' ) {
+        // fillWidth --> evaluate scale factor and number of columns
+        var totalGutterWidth = (maxCol-1) * gutterWidth;
+        scaleFactor = (areaWidth - totalGutterWidth) / (maxCol*tnWidth);
+        if( scaleFactor > 1 ) {
+          maxCol++; // add one column and re-evaluate the scale factor
+        }
+        totalGutterWidth = (maxCol-1) * gutterWidth;
+        scaleFactor = Math.min( (areaWidth - totalGutterWidth) / (maxCol*tnWidth), 1);   // no upscale
+      }
 
-          curTn.height=curTn.resizedContentHeight+borderHeight+G.tn.labelHeight.get();
-          curTn.width=tnWidth;
-          curTn.row=0;
+      
+      tnWidth = tnWidth * scaleFactor;
+      var contentWidth = tnWidth - borderWidth;
+
+      // loop to position the thumbnails, and set their size
+      var baseHeight = G.tn.opt.Get('baseGridHeight') * scaleFactor;
+      for( var i = 0; i < nbTn ; i++ ) {
+        var curTn = G.GOM.items[i];
+        if( curTn.imageHeight > 0 && curTn.imageWidth > 0 ) {
+          var curPosX = 0,
+          curPosY = 0;
+          var imageRatio = curTn.imageHeight / curTn.imageWidth;
+          // curTn.resizedContentWidth = tnWidth - borderWidth;
+          curTn.resizedContentWidth = contentWidth;
+          curTn.resizedContentHeight = curTn.resizedContentWidth * imageRatio;
+          if( baseHeight > 0 ) {
+            // grid based vertical position
+            var t= Math.max( Math.trunc(curTn.resizedContentHeight/baseHeight), 1) ;
+            curTn.resizedContentHeight = baseHeight * t + ((t-1)*(borderHeight+gutterHeight));
+          }
+          
+          curTn.height = curTn.resizedContentHeight + borderHeight + G.tn.labelHeight.get();
+          curTn.width = tnWidth;
+          curTn.row = 0;
           
           if( curRow == 0 ) {
             // first row
-            curPosX=curCol*(tnWidth+gutterWidth);
-            colHeight[curCol]=curTn.height+gutterHeight;
+            curPosX = curCol * (tnWidth + gutterWidth);
+            colHeight[curCol] = curTn.height + gutterHeight;
             
             curCol++;
             if( curCol >= maxCol ) {
-              curCol=0;
+              curCol = 0;
               curRow++;
             }
           }
           else {
             var c=0,
             minColHeight=colHeight[0];
-            for( var j=1; j<maxCol; j++) {
-              if( (colHeight[j]+5) < minColHeight ) {     // +5 --> threshold
-                minColHeight=colHeight[j];
-                c=j;
+            for( var j = 1; j < maxCol; j++) {
+              if( (colHeight[j] + 5) < minColHeight ) {     // +5 --> threshold
+                minColHeight = colHeight[j];
+                c = j;
                 //break;
               }
             }
-            curPosY=colHeight[c];
-            curPosX=c*(tnWidth+gutterWidth);
-            colHeight[c]=curPosY+curTn.height+gutterHeight;
+            curPosY = colHeight[c];
+            curPosX = c * (tnWidth + gutterWidth);
+            colHeight[c] = curPosY + curTn.height + gutterHeight;
           }
 
-          var x=curPosX;
+          var x = curPosX;
           if( G.O.RTL) {
-            x=w-curPosX-tnWidth;
+            x= w - curPosX - tnWidth;
           }
 
-          curTn.left=x;
-          curTn.top=curPosY;
+          curTn.left = x;
+          curTn.top = curPosY;
         }
       }
 
-      G.GOM.displayArea.width=maxCol*(tnWidth+gutterWidth)-gutterWidth;
+      G.GOM.displayArea.width= maxCol * (tnWidth + gutterWidth) - gutterWidth;
       return true;
     }
     
@@ -3461,7 +3393,87 @@ TODO:
     }    
     
 
-    //----- GRID LAYOUT
+    //----- MOSAIC LAYOUT
+    // Grid using a user defined pattern layout
+    // With this layout, a pattern definition is handeld a row
+    function GallerySetLayoutMosaic() {
+      var areaWidth =     G.GOM.cache.areaWidth;
+      var gutterHeight =  G.tn.opt.Get('gutterHeight');
+      var gutterWidth =   G.tn.opt.Get('gutterWidth');
+      var borderWidth =   G.tn.borderWidth * 2;
+      var borderHeight =  G.tn.borderHeight * 2;
+
+      var nbTn = G.GOM.items.length;
+      var row=0;
+      var h=0;
+      var n=0;
+      
+      
+      // first loop: evaluate the gallery width based on the first row
+      var nbCols = 0;
+      var maxW = 0;
+      var mosaicPattern = G.tn.settings.getMosaic();
+      for( var i = 0; i < nbTn ; i++ ) {
+        var curPatternElt = mosaicPattern[n];
+
+        var cLeft = (curPatternElt.c-1) * G.tn.defaultSize.getOuterWidth() + (curPatternElt.c-1) * gutterWidth;
+        var cWidth = curPatternElt.w * G.tn.defaultSize.getOuterWidth() + (curPatternElt.w-1) * gutterWidth;
+        
+        maxW=Math.max(maxW, cLeft + cWidth );
+        
+        nbCols=Math.max(nbCols, (curPatternElt.c-1) + curPatternElt.w );
+
+        n++;
+        if( n >= mosaicPattern.length ) {
+          // end of pattern
+          break;
+        }
+      }
+      var totalGutterWidth = (nbCols-1) * gutterWidth;
+      var scaleFactor = Math.min( (areaWidth - totalGutterWidth ) / ( maxW - totalGutterWidth ), 1);
+      
+      // second loop: position all the thumbnails based on the layout pattern
+      row = 0;
+      n = 0;
+      var mosaicPattern = G.tn.settings.getMosaic();
+      for( var i = 0; i < nbTn ; i++ ) {
+        var curTn=G.GOM.items[i];
+        
+        var curPatternElt = mosaicPattern[n];
+        
+        curTn.top = (curPatternElt.r-1) * G.tn.defaultSize.getOuterHeight()*scaleFactor + (curPatternElt.r-1) * gutterHeight + row * h + (G.tn.labelHeight.get()*(curPatternElt.r-1)) ;
+        if( row > 0 ) {
+          curTn.top += gutterHeight;
+        }
+        
+        curTn.left = (curPatternElt.c-1) * G.tn.defaultSize.getOuterWidth()*scaleFactor + (curPatternElt.c-1) * gutterWidth;
+
+        curTn.height = curPatternElt.h * G.tn.defaultSize.getOuterHeight()*scaleFactor + (curPatternElt.h-1) * gutterHeight + (G.tn.labelHeight.get() * curPatternElt.h);
+        curTn.resizedContentHeight = curTn.height -G.tn.labelHeight.get() - borderHeight;
+
+        curTn.width = curPatternElt.w * G.tn.defaultSize.getOuterWidth()*scaleFactor + (curPatternElt.w-1) * gutterWidth;
+        curTn.resizedContentWidth = curTn.width - borderWidth ;
+
+        curTn.row = row;
+        if( row == 0 ) {
+          h=Math.max(h, curTn.top + curTn.height);
+        }
+
+        n++;
+        if( n >= mosaicPattern.length ) {
+          // end pattern -> new line
+          n = 0;
+          row++;
+        }
+      }
+      
+      G.GOM.displayArea.width = (maxW - totalGutterWidth)*scaleFactor + totalGutterWidth;
+      return true;
+    }
+    
+    
+    
+    // --- GRID LAYOUT
     function GallerySetLayoutGrid() {
       var curPosX=      0,
       curPosY=          0,   
@@ -3473,78 +3485,85 @@ TODO:
       cols=             [],
       curCol=           0,
       newAreaWidth =    areaWidth,
-      tnWidth=          G.tn.defaultSize.getOuterWidth(),
-      tnHeight=         G.tn.defaultSize.getOuterHeight()+G.tn.labelHeight.get();
+      tnWidth=          G.tn.defaultSize.getOuterWidth();
+      var scaleFactor = 1;
       var nbTn=         G.GOM.items.length;
+      var borderWidth = G.tn.borderWidth * 2;
+      var borderHeight =G.tn.borderHeight * 2;
       
       // retrieve gutter width
       if( G.O.thumbnailAlignment == 'justified' ) {
-        maxCol=Math.min(maxCol,nbTn);
-        gutterWidth=(maxCol==1?0:(areaWidth-(maxCol*tnWidth))/(maxCol-1));
+        maxCol = Math.min( maxCol, nbTn);
+        gutterWidth = (maxCol==1 ? 0 : (areaWidth-(maxCol*tnWidth))/(maxCol-1));
       }
       else {
-        gutterWidth=G.tn.opt.Get('gutterWidth');
+        gutterWidth = G.tn.opt.Get('gutterWidth');
       }
 
-      if( G.O.RTL ) {
-        // first loop to retrieve the real used width of the area
-        for( var i= 0 ; i < nbTn ; i++ ) {
-          if( curPosY != 0 ) {
-            break;
-          }
-          else {
-            curPosX=curCol*(tnWidth+gutterWidth);
-            cols[curCol]=curPosX;
-            w=curPosX;
-          }
-          
-          curCol++;
-          if( curCol >= maxCol ){
-            curCol=0;
-            curPosY+=tnHeight+gutterHeight;
-          }
+      // first loop to retrieve the real used width of the area (the evaluation is based on the content of the first line)
+      // Retrieve the real used width of the area (the evaluation is based on the content of the first line)
+      if( G.O.RTL || G.O.thumbnailAlignment == 'fillWidth' ) {
+        // scaled --> evaluate scale factor and number of columns
+        var totalGutterWidth = (maxCol-1) * gutterWidth;
+        scaleFactor = (areaWidth - totalGutterWidth) / (maxCol*tnWidth);
+        if( scaleFactor > 1 ) {
+          maxCol++; // add one column and re-evaluate the scale factor
         }
-        newAreaWidth=w+tnWidth;
-        curPosY=0;
-        curCol=0;
+        totalGutterWidth = (maxCol-1) * gutterWidth;
+        scaleFactor = Math.min( (areaWidth - totalGutterWidth) / (maxCol*tnWidth), 1);   // no upscale
+        newAreaWidth = (maxCol*tnWidth) + totalGutterWidth;
       }
+
       
-      G.GOM.lastFullRow=0;    // display at leat 1 row (even if not full)
-      var lastPosY=0;
-      var row=0;
-      for( var i=0; i < nbTn ; i++ ) {
+      G.GOM.lastFullRow = 0 ;    // display at leat 1 row (even if not full)
+      var lastPosY = 0;
+      var row = 0;
+      
+      tnWidth = tnWidth * scaleFactor;
+      var contentWidth = tnWidth - borderWidth;
+      var tnHeight = G.tn.defaultSize.getOuterHeight() * scaleFactor + G.tn.labelHeight.get();
+      var contentHeight = G.tn.defaultSize.getOuterHeight() * scaleFactor - borderHeight;
+      
+      // loop to position and to set size of all thumbnails
+      for( var i = 0; i < nbTn ; i++ ) {
         if( curPosY == 0 ) {
-          curPosX=curCol*(tnWidth+gutterWidth)
-          cols[curCol]=curPosX;
-          w=curPosX + tnWidth;
+          curPosX = curCol * (tnWidth + gutterWidth)
+          cols[curCol] = curPosX;
+          w = curPosX + tnWidth;
         }
         else {
-          curPosX=cols[curCol];
+          curPosX = cols[curCol];
         }
 
-        var x=curPosX;
+        var x = curPosX;
         if( G.O.RTL ) {
-          x=parseInt(newAreaWidth)-curPosX-tnWidth;
+          x = parseInt(newAreaWidth) - curPosX - tnWidth;
         }
         
         // MANDATORY : set thumbnail position AND size
         var curTn=G.GOM.items[i];
-        curTn.top=curPosY;
-        curTn.left=x;
-        curTn.height=tnHeight;
-        curTn.width=tnWidth;
-        curTn.row=row;
-        lastPosY=curPosY;
+        curTn.top = curPosY;
+        curTn.left = x;
+        curTn.height = tnHeight;
+        curTn.width = tnWidth;
+        // image size
+        if( G.O.thumbnailAlignment == 'fillWidth' ) {
+          curTn.resizedContentWidth = contentWidth;
+          curTn.resizedContentHeight = contentHeight;
+        }
+        curTn.row = row;
+        lastPosY = curPosY;
 
         curCol++;
         if( curCol >= maxCol ){
-          curCol=0;
-          curPosY+=tnHeight+gutterHeight;
-          G.GOM.lastFullRow=row;
+          // new line
+          curCol = 0;
+          curPosY += tnHeight + gutterHeight;
+          G.GOM.lastFullRow = row;
           row++;
         }
       }
-      G.GOM.displayArea.width=w;
+      G.GOM.displayArea.width = w;
       return true;
     }
 
@@ -3718,7 +3737,7 @@ TODO:
     
       if( curTn.neverDisplayed ) {
         // thumbnail is built but has never been displayed (=first display)
-        var top=curTn.top-G.GOM.clipArea.top;
+        var top= curTn.top - G.GOM.clipArea.top;
         if( G.tn.opt.Get('stacks') > 0 ) {
           // we have stacks -> do not display them here. They will be displayed at the end of the display animation
           item.$elt.last().css({ display: 'block'});
@@ -3731,13 +3750,13 @@ TODO:
         
         // display the image of the thumbnail when fully loaded
         if( G.O.thumbnailWaitImageLoaded === true ) {
-          var gi_imgLoad = ngimagesLoaded( item.$getElt('.nGY2TnImg') );
+          var gi_imgLoad = ngimagesLoaded( item.$getElt('.nGY2TnImg2') );
           gi_imgLoad.on( 'progress', function( instance, image ) {
             if( image.isLoaded ) {
-              var idx=image.img.getAttribute('data-idx');
-              var albumIdx=image.img.getAttribute('data-albumidx');
+              var albumIdx = image.img.getAttribute('data-albumidx');
               if( albumIdx == G.GOM.albumIdx ) {
                 // ignore event if not on current album
+                var idx = image.img.getAttribute('data-idx');
                 G.I[idx].ThumbnailImageReveal();
               }
             }
@@ -3746,14 +3765,14 @@ TODO:
         // display the thumbnail
         ThumbnailAppear(GOMidx, cnt);
 
-        curTn.displayed=true;
-        curTn.neverDisplayed=false;
+        curTn.displayed = true;
+        curTn.neverDisplayed = false;
       }
       else {
-        var topOld=G.GOM.cache.containerOffset.top+item.top;
-        var top=G.GOM.cache.containerOffset.top+(curTn.top-G.GOM.clipArea.top);
-        newTop=curTn.top-G.GOM.clipArea.top;
-        var vp=G.GOM.cache.viewport;
+        var topOld = G.GOM.cache.containerOffset.top + item.top;
+        var top = G.GOM.cache.containerOffset.top + (curTn.top - G.GOM.clipArea.top);
+        newTop = curTn.top - G.GOM.clipArea.top;
+        var vp = G.GOM.cache.viewport;
         if( G.O.thumbnailDisplayOutsideScreen || ( ( (topOld+curTn.height) >= (vp.t-vp.h) && topOld <= (vp.t+vp.h*4) ) ||
               ( (top+curTn.height) >= (vp.t-vp.h) && top <= (vp.t+vp.h*4) ) )  ) {
           // thumbnail positioned in enlarged viewport (viewport + 4 x viewport height) (v1.5: changed from 2 to 4)
@@ -3765,11 +3784,11 @@ TODO:
                 // with transition
                 var tweenable = new NGTweenable();
                 tweenable.tween({
-                  from:       { top: item.top, left: item.left, height: item.height, width: item.width },
-                  to:         { top: newTop, left: curTn.left, height: curTn.height, width: curTn.width },
+                  from:       { top: item.top, left: item.left,  height: item.height,  width: item.width },
+                  to:         { top: newTop,   left: curTn.left, height: curTn.height, width: curTn.width },
                   attachment: { $e: item.$elt },
-                  duration:   300,
-                  delay:      cnt * G.tn.opt.Get('displayInterval'),
+                  duration:   100,
+                  delay:      cnt * G.tn.opt.Get('displayInterval') / 5,
                   easing:     'easeInOutQuart',
                   step:       function (state, att) {
                     att.$e.css(state);
@@ -3801,14 +3820,14 @@ TODO:
           item.$elt.css({ display: 'none'});
         }
       }
-      item.left=curTn.left;
-      item.top=newTop;
+      item.left = curTn.left;
+      item.top = newTop;
       
       // set new size if changed
       if( item.width != curTn.width || item.height != curTn.height ) {
         item.$elt.css({ width: curTn.width , height: curTn.height });
-        item.width=curTn.width;
-        item.height=curTn.height;
+        item.width = curTn.width;
+        item.height = curTn.height;
         
         // if( curTn.resizedContentWidth > 0 ) {
         // resize also the content (=image)
@@ -3817,8 +3836,10 @@ TODO:
             // item.$getElt('.nGY2GThumbnailAlbumUp').css({'height': curTn.resizedContentHeight, 'width': curTn.resizedContentWidth});
           }
           else {
-            item.$getElt('.nGY2GThumbnailImg').css({'height': curTn.resizedContentHeight, 'width': curTn.resizedContentWidth});
             item.$getElt('.nGY2GThumbnailImage').css({'height': curTn.resizedContentHeight, 'width': curTn.resizedContentWidth});
+            if( G.layout.engine == 'JUSTIFIED'  ) {
+              item.$getElt('.nGY2GThumbnailImg').css({'height': curTn.resizedContentHeight, 'width': curTn.resizedContentWidth});
+            }
           }
           item.resizedContentWidth=curTn.resizedContentWidth;
           item.resizedContentHeight=curTn.resizedContentHeight;
@@ -3929,7 +3950,7 @@ TODO:
             // step 1: adjust height
             var r2=G.tn.settings.getH()/newItem.thumbImg().height;
             
-            var newH= G.tn.settings.getH();
+            // var newH= G.tn.settings.getH();
             var newW= newItem.thumbImg().width*r2;
             
             // step 2: check if width needs to be adjusted
@@ -4051,10 +4072,10 @@ TODO:
     
    
     
-    // Compute the height of the annotation part of a thumbnail (title+description, both single line)
-    function ThumbnailGetAnnotationHeight() {
-      var newElt= [],
-      newEltIdx=  0;
+    // Compute the height of the label part of a thumbnail (title+description, both single line)
+    function ThumbnailGetLabelHeight() {
+      var newElt = [],
+      newEltIdx =  0;
 
       // if( G.O.thumbnailLabel.get('display') == false && G.tn.toolbar.getWidth(item) <= 0 ) {
       if( G.O.thumbnailLabel.get('display') == false  ) {
@@ -4072,7 +4093,9 @@ TODO:
         // Labels: title and description
         newElt[newEltIdx++] = '  <div class="nGY2GThumbnailLabel" '+ G.tn.style.getLabel() +'>';
         newElt[newEltIdx++] = '    <div class="nGY2GThumbnailAlbumTitle" '+G.tn.style.getTitle()+'>aAzZjJ</div>';
-        newElt[newEltIdx++] = '    <div class="nGY2GThumbnailDescription" '+G.tn.style.getDesc()+'>'+desc+'</div>';
+        if( G.O.thumbnailLabel.get('displayDescription') == true ) {
+          newElt[newEltIdx++] = '    <div class="nGY2GThumbnailDescription" '+G.tn.style.getDesc()+'>'+'aAzZjJ'+'</div>';
+        }
         newElt[newEltIdx++] = '  </div>';
       }
       
@@ -4098,31 +4121,31 @@ TODO:
     
     //----- Build one UP thumbnail (=navigation thumbnail)
     function ThumbnailBuildAlbumpUp( item, idx, GOMidx ) {
-      var newElt= [],
-      newEltIdx=  0;
+      var newElt = [],
+      newEltIdx = 0;
       
-      var mp='';
+      var mp = '';
       if( G.O.thumbnailOpenImage === false ) {
-        mp='cursor:default;'
+        mp = 'cursor:default;'
       }
       
-      newElt[newEltIdx++]=ThumbnailBuildStacks('')+'<div class="nGY2GThumbnail" style="display:none;opacity:0;'+mp+'" >';
-      newElt[newEltIdx++]='  <div class="nGY2GThumbnailSub">';
+      newElt[newEltIdx++] = ThumbnailBuildStacks('') + '<div class="nGY2GThumbnail" style="display:none;opacity:0;' + mp + '" >';
+      newElt[newEltIdx++] = '  <div class="nGY2GThumbnailSub">';
 
       var h=G.tn.defaultSize.getHeight(),
       w=G.tn.defaultSize.getWidth();
 
-      newElt[newEltIdx++]='    <div class="nGY2GThumbnailImage" style="width:'+w+'px;height:'+h+'px;"><img class="nGY2GThumbnailImg" src="'+G.emptyGif+'" alt="" style="max-width:'+w+'px;max-height:'+h+'px;" ></div>';
-      // newElt[newEltIdx++]='    <div class="nGY2GThumbnailAlbumUp" style="width:'+w+'px;height:'+h+'px;">'+G.O.icons.thumbnailAlbumUp+'</div>';
-      newElt[newEltIdx++]='    <div class="nGY2GThumbnailAlbumUp" >'+G.O.icons.thumbnailAlbumUp+'</div>';
-      newElt[newEltIdx++]='  </div>';
-      newElt[newEltIdx++]='</div>';
+      newElt[newEltIdx++] = '    <div class="nGY2GThumbnailImage" style="width:'+w+'px;height:'+h+'px;"><img class="nGY2GThumbnailImg" src="'+G.emptyGif+'" alt="" style="max-width:'+w+'px;max-height:'+h+'px;" ></div>';
+      // newElt[newEltIdx++] = '    <div class="nGY2GThumbnailAlbumUp" style="width:'+w+'px;height:'+h+'px;">'+G.O.icons.thumbnailAlbumUp+'</div>';
+      newElt[newEltIdx++] = '    <div class="nGY2GThumbnailAlbumUp" >'+G.O.icons.thumbnailAlbumUp+'</div>';
+      newElt[newEltIdx++] = '  </div>';
+      newElt[newEltIdx++] = '</div>';
       
-      var $newDiv =jQuery(newElt.join('')).appendTo(G.$E.conTn); //.animate({ opacity: 1},1000, 'swing');  //.show('slow'); //.fadeIn('slow').slideDown('slow');
+      var $newDiv = jQuery(newElt.join('')).appendTo(G.$E.conTn); //.animate({ opacity: 1},1000, 'swing');  //.show('slow'); //.fadeIn('slow').slideDown('slow');
       
-      item.$elt=$newDiv;
-      $newDiv.data('index',GOMidx);
-      item.$getElt('.nGY2GThumbnailImg').data('index',GOMidx);
+      item.$elt = $newDiv;
+      $newDiv.data('index', GOMidx);
+      item.$getElt('.nGY2GThumbnailImg').data('index', GOMidx);
       
       return;
     }
@@ -4140,116 +4163,84 @@ TODO:
         return;
       }
 
-      var newElt=[],
-      newEltIdx=0;
+      var newElt = [],
+      newEltIdx = 0;
 
-      var mp='';
+      var mp = '';
       if( G.O.thumbnailOpenImage === false ) {
-        mp='cursor:default;'
+        mp = 'cursor:default;'
       }
 
-      
-      var src=item.thumbImg().src,
-      sTitle=getThumbnailTitle(item),
-      sDesc=getTumbnailDescription(item);
+      var src = item.thumbImg().src,
+      sTitle = getThumbnailTitle(item);
 
-      // dominant colorS (blurred preview image)
-      var imgBlurred=G.emptyGif;
-      if( item.imageDominantColors != null ) {
-        imgBlurred=item.imageDominantColors;
-      }
-      // dominant color -> background color
+      // image background -> visible during image download
       var bg='';
-      if( item.imageDominantColor != null ) {
-        bg='background:'+item.imageDominantColor+';';
+      var bgImg="background-image: url('" + G.emptyGif + "');";
+      if( item.imageDominantColors != null ) {
+        // dominant colorS (blurred preview image)
+        bgImg="background-image: url('" + item.imageDominantColors + "');";
       }
-      
+      else {
+        // dominant color -> background color
+        if( item.imageDominantColor != null ) {
+          bg='background-color:'+item.imageDominantColor+';';
+        }
+        else {
+          bgImg='';
+        }
+      }
+
       var op='opacity:1;';
       if( G.O.thumbnailWaitImageLoaded == true ) {
         op='opacity:0;';
       }
 
-      // thumbnail containers 
-      newElt[newEltIdx++]=ThumbnailBuildStacks(bg)+'<div class="nGY2GThumbnail" style="display:none;opacity:0;'+mp+'"><div class="nGY2GThumbnailSub '+(G.O.thumbnailSelectable && item.selected?"nGY2GThumbnailSubSelected":"")+'">';
+      // ##### thumbnail containers  (with stacks)
+      newElt[newEltIdx++] = ThumbnailBuildStacks(bg) + '<div class="nGY2GThumbnail" style="display:none;opacity:0;' + mp + '"><div class="nGY2GThumbnailSub ' + ( G.O.thumbnailSelectable && item.selected ? "nGY2GThumbnailSubSelected" : "" ) + '">';
+
       
-      // image
-      switch( G.layout.engine ) {
-        case 'CASCADING':
-          // fixed width
-          newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="width:'+G.tn.settings.getW()+'px;'+bg+'">';
-          newElt[newEltIdx++]='  <img class="nGY2GThumbnailImg nGY2TnPreview" src="'+imgBlurred+'" style="max-width:'+G.tn.settings.getW()+'px;">';
-          newElt[newEltIdx++]='  <img class="nGY2GThumbnailImg nGY2TnImg" src="'+src+'" alt="'+sTitle+'" style="max-width:'+G.tn.settings.getW()+'px;'+op+'" data-idx="'+idx+'" data-albumidx="'+G.GOM.albumIdx+'">';
-          newElt[newEltIdx++]='</div>';
-          break;
-        case 'JUSTIFIED':
-          // fixed height
-          newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="height:'+G.tn.settings.getH()+'px;'+bg+'">';
-          newElt[newEltIdx++]='  <img class="nGY2GThumbnailImg nGY2TnPreview" src="'+imgBlurred+'" >';
-          newElt[newEltIdx++]='  <img class="nGY2GThumbnailImg nGY2TnImg" src="'+src+'" alt="'+sTitle+'" style="'+op+'" data-idx="'+idx+'" data-albumidx="'+G.GOM.albumIdx+'">';
-          newElt[newEltIdx++]='</div>';
-          break;
-        default:    // GRID
-          // fixed width and height
-          var imgSize='max-width:'+G.tn.settings.getW()+'px;max-height:'+G.tn.settings.getH()+'px;'
-          var imgBWidth='';          
-          
-          if( G.tn.opt.Get('crop') == true && item.thumbImg().height > 0 && item.thumbImg().width > 0 ) {
-            // crop images => no black border
-            if( item.thumbImg().height > item.thumbImg().width ) {
-              // portrait
-              imgSize='width:'+G.tn.settings.getW()+'px;';
-            }
-            else {
-              // landscape
-
-              // step 1: adjust height
-              var r2=G.tn.settings.getH()/item.thumbImg().height;
-              
-              var newH= G.tn.settings.getH();
-              var newW= item.thumbImg().width*r2;
-              
-              // step 2: check if width needs to be adjusted
-              if( newW >= G.tn.settings.getW() ) {
-                // no adjustement
-                var d=-(item.thumbImg().width*r2-G.tn.settings.getW()) / 2;
-                imgSize='height:'+G.tn.settings.getH()+'px;left:'+d+'px;';
-                imgBWidth='width:'+item.thumbImg().width+'px;';     // set the width of the blurred preview image
-              }
-              else {
-                // yes, adjust width
-                // after scaling to adjust the height, the width is too narrow => upscale again to fit width
-                var rW=G.tn.settings.getW()/item.thumbImg().width;
-                var w=item.thumbImg().width*rW;
-                imgSize='width:'+w+'px;';
-              }
-            }
-          }
-          newElt[newEltIdx++]='<div class="nGY2GThumbnailImage" style="width:'+G.tn.settings.getW()+'px;height:'+G.tn.settings.getH()+'px;'+bg+'">';
-          newElt[newEltIdx++]='  <img class="nGY2GThumbnailImg nGY2TnPreview" src="'+imgBlurred+'"  style="'+imgSize+imgBWidth+'">';
-          newElt[newEltIdx++]='  <img class="nGY2GThumbnailImg nGY2TnImg" src="'+src+'" alt="'+sTitle+'" style="'+imgSize+op+'" data-idx="'+idx+'" data-albumidx="'+G.GOM.albumIdx+'" >';
-          newElt[newEltIdx++]='</div>';
-          break;
+      // image size
+      var w = G.tn.settings.getW();
+      var h = G.tn.settings.getH();
+      if( G.tn.settings.getMosaic() !== null ) {
+        // mosaic layout -> 
+        w = G.GOM.items[GOMidx].width;
+        h = G.GOM.items[GOMidx].height;
       }
+      
+      // ##### layer for image background (color, dominant color, blurred preview)
+      var s1="position: absolute; top: 0px; left: 0px; width:" + w + "px; height:" + h + "px;"+bg+bgImg+" background-position: center center;  background-repeat: no-repeat; background-size:cover; overflow: hidden;";
+      newElt[newEltIdx++]='<div class="nGY2GThumbnailImage nGY2TnImgBack" style="' + s1 + '"></div>';
+      
+      // #### layer for image 
+      var s2 = op + "position: absolute; top: 0px; left: 0px; width:" + w + "px; height:" + h + "px; background-image: url('" + src + "'); background-position: center center; background-repeat: no-repeat; background-size:cover; overflow: hidden;";
+      newElt[newEltIdx++]='<div class="nGY2GThumbnailImage nGY2TnImg" style="' + s2 + '">';
+      newElt[newEltIdx++]='  <img class="nGY2GThumbnailImg nGY2TnImg2" src="' + src + '" alt="' + sTitle + '" style="opacity:0;" data-idx="' + idx + '" data-albumidx="' + G.GOM.albumIdx + '" >';
+      newElt[newEltIdx++]='</div>';
 
-      // layer for user customization purposes
+      
+      // ##### layer for user customization purposes
       newElt[newEltIdx++]='<div class="nGY2GThumbnailCustomLayer"></div>';
 
-      // annotation (=area for labels + icons)
+      // ##### layer for for labels (title + description and their icons)
       if( G.O.thumbnailLabel.get('display') == true ) {
         // Labels: title and description
-        newElt[newEltIdx++]= '  <div class="nGY2GThumbnailLabel" '+ G.tn.style.getLabel(item) +'>';
+        newElt[newEltIdx++]= '  <div class="nGY2GThumbnailLabel" '+ G.tn.style.getLabel(item) + '>';
         if( item.kind == 'album' ) {
+          // album
           newElt[newEltIdx++]= '    <div class="nGY2GThumbnailTitle nGY2GThumbnailAlbumTitle" ' + G.tn.style.getTitle() + '>' + G.O.icons.thumbnailAlbum + sTitle + '</div>';
         }
         else {
+          // image
           newElt[newEltIdx++]= '    <div class="nGY2GThumbnailTitle nGY2GThumbnailImageTitle" ' + G.tn.style.getTitle() + '>' + G.O.icons.thumbnailImage + sTitle + '</div>';
         }
-        newElt[newEltIdx++]= '    <div class="nGY2GThumbnailDescription" ' + G.tn.style.getDesc() + '>' + sDesc + '</div>';
+        newElt[newEltIdx++]= '    <div class="nGY2GThumbnailDescription" ' + G.tn.style.getDesc() + '>' + getTumbnailDescription(item) + '</div>';
         newElt[newEltIdx++]= '  </div>';
       }
 
-      // Tools layer
-      newElt[newEltIdx++]=ThumbnailBuildTools(item, lastOne);
+      // ##### layer for tools
+      newElt[newEltIdx++] = ThumbnailBuildTools(item, lastOne);
       
       
       // close containers
@@ -4299,20 +4290,20 @@ TODO:
       var cnt =     0;
       
       if( tb[position] != '' ) {
-        var pos='top:0; right:0; text-align:right;';     // 'topRight' and default
+        var pos='top: 0; right: 0; text-align: right;';     // 'topRight' and default
         switch( position ) {
           case 'topLeft':
-            pos='top:0; left:0; text-align:left;:';
+            pos='top: 0; left: 0; text-align: left;';
             break;
           case 'bottomRight':
-            pos='bottom:0; right:0; text-align:right;';
+            pos='bottom: 0; right: 0; text-align: right;';
             break;
           case 'bottomLeft':
-            pos='bottom:0; left:0; text-align:left;';
+            pos='bottom: 0; left: 0; text-align: left;';
             break;
         }
         
-        toolbar+= '  <ul class="nGY2GThumbnailIcons" style="'+pos+'">';
+        toolbar += '  <ul class="nGY2GThumbnailIcons" style="'+pos+'">';
         
         var icons=tb[position].split(',');
         var nb=icons.length;
@@ -4337,7 +4328,7 @@ TODO:
                 if( item.kind == 'album' ) {
                   toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="">';
                   toolbar+= '      <div class="nGY2GThumbnailIconImageCounter"></div>';
-                  toolbar+= '      <div class="nGY2GThumbnailIconText">'+G.O.icons.thumbnailCounter+Math.max((item.getContentLength(false)),item.numberItems)+sp+'</div>';
+                  toolbar+= '      <div class="nGY2GThumbnailIconText">' + G.O.icons.thumbnailCounter+Math.max((item.getContentLength(false)),item.numberItems) + sp + '</div>';
                   toolbar+= '    </li>';
                   cnt++;
                 }
@@ -4345,38 +4336,38 @@ TODO:
               case 'COUNTER2':
                 if( item.kind == 'album' ) {
                   toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="">';
-                  toolbar+= '      <div class="nGY2GThumbnailIconTextBadge">'+G.O.icons.thumbnailCounter+Math.max((item.getContentLength(false)),item.numberItems)+sp+'</div>';
+                  toolbar+= '      <div class="nGY2GThumbnailIconTextBadge">' + G.O.icons.thumbnailCounter+Math.max((item.getContentLength(false)),item.numberItems) + sp + '</div>';
                   toolbar+= '    </li>';
                   cnt++;
                 }
                 break;
               case 'SHARE':
-                toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="'+tIcon+'">';
-                toolbar+= '      <div>'+G.O.icons.thumbnailShare+'</div>';
+                toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="' + tIcon + '">';
+                toolbar+= '      <div>' + G.O.icons.thumbnailShare + '</div>';
                 toolbar+= '    </li>';
                 cnt++;
                 break;
               case 'DOWNLOAD':
-                toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="'+tIcon+'">';
-                toolbar+= '      <div>'+G.O.icons.thumbnailDownload+'</div>';
+                toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="' + tIcon + '">';
+                toolbar+= '      <div>' + G.O.icons.thumbnailDownload + '</div>';
                 toolbar+= '    </li>';
                 cnt++;
                 break;
               case 'INFO':
-                toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="'+tIcon+'">';
-                toolbar+= '      <div>'+G.O.icons.thumbnailInfo+'</div>';
+                toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="' + tIcon + '">';
+                toolbar+= '      <div>' + G.O.icons.thumbnailInfo + '</div>';
                 toolbar+= '    </li>';
                 cnt++;
                 break;
               case 'CART':
-                toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="'+tIcon+'">';
-                toolbar+= '      <div>'+G.O.icons.thumbnailCart+'</div>';
+                toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="' + tIcon + '">';
+                toolbar+= '      <div>' + G.O.icons.thumbnailCart + '</div>';
                 toolbar+= '    </li>';
                 cnt++;
                 break;
               case 'DISPLAY':
                 toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="DISPLAY">';
-                toolbar+= '      <div class="nGY2GThumbnailIconImageShare">'+G.O.icons.thumbnailDisplay+'</div>';
+                toolbar+= '      <div class="nGY2GThumbnailIconImageShare">' + G.O.icons.thumbnailDisplay + '</div>';
                 toolbar+= '    </li>';
                 cnt++;
                 break;
@@ -4391,15 +4382,15 @@ TODO:
               case 'CUSTOM9':
               case 'CUSTOM10':
                 var cust = tIcon.replace('CUSTOM', '');
-                toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="'+tIcon.toLowerCase()+'">';
-                toolbar+= '      <div class="nGY2GThumbnailIconImageShare">'+G.O.icons['thumbnailCustomTool'+cust]+'</div>';
+                toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="' + tIcon.toLowerCase() + '">';
+                toolbar+= '      <div class="nGY2GThumbnailIconImageShare">' + G.O.icons['thumbnailCustomTool' + cust] + '</div>';
                 toolbar+= '    </li>';
                 cnt++;
                 break;
               case 'FEATURED':
                 if( item.featured === true ) {
                   toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="">';
-                  toolbar+= '      <div class="nGY2GThumbnailIconImageFeatured">'+G.O.icons.thumbnailFeatured+'</div>';
+                  toolbar+= '      <div class="nGY2GThumbnailIconImageFeatured">' + G.O.icons.thumbnailFeatured + '</div>';
                   toolbar+= '    </li>';
                   cnt++;
                 }
@@ -4408,10 +4399,10 @@ TODO:
                 if( G.O.thumbnailSelectable == true ) {
                   toolbar+= '    <li class="nGY2GThumbnailIcon" data-ngy2action="TOGGLESELECT">';
                   if( item.selected === true ) {
-                    toolbar+= '      <div class="nGY2GThumbnailIconImageSelect nGY2ThumbnailSelected">'+G.O.icons.thumbnailSelected+'</div>';
+                    toolbar+= '      <div class="nGY2GThumbnailIconImageSelect nGY2ThumbnailSelected">' + G.O.icons.thumbnailSelected + '</div>';
                   }
                   else {
-                    toolbar+= '      <div class="nGY2GThumbnailIconImageSelect nGY2ThumbnailUnselected">'+G.O.icons.thumbnailUnselected+'</div>';
+                    toolbar+= '      <div class="nGY2GThumbnailIconImageSelect nGY2ThumbnailUnselected">' + G.O.icons.thumbnailUnselected + '</div>';
                   }
                   toolbar+= '    </li>';
                   cnt++;
@@ -4420,7 +4411,7 @@ TODO:
             }
           }
         }
-        toolbar+= '  </ul>';
+        toolbar += '  </ul>';
       }
       
       if( cnt > 0 ) {
@@ -4505,19 +4496,19 @@ TODO:
   
     // Thumbnail display animation
     function ThumbnailAppear( n, cnt ) {
-      var curTn=G.GOM.items[n];
-      var item=G.I[G.GOM.items[n].thumbnailIdx];
+      var curTn = G.GOM.items[n];
+      var item = G.I[curTn.thumbnailIdx];
 
     
       if( G.tn.opt.Get('displayTransition') == 'NONE' ) {
         item.$elt.css({ opacity: 1 });
-        ThumbnailAppearFinish(item);
+        ThumbnailAppearFinish( item );
       }
       else {
         if( item.$elt == null ) { return; }
-        var top=G.GOM.cache.containerOffset.top+(curTn.top-G.GOM.clipArea.top);
-        var vp=G.GOM.cache.viewport;
-        if( (top+(curTn.top-G.GOM.clipArea.top)) >= (vp.t-50) && top <= (vp.t+vp.h+50) ) {
+        var top = G.GOM.cache.containerOffset.top + ( curTn.top - G.GOM.clipArea.top );
+        var vp = G.GOM.cache.viewport;
+        if( (top + (curTn.top - G.GOM.clipArea.top)) >= (vp.t - 50) && top <= (vp.t + vp.h + 50) ) {
           // display animation only if in the current viewport
           var delay=cnt*G.tn.opt.Get('displayInterval');
           if( G.tn.opt.Get('displayTransition') == 'CUSTOM' ) {
@@ -4931,10 +4922,13 @@ TODO:
           tweenable.tween({
             from:         { r: 50 },
             to:           { r: 0  },
+            attachment:   { orgIdx: G.GOM.albumIdx },
             duration:     d,
             easing:       'easeOutCirc',
             step:         function (state, att) {
-              G.$E.conTnParent.css( G.CSStransformName , 'rotateX('+state.r+'deg)');
+              if( att.orgIdx == G.GOM.albumIdx ) {
+                G.$E.conTnParent.css( G.CSStransformName , 'rotateX('+state.r+'deg)');
+              }
             }
           });
           break;
@@ -4944,10 +4938,13 @@ TODO:
           tweenable.tween({
             from:         { y: 200, o: 0 },
             to:           { y: 0,   o: 1 },
+            attachment:   { orgIdx: G.GOM.albumIdx },
             duration:     d,
             easing:       'easeOutCirc',
             step:         function (state, att) {
-              G.$E.conTnParent.css( G.CSStransformName , 'translate( 0px, '+state.y + 'px)').css('opacity', state.o);
+              if( att.orgIdx == G.GOM.albumIdx ) {
+                G.$E.conTnParent.css( G.CSStransformName , 'translate( 0px, '+state.y + 'px)').css('opacity', state.o);
+              }
             }
           });
           break;
@@ -5215,9 +5212,9 @@ TODO:
     
     // function AlbumGetContent( albumIdx, fnToCall ) {
     function AlbumGetContent( albumID, fnToCall, fnParam1, fnParam2 ) {
-      var url='';
-      var kind='image';
-      var albumIdx=NGY2Item.GetIdx(G, albumID);
+      // var url='';
+      // var kind='image';
+      // var albumIdx=NGY2Item.GetIdx(G, albumID);
       // var photoIdx=NGY2Item.GetIdx(G, photoID);
       
       switch( G.O.kind ) {
@@ -5594,13 +5591,13 @@ TODO:
 
           // width
           if( data.hasOwnProperty('data-ngthumb' + lst[i] + 'width') ) {
-            var tw=parseInt( data.hasOwnProperty('data-ngthumb' + lst[i] + 'width') );
+            var tw=parseInt(data['data-ngthumb' + lst[i] + 'width']);
             newItem.width.l1[lst[i]]=tw;
             newItem.width.lN[lst[i]]=tw;
           }
           // height
           if( data.hasOwnProperty('data-ngthumb' + lst[i] + 'height') ) {
-            var th=parseInt( data.hasOwnProperty('data-ngthumb' + lst[i] + 'height') );
+            var th=parseInt('data-ngthumb' + lst[i] + 'height');
             newItem.height.l1[lst[i]]=th;
             newItem.height.lN[lst[i]]=th;
           }
@@ -5658,20 +5655,6 @@ TODO:
 
     }
 
-    function cloneJSObject( obj ) {
-      if (obj === null || typeof obj !== 'object') {
-        return obj;
-      }
-
-      var temp = obj.constructor(); // give temp the original obj's constructor
-      for (var key in obj) {
-          temp[key] = cloneJSObject(obj[key]);
-      }
-      return temp;
-    }
-
-    
-    
     
     // ################################
     // ##### DEFINE VARIABLES     #####
@@ -5789,6 +5772,8 @@ TODO:
       ThumbnailOpt('thumbnailGutterWidth', 'thumbnailL1GutterWidth', 'gutterWidth');
       // thumbnail gutter height
       ThumbnailOpt('thumbnailGutterHeight', 'thumbnailL1GutterHeight', 'gutterHeight');
+      // thumbnail grid base height (for cascading layout)
+      ThumbnailOpt('thumbnailBaseGridHeight', 'thumbnailL1BaseGridHeight', 'baseGridHeight');
       
       // gallery display mode
       G.galleryDisplayMode.lN=G.O.galleryDisplayMode.toUpperCase();
@@ -5858,7 +5843,6 @@ TODO:
       // gallery display transition
       if( typeof G.O.thumbnailDisplayTransition == 'boolean' ) {
         if( G.O.thumbnailDisplayTransition === true ) {
-          // G.displayTransition.lN='FADEIN';
           G.tn.opt.lN.displayTransition='FADEIN';
           G.tn.opt.l1.displayTransition='FADEIN';
         }
@@ -5869,52 +5853,36 @@ TODO:
       }
 
       if( G.O.fnThumbnailDisplayEffect !== '' ) {
-        // G.O.thumbnailDisplayTransition='CUSTOM';
         G.tn.opt.lN.displayTransition='CUSTOM';
         G.tn.opt.l1.displayTransition='CUSTOM';
       }
       if( G.O.fnThumbnailL1DisplayEffect !== '' ) {
-      // if( typeof G.O.fnThumbnailL1DisplayEffect == 'function' ) {
         G.tn.opt.l1.displayTransition='CUSTOM';
       }
       
       // parse thumbnail display transition
-      if( typeof G.O.thumbnailDisplayTransition == 'string' ) {
-        var st=G.O.thumbnailDisplayTransition.split('_');
-        if( st.length == 1 ) {
-          G.tn.opt.lN.displayTransition = G.O.thumbnailDisplayTransition.toUpperCase();
-          G.tn.opt.l1.displayTransition = G.O.thumbnailDisplayTransition.toUpperCase();
-        }
-        if( st.length == 2 ) {
-          G.tn.opt.lN.displayTransition = st[0].toUpperCase();
-          G.tn.opt.l1.displayTransition = st[0].toUpperCase();
-          G.tn.opt.lN.displayTransitionStartVal = Number(st[1]);
-          G.tn.opt.l1.displayTransitionStartVal = Number(st[1]);
-        }
-        if( st.length == 3 ) {
-          G.tn.opt.lN.displayTransition = st[0].toUpperCase();
-          G.tn.opt.l1.displayTransition = st[0].toUpperCase();
-          G.tn.opt.lN.displayTransitionStartVal = Number(st[1]);
-          G.tn.opt.l1.displayTransitionStartVal = Number(st[1]);
-          G.tn.opt.lN.displayTransitionEasing = st[2];
-          G.tn.opt.l1.displayTransitionEasing = st[2];
+      
+      function thumbnailDisplayTransitionParse( cfg, level ) {
+        if( typeof cfg == 'string' ) {
+          var st=cfg.split('_');
+          if( st.length == 1 ) {
+            G.tn.opt[level]['displayTransition'] = cfg.toUpperCase();
+          }
+          if( st.length == 2 ) {
+            G.tn.opt[level]['displayTransition'] = st[0].toUpperCase();
+            G.tn.opt[level]['displayTransitionStartVal'] = Number(st[1]);
+          }
+          if( st.length == 3 ) {
+            G.tn.opt[level]['displayTransition'] = st[0].toUpperCase();
+            G.tn.opt[level]['displayTransitionStartVal'] = Number(st[1]);
+            G.tn.opt[level]['displayTransitionEasing'] = st[2];
+          }
         }
       }
-      if( typeof G.O.thumbnailL1DisplayTransition == 'string' ) {
-        var st=G.O.thumbnailL1DisplayTransition.split('_');
-        if( st.length == 1 ) {
-          G.tn.opt.l1.displayTransition = G.O.thumbnailL1DisplayTransition.toUpperCase();
-        }
-        if( st.length == 2 ) {
-          G.tn.opt.l1.displayTransition = st[0].toUpperCase();
-          G.tn.opt.l1.displayTransitionStartVal = Number(st[1]);
-        }
-        if( st.length == 3 ) {
-          G.tn.opt.l1.displayTransition = st[0].toUpperCase();
-          G.tn.opt.l1.displayTransitionStartVal = Number(st[1]);
-          G.tn.opt.l1.displayTransitionEasing = st[2];
-        }
-      }
+      thumbnailDisplayTransitionParse( G.O.thumbnailDisplayTransition, 'lN');
+      thumbnailDisplayTransitionParse( G.O.thumbnailDisplayTransition, 'l1');
+      thumbnailDisplayTransitionParse( G.O.thumbnailL1DisplayTransition, 'l1');
+
       
       // thumbnail display transition duration
       ThumbnailOpt('thumbnailDisplayTransitionDuration', 'thumbnailL1DisplayTransitionDuration', 'displayTransitionDuration');
@@ -6048,18 +6016,10 @@ TODO:
       
       
       // thumbnail sizes
-      if( G.O.thumbnailHeight == 0 || G.O.thumbnailHeight == ''  ) {
-        G.O.thumbnailHeight='auto';
-      }
-      if( G.O.thumbnailWidth == 0 || G.O.thumbnailWidth == '' ) {
-        G.O.thumbnailWidth = 'auto';
-      }
-      if( G.O.thumbnailL1Height == 0 || G.O.thumbnailL1Height == '' ) {
-        G.O.thumbnailL1Height = 'auto';
-      }
-      if( G.O.thumbnailL1Width == 0 || G.O.thumbnailL1Width == '' ) {
-        G.O.thumbnailL1Width = 'auto';
-      }
+      if( G.O.thumbnailHeight == 0 || G.O.thumbnailHeight == ''  ) { G.O.thumbnailHeight='auto'; }
+      if( G.O.thumbnailWidth == 0 || G.O.thumbnailWidth == '' ) { G.O.thumbnailWidth = 'auto'; }
+      if( G.O.thumbnailL1Height == 0 || G.O.thumbnailL1Height == '' ) { G.O.thumbnailL1Height = 'auto'; }
+      if( G.O.thumbnailL1Width == 0 || G.O.thumbnailL1Width == '' ) { G.O.thumbnailL1Width = 'auto'; }
 
       // RETRIEVE ALL THUMBNAIL SIZES
       function ThumbnailSizes( srcOpt, onlyl1, opt) {
@@ -6109,6 +6069,60 @@ TODO:
       G.O.thumbnailBorderHorizontal=parseInt(G.O.thumbnailBorderHorizontal);
       G.O.thumbnailBorderVertical=parseInt(G.O.thumbnailBorderVertical);
       G.O.thumbnailLabelHeight=parseInt(G.O.thumbnailLabelHeight);
+
+      
+      // retrieve all mosaic layout patterns
+      // default pattern
+      if( G.O.galleryMosaic != undefined ) {
+        // clone object
+        G.tn.settings.mosaic.l1.xs = JSON.parse(JSON.stringify(G.O.galleryMosaic));
+        G.tn.settings.mosaic.l1.sm = JSON.parse(JSON.stringify(G.O.galleryMosaic));
+        G.tn.settings.mosaic.l1.me = JSON.parse(JSON.stringify(G.O.galleryMosaic));
+        G.tn.settings.mosaic.l1.la = JSON.parse(JSON.stringify(G.O.galleryMosaic));
+        G.tn.settings.mosaic.l1.xl = JSON.parse(JSON.stringify(G.O.galleryMosaic));
+        G.tn.settings.mosaic.lN.xs = JSON.parse(JSON.stringify(G.O.galleryMosaic));
+        G.tn.settings.mosaic.lN.sm = JSON.parse(JSON.stringify(G.O.galleryMosaic));
+        G.tn.settings.mosaic.lN.me = JSON.parse(JSON.stringify(G.O.galleryMosaic));
+        G.tn.settings.mosaic.lN.la = JSON.parse(JSON.stringify(G.O.galleryMosaic));
+        G.tn.settings.mosaic.lN.xl = JSON.parse(JSON.stringify(G.O.galleryMosaic));
+        G.tn.settings.mosaicCalcFactor('l1', 'xs');
+        G.tn.settings.mosaicCalcFactor('l1', 'sm');
+        G.tn.settings.mosaicCalcFactor('l1', 'me');
+        G.tn.settings.mosaicCalcFactor('l1', 'la');
+        G.tn.settings.mosaicCalcFactor('l1', 'xl');
+        G.tn.settings.mosaicCalcFactor('lN', 'xs');
+        G.tn.settings.mosaicCalcFactor('lN', 'sm');
+        G.tn.settings.mosaicCalcFactor('lN', 'me');
+        G.tn.settings.mosaicCalcFactor('lN', 'la');
+        G.tn.settings.mosaicCalcFactor('lN', 'xl');
+      }
+      if( G.O.galleryMosaicL1 != undefined ) {
+        // default L1 pattern
+        G.tn.settings.mosaic.l1.xs = JSON.parse(JSON.stringify(G.O.galleryMosaicL1));
+        G.tn.settings.mosaic.l1.sm = JSON.parse(JSON.stringify(G.O.galleryMosaicL1));
+        G.tn.settings.mosaic.l1.me = JSON.parse(JSON.stringify(G.O.galleryMosaicL1));
+        G.tn.settings.mosaic.l1.la = JSON.parse(JSON.stringify(G.O.galleryMosaicL1));
+        G.tn.settings.mosaic.l1.xl = JSON.parse(JSON.stringify(G.O.galleryMosaicL1));
+        G.tn.settings.mosaicCalcFactor('l1', 'xs');
+        G.tn.settings.mosaicCalcFactor('l1', 'sm');
+        G.tn.settings.mosaicCalcFactor('l1', 'me');
+        G.tn.settings.mosaicCalcFactor('l1', 'la');
+        G.tn.settings.mosaicCalcFactor('l1', 'xl');
+      }
+      for( var w=0; w< G.tn.settings.mosaic.l1; w++ ) {
+        if( G.O['galleryMosaic'+G.tn.settings.mosaic.l1[w].toUpperCase()] != undefined ) {
+          G.tn.settings.mosaic.lN[tn.settings.mosaic.l1[w]]=JSON.parse(JSON.stringify( G.O['galleryMosaic'+G.tn.settings.mosaic.l1[w].toUpperCase()] ));
+          G.tn.settings.mosaic.l1[tn.settings.mosaic.l1[w]]=JSON.parse(JSON.stringify( G.O['galleryMosaic'+G.tn.settings.mosaic.l1[w].toUpperCase()] ));
+          G.tn.settings.mosaicCalcFactor('l1', G.tn.settings.mosaic.l1[w]);
+          G.tn.settings.mosaicCalcFactor('lN', G.tn.settings.mosaic.l1[w]);
+        }
+      }
+      for( var w=0; w< G.tn.settings.mosaic.l1; w++ ) {
+        if( G.O['galleryMosaicL1'+G.tn.settings.mosaic.l1[w].toUpperCase()] != undefined ) {
+          G.tn.settings.mosaic.l1[tn.settings.mosaic.l1[w]]=JSON.parse(JSON.stringify( G.O['galleryMosaicL1'+G.tn.settings.mosaic.l1[w].toUpperCase()] ));
+          G.tn.settings.mosaicCalcFactor('l1', G.tn.settings.mosaic.l1[w]);
+        }
+      }
 
       G.layout.SetEngine();
       
@@ -6171,7 +6185,7 @@ TODO:
               continue;
             }
             
-            var num = parseInt(v.replace(/[^0-9\.]/g, ''), 10);   // extract a number if on exists
+            var num = parseInt(v.replace(/[^0-9\.]/g, ''), 10);   // extract a number if one exists
 
             if( num > 0 ) {
               // the string contains a numbers > 0
@@ -6195,11 +6209,7 @@ TODO:
               // no parameter name found -> default is duration
               effect.duration=num;
             }
-            
-
           }
-          
-          
         }        
         effect.element=ThumbnailOverEffectsGetCSSElement(sp[0], effect.type);
         
@@ -6219,7 +6229,8 @@ TODO:
         switch ( element ) {
           case 'image':
             if( property == 'blur' || property == 'brightness' || property == 'grayscale' || property == 'sepia' || property == 'contrast' || property == 'opacity'|| property == 'saturate' ) {
-              r='.nGY2GThumbnailImg';
+              // r='.nGY2GThumbnailImg';
+              r='.nGY2GThumbnailImage';
             }
             else {
               r='.nGY2GThumbnailImage';
@@ -6389,18 +6400,6 @@ TODO:
       return newEffects;
     }
 
-    function cloneJSObject( obj ) {
-      if (obj === null || typeof obj !== 'object') {
-        return obj;
-      }
-
-      var temp = obj.constructor(); // give temp the original obj's constructor
-      for (var key in obj) {
-          temp[key] = cloneJSObject(obj[key]);
-      }
-      return temp;
-    }
-
 
     // Thumbnail hover effect definition
     function NewTHoverEffect() {
@@ -6431,258 +6430,129 @@ TODO:
     }
 
     
-    // build a dummy thumbnail to get different sizes and to cache them
+    function ThumbnailStyle( cfg, level) {
+    
+      switch( cfg.position ){
+        case 'onBottom' :
+          G.tn.style[level]['label']='bottom:0; ';
+          break;
+        case 'overImageOnTop' :
+          G.tn.style[level]['label']='top:0; position:absolute;';
+          break;
+        case 'overImageOnMiddle' :
+          G.tn.style[level]['label']='top:0; bottom:0;';
+          G.tn.style[level]['title']='position:absolute; bottom:50%;';
+          G.tn.style[level]['desc']='position:absolute; top:50%;';
+          break;
+        case 'custom' :
+          break;
+        case 'overImageOnBottom' :
+        default :
+          G.O.thumbnailLabel.position='overImageOnBottom';
+          G.tn.style[level].label='bottom:0; position:absolute;';
+          break;
+      }
+      // if( G.layout.engine != 'CASCADING' ) {
+      if( cfg.position != 'onBottom' ) {
+        // multi-line
+        if( cfg.titleMultiLine ) {
+          G.tn.style[level]['title']='white-space:normal;';
+        }
+        if( cfg.descriptionMultiLine ) {
+          G.tn.style[level]['desc']='white-space:normal;';
+        }
+      }
+      
+      
+      switch( cfg.align ) {
+        case 'right':
+            G.tn.style[level].label+='text-align:right;';
+          break;
+        case 'left':
+            G.tn.style[level].label+='text-align:left;';
+          break;
+        default:
+            G.tn.style[level].label+='text-align:center;';
+          break;
+      }
+      if( cfg.titleFontSize != undefined && cfg.titleFontSize != '' ) {
+        G.tn.style[level].title += 'font-size:' + cfg.titleFontSize + ';';
+      }
+      if( cfg.descriptionFontSize != undefined && cfg.descriptionFontSize != '' ) {
+        G.tn.style[level].desc += 'font-size:' + cfg.descriptionFontSize + ';';
+      }
+      
+      if( cfg.displayDescription == false ) {
+        G.tn.style[level].desc += 'display:none;';
+      }
+    }
+
+    
+    // cache some thumbnail settings
     function ThumbnailDefCaches() {
-      
-        // thumbnail content CSS styles
-        // if( G.O.thumbnailLabel.display ) {
-        switch( G.O.thumbnailLabel.position ){
-          case 'onBottom' :
-            G.tn.style.lN.annotation='top:0; position:relative;';
-            G.tn.style.l1.annotation='top:0; position:relative;';
-            if( G.layout.engine == 'CASCADING' ) {
-              // line break --> title and description can be multi-line
-              G.tn.style.lN.label='top:auto; bottom:0; position:relative;';
-              G.tn.style.l1.label='top:auto; bottom:0; position:relative;';
-              if( G.O.thumbnailLabel.titleMultiLine ) {
-                G.tn.style.lN.title='white-space:normal;';
-                G.tn.style.l1.title='white-space:normal;';
-              }
-              if( G.O.thumbnailLabel.descriptionMultiLine ) {
-                G.tn.style.lN.desc='white-space:normal;';
-                G.tn.style.l1.desc='white-space:normal;';
-              }
-            }
-            break;
-          case 'overImageOnTop' :
-            G.tn.style.lN.annotation='top:0; bottom:0;';
-            G.tn.style.l1.annotation='top:0; bottom:0;';
-            G.tn.style.l1.label='top:0; position:absolute;';
-            G.tn.style.lN.label='top:0; position:absolute;';
-            if( G.O.thumbnailLabel.titleMultiLine ) {
-              G.tn.style.lN.title='white-space:normal;';
-              G.tn.style.l1.title='white-space:normal;';
-            }
-            if( G.O.thumbnailLabel.descriptionMultiLine ) {
-              G.tn.style.lN.desc='white-space:normal;';
-              G.tn.style.l1.desc='white-space:normal;';
-            }
-            break;
-          case 'overImageOnMiddle' :
-            G.tn.style.lN.annotation='top:0; bottom:0;';
-            G.tn.style.lN.label='top:0; bottom:0;';
-            G.tn.style.l1.annotation='top:0; bottom:0;';
-            G.tn.style.l1.label='top:0; bottom:0;';
-            G.tn.style.lN.title='position:absolute; bottom:50%;';
-            G.tn.style.l1.title='position:absolute; bottom:50%;';
-            G.tn.style.lN.desc='position:absolute; top:50%;';
-            G.tn.style.l1.desc='position:absolute; top:50%;';
-            if( G.O.thumbnailLabel.titleMultiLine ) {
-              G.tn.style.lN.title+='white-space:normal;';
-              G.tn.style.l1.title+='white-space:normal;';
-            }
-            if( G.O.thumbnailLabel.descriptionMultiLine ) {
-              G.tn.style.lN.desc+='white-space:normal;';
-              G.tn.style.l1.desc+='white-space:normal;';
-            }
-            break;
-          case 'custom' :
-            break;
-          case 'overImageOnBottom' :
-          default :
-            G.O.thumbnailLabel.position='overImageOnBottom';
-            G.tn.style.lN.annotation='bottom:0;';
-            G.tn.style.lN.label='bottom:0; position:absolute;';
-            G.tn.style.l1.annotation='bottom:0;';
-            G.tn.style.l1.label='bottom:0; position:absolute;';
-            if( G.O.thumbnailLabel.titleMultiLine ) {
-              G.tn.style.lN.title='white-space:normal;';
-              G.tn.style.l1.title='white-space:normal;';
-            }
-            if( G.O.thumbnailLabel.descriptionMultiLine ) {
-              G.tn.style.lN.desc='white-space:normal;';
-              G.tn.style.l1.desc='white-space:normal;';
-            }
-            break;
-        }
-        switch( G.O.thumbnailLabel.align ) {
-          case 'right':
-              G.tn.style.l1.label+='text-align:right;';
-              G.tn.style.lN.label+='text-align:right;';
-            break;
-          case 'left':
-              G.tn.style.l1.label+='text-align:left;';
-              G.tn.style.lN.label+='text-align:left;';
-            break;
-          default:
-              G.tn.style.l1.label+='text-align:center;';
-              G.tn.style.lN.label+='text-align:center;';
-            break;
-        }
-        if( G.O.thumbnailLabel.titleFontSize != undefined && G.O.thumbnailLabel.titleFontSize != '' ) {
-          G.tn.style.lN.title+='font-size:'+G.O.thumbnailLabel.titleFontSize+';';
-          G.tn.style.l1.title+='font-size:'+G.O.thumbnailLabel.titleFontSize+';';
-        }
-        if( G.O.thumbnailLabel.descriptionFontSize != undefined && G.O.thumbnailLabel.descriptionFontSize != '' ) {
-          G.tn.style.lN.desc+='font-size:'+G.O.thumbnailLabel.descriptionFontSize+';';
-          G.tn.style.l1.desc+='font-size:'+G.O.thumbnailLabel.descriptionFontSize+';';
-        }
-        
-      // }
+      // thumbnail content CSS styles
+
+      // settings for level L1 and LN
+      ThumbnailStyle( G.O.thumbnailLabel, 'lN');
+      ThumbnailStyle( G.O.thumbnailLabel, 'l1');
+
       if( G.O.thumbnailL1Label && G.O.thumbnailL1Label.display ) {
-        switch( G.O.thumbnailL1Label.position ){
-          case 'onBottom' :
-            G.tn.style.l1.annotation='top:0; position:relative;';
-            if( G.layout.engine == 'CASCADING' ) {
-              // line break
-              G.tn.style.l1.label='top:auto; bottom:0;';
-              if( G.O.thumbnailL1Label.titleMultiLine ) {
-                G.tn.style.l1.title='white-space:normal;';
-              }
-              if( G.O.thumbnailL1Label.descriptionMultiLine ) {
-                G.tn.style.l1.desc='white-space:normal;';
-              }
-            }
-            break;
-          case 'overImageOnTop' :
-            G.tn.style.l1.annotation='top:0; bottom:0;';
-            G.tn.style.l1.label='top:0; bottom:0;';
-            if( G.O.thumbnailL1Label.titleMultiLine ) {
-              G.tn.style.l1.title='white-space:normal;';
-            }
-            if( G.O.thumbnailL1Label.descriptionMultiLine ) {
-              G.tn.style.l1.desc='white-space:normal;';
-            }
-            break;
-          case 'overImageOnMiddle' :
-            G.tn.style.l1.annotation='top:0; bottom:0;';
-            G.tn.style.l1.label='top:0; bottom:0;';
-            G.tn.style.l1.title='position:absolute; bottom:50%;';
-            G.tn.style.l1.desc='position:absolute; top:50%;';
-            if( G.O.thumbnailL1Label.titleMultiLine ) {
-              G.tn.style.l1.title+='white-space:normal;';
-            }
-            if( G.O.thumbnailL1Label.descriptionMultiLine ) {
-              G.tn.style.l1.desc+='white-space:normal;';
-            }
-            break;
-          case 'custom' :
-            G.tn.style.l1.annotation='';
-            if( G.O.thumbnailL1Label.titleMultiLine ) {
-              G.tn.style.l1.title='white-space:normal;';
-            }
-            if( G.O.thumbnailL1Label.descriptionMultiLine ) {
-              G.tn.style.l1.desc='white-space:normal;';
-            }
-            break;
-          case 'overImageOnBottom':
-          default :
-            G.O.thumbnailL1Label.position='overImageOnBottom';
-            G.tn.style.l1.annotation='bottom:0;';
-            G.tn.style.l1.label='bottom:0;';
-            if( G.O.thumbnailL1Label.titleMultiLine ) {
-              G.tn.style.l1.title='white-space:normal;';
-            }
-            if( G.O.thumbnailL1Label.descriptionMultiLine ) {
-              G.tn.style.l1.desc='white-space:normal;';
-            }
-            break;
-        }
-        switch( G.O.thumbnailL1Label.align ) {
-          case 'right':
-              G.tn.style.l1.label+='text-align:right;';
-            break;
-          case 'left':
-              G.tn.style.l1.label+='text-align:left;';
-            break;
-          default:
-              G.tn.style.l1.label+='text-align:center;';
-            break;
-        }
-        if( G.O.thumbnailL1Label.titleFontSize != undefined && G.O.thumbnailL1Label.titleFontSize != '' ) {
-          G.tn.style.l1.title+='font-size:'+G.O.thumbnailL1Label.titleFontSize+';';
-        }
-        if( G.O.thumbnailL1Label.descriptionFontSize != undefined && G.O.thumbnailL1Label.descriptionFontSize != '' ) {
-          G.tn.style.l1.desc+='font-size:'+G.O.thumbnailL1Label.titleFontSize+';';
-        }
+        // settings for level L1
+        ThumbnailStyle( G.O.thumbnailL1Label, 'l1');
       }
       
-      G.tn.borderWidth=G.O.thumbnailBorderHorizontal;
-      G.tn.borderHeight=G.O.thumbnailBorderVertical;
+      G.tn.borderWidth = G.O.thumbnailBorderHorizontal;
+      G.tn.borderHeight = G.O.thumbnailBorderVertical;
       
-      
-      // Retrieve info for level LN
-      // TODO: do this only for grid layout and label onBottom
-
-      // retrieve annotation (label+description) height -> now done on every gallery render for the most accurate value
-      // if( G.O.thumbnailLabel.get('position') == 'onBottom' ) {
-      //  G.GOM.curNavLevel='lN';
-      //  var lh=ThumbnailGetAnnotationHeight()
-      //  G.tn.labelHeight.lN= lh;
-      //  G.tn.labelHeight.l1= lh;
-      //  G.GOM.curNavLevel='l1';
-      //}
 
       // default thumbnail sizes levels l1 and lN
       var lst=['xs','sm','me','la','xl'];
       for( var i=0; i < lst.length; i++ ) {
-        var w=G.tn.settings.width['lN'][lst[i]];
+        var w=G.tn.settings.width.lN[lst[i]];
         if( w != 'auto' ) {
-          G.tn.defaultSize.width['lN'][lst[i]]=w;
-          G.tn.defaultSize.width['l1'][lst[i]]=w;
+          G.tn.defaultSize.width.lN[lst[i]]=w;
+          G.tn.defaultSize.width.l1[lst[i]]=w;
         }
         else {
-          var h=G.tn.settings.height['lN'][lst[i]];
-          G.tn.defaultSize.width['lN'][lst[i]]=h;      // dynamic width --> set height value as default for the width
-          G.tn.defaultSize.width['l1'][lst[i]]=h;      // dynamic width --> set height value as default
+          var h=G.tn.settings.height.lN[lst[i]];
+          G.tn.defaultSize.width.lN[lst[i]]=h;      // dynamic width --> set height value as default for the width
+          G.tn.defaultSize.width.l1[lst[i]]=h;      // dynamic width --> set height value as default
         }
       }
       for( var i=0; i < lst.length; i++ ) {
-        var h=G.tn.settings.height['lN'][lst[i]];
+        var h=G.tn.settings.height.lN[lst[i]];
         if( h != 'auto' ) {
           // grid or justified layout
-          G.tn.defaultSize.height['lN'][lst[i]]=h;  //+G.tn.labelHeight.get();
-          G.tn.defaultSize.height['l1'][lst[i]]=h;  //+G.tn.labelHeight.get();
+          G.tn.defaultSize.height.lN[lst[i]]=h;  //+G.tn.labelHeight.get();
+          G.tn.defaultSize.height.l1[lst[i]]=h;  //+G.tn.labelHeight.get();
         }
         else {
-          var w=G.tn.settings.width['lN'][lst[i]];
-          G.tn.defaultSize.height['lN'][lst[i]]=w;      // dynamic height --> set width value as default for the height
-          G.tn.defaultSize.height['l1'][lst[i]]=w;      // dynamic height --> set width value as default
+          var w=G.tn.settings.width.lN[lst[i]];
+          G.tn.defaultSize.height.lN[lst[i]]=w;      // dynamic height --> set width value as default for the height
+          G.tn.defaultSize.height.l1[lst[i]]=w;      // dynamic height --> set width value as default
         }
       }
 
-
-      // Retrieve info for level L1
-      // TODO: do this only for grid layout and label onBottom
-      // if( G.O.thumbnailLabel.get('position') == 'onBottom' ) {
-      //   G.GOM.curNavLevel='l1';
-      //   var lh=ThumbnailGetAnnotationHeight()
-      //   // G.tn.labelHeight.l1= $newDiv.find('.nGY2GThumbnailLabel').outerHeight(true);
-      //   G.tn.labelHeight.l1= lh;
-      // }
-      
-      
-      // default thumbnail sizes levels l1 and lN
-      var lst=['xs','sm','me','la','xl'];
+      // default thumbnail sizes levels l1
       for( var i=0; i< lst.length; i++ ) {
-        var w=G.tn.settings.width['l1'][lst[i]];
+        var w=G.tn.settings.width.l1[lst[i]];
         if( w != 'auto' ) {
-          G.tn.defaultSize.width['l1'][lst[i]]=w;
+          G.tn.defaultSize.width.l1[lst[i]]=w;
         }
         else {
-          var h=G.tn.settings.height['l1'][lst[i]];
-          G.tn.defaultSize.width['l1'][lst[i]]=h;      // dynamic width --> set height value as default
+          var h=G.tn.settings.height.l1[lst[i]];
+          G.tn.defaultSize.width.l1[lst[i]]=h;      // dynamic width --> set height value as default
         }
       }
       for( var i=0; i< lst.length; i++ ) {
-        var h=G.tn.settings.height['l1'][lst[i]];
+        var h=G.tn.settings.height.l1[lst[i]];
         if( h != 'auto' ) {
           // grid or justified layout
-          G.tn.defaultSize.height['l1'][lst[i]]=h;  //+G.tn.labelHeight.get();
+          G.tn.defaultSize.height.l1[lst[i]]=h;  //+G.tn.labelHeight.get();
         }
         else {
-          var w=G.tn.settings.width['l1'][lst[i]];
-          G.tn.defaultSize.height['l1'][lst[i]]=w;      // dynamic height --> set width value as default
+          var w=G.tn.settings.width.l1[lst[i]];
+          G.tn.defaultSize.height.l1[lst[i]]=w;      // dynamic height --> set width value as default
         }
       }
       
@@ -6789,13 +6659,14 @@ TODO:
       // thumbnails
       s+=s1+'.nGY2GThumbnail { background:'+cs.thumbnail.background+'; border-color:'+cs.thumbnail.borderColor+'; border-top-width:'+G.O.thumbnailBorderVertical+'px; border-right-width:'+G.O.thumbnailBorderHorizontal+'px; border-bottom-width:'+G.O.thumbnailBorderVertical+'px; border-left-width:'+G.O.thumbnailBorderHorizontal+'px;}'+'\n';
       s+=s1+'.nGY2GThumbnailStack { background:'+cs.thumbnail.stackBackground+'; }'+'\n';
-      s+=s1+'.nGY2GThumbnailImage { background:'+cs.thumbnail.background+'; background-image:'+cs.thumbnail.backgroundImage+'; }'+'\n';
+      // s+=s1+'.nGY2GThumbnailImage { background:'+cs.thumbnail.background+'; background-image:'+cs.thumbnail.backgroundImage+'; }'+'\n';
+      s+=s1+'.nGY2TnImgBack { background:'+cs.thumbnail.background+'; background-image:'+cs.thumbnail.backgroundImage+'; }'+'\n';
       s+=s1+'.nGY2GThumbnailAlbumUp { background:'+cs.thumbnail.background+'; background-image:'+cs.thumbnail.backgroundImage+'; color:'+cs.thumbnail.titleColor+'; }'+'\n';
       s+=s1+'.nGY2GThumbnailIconsFullThumbnail { color:'+cs.thumbnail.titleColor+'; }\n';
       s+=s1+'.nGY2GThumbnailLabel { background:'+cs.thumbnail.labelBackground+'; opacity:'+cs.thumbnail.labelOpacity+'; }'+'\n';
       s+=s1+'.nGY2GThumbnailImageTitle  { color:'+cs.thumbnail.titleColor+'; background-color:'+cs.thumbnail.titleBgColor+'; '+(cs.thumbnail.titleShadow =='' ? '': 'Text-Shadow:'+cs.thumbnail.titleShadow+';')+' }'+'\n';
       s+=s1+'.nGY2GThumbnailAlbumTitle { color:'+cs.thumbnail.titleColor+'; background-color:'+cs.thumbnail.titleBgColor+'; '+(cs.thumbnail.titleShadow =='' ? '': 'Text-Shadow:'+cs.thumbnail.titleShadow+';')+' }'+'\n';
-      s+=s1+'.nGY2GThumbnailDescription { color:'+cs.thumbnail.descriptionColor+'; backgound-color:'+cs.thumbnail.descriptionBgColor+'; '+(cs.thumbnail.descriptionShadow =='' ? '': 'Text-Shadow:'+cs.thumbnail.descriptionShadow+';')+' }'+'\n';
+      s+=s1+'.nGY2GThumbnailDescription { color:'+cs.thumbnail.descriptionColor+'; background-color:'+cs.thumbnail.descriptionBgColor+'; '+(cs.thumbnail.descriptionShadow =='' ? '': 'Text-Shadow:'+cs.thumbnail.descriptionShadow+';')+' }'+'\n';
 
       // thumbnails - icons
       s+=s1+'.nGY2GThumbnailIcons { padding:'+cs.thumbnailIcon.padding+'; }\n';
@@ -7223,7 +7094,7 @@ TODO:
             shareURL='http://www.tumblr.com/share/link?url='+currentURL+'&name='+currentTitle;
             break;
           case 'MAIL':
-            shareURL='mailto:?subject='+currentTitle;+'&body='+ currentURL;
+            shareURL = 'mailto:?subject=' + currentTitle + '&body=' + currentURL;
             break;
           default:
             found=false;
@@ -7254,12 +7125,12 @@ TODO:
       
       var tweenable = new NGTweenable();
       tweenable.tween({
-        from:       { o: 0 },
-        to:         { o: 1 },
+        from:       { opacity: 0 },
+        to:         { opacity: 1 },
         easing:     'easeInOutSine',
         duration:   250,
         step:       function (state, att) {
-          G.popup.$elt.css('opacity',state.o);
+          G.popup.$elt.css( state );
         }
       });
       
@@ -8056,7 +7927,7 @@ TODO:
         content+='<iframe width="300" height="150" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?&amp;t=m&amp;q='+encodeURIComponent( item.exif.location ) +'&amp;output=embed"></iframe>';  
       }
 
-      var $popup=Popup(G.O.icons.viewerInfo, content, 'Left');
+      Popup(G.O.icons.viewerInfo, content, 'Left');
     
     }
     
@@ -8593,32 +8464,32 @@ TODO:
       G.VOM.window.lastWidth=windowsW;
       G.VOM.window.lastHeight=windowsH;
 
-      var vwImgC_H=$elt.height(),
-      vwImgC_W=$elt.width(),
-      vwImgC_OHt=$elt.outerHeight(true),
-      vwImgC_OHf=$elt.outerHeight(false);
+      // var vwImgC_H=$elt.height(),
+      // vwImgC_W=$elt.width(),
+      // vwImgC_OHt=$elt.outerHeight(true),
+      // vwImgC_OHf=$elt.outerHeight(false);
 
       var $tb=G.VOM.$toolbar.find('.toolbar');
       var tb_OHt=$tb.outerHeight(true);
 
       switch( G.O.viewerToolbar.position ) {
         case 'topOverImage':
-          G.VOM.$content.css({height:windowsH, width:windowsW, top:0  });
-          G.VOM.$toolbar.css({top: 0, bottom:''});
+          G.VOM.$content.css({height: windowsH, width: windowsW, top: 0  });
+          G.VOM.$toolbar.css({top: 0, bottom: ''});
           break;
         case 'top':
-          windowsH-=tb_OHt;
-          G.VOM.$content.css({height:windowsH, width:windowsW, top:tb_OHt  });
+          windowsH -= tb_OHt;
+          G.VOM.$content.css({height: windowsH, width: windowsW, top: tb_OHt  });
           G.VOM.$toolbar.css({top: 0});
           break;
         case 'bottomOverImage':
-          G.VOM.$content.css({height:windowsH, width:windowsW, bottom:0, top:0  });
+          G.VOM.$content.css({height:windowsH, width: windowsW, bottom: 0, top: 0  });
           G.VOM.$toolbar.css({bottom: 0});
           break;
         case 'bottom':
         default:
-          windowsH-=tb_OHt;
-          G.VOM.$content.css({ width:windowsW, top:0, bottom:tb_OHt });
+          windowsH -= tb_OHt;
+          G.VOM.$content.css({ width: windowsW, top: 0, bottom: tb_OHt });
           G.VOM.$toolbar.css({bottom: 0});
           break;
       }
@@ -8715,7 +8586,6 @@ TODO:
           case 'rotateX':
           case 'rotateY':
           case 'translateX':
-          case 'translateY':
           case 'translateY':
             // handle some special cases
             if( effects[j].element == '.nGY2GThumbnail' ) {
@@ -8899,6 +8769,7 @@ TODO:
             ViewerToolsUnHide();
             switch( e.keyCode) {
               case 27:    // Escape key
+              case 40:    // DOWN
                 CloseInternalViewer(G.VOM.currItemIdx);
                 break;
               case 32:    // SPACE
@@ -8910,7 +8781,6 @@ TODO:
               case 33:    // PAGE UP
                 DisplayNextImage();
                 break;
-              case 40:    // DOWN
               case 37:    // LEFT
               case 34:    // PAGE DOWN
                 DisplayPreviousImage();
@@ -9074,8 +8944,9 @@ TODO:
         if( G.galleryResizeEventEnabled ) {
           var nw=RetrieveCurWidth();
           if( G.GOM.albumIdx != -1 && 
-                ( G.tn.settings.getH() != G.tn.settings.height[G.GOM.curNavLevel][nw] || 
-                G.tn.settings.getW() != G.tn.settings.width[G.GOM.curNavLevel][nw] ) ) {
+                ( G.tn.settings.height[G.GOM.curNavLevel][G.GOM.curWidth] != G.tn.settings.height[G.GOM.curNavLevel][nw] || 
+                G.tn.settings.width[G.GOM.curNavLevel][G.GOM.curWidth] != G.tn.settings.width[G.GOM.curNavLevel][nw] ) ) {
+                  // do not use settings.getH() / settings.getW()
             // thumbnail size changed --> render the gallery with the new sizes
             G.GOM.curWidth=nw;
             //G.layout.SetEngine();
@@ -9175,10 +9046,26 @@ TODO:
       return null;
     }
 
+    
+    
+    
     // #################
     // ##### TOOLS #####
     // #################
 
+    // clone a javascript object
+    function cloneJSObject( obj ) {
+      if (obj === null || typeof obj !== 'object') {
+        return obj;
+      }
+
+      var temp = obj.constructor(); // give temp the original obj's constructor
+      for (var key in obj) {
+          temp[key] = cloneJSObject(obj[key]);
+      }
+      return temp;
+    }
+    
     // get viewport coordinates and size
     function getViewport() {
       var $win = jQuery(window);
@@ -9212,8 +9099,8 @@ TODO:
     function inViewportVert( $elt, threshold ) {
       var wp=getViewport(),
       eltOS=$elt.offset(),
-      th=$elt.outerHeight(true),
-      tw=$elt.outerWidth(true);
+      th=$elt.outerHeight(true);
+      //var tw=$elt.outerWidth(true);
 
       if( wp.t == 0 && (eltOS.top) <= (wp.t+wp.h ) ) { return true; }
 
@@ -14344,16 +14231,27 @@ if (typeof define === 'function' && define.amd) {
       // Build the URL
       var url = G.O.dataProvider + '?albumID='+albumID;             // which album
       // all thumbnails sizes (for responsive display)
-      url += '&wxs=' + G.tn.settings.width[G.GOM.curNavLevel].xs;
-      url += '&hxs=' + G.tn.settings.height[G.GOM.curNavLevel].xs;
-      url += '&wsm=' + G.tn.settings.width[G.GOM.curNavLevel].sm;
-      url += '&hsm=' + G.tn.settings.height[G.GOM.curNavLevel].sm;
-      url += '&wme=' + G.tn.settings.width[G.GOM.curNavLevel].me;
-      url += '&hme=' + G.tn.settings.height[G.GOM.curNavLevel].me;
-      url += '&wla=' + G.tn.settings.width[G.GOM.curNavLevel].la;
-      url += '&hla=' + G.tn.settings.height[G.GOM.curNavLevel].la;
-      url += '&wxl=' + G.tn.settings.width[G.GOM.curNavLevel].xl;
-      url += '&hxl=' + G.tn.settings.height[G.GOM.curNavLevel].xl;
+      url += '&hxs=' + G.tn.settings.getH(G.GOM.curNavLevel, 'xs');
+      url += '&wxs=' + G.tn.settings.getW(G.GOM.curNavLevel, 'xs');
+      url += '&hsm=' + G.tn.settings.getH(G.GOM.curNavLevel, 'sm');
+      url += '&wsm=' + G.tn.settings.getW(G.GOM.curNavLevel, 'sm');
+      url += '&hme=' + G.tn.settings.getH(G.GOM.curNavLevel, 'me');
+      url += '&wme=' + G.tn.settings.getW(G.GOM.curNavLevel, 'me');
+      url += '&hla=' + G.tn.settings.getH(G.GOM.curNavLevel, 'la');
+      url += '&wla=' + G.tn.settings.getW(G.GOM.curNavLevel, 'la');
+      url += '&hxl=' + G.tn.settings.getH(G.GOM.curNavLevel, 'xl');
+      url += '&wxl=' + G.tn.settings.getW(G.GOM.curNavLevel, 'xl');
+
+      // url += '&wxs=' + G.tn.settings.width[G.GOM.curNavLevel].xs;
+      // url += '&hxs=' + G.tn.settings.height[G.GOM.curNavLevel].xs;
+      // url += '&wsm=' + G.tn.settings.width[G.GOM.curNavLevel].sm;
+      // url += '&hsm=' + G.tn.settings.height[G.GOM.curNavLevel].sm;
+      // url += '&wme=' + G.tn.settings.width[G.GOM.curNavLevel].me;
+      // url += '&hme=' + G.tn.settings.height[G.GOM.curNavLevel].me;
+      // url += '&wla=' + G.tn.settings.width[G.GOM.curNavLevel].la;
+      // url += '&hla=' + G.tn.settings.height[G.GOM.curNavLevel].la;
+      // url += '&wxl=' + G.tn.settings.width[G.GOM.curNavLevel].xl;
+      // url += '&hxl=' + G.tn.settings.height[G.GOM.curNavLevel].xl;
       
       PreloaderDisplay( true );
       jQuery.ajaxSetup({ cache: false });
@@ -14545,8 +14443,6 @@ if (typeof define === 'function' && define.amd) {
         break;
       case 'Init':
         Init();
-        break;
-      case '':
         break;
       case '':
         break;
@@ -14964,9 +14860,9 @@ if (typeof define === 'function' && define.amd) {
           if( G.tn.settings.width[level][sizes[i]] == 'auto' ) {
             if( gh < G.tn.settings.height[level][sizes[i]] ) {
               // calculate new h/w and change URL
-              var ratio=gw/gh;
-              tn.width[level][sizes[i]]=gw*ratio;
-              tn.height[level][sizes[i]]=gh*ratio;
+              var ratio1=gw/gh;
+              tn.width[level][sizes[i]]=gw*ratio1;
+              tn.height[level][sizes[i]]=gh*ratio1;
               var url=tn.url[level][sizes[i]].substring(0, tn.url[level][sizes[i]].lastIndexOf('/'));
               url=url.substring(0, url.lastIndexOf('/')) + '/';
               tn.url[level][sizes[i]]=url+'h'+G.tn.settings.height[level][sizes[i]]+'/';
@@ -14975,9 +14871,9 @@ if (typeof define === 'function' && define.amd) {
           if( G.tn.settings.height[level][sizes[i]] == 'auto' ) {
             if( gw < G.tn.settings.width[level][sizes[i]] ) {
               // calculate new h/w and change URL
-              var ratio=gh/gw;
-              tn.height[level][sizes[i]]=gh*ratio;
-              tn.width[level][sizes[i]]=gw*ratio;
+              var ratio2=gh/gw;
+              tn.height[level][sizes[i]]=gh*ratio2;
+              tn.width[level][sizes[i]]=gw*ratio2;
               var url=tn.url[level][sizes[i]].substring(0, tn.url[level][sizes[i]].lastIndexOf('/'));
               url=url.substring(0, url.lastIndexOf('/')) + '/';
               tn.url[level][sizes[i]]=url+'w'+G.tn.settings.width[level][sizes[i]]+'/';
@@ -15027,19 +14923,21 @@ if (typeof define === 'function' && define.amd) {
         sfLN=G.O.thumbnailCropScaleFactor;
       }
 
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.xs*sfL1, G.tn.settings.height.l1.xs*sfL1, G.tn.settings.width.l1.xsc, G.tn.settings.height.l1.xsc );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.sm*sfL1, G.tn.settings.height.l1.sm*sfL1, G.tn.settings.width.l1.smc, G.tn.settings.height.l1.smc );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.me*sfL1, G.tn.settings.height.l1.me*sfL1, G.tn.settings.width.l1.mec, G.tn.settings.height.l1.mec );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.la*sfL1, G.tn.settings.height.l1.la*sfL1, G.tn.settings.width.l1.lac, G.tn.settings.height.l1.lac );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.xl*sfL1, G.tn.settings.height.l1.xl*sfL1, G.tn.settings.width.l1.xlc, G.tn.settings.height.l1.xlc );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.xs*sfLN, G.tn.settings.height.lN.xs*sfLN, G.tn.settings.width.lN.xsc, G.tn.settings.height.lN.xsc );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.sm*sfLN, G.tn.settings.height.lN.sm*sfLN, G.tn.settings.width.lN.smc, G.tn.settings.height.lN.smc );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.me*sfLN, G.tn.settings.height.lN.me*sfLN, G.tn.settings.width.lN.mec, G.tn.settings.height.lN.mec );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.la*sfLN, G.tn.settings.height.lN.la*sfLN, G.tn.settings.width.lN.lac, G.tn.settings.height.lN.lac );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.xl*sfLN, G.tn.settings.height.lN.xl*sfLN, G.tn.settings.width.lN.xlc, G.tn.settings.height.lN.xlc );
+      var st=G.tn.settings;
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.l1.xs*sfL1*st.mosaic.l1Factor.w.xs, st.height.l1.xs*sfL1*st.mosaic.l1Factor.h.xs, st.width.l1.xsc, st.height.l1.xsc );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.l1.sm*sfL1*st.mosaic.l1Factor.w.sm, st.height.l1.sm*sfL1*st.mosaic.l1Factor.h.sm, st.width.l1.smc, st.height.l1.smc );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.l1.me*sfL1*st.mosaic.l1Factor.w.me, st.height.l1.me*sfL1*st.mosaic.l1Factor.h.me, st.width.l1.mec, st.height.l1.mec );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.l1.la*sfL1*st.mosaic.l1Factor.w.la, st.height.l1.la*sfL1*st.mosaic.l1Factor.h.la, st.width.l1.lac, st.height.l1.lac );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.l1.xl*sfL1*st.mosaic.l1Factor.w.xl, st.height.l1.xl*sfL1*st.mosaic.l1Factor.h.xl, st.width.l1.xlc, st.height.l1.xlc );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.lN.xs*sfLN*st.mosaic.lNFactor.w.xs, st.height.lN.xs*sfLN*st.mosaic.lNFactor.h.xs, st.width.lN.xsc, st.height.lN.xsc );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.lN.sm*sfLN*st.mosaic.lNFactor.w.sm, st.height.lN.sm*sfLN*st.mosaic.lNFactor.h.sm, st.width.lN.smc, st.height.lN.smc );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.lN.me*sfLN*st.mosaic.lNFactor.w.me, st.height.lN.me*sfLN*st.mosaic.lNFactor.h.me, st.width.lN.mec, st.height.lN.mec );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.lN.la*sfLN*st.mosaic.lNFactor.w.la, st.height.lN.la*sfLN*st.mosaic.lNFactor.h.la, st.width.lN.lac, st.height.lN.lac );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.lN.xl*sfLN*st.mosaic.lNFactor.w.xl, st.height.lN.xl*sfLN*st.mosaic.lNFactor.h.xl, st.width.lN.xlc, st.height.lN.xlc );
     }
     
     function GoogleAddOneThumbSize(thumbSizes, v1, v2, c1, c2 ) {
+    
       var v = Math.ceil( v2 * G.tn.scale ) + c2;
       // if( v1 == 'auto' ) {
       if( isNaN(v1) ) {
@@ -15072,20 +14970,18 @@ if (typeof define === 'function' && define.amd) {
     switch( fnName ){
       case 'GetHiddenAlbums':
         var hiddenAlbums = arguments[2],
-        callback = arguments[3];
-        GetHiddenAlbums(hiddenAlbums, callback);
+        callback1 = arguments[3];
+        GetHiddenAlbums(hiddenAlbums, callback1);
         break;
       case 'AlbumGetContent':
         var albumID = arguments[2],
-        callback = arguments[3],
+        callback2 = arguments[3],
         cbParam1 = arguments[4],
         cbParam2 = arguments[5];
-        AlbumGetContent(albumID, callback, cbParam1, cbParam2);
+        AlbumGetContent(albumID, callback2, cbParam1, cbParam2);
         break;
       case 'Init':
         Init();
-        break;
-      case '':
         break;
       case '':
         break;
@@ -15258,6 +15154,8 @@ if (typeof define === 'function' && define.amd) {
 
         var itemID = item.id;
 
+        var imgUrl=item.url_sq;  //fallback size
+
         // get the title
         var itemTitle = item.title;
         if( G.O.thumbnailLabel.get('title') != '' ) {
@@ -15267,12 +15165,11 @@ if (typeof define === 'function' && define.amd) {
         // get the description
         var itemDescription=item.description._content;
         
-        // retrieve the image size with highest ravailable esolution
-        var imgUrl=item.url_sq;  //fallback size
+        // retrieve the image size with highest available resolution
         var imgW=75, imgH=75;
         var start=Flickr.photoAvailableSizesStr.length-1;
         if( G.O.flickrSkipOriginal ) { start--; }
-        for(var i = start; i>=0 ; i-- ) {
+        for( var i = start; i>=0 ; i-- ) {
           if( item['url_'+Flickr.photoAvailableSizesStr[i]] != undefined ) {
             imgUrl=item['url_'+Flickr.photoAvailableSizesStr[i]];
             imgW=parseInt(item['width_'+Flickr.photoAvailableSizesStr[i]]);
@@ -15282,7 +15179,7 @@ if (typeof define === 'function' && define.amd) {
         }
 
         var sizes = {};
-        for (var p in item) {
+        for( var p in item ) {
           if( p.indexOf('height_') == 0 || p.indexOf('width_') == 0 || p.indexOf('url_') == 0 ) {
             sizes[p]=item[p];
           }
@@ -15335,7 +15232,7 @@ if (typeof define === 'function' && define.amd) {
           var itemDescription = item.description._content != undefined ? item.description._content : '';
 
           var sizes = {};
-          for (var p in item.primary_photo_extras) {
+          for( var p in item.primary_photo_extras) {
             sizes[p]=item.primary_photo_extras[p];
           }
           var tags='';
@@ -15373,10 +15270,10 @@ if (typeof define === 'function' && define.amd) {
     
     
       var sizes=['xs','sm','me','la','xl'];
-      for(var i=0; i<sizes.length; i++ ) {
+      for( var i=0; i<sizes.length; i++ ) {
         if( G.tn.settings.width[level][sizes[i]] == 'auto' || G.tn.settings.width[level][sizes[i]] == '' ) {
           var sdir='height_';
-          var tsize=Math.ceil(G.tn.settings.height[level][sizes[i]]*G.tn.scale*sf);
+          var tsize=Math.ceil( G.tn.settings.height[level][sizes[i]] * G.tn.scale * sf * G.tn.settings.mosaic[level+'Factor']['h'][sizes[i]] );
           var one=FlickrRetrieveOneImage(sdir, tsize, item );
           tn.url[level][sizes[i]]=one.url;
           tn.width[level][sizes[i]]=one.width;
@@ -15385,7 +15282,7 @@ if (typeof define === 'function' && define.amd) {
         else 
           if( G.tn.settings.height[level][sizes[i]] == 'auto' || G.tn.settings.height[level][sizes[i]] == '' ) {
             var sdir='width_';
-            var tsize=Math.ceil(G.tn.settings.width[level][sizes[i]]*G.tn.scale*sf);
+            var tsize=Math.ceil( G.tn.settings.width[level][sizes[i]] * G.tn.scale * sf * G.tn.settings.mosaic[level+'Factor']['w'][sizes[i]] );
             var one=FlickrRetrieveOneImage(sdir, tsize, item );
             tn.url[level][sizes[i]]=one.url;
             tn.width[level][sizes[i]]=one.width;
@@ -15393,10 +15290,10 @@ if (typeof define === 'function' && define.amd) {
           }
           else {
             var sdir='height_';
-            var tsize=Math.ceil(G.tn.settings.height[level][sizes[i]]*G.tn.scale*sf);
+            var tsize=Math.ceil( G.tn.settings.height[level][sizes[i]] * G.tn.scale * sf * G.tn.settings.mosaic[level+'Factor']['h'][sizes[i]] );
             if( G.tn.settings.width[level][sizes[i]] > G.tn.settings.height[level][sizes[i]] ) {
               sdir='width_';
-              tsize=Math.ceil(G.tn.settings.width[level][sizes[i]]*G.tn.scale*sf);
+              tsize=Math.ceil( G.tn.settings.width[level][sizes[i]] * G.tn.scale * sf * G.tn.settings.mosaic[level+'Factor']['w'][sizes[i]] );
             }
             var one=FlickrRetrieveOneImage(sdir, tsize, item );
             tn.url[level][sizes[i]]=one.url;
@@ -15410,7 +15307,7 @@ if (typeof define === 'function' && define.amd) {
     function FlickrRetrieveOneImage(sdir, tsize, item ) {
       var one={ url: '', width: 0, height: 0 };
       var tnIndex=0;
-      for(var j=0; j < Flickr.thumbAvailableSizes.length; j++ ) {
+      for( var j=0; j < Flickr.thumbAvailableSizes.length; j++ ) {
         var size=item[sdir+Flickr.photoAvailableSizesStr[j]];
         if( size != undefined ) {
           tnIndex=j;
@@ -15447,24 +15344,6 @@ if (typeof define === 'function' && define.amd) {
     var FilterAlbumName = NGY2Tools.FilterAlbumName.bind(G);
     var AlbumPostProcess = NGY2Tools.AlbumPostProcess.bind(G);
 
-    // Flickr image sizes
-    // var sizeImageMax=Math.max(window.screen.width, window.screen.height);
-    // if( window.devicePixelRatio != undefined ) {
-    //  if( window.devicePixelRatio > 1 ) {
-    //    sizeImageMax=sizeImageMax*window.devicePixelRatio;
-    //  }
-    //}
-    // if( !G.O.flickrSkipOriginal ) {
-    //  Flickr.photoAvailableSizes.push(10000);
-    //  Flickr.photoAvailableSizesStr.push('o');
-    //}
-    // for( i=0; i<Flickr.photoAvailableSizes.length; i++) {
-    //  Flickr.photoSize=i; //Flickr.photoAvailableSizesStr[i];
-    //  if( sizeImageMax <= Flickr.photoAvailableSizes[i] ) {
-    //    break;
-    //  }
-    //}
-
     switch( fnName ){
       case 'GetHiddenAlbums':
         var hiddenAlbums = arguments[2],
@@ -15480,8 +15359,6 @@ if (typeof define === 'function' && define.amd) {
         break;
       case 'Init':
         Init();
-        break;
-      case '':
         break;
       case '':
         break;

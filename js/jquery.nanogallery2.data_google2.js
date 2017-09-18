@@ -401,9 +401,9 @@
           if( G.tn.settings.width[level][sizes[i]] == 'auto' ) {
             if( gh < G.tn.settings.height[level][sizes[i]] ) {
               // calculate new h/w and change URL
-              var ratio=gw/gh;
-              tn.width[level][sizes[i]]=gw*ratio;
-              tn.height[level][sizes[i]]=gh*ratio;
+              var ratio1=gw/gh;
+              tn.width[level][sizes[i]]=gw*ratio1;
+              tn.height[level][sizes[i]]=gh*ratio1;
               var url=tn.url[level][sizes[i]].substring(0, tn.url[level][sizes[i]].lastIndexOf('/'));
               url=url.substring(0, url.lastIndexOf('/')) + '/';
               tn.url[level][sizes[i]]=url+'h'+G.tn.settings.height[level][sizes[i]]+'/';
@@ -412,9 +412,9 @@
           if( G.tn.settings.height[level][sizes[i]] == 'auto' ) {
             if( gw < G.tn.settings.width[level][sizes[i]] ) {
               // calculate new h/w and change URL
-              var ratio=gh/gw;
-              tn.height[level][sizes[i]]=gh*ratio;
-              tn.width[level][sizes[i]]=gw*ratio;
+              var ratio2=gh/gw;
+              tn.height[level][sizes[i]]=gh*ratio2;
+              tn.width[level][sizes[i]]=gw*ratio2;
               var url=tn.url[level][sizes[i]].substring(0, tn.url[level][sizes[i]].lastIndexOf('/'));
               url=url.substring(0, url.lastIndexOf('/')) + '/';
               tn.url[level][sizes[i]]=url+'w'+G.tn.settings.width[level][sizes[i]]+'/';
@@ -464,19 +464,21 @@
         sfLN=G.O.thumbnailCropScaleFactor;
       }
 
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.xs*sfL1, G.tn.settings.height.l1.xs*sfL1, G.tn.settings.width.l1.xsc, G.tn.settings.height.l1.xsc );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.sm*sfL1, G.tn.settings.height.l1.sm*sfL1, G.tn.settings.width.l1.smc, G.tn.settings.height.l1.smc );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.me*sfL1, G.tn.settings.height.l1.me*sfL1, G.tn.settings.width.l1.mec, G.tn.settings.height.l1.mec );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.la*sfL1, G.tn.settings.height.l1.la*sfL1, G.tn.settings.width.l1.lac, G.tn.settings.height.l1.lac );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.xl*sfL1, G.tn.settings.height.l1.xl*sfL1, G.tn.settings.width.l1.xlc, G.tn.settings.height.l1.xlc );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.xs*sfLN, G.tn.settings.height.lN.xs*sfLN, G.tn.settings.width.lN.xsc, G.tn.settings.height.lN.xsc );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.sm*sfLN, G.tn.settings.height.lN.sm*sfLN, G.tn.settings.width.lN.smc, G.tn.settings.height.lN.smc );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.me*sfLN, G.tn.settings.height.lN.me*sfLN, G.tn.settings.width.lN.mec, G.tn.settings.height.lN.mec );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.la*sfLN, G.tn.settings.height.lN.la*sfLN, G.tn.settings.width.lN.lac, G.tn.settings.height.lN.lac );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.xl*sfLN, G.tn.settings.height.lN.xl*sfLN, G.tn.settings.width.lN.xlc, G.tn.settings.height.lN.xlc );
+      var st=G.tn.settings;
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.l1.xs*sfL1*st.mosaic.l1Factor.w.xs, st.height.l1.xs*sfL1*st.mosaic.l1Factor.h.xs, st.width.l1.xsc, st.height.l1.xsc );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.l1.sm*sfL1*st.mosaic.l1Factor.w.sm, st.height.l1.sm*sfL1*st.mosaic.l1Factor.h.sm, st.width.l1.smc, st.height.l1.smc );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.l1.me*sfL1*st.mosaic.l1Factor.w.me, st.height.l1.me*sfL1*st.mosaic.l1Factor.h.me, st.width.l1.mec, st.height.l1.mec );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.l1.la*sfL1*st.mosaic.l1Factor.w.la, st.height.l1.la*sfL1*st.mosaic.l1Factor.h.la, st.width.l1.lac, st.height.l1.lac );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.l1.xl*sfL1*st.mosaic.l1Factor.w.xl, st.height.l1.xl*sfL1*st.mosaic.l1Factor.h.xl, st.width.l1.xlc, st.height.l1.xlc );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.lN.xs*sfLN*st.mosaic.lNFactor.w.xs, st.height.lN.xs*sfLN*st.mosaic.lNFactor.h.xs, st.width.lN.xsc, st.height.lN.xsc );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.lN.sm*sfLN*st.mosaic.lNFactor.w.sm, st.height.lN.sm*sfLN*st.mosaic.lNFactor.h.sm, st.width.lN.smc, st.height.lN.smc );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.lN.me*sfLN*st.mosaic.lNFactor.w.me, st.height.lN.me*sfLN*st.mosaic.lNFactor.h.me, st.width.lN.mec, st.height.lN.mec );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.lN.la*sfLN*st.mosaic.lNFactor.w.la, st.height.lN.la*sfLN*st.mosaic.lNFactor.h.la, st.width.lN.lac, st.height.lN.lac );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.lN.xl*sfLN*st.mosaic.lNFactor.w.xl, st.height.lN.xl*sfLN*st.mosaic.lNFactor.h.xl, st.width.lN.xlc, st.height.lN.xlc );
     }
     
     function GoogleAddOneThumbSize(thumbSizes, v1, v2, c1, c2 ) {
+    
       var v = Math.ceil( v2 * G.tn.scale ) + c2;
       // if( v1 == 'auto' ) {
       if( isNaN(v1) ) {
@@ -509,20 +511,18 @@
     switch( fnName ){
       case 'GetHiddenAlbums':
         var hiddenAlbums = arguments[2],
-        callback = arguments[3];
-        GetHiddenAlbums(hiddenAlbums, callback);
+        callback1 = arguments[3];
+        GetHiddenAlbums(hiddenAlbums, callback1);
         break;
       case 'AlbumGetContent':
         var albumID = arguments[2],
-        callback = arguments[3],
+        callback2 = arguments[3],
         cbParam1 = arguments[4],
         cbParam2 = arguments[5];
-        AlbumGetContent(albumID, callback, cbParam1, cbParam2);
+        AlbumGetContent(albumID, callback2, cbParam1, cbParam2);
         break;
       case 'Init':
         Init();
-        break;
-      case '':
         break;
       case '':
         break;

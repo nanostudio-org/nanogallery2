@@ -30,16 +30,27 @@
       // Build the URL
       var url = G.O.dataProvider + '?albumID='+albumID;             // which album
       // all thumbnails sizes (for responsive display)
-      url += '&wxs=' + G.tn.settings.width[G.GOM.curNavLevel].xs;
-      url += '&hxs=' + G.tn.settings.height[G.GOM.curNavLevel].xs;
-      url += '&wsm=' + G.tn.settings.width[G.GOM.curNavLevel].sm;
-      url += '&hsm=' + G.tn.settings.height[G.GOM.curNavLevel].sm;
-      url += '&wme=' + G.tn.settings.width[G.GOM.curNavLevel].me;
-      url += '&hme=' + G.tn.settings.height[G.GOM.curNavLevel].me;
-      url += '&wla=' + G.tn.settings.width[G.GOM.curNavLevel].la;
-      url += '&hla=' + G.tn.settings.height[G.GOM.curNavLevel].la;
-      url += '&wxl=' + G.tn.settings.width[G.GOM.curNavLevel].xl;
-      url += '&hxl=' + G.tn.settings.height[G.GOM.curNavLevel].xl;
+      url += '&hxs=' + G.tn.settings.getH(G.GOM.curNavLevel, 'xs');
+      url += '&wxs=' + G.tn.settings.getW(G.GOM.curNavLevel, 'xs');
+      url += '&hsm=' + G.tn.settings.getH(G.GOM.curNavLevel, 'sm');
+      url += '&wsm=' + G.tn.settings.getW(G.GOM.curNavLevel, 'sm');
+      url += '&hme=' + G.tn.settings.getH(G.GOM.curNavLevel, 'me');
+      url += '&wme=' + G.tn.settings.getW(G.GOM.curNavLevel, 'me');
+      url += '&hla=' + G.tn.settings.getH(G.GOM.curNavLevel, 'la');
+      url += '&wla=' + G.tn.settings.getW(G.GOM.curNavLevel, 'la');
+      url += '&hxl=' + G.tn.settings.getH(G.GOM.curNavLevel, 'xl');
+      url += '&wxl=' + G.tn.settings.getW(G.GOM.curNavLevel, 'xl');
+
+      // url += '&wxs=' + G.tn.settings.width[G.GOM.curNavLevel].xs;
+      // url += '&hxs=' + G.tn.settings.height[G.GOM.curNavLevel].xs;
+      // url += '&wsm=' + G.tn.settings.width[G.GOM.curNavLevel].sm;
+      // url += '&hsm=' + G.tn.settings.height[G.GOM.curNavLevel].sm;
+      // url += '&wme=' + G.tn.settings.width[G.GOM.curNavLevel].me;
+      // url += '&hme=' + G.tn.settings.height[G.GOM.curNavLevel].me;
+      // url += '&wla=' + G.tn.settings.width[G.GOM.curNavLevel].la;
+      // url += '&hla=' + G.tn.settings.height[G.GOM.curNavLevel].la;
+      // url += '&wxl=' + G.tn.settings.width[G.GOM.curNavLevel].xl;
+      // url += '&hxl=' + G.tn.settings.height[G.GOM.curNavLevel].xl;
       
       PreloaderDisplay( true );
       jQuery.ajaxSetup({ cache: false });
@@ -231,8 +242,6 @@
         break;
       case 'Init':
         Init();
-        break;
-      case '':
         break;
       case '':
         break;
