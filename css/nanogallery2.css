@@ -325,7 +325,7 @@
   background:rgba(34, 34, 34, 0.75); /*#222;*/
   /* top: 0; bottom: 0; left: 0; right: 0; */
   left: 0; right: 0;
-  padding: 0;
+  padding: 4px;
   margin: 0;
 	position: absolute;
 	box-sizing: border-box;
@@ -337,8 +337,8 @@
 .nGY2 .nGY2GThumbnailImageTitle,
 .nGY2 .nGY2GThumbnailAlbumTitle {
 	color:#fff;
-	margin: 3px 1px 1px 1px;
-  padding: 0px 4px;
+	margin: 5px 1px 1px 1px;
+  padding: 0px 0px;
   left: 0; right: 0;
   white-space: nowrap;
 	overflow:hidden;
@@ -353,7 +353,7 @@
 .nGY2 .nGY2GThumbnailDescription {
 	clear:both;
 	margin: 1px 1px 3px 1px;
-  padding: 0px 4px;
+  padding: 0px;
 	color:#aaa;
   white-space: nowrap;
   left: 0; right: 0;
