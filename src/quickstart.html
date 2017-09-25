@@ -99,10 +99,19 @@
       
       
       <h3>1 <i class="fa fa-arrow-right" aria-hidden="true"></i>  Get the script</h3>
-      <p>
-          - download it from <a href="https://github.com/nanostudio-org/nanogallery2/releases">Github</a><br>
-          - or use npmjs: <code>npm install nanogallery2</code>
-      </p>
+      <blockquote>
+        <ul>
+          <li>
+            download it from <a href="https://github.com/nanostudio-org/nanogallery2/releases">Github</a><br>
+          </li>
+          <li>
+            or use npmjs: <code>npm install nanogallery2</code>
+          </li>
+          <li>
+            or use the <b>CDN</b> version: <a href="https://unpkg.com/nanogallery2/dist/"><code>https://unpkg.com/nanogallery2/dist/</code></a>
+          </li>
+        </ul>
+      </blockquote>
       
       <br><br><br>
 
@@ -160,14 +169,14 @@
       <p>No javascript required. Options are configured with the <code>data-nanogallery2</code> attribute</p>
       <pre><code class="language-markup">
         &lt;body&gt;
-          &lt;div id="nanogallery2" data-nanogallery2='{
+          &lt;div id="nanogallery2" data-nanogallery2 = '{
                   "thumbnailHeight":  150,
                   "thumbnailWidth":   150,
                   "itemsBaseURL":     "http://nanogallery2.nanostudio.org/samples/"
                 }' &gt;
             &lt;a href="berlin1.jpg" data-ngThumb="berlin1_t.jpg"> Berlin 1 &lt;/a&gt;
-            &lt;a href="berlin2.jpg" data-ngThumb="berlin1_t.jpg"> Berlin 2 &lt;/a&gt;
-            &lt;a href="berlin3.jpg" data-ngThumb="berlin1_t.jpg"> Berlin 3 &lt;/a&gt;
+            &lt;a href="berlin2.jpg" data-ngThumb="berlin2_t.jpg"> Berlin 2 &lt;/a&gt;
+            &lt;a href="berlin3.jpg" data-ngThumb="berlin2_t.jpg"> Berlin 3 &lt;/a&gt;
           &lt;/div&gt;
         &lt;/body&gt;
       </code></pre>
@@ -200,3 +209,6 @@
         &lt;/body&gt;
       </code></pre>
     </div>
+
+    
+  </div>
