@@ -3,119 +3,367 @@
   <div class="col-md-10">
 
     <br><br>
-    <h1 id="ngy2_intro">nanogallery2 documentation - reference guide</h1>
+    <h1 id="ngy2_intro">nanogallery2 documentation</h1>
     <br><br><br>
+
+
+
+    <div id="ngy2_concepts"></div>
+    <br><br><br><br><br><br><br>
+    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> Some concepts</h3>
+    <hr>
+    <blockquote>
+      Basically, to build a gallery, you need to use some content and to define a layout.
+    </blockquote>
+    <br>
+    <h4 style="text-decoration: underline;">1. Gallery content</h4>
+    <p>
+      A gallery is made of items which are composed of an image and/or a thumbnail image, and optional meta-data (title, description, location, exif data, etc.).
+      <br>
+      List all items with their meta-data in you HTML page. Or, use a data provider to automatically fetch your content to the gallery.
+      <br>
+      Full usage description is available on the <a href="datasource.html"><b>content source</b></a> page.
+
+    </p>
+    <ul>
+      <li>
+        <h5><b>Self hosted images</b></h5>
+        Items are defined in your HTML page.
+        <br>
+        Example:
+        <pre>
+          &lt;div id="my_nanogallery2" data-nanogallery2&gt;
+            &lt;a href="img_01.jpg" data-ngthumb="img_01t.jpg" &gt;Title Image1&lt;/a&gt;
+            &lt;a href="img_02.jpg" data-ngthumb="img_02t.jpg" &gt;Title Image2&lt;/a&gt;
+            &lt;a href="img_03.jpg" data-ngthumb="img_03t.jpg" &gt;Title Image3&lt;/a&gt;
+            ...
+          &lt;/div&gt;
+        </pre>
+        <br>
+      </li>
+      
+      <li>
+        <h5><b>Self hosted images with module nanoPhotosProvider2</b></h5>
+        nanoPhotosProvider2 is a PHP application for your webserver.
+        <br>
+        In your page, just point nanogallery2 to your webserver to automatically get all images stored there.
+        <br>
+        Usage example:
+        <pre>
+          &lt;div id="nanogallery2" data-nanogallery2='{
+              "kind":             "nano_photos_provider2",
+              "dataProvider":     "http://mywebsever.com/mypath/nano_photos_provider2/nano_photos_provider2.php",
+              "thumbnailHeight":  150,
+              "thumbnailWidth":   150
+            }'>      
+          &lt;/div>
+        </pre>
+        <br>
+      </li>
+      
+      <li>
+        <h5><b>Modules for cloud storage</b></h5>
+        Optional modules exist to fetch images from Flickr or Google Photos.
+       <br>
+      </li>
+      
+    </ul>
+
+      
     <br><br><br>
+    <h4 style="text-decoration: underline;">2. Gallery layout</h4>
+    <p class="lead">
+    <!-- 4 basic layouts are available: grid, justified, cascading and mosaic. -->
+    3 basic layouts are available: grid, justified and cascading.
+    </p>
+        
+    <ul>
+      <li>
+        <h5><b>Grid layout</b></h5>
+        <div class="row">
+          <div class="col-md-6">
+            All thumbnails have the same size. Define the height and the width of the thumbnails. Images may be cropped to fit the thumbnail.
+            <br><br>
+            Example:
+            <br><br>
+            <code>thumbnailWidth: 300, thumbnailHeight: 200</code>
+          </div>
+          <div class="col-md-6 text-center">
+            <img src="img/ngy2_2_layout_grid.png" style="max-width:70%">
+          </div>
+        </div>
+        <hr>
+      </li>
+      
+      <li>
+        <h5><b>Justified layout</b></h5>
+        <div class="row">
+          <div class="col-md-6">
+            The width of the thumbnail is calculated to respect the image ratio. There's no cropping and no reordering.
+            <br>
+            Set the special value <code>'auto'</code> to <code>thumbnailWidth</code>
+            <br><br>
+            Example:
+            <br><br>
+            <code>thumbnailWidth: <b>'auto'</b>, thumbnailHeight: 200</code>
+          </div>
+          <div class="col-md-6 text-center">
+            <img src="img/ngy2_2_layout_justified.png" style="max-width:70%">
+          </div>
+        </div>
+        <hr>
+       </li>
+       
+       <li>
+        <h5><b>Cascading layout</b></h5>
+        <div class="row">
+          <div class="col-md-6">
+            Sometimes also called masonry layout. This layout is column based. Image aspect ratio is conserved, with no cropping.
+            <br>
+            Set the special value <code>'auto'</code> to <code>thumbnailHeight</code>
+            <br><br>
+            Example:
+            <br><br>
+            <code>thumbnailWidth: 300, thumbnailHeight: <b>'auto'</b></code>
+          </div>
+          <div class="col-md-6 text-center">
+            <img src="img/ngy2_2_layout_cascading.png" style="max-width:70%">
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            The cascading layout may be enhanced by applying a grid with the option <code>thumbnailBaseGridHeight</code>.
+            <br><br>
+            Example:
+            <br><br>
+            <code>
+              thumbnailWidth: 300, thumbnailHeight: <b>'auto'</b>, <br>
+              thumbnailBaseGridHeight: 100
+              </code>
+          </div>
+          <div class="col-md-6 text-center">
+            <img src="img/ngy2_2_layout_cascading2.png" style="max-width:70%">
+          </div>
+        </div>
+        <hr>
+      </li>
+      
+      <!--
+      <li>
+        <h5><b>Mosaic layout</b></h5>
+        <div class="row">
+          <div class="col-md-6">
+            Enables full control of the layout.
+            The layout is not computed but it is based on patterns. Images may be cropped to fit the thumbnail. Thumbnails can overlap another.
+            <br>
+            To use it, set the base thumbnail width and height, and define a pattern for position and real thumbnail size.
+            <br>
+            Gallery will be scaled down to fit its container's width if necessary.
+            <br><br>
+            Example:
+            <br><br>
+            <pre>
+      thumbnailHeight: '200', thumbnailWidth: '200',
+      galleryMosaic : [
+          { c: 1, r: 1, w: 2, h: 2 },
+          { c: 3, r: 1, w: 1, h: 1 },
+          { c: 3, r: 2, w: 1, h: 1 },
+          { c: 1, r: 3, w: 1, h: 1 },
+          { c: 3, r: 3, w: 2, h: 1 }
+      ]
+            </pre>
+            Properties <code>c</code> and <code>r</code> define the position of the thumbnail (column number and row number).
+            <br>
+            Properties <code>w</code> and <code>h</code> define the size of the thumbnail (width and height multiplicator).
+          </div>
+          <div class="col-md-6 text-center">
+            <img src="img/ngy2_2_layout_mosaic.png" style="max-width:70%">
+          </div>
+        </div>
+        <hr>
+      </li>
+      -->
+      
+      <br><br>
+      <li>
+        <h5><b>More about gallery layout</b></h5>
+        The gallery layout can be tuned with more settings:
+        <br>
+        - Thumbnail border size: <code>thumbnailBorderHorizontal</code>, <code>thumbnailBorderVertical</code>
+        <br>
+        - Gutter space between thumbnails:  <code>thumbnailGutterWidth</code>, <code>thumbnailGutterHeight</code>
+        <br>
+        - Thumbnail alignement is configured with the option <code>thumbnailAlignment</code>.
+
+      </li>
+    </ul>
+    
+    
+    
+    
+    <div id="ngy2_gesture"></div>
+    <br><br><br><br><br><br><br>
+    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> Gesture and touch actions</h3>
+    <hr>
+    <blockquote>
+      Standard gesture actions are supported to control the gallery and the lightbox.
+    </blockquote>
+    <br>
+    <h4 style="text-decoration: underline;">1. Gallery touch actions</h4>
+    <br>
+    <div class="row">
+      <div class="col-md-6 text-center">
+        <b>Open image in lightbox</b>
+        <div class="row">
+          <div class="col-md-6 text-center">
+            <img src="img/gesture_tap.png"> + 
+            <img src="img/gesture_tap.png">
+            <br>
+            Tap twice
+            <br><br>
+            The hover animation is fired on first tap.
+            <br>
+            Image is displayed in lightbox on second one.
+            <br>
+            This is the default behaviour.
+          </div>
+          <div class="col-md-6 text-center">
+            <img src="img/gesture_tap.png">
+            <br>
+            Single tap
+            <br><br>
+            The hover animation is fired on tap, and after a defined delay, the image is automatically displayed in the lightbox.
+            <br>
+            Use the option <code>touchAutoOpenDelay</code> to enable this behaviour.
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 text-center">
+        <b>Switch to next/previous page</b>
+        <br>
+        <img src="img/gesture_pan_hor.png">
+        <br>
+        Horizontal swipe
+        <br><br>
+        Switch to next/previous gallery page, when option <code>galleryDisplayMode: 'pagination'</code>
+      </div>
+    </div>
+    
+    <br><br>
+    <h4 style="text-decoration: underline;">2. Lightbox touch actions</h4>
+    <br>
+    <div class="row">
+      <div class="col-md-4 text-center">
+        <b>Switch to another image</b>
+        <div class="row">
+          <div class="col-md-6 text-center">
+            <img src="img/gesture_pan_hor.png">
+            <br>
+            Horizontal swipe
+          </div>
+          <div class="col-md-6 text-center">
+            <img src="img/gesture_tap.png">
+            <br>
+            Tap left/right image side
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 text-center">
+        <b>Zoom</b>
+        <div class="row">
+          <div class="col-md-4 text-center">
+            <img src="img/gesture_pinch.png">
+            <br>
+            Pinch-in/out
+          </div>
+          <div class="col-md-4 text-center">
+            <img src="img/gesture_tap_double.png">
+            <br>
+            Double tap
+          </div>
+          <div class="col-md-4 text-center">
+            <img src="img/gesture_drag.png">
+            <br>
+            Pan image
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 text-center">
+        <b>Close lightbox</b>
+        <br>
+        <img src="img/gesture_pan_down.png">
+        <br>
+        Swipe down
+      </div>
+    </div>
+    
+
+
+
+    <div id="ngy2_launching"></div>
+    <br><br><br><br><br><br><br>
+    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> Launching the gallery</h3>
+    <hr>
     <blockquote>
       <br>
-        nanogallery2 is highly customizable and fully adjustable to suit your needs.<br>
-        This page lists and describes the options accepted by nanogallery2 (<b>everything is CaSe sEnSiTiVe</b>).
-      <br>
-      <br>
-        Check also the documentation for <b><a href="datasource.html">content source</a></b> and for <b><a href="api.html">API</a></b>.
+        Settings are passed to the script on initialization, and are <b>CaSe sEnSiTiVe</b>: 
+      <br><br><br>
+      <div class="row" >
+        <div class="col-md-6">
+          <h3>with HTML markup:</h3>
+          <p>Options are configured with the <code>data-nanogallery2</code> attribute.</p>
+      <pre>
+&lt;div id="nanogallery2" data-nanogallery2='{
+    "kind":             "nanoPhotosProvider2",
+    "dataProvider":     "http://mywebsever.com/nano_photos_provider2.php",
+    "thumbnailHeight":  200,
+    "thumbnailWidth":   "auto",
+    galleryDisplayMode: "rows",
+    ...
+  }'&gt;
+&lt;/div&gt;
+      </pre>
+        <i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#b00;"></i> with markup, options must respect the JSON format (and <u>not</u> the javascript object syntax).
+        Property names and string values must be between double-quotes <code style="background:whitesmoke;">"</code>.
+        </div>
+        
+        <div class="col-md-6">
+          <h3>or, with javascript:</h3>
+          <p>Options are passed to the <code>nanogallery2()</code> function.</p>
+      <pre>
+$("#nanogallery2").nanogallery2({
+  kind:               'nanoPhotosProvider2',
+  dataProvider:       'http://mywebsever.com/nano_photos_provider2.php',
+  thumbnailHeight:    200,
+  thumbnailWidth:     'auto',
+  galleryDisplayMode: 'rows',
+  ...
+});
+        
+      </pre>
+        </div>
+      </div>
       <br><br>
-        You may also use the visual <b><a href="builder.html">BUILDER</a></b> to quickly test some of the available options.
-      <br>
-      <br>
+      You may also use the visual <b><a href="builder.html">BUILDER</a></b> to quickly test some of the available options.
+
     </blockquote>
-    <p>
-      <br><br>
-      Settings are passed to the gallery on initialization:
-    </p>
-    <div class="row" >
-      <div class="col-md-6">
-        <h3>with HTML markup:</h3>
-        <p>Options are configured with the <code>data-nanogallery2</code> attribute.</p>
-    <pre>
-    &lt;div id="nanogallery2" data-nanogallery2='{
-        "userID":           "34858669@N00",
-        "kind":             "flickr",
-        "thumbnailHeight":  200,
-        "thumbnailWidth":   "auto",
-        galleryDisplayMode: "rows",
-        ...
-      }'&gt;
-    &lt;/div&gt;
-    </pre>
-      </div>
-      <div class="col-md-6">
-        <h3>or, with javascript:</h3>
-        <p>Options are passed to the <code>nanogallery2()</code> function.</p>
-    <pre>
-    $("#nanogallery2").nanogallery2({
-      userID:             '34858669@N00',
-      kind:               'flickr',
-      thumbnailHeight:    200,
-      thumbnailWidth:     'auto',
-      galleryDisplayMode: 'rows',
-      ...
-    });
-      
-    </pre>
-      </div>
-    </div>
     <br><br><br><br>
 
-    <h3>The full nanogallery2 ecosystem</h3>
-    <img style="max-width: 75%;" src="img/ngy2_ecosystem.png" alt="nanogallery2 ecosystem">
-    
-    
-    
+     
+            
     
     <br><br><br><br>
-    <div class="row" >
-      <div class="col-md-8">&nbsp;</div>
-      <div class="col-md-4">
-        <div class="text-center" style="background-color:#eee;border:8px solid #499295;border-radius: 15px;">
-          <h4 style="color:#000;">Enjoy using nanogallery2? <!-- <i class="fa fa-question-circle-o" aria-hidden="true"></i>--> </h4>
-          
-          <button type="button" data-toggle="modal" data-target="#myModalEnjoyNo" class="btn btn-default btn-xs"><b>Not really</b></button>
-          <button type="button" data-toggle="modal" data-target="#myModalEnjoyYes" class="btn btn-success btn-xs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Yes!</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
-          <br><br>
-        </div>
-      </div>
-    </div>
-    
-    <div class="modal fade" id="myModalEnjoyYes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h3 class="modal-title" id="myModalLabel">nanogallery2</h3>
-          </div>
-          <div class="modal-body">
-            <h3>How about a rating, then?</h3>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">No, thanks</button>
-            <button type="button" class="btn btn-primary" id="btn_enjoy_yes">Ok, sure</button>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="modal fade" id="myModalEnjoyNo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h3 class="modal-title" id="myModalLabel">nanogallery2</h3>
-          </div>
-          <div class="modal-body">
-            <h3>Would you mind giving us some feedback?</h3>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">No, thanks</button>
-            <button type="button" class="btn btn-primary" id="btn_enjoy_no">Ok, sure</button>
-          </div>
-        </div>
-      </div>
-    </div>
     
+    
+    <div id="ngy2_ref"></div>
+    <br><br><br><br><br><br><br>
+    <h2><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> Reference guide</h2>
     
     <div id="ngy2_gallery"></div>
     <br><br><br><br><br><br><br>
-    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> GALLERY</h3>
+    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> GALLERY SETTINGS</h3>
     <hr>
     <blockquote>
       Configure the behaviour of the gallery.
@@ -133,15 +381,44 @@
         </thead>
         <tbody>
           <tr>
+            <td>thumbnailOpenImage</td>
+            <td>boolean</td>
+            <td>true</td>
+            <td>
+              Gallery with or without lightbox.
+              <ul>
+                <li>
+                  <b>true</b>: lightbox is enabled
+                </li>
+                <li>
+                  <b>false</b>: lightbox is disabled. No image will be displayed when a thumbnail is clicked/touched.
+                </li>
+              </ul>
+            </td>
+            <td>1.0</td>
+          </tr>
+          <tr>
             <td>galleryDisplayMode</td>
             <td>string</td>
             <td>'fullContent'</td>
             <td>
+              Define the elements to display.
+              <br><br>
               Possible values:
-              <br>- <b>'fullContent'</b>: display all thumbnails at once
-              <br>- <b>'moreButton'</b>: display N rows and a button to show N more rows (see <code>galleryDisplayMoreStep</code>)
-              <br>- <b>'pagination'</b>: display N rows and <b>numbers/dots</b> to paginate the gallery (see <code>galleryMaxRows</code>)
-              <br>- <b>'rows'</b>: display maximum N rows (see <code>galleryMaxRows</code>). The number of remaining images is displayed over the last thumbnail.
+              <ul>
+                <li>
+                  <b>'fullContent'</b>: display all thumbnails at once
+                </li>
+                <li>
+                  <b>'moreButton'</b>: display N rows and a button to show N more rows (see <code>galleryDisplayMoreStep</code>)
+                </li>
+                <li>
+                  <b>'pagination'</b>: display N rows and <b>numbers/dots</b> to paginate the gallery (see <code>galleryMaxRows</code>)
+                </li>
+                <li>
+                  <b>'rows'</b>: display maximum N rows (see <code>galleryMaxRows</code>). The number of remaining images is displayed over the last thumbnail.
+                </li>
+              </ul>
             </td>
             <td>1.0</td>
           </tr>
@@ -161,12 +438,20 @@
             <td>string</td>
             <td>'rectangles'</td>
             <td>
-              Display type in pagination mode:
-              <br>- <b>'rectangles'</b>
-              <br>- <b>'dots'</b>
-              <br>- <b>'numbers'</b>
+              Display type in pagination mode (<code>galleryDisplayMode: 'pagination'</code>).
               <br>
-              <br>only for <code>galleryDisplayMode: 'pagination'</code>
+              Possible values:
+              <ul>
+                <li>
+                  <b>'rectangles'</b>
+                </li>
+                <li>
+                  <b>'dots'</b>
+                </li>
+                <li>
+                  <b>'numbers'</b>
+                </li>
+              </ul
             </td>
             <td>1.0</td>
           </tr>
@@ -178,6 +463,7 @@
               Maximum number of rows to display
               <br>
               <br>Only for <code>galleryDisplayMode: 'rows'</code> or <code>galleryDisplayMode: 'pagination'</code>.
+              <br>
               <br>Not supported if <code>thumbnailHeight: 'auto'</code>
             </td>
             <td>1.0</td>
@@ -235,13 +521,6 @@
             <td>boolean</td>
             <td>true</td>
             <td>Animate the moving of thumbnails to their new position when the gallery is resized.</td>
-            <td>1.0</td>
-          </tr>
-          <tr>
-            <td>thumbnailOpenImage</td>
-            <td>boolean</td>
-            <td>true</td>
-            <td>Pure gallery: lightbox is disabled. No image will be displayed.</td>
             <td>1.0</td>
           </tr>
           <tr>
@@ -313,58 +592,7 @@
         </table>
       </div>
 
-      
-      
-    <div id="ngy2_gallery_layout"></div>
-    <br><br><br><br><br><br><br>
-    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> GALLERY LAYOUT STYLE - THUMBNAILS SIZES</h3>
-    <hr>
-    <blockquote>
-      3 basic layout styles are available: <b>'grid'</b>, <b>'justified'</b> and <b>'cascading'</b>
-      <br>You don't need to specify the layout style, it is automatically set based on the size of the thumbnails.
-      <br>&nbsp;
-      <ul>
-        <li>
-          <b>grid layout</b>
-          <div class="row" >
-            <div class="col-md-8">
-              Height and width is fixed and the same for all thumbnails.
-              <br>&nbsp;&nbsp;Define the height and the width.
-              <br>&nbsp;&nbsp;Example: <code>thumbnailWidth: 300, thumbnailHeight: 200</code>
-            </div>
-            <div class="col-md-4">
-              <img src="img/ngy2_layout_grid2.png" >
-            </div>
-          </div>
-        </li>
-        <li><b>justified layout</b>
-          <div class="row" >
-            <div class="col-md-8">
-              Width is calculated to respect the image ratio.
-              <br>&nbsp;&nbsp;Set the special value <code>'auto'</code> to <code>thumbnailWidth</code>
-              <br>&nbsp;&nbsp;Example: <code>thumbnailWidth: <b>'auto'</b>, thumbnailHeight: 200</code>
-            </div>
-            <div class="col-md-4">
-              <img src="img/ngy2_layout_justified.png" >
-            </div>
-          </div>
-        </li>
-        <li><b>cascading layout (also called masonry layout)</b>
-          <div class="row" >
-            <div class="col-md-8">
-              Height is calculated to respect the image ratio.
-              <br>&nbsp;&nbsp;Set the special value <code>'auto'</code> to <code>thumbnailHeight</code>
-              <br>&nbsp;&nbsp;Example: <code>thumbnailWidth: 300, thumbnailHeight: <b>'auto'</b></code>
-            </div>
-            <div class="col-md-4">
-              <img src="img/ngy2_layout_cascading.png" >
-            </div>
-          </div>
-        </li>
-      </ul>
-    </blockquote>
 
-    
     
     <div id="ngy2_gallery_thumbnails"></div>
     <br><br><br><br><br><br><br>
@@ -411,36 +639,54 @@
           <td>1.0</td>
         </tr>
         <tr>
-          <td>thumbnailCrop</td>
-          <td>boolean</td>
-          <td>true</td>
-          <td>
-            If needed, thumbnail image will be cropped to avoid black borders (only for grid layout).<br>
-          </td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>thumbnailCropScaleFactor</td>
-          <td>decimal</td>
-          <td>1.5</td>
-          <td>
-            <b>This option is only for Google Photos and Flickr.</b><br>
-            Activating the crop option to avoid black image borders may scale the thumbnail image up.<br>
-            For this case and to avoid quality loss, the <code>thumbnailCropScaleFactor</code> will be applied to the thumbnail size to get a better image quality.
-          </td>
-          <td>1.0</td>
-        </tr>
-        <tr>
           <td>thumbnailAlignment</td>
           <td>string</td>
-          <td>'center'</td>
+          <td>'fillWidth'</td>
           <td>
-            Sets the thumbnail alignment.
-            <br>Possible values: <b>'left'</b>, <b>'right'</b>, <b>'justified'</b>, <b>'center'</b>.
-            <br>Note: the parameter 'thumbnailGutterWidth' is ignored when <code>thumbnailAlignment: 'justified'</code>.
+            Horizontal thumbnail alignement in the available space width.
+            <br>
+            This option is ignored for the justified layout.
+            <br><br>
+            Possible values:
+            <ul>
+              <li>
+                <b>'left'</b>
+                <br>
+                <img src="img/ngy2_align_left.png" style="max-width:70%;padding:10px;">
+                <br><br>
+              </li>
+              <li>
+                <b>'right'</b>
+                <br>
+                <img src="img/ngy2_align_right.png" style="max-width:70%;padding:10px;">
+                <br><br>
+              </li>
+              <li>
+                <b>'center'</b>
+                <br>
+                <img src="img/ngy2_align_center.png" style="max-width:70%;padding:10px;">
+                <br><br>
+              </li>
+              <li>
+                <b>'justified'</b>
+                <br>
+                <img src="img/ngy2_align_justified.png" style="max-width:70%;padding:10px;">
+                <br>
+                Note: the parameter <code>thumbnailGutterWidth</code> is ignored.
+                <br><br>
+              </li>
+              <li>
+                <b>'fillWidth'</b> (v2.0+)
+                <br>
+                <img src="img/ngy2_align_fillwidth.png" style="max-width:70%;padding:10px;">
+                <br>
+                The thumbnails are downscaled to use all the available width.
+              </li>
+            </ul>
           </td>
           <td>1.0</td>
         </tr>
+
         <tr>
           <td>thumbnailGutterWidth</td>
           <td>integer</td>
@@ -539,6 +785,15 @@
           <td>1.4</td>
         </tr>
         <tr>
+          <td>thumbnailCrop</td>
+          <td>boolean</td>
+          <td>true</td>
+          <td>
+            If needed, thumbnail image will be cropped to avoid black borders (only for grid layout).<br>
+          </td>
+          <td>1.0</td>
+        </tr>
+        <tr>
           <td>thumbnailLastImgSliderDelay</td>
           <td>integer</td>
           <td>2000</td>
@@ -553,7 +808,7 @@
             <br>
             Thumbnail image sizes must be defined.
           </td>
-          <td>1.5</td>
+          <td>2.0</td>
         </tr>
       </tbody>
       </table>
@@ -670,16 +925,6 @@
           <td>boolean</td>
           <td>false</td>
           <td>Displays or hides the description.</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>align</td>
-          <td>string</td>
-          <td>'center'</td>
-          <td>
-            Horizontal text alignment.
-            <br>Possible values: <b>'right'</b>, <b>'center'</b>, <b>'left'</b>
-          </td>
           <td>1.0</td>
         </tr>
         <tr>
@@ -2085,13 +2330,20 @@
   <div id="ngy2_vert_nav_style" class="col-md-2 scrollspy">
     <ul id="ngy2_vert_nav" class="nav hidden-xs hidden-sm" data-spy="affix">
       <li>
-        <a href="#ngy2_intro">Reference guide</a>
+        <a href="#ngy2_intro">Concepts</a>
       </li>
       <li>
-        <a href="#ngy2_gallery">Gallery</a>
+        <a href="#ngy2_gesture">Gesture and touch actions</a>
       </li>
       <li>
-        <a href="#ngy2_gallery_layout">Gallery layout</a>
+        <a href="#ngy2_launching">Launching the gallery</a>
+      </li>
+      <br>
+      <li>
+        <a href="#ngy2_ref"><b>Reference guide</b></a>
+      </li>
+      <li>
+        <a href="#ngy2_gallery">Gallery settings</a>
       </li>
       <li>
         <a href="#ngy2_gallery_thumbnails">Thumbnails</a>
@@ -2158,5 +2410,3 @@
   </div>
   </div>
   </div>
-
-  
