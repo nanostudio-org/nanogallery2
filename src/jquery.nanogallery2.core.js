@@ -7202,7 +7202,6 @@ Todo:
       var fu=G.O.fnThumbnailClicked;
       if( fu !== null ) {
         typeof fu == 'function' ? fu(item.$elt, item) : window[fu](item.$elt, item);
-	return;
       }
       
       // open URL
@@ -7310,6 +7309,7 @@ Todo:
       var fu=G.O.fnThumbnailOpen;
       if( fu !== null ) {
         typeof fu == 'function' ? fu(items) : window[fu](items);
+        return;
       }
     
       // use internal viewer
