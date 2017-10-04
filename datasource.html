@@ -640,32 +640,41 @@
     <p>
       Content source is defined on gallery initialization:
     </p>
-    <div class="row" >
-      <div class="col-md-6">
-        <h3>Example with HTML markup:</h3>
+    
+        <h3><u>HTML markup example:</u></h3>
         <p>use the <code>data-nanogallery2</code> attribute.</p>
     <pre>
-&lt;div data-nanogallery2='{
-    "kind":         "nanoPhotosProvider2",
-    "dataProvider": "http://mywebsever.com/nano_photos_provider2.php",
-    ...
+&lt;div data-nanogallery2 = '{
+    &lt;!-- ### gallery settings ### -->
+    "thumbnailHeight":  150,
+    "thumbnailWidth":   150,
+    "itemsBaseURL":     "http://nanogallery2.nanostudio.org/samples/"
   }'&gt;
+
+  &lt;!-- ### gallery content ### -->
+  &lt;a href="img_01.jpg" data-ngthumb="img_01t.jpg"&gt;Title Image 1&lt;/a&gt;
+  &lt;a href="img_02.jpg" data-ngthumb="img_02t.jpg"&gt;Title Image 2&lt;/a&gt;
+  &lt;a href="img_03.jpg" data-ngthumb="img_03t.jpg"&gt;Title Image 3&lt;/a&gt;
 &lt;/div&gt;
     </pre>
-      </div>
-      <div class="col-md-6">
-        <h3>or, with javascript:</h3>
+
+        <h3><u>Javascript example:</u></h3>
         <p>settings are passed to the <code>nanogallery2()</code> function.</p>
     <pre>
 $("#my_nanogallery2").nanogallery2({
-  kind:         'nanoPhotosProvider2',
-  dataProvider: 'http://mywebsever.com/nano_photos_provider2.php',
-  ...
+  &lt;!-- ### gallery settings ### -->
+  thumbnailHeight:  150,
+  thumbnailWidth:   150,
+  itemsBaseURL:     'http://nanogallery2.nanostudio.org/samples/',
+
+  &lt;!-- ### gallery content ### -->
+  items: [
+      { src: 'img_01.jpg', srct: 'img_01t.jpg', title: 'Title Image 1' },
+      { src: 'img_02.jpg', srct: 'img_02t.jpg', title: 'Title Image 2' },
+      { src: 'img_03.jpg', srct: 'img_03t.jpg', title: 'Title Image 3' }
+  ]
 });
-      
     </pre>
-      </div>
-    </div>
     <br><br>
 
   
@@ -691,13 +700,13 @@ $("#my_nanogallery2").nanogallery2({
             <th class="" style="font-size:1.2em;">feature</th>
             <th class="text-center"><span style="font-size:1.2em;">markup or javascript</span><br>&nbsp;</th>
             <th class="text-center"><span style="font-size:1.2em;"><a href="http://nanophotosprovider2.nanostudio.org/" target="_blank">nanoPhotosProvider2 <i class="fa fa-external-link" aria-hidden="true"></i></a></span><br>optional module</th>
-            <th class="text-center"><span style="font-size:1.2em;">Google Photos</span><br>optional module</th>
-            <th class="text-center"><span style="font-size:1.2em;">Flickr</span><br>optional module</th>
+            <th class="text-center"><span style="font-size:1.2em;"><a href="#ngy2_google">Google Photos</a></span><br>optional module</th>
+            <th class="text-center"><span style="font-size:1.2em;"><a href="#ngy2_flickr">Flickr</a></span><br>optional module</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Easy setup</td>
+            <td>easy setup</td>
             <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
             <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
             <td class="text-center"><i class="fa fa-close" style="color:#e00;" aria-hidden="true"></i><i class="fa fa-close" style="color:#e00;" aria-hidden="true"></i></td>
@@ -805,7 +814,7 @@ $("#my_nanogallery2").nanogallery2({
         &nbsp; &nbsp; <a href="http://codepen.io/Kris-B/pen/eWLOZY" type="button" class="btn btn-primary" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> demo - gallery with albums (markup)</a>
       <br><br><br>
       Elements (images and albums) are defined using the <b>&lt;A&gt;</b> tag and <b>data-</b> attributs.<br>
-      Example:<br>
+      <u><b>Example:</b></u><br>
       <pre>
 &lt;div id="my_nanogallery2" data-nanogallery2&gt;
   &lt;a href="img_01.jpg" data-ngthumb="img_01t.jpg"  data-ngdesc="Description1"        &gt;Title Image1&lt;/a&gt;
@@ -816,7 +825,7 @@ $("#my_nanogallery2").nanogallery2({
       <br>
       For albums, you need to define a kind and an ID for each element.<br>
       Default kind is 'photo'. Use the attribut <code>data-ngid</code> for an element ID, and <code>data-ngalbumid</code> for an album ID.<br>
-      Example:
+      <u><b>Example:</b></u><br>
       <pre>
 &lt;div id="my_nanogallery2" data-nanogallery2&gt;
   &lt;!-- first album --&gt;
@@ -833,7 +842,7 @@ $("#my_nanogallery2").nanogallery2({
       </pre>
       <br>
       <b>Note</b>: use the attribut <code>itemsBaseURL</code> to define the base URL where images are stored.<br>
-      Example:<br>
+      <u><b>Example:</b></u><br>
       <pre>
 &lt;div id="my_nanogallery2" data-nanogallery2 <b>= '{ "itemsBaseURL": "http://mywebserver/gallery/myimages/"}'</b> &gt;
   &lt;a href="img_01.jpg" data-ngthumb="img_01t.jpg"&gt;Title Image1&lt;/a&gt;
@@ -869,14 +878,14 @@ $("#my_nanogallery2").nanogallery2({
             <td>data-ngid</td>
             <td>integer</td>
             <td></td>
-            <td>Item ID.<br><b>MANDATORY if your gallery contains albums: assign an ID to each item (image and album).</b></td>
+            <td>Item ID.<br><span class="label label-primary">MANDATORY if your gallery contains albums -> assign an ID to each item (image and album).</span></td>
             <td>1.0</td>
           </tr>
           <tr>
             <td>data-ngalbumid</td>
             <td>integer</td>
             <td></td>
-            <td>ID of the album containing the item.<br><b>MANDATORY if your gallery contains albums.</b></td>
+            <td>ID of the album containing the item.<br><span class="label label-primary">MANDATORY if your gallery contains albums.</span></td>
             <td>1.0</td>
           </tr>
           <tr>
@@ -898,9 +907,10 @@ $("#my_nanogallery2").nanogallery2({
             <td>integer</td>
             <td>0</td>
             <td>
-              Height of the thumbnail image (in pixels). <b>
+              Height of the thumbnail image (in pixels).
               <br>
-              Not mandatory, but should be defined to improve overall performances.</b></td>
+              <span class="label label-info">Not mandatory, but should be defined to improve overall performances.</span>
+            </td>
             <td>1.0</td>
           </tr>
           <tr>
@@ -908,9 +918,10 @@ $("#my_nanogallery2").nanogallery2({
             <td>integer</td>
             <td>0</td>
             <td>
-              Width of the thumbnail image (in pixels).<b>
+              Width of the thumbnail image (in pixels).
               <br>
-              Not mandatory, but should be defined to improve overall performances.</b></td>
+              <span class="label label-info">Not mandatory, but should be defined to improve overall performances.</span>
+            </td>
             <td>1.0</td>
           </tr>
           <tr>
@@ -918,9 +929,10 @@ $("#my_nanogallery2").nanogallery2({
             <td>integer</td>
             <td>0</td>
             <td>
-              Width of the image (in pixels). <b>
+              Width of the image (in pixels).
               <br>
-              Not mandatory, but should be defined to improve overall performances.</b></td>
+              <span class="label label-info">Not mandatory, but should be defined to improve overall performances.</span>
+            </td>
             <td>1.0</td>
           </tr>
           <tr>
@@ -928,9 +940,10 @@ $("#my_nanogallery2").nanogallery2({
             <td>integer</td>
             <td>0</td>
             <td>
-              Height of the image (in pixels). <b>
+              Height of the image (in pixels).
               <br>
-              Not mandatory, but should be defined to improve overall performances.</b></td>
+              <span class="label label-info">Not mandatory, but should be defined to improve overall performances.</span>
+            </td>
             <td>1.0</td>
           </tr>
           <tr>
@@ -1073,7 +1086,7 @@ $("#my_nanogallery2").nanogallery2({
         &nbsp; &nbsp; <a href="http://codepen.io/Kris-B/pen/GrNmxv" type="button" class="btn btn-primary" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> demo - gallery with albums (javascript)</a>
       <br><br><br>
       Define the elements on gallery initialization.<br>
-      Example:<br>
+      <u><b>Example:</b></u><br>
       <pre>
 &lt;div id="my_nanogallery2" data-nanogallery2&gt;&lt;/div&gt;
 
@@ -1099,7 +1112,7 @@ $(document).ready(function () {
       For albums, you need to define a <code>kind</code> and an <code>ID</code> for each element.<br>
       Default kind is 'photo'. Use the option <code>ID</code> for an element ID, and <code>albumID</code> for an album ID.
       <br>
-      Example:
+      <u><b>Example:</b></u><br>
       <pre>
 &lt;div id="my_nanogallery2" data-nanogallery2&gt;&lt;/div&gt;
 
@@ -1169,14 +1182,20 @@ $(document).ready(function () {
             <td>ID</td>
             <td>integer</td>
             <td></td>
-            <td>Item ID.<br><b>MANDATORY if your gallery contains albums: assign an ID to each item (image and album).</b></td>
+            <td>
+              Item ID.<br>
+              <span class="label label-primary">MANDATORY if your gallery contains albums -> assign an ID to each item (image and album).</span>
+            </td>
             <td>1.0</td>
           </tr>
           <tr>
             <td>albumID</td>
             <td>integer</td>
             <td></td>
-            <td>ID of the album containing the item.<br><b>MANDATORY if your gallery contains albums.</b></td>
+            <td>
+              ID of the album containing the item.<br>
+              <span class="label label-primary">MANDATORY if your gallery contains albums.</span>
+            </td>
             <td>1.0</td>
           </tr>
           <tr>
@@ -1207,7 +1226,7 @@ $(document).ready(function () {
             <td>
               Height of the image (in pixels).
               <br>
-              <b>Not mandatory, but should be defined to improve overall performances.</b>
+              <span class="label label-info">Not mandatory, but should be defined to improve overall performances.</span>
             </td>
             <td>1.0</td>
           </tr>
@@ -1218,7 +1237,7 @@ $(document).ready(function () {
             <td>
               Width of the image (in pixels).
               <br>
-              <b>Not mandatory, but should be defined to improve overall performances.</b>
+              <span class="label label-info">Not mandatory, but should be defined to improve overall performances.</span>
             </td>
             <td>1.0</td>
           </tr>
@@ -1236,7 +1255,7 @@ $(document).ready(function () {
             <td>
               Height of the thumbnail image (in pixels).
               <br>
-              <b>Not mandatory, but should be defined to improve overall performances.</b>
+              <span class="label label-info">Not mandatory, but should be defined to improve overall performances.</span>
             </td>
             <td>1.0</td>
           </tr>
@@ -1247,7 +1266,7 @@ $(document).ready(function () {
             <td>
               Width of the thumbnail image (in pixels).
               <br>
-              <b>Not mandatory, but should be defined to improve overall performances.</b>
+              <span class="label label-info">Not mandatory, but should be defined to improve overall performances.</span>
             </td>
             <td>1.0</td>
           </tr>
@@ -1376,21 +1395,38 @@ $(document).ready(function () {
       <br>
       Blurred preview images are used for a really nice effect.
       <br><br>
-      <span class="lead">
-        &nbsp; &nbsp; &nbsp; 
-        <a href="http://nanophotosprovider2.nanostudio.org/" type="button" class="btn btn-success " target="_blank"><i class="fa fa-arrow-right" aria-hidden="true"></i> <b>visit nanoPhotosProvider2 homepage</b></a>
-      </span>
-      <br><br>
-      Usage example:
-      <pre>
+      <u><b>Usage:</b></u>
+      <br>
+      <ol>
+        <li>
+          start by installing nanoPhotosProvider2 on your PHP web server. Follow the installation steps on the <a href="http://nanophotosprovider2.nanostudio.org/" type="button" class="btn btn-success " target="_blank"><b>nanoPhotosProvider2</b></a> homepage.
+        </li>
+        <li>
+          then configure your HTML page to display the gallery:
+              
+          <br>
+          <br>
+          - HTML markup example:
+          <pre>
 &lt;div id="nanogallery2" data-nanogallery2='{
     "kind":             "nano_photos_provider2",
-    "dataProvider":     "http://mywebsever.com/mypath/nano_photos_provider2/nano_photos_provider2.php",
+    "dataProvider":     "http://mywebsever.com/nano_photos_provider2/nano_photos_provider2.php",
     "thumbnailHeight":  150,
     "thumbnailWidth":   150
   }'>      
 &lt;/div>
-      </pre>
+          </pre>
+          - Javascript example:
+          <pre>
+jQuery("#nanogallery2").nanogallery2({
+  kind:             'nano_photos_provider2',
+  dataProvider:     'http://mywebsever.com/nano_photos_provider2/nano_photos_provider2.php',
+  thumbnailHeight:  150,
+  thumbnailWidth:   150
+});
+          </pre>
+        </li>
+      </ol>
       <br>
       This is an <u>optional module</u>. To use it, include in your HTML page:
       <p>
@@ -1421,7 +1457,7 @@ $(document).ready(function () {
             <td>string</td>
             <td></td>
             <td>
-              <b>MANDATORY</b><br>
+              <span class="label label-primary">MANDATORY</span><br>
               Storage type. Must be set to <code>'nano_photos_provider2'</code> to access nanoPhotosProvider2 data.
             </td>
             <td>1.3</td>
@@ -1431,12 +1467,12 @@ $(document).ready(function () {
             <td>string</td>
             <td></td>
             <td>
-              <b>MANDATORY</b><br>
+              <span class="label label-primary">MANDATORY</span><br>
               URL of your nanoPhotosProvider2 installation.
               <br>
               Example:
               <br>
-              <code>dataProvider: 'http://mywebsever.com/mypath/nano_photos_provider2/nano_photos_provider2.php'</code>
+              <code>dataProvider: 'http://mywebsever.com/nano_photos_provider2/nano_photos_provider2.php'</code>
             </td>
             <td>1.3</td>
           </tr>
@@ -1514,6 +1550,33 @@ $(document).ready(function () {
         This feature is provided "as-is". nanogallery2 is not affiliated to Flickr. Changes by Flickr may affect your galleries. nanogallery2 can not be held responsible for any issue caused by any change on Flickr.
       </b></span>
       <br>
+      <br>
+      <ul>
+        <li>
+          HTML markup example:
+          <pre>
+&lt;div id="nanogallery2" data-nanogallery2='{
+    "kind":             "flickr",
+    "userID":           "149035168@N08",
+    "thumbnailHeight":  150,
+    "thumbnailWidth":   150
+  }'>      
+&lt;/div>
+          </pre>
+        </li>
+        <li>
+          Javascript example:
+          <pre>
+jQuery("#nanogallery2").nanogallery2({
+  kind:             'flickr',
+  userID:           '149035168@N08',
+  thumbnailHeight:  150,
+  thumbnailWidth:   150
+});
+          </pre>
+        </li>
+      </ul>
+      
       <br><br>
       This is an <u>optional module</u>. To use it, include in your HTML page:
       <p>
@@ -1544,7 +1607,7 @@ $(document).ready(function () {
             <td>string</td>
             <td></td>
             <td>
-              <b>MANDATORY</b><br>
+              <span class="label label-primary">MANDATORY</span><br>
               Storage type. Must be set to <code>'flickr'</code> to access Flickr data.
               </td>
             <td>1.0</td>
@@ -1554,7 +1617,7 @@ $(document).ready(function () {
             <td>string</td>
             <td></td>
             <td>
-              <b>MANDATORY</b><br>
+              <span class="label label-primary">MANDATORY</span><br>
               The Flickr user account ID.
               <br><br>
               To retrieve your Flickr user ID: <a href="http://www.flickr.com/services/api/explore/flickr.people.findByUsername" target="_blank" style="background-color:#eee;"><b>use this page</b></a>
@@ -1666,14 +1729,46 @@ $(document).ready(function () {
         <br>
         nanogallery2 requires a permanent authorization, which is only possible for server side applications.
         <br>
-        To solve this issue, you need to use the server module <b>nanogp</b> (<a href="https://github.com/nanostudio-org/nanogp" target="_blank">more here</a>) .
+        To solve this issue, you need to use the server module <b>NANOGP</b> (<a href="https://github.com/nanostudio-org/nanogp" target="_blank">more here</a>) .
         </b>
       </span>
-      <br><br>
-      By default, all your non shared albums are displayed.
       <br>
-      Image description field is not supported.
       <br>
+      <br>
+      <u><b>Usage:</b></u>
+      <br>
+      <ol>
+        <li>
+          start by installing <b>NANOGP</b> on your PHP web server. Follow the installation steps on the <a href="https://github.com/nanostudio-org/nanogp" type="button" class="btn btn-success " target="_blank"><b>NANOGP</b></a> homepage.
+        </li>
+        <li>
+          then configure your HTML page to display a gallery.
+          <br>
+          <br>
+          - HTML markup example:
+          <pre>
+&lt;div id="nanogallery2" data-nanogallery2='{
+    "kind":             "google2",
+    "userID":           "111186676244625461692",
+    "google2URL":       "https://YOUR_WEB_SERVER/nanogp/nanogp.php",
+    "thumbnailHeight":  150,
+    "thumbnailWidth":   150
+  }'>      
+&lt;/div>
+          </pre>
+          - Javascript example:
+          <pre>
+jQuery("#nanogallery2").nanogallery2({
+  kind:             'google2',
+  userID:           '111186676244625461692',
+  google2URL:       'https://YOUR_WEB_SERVER/nanogp/nanogp.php',
+  thumbnailHeight:  150,
+  thumbnailWidth:   150
+});
+          </pre>
+        </li>
+      </ol>
+      
       <br><br>
       This is an <u>optional module</u>. To use it, include in your HTML page:
       <p>
@@ -1686,6 +1781,10 @@ $(document).ready(function () {
           </li>
         </ul>
       </p>
+      <br>
+      By default, all your non shared albums are displayed.
+      <br>
+      Image description field is not supported.
     </blockquote>
     <div class="table-responsive">
       <table class="table table-striped table-hover">
@@ -1704,7 +1803,7 @@ $(document).ready(function () {
             <td>string</td>
             <td></td>
             <td>
-              <b>MANDATORY</b><br>
+              <span class="label label-primary">MANDATORY</span><br>
               Storage type. Must be set to '<b>google2</b>' to access Google Photos data.
               </td>
             <td>1.0</td>
@@ -1714,7 +1813,7 @@ $(document).ready(function () {
             <td>string</td>
             <td></td>
             <td>
-              <b>MANDATORY</b><br>
+              <span class="label label-primary">MANDATORY</span><br>
               The Google Photos / Google+ user account ID.
             </td>
             <td>1.0</td>
@@ -1724,12 +1823,12 @@ $(document).ready(function () {
             <td>string</td>
             <td></td>
             <td>
-              <b>MANDATORY</b><br>
+              <span class="label label-primary">MANDATORY</span><br>
               The URL pointing to <u>your</u> <b>nanogp</b> installation.
               <br>
               Example:
               <br>
-              <code>google2URL: 'https://mydomain/nanogp/nanogp.php'</code>
+              <code>google2URL: 'https://mywebsever/nanogp/nanogp.php'</code>
             </td>
             <td>1.0</td>
           </tr>
@@ -1831,7 +1930,7 @@ $(document).ready(function () {
         <a href="#ngy2_intro">Content source</a>
       </li>
       <li>
-        <a href="#ngy2_comparison">Sources comparison</a>
+        <a href="#ngy2_comparison">Feature comparison</a>
       </li>
       <br>
       <li>
@@ -1880,6 +1979,9 @@ $(document).ready(function () {
   </div>
   </div>
   </div>
+
+  
+  
 
   <!-- ######################## -->
   <!-- #####  INCLUDE JS  ##### -->
