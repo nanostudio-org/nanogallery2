@@ -622,8 +622,9 @@
   <!-- ##### END LOGO INDEX  ##### -->
   <!-- ########################### -->
 
-  <div class="container ngy2documentation">
+  
   <div class="row" >
+  <div class="container ngy2documentation">
   <div class="col-md-10">
 
     <br><br>
@@ -755,6 +756,7 @@
           </div>
         </div>
         <br>
+        <!--
         <div class="row">
           <div class="col-md-6">
             The cascading layout may be enhanced by applying a grid with the option <code>thumbnailBaseGridHeight</code>.
@@ -771,6 +773,7 @@
           </div>
         </div>
         <hr>
+        -->
       </li>
       
       <!--
@@ -933,41 +936,45 @@
       <br>
         Settings are passed to the script on initialization, and are <b>CaSe sEnSiTiVe</b>: 
       <br><br><br>
-      <div class="row" >
-        <div class="col-md-6">
-          <h3>with HTML markup:</h3>
-          <p>Options are configured with the <code>data-nanogallery2</code> attribute.</p>
+      <h3><u>HTML markup example:</u></h3>
+      <p>use the <code>data-nanogallery2</code> attribute.</p>
       <pre>
-&lt;div id="nanogallery2" data-nanogallery2='{
-    "kind":             "nanoPhotosProvider2",
-    "dataProvider":     "http://mywebsever.com/nano_photos_provider2.php",
-    "thumbnailHeight":  200,
-    "thumbnailWidth":   "auto",
-    galleryDisplayMode: "rows",
-    ...
+&lt;div data-nanogallery2 = '{
+    &lt;!-- ### gallery settings ### -->
+    "thumbnailHeight":  150,
+    "thumbnailWidth":   150,
+    "itemsBaseURL":     "http://nanogallery2.nanostudio.org/samples/"
   }'&gt;
+
+  &lt;!-- ### gallery content ### -->
+  &lt;a href="img_01.jpg" data-ngthumb="img_01t.jpg"&gt;Title Image 1&lt;/a&gt;
+  &lt;a href="img_02.jpg" data-ngthumb="img_02t.jpg"&gt;Title Image 2&lt;/a&gt;
+  &lt;a href="img_03.jpg" data-ngthumb="img_03t.jpg"&gt;Title Image 3&lt;/a&gt;
 &lt;/div&gt;
       </pre>
-        <i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#b00;"></i> with markup, options must respect the JSON format (and <u>not</u> the javascript object syntax).
-        Property names and string values must be between double-quotes <code style="background:whitesmoke;">"</code>.
-        </div>
-        
-        <div class="col-md-6">
-          <h3>or, with javascript:</h3>
-          <p>Options are passed to the <code>nanogallery2()</code> function.</p>
+      <i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#b00;"></i> with markup, options must respect the JSON format (and <u>not</u> the javascript object syntax).
+      Property names and string values must be between double-quotes <code style="background:whitesmoke;">"</code>.
+
+      <br><br>
+      <h3><u>Javascript example:</u></h3>
+      <p>settings are passed to the <code>nanogallery2()</code> function.</p>
       <pre>
-$("#nanogallery2").nanogallery2({
-  kind:               'nanoPhotosProvider2',
-  dataProvider:       'http://mywebsever.com/nano_photos_provider2.php',
-  thumbnailHeight:    200,
-  thumbnailWidth:     'auto',
-  galleryDisplayMode: 'rows',
-  ...
+$("#my_nanogallery2").nanogallery2({
+  &lt;!-- ### gallery settings ### -->
+  thumbnailHeight:  150,
+  thumbnailWidth:   150,
+  itemsBaseURL:     'http://nanogallery2.nanostudio.org/samples/',
+
+  &lt;!-- ### gallery content ### -->
+  items: [
+      { src: 'img_01.jpg', srct: 'img_01t.jpg', title: 'Title Image 1' },
+      { src: 'img_02.jpg', srct: 'img_02t.jpg', title: 'Title Image 2' },
+      { src: 'img_03.jpg', srct: 'img_03t.jpg', title: 'Title Image 3' }
+  ]
 });
-        
       </pre>
-        </div>
-      </div>
+        
+
       <br><br>
       You may also use the visual <b><a href="builder.html">BUILDER</a></b> to quickly test some of the available options.
 
@@ -983,7 +990,10 @@ $("#nanogallery2").nanogallery2({
     
     <div id="ngy2_ref"></div>
     <br><br><br><br><br><br><br>
-    <h2><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> Reference guide</h2>
+
+    <div style="padding: 5px 10px;19676B;background-color: #499195;">
+      <h2 style="color:#fff;"><i class="fa fa-hashtag" aria-hidden="true"></i> Reference guide</h2>
+    </div>
     
     <div id="ngy2_gallery"></div>
     <br><br><br><br><br><br><br>
@@ -3034,6 +3044,7 @@ $("#nanogallery2").nanogallery2({
   </div>
   </div>
   </div>
+
 
   <!-- ######################## -->
   <!-- #####  INCLUDE JS  ##### -->
