@@ -825,6 +825,62 @@
 
       </li>
     </ul>
+
+    
+    
+    <div id="ngy2_launching"></div>
+    <br><br><br><br><br><br><br>
+    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> Launching the gallery</h3>
+    <hr>
+    <blockquote>
+      <br>
+        Settings are passed to the script on initialization, and are <b>CaSe sEnSiTiVe</b>: 
+      <br><br><br>
+      <h3><u>HTML markup example:</u></h3>
+      <p>use the <code>data-nanogallery2</code> attribute.</p>
+      <pre>
+&lt;div data-nanogallery2 = '{
+    &lt;!-- ### gallery settings ### -->
+    "thumbnailHeight":  150,
+    "thumbnailWidth":   150,
+    "itemsBaseURL":     "http://nanogallery2.nanostudio.org/samples/"
+  }'&gt;
+
+  &lt;!-- ### gallery content ### -->
+  &lt;a href="img_01.jpg" data-ngthumb="img_01t.jpg"&gt;Title Image 1&lt;/a&gt;
+  &lt;a href="img_02.jpg" data-ngthumb="img_02t.jpg"&gt;Title Image 2&lt;/a&gt;
+  &lt;a href="img_03.jpg" data-ngthumb="img_03t.jpg"&gt;Title Image 3&lt;/a&gt;
+&lt;/div&gt;
+      </pre>
+      <i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#b00;"></i> with markup, options must respect the JSON format (and <u>not</u> the javascript object syntax).
+      Property names and string values must be between double-quotes <code style="background:whitesmoke;">"</code>.
+
+      <br><br>
+      <h3><u>Javascript example:</u></h3>
+      <p>settings are passed to the <code>nanogallery2()</code> function.</p>
+      <pre>
+$("#my_nanogallery2").nanogallery2({
+  &lt;!-- ### gallery settings ### -->
+  thumbnailHeight:  150,
+  thumbnailWidth:   150,
+  itemsBaseURL:     'http://nanogallery2.nanostudio.org/samples/',
+
+  &lt;!-- ### gallery content ### -->
+  items: [
+      { src: 'img_01.jpg', srct: 'img_01t.jpg', title: 'Title Image 1' },
+      { src: 'img_02.jpg', srct: 'img_02t.jpg', title: 'Title Image 2' },
+      { src: 'img_03.jpg', srct: 'img_03t.jpg', title: 'Title Image 3' }
+  ]
+});
+      </pre>
+        
+
+      <br><br>
+      You may also use the visual <b><u><a href="builder.html">BUILDER</a></u></b> to quickly test some of the available options.
+
+    </blockquote>
+    <br><br><br><br>
+
     
     
     
@@ -927,6 +983,8 @@
     
 
     
+    
+    
     <div id="ngy2_ui"></div>
     <br><br><br><br><br><br><br>
     <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> UI interactions</h3>
@@ -1011,63 +1069,11 @@
     </p>
 
 
-    <div id="ngy2_launching"></div>
-    <br><br><br><br><br><br><br>
-    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> Launching the gallery</h3>
-    <hr>
-    <blockquote>
-      <br>
-        Settings are passed to the script on initialization, and are <b>CaSe sEnSiTiVe</b>: 
-      <br><br><br>
-      <h3><u>HTML markup example:</u></h3>
-      <p>use the <code>data-nanogallery2</code> attribute.</p>
-      <pre>
-&lt;div data-nanogallery2 = '{
-    &lt;!-- ### gallery settings ### -->
-    "thumbnailHeight":  150,
-    "thumbnailWidth":   150,
-    "itemsBaseURL":     "http://nanogallery2.nanostudio.org/samples/"
-  }'&gt;
-
-  &lt;!-- ### gallery content ### -->
-  &lt;a href="img_01.jpg" data-ngthumb="img_01t.jpg"&gt;Title Image 1&lt;/a&gt;
-  &lt;a href="img_02.jpg" data-ngthumb="img_02t.jpg"&gt;Title Image 2&lt;/a&gt;
-  &lt;a href="img_03.jpg" data-ngthumb="img_03t.jpg"&gt;Title Image 3&lt;/a&gt;
-&lt;/div&gt;
-      </pre>
-      <i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#b00;"></i> with markup, options must respect the JSON format (and <u>not</u> the javascript object syntax).
-      Property names and string values must be between double-quotes <code style="background:whitesmoke;">"</code>.
-
-      <br><br>
-      <h3><u>Javascript example:</u></h3>
-      <p>settings are passed to the <code>nanogallery2()</code> function.</p>
-      <pre>
-$("#my_nanogallery2").nanogallery2({
-  &lt;!-- ### gallery settings ### -->
-  thumbnailHeight:  150,
-  thumbnailWidth:   150,
-  itemsBaseURL:     'http://nanogallery2.nanostudio.org/samples/',
-
-  &lt;!-- ### gallery content ### -->
-  items: [
-      { src: 'img_01.jpg', srct: 'img_01t.jpg', title: 'Title Image 1' },
-      { src: 'img_02.jpg', srct: 'img_02t.jpg', title: 'Title Image 2' },
-      { src: 'img_03.jpg', srct: 'img_03t.jpg', title: 'Title Image 3' }
-  ]
-});
-      </pre>
-        
-
-      <br><br>
-      You may also use the visual <b><a href="builder.html">BUILDER</a></b> to quickly test some of the available options.
-
-    </blockquote>
-    <br><br><br><br>
 
      
             
     
-    <br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br>
 
     
     
@@ -3064,13 +3070,13 @@ $("#my_nanogallery2").nanogallery2({
         <a href="#ngy2_concepts_layout"> &nbsp; - Layout</a>
       </li>
       <li>
+        <a href="#ngy2_launching">Launching the gallery</a>
+      </li>
+      <li>
         <a href="#ngy2_gesture">Gesture and touch actions</a>
       </li>
       <li>
         <a href="#ngy2_ui">UI interactions</a>
-      </li>
-      <li>
-        <a href="#ngy2_launching">Launching the gallery</a>
       </li>
       <br>
       <li>
@@ -3144,6 +3150,7 @@ $("#my_nanogallery2").nanogallery2({
   </div>
   </div>
   </div>
+
 
   <!-- ######################## -->
   <!-- #####  INCLUDE JS  ##### -->
