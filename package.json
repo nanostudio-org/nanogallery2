@@ -2,7 +2,7 @@
   "name": "nanogallery2_website",
   "description": "nanogallery2 - website",
   "author": "Christophe Brisbois",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "homepage": "http://nanogallery2.nanostudio.org",
   "devDependencies": {
     "grunt": "~0.4.1",
