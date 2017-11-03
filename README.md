@@ -24,7 +24,7 @@ nanogallery2 is a javascript library for building beautiful, modern and high-qua
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Ir098VWCv8Q?rel=0" frameborder="0" allowfullscreen></iframe>  
 
-[![Alt text](https://img.youtube.com/vi/VID/0.jpg)](https://www.youtube.com/watch?v=VID)
+[![Alt text](https://img.youtube.com/vi/Ir098VWCv8Q/0.jpg)](https://www.youtube.com/watch?v=Ir098VWCv8Q)
 
 #### - Thumbnail display animations
 ![nanogallery2 Sample display animation](https://github.com/nanostudio-org/nanogallery2/raw/gh-pages/videos/ngy2_display1.gif "Sample display animation")
