@@ -53,7 +53,9 @@
   <!-- #################################################################################################################### -->
 
   <style>
-    body { font-size:1.3em; color:#111; }
+
+	  
+    body { font-size:1.3em; color:#111; line-height:1.5; }
     p { font-size:1.3em; }
     td { font-size:1.2em; }
     .ngy2documentation p { font-size:1.1em; }
@@ -77,8 +79,12 @@
       padding-top: 25px;
       padding-bottom: 25px;
     }
+
+
     
-    /***** TOP NAVIGATION BAR *****/
+    /**********************/
+    /* TOP NAVIGATION BAR */
+    /**********************/
     .navbar * { font-weight: bold; }
     .navbar-inverse .navbar-nav>li>a { 
       color: #fff;
@@ -102,11 +108,13 @@
       background-color: #0F1934;
     }
     
-    /***** NANOGALLERY2 COLORS *****/
 
-    
+
+    /***********************/
+    /* NANOGALLERY2 COLORS */
+    /***********************/
+
     /* palette (bleuté)- fond clair
-
     logo + menu + icon button : 23CB99 (plus clair: 46D6AB)
     base: 499295
     AEDADC
@@ -156,7 +164,11 @@
       border-color: #3C4B5B;
     }
 
-    /* ### LOGO ### */
+    
+    
+    /********/
+    /* LOGO */
+    /********/
     .ngy2_logo {
       border-left : none;
       padding-left: 0;
@@ -164,24 +176,34 @@
       font-weight: bold;
     }
 		
+
 		
-		/* ### BUTTONS ### */
+    /***********/
+    /* BUTTONS */
+    /***********/
     .btn {
       margin-top: 2px;
       margin-bottom: 2px;
     }
+    
+    
 		
-/* navbar */
-.navbar {
-    position: relative;
-    min-height: 10px;
-    margin-bottom: 0px;
-    border: 0px solid transparent;
-	border-radius: 0px;
-}	  
+    /**********/
+    /* navbar */
+    /**********/
+    .navbar {
+        position: relative;
+        min-height: 10px;
+        margin-bottom: 0px;
+        border: 0px solid transparent;
+      border-radius: 0px;
+    }
 	  
 	  
-    /* ### BUTTON SUCCESS ### */
+	  
+    /******************/
+    /* BUTTON SUCCESS */
+    /******************/
     .btn-success, .btn-success:visited {
       color: #fff;
       background-color: #23CB99;
@@ -206,7 +228,9 @@
     
 
     
+    /*************/
     /* DIAGONALS */
+    /*************/
     .svg-diag {
       display:  block;
       width:    100%;
@@ -222,7 +246,9 @@
     }
 
 
-    /***** CHANGELOG *****/
+    /*************/
+    /* CHANGELOG */
+    /*************/
     #ngy2_changelog {
       font-size: 1.2em;
     }
@@ -250,18 +276,28 @@
     }
     
     
-    /***** TOP CUSTOM JUMBOTRON *****/
+    /************************/
+    /* TOP CUSTOM JUMBOTRON */
+    /************************/
     .jumbotronNGY2 {
       padding-top:0px;
     }
     
-    /***** CUSTOM JUMBOTRON *****/
+    
+    
+    /********************/
+    /* CUSTOM JUMBOTRON */
+    /********************/
     .jumbotron {
       margin-bottom: 0;
     }
 
 
-    /***** REVIEW / rating *****/
+    
+    
+    /*******************/
+    /* REVIEW / rating */
+    /*******************/
     .ngy2_review_rating {
       width: 200px;
       display: inline-block;
@@ -294,9 +330,12 @@
       padding: 15px;
       font-size: 1.2em;
     }
-        
     
-    /***** VERTICAL NAVIGATION BAR (documentation) *****/
+    
+    
+    /*******************************************/
+    /* VERTICAL NAVIGATION BAR (documentation) */
+    /*******************************************/
     #ngy2_vert_nav {
       border-left: 4px solid #499295;
     }
@@ -350,6 +389,9 @@
 
 
 
+    /*************************************/
+    /* DOCUMENTATION VERTICAL MENU - FIX */
+    /*************************************/
     .affix {
       top: 60px;
       width: 213px;
@@ -362,7 +404,10 @@
     }    
     
 
-    /***** BOOTSTRAP ROW - COLUMNS SAME HEIGHT *****/
+    
+    /***************************************/
+    /* BOOTSTRAP ROW - COLUMNS SAME HEIGHT */
+    /***************************************/
     .equal {
       display: flex;
       display: -webkit-flex;
@@ -370,9 +415,11 @@
     }    
 
     
-    /**
-     * Syntax highlighting
-     */
+    
+    
+    /***********************/
+    /* Syntax highlighting */
+    /***********************/
     pre code {
       font-size:1.6rem;
       line-height: 1.7;
@@ -456,7 +503,9 @@
       -webkit-hyphens: none;
       -ms-hyphens: none;
       hyphens: none;
-      white-space: pre; }
+      /* white-space: pre; */
+      word-break: break-all;
+    }
 
     /* Code blocks */
     pre {
@@ -509,7 +558,98 @@
       font-weight: 400;
       /* font-family: Roboto, "Helvetica Neue", sans-serif; */
     }    
-        
+
+
+    
+    /*****************/
+    /* BUILDER PANEL */
+    /*****************/
+    #ngy2tools .ngy2_vert_toolbar {
+      font-size: 0.8em;
+      color: #eee;
+      background-color: #222;
+    }
+    #ngy2tools .panel-default {
+      border-color: #444;
+    }
+
+    #ngy2tools .form-control{
+      height: 20px;
+      padding: 0px 5px;
+      border-radius: 0px;
+      color: #eee;
+      background-color: #000;
+      border: 0px solid #111;
+    }
+    #ngy2tools .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+      background-color: #333;
+      color: #888;
+    }
+
+    #ngy2tools .panel-heading,
+    #ngy2tools .ngy2toolbar {
+      background-color: #222;
+      color: #eee;
+    }
+
+    #ngy2tools .panel-body {
+      background-color: #333;
+    }
+    #ngy2tools .panel {
+      border-radius:0px;
+      background-color:#222;
+    }
+    #ngy2tools .form-horizontal .control-label {
+      padding-top:0px;
+    }
+    
+    
+    
+    /****************/
+    /* color picker */
+    /****************/
+    #ngy2tools  .colorpicker-component .input-group-addon {
+      padding : 0px;
+      border-radius: 0px;
+      border: 1px solid #aaa;
+    }
+
+    /* switch */
+    .bootstrap-switch {
+      border: none;
+    }
+    .bootstrap-switch .bootstrap-switch-label{
+      background-colorcolor: #000;
+    }
+    .bootstrap-switch.bootstrap-switch-focused {
+      border-color: #000;
+      box-shadow: none;
+    }
+
+
+
+
+    
+    /**********************/
+    /* YOUTUBE RESPONSIVE */
+    /**********************/
+    .video-container {
+      position:relative;
+      padding-bottom:56.25%;
+      /* padding-top:30px; */
+      height:0;
+      overflow:hidden;
+    }
+
+    .video-container iframe, .video-container object, .video-container embed {
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+    }    
+    
+	  
 
   </style>
 
