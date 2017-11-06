@@ -12,7 +12,20 @@
 // ############################################
 
 
-;(function ($) {
+(function (factory) {
+    "use strict";
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['jquery', 'nanogallery2'], factory);
+    } else if (typeof exports === 'object' && typeof require === 'function') {
+        // Browserify
+        factory(require(['jquery', 'nanogallery2']));
+    } else {
+        // Browser globals
+        factory(jQuery);
+    }
+}(function ($) {
+// ;(function ($) {
   
   jQuery.nanogallery2.data_flickr = function (instance, fnName){
     var G = instance;      // current nanogallery2 instance
@@ -369,7 +382,8 @@
   };
   
 // END FLICKR DATA SOURCE FOR NANOGALLERY2
-}( jQuery ));
-  
+// }( jQuery ));
+}));
+
   
   
