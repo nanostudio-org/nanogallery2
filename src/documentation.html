@@ -1,5 +1,5 @@
-  <div class="row" >
   <div class="container ngy2documentation">
+  <div class="row" >
   <div class="col-md-10">
 
     <br><br>
@@ -376,7 +376,7 @@ $("#my_nanogallery2").nanogallery2({
       <br>
       The duration of the animation is defined with <code>galleryDisplayTransitionDuration</code>.
       <br><br>
-      <div class="text-center">
+      <div class="text-center video-container">
         <iframe width="500" height="307" src="https://www.youtube.com/embed/v_ceRYjgWVY?rel=0" frameborder="0" gesture="media" allowfullscreen></iframe>
       </div>
       <br><br><br>
@@ -392,7 +392,7 @@ $("#my_nanogallery2").nanogallery2({
       <br>
       Duration is defined in ms, with the option <code>thumbnailDisplayTransitionDuration</code>, and delay between the display of 2 thumbnails is configured with <code>thumbnailDisplayInterval</code>.
       <br><br>
-      <div class="text-center">
+      <div class="text-center video-container">
         <iframe width="560" height="315" src="https://www.youtube.com/embed/WAzCHt2JMpU?rel=0" frameborder="0" gesture="media" allowfullscreen></iframe>
       </div>
       <br><br><br>
@@ -402,7 +402,7 @@ $("#my_nanogallery2").nanogallery2({
     <p>
       These animations are fired on mouse hover or when the user touch the thumbnail. Multiple animations can be combined.
       <br><br>
-      <div class="text-center">
+      <div class="text-center video-container">
         <iframe width="560" height="315" src="https://www.youtube.com/embed/2src3W4be9Q?rel=0" frameborder="0" allowfullscreen></iframe>
       </div>
       <br><br>
@@ -1246,9 +1246,9 @@ $("#my_nanogallery2").nanogallery2({
       <u>Note:</u> <b>name</b> is the only mandatory proprety.
       <br>Some examples:
       <ul>
-        <li><code>thumbnailHoverEffect2: { name: 'imageBlurOn', duration: 800, easing: 'easeInCubic', delayBack: 0, durationBack: 300, easingBack: 'easeOutQuart' }</code></li>
-        <li><code>thumbnailHoverEffect2: { name: 'image_rotateZ_0deg_15deg', duration: 800, durationBack: 500}</code></li>
-        <li>combination of 2 effects: <br><code>thumbnailHoverEffect2: [{ name: 'image_scale_1.00_1.20', duration: 500}, { name: 'image_rotateZ_0deg_15deg', delay: 500}]</code></li>
+        <li><pre>thumbnailHoverEffect2: { name: 'imageBlurOn', duration: 800, easing: 'easeInCubic', delayBack: 0, durationBack: 300, easingBack: 'easeOutQuart' }</pre></li>
+        <li><pre>thumbnailHoverEffect2: { name: 'image_rotateZ_0deg_15deg', duration: 800, durationBack: 500}</pre></li>
+        <li>combination of 2 effects: <br><pre>thumbnailHoverEffect2: [{ name: 'image_scale_1.00_1.20', duration: 500}, { name: 'image_rotateZ_0deg_15deg', delay: 500}]</pre></li>
       </ul>
     </p>
     
@@ -2525,4 +2525,3 @@ $("#my_nanogallery2").nanogallery2({
   </div>
   </div>
   </div>
-
