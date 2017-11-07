@@ -157,6 +157,11 @@
         $('#myModalEnjoyNo').modal('hide');
       });
 
+      // typeform newsletter
+      jQuery('#btn_newsletter').on('click', function() {
+        window.open('https://nanostudio.typeform.com/to/P8SFe8', '_blank');
+        $('#myModalEnjoyYes').modal('hide');
+      });
     
       // LOGO APPEAR
       var tweenable = new NGTweenable();
@@ -235,7 +240,7 @@
 
 
 
-      // ##### LICENSES TAB
+      // ##### LICENSE TAB
       jQuery('#ngy2_lic1').on( "click", function(e) {
         jQuery('#ngy2_lic1_desc').css({ 'display': 'block' });
         jQuery('#ngy2_lic2_desc').css({ 'display': 'none' });
