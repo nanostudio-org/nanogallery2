@@ -22,7 +22,7 @@ nanogallery2 is a javascript library for building beautiful, modern and high-qua
   
   
   
-[![Alt text](https://img.youtube.com/vi/Ir098VWCv8Q/0.jpg)](https://www.youtube.com/watch?v=Ir098VWCv8Q)
+[![nanogallery2 youtube demo](https://github.com/nanostudio-org/nanogallery2/raw/gh-pages/videos/youtube_nanogallery2.png)](https://www.youtube.com/watch?v=Ir098VWCv8Q)
   
     
     
