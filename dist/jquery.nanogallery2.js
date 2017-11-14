@@ -1,4 +1,4 @@
-/* nanogallery2 - v1.5.0 - 2017-11-03 - http://nanogallery2.nanostudio.org */
+/* nanogallery2 - v1.5.0 - 2017-11-14 - http://nanogallery2.nanostudio.org */
 /**!
  * @preserve nanogallery2 - javascript image gallery
  * Homepage: http://nanogallery2.nanostudio.org
