@@ -180,9 +180,9 @@
 
           var tags = (item.tags === undefined) ? '' : item.tags;
           
-          var newItem=NGY2Item.New( G, title.split('_').join(' ') , description, ID, albumID, kind, tags );
-          newItem.src=src;
-
+          var newItem = NGY2Item.New( G, title.split('_').join(' ') , description, ID, albumID, kind, tags );
+          newItem.setMediaURL( src, 'img');
+          
           // dominant colorS as a gif
           if( item.dcGIF !== undefined ) {
             newItem.imageDominantColors='data:image/gif;base64,'+item.dcGIF;
