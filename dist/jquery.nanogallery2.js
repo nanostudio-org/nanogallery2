@@ -15443,7 +15443,8 @@ if (typeof define === 'function' && define.amdDISABLED) {
         tn=FlickrRetrieveImages(tn, item, 'l1' );
         tn=FlickrRetrieveImages(tn, item, 'lN' );
         newItem.thumbs=tn;
-
+	if (typeof G.O.fnProcessData == 'function')
+	  G.O.fnProcessData(newItem, 'flickr', source);
       });
       G.I[albumIdx].contentIsLoaded=true;
       
