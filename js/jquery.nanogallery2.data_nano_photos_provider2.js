@@ -12,7 +12,20 @@
 // ########################################################
 
 
-;(function ($) {
+(function (factory) {
+    "use strict";
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['jquery', 'nanogallery2'], factory);
+    } else if (typeof exports === 'object' && typeof require === 'function') {
+        // Browserify
+        factory(require(['jquery', 'nanogallery2']));
+    } else {
+        // Browser globals
+        factory(jQuery);
+    }
+}(function ($) {
+// ;(function ($) {
   
   jQuery.nanogallery2.data_nano_photos_provider2 = function (instance, fnName){
     var G=instance;      // current nanogallery2 instance
@@ -167,9 +180,9 @@
 
           var tags = (item.tags === undefined) ? '' : item.tags;
           
-          var newItem=NGY2Item.New( G, title.split('_').join(' ') , description, ID, albumID, kind, tags );
-          newItem.src=src;
-
+          var newItem = NGY2Item.New( G, title.split('_').join(' ') , description, ID, albumID, kind, tags );
+          newItem.setMediaURL( src, 'img');
+          
           // dominant colorS as a gif
           if( item.dcGIF !== undefined ) {
             newItem.imageDominantColors='data:image/gif;base64,'+item.dcGIF;
@@ -204,8 +217,9 @@
           }
          
           // post-process callback
-          if( typeof G.O.fnProcessData == 'function' ) {
-            G.O.fnProcessData(newItem, G.O.dataProvider, data);
+          var fu = G.O.fnProcessData;
+          if( fu !== null ) {
+            typeof fu == 'function' ? fu(newItem, G.O.dataProvider, data) : window[fu](newItem, G.O.dataProvider, data);
           }
           
         }
@@ -250,8 +264,8 @@
   };
   
 // END NANOPHOTOSPROVIDER DATA SOURCE FOR NANOGALLERY2
-}( jQuery ));
-  
+// }( jQuery ));
+}));  
   
   
   

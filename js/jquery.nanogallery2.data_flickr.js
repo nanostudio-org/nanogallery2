@@ -12,7 +12,20 @@
 // ############################################
 
 
-;(function ($) {
+(function (factory) {
+    "use strict";
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['jquery', 'nanogallery2'], factory);
+    } else if (typeof exports === 'object' && typeof require === 'function') {
+        // Browserify
+        factory(require(['jquery', 'nanogallery2']));
+    } else {
+        // Browser globals
+        factory(jQuery);
+    }
+}(function ($) {
+// ;(function ($) {
   
   jQuery.nanogallery2.data_flickr = function (instance, fnName){
     var G = instance;      // current nanogallery2 instance
@@ -191,13 +204,14 @@
         var tags = item.tags !== undefined ? item.tags : '';
 
         // create item
-        var newItem=NGY2Item.New( G, itemTitle, itemDescription, itemID, albumID, 'image', tags );
+        var newItem = NGY2Item.New( G, itemTitle, itemDescription, itemID, albumID, 'image', tags );
 
         // add image
-        newItem.src=imgUrl;
-        newItem.imageWidth=imgW;
-        newItem.imageHeight=imgH;
+        newItem.setMediaURL( imgUrl, 'img');
+        newItem.imageWidth = imgW;
+        newItem.imageHeight = imgH;
 
+        
         // add thumbnails
         var tn = {
           url:    { l1 : { xs:'', sm:'', me:'', la:'', xl:'' }, lN : { xs:'', sm:'', me:'', la:'', xl:'' } },
@@ -207,6 +221,13 @@
         tn=FlickrRetrieveImages(tn, item, 'l1' );
         tn=FlickrRetrieveImages(tn, item, 'lN' );
         newItem.thumbs=tn;
+        
+        // post-process callback
+        var fu = G.O.fnProcessData;
+        if( fu !== null ) {
+          typeof fu == 'function' ? fu(newItem, 'flickr', item) : window[fu](newItem, 'flickr', item);
+        }
+        
 
       });
       G.I[albumIdx].contentIsLoaded=true;
@@ -235,27 +256,33 @@
 
           var sizes = {};
           for( var p in item.primary_photo_extras) {
-            sizes[p]=item.primary_photo_extras[p];
+            sizes[p] = item.primary_photo_extras[p];
           }
           var tags='';
           if( item.primary_photo_extras !== undefined ) {
             if( item.primary_photo_extras.tags !== undefined ) {
-              tags=item.primary_photo_extras.tags;
+              tags = item.primary_photo_extras.tags;
             }
           }
         
-          var newItem=NGY2Item.New( G, itemTitle, itemDescription, itemID, albumID, 'album', tags );
-          newItem.numberItems=item.photos;
-          newItem.thumbSizes=sizes;
+          var newItem = NGY2Item.New( G, itemTitle, itemDescription, itemID, albumID, 'album', tags );
+          newItem.numberItems = item.photos;
+          newItem.thumbSizes = sizes;
           
           var tn = {
             url:    { l1 : { xs:'', sm:'', me:'', la:'', xl:'' }, lN : { xs:'', sm:'', me:'', la:'', xl:'' } },
             width:  { l1 : { xs:0, sm:0, me:0, la:0, xl:0 }, lN : { xs:0, sm:0, me:0, la:0, xl:0 } },
             height: { l1 : { xs:0, sm:0, me:0, la:0, xl:0 }, lN : { xs:0, sm:0, me:0, la:0, xl:0 } }
           };
-          tn=FlickrRetrieveImages(tn, item.primary_photo_extras, 'l1' );
-          tn=FlickrRetrieveImages(tn, item.primary_photo_extras, 'lN' );
-          newItem.thumbs=tn;
+          tn = FlickrRetrieveImages(tn, item.primary_photo_extras, 'l1' );
+          tn = FlickrRetrieveImages(tn, item.primary_photo_extras, 'lN' );
+          newItem.thumbs = tn;
+
+          // post-process callback
+          var fu = G.O.fnProcessData;
+          if( fu !== null ) {
+            typeof fu == 'function' ? fu(newItem, 'flickr', item) : window[fu](newItem, 'flickr', item);
+          }
           
         }
       });
@@ -369,7 +396,8 @@
   };
   
 // END FLICKR DATA SOURCE FOR NANOGALLERY2
-}( jQuery ));
-  
+// }( jQuery ));
+}));
+
   
   
