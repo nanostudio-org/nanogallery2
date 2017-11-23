@@ -313,9 +313,12 @@
           newItem.thumbs=GoogleThumbSetSizes('l1', 0, newItem.thumbs, data, kind );
           newItem.thumbs=GoogleThumbSetSizes('lN', 5, newItem.thumbs, data, kind );
           
-          if( typeof G.O.fnProcessData == 'function' ) {
-            G.O.fnProcessData(newItem, 'google2', data);
+          // post-process callback
+          var fu = G.O.fnProcessData;
+          if( fu !== null ) {
+            typeof fu == 'function' ? fu(newItem, 'google2', data) : window[fu](newItem, 'google2', data);
           }
+          
         }
       });
 

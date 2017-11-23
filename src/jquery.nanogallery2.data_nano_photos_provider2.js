@@ -217,8 +217,9 @@
           }
          
           // post-process callback
-          if( typeof G.O.fnProcessData == 'function' ) {
-            G.O.fnProcessData(newItem, G.O.dataProvider, data);
+          var fu = G.O.fnProcessData;
+          if( fu !== null ) {
+            typeof fu == 'function' ? fu(newItem, G.O.dataProvider, data) : window[fu](newItem, G.O.dataProvider, data);
           }
           
         }
