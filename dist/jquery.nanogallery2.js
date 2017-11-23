@@ -1,4 +1,4 @@
-/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2017-11-20 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2017-11-23 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /**!
  * @preserve nanogallery2 - javascript image gallery
  * Homepage: http://nanogallery2.nanostudio.org
@@ -23,11 +23,13 @@
 v2.0.0beta - USE ONLY FOR TEST PURPOSES
 - new: mosaic layout
 - new: video support (Youtube, Vimeo and Dailymotion)
+- new: image slider in thumbnail (see option 'thumbnailLastImgSliderDelay')
 - new: value 'fillWidth' for option 'thumbnailAlignment' (is also the new default value)
 - new: option 'thumbnailBaseGridHeight' for cascading layout
 - new: markup content source supports the ID attribute
-- new: option 'imageTransitionMediaKind' to enable/disable media transition in lightbox
+- new: option 'viewerTransitionMediaKind' to enable/disable media transition in lightbox
 - new: module support
+- new: callback fnProcessData for Flickr data
 - enhanced: option 'thumbnailOpenOriginal' for all data types 
 - enhanced: added keyword 'auto backup' to default value for 'blackList'
 - enhanced: loading.gif embeded in CSS file
@@ -58,6 +60,7 @@ Todo:
 - checked thumbnail
 - enlever erreur 'no image to process'
 - verifier fonctionnement thumbnail tools
+- mosaic layout templates
   
 */ 
  
@@ -661,7 +664,7 @@ Todo:
           
           //--- viewer - transition can be disabled per media kind
           NGY2Item.prototype.mediaTransition = function( ) {
-            if( this.G.O.imageTransitionMediaKind.indexOf( this.mediaKind ) > -1 ) {
+            if( this.G.O.viewerTransitionMediaKind.indexOf( this.mediaKind ) > -1 ) {
               return true;
             }
             return false;
@@ -1233,7 +1236,7 @@ Todo:
     thumbnailL1StacksScale :      null,
     thumbnailDisplayOutsideScreen: false,
     thumbnailWaitImageLoaded:     true,
-    thumbnailLastImgSliderDelay:  0,      // 2000
+    thumbnailLastImgSliderDelay:  2000,
     galleryBuildInit2 :           '',
     portable :                    false,
     
@@ -1270,7 +1273,7 @@ Todo:
     viewerFullscreen:             false,
     viewerDisplayLogo :           false,
     imageTransition :             'swipe',
-    imageTransitionMediaKind :    'img',
+    viewerTransitionMediaKind :   'img',
     viewerZoom :                  true,
     viewerImageDisplay :          '',
     openOnStart :                 '',
@@ -2076,9 +2079,10 @@ Todo:
         timerID:    0,
         enabled:    false
       },
-      NGY2Item: function( idx ) {   // returns a NGY2Item
-        var i= G.GOM.items[idx].thumbnailIdx;
-        return G.I[i]
+      NGY2Item: function( idx ) {   // returns a NGY2Item or null if it does not exist
+        if( G.GOM.items[idx] == undefined || G.GOM.items[idx] == null ) { return null; }
+        var i = G.GOM.items[idx].thumbnailIdx;
+        return G.I[i];
       }
     };
     
@@ -4088,20 +4092,20 @@ Todo:
 
         if( nb > 0 ) {
           if( G.O.thumbnailOpenImage || G.O.thumbnailLastImgSliderDelay > 0  ) {
-            item.$getElt('.nGY2GThumbnailIconsFullThumbnail').html('+'+nb);
+            item.$getElt('.nGY2GThumbnailIconsFullThumbnail').html( '+' + nb);
           }
 
           if( G.layout.engine == 'GRID' && G.GOM.lastTn.startItem != G.GOM.NGY2Item(GOMidx) ) {
             // image slider on last displayed thumbnail
-            G.GOM.lastTn.startIdx=GOMidx;
-            G.GOM.lastTn.startItem=G.GOM.NGY2Item(GOMidx);
-            G.GOM.lastTn.nextIdx=GOMidx;
-            G.GOM.lastTn.currentIdx=GOMidx;
-            G.GOM.lastTn.initiated=false;
-            G.GOM.lastTn.enabled=true;
+            G.GOM.lastTn.startIdx = GOMidx;
+            G.GOM.lastTn.startItem = G.GOM.NGY2Item(GOMidx);
+            G.GOM.lastTn.nextIdx = GOMidx;
+            G.GOM.lastTn.currentIdx = GOMidx;
+            G.GOM.lastTn.initiated = false;
+            G.GOM.lastTn.enabled = true;
           }
         }
-        G.GOM.lastDisplayedIdx=GOMidx;
+        G.GOM.lastDisplayedIdx = GOMidx;
       }
 
     }
@@ -4116,23 +4120,24 @@ Todo:
       
       G.GOM.lastTn.initiated=true;
       
-      var item=G.GOM.lastTn.startItem;
+      var item = G.GOM.lastTn.startItem;
       if( item.$getElt('.nGY2TnPreview2').length == 0 ) {
         // create new DIVs for next item's image and blurred preview
-        item.$getElt('.nGY2TnPreview').clone().removeClass('nGY2TnPreview').addClass('nGY2TnPreview2').appendTo(item.$getElt('.nGY2GThumbnailImage'));
-        item.$getElt('.nGY2TnImg').clone().removeClass('nGY2TnImg').addClass('nGY2TnImg2').appendTo(item.$getElt('.nGY2GThumbnailImage'));
-        item.$getElt('.nGY2TnPreview2', true).css({ opacity: 1 });
-        item.$getElt('.nGY2TnImg2').css({ opacity: 1 });
-        item.CSSTransformSet('.nGY2TnPreview2', 'translateX', item.thumbImg().width +'px');
-        item.CSSTransformApply( '.nGY2TnPreview2' );
-        item.CSSTransformSet('.nGY2TnImg2', 'translateX', item.thumbImg().width +'px');
-        item.CSSTransformApply( '.nGY2TnImg2' );
+        
+        // dupplicate image layer
+        item.$getElt('.nGY2TnImg').clone().removeClass('nGY2TnImg').addClass('nGY2TnImgNext').insertAfter(item.$getElt('.nGY2TnImg'));
+        item.$getElt('.nGY2TnImgBack').clone().removeClass('nGY2TnImgBack').addClass('nGY2TnImgBackNext').insertAfter(item.$getElt('.nGY2TnImg', true));
+
+        item.CSSTransformSet('.nGY2TnImgNext', 'translateX', G.tn.settings.getW() + 'px');
+        item.CSSTransformApply( '.nGY2TnImgNext' );
+        item.CSSTransformSet('.nGY2TnImgBackNext', 'translateX', G.tn.settings.getW() + 'px');
+        item.CSSTransformApply( '.nGY2TnImgBackNext' );
       }
 
       GalleryLastThumbnailSlideImageSetNext();
       
       clearTimeout(G.GOM.lastTn.timerID);
-      G.GOM.lastTn.timerID=setTimeout(function(){ GalleryLastThumbnailSlideImage2( false ) }, G.O.thumbnailLastImgSliderDelay);
+      G.GOM.lastTn.timerID = setTimeout(function(){ GalleryLastThumbnailSlideImage2( false ) }, G.O.thumbnailLastImgSliderDelay);
     }
 
     
@@ -4140,71 +4145,22 @@ Todo:
 
       G.GOM.lastTn.nextIdx++;
       if( G.GOM.lastTn.nextIdx >= G.GOM.items.length ) {
-        G.GOM.lastTn.nextIdx=G.GOM.lastTn.startIdx;
+        G.GOM.lastTn.nextIdx = G.GOM.lastTn.startIdx;
       }
       
       // new image
-      var newItem=G.GOM.NGY2Item(G.GOM.lastTn.nextIdx);
-      var imgBlurred=G.emptyGif;
+      var newItem = G.GOM.NGY2Item(G.GOM.lastTn.nextIdx);
+      var imgBlurred = G.emptyGif;
+      var bgImg = "url('" + G.emptyGif + "')";
       if( newItem.imageDominantColors != null ) {
-        imgBlurred=newItem.imageDominantColors;
+        imgBlurred = newItem.imageDominantColors;
+        bgImg = "url('" + newItem.imageDominantColors + "')";
       }
-      G.GOM.lastTn.startItem.$getElt('.nGY2TnPreview2').attr('src',imgBlurred);
-      G.GOM.lastTn.startItem.$getElt('.nGY2TnImg2').attr('src', newItem.thumbImg().src );
+      G.GOM.lastTn.startItem.$getElt('.nGY2TnImgBackNext').css({'background-image': bgImg, opacity: 1 });
+      G.GOM.lastTn.startItem.$getElt('.nGY2TnImgNext').css({ 'background-image': "url('" + newItem.thumbImg().src + "')", opacity: 1 });
+      G.GOM.lastTn.startItem.$getElt('.nGY2TnImgNext .nGY2GThumbnailImg').attr('src', newItem.thumbImg().src );
       
-      GalleryLastThumbnailSlideSetImage(newItem, '.nGY2TnImg2', '.nGY2TnPreview2');
 
-    }
-    
-    function GalleryLastThumbnailSlideSetImage( newItem, img, imgPreview ) {
-      var item=G.GOM.lastTn.startItem;
-    
-      if( G.layout.engine == 'GRID' ) {
-        // fixed width and height
-        // var imgSize='max-width:'+G.tn.settings.getW()+'px;max-height:'+G.tn.settings.getH()+'px;'
-        // var imgBWidth='';
-        
-        if( G.tn.opt.Get('crop') == true && newItem.thumbImg().height > 0 && newItem.thumbImg().width > 0 ) {
-
-        // crop images => no black border
-        if( newItem.thumbImg().height > newItem.thumbImg().width ) {
-            // portrait
-            // imgSize='width:'+G.tn.settings.getW()+'px;';
-            item.$getElt(imgPreview).css({ 'width': G.tn.settings.getW()+'px;' });
-            item.$getElt(img).css({ 'width': G.tn.settings.getW()+'px;' });
-          }
-          else {
-            // landscape
-
-            // step 1: adjust height
-            var r2=G.tn.settings.getH()/newItem.thumbImg().height;
-            
-            // var newH= G.tn.settings.getH();
-            var newW= newItem.thumbImg().width*r2;
-            
-            // step 2: check if width needs to be adjusted
-            if( newW >= G.tn.settings.getW() ) {
-              // no adjustement
-              var d=-(newItem.thumbImg().width*r2-G.tn.settings.getW()) / 2;
-              // imgSize='height:'+G.tn.settings.getH()+'px;left:'+d+'px;';
-              item.$getElt(imgPreview).css({ 'height': G.tn.settings.getH()+'px;', 'left': d+'px;', 'width': newItem.thumbImg().width+'px;' });
-              item.$getElt(img).css({ 'height': G.tn.settings.getH()+'px;', 'left': d+'px;' });
-            }
-            else {
-              // yes, adjust width
-              // after scaling to adjust the height, the width is too narrow => upscale again to fit width
-              var rW=G.tn.settings.getW()/newItem.thumbImg().width;
-              var w=newItem.thumbImg().width*rW;
-              item.$getElt(imgPreview).css({ 'width': w+'px;' });
-              item.$getElt(img).css({ 'width': w+'px;' });
-            }
-          }
-        }
-        else {
-          item.$getElt(imgPreview).css({ 'max-width': G.tn.settings.getW()+'px;', 'max-height': G.tn.settings.getH()+'px;' });
-          item.$getElt(img).css({ 'max-width': G.tn.settings.getW()+'px;', 'max-height': G.tn.settings.getH()+'px;' });
-        }
-      }      
     }
     
     function GalleryLastThumbnailSlideImage2() {
@@ -4214,13 +4170,16 @@ Todo:
 
         var context = {};
         context.item = item;
+        var newItem = G.GOM.NGY2Item(G.GOM.lastTn.nextIdx);
+        context.newItem = newItem;
 
         // animation
         var tweenable = new NGTweenable();
-        context.tweenable=tweenable;
+        context.tweenable = tweenable;
         tweenable.tween({
           attachment:   context,
-          from:         { 'left': item.thumbImg().width },
+          // from:         { 'left': item.thumbImg().width },
+          from:         { 'left': G.tn.settings.getW() },
           to:           { 'left': 0 },
           duration:     1000,
           delay:        0,
@@ -4228,7 +4187,7 @@ Todo:
           
           step: function (state, att) {
             if( att.item.$getElt() == null ) {
-              // the thumbnail may be destroyed since the start of the animation
+              // the thumbnail may have been destroyed since the start of the animation
               att.tweenable.stop(false);
               return;
             }
@@ -4238,16 +4197,17 @@ Todo:
               // return;
             // }
             
-            // current image
-            att.item.CSSTransformSet('.nGY2TnPreview', 'translateX', -(att.item.thumbImg().width-state.left)+'px');
-            att.item.CSSTransformApply( '.nGY2TnPreview' );
-            att.item.CSSTransformSet('.nGY2TnImg', 'translateX', -(att.item.thumbImg().width-state.left)+'px');
+            // slide current image
+            att.item.CSSTransformSet('.nGY2TnImgBack', 'translateX', -(G.tn.settings.getW()-state.left)+'px');
+            att.item.CSSTransformApply( '.nGY2TnImgBack' );
+            att.item.CSSTransformSet('.nGY2TnImg', 'translateX', -(G.tn.settings.getW()-state.left)+'px');
             att.item.CSSTransformApply( '.nGY2TnImg' );
-            // new image
-            att.item.CSSTransformSet('.nGY2TnPreview2', 'translateX', state.left+'px');
-            att.item.CSSTransformApply( '.nGY2TnPreview2' );
-            att.item.CSSTransformSet('.nGY2TnImg2', 'translateX', state.left+'px');
-            att.item.CSSTransformApply( '.nGY2TnImg2' );
+
+            // slide new image
+            att.item.CSSTransformSet('.nGY2TnImgBackNext', 'translateX', state.left+'px');
+            att.item.CSSTransformApply( '.nGY2TnImgBackNext' );
+            att.item.CSSTransformSet('.nGY2TnImgNext', 'translateX', state.left+'px');
+            att.item.CSSTransformApply( '.nGY2TnImgNext' );
             
           },
           finish: function (state, att) {
@@ -4255,35 +4215,39 @@ Todo:
               // the thumbnail may be destroyed since the start of the animation
               return;
             }
-            // if( att.G.VOM.viewerDisplayed ) {
-              // return;
-            // }
+            // if( att.G.VOM.viewerDisplayed ) { return; }
+           
+            var newItem = G.GOM.NGY2Item( G.GOM.lastTn.currentIdx );
+            if( newItem == null ) { return; } // item does not exist anymore
             
-            att.item.$getElt('.nGY2TnPreview').attr('src', att.item.$getElt('.nGY2TnPreview2').attr('src') );
-            att.item.$getElt('.nGY2TnImg').attr('src', att.item.$getElt('.nGY2TnImg2').attr('src') );
+            var bgImg = "url('" + G.emptyGif + "')";
+            if( att.newItem.imageDominantColors != null ) {
+              bgImg = "url('" + newItem.imageDominantColors + "')";
+            }
+            att.item.$getElt('.nGY2TnImgBack').css('background-image', bgImg);
+            att.item.$getElt('.nGY2TnImg').css('background-image', "url('" + att.newItem.thumbImg().src + "')" );
+            att.item.$getElt('.nGY2TnImg .nGY2GThumbnailImg').attr('src', att.newItem.thumbImg().src );
             
-            GalleryLastThumbnailSlideSetImage(att.item, '.nGY2TnImg', '.nGY2TnPreview');
-
-            att.item.CSSTransformSet('.nGY2TnPreview', 'translateX', '0px');
-            att.item.CSSTransformApply( '.nGY2TnPreview' );
+            att.item.CSSTransformSet('.nGY2TnImgBack', 'translateX', '0px');
+            att.item.CSSTransformApply( '.nGY2TnImgBack' );
             att.item.CSSTransformSet('.nGY2TnImg', 'translateX', '0px');
             att.item.CSSTransformApply( '.nGY2TnImg' );
-            att.item.CSSTransformSet('.nGY2TnPreview2', 'translateX', item.thumbImg().width +'px');
-            att.item.CSSTransformApply( '.nGY2TnPreview2' );
-            att.item.CSSTransformSet('.nGY2TnImg2', 'translateX', item.thumbImg().width +'px');
-            att.item.CSSTransformApply( '.nGY2TnImg2' );
+
+            att.item.CSSTransformSet('.nGY2TnImgBackNext', 'translateX', G.tn.settings.getW() +'px');
+            att.item.CSSTransformApply( '.nGY2TnImgBackNext' );
+            att.item.CSSTransformSet('.nGY2TnImgNext', 'translateX', G.tn.settings.getW() +'px');
+            att.item.CSSTransformApply( '.nGY2TnImgNext' );
 
             G.GOM.lastTn.currentIdx=G.GOM.lastTn.nextIdx;
             
-            // set title and description
-            var newItem=G.GOM.NGY2Item(G.GOM.lastTn.currentIdx);
+            // set new title and description
             if( G.O.thumbnailLabel.get('display') == true ) {
               var icons=G.O.icons.thumbnailAlbum;
-              if( newItem.kind != 'album' ) {
+              if( att.newItem.kind != 'album' ) {
                 icons=G.O.icons.thumbnailImage;
               }
-              att.item.$getElt('.nGY2GThumbnailTitle').html(icons + getThumbnailTitle(newItem));
-              att.item.$getElt('.nGY2GThumbnailDescription').html(icons + getTumbnailDescription(newItem));
+              att.item.$getElt('.nGY2GThumbnailTitle').html(icons + getThumbnailTitle(att.newItem));
+              att.item.$getElt('.nGY2GThumbnailDescription').html(icons + getTumbnailDescription(att.newItem));
             }
             
             GalleryLastThumbnailSlideImageSetNext();
@@ -4382,10 +4346,10 @@ Todo:
     
     //----- Build one thumbnail
     function ThumbnailBuild( item, idx, GOMidx, lastOne ) {
-      item.eltTransform=  [];
-      item.eltFilter=     [];
-      item.hoverInitDone= false;
-      item.$Elts=         [];
+      item.eltTransform =  [];
+      item.eltFilter =     [];
+      item.hoverInitDone = false;
+      item.$Elts =         [];
 
       if( item.kind == 'albumUp' ) {
         ThumbnailBuildAlbumpUp( item, idx, GOMidx);
@@ -4404,25 +4368,25 @@ Todo:
       sTitle = getThumbnailTitle(item);
 
       // image background -> visible during image download
-      var bg='';
-      var bgImg="background-image: url('" + G.emptyGif + "');";
+      var bg = '';
+      var bgImg = "background-image: url('" + G.emptyGif + "');";
       if( item.imageDominantColors != null ) {
         // dominant colorS (blurred preview image)
-        bgImg="background-image: url('" + item.imageDominantColors + "');";
+        bgImg = "background-image: url('" + item.imageDominantColors + "');";
       }
       else {
         // dominant color -> background color
         if( item.imageDominantColor != null ) {
-          bg='background-color:'+item.imageDominantColor+';';
+          bg = 'background-color:' + item.imageDominantColor + ';';
         }
         else {
-          bgImg='';
+          bgImg = '';
         }
       }
 
-      var op='opacity:1;';
+      var op = 'opacity:1;';
       if( G.O.thumbnailWaitImageLoaded == true ) {
-        op='opacity:0;';
+        op = 'opacity:0;';
       }
 
       // ##### thumbnail containers  (with stacks)
@@ -4444,11 +4408,11 @@ Todo:
       }
       
       // ##### layer for image background (color, dominant color, blurred preview)
-      var s1="position: absolute; top: 0px; left: 0px; width:" + w + "px; height:" + h + "px;"+bg+bgImg+" background-position: center center;  background-repeat: no-repeat; background-size:"+bgSize+"; overflow: hidden;";
+      var s1 = "position: absolute; top: 0px; left: 0px; width:" + w + "px; height:" + h + "px;"+ bg + bgImg + " background-position: center center;  background-repeat: no-repeat; background-size:" + bgSize + "; overflow: hidden;";
       newElt[newEltIdx++]='<div class="nGY2GThumbnailImage nGY2TnImgBack" style="' + s1 + '"></div>';
       
       // #### layer for image 
-      var s2 = op + "position: absolute; top: 0px; left: 0px; width:" + w + "px; height:" + h + "px; background-image: url('" + src + "'); background-position: center center; background-repeat: no-repeat; background-size:"+bgSize+"; overflow: hidden;";
+      var s2 = op + "position: absolute; top: 0px; left: 0px; width:" + w + "px; height:" + h + "px; background-image: url('" + src + "'); background-position: center center; background-repeat: no-repeat; background-size:" + bgSize + "; overflow: hidden;";
       newElt[newEltIdx++]='<div class="nGY2GThumbnailImage nGY2TnImg" style="' + s2 + '">';
       newElt[newEltIdx++]='  <img class="nGY2GThumbnailImg nGY2TnImg2" src="' + src + '" alt="' + sTitle + '" style="opacity:0;" data-idx="' + idx + '" data-albumidx="' + G.GOM.albumIdx + '" >';
       newElt[newEltIdx++]='</div>';
@@ -4457,16 +4421,16 @@ Todo:
       // ##### layer for user customization purposes
       newElt[newEltIdx++]='<div class="nGY2GThumbnailCustomLayer"></div>';
 
-      // ##### layer for for labels (title + description and their icons)
+      // ##### layer for labels (title + description and their icons)
       if( G.O.thumbnailLabel.get('display') == true ) {
         // Labels: title and description
         newElt[newEltIdx++]= '  <div class="nGY2GThumbnailLabel" '+ G.tn.style.getLabel(item) + '>';
         if( item.kind == 'album' ) {
-          // album
+          // album kind
           newElt[newEltIdx++]= '    <div class="nGY2GThumbnailTitle nGY2GThumbnailAlbumTitle" ' + G.tn.style.getTitle() + '>' + G.O.icons.thumbnailAlbum + sTitle + '</div>';
         }
         else {
-          // image
+          // image/media kind
           newElt[newEltIdx++]= '    <div class="nGY2GThumbnailTitle nGY2GThumbnailImageTitle" ' + G.tn.style.getTitle() + '>' + G.O.icons.thumbnailImage + sTitle + '</div>';
         }
         newElt[newEltIdx++]= '    <div class="nGY2GThumbnailDescription" ' + G.tn.style.getDesc() + '>' + getTumbnailDescription(item) + '</div>';
@@ -4476,7 +4440,6 @@ Todo:
       // ##### layer for tools
       newElt[newEltIdx++] = ThumbnailBuildTools(item, lastOne);
       
-      
       // close containers
       newElt[newEltIdx++]='</div></div>';
       
@@ -4485,7 +4448,6 @@ Todo:
       item.$elt=$newDiv;
       $newDiv.data('index',GOMidx);
       item.$getElt('.nGY2GThumbnailImg').data('index',GOMidx);
-
       
       // Custom init function
       var fu=G.O.fnThumbnailInit;
@@ -4985,8 +4947,8 @@ Todo:
               return;
             }
             att.item.$elt.css('opacity', state.opacity);
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px,'+state.translateY+'px');
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateX', state.rotateX+'deg');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px,' + state.translateY + 'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateX', state.rotateX + 'deg');
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
@@ -5015,8 +4977,8 @@ Todo:
               return;
             }
             att.item.$elt.css('opacity', state.opacity);
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px,'+state.translateY+'px');
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateY', state.rotateY+'deg');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px,' + state.translateY + 'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateY', state.rotateY + 'deg');
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
           finish:       function (state, att) {
@@ -5044,7 +5006,7 @@ Todo:
               return;
             }
             att.item.$elt.css('opacity', state.opacity);
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px, '+state.translateY + 'px');
+            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px, ' + state.translateY + 'px');
             att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateY', state.rotateY + 'deg');
             att.item.CSSTransformApply('.nGY2GThumbnail');
           },
@@ -5157,7 +5119,7 @@ Todo:
             easing:       'easeOutCirc',
             step:         function (state, att) {
               if( att.orgIdx == G.GOM.albumIdx ) {
-                G.$E.conTnParent.css( G.CSStransformName , 'rotateX('+state.r+'deg)');
+                G.$E.conTnParent.css( G.CSStransformName , 'rotateX(' + state.r + 'deg)');
               }
             }
           });
@@ -5324,7 +5286,7 @@ Todo:
           ThumbnailHoverOut(i);
         }
         else {
-          G.I[G.GOM.items[i].thumbnailIdx].hovered=false;
+          G.I[G.GOM.items[i].thumbnailIdx].hovered = false;
         }
       }
     }
@@ -5355,7 +5317,7 @@ Todo:
         // GalleryResize( );
       }
       catch (e) { 
-        NanoAlert(G, 'error on hoverOut: ' +e.message );
+        NanoAlert(G, 'error on hoverOut: ' + e.message );
       }
       
     }
@@ -5743,7 +5705,7 @@ Todo:
         
         // custom data
         if( item.customData !== null ) {
-          newItem.customData=cloneJSObject(item.customData);
+          newItem.customData = cloneJSObject( item.customData );
         }
 
         newItem.contentIsLoaded = true;
@@ -14613,8 +14575,9 @@ if (typeof define === 'function' && define.amdDISABLED) {
           }
          
           // post-process callback
-          if( typeof G.O.fnProcessData == 'function' ) {
-            G.O.fnProcessData(newItem, G.O.dataProvider, data);
+          var fu = G.O.fnProcessData;
+          if( fu !== null ) {
+            typeof fu == 'function' ? fu(newItem, G.O.dataProvider, data) : window[fu](newItem, G.O.dataProvider, data);
           }
           
         }
@@ -14980,9 +14943,12 @@ if (typeof define === 'function' && define.amdDISABLED) {
           newItem.thumbs=GoogleThumbSetSizes('l1', 0, newItem.thumbs, data, kind );
           newItem.thumbs=GoogleThumbSetSizes('lN', 5, newItem.thumbs, data, kind );
           
-          if( typeof G.O.fnProcessData == 'function' ) {
-            G.O.fnProcessData(newItem, 'google2', data);
+          // post-process callback
+          var fu = G.O.fnProcessData;
+          if( fu !== null ) {
+            typeof fu == 'function' ? fu(newItem, 'google2', data) : window[fu](newItem, 'google2', data);
           }
+          
         }
       });
 
@@ -15443,8 +15409,14 @@ if (typeof define === 'function' && define.amdDISABLED) {
         tn=FlickrRetrieveImages(tn, item, 'l1' );
         tn=FlickrRetrieveImages(tn, item, 'lN' );
         newItem.thumbs=tn;
-	if (typeof G.O.fnProcessData == 'function')
-	  G.O.fnProcessData(newItem, 'flickr', source);
+        
+        // post-process callback
+        var fu = G.O.fnProcessData;
+        if( fu !== null ) {
+          typeof fu == 'function' ? fu(newItem, 'flickr', item) : window[fu](newItem, 'flickr', item);
+        }
+        
+
       });
       G.I[albumIdx].contentIsLoaded=true;
       
@@ -15493,6 +15465,12 @@ if (typeof define === 'function' && define.amdDISABLED) {
           tn = FlickrRetrieveImages(tn, item.primary_photo_extras, 'l1' );
           tn = FlickrRetrieveImages(tn, item.primary_photo_extras, 'lN' );
           newItem.thumbs = tn;
+
+          // post-process callback
+          var fu = G.O.fnProcessData;
+          if( fu !== null ) {
+            typeof fu == 'function' ? fu(newItem, 'flickr', item) : window[fu](newItem, 'flickr', item);
+          }
           
         }
       });
