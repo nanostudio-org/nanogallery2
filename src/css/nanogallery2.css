@@ -766,7 +766,7 @@
 	-moz-box-sizing: border-box;
 	-o-box-sizing: border-box;
 }
-.nGY2 .nGY2ViewerMedia{
+.nGY2 .nGY2ViewerMedia {
   visibility: visible;
   opacity: 1;
   will-change: transform;
@@ -796,7 +796,7 @@
 	-o-box-sizing: border-box;
 }
 
-.nGY2 .nGY2ViewerContent .imgCurrent{
+.nGY2 .nGY2ViewerContent .imgCurrent {
 	cursor: pointer;
 }
 
