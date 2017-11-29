@@ -248,7 +248,9 @@
       jQuery.each(source, function(i,item){
         //Get the title
         var itemTitle = item.title._content;
-
+        
+        if( item.visibility_can_see_set == 0 ) { return true; }    // skip it
+        
         if( FilterAlbumName(itemTitle, item.id) ) {
           var itemID=item.id;
           //Get the description
