@@ -22,7 +22,7 @@
 v2.0.0beta - USE ONLY FOR TEST PURPOSES
 - new: mosaic layout
 - new: video support (Youtube, Vimeo and Dailymotion)
-- new: image slider in thumbnail (see option 'thumbnailLastImgSliderDelay')
+- new: image slider in thumbnail (see option 'thumbnailSliderDelay')
 - new: value 'fillWidth' for option 'thumbnailAlignment' (is also the new default value)
 - new: option 'thumbnailBaseGridHeight' for cascading layout
 - new: markup content source supports the ID attribute
@@ -37,6 +37,11 @@ v2.0.0beta - USE ONLY FOR TEST PURPOSES
 - fixed: image swipe left/right closes the lightbox
 - fixed: #56 #68 destroy method issue -> warning: browser back to non existing location could happen
 - fixed: #70 overflow-x: hidden; not working after exit gallery
+- fixed: Flickr - album list blocked by hidden albums 
+- fixed: #69 message 'error: no image to process.' no more displayed
+- fixed: #77 link to the photo on flickr leads to photostream instead of album
+- fixed: #78 exif time now handeld as string format
+
 
 Todo:
 - gallery margin left/right
@@ -57,9 +62,9 @@ Todo:
 - séparation title / description
 - gallery : animation pagination -> a rajouter sur effacement gallery
 - checked thumbnail
-- enlever erreur 'no image to process'
 - verifier fonctionnement thumbnail tools
 - mosaic layout templates
+- utiliser ngy2 logo comme animation de chargement
   
 */ 
  
@@ -655,6 +660,15 @@ Todo:
               return this.$Elts[elt];
             }
           };
+          
+          // remove one element (in DOM and in cache)
+          NGY2Item.prototype.removeElt = function( elt ) {
+            if( this.$elt == null ) { return; }
+            if( this.$Elts[elt] == undefined) { return; }
+            this.$Elts[elt].remove();
+            var index = this.$Elts.indexOf(elt);
+            this.$Elts.splice(index, 1);
+          };
 
           //--- returns the album containing the item
           NGY2Item.prototype.album = function() {
@@ -852,9 +866,9 @@ Todo:
             return n + a;
           } 
           
-          //--- 2D/3D css transform - apply the cached value to element
+          //--- 2D/3D CSS transform - apply the cached value to element
           NGY2Item.prototype.CSSTransformApply = function ( eltClass ) {
-            var obj=this.eltTransform[eltClass];
+            var obj = this.eltTransform[eltClass];
 
             if( eltClass == '.nGY2GThumbnail' ) {
               // thumbnail
@@ -870,12 +884,12 @@ Todo:
               var pScale = 1;
               for( var n = nbStacks; n >= 0; n-- ) {
                 // units must be given with
-                var v = 'translateX('+ValueApplyPercent(obj.translateX,pTranslateX)+') translateY('+ValueApplyPercent(obj.translateY,pTranslateY)+') translateZ('+ValueApplyPercent(obj.translateZ,pTranslateZ)+') scale('+ValueApplyPercent(obj.scale,pScale)+') translate('+ValueApplyPercent(obj.translate,pTranslate)+')';
+                var v = 'translateX(' + ValueApplyPercent(obj.translateX,pTranslateX) + ') translateY(' + ValueApplyPercent(obj.translateY,pTranslateY) + ') translateZ(' + ValueApplyPercent(obj.translateZ,pTranslateZ) + ') scale(' + ValueApplyPercent(obj.scale,pScale) + ') translate(' + ValueApplyPercent(obj.translate,pTranslate) + ')';
                 if( !(this.G.IE <= 9) && !this.G.isGingerbread ) {
-                  v += ' rotateX('+ValueApplyPercent(obj.rotateX,pRotateX)+') rotateY('+ValueApplyPercent(obj.rotateY,pRotateY)+') rotateZ('+ValueApplyPercent(obj.rotateZ,pRotateZ)+') rotate('+ValueApplyPercent(obj.rotate,pRotate)+')';
+                  v += ' rotateX(' + ValueApplyPercent(obj.rotateX,pRotateX) + ') rotateY(' + ValueApplyPercent(obj.rotateY,pRotateY) + ') rotateZ(' + ValueApplyPercent(obj.rotateZ,pRotateZ) + ') rotate(' + ValueApplyPercent(obj.rotate,pRotate) + ')';
                 }
                 else {
-                  v += ' rotate('+ValueApplyPercent(obj.rotateZ,pRotateZ)+')';
+                  v += ' rotate(' + ValueApplyPercent(obj.rotateZ,pRotateZ) + ')';
                 }
                 obj.$elt[n].style[this.G.CSStransformName] = v;
                 
@@ -896,14 +910,13 @@ Todo:
               if( obj.$elt != null ) {
                 for( var n = 0; n < obj.$elt.length; n++ ) {
                   if( obj.$elt[n] != undefined ) {
-                    obj.$elt[n].style.WebkitFilter = v;
                     // units must be given with
-                    var v = 'translateX('+obj.translateX+') translateY('+obj.translateY+') translateZ('+obj.translateY+') scale('+obj.scale+') translate('+obj.translate+')';
+                    var v = 'translateX(' + obj.translateX + ') translateY(' + obj.translateY + ') translateZ(' + obj.translateY + ') scale(' + obj.scale + ') translate(' + obj.translate + ')';
                     if( !(this.G.IE <= 9) && !this.G.isGingerbread ) {
-                      v += ' rotateX('+obj.rotateX+') rotateY('+obj.rotateY+') rotateZ('+obj.rotateZ+') rotate('+obj.rotate+')';
+                      v += ' rotateX(' + obj.rotateX + ') rotateY(' + obj.rotateY + ') rotateZ(' + obj.rotateZ + ') rotate(' + obj.rotate + ')';
                     }
                     else {
-                      v += ' rotate('+obj.rotateZ+')';
+                      v += ' rotate(' + obj.rotateZ + ')';
                     }
                     obj.$elt[n].style[this.G.CSStransformName] = v;
                   }
@@ -912,19 +925,22 @@ Todo:
             }
           };
 
-          //--- 2D/3D css transform - set a value in cache
-          NGY2Item.prototype.CSSTransformSet = function ( eltClass, transform, value ) {
+          //--- 2D/3D CSS transform - set a value in cache
+          NGY2Item.prototype.CSSTransformSet = function ( eltClass, transform, value, forceRefresh ) {
             if( this.eltTransform[eltClass] == undefined ) {
-              this.eltTransform[eltClass]={ translateX: 0, translateY: 0, translateZ: 0, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1, translate: '0px,0px', rotate: 0 };
-              this.eltTransform[eltClass].$elt=this.$getElt(eltClass);
+              this.eltTransform[eltClass] = { translateX: 0, translateY: 0, translateZ: 0, rotateX: 0, rotateY: 0, rotateZ: 0, scale: 1, translate: '0px,0px', rotate: 0 };
+              this.eltTransform[eltClass].$elt = this.$getElt(eltClass);
             }
-            this.eltTransform[eltClass][transform]=value;
+            this.eltTransform[eltClass][transform] = value;
+            if( forceRefresh === true ) {
+              this.eltTransform[eltClass].$elt = this.$getElt(eltClass, true);
+            }
           };
 
           //--- CSS Filters - apply the cached value to element
           NGY2Item.prototype.CSSFilterApply = function ( eltClass ) {
-            var obj=this.eltFilter[eltClass];
-            var v = 'blur('+obj.blur+') brightness('+obj.brightness+') grayscale('+obj.grayscale+') sepia('+obj.sepia+') contrast('+obj.contrast+') opacity('+obj.opacity+') saturate('+obj.saturate+')';
+            var obj = this.eltFilter[eltClass];
+            var v = 'blur(' + obj.blur + ') brightness(' + obj.brightness + ') grayscale(' + obj.grayscale + ') sepia(' + obj.sepia + ') contrast(' + obj.contrast + ') opacity(' + obj.opacity + ') saturate(' + obj.saturate + ')';
             if( obj.$elt != null ) {
               for( var n = 0; n < obj.$elt.length; n++ ) {
                 if( obj.$elt[n] != undefined ) {
@@ -936,12 +952,15 @@ Todo:
           };
 
           //--- CSS Filters - set a value in cache
-          NGY2Item.prototype.CSSFilterSet = function ( eltClass, filter, value ) {
+          NGY2Item.prototype.CSSFilterSet = function ( eltClass, filter, value, forceRefresh ) {
             if( this.eltFilter[eltClass] == undefined ) {
-              this.eltFilter[eltClass] = { blur:0, brightness:'100%', grayscale:'0%', sepia:'0%', contrast:'100%', opacity:'100%', saturate:'100%' };
+              this.eltFilter[eltClass] = { blur: 0, brightness: '100%', grayscale: '0%', sepia: '0%', contrast: '100%', opacity: '100%', saturate: '100%' };
               this.eltFilter[eltClass].$elt = this.$getElt(eltClass);
             }
             this.eltFilter[eltClass][filter] = value;
+            if( forceRefresh === true ) {
+              this.eltTransform[eltClass].$elt = this.$getElt(eltClass, true);
+            }
           };
 
           //--- thumbnail hover animation
@@ -971,7 +990,7 @@ Todo:
               context.animeFrom = effect.from;
               context.animeTo = effect.to;
               context.animeDuration = parseInt(effect.duration);
-              context.animeDelay = 30 + parseInt(effect.delay+delay);  // 30ms is a default delay to avoid conflict with other initializations
+              context.animeDelay = 30 + parseInt(effect.delay + delay);  // 30ms is a default delay to avoid conflict with other initializations
               context.animeEasing = effect.easing;
             }
             else {
@@ -990,7 +1009,7 @@ Todo:
               }
               
               context.animeDuration = parseInt(effect.durationBack);
-              context.animeDelay = 30 + parseInt(effect.delayBack+delay);   // 30ms is a default delay to avoid conflict with other initializations
+              context.animeDelay = 30 + parseInt(effect.delayBack + delay);   // 30ms is a default delay to avoid conflict with other initializations
               context.animeEasing = effect.easingBack;
             }
             
@@ -1015,7 +1034,7 @@ Todo:
             // handle some special cases
             if( hoverIn && effect.element == '.nGY2GThumbnail' && ( effect.type == 'scale' || effect.type == 'rotateX') ) {
               this.G.GOM.lastZIndex++;
-              this.$getElt(effect.element).css('z-index',this.G.GOM.lastZIndex);
+              this.$getElt(effect.element).css('z-index', this.G.GOM.lastZIndex);
               // setElementOnTop(this.G.$E.base, this.$getElt(effect.element) );
             }
             
@@ -1100,11 +1119,11 @@ Todo:
                 switch( att.cssKind ) {
                   case 'transform':
                     att.item.CSSTransformSet(att.effect.element, att.effect.type, att.animeTo);
-                    att.item.CSSTransformApply(att.effect.element );
+                    att.item.CSSTransformApply(att.effect.element);
                     break;
                   case 'filter':
                     att.item.CSSFilterSet(att.effect.element, att.effect.type, att.animeTo);
-                    att.item.CSSFilterApply(att.effect.element );
+                    att.item.CSSFilterApply(att.effect.element);
                     break;
                   default:
                     att.item.$getElt(att.effect.element).css(att.effect.type, att.animeTo);
@@ -1235,7 +1254,7 @@ Todo:
     thumbnailL1StacksScale :      null,
     thumbnailDisplayOutsideScreen: false,
     thumbnailWaitImageLoaded:     true,
-    thumbnailLastImgSliderDelay:  2000,
+    thumbnailSliderDelay:         2000,
     galleryBuildInit2 :           '',
     portable :                    false,
     
@@ -2070,13 +2089,13 @@ Todo:
       albumSearchTags:            '',     // current search string -> tags
       lastZIndex:                 0,      // used to put a thumbnail on top of all others (for exemple for scale hover effect)
       lastRandomValue:            0,
-      lastTn : {                          // slider on last thumbnail
-        startIdx:   0,
-        startItem:  null,
-        currentIdx: 0,
-        initiated:  false,
-        timerID:    0,
-        enabled:    false
+      slider : {                          // slider on last thumbnail
+        hostIdx:                  -1,       // idx of the thumbnail hosting the slider
+        hostItem:                 null,     // item hosting the slider
+        currentIdx:               0,        // idx of the current displayed item
+        nextIdx:                  0,        // idx of the next item to display in the slider
+        timerID:                  0,
+        tween:                    null      // tranistion tween instance
       },
       NGY2Item: function( idx ) {   // returns a NGY2Item or null if it does not exist
         if( G.GOM.items[idx] == undefined || G.GOM.items[idx] == null ) { return null; }
@@ -2972,8 +2991,8 @@ Todo:
     function GalleryRender( albumIdx ) {
       TriggerCustomEvent('galleryRenderStart');
       
-      clearTimeout(G.GOM.lastTn.timerID);
-      G.GOM.lastTn.enabled=false;
+      clearTimeout(G.GOM.slider.timerID);
+      G.GOM.slider.hostIdx = -1;      // disabled slider on thumbnail
       
       var fu=G.O.fnGalleryRenderStart;
       if( fu !== null ) {
@@ -3167,11 +3186,11 @@ Todo:
     
     // Resize the gallery
     function GalleryResize() {
-      var d=new Date();
-      G.galleryResizeEventEnabled=false;
+      var d = new Date();
+      G.galleryResizeEventEnabled = false;
       // G.GOM.cache.areaWidth=G.$E.conTnParent.width();
       if( GallerySetLayout() == false ) {
-        G.galleryResizeEventEnabled=true;
+        G.galleryResizeEventEnabled = true;
         if( G.O.debugMode ) { console.log('GalleryResize1: '+ (new Date()-d)); }
         return;
       }
@@ -3287,8 +3306,8 @@ Todo:
     function GallerySetLayout() {
       var r = true;
       // width of the available area
-      G.GOM.cache.areaWidth=G.$E.conTnParent.width();
-      G.GOM.displayArea={ width:0, height:0 };
+      G.GOM.cache.areaWidth = G.$E.conTnParent.width();
+      G.GOM.displayArea = { width:0, height:0 };
 
       switch( G.layout.engine ) {
         case 'JUSTIFIED':
@@ -3307,7 +3326,7 @@ Todo:
       }
       
       TriggerCustomEvent('galleryLayoutApplied');
-      var fu=G.O.fnGalleryLayoutApplied;
+      var fu = G.O.fnGalleryLayoutApplied;
       if( fu !== null ) {
         fu == 'function' ? fu() : window[fu]();
       }
@@ -3319,7 +3338,7 @@ Todo:
     //----- CASCADING LAYOUT
     function GallerySetLayoutHeightAuto() {
       var curCol =      0,
-      areaWidth=        G.GOM.cache.areaWidth,
+      areaWidth =       G.GOM.cache.areaWidth,
       curRow =          0,
       colHeight =       [],
       maxCol =          NbThumbnailsPerRow(areaWidth),
@@ -3348,12 +3367,12 @@ Todo:
       // Retrieve the real used width of the area (the evaluation is based on the content of the first line)
       if( G.O.thumbnailAlignment == 'fillWidth' ) {
         // fillWidth --> evaluate scale factor and number of columns
-        var totalGutterWidth = (maxCol-1) * gutterWidth;
-        scaleFactor = (areaWidth - totalGutterWidth) / (maxCol*tnWidth);
+        var totalGutterWidth = (maxCol - 1) * gutterWidth;
+        scaleFactor = (areaWidth - totalGutterWidth) / (maxCol * tnWidth);
         if( scaleFactor > 1 ) {
           maxCol++; // add one column and re-evaluate the scale factor
         }
-        totalGutterWidth = (maxCol-1) * gutterWidth;
+        totalGutterWidth = (maxCol - 1) * gutterWidth;
         scaleFactor = Math.min( (areaWidth - totalGutterWidth) / (maxCol*tnWidth), 1);   // no upscale
       }
 
@@ -3425,43 +3444,43 @@ Todo:
     
     //----- JUSTIFIED LAYOUT
     function GallerySetLayoutWidthtAuto() {
-      var curWidth=               0,
-      areaWidth=                  G.GOM.cache.areaWidth,
-      lastPosX=                   0,
-      curPosY=                    0,
-      rowLastItem=                [],
-      rowNum=                     0,
-      rowHeight=                  [],
-      bNewRow=                    false,
-      cnt=                        0,
-      gutterWidth=                G.tn.opt.Get('gutterWidth'),
-      gutterHeight=               G.tn.opt.Get('gutterHeight');
+      var curWidth =               0,
+      areaWidth =                  G.GOM.cache.areaWidth,
+      lastPosX =                   0,
+      curPosY =                    0,
+      rowLastItem =                [],
+      rowNum =                     0,
+      rowHeight =                  [],
+      bNewRow =                    false,
+      cnt =                        0,
+      gutterWidth =                G.tn.opt.Get('gutterWidth'),
+      gutterHeight =               G.tn.opt.Get('gutterHeight');
       // by grief-of-these-days
-      var maxRowHeightVertical=   0; // max height of a row with vertical thumbs
-      var maxRowHeightHorizontal= 0; // max height of a row with horizontal thumbs
-      var rowHasVertical=         false; // current row has vertical thumbs
-      var rowHasHorizontal=       false; // current row has horizontal thumbs
+      var maxRowHeightVertical =   0; // max height of a row with vertical thumbs
+      var maxRowHeightHorizontal = 0; // max height of a row with horizontal thumbs
+      var rowHasVertical =         false; // current row has vertical thumbs
+      var rowHasHorizontal =       false; // current row has horizontal thumbs
 
-      var tnHeight=G.tn.defaultSize.getOuterHeight();
-      var borderWidth=G.tn.borderWidth*2;
-      var borderHeight=G.tn.borderHeight*2;
-      var nbTnInCurrRow=1;
-      var nbTn=G.GOM.items.length;
+      var tnHeight = G.tn.defaultSize.getOuterHeight();
+      var borderWidth = G.tn.borderWidth * 2;
+      var borderHeight = G.tn.borderHeight * 2;
+      var nbTnInCurrRow = 1;
+      var nbTn = G.GOM.items.length;
 
       // first loop --> retrieve each row image height
-      for( var i=0; i < nbTn ; i++ ) {
-        var curTn=G.GOM.items[i];
+      for( var i = 0; i < nbTn ; i++ ) {
+        var curTn = G.GOM.items[i];
         if( curTn.imageWidth > 0 ) {
-          var imageRatio=curTn.imageWidth/curTn.imageHeight;
-          var imageWidth=Math.floor(tnHeight*imageRatio);
+          var imageRatio = curTn.imageWidth / curTn.imageHeight;
+          var imageWidth = Math.floor( tnHeight * imageRatio );
 
           if( bNewRow ) {
-            bNewRow=false;
+            bNewRow = false;
             rowNum++;
-            curWidth=0;
-            rowHasVertical=false;
-            rowHasHorizontal=false;
-            nbTnInCurrRow=1;
+            curWidth = 0;
+            rowHasVertical = false;
+            rowHasHorizontal = false;
+            nbTnInCurrRow = 1;
           }
           // by grief-of-these-days
           if( curTn.imageHeight > curTn.imageWidth ) {
@@ -3471,99 +3490,99 @@ Todo:
             rowHasHorizontal = true;
           }
           
-          if( (curWidth + gutterWidth + imageWidth) < (areaWidth - (nbTnInCurrRow*borderWidth)) ) {
+          if( (curWidth + gutterWidth + imageWidth) < (areaWidth - (nbTnInCurrRow * borderWidth)) ) {
             // enough place left in the current row
-            curWidth+=imageWidth+gutterWidth;
-            rowHeight[rowNum]=tnHeight;
+            curWidth += imageWidth + gutterWidth;
+            rowHeight[rowNum] = tnHeight;
             
             // prevent incomplete row from being heigher than the previous ones.
             // by grief-of-these-days
-            var rowHeightLimit=Math.max(rowHasVertical ? maxRowHeightVertical : 0, rowHasHorizontal ? maxRowHeightHorizontal : 0);
+            var rowHeightLimit = Math.max(rowHasVertical ? maxRowHeightVertical : 0, rowHasHorizontal ? maxRowHeightHorizontal : 0);
             if( rowHeightLimit > 0 ) {
-              rowHeight[rowNum]=Math.min(rowHeight[rowNum],rowHeightLimit);
+              rowHeight[rowNum] = Math.min(rowHeight[rowNum], rowHeightLimit);
             }
             
-            rowLastItem[rowNum]=i;
+            rowLastItem[rowNum] = i;
           }
           else {
             // new row after current item --> we need to adujet the row height to have enough space for the current thumbnail
-            curWidth+=gutterWidth+imageWidth;
-            var ratio=(areaWidth-nbTnInCurrRow*borderWidth) / curWidth;
-            var rH=Math.floor(tnHeight*ratio);
-            rowHeight[rowNum]=rH;
+            curWidth += gutterWidth+imageWidth;
+            var ratio = (areaWidth - nbTnInCurrRow * borderWidth) / curWidth;
+            var rH = Math.floor(tnHeight * ratio);
+            rowHeight[rowNum] = rH;
             
             // save the max row height for each thumb orientation.
             // by grief-of-these-days
             if( rowHasVertical ) {
-              maxRowHeightVertical=Math.max(maxRowHeightVertical,rH);
+              maxRowHeightVertical = Math.max( maxRowHeightVertical, rH );
             }
             if( rowHasHorizontal ) {
-              maxRowHeightHorizontal=Math.max(maxRowHeightHorizontal,rH);
+              maxRowHeightHorizontal = Math.max( maxRowHeightHorizontal, rH );
             }
             
-            rowLastItem[rowNum]=i;
-            bNewRow=true;
+            rowLastItem[rowNum] = i;
+            bNewRow = true;
           }
           cnt++;
           nbTnInCurrRow++;
         }
       }
 
-      rowNum=0;
-      curPosY=0;
-      lastPosX=0;
-      cnt=0;
+      rowNum = 0;
+      curPosY = 0;
+      lastPosX = 0;
+      cnt = 0;
       
-      G.GOM.lastFullRow=0;    // display at leat 1 row (even if not full)
+      G.GOM.lastFullRow = 0;    // display at leat 1 row (even if not full)
       
       // second loop --> calculate each thumbnail size
-      for( var i=0; i < nbTn ; i++ ) {
-        var curTn=G.GOM.items[i];
+      for( var i = 0; i < nbTn ; i++ ) {
+        var curTn = G.GOM.items[i];
         if( curTn.imageWidth > 0 ) {
-          var imageRatio=curTn.imageWidth/curTn.imageHeight;
-          var imageWidth=Math.floor(imageRatio*rowHeight[rowNum]); // border is already NOT included
+          var imageRatio = curTn.imageWidth / curTn.imageHeight;
+          var imageWidth = Math.floor( imageRatio * rowHeight[rowNum] ); // border is already NOT included
 
           if( i == rowLastItem[rowNum] ) {
             // row last item --> adjust image width because of rounding problems
             if( rowLastItem.length != (rowNum+1) ) {
               // last item in current row -> use the full remaining width
-              imageWidth=areaWidth-lastPosX-borderWidth;
+              imageWidth = areaWidth - lastPosX - borderWidth;
             }
             else {
               // very last item (on the last row)
               if( (lastPosX + gutterWidth + imageWidth + borderWidth ) > areaWidth ) {
                 // reduce size if image is wider as the remaining space
-                imageWidth=areaWidth-lastPosX-borderWidth;
+                imageWidth = areaWidth - lastPosX - borderWidth;
               }
             }
           }
           
-          var rh=parseInt(rowHeight[rowNum]);
-          imageWidth=parseInt(imageWidth);
+          var rh = parseInt( rowHeight[rowNum] );
+          imageWidth = parseInt( imageWidth );
 
           // thumbnail image size
-          curTn.resizedContentWidth=imageWidth;
-          curTn.resizedContentHeight=rh;
+          curTn.resizedContentWidth = imageWidth;
+          curTn.resizedContentHeight = rh;
           // thumbnail position and size
-          curTn.width=imageWidth+borderWidth;
-          curTn.height=rh+G.tn.labelHeight.get()+borderHeight;
-          curTn.row=rowNum;
+          curTn.width = imageWidth + borderWidth;
+          curTn.height= rh + G.tn.labelHeight.get() + borderHeight;
+          curTn.row = rowNum;
 
-          curTn.top=curPosY;
-          var x=lastPosX;
+          curTn.top = curPosY;
+          var x = lastPosX;
           if( G.O.RTL) {
-            x=areaWidth - lastPosX - curTn.width ;
+            x = areaWidth - lastPosX - curTn.width ;
           }
-          curTn.left=x;
+          curTn.left = x;
 
-          lastPosX+=curTn.width+gutterWidth;
+          lastPosX += curTn.width + gutterWidth;
 
           if( i == rowLastItem[rowNum] ) {
             // start a new row
-            curPosY+=curTn.height+gutterHeight;
-            G.GOM.lastFullRow=rowNum-1;
+            curPosY += curTn.height + gutterHeight;
+            G.GOM.lastFullRow = rowNum - 1;
             rowNum++;
-            lastPosX=0;
+            lastPosX = 0;
           }
           cnt++;
         }
@@ -3573,32 +3592,32 @@ Todo:
       }
       
       if( false ) {
-        var newTop=0;
+        var newTop = 0;
         if( typeof GOMidx !== 'undefined' ) {
-          // gallery hover effect --> experimental / not used
+          // hover effect on gallery (vs on thumbnail) --> experimental / not used
           if( G.GOM.albumIdx != -1 ) {
-            var hoveredTn=G.GOM.items[GOMidx];
-            var item=G.I[hoveredTn.thumbnailIdx];
+            var hoveredTn = G.GOM.items[GOMidx];
+            var item = G.I[hoveredTn.thumbnailIdx];
             
             // hovered thumbnail
-            hoveredTn.width+=40;
-            hoveredTn.height+=40;
+            hoveredTn.width += 40;
+            hoveredTn.height += 40;
             // todo : left
             
-            for( var i=0; i < nbTn ; i++ ) {
-              var curTn=G.GOM.items[i];
+            for( var i = 0; i < nbTn ; i++ ) {
+              var curTn = G.GOM.items[i];
               if( curTn.imageWidth > 0 ) {
                 if( curTn.row == hoveredTn.row ) {
                   // hovered row
-                  newTop=40;
+                  newTop = 40;
                   if( hoveredTn.thumbnailIdx != curTn.thumbnailIdx ) {
                     // not hovered thumbnail
                     // curTn.resizedContentWidth+=10;
                     // curTn.resizedContentHeight+=20;
                     // curTn.width+=10;
-                    curTn.top+=30;
-                    curTn.width-=20;
-                    curTn.height-=20;
+                    curTn.top += 30;
+                    curTn.width -= 20;
+                    curTn.height -= 20;
                   }
                 }
                 else {
@@ -3607,7 +3626,7 @@ Todo:
                     // first row
                   }
                   else {
-                    curTn.top+=newTop;
+                    curTn.top += newTop;
                   }
                 }
               }
@@ -3616,7 +3635,7 @@ Todo:
         }
       }
       
-      G.GOM.displayArea.width=areaWidth;
+      G.GOM.displayArea.width = areaWidth;
       return true;
     }    
     
@@ -3632,9 +3651,9 @@ Todo:
       var borderHeight =  G.tn.borderHeight * 2;
 
       var nbTn = G.GOM.items.length;
-      var row=0;
-      var h=0;
-      var n=0;
+      var row = 0;
+      var h = 0;
+      var n = 0;
       
       
       // first loop: evaluate the gallery width based on the first row
@@ -3644,12 +3663,12 @@ Todo:
       for( var i = 0; i < nbTn ; i++ ) {
         var curPatternElt = mosaicPattern[n];
 
-        var cLeft = (curPatternElt.c-1) * G.tn.defaultSize.getOuterWidth() + (curPatternElt.c-1) * gutterWidth;
-        var cWidth = curPatternElt.w * G.tn.defaultSize.getOuterWidth() + (curPatternElt.w-1) * gutterWidth;
+        var cLeft = (curPatternElt.c - 1) * G.tn.defaultSize.getOuterWidth() + (curPatternElt.c - 1) * gutterWidth;
+        var cWidth = curPatternElt.w * G.tn.defaultSize.getOuterWidth() + (curPatternElt.w - 1) * gutterWidth;
         
         maxW=Math.max(maxW, cLeft + cWidth );
         
-        nbCols=Math.max(nbCols, (curPatternElt.c-1) + curPatternElt.w );
+        nbCols=Math.max(nbCols, (curPatternElt.c - 1) + curPatternElt.w );
 
         n++;
         if( n >= mosaicPattern.length ) {
@@ -3657,7 +3676,7 @@ Todo:
           break;
         }
       }
-      var totalGutterWidth = (nbCols-1) * gutterWidth;
+      var totalGutterWidth = (nbCols - 1) * gutterWidth;
       var scaleFactor = Math.min( (areaWidth - totalGutterWidth ) / ( maxW - totalGutterWidth ), 1);
       
       // second loop: position all the thumbnails based on the layout pattern
@@ -3668,17 +3687,17 @@ Todo:
         var curTn = G.GOM.items[i];
         var curPatternElt = mosaicPattern[n];
         
-        curTn.top = (curPatternElt.r-1) * G.tn.defaultSize.getOuterHeight()*scaleFactor + (curPatternElt.r-1) * gutterHeight + row * h + (G.tn.labelHeight.get()*(curPatternElt.r-1)) ;
+        curTn.top = (curPatternElt.r - 1) * G.tn.defaultSize.getOuterHeight()*scaleFactor + (curPatternElt.r - 1) * gutterHeight + row * h + (G.tn.labelHeight.get()*(curPatternElt.r-1)) ;
         if( row > 0 ) {
           curTn.top += gutterHeight;
         }
 
-        curTn.left = (curPatternElt.c-1) * G.tn.defaultSize.getOuterWidth()*scaleFactor + (curPatternElt.c-1) * gutterWidth;
+        curTn.left = (curPatternElt.c - 1) * G.tn.defaultSize.getOuterWidth()*scaleFactor + (curPatternElt.c - 1) * gutterWidth;
 
-        curTn.height = curPatternElt.h * G.tn.defaultSize.getOuterHeight()*scaleFactor + (curPatternElt.h-1) * gutterHeight + (G.tn.labelHeight.get() * curPatternElt.h);
-        curTn.resizedContentHeight = curTn.height -G.tn.labelHeight.get() - borderHeight;
+        curTn.height = curPatternElt.h * G.tn.defaultSize.getOuterHeight() * scaleFactor + (curPatternElt.h - 1) * gutterHeight + (G.tn.labelHeight.get() * curPatternElt.h);
+        curTn.resizedContentHeight = curTn.height - G.tn.labelHeight.get() - borderHeight;
 
-        curTn.width = curPatternElt.w * G.tn.defaultSize.getOuterWidth()*scaleFactor + (curPatternElt.w-1) * gutterWidth;
+        curTn.width = curPatternElt.w * G.tn.defaultSize.getOuterWidth()*scaleFactor + (curPatternElt.w - 1) * gutterWidth;
         curTn.resizedContentWidth = curTn.width - borderWidth ;
 
         curTn.row = row;
@@ -3694,7 +3713,7 @@ Todo:
         }
       }
       
-      G.GOM.displayArea.width = (maxW - totalGutterWidth)*scaleFactor + totalGutterWidth;
+      G.GOM.displayArea.width = (maxW - totalGutterWidth) * scaleFactor + totalGutterWidth;
       return true;
     }
     
@@ -3811,13 +3830,15 @@ Todo:
       G.GOM.cache.areaWidth = G.$E.conTnParent.width();
       G.GOM.cache.containerOffset = G.$E.conTnParent.offset();
     }
+
+
     
     function GalleryDisplayPart2( forceTransition ) {
 
       var nbTn = G.GOM.items.length;
       G.GOM.itemsDisplayed = 0;
       var threshold = 50;
-      var cnt=0;    // counter for delay between each thumbnail display
+      var cnt = 0;    // counter for delay between each thumbnail display
       
 
       GalleryRenderGetInterval();
@@ -3914,11 +3935,11 @@ Todo:
       // counter of not displayed images (is displayed on the last thumbnail)
       if( G.layout.support.rows ) {
         if( G.galleryDisplayMode.Get() == 'ROWS' || (G.galleryDisplayMode.Get() == 'FULLCONTENT' && G.galleryLastRowFull.Get() && G.GOM.lastFullRow != -1) ){
-          if( lastTnIdx < (nbTn-1) ) {
+          if( lastTnIdx < (nbTn - 1) ) {
             G.GOM.lastDisplayedIdxNew = lastTnIdx;
           }
           else {
-            G.GOM.lastDisplayedIdxNew=-1;
+            G.GOM.lastDisplayedIdxNew =- 1;
           }
           // remove last displayed counter
           if( G.GOM.lastDisplayedIdx != -1 ) {
@@ -3936,8 +3957,9 @@ Todo:
         // ThumbnailSetPosition(tnToDisplay[i].idx, tnToDisplay[i].delay+10);
         ThumbnailSetPosition(tnToDisplay[i].idx, i);
       }
+      
       // then re-position already displayed thumbnails
-      var n=tnToReDisplay.length;
+      var n = tnToReDisplay.length;
       for( var i = 0; i < n ; i++ ) {
         // ThumbnailSetPosition(tnToReDisplay[i].idx, nbBuild+1);
         ThumbnailSetPosition(tnToReDisplay[i].idx, i);
@@ -3945,14 +3967,14 @@ Todo:
 
       if( G.tn.opt.Get('displayTransition') == 'NONE' ) {
         G.galleryResizeEventEnabled = true;
-        GalleryLastThumbnailSlideImage();  // image slider on last displayed thumbnail
+        // GalleryThumbnailSliderBuildAndStart();  // image slider on last displayed thumbnail
         TriggerCustomEvent('galleryDisplayed');
       }
       else {
         setTimeout(function() {
           // change value after the end of the display transistion of the newly built thumbnails
           G.galleryResizeEventEnabled = true;
-          GalleryLastThumbnailSlideImage();  // image slider on last displayed thumbnail
+          // GalleryThumbnailSliderBuildAndStart();  // image slider on last displayed thumbnail
           TriggerCustomEvent('galleryDisplayed');
         }, nbBuild * G.tn.opt.Get('displayInterval'));
       }
@@ -4005,8 +4027,8 @@ Todo:
         var top = G.GOM.cache.containerOffset.top + (curTn.top - G.GOM.clipArea.top);
         newTop = curTn.top - G.GOM.clipArea.top;
         var vp = G.GOM.cache.viewport;
-        if( G.O.thumbnailDisplayOutsideScreen || ( ( (topOld+curTn.height) >= (vp.t-vp.h) && topOld <= (vp.t+vp.h*4) ) ||
-              ( (top+curTn.height) >= (vp.t-vp.h) && top <= (vp.t+vp.h*4) ) )  ) {
+        if( G.O.thumbnailDisplayOutsideScreen || ( ( (topOld + curTn.height) >= (vp.t - vp.h) && topOld <= (vp.t + vp.h * 4) ) ||
+              ( (top + curTn.height) >= (vp.t - vp.h) && top <= (vp.t + vp.h * 4) ) )  ) {
           // thumbnail positioned in enlarged viewport (viewport + 4 x viewport height) (v1.5: changed from 2 to 4)
           if( curTn.displayed ) {
             // thumbnail is displayed
@@ -4040,7 +4062,7 @@ Todo:
           }
           else {
             // re-display thumbnail
-            curTn.displayed=true;
+            curTn.displayed = true;
             // item.$elt.css({ display: 'block', top: curTn.top , left: curTn.left, opacity:1 });
             item.$elt.css({ display: 'block', top: newTop, left: curTn.left, opacity: 1 });
             ThumbnailAppearFinish(item);
@@ -4048,7 +4070,7 @@ Todo:
         }
         else {
           // undisplay thumbnail if not in viewport+margin --> performance gain
-          curTn.displayed=false;
+          curTn.displayed = false;
           item.$elt.css({ display: 'none'});
         }
       }
@@ -4069,12 +4091,13 @@ Todo:
           }
           else {
             item.$getElt('.nGY2GThumbnailImage').css({'height': curTn.resizedContentHeight, 'width': curTn.resizedContentWidth});
+
             if( G.layout.engine == 'JUSTIFIED'  ) {
               item.$getElt('.nGY2GThumbnailImg').css({'height': curTn.resizedContentHeight, 'width': curTn.resizedContentWidth});
             }
           }
-          item.resizedContentWidth=curTn.resizedContentWidth;
-          item.resizedContentHeight=curTn.resizedContentHeight;
+          item.resizedContentWidth = curTn.resizedContentWidth;
+          item.resizedContentHeight = curTn.resizedContentHeight;
         }
       }
       
@@ -4083,184 +4106,193 @@ Todo:
       if( G.GOM.lastDisplayedIdxNew == GOMidx &&  G.layout.support.rows ) {
         if( (G.galleryDisplayMode.Get() == 'ROWS' && G.galleryMaxRows.Get() > 0) || (G.galleryDisplayMode.Get() == 'FULLCONTENT' && G.galleryLastRowFull.Get() && G.GOM.lastFullRow != -1) ){
           // number of items
-          var nb=G.GOM.items.length - GOMidx -1;
+          var nb = G.GOM.items.length - GOMidx - 1;
           if( item.albumID != '0' && G.O.thumbnailLevelUp ) {
             nb--;
           }
-        }
 
-        if( nb > 0 ) {
-          if( G.O.thumbnailOpenImage || G.O.thumbnailLastImgSliderDelay > 0  ) {
-            item.$getElt('.nGY2GThumbnailIconsFullThumbnail').html( '+' + nb);
-          }
+          if( nb > 0 ) {
+            // display counter
+            if( G.O.thumbnailOpenImage || G.O.thumbnailSliderDelay > 0  ) {
+              item.$getElt('.nGY2GThumbnailIconsFullThumbnail').html( '+' + nb);
+            }
 
-          if( G.layout.engine == 'GRID' && G.GOM.lastTn.startItem != G.GOM.NGY2Item(GOMidx) ) {
+            // if( G.layout.engine == 'GRID' && G.GOM.slider.hostItem != G.GOM.NGY2Item(GOMidx) ) {
             // image slider on last displayed thumbnail
-            G.GOM.lastTn.startIdx = GOMidx;
-            G.GOM.lastTn.startItem = G.GOM.NGY2Item(GOMidx);
-            G.GOM.lastTn.nextIdx = GOMidx;
-            G.GOM.lastTn.currentIdx = GOMidx;
-            G.GOM.lastTn.initiated = false;
-            G.GOM.lastTn.enabled = true;
+            if( G.GOM.slider.hostItem != G.GOM.NGY2Item(GOMidx) ) {
+
+              // set current slider back to initial content
+              GalleryThumbnailSliderSetContent( G.GOM.slider.hostItem );
+              // new slider
+              G.GOM.slider.hostIdx = GOMidx;
+              G.GOM.slider.hostItem = G.GOM.NGY2Item(GOMidx);
+              G.GOM.slider.nextIdx = GOMidx;
+              G.GOM.slider.currentIdx = GOMidx;
+              GalleryThumbnailSliderBuildAndStart();  // image slider on last displayed thumbnail
+              // GalleryThumbnailSliderSetNextContent();
+            }
           }
+          else {
+            // reset slider content to initial content because all thumbnails are displayed
+            GalleryThumbnailSliderSetContent( G.GOM.slider.hostItem );
+            G.GOM.slider.hostIdx = -1;
+          }
+          
+          G.GOM.lastDisplayedIdx = GOMidx;
         }
-        G.GOM.lastDisplayedIdx = GOMidx;
       }
 
     }
     
     // ---------------------
     // replace image on last thumbnails with not displayed ones (mode ROWS or FULLCONTENT with galleryLastRowFull enabled)
-    function GalleryLastThumbnailSlideImage() {
+    // function GalleryLastThumbnailSlideImage() {
+    function GalleryThumbnailSliderBuildAndStart() {
 
-      if( G.O.thumbnailLastImgSliderDelay == 0 || G.GOM.lastTn.initiated || !G.GOM.lastTn.enabled ) {
+      if( G.O.thumbnailSliderDelay == 0 || G.GOM.slider.hostIdx == -1 ) {
         return;
       }
+      clearTimeout(G.GOM.slider.timerID);
       
-      G.GOM.lastTn.initiated=true;
-      
-      var item = G.GOM.lastTn.startItem;
-      if( item.$getElt('.nGY2TnPreview2').length == 0 ) {
-        // create new DIVs for next item's image and blurred preview
-        
-        // dupplicate image layer
+      var item = G.GOM.slider.hostItem;
+
+      // dupplicate image layer -> for the next image
+      if( item.$getElt('.nGY2TnImgNext').length == 0 ) {
         item.$getElt('.nGY2TnImg').clone().removeClass('nGY2TnImg').addClass('nGY2TnImgNext').insertAfter(item.$getElt('.nGY2TnImg'));
         item.$getElt('.nGY2TnImgBack').clone().removeClass('nGY2TnImgBack').addClass('nGY2TnImgBackNext').insertAfter(item.$getElt('.nGY2TnImg', true));
-
-        item.CSSTransformSet('.nGY2TnImgNext', 'translateX', G.tn.settings.getW() + 'px');
-        item.CSSTransformApply( '.nGY2TnImgNext' );
-        item.CSSTransformSet('.nGY2TnImgBackNext', 'translateX', G.tn.settings.getW() + 'px');
-        item.CSSTransformApply( '.nGY2TnImgBackNext' );
+        item.$getElt('.nGY2GThumbnailImage', true); // important -> refresh the cache
+        item.$getElt('.nGY2GThumbnailImg', true);   // important -> refresh the cache
       }
 
-      GalleryLastThumbnailSlideImageSetNext();
+      item.CSSTransformSet('.nGY2TnImgNext', 'translateX', '100%', true);
+      item.CSSTransformApply( '.nGY2TnImgNext' );
+      item.CSSTransformSet('.nGY2TnImgBackNext', 'translateX', '100%', true);
+      item.CSSTransformApply( '.nGY2TnImgBackNext' );
+
+      GalleryThumbnailSliderSetNextContent();
       
-      clearTimeout(G.GOM.lastTn.timerID);
-      G.GOM.lastTn.timerID = setTimeout(function(){ GalleryLastThumbnailSlideImage2( false ) }, G.O.thumbnailLastImgSliderDelay);
+      // clearTimeout(G.GOM.slider.timerID);
+      G.GOM.slider.timerID = setTimeout(function(){ GalleryThumbnailSliderStartTransition() }, G.O.thumbnailSliderDelay);
     }
 
     
-    function GalleryLastThumbnailSlideImageSetNext() {
+    function GalleryThumbnailSliderSetNextContent() {
 
-      G.GOM.lastTn.nextIdx++;
-      if( G.GOM.lastTn.nextIdx >= G.GOM.items.length ) {
-        G.GOM.lastTn.nextIdx = G.GOM.lastTn.startIdx;
+      G.GOM.slider.nextIdx++;
+      if( G.GOM.slider.nextIdx >= G.GOM.items.length ) {
+        G.GOM.slider.nextIdx = G.GOM.slider.hostIdx;
       }
       
       // new image
-      var newItem = G.GOM.NGY2Item(G.GOM.lastTn.nextIdx);
+      var newItem = G.GOM.NGY2Item(G.GOM.slider.nextIdx);
       var imgBlurred = G.emptyGif;
       var bgImg = "url('" + G.emptyGif + "')";
       if( newItem.imageDominantColors != null ) {
         imgBlurred = newItem.imageDominantColors;
         bgImg = "url('" + newItem.imageDominantColors + "')";
       }
-      G.GOM.lastTn.startItem.$getElt('.nGY2TnImgBackNext').css({'background-image': bgImg, opacity: 1 });
-      G.GOM.lastTn.startItem.$getElt('.nGY2TnImgNext').css({ 'background-image': "url('" + newItem.thumbImg().src + "')", opacity: 1 });
-      G.GOM.lastTn.startItem.$getElt('.nGY2TnImgNext .nGY2GThumbnailImg').attr('src', newItem.thumbImg().src );
+      G.GOM.slider.hostItem.$getElt('.nGY2TnImgBackNext', true).css({'background-image': bgImg, opacity: 1 });
+      G.GOM.slider.hostItem.$getElt('.nGY2TnImgNext', true).css({ 'background-image': "url('" + newItem.thumbImg().src + "')", opacity: 1 });
+      G.GOM.slider.hostItem.$getElt('.nGY2TnImgNext .nGY2GThumbnailImg', true).attr('src', newItem.thumbImg().src );
       
 
     }
     
-    function GalleryLastThumbnailSlideImage2() {
+    // thumbnail slider - transition from one image to the next one
+    function GalleryThumbnailSliderStartTransition() {
       
-      var item=G.GOM.lastTn.startItem;
-      if( item.$getElt() != null ) {
+      if( G.GOM.slider.hostItem.$getElt() != null ) {
 
-        var context = {};
-        context.item = item;
-        var newItem = G.GOM.NGY2Item(G.GOM.lastTn.nextIdx);
-        context.newItem = newItem;
-
-        // animation
+        // slider transition
         var tweenable = new NGTweenable();
-        context.tweenable = tweenable;
+        G.GOM.slider.tween = tweenable;
         tweenable.tween({
-          attachment:   context,
-          // from:         { 'left': item.thumbImg().width },
-          from:         { 'left': G.tn.settings.getW() },
+          from:         { 'left': 100 },
           to:           { 'left': 0 },
-          duration:     1000,
+          duration:     800,
           delay:        0,
           easing:       'easeInOutQuart',
           
-          step: function (state, att) {
-            if( att.item.$getElt() == null ) {
+          step: function (state) {
+            if( G.GOM.slider.hostItem.$getElt() == null ) {
               // the thumbnail may have been destroyed since the start of the animation
-              att.tweenable.stop(false);
+              G.GOM.slider.tween.stop(false);
               return;
             }
 
-            // if( att.G.VOM.viewerDisplayed ) {
-              // att.tweenable.stop(false);
-              // return;
-            // }
-            
-            // slide current image
-            att.item.CSSTransformSet('.nGY2TnImgBack', 'translateX', -(G.tn.settings.getW()-state.left)+'px');
-            att.item.CSSTransformApply( '.nGY2TnImgBack' );
-            att.item.CSSTransformSet('.nGY2TnImg', 'translateX', -(G.tn.settings.getW()-state.left)+'px');
-            att.item.CSSTransformApply( '.nGY2TnImg' );
+            // slide current content
+            G.GOM.slider.hostItem.CSSTransformSet('.nGY2TnImgBack', 'translateX', -(100 - state.left) + '%');
+            G.GOM.slider.hostItem.CSSTransformApply( '.nGY2TnImgBack' );
+            G.GOM.slider.hostItem.CSSTransformSet('.nGY2TnImg', 'translateX', -(100 - state.left) + '%');
+            G.GOM.slider.hostItem.CSSTransformApply( '.nGY2TnImg' );
 
-            // slide new image
-            att.item.CSSTransformSet('.nGY2TnImgBackNext', 'translateX', state.left+'px');
-            att.item.CSSTransformApply( '.nGY2TnImgBackNext' );
-            att.item.CSSTransformSet('.nGY2TnImgNext', 'translateX', state.left+'px');
-            att.item.CSSTransformApply( '.nGY2TnImgNext' );
+            // slide new content
+            G.GOM.slider.hostItem.CSSTransformSet('.nGY2TnImgBackNext', 'translateX', state.left + '%');
+            G.GOM.slider.hostItem.CSSTransformApply( '.nGY2TnImgBackNext' );
+            G.GOM.slider.hostItem.CSSTransformSet('.nGY2TnImgNext', 'translateX', state.left + '%');
+            G.GOM.slider.hostItem.CSSTransformApply( '.nGY2TnImgNext' );
             
           },
-          finish: function (state, att) {
-            if( att.item.$getElt() == null ) {
+          finish: function (state) {
+            if( G.GOM.slider.hostItem.$getElt() == null ) {
               // the thumbnail may be destroyed since the start of the animation
               return;
             }
-            // if( att.G.VOM.viewerDisplayed ) { return; }
            
-            var newItem = G.GOM.NGY2Item( G.GOM.lastTn.currentIdx );
-            if( newItem == null ) { return; } // item does not exist anymore
+            if( G.GOM.NGY2Item(G.GOM.slider.nextIdx) == null ) { return; } // item does not exist anymore
             
-            var bgImg = "url('" + G.emptyGif + "')";
-            if( att.newItem.imageDominantColors != null ) {
-              bgImg = "url('" + newItem.imageDominantColors + "')";
-            }
-            att.item.$getElt('.nGY2TnImgBack').css('background-image', bgImg);
-            att.item.$getElt('.nGY2TnImg').css('background-image', "url('" + att.newItem.thumbImg().src + "')" );
-            att.item.$getElt('.nGY2TnImg .nGY2GThumbnailImg').attr('src', att.newItem.thumbImg().src );
+            // set new content as current content
+            GalleryThumbnailSliderSetContent( G.GOM.NGY2Item(G.GOM.slider.nextIdx) );
+            G.GOM.slider.currentIdx = G.GOM.slider.nextIdx;
+            GalleryThumbnailSliderSetNextContent();
             
-            att.item.CSSTransformSet('.nGY2TnImgBack', 'translateX', '0px');
-            att.item.CSSTransformApply( '.nGY2TnImgBack' );
-            att.item.CSSTransformSet('.nGY2TnImg', 'translateX', '0px');
-            att.item.CSSTransformApply( '.nGY2TnImg' );
-
-            att.item.CSSTransformSet('.nGY2TnImgBackNext', 'translateX', G.tn.settings.getW() +'px');
-            att.item.CSSTransformApply( '.nGY2TnImgBackNext' );
-            att.item.CSSTransformSet('.nGY2TnImgNext', 'translateX', G.tn.settings.getW() +'px');
-            att.item.CSSTransformApply( '.nGY2TnImgNext' );
-
-            G.GOM.lastTn.currentIdx=G.GOM.lastTn.nextIdx;
-            
-            // set new title and description
-            if( G.O.thumbnailLabel.get('display') == true ) {
-              var icons=G.O.icons.thumbnailAlbum;
-              if( att.newItem.kind != 'album' ) {
-                icons=G.O.icons.thumbnailImage;
-              }
-              att.item.$getElt('.nGY2GThumbnailTitle').html(icons + getThumbnailTitle(att.newItem));
-              att.item.$getElt('.nGY2GThumbnailDescription').html(icons + getTumbnailDescription(att.newItem));
-            }
-            
-            GalleryLastThumbnailSlideImageSetNext();
-            
-            clearTimeout(G.GOM.lastTn.timerID);
-            G.GOM.lastTn.timerID=setTimeout(function(){ GalleryLastThumbnailSlideImage2( false ) }, G.O.thumbnailLastImgSliderDelay);
+            clearTimeout(G.GOM.slider.timerID);
+            G.GOM.slider.timerID=setTimeout(function(){ GalleryThumbnailSliderStartTransition() }, G.O.thumbnailSliderDelay);
           }
         });
-        
-        
       }
     }
     
-    
+    // set main content of the thumbnail hosting the slider
+    // hide the elements for the next content of the slider
+    function GalleryThumbnailSliderSetContent( ngy2itemContent ) {
+        if( G.GOM.slider.hostIdx == -1 ) { return; }
+        
+        if( G.GOM.slider.tween != null ) {
+          if( G.GOM.slider.tween._isTweening  == true ) {
+            G.GOM.slider.tween.stop(false);
+          }
+        }
+
+        var bgImg = "url('" + G.emptyGif + "')";
+        if( ngy2itemContent.imageDominantColors != null ) {
+          bgImg = "url('" + ngy2itemContent.imageDominantColors + "')";
+        }
+        G.GOM.slider.hostItem.$getElt('.nGY2TnImgBack').css('background-image', bgImg);
+        G.GOM.slider.hostItem.$getElt('.nGY2TnImg').css('background-image', "url('" + ngy2itemContent.thumbImg().src + "')" );
+        G.GOM.slider.hostItem.$getElt('.nGY2TnImg .nGY2GThumbnailImg').attr('src', ngy2itemContent.thumbImg().src );
+        
+        G.GOM.slider.hostItem.CSSTransformSet('.nGY2TnImgBack', 'translateX', '0');
+        G.GOM.slider.hostItem.CSSTransformApply( '.nGY2TnImgBack' );
+        G.GOM.slider.hostItem.CSSTransformSet('.nGY2TnImg', 'translateX', '0');
+        G.GOM.slider.hostItem.CSSTransformApply( '.nGY2TnImg' );
+
+        // place the containers for the next image slider outside of the thumbnail (=hidden)
+        G.GOM.slider.hostItem.CSSTransformSet('.nGY2TnImgBackNext', 'translateX', '100%', true);
+        G.GOM.slider.hostItem.CSSTransformApply( '.nGY2TnImgBackNext' );
+        G.GOM.slider.hostItem.CSSTransformSet('.nGY2TnImgNext', 'translateX', '100%', true);
+        G.GOM.slider.hostItem.CSSTransformApply( '.nGY2TnImgNext' );
+
+        // set new title and description
+        if( G.O.thumbnailLabel.get('display') == true ) {
+          var icons = G.O.icons.thumbnailAlbum;
+          if( ngy2itemContent.kind != 'album' ) {
+            icons = G.O.icons.thumbnailImage;
+          }
+          G.GOM.slider.hostItem.$getElt('.nGY2GThumbnailTitle').html(icons + getThumbnailTitle(ngy2itemContent));
+          G.GOM.slider.hostItem.$getElt('.nGY2GThumbnailDescription').html(icons + getTumbnailDescription(ngy2itemContent));
+        }
+      }
     
    
     
@@ -4276,11 +4308,11 @@ Todo:
       
       var desc='';
       if( G.O.thumbnailLabel.get('displayDescription') == true ) {
-        desc='aAzZjJ';
+        desc = 'aAzZjJ';
       }
 
       // visibility set to hidden
-      newElt[newEltIdx++] = '<div class="nGY2GThumbnail '+G.O.theme+'" style="display:block;visibility:hidden;position:absolute;top:-9999px;left:-9999px;" ><div class="nGY2GThumbnailSub">';
+      newElt[newEltIdx++] = '<div class="nGY2GThumbnail ' + G.O.theme + '" style="display:block;visibility:hidden;position:absolute;top:-9999px;left:-9999px;" ><div class="nGY2GThumbnailSub">';
       if( G.O.thumbnailLabel.get('display') == true ) {
         // Labels: title and description
         newElt[newEltIdx++] = '  <div class="nGY2GThumbnailLabel" '+ G.tn.style.getLabel() +'>';
@@ -4291,7 +4323,7 @@ Todo:
         newElt[newEltIdx++] = '  </div>';
       }
       
-      newElt[newEltIdx++]='</div></div>';
+      newElt[newEltIdx++] = '</div></div>';
     
       var $newDiv = jQuery(newElt.join('')).appendTo(G.$E.conTn);
       var h = $newDiv.find('.nGY2GThumbnailLabel').outerHeight(true);
@@ -5157,19 +5189,19 @@ Todo:
       // 2) init with the hover effect parameter
       
       
-      var curTn=G.GOM.items[GOMidx];
-      var item=G.I[curTn.thumbnailIdx];
+      var curTn = G.GOM.items[GOMidx];
+      var item = G.I[curTn.thumbnailIdx];
 
       if( item.$elt == null ) { return; } // zombie
       
-      var fu=G.O.fnThumbnailHoverInit;
+      var fu = G.O.fnThumbnailHoverInit;
       if( fu !== null ) {
         typeof fu == 'function' ? fu($e, item, GOMidx) : window[fu]($e, item, GOMidx);
       }
 
       // build initialization
-      var inits=G.tn.buildInit.get();
-      for( var j=0; j<inits.length; j++) {
+      var inits = G.tn.buildInit.get();
+      for( var j = 0; j < inits.length; j++) {
         switch( inits[j].property ) {
           // CSS Transform
           case 'scale':
@@ -5201,8 +5233,8 @@ Todo:
       }
       
       // hover
-      var effects=G.tn.hoverEffects.get();
-      for( var j=0; j<effects.length; j++) {
+      var effects = G.tn.hoverEffects.get();
+      for( var j = 0; j < effects.length; j++) {
         if( effects[j].firstKeyframe === true ) {
           switch( effects[j].type ) {
             case 'scale':
@@ -5226,7 +5258,7 @@ Todo:
               item.CSSFilterApply(effects[j].element);
               break;
             default:
-              var $t=item.$getElt(effects[j].element);
+              var $t = item.$getElt(effects[j].element);
               $t.css( effects[j].type, effects[j].from );
               break;
               
@@ -5238,31 +5270,35 @@ Todo:
 
     function ThumbnailHoverReInitAll() {
       if( G.GOM.albumIdx == -1 ) { return; };
-      var l=G.GOM.items.length;
-      for( var i=0; i < l ; i++ ) {
+      var l = G.GOM.items.length;
+      for( var i = 0; i < l ; i++ ) {
         ThumbnailOverInit(i);
         // G.GOM.items[i].hovered=false;
-        G.I[G.GOM.items[i].thumbnailIdx].hovered=false;
+        G.I[G.GOM.items[i].thumbnailIdx].hovered = false;
       }
     }
 
 
     function ThumbnailHover( GOMidx ) {
       if( G.GOM.albumIdx == -1 || !G.galleryResizeEventEnabled ) { return; };
-      var curTn=G.GOM.items[GOMidx];
-      var item=G.I[curTn.thumbnailIdx];
+      if( G.GOM.slider.hostIdx == GOMidx ) {
+        // slider hosted on thumbnail -> no hover effect
+        return;
+      }
+      var curTn = G.GOM.items[GOMidx];
+      var item = G.I[curTn.thumbnailIdx];
       if( item.kind == 'albumUp' || item.$elt == null ) { return; }
 
-      item.hovered=true;
+      item.hovered = true;
 
-      var fu=G.O.fnThumbnailHover;
+      var fu = G.O.fnThumbnailHover;
       if( fu !== null ) {
         typeof fu == 'function' ? fu(item.$elt, item, GOMidx) : window[fu](item.$elt, item, GOMidx);
       }
-      var effects=G.tn.hoverEffects.get();
+      var effects = G.tn.hoverEffects.get();
 
       try {
-        for( var j=0; j<effects.length; j++) {
+        for( var j = 0; j < effects.length; j++) {
           if( effects[j].hoverin === true ) {
             //item.animate( effects[j], j*10,  true );
             item.animate( effects[j], 0,  true );
@@ -5279,8 +5315,8 @@ Todo:
 
     function ThumbnailHoverOutAll() {
       if( G.GOM.albumIdx == -1 ) { return; };
-      var l=G.GOM.items.length;
-      for( var i=0; i < l ; i++ ) {
+      var l = G.GOM.items.length;
+      for( var i = 0; i < l ; i++ ) {
         if( G.GOM.items[i].inDisplayArea ) {
           ThumbnailHoverOut(i);
         }
@@ -5292,21 +5328,27 @@ Todo:
 
     
     function ThumbnailHoverOut( GOMidx ) {
-      if( G.GOM.albumIdx == -1 || !G.galleryResizeEventEnabled ) { return; };
-      var curTn=G.GOM.items[GOMidx];
-      var item=G.I[curTn.thumbnailIdx];
+      if( G.GOM.albumIdx == -1 || !G.galleryResizeEventEnabled ) { return; }
+
+      if( G.GOM.slider.hostIdx == GOMidx ) {
+        // slider on thumbnail -> no hover effect
+        return;
+      }
+
+      var curTn = G.GOM.items[GOMidx];
+      var item = G.I[curTn.thumbnailIdx];
       if( item.kind == 'albumUp' || !item.hovered ) { return; }
-      item.hovered=false;
+      item.hovered = false;
       if( item.$elt == null ) { return; }
 
-      var fu=G.O.fnThumbnailHoverOut;
+      var fu = G.O.fnThumbnailHoverOut;
       if( fu !== null ) {
         typeof fu == 'function' ? fu(item.$elt, item, GOMidx) : window[fu](item.$elt, item, GOMidx);
       }
 
-      var effects=G.tn.hoverEffects.get();
+      var effects = G.tn.hoverEffects.get();
       try {
-        for( var j=0; j<effects.length; j++) {
+        for( var j = 0; j < effects.length; j++) {
           if( effects[j].hoverout === true ) {
             // item.animate( effects[j], j*10, false );
             item.animate( effects[j], 0, false );
@@ -5496,7 +5538,7 @@ Todo:
           G.O.$markup=[]  ;
         }
         else {
-          NanoAlert(G, 'error: no image to process.');
+          NanoConsoleLog(G, 'error: no image to process.');
           return;
         }
       }
@@ -7078,10 +7120,10 @@ Todo:
 
       if( r.GOMidx == -1 ) { return 'exit'; }
       
-      var idx=G.GOM.items[r.GOMidx].thumbnailIdx;
-      if( G.GOM.lastTn.enabled && G.GOM.lastTn.startIdx == r.GOMidx ) {
-        // slider on last image -> open the displayed image
-        idx=G.GOM.items[G.GOM.lastTn.currentIdx].thumbnailIdx;
+      var idx = G.GOM.items[r.GOMidx].thumbnailIdx;
+      if( G.GOM.slider.hostIdx == r.GOMidx ) {
+        // slider on thumbnail -> open the displayed image
+        idx = G.GOM.items[G.GOM.slider.currentIdx].thumbnailIdx;
       }
       switch( r.action ) {
         case 'OPEN':
@@ -7454,6 +7496,9 @@ Todo:
       switch( G.O.kind ) {
         case 'flickr':
           var sU = 'https://www.flickr.com/photos/' + G.O.userID + '/' + item.GetID();
+          if( item.albumID != '0' ) {
+            sU += '/in/album-' + item.albumID + '/';
+          }
           window.open(sU, '_blank');
           break;
         case 'picasa':
@@ -8102,25 +8147,26 @@ Todo:
     // Display photo infos
     function ItemDisplayInfo( item) {
 
-      var content = '<div class="nGY2PopupOneItemText">'+item.title+'</div>';
-      content    += '<div class="nGY2PopupOneItemText">'+item.description+'</div>';
+      var content = '<div class="nGY2PopupOneItemText">' + item.title + '</div>';
+      content    += '<div class="nGY2PopupOneItemText">' + item.description + '</div>';
       if( item.author != '' ) {
-        content  += '<div class="nGY2PopupOneItemText">'+G.O.icons.user+' '+item.author+'</div>';
+        content  += '<div class="nGY2PopupOneItemText">' + G.O.icons.user + ' ' + item.author + '</div>';
       }
       if( item.exif.model != '' ) {
-        content  += '<div class="nGY2PopupOneItemText">'+G.O.icons.config+' '+item.exif.model+'</div>';
+        content  += '<div class="nGY2PopupOneItemText">' + G.O.icons.config + ' ' + item.exif.model + '</div>';
       }
       var sexif = '';
-      sexif += item.exif.flash == '' ? '' : ' &nbsp; '+item.exif.flash;
-      sexif += item.exif.focallength == '' ? '' : ' &nbsp; '+item.exif.focallength+'mm';
-      sexif += item.exif.fstop == '' ? '' : ' &nbsp; f'+item.exif.fstop;
-      sexif += item.exif.exposure == '' ? '' : ' &nbsp; '+item.exif.exposure+'s';
-      sexif += item.exif.iso == '' ? '' : ' &nbsp; '+item.exif.iso+' ISO';
+      sexif += item.exif.flash == '' ? '' : ' &nbsp; ' + item.exif.flash;
+      sexif += item.exif.focallength == '' ? '' : ' &nbsp; ' + item.exif.focallength+'mm';
+      sexif += item.exif.fstop == '' ? '' : ' &nbsp; f' + item.exif.fstop;
+      sexif += item.exif.exposure == '' ? '' : ' &nbsp; ' + item.exif.exposure+'s';
+      sexif += item.exif.iso == '' ? '' : ' &nbsp; ' + item.exif.iso+' ISO';
       if( item.exif.time != '' ) {
-        var date = new Date(parseInt(item.exif.time));
-        sexif += ' &nbsp; '+date.toLocaleDateString();
+        // var date = new Date(parseInt(item.exif.time));
+        // sexif += ' &nbsp; '+date.toLocaleDateString();
+        sexif += ' &nbsp; ' + item.exif.time;
       }
-      content += '<div class="nGY2PopupOneItemText">'+sexif+'</div>';
+      content += '<div class="nGY2PopupOneItemText">' + sexif + '</div>';
 
       if( item.exif.location != '' ) {
         content += '<div class="nGY2PopupOneItemText">'+G.O.icons.location+' <a href="http://maps.google.com/maps?z=12&t=m&q='+encodeURIComponent(item.exif.location)+'" target="_blank">'+item.exif.location+'</a></div>';
@@ -8964,13 +9010,21 @@ Todo:
             if( GalleryClicked(ev.srcEvent) == 'exit' ) { return; }
           }
           else {
-            var r=GalleryEventRetrieveElementl(ev.srcEvent, false);
+            var r = GalleryEventRetrieveElementl(ev.srcEvent, false);
             if( r.GOMidx == -1 ) { return; }
             if( r.action != 'NONE' && r.action != 'OPEN' ) {
               // toolbar touched --> execute action
               GalleryClicked(ev.srcEvent);
               return;
             }
+            
+            if( G.GOM.slider.hostIdx == r.GOMidx ) {
+              // touch on thumbnail slider -> open immediately
+              ThumbnailHoverOutAll();
+              ThumbnailOpen(G.GOM.items[r.GOMidx].thumbnailIdx, true);
+              return;
+            }
+
             if( G.O.touchAutoOpenDelay > 0 ) {
               // one touch scenario
               ThumbnailHoverOutAll();
@@ -9201,15 +9255,15 @@ Todo:
       }
       else {
         if( G.galleryResizeEventEnabled ) {
-          var nw=RetrieveCurWidth();
+          var nw = RetrieveCurWidth();
           if( G.GOM.albumIdx != -1 && 
                 ( G.tn.settings.height[G.GOM.curNavLevel][G.GOM.curWidth] != G.tn.settings.height[G.GOM.curNavLevel][nw] || 
                 G.tn.settings.width[G.GOM.curNavLevel][G.GOM.curWidth] != G.tn.settings.width[G.GOM.curNavLevel][nw] ) ) {
                   // do not use settings.getH() / settings.getW()
             // thumbnail size changed --> render the gallery with the new sizes
-            G.GOM.curWidth=nw;
+            G.GOM.curWidth = nw;
             //G.layout.SetEngine();
-            G.GOM.pagination.currentPage=0;
+            G.GOM.pagination.currentPage = 0;
             GalleryRender( G.GOM.albumIdx );
           }
           else {
