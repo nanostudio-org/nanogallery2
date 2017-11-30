@@ -1,6 +1,32 @@
 nanogallery2 - ChangeLog
 ===========
 
+v2.0.0
+------
+- new: mosaic layout
+- new: video support (Youtube, Vimeo and Dailymotion)
+- new: image slider in thumbnail (see option 'thumbnailSliderDelay')
+- new: value 'fillWidth' for option 'thumbnailAlignment' (is also the new default value)
+- new: option 'thumbnailBaseGridHeight' for cascading layout
+- new: markup content source supports the ID attribute
+- new: option 'viewerTransitionMediaKind' to enable/disable media transition in lightbox
+- new: module support
+- new: callback fnProcessData for Flickr data
+- enhanced: option 'thumbnailOpenOriginal' for all data types 
+- enhanced: added keyword 'auto backup' to default value for 'blackList'
+- enhanced: loading.gif embeded in CSS file
+- changed: the lightbox is nor more closed when the user clicks/touches the area outside the image
+- fixed: #67 viewer opens even if cutom viewer defined (broken in v1.5.0)
+- fixed: image swipe left/right closes the lightbox
+- fixed: #56 #68 destroy method issue -> warning: browser back to non existing location could happen
+- fixed: #70 overflow-x: hidden; not working after exit gallery
+- fixed: Flickr - album list blocked by hidden albums 
+- fixed: #69 message 'error: no image to process.' no more displayed
+- fixed: #77 link to the photo on flickr leads to photostream instead of album
+- fixed: #78 exif time now handeld as string format
+- fixed: image on selected thumbnail not visible
+  
+  
 v1.5.0
 ------
 - new: swipe down to close lightbox
