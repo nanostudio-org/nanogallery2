@@ -799,6 +799,7 @@
   <!-- ##### END LOGO INDEX  ##### -->
   <!-- ########################### -->
 
+  
   <div class="container ngy2documentation">
   <div class="row" >
   <div class="col-md-10">
@@ -811,13 +812,13 @@
 
     <div id="ngy2_concepts"></div>
     <br><br><br><br><br><br><br>
-    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> Some concepts</h3>
+    <h3><b><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> Some concepts</b></h3>
     <hr>
     <blockquote>
       Basically, to build a gallery, you need to use some content and to define a layout.
     </blockquote>
-    <br>
-    <h4 style="text-decoration: underline;" id="ngy2_concepts_content">1. Gallery content</h4>
+    <br><br><br><br>
+    <h4 style="text-decoration: underline;" id="ngy2_concepts_content"><b>1. Gallery content</b></h4>
     <p>
       A gallery is made of items which are composed of an image and/or a thumbnail image, and optional meta-data (title, description, location, exif data, etc.).
       <br>
@@ -871,8 +872,8 @@
     </ul>
 
       
-    <br><br><br>
-    <h4 style="text-decoration: underline;" id="ngy2_concepts_layout">2. Gallery layout</h4>
+    <br><br><br><br><br><br>
+    <h4 style="text-decoration: underline;" id="ngy2_concepts_layout"><b>2. Gallery layout</b></h4>
     <p class="lead">
     <!-- 4 basic layouts are available: grid, justified, cascading and mosaic. -->
     3 basic layouts are available: grid, justified and cascading.
@@ -895,6 +896,8 @@
         </div>
         <hr>
       </li>
+      <br><br>
+      
       
       <li>
         <h5><b>Justified layout</b></h5>
@@ -914,6 +917,8 @@
         </div>
         <hr>
        </li>
+       <br><br>
+       
        
        <li>
         <h5><b>Cascading layout</b></h5>
@@ -932,7 +937,6 @@
           </div>
         </div>
         <br>
-        <!--
         <div class="row">
           <div class="col-md-6">
             The cascading layout may be enhanced by applying a grid with the option <code>thumbnailBaseGridHeight</code>.
@@ -949,18 +953,18 @@
           </div>
         </div>
         <hr>
-        -->
       </li>
+      <br><br>
       
-      <!--
+      
       <li>
         <h5><b>Mosaic layout</b></h5>
         <div class="row">
           <div class="col-md-6">
             Enables full control of the layout.
-            The layout is not computed but it is based on patterns. Images may be cropped to fit the thumbnail. Thumbnails can overlap another.
+            The layout is not computed but it is based on a pattern. Images may be cropped to fit the thumbnail. Thumbnails can overlap one another.
             <br>
-            To use it, set the base thumbnail width and height, and define a pattern for position and real thumbnail size.
+            To use it, set the base <b>thumbnail width AND height</b>, and define a pattern for position and real thumbnail size.
             <br>
             Gallery will be scaled down to fit its container's width if necessary.
             <br><br>
@@ -986,7 +990,6 @@
         </div>
         <hr>
       </li>
-      -->
       
       <br><br>
       <li>
@@ -1006,14 +1009,14 @@
     
     <div id="ngy2_launching"></div>
     <br><br><br><br><br><br><br>
-    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> Launching the gallery</h3>
+    <h3><b><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> Launching the gallery</b></h3>
     <hr>
     <blockquote>
       <br>
         Settings are passed to the script on initialization, and are <b>CaSe sEnSiTiVe</b>: 
       <br><br><br>
       <h3><u>HTML markup example:</u></h3>
-      <p>use the <code>data-nanogallery2</code> attribute.</p>
+      use the <code>data-nanogallery2</code> attribute.
       <pre>
 &lt;div data-nanogallery2 = '{
     &lt;!-- ### gallery settings ### -->
@@ -1033,7 +1036,7 @@
 
       <br><br>
       <h3><u>Javascript example:</u></h3>
-      <p>settings are passed to the <code>nanogallery2()</code> function.</p>
+      settings are passed to the <code>nanogallery2()</code> function.
       <pre>
 $("#my_nanogallery2").nanogallery2({
   &lt;!-- ### gallery settings ### -->
@@ -1063,97 +1066,104 @@ $("#my_nanogallery2").nanogallery2({
     
     <div id="ngy2_gesture"></div>
     <br><br><br><br><br><br><br>
-    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> Gesture and touch actions</h3>
+    <h3><b><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> Gesture and touch actions</b></h3>
     <hr>
     <blockquote>
       Standard gesture actions are supported to control the gallery and the lightbox.
     </blockquote>
-    <br>
-    <h4 style="text-decoration: underline;">1. Gallery touch actions</h4>
+    <br><br><br>
+    <h4 style="text-decoration: underline;"><b>1. Gallery touch actions</b></h4>
     <br>
     <div class="row">
       <div class="col-md-6 text-center">
-        <b>Open image in lightbox</b>
+        <p><b>Open image in lightbox</b></p>
         <div class="row">
           <div class="col-md-6 text-center">
             <img src="img/gesture_tap.png"> + 
             <img src="img/gesture_tap.png">
-            <br>
-            Tap twice
-            <br><br>
-            The hover animation is fired on first tap.
-            <br>
-            Image is displayed in lightbox on second one.
-            <br>
-            This is the default behaviour.
+            <p>
+              <b>Tap twice</b>
+              <br><br>
+              The hover animation is fired on first tap.
+              <br>
+              Image is displayed in lightbox on second one.
+              <br>
+              This is the default behaviour.
+            </p>
           </div>
           <div class="col-md-6 text-center">
             <img src="img/gesture_tap.png">
-            <br>
-            Single tap
-            <br><br>
-            The hover animation is fired on tap, and after a defined delay, the image is automatically displayed in the lightbox.
-            <br>
-            Use the option <code>touchAutoOpenDelay</code> to enable this behaviour.
+            <p>
+              <b>Single tap</b>
+              <br><br>
+              The hover animation is fired on tap, and after a defined delay, the image is automatically displayed in the lightbox.
+              <br>
+              Use the option <code>touchAutoOpenDelay</code> to enable this behaviour.
+            </p>
           </div>
         </div>
       </div>
       <div class="col-md-6 text-center">
-        <b>Switch to next/previous page</b>
-        <br>
+        <p><b>Switch to next/previous page</b></p>
         <img src="img/gesture_pan_hor.png">
-        <br>
-        Horizontal swipe
-        <br><br>
-        Switch to next/previous gallery page, when option <code>galleryDisplayMode: 'pagination'</code>
+        <p>
+          <b>Horizontal swipe</b>
+          <br><br>
+          Switch to next/previous gallery page, when option <code>galleryDisplayMode: 'pagination'</code>
+        </p>
       </div>
     </div>
     
-    <br><br>
-    <h4 style="text-decoration: underline;">2. Lightbox touch actions</h4>
+    <br><br><br><br>
+    <h4 style="text-decoration: underline;"><b>2. Lightbox touch actions</b></h4>
     <br>
     <div class="row">
       <div class="col-md-4 text-center">
-        <b>Switch to another image</b>
+        <p><b>Switch to another image</b></p>
         <div class="row">
           <div class="col-md-6 text-center">
             <img src="img/gesture_pan_hor.png">
-            <br>
-            Horizontal swipe
+            <p>
+              Horizontal swipe
+            </p>
           </div>
           <div class="col-md-6 text-center">
             <img src="img/gesture_tap.png">
-            <br>
-            Tap left/right image side
+            <p>
+              Tap left/right image side
+            </p>
           </div>
         </div>
       </div>
       <div class="col-md-4 text-center">
-        <b>Zoom</b>
+        <p><b>Zoom</b></p>
         <div class="row">
           <div class="col-md-4 text-center">
             <img src="img/gesture_pinch.png">
-            <br>
-            Pinch-in/out
+            <p>
+              Pinch-in/out
+            </p>
           </div>
           <div class="col-md-4 text-center">
             <img src="img/gesture_tap_double.png">
-            <br>
-            Double tap
+            <p>
+              Double tap
+            </p>
           </div>
           <div class="col-md-4 text-center">
             <img src="img/gesture_drag.png">
-            <br>
-            Pan image
+            <p>
+              Pan image
+            </p>
           </div>
         </div>
       </div>
       <div class="col-md-4 text-center">
-        <b>Close lightbox</b>
-        <br>
+        <p><b>Close lightbox</b></p>
         <img src="img/gesture_pan_down.png">
-        <br>
-        Swipe down
+        <p>
+          Swipe down
+        </p>
       </div>
     </div>
     
@@ -1162,14 +1172,15 @@ $("#my_nanogallery2").nanogallery2({
     
     
     <div id="ngy2_ui"></div>
-    <br><br><br><br><br><br><br>
-    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> UI interactions</h3>
+    <br><br><br><br><br><br><br><br><br><br>
+    <h3><b><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> UI interactions</b></h3>
     <hr>
     <blockquote>
       nanogallery2 includes UI interactions and animations to capture the attention of your visitors.
     </blockquote>
-    <br>
-    <h4 style="text-decoration: underline;">1. Gallery display animations</h4>
+    <br><br><br>
+    
+    <h4 style="text-decoration: underline;"><b>1. Gallery display animations</b></h4>
     <p>
       Use the option <code>galleryDisplayTransition</code> to define the animation for displaying the gallery.
       <br><br>
@@ -1182,8 +1193,10 @@ $("#my_nanogallery2").nanogallery2({
       </div>
       <br><br><br>
     </p>
-    <br>
-    <h4 style="text-decoration: underline;">2. Thumbnail display animations</h4>
+    <br><br><br>
+    
+    
+    <h4 style="text-decoration: underline;"><b>2. Thumbnail display animations</b></h4>
     <p>
       The display of each individual thumbnail can be animated with the option <code>thumbnailDisplayTransition</code>.
       <br><br>
@@ -1198,50 +1211,61 @@ $("#my_nanogallery2").nanogallery2({
       </div>
       <br><br><br>
     </p>
-    <br>
-    <h4 style="text-decoration: underline;">3. Thumbnail touch and hover effects</h4>
+    <br><br><br>
+    
+    
+    <h4 style="text-decoration: underline;"><b>3. Thumbnail touch and hover effects</b></h4>
     <p>
       These animations are fired on mouse hover or when the user touch the thumbnail. Multiple animations can be combined.
       <br><br>
+      <div class="text-center">
+      <img src="img/ngy2_thumbnail_hover.gif" style="padding:10px;">
+      </div> 
+      <!--
       <div class="text-center video-container">
         <iframe width="560" height="315" src="https://www.youtube.com/embed/2src3W4be9Q?rel=0" frameborder="0" allowfullscreen></iframe>
       </div>
-      <br><br>
-      They are configured with the option <code>thumbnailHoverEffect2: 'effect1|effect2|...'</code>
-      <br>
-      Where <code>effect</code> is :
-      <ul>
-        <li>
-          <u>A predefined preset, like: </u>
+      -->
+      <p>
+        <br><br>
+        They are configured with the option <code>thumbnailHoverEffect2: 'effect1|effect2|...'</code>
+        <br>
+        Where <code>effect</code> is :
+        <ul>
+          <li>
+            <u>A predefined preset, like: </u>
+            <br>
+            - <code>'imageGrayOn'</code>: to animate image from color to black&white<br>
+            - <code>'scale120'</code>: to upscale the thumbnail by 20%<br>
+            - <code>'borderLighter'</code>: to make the border color lighter<br>
+            <br>
+            Example: <code>thumbnailHoverEffect2: 'imageGrayOn|scale120'</code>
+            <br><br>
+            See <a href="#ngy2_gallery_thumbnails_hover_presets">here</a> for the list of available presets.
+            <br><br>
+          </li>
+          <li>
+            <u>Or a customized animation:</u>
+            <br>
+            In this case, the syntax of the effect is <code>[element]_[property]_[fromValue]_[toValue]</code>
+            <br>
+            Examples:<br>
+            - Rotate the image from 0 to 15 degre: <code>'image_rotateZ_0deg_15deg'</code><br>
+            - Upscale the image:  <code>'image_scale_1.00_1.20'</code><br>
+            <br>
+            To combine both effects: <code>'image_rotateZ_0deg_15deg|image_scale_1.00_1.20'</code>
+            
+            <br><br>
+            See <a href="#ngy2_gallery_thumbnails_hover_adv">here</a> for more details.
+          </li>
+        </ul>
+        <br>
+        <p>
+          Additional <b>effect tuning</b> is also available for controling duration, easing, hover out effect, sequential animation, etc.
           <br>
-          - <code>'imageGrayOn'</code>: to animate image from color to black&white<br>
-          - <code>'scale120'</code>: to upscale the thumbnail by 20%<br>
-          - <code>'borderLighter'</code>: to make the border color lighter<br>
-          <br>
-          Example: <code>thumbnailHoverEffect2: 'imageGrayOn|scale120'</code>
-          <br><br>
-          See <a href="#ngy2_gallery_thumbnails_hover_presets">here</a> for the list of available presets.
-          <br><br>
-        </li>
-        <li>
-          <u>Or a customized animation:</u>
-          <br>
-          In this case, the syntax of the effect is <code>[element]_[property]_[fromValue]_[toValue]</code>
-          <br>
-          Examples:<br>
-          - Rotate the image from 0 to 15 degre: <code>'image_rotateZ_0deg_15deg'</code><br>
-          - Upscale the image:  <code>'image_scale_1.00_1.20'</code><br>
-          <br>
-          To combine both effects: <code>'image_rotateZ_0deg_15deg|image_scale_1.00_1.20'</code>
-          
-          <br><br>
-          See <a href="#ngy2_gallery_thumbnails_hover_adv">here</a> for more details.
-        </li>
-      </ul>
-      <br>
-      Additional <b>effect tuning</b> is also available for controling duration, easing, hover out effect, sequential animation, etc.
-      <br>
-      See the <a href="#ngy2_gallery_thumbnails_hover_tuning">tuning section</a>.
+          See the <a href="#ngy2_gallery_thumbnails_hover_tuning"><b>tuning section</b></a>.
+        </p>
+      </p>
     </p>
 
 
@@ -1262,7 +1286,7 @@ $("#my_nanogallery2").nanogallery2({
     
     <div id="ngy2_gallery"></div>
     <br><br><br><br><br><br><br>
-    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> GALLERY SETTINGS</h3>
+    <h3><b><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> GALLERY SETTINGS</b></h3>
     <hr>
     <blockquote>
       Configure the behaviour of the gallery.
@@ -1495,7 +1519,7 @@ $("#my_nanogallery2").nanogallery2({
     
     <div id="ngy2_gallery_thumbnails"></div>
     <br><br><br><br><br><br><br>
-    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> THUMBNAILS</h3>
+    <h3><b><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> THUMBNAILS</b></h3>
     <hr>
     <blockquote>
       Configure the layout and the content of the thumbnails.
@@ -1694,19 +1718,19 @@ $("#my_nanogallery2").nanogallery2({
           <td>1.0</td>
         </tr>
         <tr>
-          <td>thumbnailLastImgSliderDelay</td>
+          <td>thumbnailSliderDelay</td>
           <td>integer</td>
           <td>2000</td>
           <td>
-            Image slider last displayed thumbnail.
+            Image slider on last displayed thumbnail.
             <br>
-            Delay in ms between the display of images.
+            Delay in ms between the display of 2 images.
             <br>
             Set it to <b>0</b> to disable it.
             <br>
-            Supported in grid layout with <b>galleryDisplayMode</b> set to <b>'rows'</b> or to <b>'fullContent'</b> with <b>galleryLastRowFull</b> enabled.
+            <img src="img/ngy2_thumbnail_slider.gif" style="padding:10px;">
             <br>
-            Thumbnail image sizes must be defined.
+            Supported when <b>galleryDisplayMode</b> set to <b>'rows'</b> or to <b>'fullContent'</b> with <b>galleryLastRowFull</b> enabled.
           </td>
           <td>2.0</td>
         </tr>
@@ -1716,7 +1740,7 @@ $("#my_nanogallery2").nanogallery2({
 
     <div id="ngy2_gallery_thumbnails_resp"></div>
     <br><br><br><br><br><br><br>
-    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> THUMBNAIL RESPONSIVE SIZES</h3>
+    <h3><b><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> THUMBNAIL RESPONSIVE SIZES</b></h3>
     <hr>
     <blockquote>
       For a fully responsive gallery, you can define multiple thumbnail sizes for each image.
@@ -1760,7 +1784,7 @@ $("#my_nanogallery2").nanogallery2({
     
     <div id="ngy2_gallery_thumbnails_label"></div>
     <br><br><br><br><br><br><br>
-    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> THUMBNAIL LABEL</h3>
+    <h3><b><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> THUMBNAIL LABEL</b></h3>
     <hr>
     <blockquote>
       The <b>label</b> is composed by a <b>title</b> and a <b>description</b>. Set these settings to the <b><code>thumbnailLabel</code></b> parameter.
@@ -1908,7 +1932,7 @@ $("#my_nanogallery2").nanogallery2({
     
     <div id="ngy2_gallery_thumbnails_hover"></div>
     <br><br><br><br><br><br><br>
-    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> THUMBNAIL - TOUCH AND HOVER EFFECTS</h3>
+    <h3><b><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> THUMBNAIL - TOUCH AND HOVER EFFECTS</b></h3>
     <hr>
     <blockquote>
     Hover effects are triggered on mouse over or on touch-tap. They are confugured with the <code><b>thumbnailHoverEffect2</b></code> parameter.
@@ -1916,7 +1940,7 @@ $("#my_nanogallery2").nanogallery2({
       <img src="img/ngy2_thumbnail_hover.png" class="img-responsive center-block">
     </blockquote>
     <br><br>
-    <h4><i id="ngy2_gallery_thumbnails_hover_presets" class="fa fa-circle-o"></i> Presets:</h4>
+    <h4><b><i id="ngy2_gallery_thumbnails_hover_presets" class="fa fa-circle-o"></i> Presets</b></h4>
     <p>
       You can set one or multiple presets to the <code>thumbnailHoverEffect2</code> with the syntax <code><b>thumbnailHoverEffect2: 'preset1|preset2|...'</b></code>
     </p>
@@ -1946,10 +1970,10 @@ $("#my_nanogallery2").nanogallery2({
     <p>
       Usage example: <code>thumbnailHoverEffect2: 'borderDarker|labelAppear75'</code>
     </p>
-    <br>
-    <br>
-    <br>
-    <h4><i id="ngy2_gallery_thumbnails_hover_adv" class="fa fa-circle-o"></i> Advanced usage</h4>
+    <br><br><br>
+    
+    
+    <h4><b><i id="ngy2_gallery_thumbnails_hover_adv" class="fa fa-circle-o"></i> Advanced usage</b></h4>
     <p>
       For a full control of the effects, use the syntax <code>thumbnailHoverEffect2: 'effect1|effect2|...'</code><br><br>
       where <b>effectN</b> has the syntax <code> [element]_[property]_[fromValue]_[toValue]</code>
@@ -2009,10 +2033,10 @@ $("#my_nanogallery2").nanogallery2({
       For this, use the option <code>thumbnailBuildInit2: : 'init1|init2|...'</code> where <b>initN</b> has the syntax: <code>[element]_[property]_[Value]</code>.
       <br>Example : <code>thumbnailBuildInit2: 'image_scale_1.20'</code>
     </p>
-    <br>
-    <br>
-    <br>
-    <h4><i id="ngy2_gallery_thumbnails_hover_tuning" class="fa fa-circle-o"></i> Additional tuning</h4>
+    <br><br><br>
+    
+    
+    <h4><b><i id="ngy2_gallery_thumbnails_hover_tuning" class="fa fa-circle-o"></i> Additional tuning</b></h4>
     <p>
       Fine tuning settings: duration, delay, easing, back duration, back delay, beack easing, hoverin, hoverout, first keyframe
       <br>syntax:
@@ -2052,10 +2076,10 @@ $("#my_nanogallery2").nanogallery2({
         <li>combination of 2 effects: <br><pre>thumbnailHoverEffect2: [{ name: 'image_scale_1.00_1.20', duration: 500}, { name: 'image_rotateZ_0deg_15deg', delay: 500}]</pre></li>
       </ul>
     </p>
+    <br><br><br><br>
     
-    <br><br>
-    <br><br>
-    <h4><i class="fa fa-circle-o"></i> Stacks</h4>
+    
+    <h4><b><i class="fa fa-circle-o"></i> Stacks</b></h4>
     <p>
       <div class="row">
         <div class="col-md-8">
@@ -2078,9 +2102,11 @@ $("#my_nanogallery2").nanogallery2({
     </p>
     
     
+    
+    
     <div id="ngy2_thumbnail_tools"></div>
     <br><br><br><br><br><br><br>
-    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> THUMBNAIL - TOOLS</h3>
+    <h3><b><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> THUMBNAIL - TOOLS</b></h3>
     <hr>
     <blockquote>
       Each corner of one thumbnail has a toolbar. You can customize each of these toolbars.
@@ -2134,7 +2160,7 @@ $("#my_nanogallery2").nanogallery2({
     
     <div id="ngy2_navigation"></div>
     <br><br><br><br><br><br><br>
-    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> NAVIGATION</h3>
+    <h3><b><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> NAVIGATION</b></h3>
     <hr>
     <blockquote>
       Configure how the user can navigate in albums, filter the thumbnails based on tags, and the touch/tap handling.
@@ -2258,9 +2284,11 @@ $("#my_nanogallery2").nanogallery2({
       </table>
     </div>
 
+    
+    
     <div id="ngy2_navigation_first"></div>
     <br><br><br><br><br><br><br>
-    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> GALLERY - FIRST ALBUM LEVEL SPECIFIC OPTIONS</h3>
+    <h3><b><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> GALLERY - FIRST ALBUM LEVEL SPECIFIC OPTIONS</b></h3>
     <hr>
     <blockquote>
       Settings can be defined specificaly for the first album level (root level) and for the other ones.<br>
@@ -2361,7 +2389,7 @@ $("#my_nanogallery2").nanogallery2({
    
     <div id="ngy2_lightbox"></div>
     <br><br><br><br><br><br><br>
-    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> IMAGE DISPLAY - LIGHTBOX</h3>
+    <h3><b><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> IMAGE DISPLAY - LIGHTBOX</b></h3>
     <hr>
     <blockquote>
       The lightbox is used to display images in full size.
@@ -2564,13 +2592,26 @@ $("#my_nanogallery2").nanogallery2({
             </td>
             <td>1.5</td>
           </tr>
+          <tr>
+            <td>viewerTransitionMediaKind</td>
+            <td>string</td>
+            <td>'img'</td>
+            <td>
+              Enables or disables the display transition for each media kind.
+              <br>
+              Supported values: 'img', 'iframe'
+              <br>
+              Example: viewerTransitionMediaKind: 'img,iframe'
+            </td>
+            <td>2.0</td>
+          </tr>
         </tbody>
       </table>
     </div>
 
     <div id="ngy2_icons"></div>
     <br><br><br><br><br><br><br>
-    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> CUSTOM ICONS</h3>
+    <h3><b><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> CUSTOM ICONS</b></h3>
     <hr>
     <blockquote>
       All icons used in the gallery can be customized. By default, an icon font is used.<br>
@@ -2953,7 +2994,7 @@ $("#my_nanogallery2").nanogallery2({
     
     <div id="ngy2_colorschemes"></div>
     <br><br><br><br><br><br><br>
-    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> THEMES</h3>
+    <h3><b><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> THEMES</b></h3>
     <hr>
     <blockquote>
       Themes allow you to customize some elements without changing the CSS file.<br>
@@ -2994,7 +3035,7 @@ $("#my_nanogallery2").nanogallery2({
     
     <div id="ngy2_upgrade"></div>
     <br><br><br><br><br><br><br>
-    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> UPGRADING FROM nanoGALLERY</h3>
+    <h3><b><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> UPGRADING FROM nanoGALLERY</b></h3>
     <hr>
     <blockquote>
       nanogallery2 comes with an interesting set of new features that should streamline your development experience.
@@ -3163,7 +3204,7 @@ $("#my_nanogallery2").nanogallery2({
 
     <div id="ngy2_faq"></div>
     <br><br><br><br><br><br><br>
-    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> TIPS AND TRICKS</h3>
+    <h3><b><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> TIPS AND TRICKS</b></h3>
     <hr>
     <blockquote>
       Recommandations / Performances / FAQ
@@ -3171,38 +3212,44 @@ $("#my_nanogallery2").nanogallery2({
     </blockquote>
     <p>
       Thumbnails hover effects:
-      <ul>
-        <li>
-          do not combine too much effects (smooth animation on a computer may be slow on a mobile device).
-        </li>
-      </ul>
-      Self hosted images:
-      <ul>
-        <li>
-          define each thumbnail's size.
-        </li>
-        <li>
-          define each image's size.
-        </li>
-      </ul>
-      Social sharing
-      <ul>
-        <li>
-          Assign an ID to the DIV containing the gallery.
-        </li>
-        <li>
-          Each album and image must have an ID defined.
-        </li>
-        <li>
-          IDs should never been changed.
-        </li>
-      </ul>
     </p>
+    <ul>
+      <li>
+        <p>
+          do not combine too much effects (smooth animation on a computer may be slow on a mobile device).
+        </p>
+      </li>
+    </ul>
+    <p>
+      Self hosted images:
+    </p>
+    <ul>
+      <li>
+        <p>define each thumbnail's size.</p>
+      </li>
+      <li>
+        <p>define each image's size.</p>
+      </li>
+    </ul>
+    <p>
+      Social sharing:
+    </p>
+    <ul>
+      <li>
+        <p>Assign an ID to the DIV containing the gallery.</p>
+      </li>
+      <li>
+        <p>Each album and image must have an ID defined.</p>
+      </li>
+      <li>
+        <p>IDs should never been changed.</p>
+      </li>
+    </ul>
 
 
     <div id="ngy2_security"></div>
     <br><br><br><br><br><br><br>
-    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> SECURITY</h3>
+    <h3><b><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> SECURITY</b></h3>
     <hr>
     <blockquote>
       <br>
@@ -3217,15 +3264,14 @@ $("#my_nanogallery2").nanogallery2({
 
     <div id="ngy2_browser"></div>
     <br><br><br><br><br><br><br>
-    <h3><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> BROWSER SUPPORT</h3>
+    <h3><b><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> BROWSER SUPPORT</b></h3>
     <hr>
     <blockquote>
-      <p>
       Firefox 6+ - Chrome 16+ - Edge 13+ - IE 10+ - Opera 12.1+ - Yandex 14.12+ - iPhone 5+ / iOS 6+ - Safari 6.2+
-      <br>(some features may not be available on every platform).
       <br>
-      </p>
-      <p>Testing services provided by <a href="https://www.browserstack.com" target="_blank">BrowserStack</a><img src="img/browserstack3.png" alt="browserstack"></p>
+      (some features may not be available on every platform).
+      <br><br>
+      Testing services provided by <a href="https://www.browserstack.com" target="_blank">BrowserStack</a><img src="img/browserstack3.png" alt="browserstack">
     </blockquote>
     
 
@@ -3237,7 +3283,7 @@ $("#my_nanogallery2").nanogallery2({
   <div id="ngy2_vert_nav_style" class="col-md-2 scrollspy">
     <ul id="ngy2_vert_nav" class="nav hidden-xs hidden-sm" data-spy="affix">
       <li>
-        <a href="#ngy2_intro">Concepts</a>
+        <a href="#ngy2_intro"><b>Concepts</b></a>
       </li>
       <li>
         <a href="#ngy2_concepts_content"> &nbsp; - Content</a>
