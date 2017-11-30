@@ -1,168 +1,12 @@
   <!-- ######################## -->
   <!-- ##### JS FOR PAGE  ##### -->
   <!-- ######################## -->
-  <script type="text/javascript">
-    /* 
-      disqusLoader.js v1.0
-      A JavaScript plugin for lazy-loading Disqus comments widget.
-      https://css-tricks.com/lazy-loading-disqus-comments/
-      https://github.com/osvaldasvalutis/disqusLoader.js/blob/master/disqusloader.js
-      -
-      By Osvaldas Valutis, www.osvaldas.info
-      Available for use under the MIT License
-    */
-
-    ;( function( window, document, index )
-    {
-      'use strict';
-
-      var extendObj = function( defaults, options )
-        {
-          var prop, extended = {};
-          for( prop in defaults )
-            if( Object.prototype.hasOwnProperty.call( defaults, prop ))
-              extended[ prop ] = defaults[ prop ];
-
-          for( prop in options )
-            if( Object.prototype.hasOwnProperty.call( options, prop ))
-              extended[ prop ] = options[ prop ];
-
-          return extended;
-        },
-        getOffset = function( el )
-        {
-          var rect = el.getBoundingClientRect();
-          return { top: rect.top + document.body.scrollTop, left: rect.left + document.body.scrollLeft };
-        },
-        loadScript = function( url, callback )
-        {
-          var script	 = document.createElement( 'script' );
-          script.src	 = url;
-          script.async = true;
-          script.setAttribute( 'data-timestamp', +new Date());
-          script.addEventListener( 'load', function()
-          {
-            if( typeof callback === 'function' )
-              callback();
-          });
-          ( document.head || document.body ).appendChild( script );
-        },
-        throttle		= function(a,b){var c,d;return function(){var e=this,f=arguments,g=+new Date;c&&g<c+a?(clearTimeout(d),d=setTimeout(function(){c=g,b.apply(e,f)},a)):(c=g,b.apply(e,f))}},
-
-        throttleTO		= false,
-        laziness		= false,
-        disqusConfig	= false,
-        scriptUrl		= false,
-
-        scriptStatus	= 'unloaded',
-        instance		= false,
-
-        init = function()
-        {
-          if( !instance || !document.body.contains( instance ) || instance.disqusLoaderStatus == 'loaded' )
-            return true;
-
-          var winST	= window.pageYOffset,
-            offset	= getOffset( instance ).top;
-
-          // if the element is too far below || too far above
-          if( offset - winST > window.innerHeight * laziness || winST - offset - instance.offsetHeight - ( window.innerHeight * laziness ) > 0 )
-            return true;
-
-          var tmp = document.getElementById( 'disqus_thread' );
-          if( tmp ) tmp.removeAttribute( 'id' );
-          instance.setAttribute( 'id', 'disqus_thread' );
-          instance.disqusLoaderStatus = 'loaded';
-
-          if( scriptStatus == 'loaded' )
-          {
-            DISQUS.reset({ reload: true, config: disqusConfig });
-          }
-          else // unloaded | loading
-          {
-            window.disqus_config = disqusConfig;
-            if( scriptStatus == 'unloaded' )
-            {
-              scriptStatus = 'loading';
-              loadScript( scriptUrl, function()
-              {
-                scriptStatus = 'loaded';
-              });
-            }
-          }
-        };
-
-      window.addEventListener( 'scroll', throttle( throttleTO, init ));
-      window.addEventListener( 'resize', throttle( throttleTO, init ));
-
-      window.disqusLoader = function( element, options )
-      {
-        options = extendObj(
-        {
-          laziness:		1,
-          throttle:		250,
-          scriptUrl:		false,
-          disqusConfig:	false,
-
-        }, options );
-
-        laziness		= options.laziness + 1;
-        throttleTO		= options.throttle;
-        disqusConfig	= options.disqusConfig;
-        scriptUrl		= scriptUrl === false ? options.scriptUrl : scriptUrl; // set it only once
-
-        if( typeof element === 'string' )				instance = document.querySelector( element );
-        else if( typeof element.length === 'number' )	instance = element[ 0 ];
-        else											instance = element;
-
-        instance.disqusLoaderStatus = 'unloaded';
-
-        init();
-      };
-
-    }( window, document, 0 ));
-
-    
-    // LAZY LOAD MY DISQUS
-    var options =
-    {
-      scriptUrl: 'https://nanogallery2.disqus.com/embed.js',
-      laziness: 1,
-      throttle: 250,
-      disqusConfig: function()
-      {
-        //this.page.title       = 'Page Title';
-        // this.page.url         = 'http://url.to/your-website';
-        this.page.identifier  = 'nanogallery2';
-      }
-    };
-
-    disqusLoader( '.disqus', options );
-    
+	<script type="text/javascript">
 
 
-    
-	  
-	  
-	  
     $(document).ready(function () {
 
-      // typeform review
-      jQuery('#btn_enjoy_yes').on('click', function() {
-        window.open('https://nanostudio.typeform.com/to/zyHSZD', '_blank');
-        $('#myModalEnjoyYes').modal('hide');
-      });
-      jQuery('#btn_enjoy_no').on('click', function() {
-        window.open('https://nanostudio.typeform.com/to/wHRN2N', '_blank');
-        $('#myModalEnjoyNo').modal('hide');
-      });
-
-      // typeform newsletter
-      jQuery('#btn_newsletter').on('click', function() {
-        window.open('https://nanostudio.typeform.com/to/P8SFe8', '_blank');
-        $('#myModalEnjoyYes').modal('hide');
-      });
-    
+      
       // LOGO APPEAR
       var tweenable = new NGTweenable();
       tweenable.tween({
@@ -197,7 +41,7 @@
           'filter by keywords', 'navigation in albums', 'self hosted images', 'google photos and flickr data sources',
           'thumbnail selection mode with checkboxes', 'support multi-touch gesture', 'hover effects on touchscreen', 'deep linking',
           'highly customizable', 'browser back/forward navigation', 'slideshow', 'image lazy loading and pre-loading', 'keyboard support',
-          'inactive state detection', 'themes', 'multiple galleries',
+          'inactive state detection', 'themes', 'multiple galleries', 'nested folder navigation',
           'custom icons'
         ];
       
@@ -238,32 +82,34 @@
       }
       RotatorNext(0);
 
+      
+      
+      // ##### TEMPLATE TAB
+      jQuery('#ngy2_init1').on( "click", function(e) {
+        jQuery('#init_markup').css({ 'display': 'block' });
+        jQuery('#init_js').css({ 'display': 'none' });
 
-
-      // ##### LICENSE TAB
-      jQuery('#ngy2_lic1').on( "click", function(e) {
-        jQuery('#ngy2_lic1_desc').css({ 'display': 'block' });
-        jQuery('#ngy2_lic2_desc').css({ 'display': 'none' });
-        //jQuery('#ngy2_lic1').css({ 'text-decoration': 'underline', 'color': '#fff' });
-        jQuery('#ngy2_lic1').css({ 'color': '#fff' });
-        jQuery('#ngy2_lic2').css({ 'text-decoration': 'none', 'color':'#AEDADC' });
+        jQuery('#ngy2_init1').css({ 'color': '#499295' });
+        jQuery('#ngy2_init2').css({ 'text-decoration': 'none', 'color':'#111' });
         
-        jQuery('#ngy2_lic2').find('i').removeClass('fa-check-circle-o').addClass('fa-circle-o');
-        jQuery('#ngy2_lic1').find('i').removeClass('fa-circle-o').addClass('fa-check-circle-o');
+        jQuery('#ngy2_init2').find('i').removeClass('fa-check-circle-o').addClass('fa-circle-o');
+        jQuery('#ngy2_init1').find('i').removeClass('fa-circle-o').addClass('fa-check-circle-o');
         
       });
-      jQuery('#ngy2_lic2').on( "click", function(e) {
-        jQuery('#ngy2_lic2_desc').css({ 'display': 'block' });
-        jQuery('#ngy2_lic1_desc').css({ 'display': 'none' });
+      jQuery('#ngy2_init2').on( "click", function(e) {
+        jQuery('#init_js').css({ 'display': 'block' });
+        jQuery('#init_markup').css({ 'display': 'none' });
         //jQuery('#ngy2_lic2').css({ 'text-decoration': 'underline', 'color': '#fff' });
-        jQuery('#ngy2_lic2').css({ 'color': '#fff' });
-        jQuery('#ngy2_lic1').css({ 'text-decoration': 'none', 'color':'#AEDADC' });
+        jQuery('#ngy2_init2').css({ 'color': '#499295' });
+        jQuery('#ngy2_init1').css({ 'text-decoration': 'none', 'color':'#111' });
         
-        jQuery('#ngy2_lic1').find('i').removeClass('fa-check-circle-o').addClass('fa-circle-o');
-        jQuery('#ngy2_lic2').find('i').removeClass('fa-circle-o').addClass('fa-check-circle-o');
+        jQuery('#ngy2_init1').find('i').removeClass('fa-check-circle-o').addClass('fa-circle-o');
+        jQuery('#ngy2_init2').find('i').removeClass('fa-circle-o').addClass('fa-check-circle-o');
       });
-      $('#ngy2_lic1').trigger('click');
+      $('#ngy2_init1').trigger('click');
 
+      
+      
       
       function fnOpenNewTab(e) {
         jQuery('.nGY2Viewer a').on( "click", function(e) {
@@ -273,6 +119,8 @@
           return true;
         });
       }
+      
+      
 
       jQuery('#btnsearch').on('click', function() {
         // jQuery("#nanogallery").nanogallery2('displayItem', 'fun/fun%2Fphoto%20by%20himanshu%20singh%20gurjar');
@@ -281,6 +129,18 @@
        // jQuery("#nanogallery").nanogallery2('searchSetTags', jQuery('#ngy2search2').val() );
        alert(jQuery("#nanogallery").nanogallery2('search2Execute'));
       });
+
+      
+      
+      function selectImage(items) {
+        var obj = items[0];
+        alert(obj.title);
+        //$('#@(Model.ImageType)Key').val(obj.title);
+        //$('#@(Model.ImageType)Image > img').attr('src', obj.src);
+        //$('#modal-container').modal('hide');
+      }      
+
+
 
       
       jQuery("#nanogallery").nanogallery2({
@@ -294,20 +154,24 @@
         // fnImgDisplayed: fnOpenNewTab,
         itemsBaseURL:     '../samples/',
         items: [
-            { src: 'berlin1_t.jpg', srct: 'berlin1_t.jpg', title: 'Berlin 1' },
-            { src: 'berlin2_t.jpg', srct: 'berlin2_t.jpg', title: 'Berlin 2' },
+            { src: 'https://www.youtube.com/watch?v=Ir098VWCv8Q', srct: 'berlin1_t.jpg', title: 'youtube' },
+            { src: 'https://vimeo.com/32875422', srct: 'https://i.vimeocdn.com/video/222726041_1280x720.jpg', title: 'vimeo' },
+            { src: 'http://www.dailymotion.com/video/x4wtyl6', srct: 'berlin1_t.jpg', title: 'dailymotion' },
+            { src: 'berlin1.jpg', srct: 'berlin1_t.jpg', title: 'Berlin 1' },
+            { src: 'berlin2.jpg', srct: 'berlin2_t.jpg', title: 'Berlin 2' },
             { src: 'berlin3.jpg', srct: 'berlin3_t.jpg', title: 'Berlin 3' }
           ],
-
+// fnThumbnailOpen: selectImage,
         kind: 'nano_photos_provider2',
         dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
-        //kind: 'flickr',
+        // kind: 'flickr',
         // userID: '149035168@N08',    // nano studio
+        //album: 'none',
         // userID: '148691806@N05',  
         // flickrSkipOriginal: false,
         //album: 'into%20the%20wild',
         // albumList2: ['into the wild', 'fun'],
-        // dataProvider: 'http://localhost:12345/nano_photos_provider2/dist/nano_photos_provider2.php',
+        //dataProvider: 'http://localhost:12345/nano_photos_provider2/dist/nano_photos_provider2.php',
                
         galleryRenderDelay: 1200,
         galleryDisplayTransition: 'rotateX',
@@ -315,9 +179,9 @@
         galleryL1DisplayTransition: 'slideUp',
       
 
-        //kind : 'google2', 
-        //userID : '111186676244625461692', 
-        //google2URL : 'http://lvh.me:12345/nanogp/nanogp.php',
+        // kind : 'google2', 
+        // userID : '111186676244625461692', 
+        // google2URL : 'http://lvh.me:12345/nanogp/nanogp.php',
         google2URL : 'https://nano.gallery/nanogp/nanogp.php',
         //album: '6325352440922789105',
         //albumList2:['6137218671601042145','5851968929721015169','5851895073106049313'],
@@ -328,35 +192,78 @@
         //        photoset: '72157656850365463',
 
         blackList: 'forhomepage|scrapbook|profil',
-        //thumbnailL1DisplayTransition: 'scaleUp',
-        thumbnailL1DisplayTransition: 'none',
-        thumbnailL1DisplayTransitionDuration: 500,
-        thumbnailL1DisplayInterval: 90,
 
-        thumbnailDisplayTransition: 'SLIDERIGHT',
+        
+        
+    // breakpointSizeME :            992,
+    // breakpointSizeLA :            1200,
+    // 992 >= WIDTH < 1200
+       
+       
+        galleryMosaicXXX : [
+          { w: 2, h: 2, c: 1, r: 1 },
+          { w: 2, h: 1, c: 3, r: 1 },
+          { w: 2, h: 1, c: 3, r: 2 },
+          { w: 1, h: 1, c: 5, r: 1 },
+          { w: 1, h: 1, c: 5, r: 2 },
+          { w: 1, h: 2, c: 6, r: 1 },
+          { w: 1, h: 1, c: 1, r: 3 },
+          { w: 1, h: 1, c: 2, r: 3 },
+          { w: 1, h: 1, c: 3, r: 3 },
+          { w: 1, h: 1, c: 4, r: 3 },
+          { w: 1, h: 1, c: 5, r: 3 },
+          { w: 1, h: 1, c: 6, r: 3 }
+        ],
+        galleryMosaicXXX : [
+          { w: 2, h: 2, c: 1, r: 2 },
+          { w: 2, h: 2, c: 3, r: 1 },
+          { w: 2, h: 2, c: 3, r: 3 },
+          { w: 2, h: 2, c: 5, r: 2 },
+          { w: 2, h: 2, c: 7, r: 1 },
+          { w: 2, h: 2, c: 7, r: 3 },
+        ],
+        galleryMosaicL1 : [
+          { w: 4, h: 3, c: 1, r: 1 },
+          { w: 2, h: 2, c: 5, r: 1 },
+          { w: 2, h: 2, c: 7, r: 1 },
+          { w: 4, h: 3, c: 5, r: 3 },
+          { w: 2, h: 2, c: 1, r: 4 },
+          { w: 2, h: 2, c: 3, r: 4 },
+        ],
+        
+        thumbnailAlignment: 'scaled',
+
+        thumbnailL1Height: '80', thumbnailL1Width: '120',
+        thumbnailHeight: '250', thumbnailWidth: 'auto',
+        // thumbnailHeight: '250', thumbnailWidth: 250,
+        thumbnailBaseGridHeight: 80,
+        
+        thumbnailDisplayTransition: 'slideLeft',
         thumbnailDisplayTransitionDuration: 600,
-        thumbnailDisplayInterval: 60,
-        thumbnailHeight: '200 XS150 SM150', thumbnailWidth: 'auto',
-        thumbnailL1Height: '200 XS100 SM150', thumbnailL1Width: '300 XS100 SM225',
-        // thumbnailL1Height: '200', thumbnailL1Width: '300',
-        galleryL1MaxRows: 1,
-
-
-
-        galleryL1DisplayMode: 'pagination',
+        thumbnailDisplayInterval: 90,
+        thumbnailL1DisplayInterval: 200,
+        galleryMaxRows: 3,
         galleryDisplayMode: 'rows',
+
+        thumbnailL1GutterWidth: 10,
+        thumbnailL1GutterHeight: 10,
+        thumbnailBorderHorizontal: 0,
+        thumbnailBorderVertical: 0,
+        thumbnailGutterWidth: 2,
+        thumbnailGutterHeight: 2,
+
+
         galleryPaginationMode: 'rectangles',
-        galleryMaxRows: 4,
         
         
         //galleryBuildInit2 : 'transform-origin_top right',
         //thumbnailL1BuildInit2: 'thumbnail_transform-origin_50% 150%',
 
 
-thumbnailL1BuildInit2: '.nGY2GThumbnailAlbumTitle_border-left_5px solid #23CB99|.nGY2GThumbnailAlbumTitle_margin_20px|\
-title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
+        thumbnailL1BuildInit2: '.nGY2GThumbnailAlbumTitle_border-left_5px solid #23CB99|.nGY2GThumbnailAlbumTitle_margin_20px|\
+              title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
 
-        thumbnailL1HoverEffect2: 'label_left_-100%_0%|thumbnail_scale_1.00_1.20',
+         thumbnailL1HoverEffect2: 'label_left_-100%_0%|thumbnail_scale_1.00_0.95',
         
         
         thumbnailL2HoverEffect2: 'image_scale_1.00_1.20|labelAppear|customlayer_backgroundColor_rgba(35,203,153,0.0)_rgba(35,203,153,0.8)|\
@@ -365,20 +272,16 @@ title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
                 thumbnail_rotateX_-10deg_0deg_delay250_keyframe_hoverin_easeOutBack_400',
 
         thumbnailL2BuildInit2: 'customlayer_scale_1.3|customlayer_translateY_-15px|customlayer_translateX_-60%|customlayer_rotateZ_10deg',
-        //  galleryBuildInit2 : 'perspective_900px|perspective-origin_50% 150%',
+        galleryBuildInit2 : 'perspective_900px|perspective-origin_50% 150%',
 
         thumbnailHoverEffect2: 'label_font-size_1em_1.5em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((35,203,153,0.8)|title_color_#000_#fff|image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
 
-        // thumbnailToolbarImage : { topLeft: 'select', topRight : 'share,featured,download' },
+        thumbnailToolbarImage : { topLeft: 'select', topRight : 'share,featured,download' },
         thumbnailToolbarAlbum:null,
 
-        thumbnailL1Label: { display: true, position:'overImageOnMiddle', hideIcons: true, titleFontSize: '1.5em', align: 'center'},
+        // thumbnailL1Label: { display: true, position:'overImageOnMiddle', hideIcons: true, titleFontSize: '1.5em', align: 'center'},
         thumbnailL1Label: { display: true, position:'overImageOnTop', hideIcons: true, titleFontSize: '1.5em', align: 'left'},
-        thumbnailLabel: { display: true, position:'overImageOnBottom', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true},
-        thumbnailBorderHorizontal: 0,
-        thumbnailBorderVertical: 0,
-        thumbnailL1GutterWidth: 40,
-        thumbnailL1GutterHeight: 20,
+        thumbnailLabel: { display: true, position:'onBottomOverImage', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true, displayDescription: false},
         
         thumbnailSelectable: false,
         breadcrumbHideIcons: true,
@@ -408,7 +311,7 @@ title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
       
       jQuery("#nanogallery4XXX").nanogallery2({
 
-        kind: 'nano_photos_provider2',
+        // kind: 'nano_photos_provider2',
         dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
         album: displayAlbum,
 
@@ -596,7 +499,7 @@ title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
       
       //  RANDOM DEMO
       var lastRnd=-1;
-      var demos=[0, 1, 2, 3, 4, 5, 6, 7, 8]
+      var demos=[0, 1, 2, 3, 4, 5, 6, 7]
       var rnd=randomIntFromInterval(0,demos.length-1);
       jQuery('#btn_random_demo').on('click', function() {
         //rnd++;
@@ -606,9 +509,8 @@ title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
         //  rnd=randomIntFromInterval(0,4);
         // }
         // lastRnd=rnd;
-        //rnd=8;
+        //rnd=7;
         ga('send', 'event', 'click', 'index', 'random');
-
         switch ( rnd ) {
           case 0:
             jQuery("#nanogallery").nanogallery2({
@@ -619,7 +521,7 @@ title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
               thumbnailHeight: '200', thumbnailWidth: 'auto',
               galleryDisplayMode: 'rows',
               galleryPaginationMode: 'rectangles',
-              galleryMaxRows: 10,
+              galleryMaxRows: 1,
               thumbnailHoverEffect2 : 'image_scale_1.0_1.1_1500',
               thumbnailToolbarImage : { topRight : '', bottomRight : '' },
               thumbnailLabel: { display: false, position:'overImageOnBottom', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true},
@@ -629,7 +531,7 @@ title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
               gallerySorting: 'random',
               galleryTheme : { thumbnail: {titleShadow : 'none', descriptionShadow : 'none'} },
               galleryLastRowFull: true,
-              locationHash: false
+              locationHash: true
             });
             break;
             
@@ -652,11 +554,11 @@ title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
               
               thumbnailHoverEffect2 : 'image_opacity_100%_80%|imageGrayOn|labelAppear|toolsSlideDown',
               
-              thumbnailToolbarImage : { topRight : '', bottomRight : '' },
-              thumbnailLabel: { display: true, position:'onBottomOverImage', titleFontSize: '1.0em', align: 'left', titleMultiLine:true, displayDescription: true},
+              thumbnailToolbarImage : { topRight : 'download,share', bottomRight : '' },
+              thumbnailLabel: { display: true, position:'onBottomOverImage', titleFontSize: '2.0em', align: 'left', titleMultiLine:true, displayDescription: true},
               gallerySorting: 'random',
               //galleryTheme : { thumbnail: { labelBackground: '#eef', titleShadow : 'none', descriptionShadow : 'none', titleColor: '#000', descriptionColor: '#000'} },
-              locationHash: false
+              locationHash: true
             });
             break;
             
@@ -679,7 +581,7 @@ title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
               thumbnailLabel: { display: true, position:'onBottom', titleFontSize: '1.0em', align: 'left', titleMultiLine:true, displayDescription: true},
               gallerySorting: 'random',
               galleryTheme : { thumbnail: { labelBackground: '#eef', titleShadow : 'none', descriptionShadow : 'none', titleColor: '#000', descriptionColor: '#000'} },
-              locationHash: false
+              locationHash: true
             });
             break;
           case 3:
@@ -692,13 +594,14 @@ title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
               thumbnailHeight: '200', thumbnailWidth: '200',
               galleryDisplayMode: 'pagination',
               galleryPaginationMode: 'numbers',
-              galleryMaxRows: 2,
+              galleryMaxRows: 1,
               thumbnailHoverEffect2 : 'toolsSlideUp|labelAppear',
               thumbnailToolbarImage : { topRight : '', bottomRight : 'share,featured,download' },
               thumbnailLabel: { display: true, position:'overImageOnMiddle', titleFontSize: '1.5em', align: 'center', titleMultiLine:true},
               gallerySorting: 'random',
               galleryTheme : { thumbnail: { labelBackground: 'rgba(34, 34, 34, .3)', titleShadow : 'none'} },
-              locationHash: false
+              locationHash: true,
+              galleryTheme: 'light'
             });
             break;
             
@@ -709,20 +612,22 @@ title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
               photoset: 'NONE',
               blackList: 'forhomepage|scrapbook|profil',
               thumbnailDisplayTransition: 'scaleUp',
-              thumbnailHeight: '200', thumbnailWidth: '200',
+              thumbnailDisplayInterval: 45,
+              thumbnailHeight: '150', thumbnailWidth: '150',
               galleryDisplayMode: 'moreButton',
+              
               galleryDisplayMoreStep: 2,
               thumbnailBorderVertical: 5,
               thumbnailBorderHorizontal: 5,
               thumbnailGutterWidth: 10,
               thumbnailGutterHeight: 10,
-              thumbnailHoverEffect2 : 'title_backgroundColor_rgba(255,255,255,0.34)_rgba(((84,84,84,0.8)|image_saturate_200%_100%|image_blur_1px_0px|labelAppear',
+              // thumbnailHoverEffect2 : 'title_backgroundColor_rgba(255,255,255,0.34)_rgba(((84,84,84,0.8)|image_saturate_200%_100%|image_blur_1px_0px|labelAppear',
               thumbnailToolbarImage : { topRight : '', bottomRight : '' },
               //thumbnailLabel: { display: true, position:'overImageOnMiddle', titleFontSize: '1.5em', align: 'left', titleMultiLine:true},
               thumbnailLabel: { display: true, position:'overImageOnTop', hideIcons: false, titleFontSize: '1.2em', align: 'left', titleMultiLine:true},
               gallerySorting: 'random',
               galleryTheme : { thumbnail: { labelBackground: 'rgba(34, 34, 34, .0)', titleShadow : 'none', borderColor: '#fff'} },
-              locationHash: false
+              locationHash: true
             });
             break;
             
@@ -733,8 +638,8 @@ title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
               photoset: '72157675219521270',
               blackList: 'forhomepage|scrapbook|profil',
               thumbnailDisplayTransition: 'scaleUp',
-              thumbnailHeight: '200', thumbnailWidth: '200',
-              galleryDisplayMode: 'fullContent',
+              thumbnailHeight: '300', thumbnailWidth: '300',
+              galleryDisplayMode: 'rows',
               galleryDisplayMoreStep: 2,
               thumbnailBorderVertical: 0,
               thumbnailBorderHorizontal: 0,
@@ -746,7 +651,9 @@ title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
               thumbnailLabel: { display: true, position:'overImageOnMiddle', hideIcons: true, titleFontSize: '1.2em', align: 'center', titleMultiLine:true},
               gallerySorting: 'random',
               galleryTheme : { thumbnail: { labelBackground: 'rgba(34, 34, 34, .0)', titleShadow : 'none', borderColor: '#54840C'} },
-              locationHash: false
+              galleryLastRowFull  : true,
+              galleryMaxRows: 1,
+              locationHash: true
             });
             break;
           
@@ -757,8 +664,9 @@ title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
               photoset: '72157675219521270',
               blackList: 'forhomepage|scrapbook|profil',
               thumbnailDisplayTransition: 'scaleUp',
-              thumbnailHeight: '200', thumbnailWidth: '250',
-              galleryDisplayMode: 'fullContent',
+              thumbnailHeight: '400', thumbnailWidth: '450',
+              galleryDisplayMode: 'rows',
+              galleryMaxRows: 3,
               galleryDisplayMoreStep: 2,
               thumbnailBorderVertical: 2,
               thumbnailBorderHorizontal: 2,
@@ -771,7 +679,7 @@ title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
               gallerySorting: 'random',
               //galleryTheme : { thumbnail: { labelBackground: 'rgba(34, 34, 34, .0)', titleShadow : 'none'} },
               galleryLastRowFull: true,
-              locationHash: false,
+              locationHash: true,
               fnThumbnailInit: myTnInit
             });
             break;
@@ -781,29 +689,30 @@ title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
               kind: 'flickr',
               userID: '34858669@N00',
               thumbnailDisplayTransition: 'slideUp',
-              thumbnailDisplayInterval: 15,
-              thumbnailHeight: 60, thumbnailWidth: 60,
+              thumbnailDisplayInterval: 45,
+              thumbnailHeight: 100, thumbnailWidth: 100,
               album: 'none',
               galleryDisplayMode: 'rows',
               thumbnailToolbarImage:null,
               thumbnailToolbarAlbum:null,
-              galleryMaxRows: 6,
+              galleryMaxRows: 3,
               gallerySorting: 'random',
               thumbnailLabel: { display: false},
               thumbnailBorderHorizontal: 0,
               thumbnailBorderVertical: 0,
               thumbnailGutterWidth : 0,
               thumbnailGutterHeight : 0,
+              galleryTheme : { thumbnail : { background: '#444', backgroundImage: 'linear-gradient(315deg, #111 0%, #444 90%)' }},
               //fnThumbnailInit: myTnEffectHBlurInit,
               //fnThumbnailHover: myTnEffectHBlurHover,
               //fnThumbnailHoverOut: myTnEffectHBlurHoverOut,
               thumbnailOpenImage: false,
               galleryDisplayTransition: 'slideup',
-              locationHash: false
+              locationHash: true
             });
             break;
             
-          case 8:
+          case 8: // no more used
             jQuery("#nanogallery").nanogallery2({
               kind: 'flickr',
               userID: '149035168@N08',
@@ -824,7 +733,7 @@ title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
               thumbnailBorderVertical: 0,
               thumbnailGutterWidth : 1,
               thumbnailGutterHeight : 1,
-              locationHash: false
+              locationHash: true
             });
             break;
           default:
@@ -850,4 +759,5 @@ title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
       
     });
   </script>
+
 
