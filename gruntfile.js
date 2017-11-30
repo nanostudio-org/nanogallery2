@@ -128,16 +128,16 @@ module.exports = function(grunt) {
           ],
           dest: 'build/reviews.html'
         },
-        comments: {
+        comment: {
           src: [
             'template/header-1.html',
-            'src/comments_meta.html',
+            'src/comment_meta.html',
             'template/header-2.html',
             'template/header-3.html',
             'template/logo.html',
-            'src/comments.html',
+            'src/comment.html',
             'template/javascript.html',
-            'src/comments_js.html',
+            'src/comment_js.html',
             'template/footer.html'
           ],
           dest: 'build/reviews.html'
