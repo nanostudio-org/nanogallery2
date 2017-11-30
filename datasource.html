@@ -53,13 +53,12 @@
 
   <style>
 
-	  
-    body { font-size:1.3em; color:#111; line-height:1.5; }
+    body { font-size:1.3em; color:#000; line-height:1.5; }
     p { font-size:1.3em; }
     td { font-size:1.2em; }
-    .ngy2documentation p { font-size:1.1em; }
-    .ngy2documentation td { font-size:1.1em; }
-    .ngy2documentation blockquote { font-size:1.1em; }
+    .ngy2documentation p { font-size:1.2em; }
+    .ngy2documentation td { font-size:1.2em; }
+    .ngy2documentation blockquote { font-size:1.2em; }
    
     * { font-family: 'News Cycle', sans-serif; }
     h1 {
@@ -68,6 +67,9 @@
     }
     .footer {
       margin: 0;
+    }
+    h2, h3, h4, h5, h6 {
+      font-weight: bold;
     }
     
 
@@ -107,6 +109,9 @@
       background-color: #0F1934;
     }
     
+    .dropdown-menu>li>a {
+      padding: 10px 20px;
+    }
 
 
     /***********************/
@@ -271,7 +276,7 @@
     }
     
     #ngy2_changelog .label {
-      padding: .2em .6em .2em;
+      padding: 0em .6em .2em;
     }
     
     
@@ -648,6 +653,7 @@
       height:100%;
     }    
     
+
 	  
 
   </style>
@@ -696,15 +702,47 @@
           <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand form-horizontal" href="http://nanogallery2.nanostudio.org/" rel="home" title="nanogallery2">
-          <img src="img/nanogallery2s.png" alt="nanogallery2" style="height:30px;"> &nbsp; <span class="ngy2version">v1.5.0</span>
+          <img src="img/nanogallery2s.png" alt="nanogallery2" style="height:30px;"> &nbsp; <span class="ngy2_version">v1.4.0</span>
         </a>
       </div>
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav navbar-right text-uppercase">
           <li><a href="index.html">Intro</a></li>
+          <!--
           <li><a href="quickstart.html">Get started</a></li>
+          -->
           <li><a href="demonstration.html">Showcase</a></li>
           <li><a href="builder.html"><i class="fa fa-wrench ngy2_color2" aria-hidden="true"></i> Builder</a></li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Learn
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <!-- <li><a href="quickstart.html">Get started</a></li> -->
+              <li><a href="documentation.html">User Guide</a></li>
+              <li><a href="datasource.html">Content Source</a></li>
+              <li><a href="api.html">API</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Discuss
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="https://nanostudio.typeform.com/to/P8SFe8" target="_blank">Mailing List</a></li>
+            
+              <li><a href="reviews.html">review 
+                <i class="ngy2_stars_on fa fa-star" aria-hidden="true"></i>
+                <i class="ngy2_stars_on fa fa-star" aria-hidden="true"></i>
+                <i class="ngy2_stars_on fa fa-star" aria-hidden="true"></i>
+                <i class="ngy2_stars_on fa fa-star" aria-hidden="true"></i>
+                <i class="ngy2_stars_on fa fa-star-half-o" aria-hidden="true"></i>
+              </a></li>
+              <li><a href="https://github.com/nanostudio-org/nanogallery2/issues" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> Feature and Issue tracker</a></li>
+              <li><a href="https://github.com/nanostudio-org/nanogallery2" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> Github</a></li>
+              <li><a href="comment.html">Comments</a></li>
+            </ul>
+          </li>
+          <li><a href="support.html">Support nanogallery2</a></li>
+          <!-- 
           <li><a href="documentation.html">Guide</a></li>
           <li><a href="datasource.html">Content source</a></li>
           <li><a href="api.html">API</a></li>
@@ -715,8 +753,8 @@
             <i class="ngy2_stars_on fa fa-star" aria-hidden="true"></i>
             <i class="ngy2_stars_on fa fa-star-half-o" aria-hidden="true"></i>
           </a></li>
-          <li><a href="https://github.com/nanostudio-org/nanogallery2" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> github</a></li>
-          <!-- <li><a href="modules.html">Modules</a></li> -->
+          <li><a href="https://github.com/nanostudio-org/nanogallery2" target="_blank"><i class="fa fa-github" aria-hidden="true"></i></a></li>
+          -->
         </ul>
       </div><!--/.nav-collapse -->
     </div>
