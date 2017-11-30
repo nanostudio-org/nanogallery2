@@ -114,6 +114,34 @@ module.exports = function(grunt) {
           ],
           dest: 'build/reviews.html'
         },
+        support: {
+          src: [
+            'template/header-1.html',
+            'src/support_meta.html',
+            'template/header-2.html',
+            'template/header-3.html',
+            'template/logo.html',
+            'src/support.html',
+            'template/javascript.html',
+            'src/support_js.html',
+            'template/footer.html'
+          ],
+          dest: 'build/reviews.html'
+        },
+        comments: {
+          src: [
+            'template/header-1.html',
+            'src/comments_meta.html',
+            'template/header-2.html',
+            'template/header-3.html',
+            'template/logo.html',
+            'src/comments.html',
+            'template/javascript.html',
+            'src/comments_js.html',
+            'template/footer.html'
+          ],
+          dest: 'build/reviews.html'
+        },
         demonstration: {
           src: [
             'template/header-1.html',
