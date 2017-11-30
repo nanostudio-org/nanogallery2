@@ -12,10 +12,23 @@
 // ########################################################
 
 
-;(function ($) {
+(function (factory) {
+    "use strict";
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['jquery', 'nanogallery2'], factory);
+    } else if (typeof exports === 'object' && typeof require === 'function') {
+        // Browserify
+        factory(require(['jquery', 'nanogallery2']));
+    } else {
+        // Browser globals
+        factory(jQuery);
+    }
+}(function ($) {
+// ;(function ($) {
   
   jQuery.nanogallery2.data_nano_photos_provider2 = function (instance, fnName){
-    var G=instance;      // current nanogallery2 instance
+    var G = instance;      // current nanogallery2 instance
     
     /** @function AlbumGetContent */
     var AlbumGetContent = function(albumID, fnToCall, fnParam1, fnParam2) {
@@ -30,16 +43,26 @@
       // Build the URL
       var url = G.O.dataProvider + '?albumID='+albumID;             // which album
       // all thumbnails sizes (for responsive display)
-      url += '&wxs=' + G.tn.settings.width[G.GOM.curNavLevel].xs;
-      url += '&hxs=' + G.tn.settings.height[G.GOM.curNavLevel].xs;
-      url += '&wsm=' + G.tn.settings.width[G.GOM.curNavLevel].sm;
-      url += '&hsm=' + G.tn.settings.height[G.GOM.curNavLevel].sm;
-      url += '&wme=' + G.tn.settings.width[G.GOM.curNavLevel].me;
-      url += '&hme=' + G.tn.settings.height[G.GOM.curNavLevel].me;
-      url += '&wla=' + G.tn.settings.width[G.GOM.curNavLevel].la;
-      url += '&hla=' + G.tn.settings.height[G.GOM.curNavLevel].la;
-      url += '&wxl=' + G.tn.settings.width[G.GOM.curNavLevel].xl;
-      url += '&hxl=' + G.tn.settings.height[G.GOM.curNavLevel].xl;
+      url += '&hxs=' + G.tn.settings.getH(G.GOM.curNavLevel, 'xs');
+      url += '&wxs=' + G.tn.settings.getW(G.GOM.curNavLevel, 'xs');
+      url += '&hsm=' + G.tn.settings.getH(G.GOM.curNavLevel, 'sm');
+      url += '&wsm=' + G.tn.settings.getW(G.GOM.curNavLevel, 'sm');
+      url += '&hme=' + G.tn.settings.getH(G.GOM.curNavLevel, 'me');
+      url += '&wme=' + G.tn.settings.getW(G.GOM.curNavLevel, 'me');
+      url += '&hla=' + G.tn.settings.getH(G.GOM.curNavLevel, 'la');
+      url += '&wla=' + G.tn.settings.getW(G.GOM.curNavLevel, 'la');
+      url += '&hxl=' + G.tn.settings.getH(G.GOM.curNavLevel, 'xl');
+      url += '&wxl=' + G.tn.settings.getW(G.GOM.curNavLevel, 'xl');
+      // url += '&wxs=' + G.tn.settings.width[G.GOM.curNavLevel].xs;
+      // url += '&hxs=' + G.tn.settings.height[G.GOM.curNavLevel].xs;
+      // url += '&wsm=' + G.tn.settings.width[G.GOM.curNavLevel].sm;
+      // url += '&hsm=' + G.tn.settings.height[G.GOM.curNavLevel].sm;
+      // url += '&wme=' + G.tn.settings.width[G.GOM.curNavLevel].me;
+      // url += '&hme=' + G.tn.settings.height[G.GOM.curNavLevel].me;
+      // url += '&wla=' + G.tn.settings.width[G.GOM.curNavLevel].la;
+      // url += '&hla=' + G.tn.settings.height[G.GOM.curNavLevel].la;
+      // url += '&wxl=' + G.tn.settings.width[G.GOM.curNavLevel].xl;
+      // url += '&hxl=' + G.tn.settings.height[G.GOM.curNavLevel].xl;
       
       PreloaderDisplay( true );
       jQuery.ajaxSetup({ cache: false });
@@ -49,7 +72,7 @@
         var tId = setTimeout( function() {
           // workaround to handle JSONP (cross-domain) errors
           PreloaderDisplay(false);
-          NanoAlert('Could not retrieve nanoPhotosProvider2 data (timeout).');
+          NanoAlert(G, 'Could not retrieve nanoPhotosProvider2 data (timeout).');
         }, 60000 );
 
         if( G.O.debugMode ) { console.log('nanoPhotosProvider2 URL: ' + url); }
@@ -156,9 +179,9 @@
 
           var tags = (item.tags === undefined) ? '' : item.tags;
           
-          var newItem=NGY2Item.New( G, title.split('_').join(' ') , description, ID, albumID, kind, tags );
-          newItem.src=src;
-
+          var newItem = NGY2Item.New( G, title.split('_').join(' ') , description, ID, albumID, kind, tags );
+          newItem.setMediaURL( src, 'img');
+          
           // dominant colorS as a gif
           if( item.dcGIF !== undefined ) {
             newItem.imageDominantColors='data:image/gif;base64,'+item.dcGIF;
@@ -193,8 +216,9 @@
           }
          
           // post-process callback
-          if( typeof G.O.fnProcessData == 'function' ) {
-            G.O.fnProcessData(newItem, G.O.dataProvider, data);
+          var fu = G.O.fnProcessData;
+          if( fu !== null ) {
+            typeof fu == 'function' ? fu(newItem, G.O.dataProvider, data) : window[fu](newItem, G.O.dataProvider, data);
           }
           
         }
@@ -234,15 +258,13 @@
         break;
       case '':
         break;
-      case '':
-        break;
     }
 
   };
   
 // END NANOPHOTOSPROVIDER DATA SOURCE FOR NANOGALLERY2
-}( jQuery ));
-  
+// }( jQuery ));
+}));  
   
   
   

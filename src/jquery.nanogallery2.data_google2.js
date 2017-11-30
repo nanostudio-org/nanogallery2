@@ -13,7 +13,20 @@
 // ###################################################
 
 
-;(function ($) {
+(function (factory) {
+    "use strict";
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define(['jquery', 'nanogallery2'], factory);
+    } else if (typeof exports === 'object' && typeof require === 'function') {
+        // Browserify
+        factory(require(['jquery', 'nanogallery2']));
+    } else {
+        // Browser globals
+        factory(jQuery);
+    }
+}(function ($) {
+// ;(function ($) {
   
   jQuery.nanogallery2.data_google2 = function (instance, fnName){
     var G=instance;      // current nanogallery2 instance
@@ -229,22 +242,25 @@
         var itemID = data.gphoto$id.$t;
         if( !(kind == 'album' && !FilterAlbumName(itemTitle, itemID)) ) {
 
-          var newItem=NGY2Item.New( G, itemTitle, itemDescription, itemID, albumID, kind, '' );
+          // create ngy2 item
+          var newItem = NGY2Item.New( G, itemTitle, itemDescription, itemID, albumID, kind, '' );
+          
           // set the image src
-          var src='';
+          var src = '';
           if( kind == 'image' ) {
-            src=imgUrl;
+            src = imgUrl;
             if( !G.O.viewerZoom && G.O.viewerZoom != undefined ) {
-              var s=imgUrl.substring(0, imgUrl.lastIndexOf('/'));
-              s=s.substring(0, s.lastIndexOf('/')) + '/';
+              var s = imgUrl.substring(0, imgUrl.lastIndexOf('/'));
+              s = s.substring(0, s.lastIndexOf('/')) + '/';
               if( window.screen.width >  window.screen.height ) {
-                src=s+'w'+window.screen.width+'/'+filename;
+                src=s + 'w' + window.screen.width + '/' + filename;
               }
               else {
-                src=s+'h'+window.screen.height+'/'+filename;
+                src = s + 'h' + window.screen.height + '/' + filename;
               }
             }
-            newItem.src=src;    // image's URL
+            // image's URL
+            newItem.setMediaURL( src, 'img');
 
             // image size
             if( data.gphoto$width !== undefined ) {
@@ -262,48 +278,51 @@
             // exif data
             if( data.exif$tags !== undefined ) {
               if( data.exif$tags.exif$exposure != undefined ) {
-                newItem.exif.exposure= data.exif$tags.exif$exposure.$t;
+                newItem.exif.exposure = data.exif$tags.exif$exposure.$t;
               }
               if( data.exif$tags.exif$flash != undefined ) {
                 if( data.exif$tags.exif$flash.$t == 'true' ) {
-                  newItem.exif.flash= 'flash';
+                  newItem.exif.flash = 'flash';
                 }
               }
               if( data.exif$tags.exif$focallength != undefined ) {
-                newItem.exif.focallength= data.exif$tags.exif$focallength.$t;
+                newItem.exif.focallength = data.exif$tags.exif$focallength.$t;
               }
               if( data.exif$tags.exif$fstop != undefined ) {
-                newItem.exif.fstop= data.exif$tags.exif$fstop.$t;
+                newItem.exif.fstop = data.exif$tags.exif$fstop.$t;
               }
               if( data.exif$tags.exif$iso != undefined ) {
-                newItem.exif.iso= data.exif$tags.exif$iso.$t;
+                newItem.exif.iso = data.exif$tags.exif$iso.$t;
               }
               if( data.exif$tags.exif$model != undefined ) {
-                newItem.exif.model= data.exif$tags.exif$model.$t;
+                newItem.exif.model = data.exif$tags.exif$model.$t;
               }
               
               // geo location
               if( data.gphoto$location != undefined ) {
-                newItem.exif.location= data.gphoto$location;
+                newItem.exif.location = data.gphoto$location;
               }
             }
           }
           else {
-            newItem.author=data.author[0].name.$t;
-            newItem.numberItems=data.gphoto$numphotos.$t;
+            newItem.author = data.author[0].name.$t;
+            newItem.numberItems = data.gphoto$numphotos.$t;
           }
 
           // set the URL of the thumbnails images
           newItem.thumbs=GoogleThumbSetSizes('l1', 0, newItem.thumbs, data, kind );
           newItem.thumbs=GoogleThumbSetSizes('lN', 5, newItem.thumbs, data, kind );
           
-          if( typeof G.O.fnProcessData == 'function' ) {
-            G.O.fnProcessData(newItem, 'google2', data);
+          // post-process callback
+          var fu = G.O.fnProcessData;
+          if( fu !== null ) {
+            typeof fu == 'function' ? fu(newItem, 'google2', data) : window[fu](newItem, 'google2', data);
           }
+          
         }
       });
 
-      G.I[albumIdx].contentIsLoaded=true;   // album's content is ready
+      G.I[albumIdx].contentIsLoaded = true;   // album's content is ready
     }
   
     
@@ -311,7 +330,7 @@
     /** @function GetHiddenAlbums */
     var GetHiddenAlbums = function( hiddenAlbums, callback ){
       var lstAlbums = [].concat( hiddenAlbums );
-      for( var i=0; i< lstAlbums.length; i++ ) {
+      for( var i = 0; i < lstAlbums.length; i++ ) {
         AlbumAuthkeyGetInfoQueue(lstAlbums[i], callback);
       }
       // dequeue sequentially
@@ -323,15 +342,15 @@
     function AlbumAuthkeyGetInfoQueue( albumIDwithAuthkey, callback ) {
       jQuery(document).queue('GoogleAlbumWithAuthkey', function() {
 
-      var p=albumIDwithAuthkey.indexOf('&authkey=');
+      var p = albumIDwithAuthkey.indexOf('&authkey=');
         if( p == -1 ) {
-          p=albumIDwithAuthkey.indexOf('?authkey=');
+          p = albumIDwithAuthkey.indexOf('?authkey=');
         }
-        var albumID=albumIDwithAuthkey.substring(0,p);
+        var albumID = albumIDwithAuthkey.substring(0,p);
 
-        var opt=albumIDwithAuthkey.substring(p);
+        var opt = albumIDwithAuthkey.substring(p);
         if( opt.indexOf('Gv1sRg') == -1 ) {
-          opt='&authkey=Gv1sRg'+opt.substring(9);
+          opt = '&authkey=Gv1sRg'+opt.substring(9);
         }
         var url = Google.url() + 'user/'+G.O.userID+'/albumid/'+albumID+'?alt=json&kind=photo'+opt+'&max-results=1&thumbsize='+G.picasa.thumbSizes+'&imgmax=d';
         
@@ -349,22 +368,22 @@
           clearTimeout(tId);
           PreloaderDisplay(false);
           
-          var albumTitle=data.feed.title.$t;
+          var albumTitle = data.feed.title.$t;
           var source = data.feed.entry[0];
 
-          var newItem=NGY2Item.New( G, albumTitle, '', albumID, '0', 'album', '' );
+          var newItem = NGY2Item.New( G, albumTitle, '', albumID, '0', 'album', '' );
           
-          newItem.authkey=opt;
+          newItem.authkey = opt;
           
           //Get and set the URLs of the thumbnail
-          newItem.thumbs=GoogleThumbSetSizes('l1', 0, newItem.thumbs, source, 'album' );
-          newItem.thumbs=GoogleThumbSetSizes('lN', 5, newItem.thumbs, source, 'album' );
+          newItem.thumbs = GoogleThumbSetSizes('l1', 0, newItem.thumbs, source, 'album' );
+          newItem.thumbs = GoogleThumbSetSizes('lN', 5, newItem.thumbs, source, 'album' );
    
           if( typeof G.O.fnProcessData == 'function' ) {
             G.O.fnProcessData(newItem, 'google', source);
           }
 //          G.I[1].contentIsLoaded=true;
-          newItem.numberItems=data.feed.gphoto$numphotos.$t;
+          newItem.numberItems = data.feed.gphoto$numphotos.$t;
 
           // dequeue to process the next google+/picasa private album
           if( jQuery(document).queue('GoogleAlbumWithAuthkey').length > 0 ) {
@@ -401,9 +420,9 @@
           if( G.tn.settings.width[level][sizes[i]] == 'auto' ) {
             if( gh < G.tn.settings.height[level][sizes[i]] ) {
               // calculate new h/w and change URL
-              var ratio=gw/gh;
-              tn.width[level][sizes[i]]=gw*ratio;
-              tn.height[level][sizes[i]]=gh*ratio;
+              var ratio1=gw/gh;
+              tn.width[level][sizes[i]]=gw*ratio1;
+              tn.height[level][sizes[i]]=gh*ratio1;
               var url=tn.url[level][sizes[i]].substring(0, tn.url[level][sizes[i]].lastIndexOf('/'));
               url=url.substring(0, url.lastIndexOf('/')) + '/';
               tn.url[level][sizes[i]]=url+'h'+G.tn.settings.height[level][sizes[i]]+'/';
@@ -412,9 +431,9 @@
           if( G.tn.settings.height[level][sizes[i]] == 'auto' ) {
             if( gw < G.tn.settings.width[level][sizes[i]] ) {
               // calculate new h/w and change URL
-              var ratio=gh/gw;
-              tn.height[level][sizes[i]]=gh*ratio;
-              tn.width[level][sizes[i]]=gw*ratio;
+              var ratio2=gh/gw;
+              tn.height[level][sizes[i]]=gh*ratio2;
+              tn.width[level][sizes[i]]=gw*ratio2;
               var url=tn.url[level][sizes[i]].substring(0, tn.url[level][sizes[i]].lastIndexOf('/'));
               url=url.substring(0, url.lastIndexOf('/')) + '/';
               tn.url[level][sizes[i]]=url+'w'+G.tn.settings.width[level][sizes[i]]+'/';
@@ -464,19 +483,21 @@
         sfLN=G.O.thumbnailCropScaleFactor;
       }
 
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.xs*sfL1, G.tn.settings.height.l1.xs*sfL1, G.tn.settings.width.l1.xsc, G.tn.settings.height.l1.xsc );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.sm*sfL1, G.tn.settings.height.l1.sm*sfL1, G.tn.settings.width.l1.smc, G.tn.settings.height.l1.smc );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.me*sfL1, G.tn.settings.height.l1.me*sfL1, G.tn.settings.width.l1.mec, G.tn.settings.height.l1.mec );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.la*sfL1, G.tn.settings.height.l1.la*sfL1, G.tn.settings.width.l1.lac, G.tn.settings.height.l1.lac );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.l1.xl*sfL1, G.tn.settings.height.l1.xl*sfL1, G.tn.settings.width.l1.xlc, G.tn.settings.height.l1.xlc );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.xs*sfLN, G.tn.settings.height.lN.xs*sfLN, G.tn.settings.width.lN.xsc, G.tn.settings.height.lN.xsc );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.sm*sfLN, G.tn.settings.height.lN.sm*sfLN, G.tn.settings.width.lN.smc, G.tn.settings.height.lN.smc );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.me*sfLN, G.tn.settings.height.lN.me*sfLN, G.tn.settings.width.lN.mec, G.tn.settings.height.lN.mec );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.la*sfLN, G.tn.settings.height.lN.la*sfLN, G.tn.settings.width.lN.lac, G.tn.settings.height.lN.lac );
-      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, G.tn.settings.width.lN.xl*sfLN, G.tn.settings.height.lN.xl*sfLN, G.tn.settings.width.lN.xlc, G.tn.settings.height.lN.xlc );
+      var st=G.tn.settings;
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.l1.xs*sfL1*st.mosaic.l1Factor.w.xs, st.height.l1.xs*sfL1*st.mosaic.l1Factor.h.xs, st.width.l1.xsc, st.height.l1.xsc );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.l1.sm*sfL1*st.mosaic.l1Factor.w.sm, st.height.l1.sm*sfL1*st.mosaic.l1Factor.h.sm, st.width.l1.smc, st.height.l1.smc );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.l1.me*sfL1*st.mosaic.l1Factor.w.me, st.height.l1.me*sfL1*st.mosaic.l1Factor.h.me, st.width.l1.mec, st.height.l1.mec );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.l1.la*sfL1*st.mosaic.l1Factor.w.la, st.height.l1.la*sfL1*st.mosaic.l1Factor.h.la, st.width.l1.lac, st.height.l1.lac );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.l1.xl*sfL1*st.mosaic.l1Factor.w.xl, st.height.l1.xl*sfL1*st.mosaic.l1Factor.h.xl, st.width.l1.xlc, st.height.l1.xlc );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.lN.xs*sfLN*st.mosaic.lNFactor.w.xs, st.height.lN.xs*sfLN*st.mosaic.lNFactor.h.xs, st.width.lN.xsc, st.height.lN.xsc );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.lN.sm*sfLN*st.mosaic.lNFactor.w.sm, st.height.lN.sm*sfLN*st.mosaic.lNFactor.h.sm, st.width.lN.smc, st.height.lN.smc );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.lN.me*sfLN*st.mosaic.lNFactor.w.me, st.height.lN.me*sfLN*st.mosaic.lNFactor.h.me, st.width.lN.mec, st.height.lN.mec );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.lN.la*sfLN*st.mosaic.lNFactor.w.la, st.height.lN.la*sfLN*st.mosaic.lNFactor.h.la, st.width.lN.lac, st.height.lN.lac );
+      G.picasa.thumbSizes=GoogleAddOneThumbSize(G.picasa.thumbSizes, st.width.lN.xl*sfLN*st.mosaic.lNFactor.w.xl, st.height.lN.xl*sfLN*st.mosaic.lNFactor.h.xl, st.width.lN.xlc, st.height.lN.xlc );
     }
     
     function GoogleAddOneThumbSize(thumbSizes, v1, v2, c1, c2 ) {
+    
       var v = Math.ceil( v2 * G.tn.scale ) + c2;
       // if( v1 == 'auto' ) {
       if( isNaN(v1) ) {
@@ -509,20 +530,18 @@
     switch( fnName ){
       case 'GetHiddenAlbums':
         var hiddenAlbums = arguments[2],
-        callback = arguments[3];
-        GetHiddenAlbums(hiddenAlbums, callback);
+        callback1 = arguments[3];
+        GetHiddenAlbums(hiddenAlbums, callback1);
         break;
       case 'AlbumGetContent':
         var albumID = arguments[2],
-        callback = arguments[3],
+        callback2 = arguments[3],
         cbParam1 = arguments[4],
         cbParam2 = arguments[5];
-        AlbumGetContent(albumID, callback, cbParam1, cbParam2);
+        AlbumGetContent(albumID, callback2, cbParam1, cbParam2);
         break;
       case 'Init':
         Init();
-        break;
-      case '':
         break;
       case '':
         break;
@@ -531,8 +550,8 @@
   };
   
 // END GOOGLE DATA SOURCE FOR NANOGALLERY2
-}( jQuery ));
-  
+// }( jQuery ));
+}));
   
   
   
