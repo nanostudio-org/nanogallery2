@@ -1000,8 +1000,8 @@
       html_part1+='  &lt;head&gt;\n';
       html_part1+='    &lt;meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"&gt;\n\n';
       html_part1+='    &lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"&gt;&lt;/script&gt;\n\n';
-      html_part1+='    &lt;link href="https://unpkg.com/nanogallery2@1.4.0/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css"&gt;\n';
-      html_part1+='    &lt;script type="text/javascript" src="https://unpkg.com/nanogallery2@1.4.0/dist/jquery.nanogallery2.min.js"&gt;&lt;/script&gt;\n';
+      html_part1+='    &lt;link href="https://unpkg.com/nanogallery2@2.0.0/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css"&gt;\n';
+      html_part1+='    &lt;script type="text/javascript" src="https://unpkg.com/nanogallery2@2.0.0/dist/jquery.nanogallery2.min.js"&gt;&lt;/script&gt;\n';
       html_part1+='\n';
       html_part1+='  &lt;/head&gt;\n';
       html_part1+='  &lt;body&gt;\n\n';
@@ -1427,6 +1427,14 @@
             itemsBaseURL: 'http://nanogallery2.nanostudio.org/samples/',
             locationHash: false,
             //galleryBuildInit2 : 'perspective_900px|perspective-origin_50% 150%',
+//            thumbnailBuildInit2: '.nGY2GThumbnailImageTitle_border-left_5px solid #23CB99|.nGY2GThumbnailImageTitle_margin_20px|\
+//                image_transform-origin_50% 50% -100px|image_transform-style_preserve-3d|image_backface-visibility_hidden|\
+//                label_transform-origin_50% 50% -100px|label_transform-style_preserve-3d|label_backface-visibility_hidden|\
+//                thumbnail_perspective_250px|\
+//                .nGY2GThumbnailSub_perspective_250px|\
+//                thumbnail_overflow_visible|\
+//                .nGY2GThumbnailSub_overflow_visible|\
+//                label_background_url(img/thumbnail-background-pixabay-com.jpg)|label_background-size_100%|thumbnail_background-color_rgba(0,0,0,0)|title_color_#000',
             thumbnailBuildInit2: '.nGY2GThumbnailImageTitle_border-left_5px solid #23CB99|.nGY2GThumbnailImageTitle_margin_20px|\
                 image_transform-origin_50% 50% -100px|image_transform-style_preserve-3d|image_backface-visibility_hidden|\
                 label_transform-origin_50% 50% -100px|label_transform-style_preserve-3d|label_backface-visibility_hidden|\
@@ -1656,7 +1664,7 @@
           html2+=' "kind": "flickr", "userID": "149035168@N08", "photoset": "72157675219521270", "thumbnailHeight": 150, "thumbnailWidth": 150';
           html2+=portable_part2;
           jQuery('#ngy2_portable').html(html2);
-          jQuery('#ngy2_description').text('Display an album the grid layout. Thumbnail width and height are fixed.');
+          jQuery('#ngy2_description').text('Display an album with the grid layout. Thumbnail width and height are fixed.');
         },
         
         btnNGY2_layout_demo3: function() {
@@ -1682,7 +1690,69 @@
           html2+=' "kind": "flickr", "userID": "149035168@N08", "photoset": "72157675219521270", "thumbnailLabel": { "position" : "onBottom" }, "thumbnailHeight": "auto", "thumbnailWidth": 200';
           html2+=portable_part2;
           jQuery('#ngy2_portable').html(html2);
-          jQuery('#ngy2_description').text('Display an album the cascading layout. Label is positioned under the thumbnail. The thumbnail height is set to "auto".');
+          jQuery('#ngy2_description').text('Display an album with the cascading layout. Label is positioned under the thumbnail. The thumbnail height is set to "auto".');
+        },
+        
+        btnNGY2_layout_demo4: function() {
+          jQuery("#nanogallery2").nanogallery2({
+            kind: 'flickr',
+            userID: '149035168@N08',
+            photoset: '72157675219521270',
+            thumbnailHeight: 70, thumbnailWidth:70,
+            //thumbnailLabel : { position : 'onBottom' },
+            gallerySorting: 'random',
+            thumbnailLabel: {display: false},
+            galleryMosaic : [
+              { w: 5, h: 3, c: 2, r: 1 },
+              { w: 2, h: 2, c: 1, r: 2 },
+              { w: 2, h: 2, c: 7, r: 2 },
+              { w: 2, h: 2, c: 2, r: 4 },
+              { w: 3, h: 4, c: 4, r: 4 },
+              { w: 3, h: 4, c: 7, r: 4 },
+              { w: 2, h: 2, c: 10, r: 5 },
+              { w: 4, h: 2, c: 11, r: 6 }
+            ],
+            thumbnailGutterWidth: 0,
+            thumbnailGutterHeight: 0,
+            thumbnailBorderHorizontal: 5,
+            thumbnailBorderVertical: 5,
+            galleryTheme : {thumbnail: { borderColor: '#f8f8f8' }},
+            galleryMaxRows: 1,
+            galleryDisplayMode: 'rows',
+            galleryDisplayMode: 'pagination',
+            locationHash: false
+          });
+          var html=html_part1;
+          html+='        "kind":                      "flickr",\n';
+          html+='        "userID":                    "149035168@N08",\n';
+          html+='        "photoset":                  "72157675219521270",\n';
+          html+='        "thumbnailHeight":           200,\n';
+          html+='        "thumbnailWidth":            200,\n';
+          html+='        "galleryMosaic":             [\n';
+          html+='                                       { "w": 5, "h": 3, "c": 2, "r": 1 },\n';
+          html+='                                       { "w": 2, "h": 2, "c": 1, "r": 2 },\n';
+          html+='                                       { "w": 2, "h": 2, "c": 7, "r": 2 },\n';
+          html+='                                       { "w": 2, "h": 2, "c": 2, "r": 4 },\n';
+          html+='                                       { "w": 3, "h": 4, "c": 4, "r": 4 },\n';
+          html+='                                       { "w": 3, "h": 4, "c": 7, "r": 4 },\n';
+          html+='                                       { "w": 2, "h": 2, "c": 10, "r": 5 },\n';
+          html+='                                       { "w": 4, "h": 2, "c": 11, "r": 6 },\n';
+          html+='                                     ],\n';
+          html+='        "thumbnailGutterWidth":      0,\n';
+          html+='        "thumbnailGutterHeight":     0,\n';
+          html+='        "thumbnailBorderHorizontal": 5,\n';
+          html+='        "thumbnailBorderVertical":   5,\n';
+          html+='        "galleryMaxRows":            1,\n';
+          html+='        "galleryDisplayMode":        "rows",\n';
+          html+='        "galleryDisplayMode":        "pagination", \n';
+          html+='        "thumbnailLabel":            { "display" : false }\n';
+          html+=html_part2+html_part3;
+          jQuery('#ngy2_template').html(html);
+          var html2=portable_part1;
+          html2+=' "kind": "flickr", "userID": "149035168@N08", "photoset": "72157675219521270", "thumbnailLabel": { "position" : "onBottom" }, "thumbnailHeight": "auto", "thumbnailWidth": 200';
+          html2+=portable_part2;
+          jQuery('#ngy2_portable').html(html2);
+          jQuery('#ngy2_description').text('Display an album with the mosaic layout. Mosaic layout is defined with "galleryMosaic".');
         },
         
         // #############################################################
@@ -1782,10 +1852,10 @@
       
       var hash = window.location.hash;
       switch( hash ) {
-        case '#gallery_layouts':
-          $('select[name=demoCat]').val('catLayout').trigger('change');
-          mydemos.btnNGY2_layout_demo1();
-          break;
+//        case '#gallery_layouts':
+//          $('select[name=demoCat]').val('catLayout').trigger('change');
+//          mydemos.btnNGY2_layout_demo1();
+//          break;
         case '#gallery_display_modes':
           $('select[name=demoCat]').val('catDisplayMode').trigger('change');
           mydemos.btnNGY2_displaymode_demo1();
@@ -1799,9 +1869,13 @@
           mydemos.btnNGY2_source_demo3();
           break;
         case '#thumbnail_hover_effects':
+          $('select[name=demoCat]').val('catContentSource').trigger('change');
+          mydemos.btnNGY2_hover_demo1();
+          break;
+        case '#gallery_layouts':
         default:
           $('select[name=demoCat]').trigger('change');
-          mydemos.btnNGY2_hover_demo1();
+          mydemos.btnNGY2_layout_demo4();
           break;
       }
    
@@ -1809,6 +1883,7 @@
     
     
   </script>
+ 
 
   <!-- ######################## -->
   <!-- ##### START FOOTER ##### -->
