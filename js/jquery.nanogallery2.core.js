@@ -18,56 +18,6 @@
  *  - ICO online converter: https://iconverticons.com/online/
  */
 
-/*
-v2.0.0beta - USE ONLY FOR TEST PURPOSES
-- new: mosaic layout
-- new: video support (Youtube, Vimeo and Dailymotion)
-- new: image slider in thumbnail (see option 'thumbnailSliderDelay')
-- new: value 'fillWidth' for option 'thumbnailAlignment' (is also the new default value)
-- new: option 'thumbnailBaseGridHeight' for cascading layout
-- new: markup content source supports the ID attribute
-- new: option 'viewerTransitionMediaKind' to enable/disable media transition in lightbox
-- new: module support
-- new: callback fnProcessData for Flickr data
-- enhanced: option 'thumbnailOpenOriginal' for all data types 
-- enhanced: added keyword 'auto backup' to default value for 'blackList'
-- enhanced: loading.gif embeded in CSS file
-- changed: the lightbox is nor more closed when the user clicks/touches the area outside the image
-- fixed: #67 viewer opens even if cutom viewer defined (broken in v1.5.0)
-- fixed: image swipe left/right closes the lightbox
-- fixed: #56 #68 destroy method issue -> warning: browser back to non existing location could happen
-- fixed: #70 overflow-x: hidden; not working after exit gallery
-- fixed: Flickr - album list blocked by hidden albums 
-- fixed: #69 message 'error: no image to process.' no more displayed
-- fixed: #77 link to the photo on flickr leads to photostream instead of album
-- fixed: #78 exif time now handeld as string format
-
-
-Todo:
-- gallery margin left/right
-- revoir image.isLoaded
-- label onBottom -> support for multi-line title and description
-- gallery header -> image / navigation / filter
-- API function and callback to load custom JSON
-- option touchAnimation not implemented
-- theme pas vraiment synonyme
-- pagination: rectangles/dots/numbers -> check themes dark/light
-- settimeout on mobile
-- lightbox: double tap image -> zoom to no black border
-- hover effects on single words/letters
-- title for home gallery
-- gallery pagination: add scroll to top of gallery
-- dropbox
-- S3
-- séparation title / description
-- gallery : animation pagination -> a rajouter sur effacement gallery
-- checked thumbnail
-- verifier fonctionnement thumbnail tools
-- mosaic layout templates
-- utiliser ngy2 logo comme animation de chargement
-  
-*/ 
- 
 
 // ###########################################
 // ##### nanogallery2 as a JQUERY PLUGIN #####
@@ -521,58 +471,58 @@ Todo:
           
           // create new item (image, album or albumUp)
           NGY2Item.New = function( instance, title, description, ID, albumID, kind, tags ) {
-            var album=NGY2Item.Get( instance, albumID );
+            var album = NGY2Item.Get( instance, albumID );
             
             if( albumID != -1 && albumID != 0 && title !='image gallery by nanogallery2 [build]'  ) {
               if( instance.O.thumbnailLevelUp && album.getContentLength(false) == 0 && instance.O.album == '' ) {
                 // add navigation thumbnail (album up)
-                var item=new NGY2Item('0');
+                var item = new NGY2Item('0');
                 instance.I.push(item);
-                album.contentLength+=1;
-                item.title='UP';
-                item.albumID=albumID;
-                item.kind='albumUp';
-                item.G=instance;
+                album.contentLength += 1;
+                item.title = 'UP';
+                item.albumID = albumID;
+                item.kind = 'albumUp';
+                item.G = instance;
 
                 jQuery.extend( true, item.thumbs.width, instance.tn.defaultSize.width);
                 jQuery.extend( true, item.thumbs.height, instance.tn.defaultSize.height);
               }
             }
             
-            var item=NGY2Item.Get(instance, ID);
+            var item = NGY2Item.Get(instance, ID);
             if( item === null ){
               // create a new item (otherwise, just update the existing one)
-              item=new NGY2Item(ID);
+              item = new NGY2Item(ID);
               instance.I.push(item);
               if( albumID != -1 && title !='image gallery by nanogallery2 [build]' ) {
                 album.contentLength+=1;
               }
             }
-            item.G=instance;
+            item.G = instance;
 
-            item.albumID=albumID;
-            item.kind=kind;
+            item.albumID = albumID;
+            item.kind = kind;
             if( kind == 'image' ) {
-              album.imageCounter+=1;
+              album.imageCounter += 1;
               item.mediaNumber = album.imageCounter;
             }
 
             // check keyword to find features images/albums
-            var kw=instance.O.thumbnailFeaturedKeyword;
+            var kw = instance.O.thumbnailFeaturedKeyword;
             if( kw != '' ) {
               // check if item featured based on a keyword in the title or in the description
-              kw=kw.toUpperCase();
-              var p=title.toUpperCase().indexOf(kw);
+              kw = kw.toUpperCase();
+              var p = title.toUpperCase().indexOf(kw);
               if( p > -1) {
-                item.featured=true;
+                item.featured = true;
                 // remove keyword case unsensitive
-                title=title.substring(0, p) + title.substring(p+kw.length, title.length);
+                title = title.substring(0, p) + title.substring(p+kw.length, title.length);
               }
-              p=description.toUpperCase().indexOf(kw);
+              p = description.toUpperCase().indexOf(kw);
               if( p > -1) {
                 item.featured=true;
                 // remove keyword case unsensitive
-                description=description.substring(0, p) + description.substring(p+kw.length, description.length);
+                description=description.substring(0, p) + description.substring(p + kw.length, description.length);
               }
             }
             
@@ -586,25 +536,25 @@ Todo:
               // }
               // else {
                 // extract tags starting with # (in title)
-              if( typeof  instance.galleryFilterTags.Get() == 'string' ) {
+              if( typeof instance.galleryFilterTags.Get() == 'string' ) {
                 switch( instance.galleryFilterTags.Get().toUpperCase() ) {
                   case 'TITLE':
                     var re = /(?:^|\W)#(\w+)(?!\w)/g, match, matches = [];
-                    var tags="";
+                    var tags = "";
                     while (match = re.exec(title)) {
                       matches.push(match[1].replace(/^\s*|\s*$/, ''));   //trim trailing/leading whitespace
                     }
                     item.setTags(matches);  //tags;
-                    title=title.split('#').join('');   //replaceall
+                    title = title.split('#').join('');   //replaceall
                     break;
                   case 'DESCRIPTION':
                     var re = /(?:^|\W)#(\w+)(?!\w)/g, match, matches = [];
-                    var tags="";
+                    var tags = "";
                     while (match = re.exec(description)) {
                       matches.push(match[1].replace(/^\s*|\s*$/, ''));   //trim trailing/leading whitespace
                     }
                     item.setTags(matches);  //tags;
-                    description=description.split('#').join('');   //replaceall
+                    description = description.split('#').join('');   //replaceall
                     break;
                 }
               }
@@ -618,8 +568,8 @@ Todo:
             // }
             
             // set (maybe modified) fields title and description
-            item.title=escapeHtml(instance, title);
-            item.description=escapeHtml(instance, description);
+            item.title = escapeHtml(instance, title);
+            item.description = escapeHtml(instance, description);
             return item;
           };
           
@@ -1940,7 +1890,7 @@ Todo:
           var cl = (l == undefined ? G.GOM.curNavLevel : l);
           var cw = (w == undefined ? G.GOM.curWidth : w);
           if( G.layout.engine == 'MOSAIC' ) {
-            return G.tn.settings.height[cl][cw] * G.tn.settings.mosaic[cl+'Factor']['h'][cw];
+          return G.tn.settings.height[cl][cw] * G.tn.settings.mosaic[cl+'Factor']['h'][cw];
           }
           else {
             return G.tn.settings.height[cl][cw];
@@ -1967,14 +1917,14 @@ Todo:
         },
         mosaicCalcFactor: function(l, w) {
             // retrieve max size multiplicator
-            var maxW=1;
-            var maxH=1;
-            for( var n=0; n< G.tn.settings.mosaic[l][w].length; n++ ) {
-              maxW=Math.max(maxW, G.tn.settings.mosaic[l][w][n]['w']);
-              maxH=Math.max(maxH, G.tn.settings.mosaic[l][w][n]['h']);
+            var maxW = 1;
+            var maxH = 1;
+            for( var n = 0; n < G.tn.settings.mosaic[l][w].length; n++ ) {
+              maxW = Math.max(maxW, G.tn.settings.mosaic[l][w][n]['w']);
+              maxH = Math.max(maxH, G.tn.settings.mosaic[l][w][n]['h']);
             }
-            G.tn.settings.mosaic[l+'Factor']['h'][w]=maxH;
-            G.tn.settings.mosaic[l+'Factor']['w'][w]=maxW;
+            G.tn.settings.mosaic[l + 'Factor']['h'][w] = maxH;
+            G.tn.settings.mosaic[l + 'Factor']['w'][w] = maxW;
         }
       },
       // thumbnail hover effects
@@ -2741,14 +2691,14 @@ Todo:
       if( G.GOM.items.length == 0 ) { return; }   // no thumbnail to display
 
       // calculate the number of pages
-      var nbPages=Math.ceil((G.GOM.items[G.GOM.items.length-1].row+1)/G.galleryMaxRows.Get());
+      var nbPages=Math.ceil((G.GOM.items[G.GOM.items.length - 1].row + 1)/G.galleryMaxRows.Get());
 
       // only one page -> do not display pagination
       if( nbPages == 1 ) { return; }
 
-      // check if current page still exist (for example after a resize)
+      // check if current page still exists (for example after a resize)
       if( G.GOM.pagination.currentPage > (nbPages-1) ) {
-        G.GOM.pagination.currentPage=nbPages-1;
+        G.GOM.pagination.currentPage = nbPages-1;
       }
       
       GalleryRenderGetInterval();
@@ -2757,54 +2707,54 @@ Todo:
       
       // display "previous"
       if( G.O.galleryPaginationMode == 'NUMBERS' && G.GOM.pagination.currentPage > 0 ) {
-        var $eltPrev=jQuery('<div class="nGY2PaginationPrev">'+G.O.icons.paginationPrevious+'</div>').appendTo(G.$E.conTnBottom);
+        var $eltPrev = jQuery('<div class="nGY2PaginationPrev">'+G.O.icons.paginationPrevious+'</div>').appendTo(G.$E.conTnBottom);
         $eltPrev.click(function(e) {
           paginationPreviousPage();
         });
       }
 
-      var firstPage=0;
-      var lastPage=nbPages;
+      var firstPage = 0;
+      var lastPage = nbPages;
       if( G.O.galleryPaginationMode != 'NUMBERS' ) {
         // no 'previous'/'next' and no max number of pagination items
-        firstPage=0;
+        firstPage = 0;
       }
       else {
         // display pagination numbers and previous/next
-        var vp=G.O.paginationVisiblePages;
-        var numberOfPagesToDisplay=G.O.paginationVisiblePages;
+        var vp = G.O.paginationVisiblePages;
+        var numberOfPagesToDisplay = G.O.paginationVisiblePages;
         if( numberOfPagesToDisplay >= nbPages ) {
-          firstPage=0;
+          firstPage = 0;
         }
         else {
           // we have more pages than we want to display
-          var nbBeforeAfter=0;
+          var nbBeforeAfter = 0;
           if( isOdd(numberOfPagesToDisplay) ) {
-            nbBeforeAfter=(numberOfPagesToDisplay+1)/2;
+            nbBeforeAfter = (numberOfPagesToDisplay + 1) / 2;
           }
           else {
-            nbBeforeAfter=numberOfPagesToDisplay/2;
+            nbBeforeAfter = numberOfPagesToDisplay / 2;
           }
           
           if( G.GOM.pagination.currentPage < nbBeforeAfter ) {
-            firstPage=0;
-            lastPage=numberOfPagesToDisplay-1;
+            firstPage = 0;
+            lastPage = numberOfPagesToDisplay - 1;
             if( lastPage > nbPages ) {
-              lastPage=nbPages-1;
+              lastPage = nbPages - 1;
             }
           }
           else {
-            firstPage=G.GOM.pagination.currentPage-nbBeforeAfter;
-            lastPage=firstPage+numberOfPagesToDisplay;
+            firstPage = G.GOM.pagination.currentPage - nbBeforeAfter;
+            lastPage = firstPage + numberOfPagesToDisplay;
             if( lastPage > nbPages ) {
-              lastPage=nbPages-1;
+              lastPage = nbPages - 1;
             }
           }
           
           if( (lastPage - firstPage) < numberOfPagesToDisplay ) {
-            firstPage=lastPage-numberOfPagesToDisplay;
+            firstPage = lastPage - numberOfPagesToDisplay;
             if( firstPage < 0 ) {
-              firstPage=0;
+              firstPage = 0;
             }
           }
 
@@ -2813,29 +2763,29 @@ Todo:
 
       // render pagination items
       for(var i = firstPage; i < lastPage; i++ ) {
-        var c='';
-        var p='';
+        var c = '';
+        var p = '';
 
         switch( G.O.galleryPaginationMode ) {
           case 'NUMBERS':
-            c='nGY2paginationItem';
-            p=i+1;
+            c = 'nGY2paginationItem';
+            p = i + 1;
             break;
           case 'DOTS':
-            c='nGY2paginationDot';
+            c = 'nGY2paginationDot';
             break;
           case 'RECTANGLES':
-            c='nGY2paginationRectangle';
+            c = 'nGY2paginationRectangle';
             break;
         }
         if( i == G.GOM.pagination.currentPage ) {
-          c+='CurrentPage';
+          c += 'CurrentPage';
         }
 
-        var elt$=jQuery('<div class="'+c+'">'+p+'</div>').appendTo(G.$E.conTnBottom);
+        var elt$ = jQuery('<div class="' + c + '">' + p + '</div>').appendTo(G.$E.conTnBottom);
         elt$.data('pageNumber', i );
         elt$.click( function(e) {
-          G.GOM.pagination.currentPage=jQuery(this).data('pageNumber');
+          G.GOM.pagination.currentPage = jQuery(this).data('pageNumber');
           TriggerCustomEvent('pageChanged');
           GalleryDisplayPart1( true );
           GalleryDisplayPart2( true );
@@ -2844,8 +2794,8 @@ Todo:
       }
 
       // display "next"
-      if( G.O.galleryPaginationMode == 'NUMBERS' && (G.GOM.pagination.currentPage+1) < nbPages ) {
-        var $eltNext=jQuery('<div class="nGY2PaginationNext">'+G.O.icons.paginationNext+'</div>').appendTo(G.$E.conTnBottom);
+      if( G.O.galleryPaginationMode == 'NUMBERS' && (G.GOM.pagination.currentPage + 1) < nbPages ) {
+        var $eltNext = jQuery('<div class="nGY2PaginationNext">' + G.O.icons.paginationNext + '</div>').appendTo(G.$E.conTnBottom);
         $eltNext.click( function(e) {
           paginationNextPage();
         });
@@ -2858,22 +2808,22 @@ Todo:
     
     // pagination - next page
     function paginationNextPage() {
-      var aIdx=G.GOM.albumIdx,
-      n1=0;
+      var aIdx = G.GOM.albumIdx,
+      n1 = 0;
       ThumbnailHoverOutAll();
       
       // pagination - max lines per page mode
       if( G.galleryMaxRows.Get() > 0 ) {
         // number of pages
-        n1=(G.GOM.items[G.GOM.items.length-1].row+1)/G.galleryMaxRows.Get();
+        n1 = (G.GOM.items[G.GOM.items.length - 1].row + 1) / G.galleryMaxRows.Get();
       }
-      var n2=Math.ceil(n1);
-      var pn=G.GOM.pagination.currentPage;
+      var n2 = Math.ceil(n1);
+      var pn = G.GOM.pagination.currentPage;
       if( pn < (n2-1) ) {
         pn++;
       }
       else {
-        pn=0;
+        pn = 0;
       }
       
       G.GOM.pagination.currentPage = pn;
@@ -2886,25 +2836,25 @@ Todo:
     // pagination - previous page
     function paginationPreviousPage() {
       // var aIdx=G.$E.conTnBottom.data('galleryIdx'),
-      var aIdx=G.GOM.albumIdx,
-      n1=0;
+      var aIdx = G.GOM.albumIdx,
+      n1 = 0;
 
       ThumbnailHoverOutAll();
       
       // pagination - max lines per page mode
       if( G.galleryMaxRows.Get() > 0 ) {
         // number of pages
-        n1=(G.GOM.items[G.GOM.items.length-1].row+1)/G.galleryMaxRows.Get();
+        n1 = (G.GOM.items[G.GOM.items.length - 1].row + 1) / G.galleryMaxRows.Get();
       }
-      var n2=Math.ceil(n1);
+      var n2 = Math.ceil(n1);
       
       // var pn=G.$E.conTnBottom.data('currentPageNumber');
-      var pn=G.GOM.pagination.currentPage;
+      var pn = G.GOM.pagination.currentPage;
       if( pn > 0 ) {
         pn--;
       }
       else {
-        pn=n2-1;
+        pn = n2 - 1;
       }
 
       G.GOM.pagination.currentPage = pn;
@@ -2915,23 +2865,23 @@ Todo:
 
     // retrieve the from/to intervall for gallery thumbnail render
     function GalleryRenderGetInterval() {
-      G.GOM.displayInterval.from=0;
-      G.GOM.displayInterval.len=G.I.length;
+      G.GOM.displayInterval.from = 0;
+      G.GOM.displayInterval.len = G.I.length;
       
       switch( G.galleryDisplayMode.Get() ) {
         case 'PAGINATION':
           if( G.layout.support.rows ) {
-            var nbTn=G.GOM.items.length;
-            var firstRow=G.GOM.pagination.currentPage * G.galleryMaxRows.Get();
-            var lastRow=firstRow+G.galleryMaxRows.Get();
-            var firstTn=-1;
-            G.GOM.displayInterval.len=0;
-            for( var i=0; i < nbTn ; i++ ) {
-              var curTn=G.GOM.items[i];
+            var nbTn = G.GOM.items.length;
+            var firstRow = G.GOM.pagination.currentPage * G.galleryMaxRows.Get();
+            var lastRow = firstRow + G.galleryMaxRows.Get();
+            var firstTn = -1;
+            G.GOM.displayInterval.len = 0;
+            for( var i = 0; i < nbTn ; i++ ) {
+              var curTn = G.GOM.items[i];
               if( curTn.row >= firstRow && curTn.row < lastRow ) {
                 if( firstTn == -1 ) {
-                  G.GOM.displayInterval.from=i;
-                  firstTn=i;
+                  G.GOM.displayInterval.from = i;
+                  firstTn = i;
                 }
                 G.GOM.displayInterval.len++;
               }
@@ -2940,11 +2890,11 @@ Todo:
           break;
         case 'MOREBUTTON':
           if( G.layout.support.rows ) {
-            var nbTn=G.GOM.items.length;
-            var lastRow=G.O.galleryDisplayMoreStep * (G.GOM.displayedMoreSteps+1);
-            G.GOM.displayInterval.len=0;
-            for( var i=0; i < nbTn ; i++ ) {
-              var curTn=G.GOM.items[i];
+            var nbTn = G.GOM.items.length;
+            var lastRow = G.O.galleryDisplayMoreStep * (G.GOM.displayedMoreSteps+1);
+            G.GOM.displayInterval.len = 0;
+            for( var i = 0; i < nbTn ; i++ ) {
+              var curTn = G.GOM.items[i];
               if( curTn.row < lastRow ) {
                 G.GOM.displayInterval.len++;
               }
@@ -2953,16 +2903,16 @@ Todo:
           break;
         case 'ROWS':
           if( G.layout.support.rows ) {
-            var nbTn=G.GOM.items.length;
-            var lastRow=G.galleryMaxRows.Get();
+            var nbTn = G.GOM.items.length;
+            var lastRow = G.galleryMaxRows.Get();
             if( G.galleryLastRowFull.Get() && G.GOM.lastFullRow != -1 ) {
-              if( lastRow > G.GOM.lastFullRow+1) {
-                lastRow=G.GOM.lastFullRow+1;
+              if( lastRow > (G.GOM.lastFullRow + 1) ) {
+                lastRow = G.GOM.lastFullRow + 1;
               }
             }
-            G.GOM.displayInterval.len=0;
-            for( var i=0; i < nbTn ; i++ ) {
-              var curTn=G.GOM.items[i];
+            G.GOM.displayInterval.len = 0;
+            for( var i = 0; i < nbTn ; i++ ) {
+              var curTn = G.GOM.items[i];
               if( curTn.row < lastRow ) {
                 G.GOM.displayInterval.len++;
               }
@@ -2972,11 +2922,11 @@ Todo:
         default:
         case 'FULLCONTENT':
         if( G.layout.support.rows && G.galleryLastRowFull.Get() && G.GOM.lastFullRow != -1 ) {
-            var nbTn=G.GOM.items.length;
-            var lastRow=G.GOM.lastFullRow+1;
-            G.GOM.displayInterval.len=0;
-            for( var i=0; i < nbTn ; i++ ) {
-              var curTn=G.GOM.items[i];
+            var nbTn = G.GOM.items.length;
+            var lastRow = G.GOM.lastFullRow + 1;
+            G.GOM.displayInterval.len = 0;
+            for( var i = 0; i < nbTn ; i++ ) {
+              var curTn = G.GOM.items[i];
               if( curTn.row < lastRow ) {
                 G.GOM.displayInterval.len++;
               }
@@ -4043,7 +3993,7 @@ Todo:
                   attachment: { $e: item.$elt },
                   duration:   100,
                   delay:      cnt * G.tn.opt.Get('displayInterval') / 5,
-                  easing:     'easeInOutQuart',
+                  easing:     'easeInOutQuad',
                   step:       function (state, att) {
                     att.$e.css(state);
                   },
@@ -4211,7 +4161,7 @@ Todo:
           to:           { 'left': 0 },
           duration:     800,
           delay:        0,
-          easing:       'easeInOutQuart',
+          easing:       'easeInOutQuad',
           
           step: function (state) {
             if( G.GOM.slider.hostItem.$getElt() == null ) {
@@ -5308,7 +5258,7 @@ Todo:
         // GalleryResize( GOMidx );
       }
       catch (e) { 
-        NanoAlert(G, 'error on hover: ' +e.message );
+        NanoAlert(G, 'error on hover: ' + e.message );
       }
 
     }
@@ -7264,7 +7214,8 @@ Todo:
         // thumbnail is not built
         return;
       }
-      var $sub = item.$getElt('.nGY2GThumbnailSub');
+      // var $sub = item.$getElt('.nGY2GThumbnailSub');
+      var $sub = item.$getElt('.nGY2GThumbnail');
       var $icon = item.$getElt('.nGY2GThumbnailIconImageSelect');
       if( item.selected === true) {
         $sub.addClass('nGY2GThumbnailSubSelected');
@@ -7289,13 +7240,13 @@ Todo:
     
       var item=G.I[idx];
 
-      var currentURL=document.location.protocol +'//'+document.location.hostname + document.location.pathname;
-      var newLocationHash='#nanogallery/'+G.baseEltID+'/';
+      var currentURL=document.location.protocol + '//' + document.location.hostname + document.location.pathname;
+      var newLocationHash = '#nanogallery/' + G.baseEltID + '/';
       if( item.kind == 'image' ) {
-        newLocationHash+=item.albumID + '/' + item.GetID();
+        newLocationHash += item.albumID + '/' + item.GetID();
       }
       else {
-        newLocationHash+=item.GetID();
+        newLocationHash += item.GetID();
       }
     
       var content = '';
@@ -7321,37 +7272,37 @@ Todo:
       G.popup.$elt.find('.nGY2PopupOneItem').on('click', function(e) {
         e.stopPropagation();
         
-        var shareURL='';
-        var found=true;
+        var shareURL = '';
+        var found = true;
         switch(jQuery(this).attr('data-share').toUpperCase()) {
           case 'FACEBOOK':
             // <a name="fb_share" type="button" href="http://www.facebook.com/sharer.php?u={$url}&media={$imgPath}&description={$desc}" class="joinFB">Share Your Advertise</a>
             //window.open("https://www.facebook.com/sharer.php?u="+currentURL,"","height=368,width=600,left=100,top=100,menubar=0");
-            shareURL='https://www.facebook.com/sharer.php?u=' + currentURL;
+            shareURL = 'https://www.facebook.com/sharer.php?u=' + currentURL;
             break;
           case 'VK':
-            shareURL='http://vk.com/share.php?url=' + currentURL;
+            shareURL = 'http://vk.com/share.php?url=' + currentURL;
             break;
           case 'GOOGLEPLUS':
-            shareURL="https://plus.google.com/share?url=" + currentURL;
+            shareURL = "https://plus.google.com/share?url=" + currentURL;
             break;
           case 'TWITTER':
             // shareURL="https://twitter.com/share?url="+currentURL+"&text="+currentTitle;
-            shareURL='https://twitter.com/intent/tweet?text=' + currentTitle + 'url=' + currentURL;
+            shareURL = 'https://twitter.com/intent/tweet?text=' + currentTitle + 'url=' + currentURL;
             break;
           case 'PINTEREST':
             // shareURL='https://pinterest.com/pin/create/bookmarklet/?media='+currentTn+'&url='+currentURL+'&description='+currentTitle;
-            shareURL='https://pinterest.com/pin/create/button/?media=' + currentTn + '&url=' + currentURL + '&description=' + currentTitle;
+            shareURL = 'https://pinterest.com/pin/create/button/?media=' + currentTn + '&url=' + currentURL + '&description=' + currentTitle;
             break;
           case 'TUMBLR':
             //shareURL='https://www.tumblr.com/widgets/share/tool/preview?caption=<strong>'+currentTitle+'</strong>&tags=nanogallery2&url='+currentURL+'&shareSource=legacy&posttype=photo&content='+currentTn+'&clickthroughUrl='+currentURL;
-            shareURL='http://www.tumblr.com/share/link?url=' + currentURL + '&name=' + currentTitle;
+            shareURL = 'http://www.tumblr.com/share/link?url=' + currentURL + '&name=' + currentTitle;
             break;
           case 'MAIL':
             shareURL = 'mailto:?subject=' + currentTitle + '&body=' + currentURL;
             break;
           default:
-            found=false;
+            found = false;
             break;
         }
         
@@ -7372,10 +7323,10 @@ Todo:
       pp    +=  content;
       pp    +=  '</div></div>';
       
-      G.popup.$elt=jQuery(pp).appendTo('body');
+      G.popup.$elt = jQuery(pp).appendTo('body');
       setElementOnTop( G.VOM.$viewer, G.popup.$elt);
       
-      G.popup.isDisplayed=true;
+      G.popup.isDisplayed = true;
       
       var tweenable = new NGTweenable();
       tweenable.tween({
@@ -9021,7 +8972,7 @@ Todo:
             if( G.GOM.slider.hostIdx == r.GOMidx ) {
               // touch on thumbnail slider -> open immediately
               ThumbnailHoverOutAll();
-              ThumbnailOpen(G.GOM.items[r.GOMidx].thumbnailIdx, true);
+              ThumbnailOpen(G.GOM.items[G.GOM.slider.currentIdx].thumbnailIdx, true);
               return;
             }
 
