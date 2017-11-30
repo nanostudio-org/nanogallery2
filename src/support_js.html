@@ -1,0 +1,34 @@
+  <!-- ######################## -->
+  <!-- ##### JS FOR PAGE  ##### -->
+  <!-- ######################## -->
+	<script type="text/javascript">
+
+    $(document).ready(function () {
+
+      // ##### LICENSE TAB
+      jQuery('#ngy2_lic1').on( "click", function(e) {
+        jQuery('#ngy2_lic1_desc').css({ 'display': 'block' });
+        jQuery('#ngy2_lic2_desc').css({ 'display': 'none' });
+        //jQuery('#ngy2_lic1').css({ 'text-decoration': 'underline', 'color': '#fff' });
+        jQuery('#ngy2_lic1').css({ 'color': '#000' });
+        jQuery('#ngy2_lic2').css({ 'text-decoration': 'none', 'color':'#19676B' });
+        
+        jQuery('#ngy2_lic2').find('i').removeClass('fa-check-circle-o').addClass('fa-circle-o');
+        jQuery('#ngy2_lic1').find('i').removeClass('fa-circle-o').addClass('fa-check-circle-o');
+        
+      });
+      jQuery('#ngy2_lic2').on( "click", function(e) {
+        jQuery('#ngy2_lic2_desc').css({ 'display': 'block' });
+        jQuery('#ngy2_lic1_desc').css({ 'display': 'none' });
+        //jQuery('#ngy2_lic2').css({ 'text-decoration': 'underline', 'color': '#fff' });
+        jQuery('#ngy2_lic2').css({ 'color': '#000' });
+        jQuery('#ngy2_lic1').css({ 'text-decoration': 'none', 'color':'#19676B' });
+        
+        jQuery('#ngy2_lic1').find('i').removeClass('fa-check-circle-o').addClass('fa-circle-o');
+        jQuery('#ngy2_lic2').find('i').removeClass('fa-circle-o').addClass('fa-check-circle-o');
+      });
+      $('#ngy2_lic1').trigger('click');
+
+      
+    });
+  </script>
