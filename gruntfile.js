@@ -126,7 +126,7 @@ module.exports = function(grunt) {
             'src/support_js.html',
             'template/footer.html'
           ],
-          dest: 'build/reviews.html'
+          dest: 'build/support.html'
         },
         comment: {
           src: [
@@ -140,7 +140,7 @@ module.exports = function(grunt) {
             'src/comment_js.html',
             'template/footer.html'
           ],
-          dest: 'build/reviews.html'
+          dest: 'build/comment.html'
         },
         demonstration: {
           src: [
