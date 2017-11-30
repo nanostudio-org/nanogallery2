@@ -325,7 +325,7 @@
   background:rgba(34, 34, 34, 0.75); /*#222;*/
   /* top: 0; bottom: 0; left: 0; right: 0; */
   left: 0; right: 0;
-  padding: 0;
+  padding: 4px;
   margin: 0;
 	position: absolute;
 	box-sizing: border-box;
@@ -337,8 +337,8 @@
 .nGY2 .nGY2GThumbnailImageTitle,
 .nGY2 .nGY2GThumbnailAlbumTitle {
 	color:#fff;
-	margin: 3px 1px 1px 1px;
-  padding: 0px 4px;
+	margin: 5px 1px 1px 1px;
+  padding: 0px 0px;
   left: 0; right: 0;
   white-space: nowrap;
 	overflow:hidden;
@@ -353,7 +353,7 @@
 .nGY2 .nGY2GThumbnailDescription {
 	clear:both;
 	margin: 1px 1px 3px 1px;
-  padding: 0px 4px;
+  padding: 0px;
 	color:#aaa;
   white-space: nowrap;
   left: 0; right: 0;
@@ -694,6 +694,12 @@
 	background-color: rgba(1, 1, 1, 0.85);
 	text-align: center;
   clear: both;
+  user-drag: none; 
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }
 .nGY2 .nGY2ViewerLogo {
   text-align: center;
@@ -726,12 +732,18 @@
 	cursor: -moz-zoom-out;
 	cursor: zoom-out;
   */
+  user-drag: none; 
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-o-box-sizing: border-box;
 }
-.nGY2 .nGY2ViewerImagePan{
+.nGY2 .nGY2ViewerMediaPan{
   visibility: visible;
   opacity: 0;
   position: absolute;
@@ -743,19 +755,18 @@
   right: 0;
   margin: auto;   /* never change this value */
   zoom: 1;
-  draggable: false;
-  unselectable: on;
-  -moz-user-select: none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  -o-user-select: none;
+  user-drag: none; 
   user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;  
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-o-box-sizing: border-box;
 }
-.nGY2 .nGY2ViewerImage{
+.nGY2 .nGY2ViewerMedia {
   visibility: visible;
   opacity: 1;
   will-change: transform;
@@ -767,27 +778,26 @@
   right: 0;
   margin: auto;    /* never change this value */
   zoom: 1;
-  draggable: false;
-  unselectable: on;
-  -moz-user-select: none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  -o-user-select: none;
+  user-drag: none; 
   user-select: none;
-	background-image: url('loading.gif');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-color: #000;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+	background-image:     url('data:image/gif;base64,R0lGODlhEAALAPQAAP///wAAANra2tDQ0Orq6gYGBgAAAC4uLoKCgmBgYLq6uiIiIkpKSoqKimRkZL6+viYmJgQEBE5OTubm5tjY2PT09Dg4ONzc3PLy8ra2tqCgoMrKyu7u7gAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCwAAACwAAAAAEAALAAAFLSAgjmRpnqSgCuLKAq5AEIM4zDVw03ve27ifDgfkEYe04kDIDC5zrtYKRa2WQgAh+QQJCwAAACwAAAAAEAALAAAFJGBhGAVgnqhpHIeRvsDawqns0qeN5+y967tYLyicBYE7EYkYAgAh+QQJCwAAACwAAAAAEAALAAAFNiAgjothLOOIJAkiGgxjpGKiKMkbz7SN6zIawJcDwIK9W/HISxGBzdHTuBNOmcJVCyoUlk7CEAAh+QQJCwAAACwAAAAAEAALAAAFNSAgjqQIRRFUAo3jNGIkSdHqPI8Tz3V55zuaDacDyIQ+YrBH+hWPzJFzOQQaeavWi7oqnVIhACH5BAkLAAAALAAAAAAQAAsAAAUyICCOZGme1rJY5kRRk7hI0mJSVUXJtF3iOl7tltsBZsNfUegjAY3I5sgFY55KqdX1GgIAIfkECQsAAAAsAAAAABAACwAABTcgII5kaZ4kcV2EqLJipmnZhWGXaOOitm2aXQ4g7P2Ct2ER4AMul00kj5g0Al8tADY2y6C+4FIIACH5BAkLAAAALAAAAAAQAAsAAAUvICCOZGme5ERRk6iy7qpyHCVStA3gNa/7txxwlwv2isSacYUc+l4tADQGQ1mvpBAAIfkECQsAAAAsAAAAABAACwAABS8gII5kaZ7kRFGTqLLuqnIcJVK0DeA1r/u3HHCXC/aKxJpxhRz6Xi0ANAZDWa+kEAA7AAAAAAAAAAAA');
+  background-repeat:    no-repeat;
+  background-position:  center;
+  background-color:     #000;
 	/*display:block;*/
-	padding:0px;
+	padding: 0px;
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-o-box-sizing: border-box;
 }
 
-.nGY2 .nGY2ViewerContent .imgCurrent{
-	cursor:pointer;
+.nGY2 .nGY2ViewerContent .imgCurrent {
+	cursor: pointer;
 }
 
 .nGY2 .nGY2ViewerAreaPrevious {
@@ -801,19 +811,25 @@
 	top: 50%;
 	/*height:20px;*/
 	/*width:20px;*/
-	padding:10px 0px 10px 1px;
+	padding: 10px 0px 10px 1px;
 	margin-top: -25px;
 	left: 0px;
 	text-align: left;
 	cursor: pointer;
 	opacity: 1;
+  user-drag: none; 
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 	transition: all 0.2s ease;
 	-webkit-transition: all 0.2s ease;
 	-moz-transition: all 0.2s ease;
 	-o-transition: all 0.2s ease;
 }
 .nGY2 .nGY2ViewerAreaPrevious > i {
-  margin-left:0px;
+  margin-left: 0px;
 }
 
 .nGY2 .nGY2ViewerAreaNext {
@@ -833,6 +849,12 @@
 	text-align: right;
 	cursor: pointer;
 	opacity: 1;
+  user-drag: none; 
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 	transition: all 0.2s ease;
 	-webkit-transition: all 0.2s ease;
 	-moz-transition: all 0.2s ease;
