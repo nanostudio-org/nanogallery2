@@ -7,43 +7,53 @@
 <!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
 
 <url>
-  <loc>http://nanogallery2.nanostudio.org/</loc>
-  <lastmod>2016-12-19T15:44:29+00:00</lastmod>
+  <loc>https://nanogallery2.nanostudio.org/</loc>
+  <lastmod>2017-12-01T13:16:45+00:00</lastmod>
+  <priority>1.00</priority>
 </url>
 <url>
-  <loc>http://nanogallery2.nanostudio.org/index.html</loc>
-  <lastmod>2016-12-19T15:44:29+00:00</lastmod>
+  <loc>https://nanogallery2.nanostudio.org/index.html</loc>
+  <lastmod>2017-12-01T13:16:45+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://nanogallery2.nanostudio.org/demonstration.html</loc>
-  <lastmod>2016-12-19T15:44:29+00:00</lastmod>
+  <loc>https://nanogallery2.nanostudio.org/demonstration.html</loc>
+  <lastmod>2017-12-01T13:16:45+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://nanogallery2.nanostudio.org/quickstart.html</loc>
-  <lastmod>2016-12-19T15:44:29+00:00</lastmod>
+  <loc>https://nanogallery2.nanostudio.org/builder.html</loc>
+  <lastmod>2017-12-01T13:16:45+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://nanogallery2.nanostudio.org/builder.html</loc>
-  <lastmod>2016-12-19T15:44:29+00:00</lastmod>
+  <loc>https://nanogallery2.nanostudio.org/documentation.html</loc>
+  <lastmod>2017-12-01T13:16:45+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://nanogallery2.nanostudio.org/documentation.html</loc>
-  <lastmod>2016-12-19T15:44:29+00:00</lastmod>
+  <loc>https://nanogallery2.nanostudio.org/datasource.html</loc>
+  <lastmod>2017-12-01T13:16:45+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://nanogallery2.nanostudio.org/datasource.html</loc>
-  <lastmod>2016-12-19T15:44:29+00:00</lastmod>
+  <loc>https://nanogallery2.nanostudio.org/api.html</loc>
+  <lastmod>2017-12-01T13:16:45+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://nanogallery2.nanostudio.org/api.html</loc>
-  <lastmod>2016-12-19T15:44:29+00:00</lastmod>
+  <loc>https://nanogallery2.nanostudio.org/reviews.html</loc>
+  <lastmod>2017-12-01T13:16:45+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://nanogallery2.nanostudio.org/reviews.html</loc>
-  <lastmod>2017-07-27T15:44:29+00:00</lastmod>
+  <loc>https://nanogallery2.nanostudio.org/comment.html</loc>
+  <lastmod>2017-12-01T13:16:45+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-  <loc>http://nanogallery2.nanostudio.org/./</loc>
-  <lastmod>2016-12-19T15:44:29+00:00</lastmod>
+  <loc>https://nanogallery2.nanostudio.org/support.html</loc>
+  <lastmod>2017-12-01T13:16:45+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 </urlset>
