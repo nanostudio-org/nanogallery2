@@ -952,9 +952,46 @@
         <br><br>
       </div>
       -->
+      <br><br><br><br><br>
+
+
+
+      <div class="row equal" style="color:#fff;">
+        <div class="col-md-3 text-center">
+        </div>
+        <div class="col-md-3 text-center" >
+          <span itemprop="aggregateRating">
+            <span style="font-size:6em;">
+              <span itemprop="ratingValue">4.78</span>
+            </span>
+            <br>
+            <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+            <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+            <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+            <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
+            <i class="ngy2_stars_on fa fa-star-half-o fa-2x" aria-hidden="true"></i>
+            <br>
+            <i class="fa fa-user fa-1x" aria-hidden="true"></i> <span >18</span> total
+          </span>
           <br><br>
+        </div>
+        <div class="col-md-4 text-center">
+          <br>
+          <h2>nanogallery2 user reviews</h2>
           <br><br>
-          <br><br>
+          <a href="reviews.html" class="btn btn-primary btn"> &nbsp; read more &nbsp; </a>
+        </div>
+        <div class="col-md-2 text-center">
+        </div>
+      </div>
+
+
+
+
+
+      <br><br><br><br><br><br>
+      <br><br>
+      <br><br>
       
       <div class="row text-center">
         <div class="col-md-12">
@@ -1313,7 +1350,7 @@
       <div class="col-md-10">
         <h2>Get started</h2>
         <p>
-          Use one of these HTML template for quickly building a photo gallery from scratch.
+          Use one of these HTML templates for quickly building a photo gallery from scratch.
         </p>
         <br><br><br><br>
         <p class="text-left ">
@@ -1444,7 +1481,7 @@
   <!-- ######################## -->
   <!-- ##### JS FOR PAGE  ##### -->
   <!-- ######################## -->
-	<script type="text/javascript">
+<script type="text/javascript">
 
 
     $(document).ready(function () {
@@ -1719,8 +1756,9 @@
 
         thumbnailHoverEffect2: 'label_font-size_1em_1.5em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((35,203,153,0.8)|title_color_#000_#fff|image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
 
-        thumbnailToolbarImage : { topLeft: 'select', topRight : 'share,featured,download' },
-        thumbnailToolbarAlbum:null,
+        // thumbnailToolbarImage : { topLeft: 'select', topRight : 'share,featured,download' },
+        thumbnailToolbarImage : null,
+        thumbnailToolbarAlbum: null,
 
         // thumbnailL1Label: { display: true, position:'overImageOnMiddle', hideIcons: true, titleFontSize: '1.5em', align: 'center'},
         thumbnailL1Label: { display: true, position:'overImageOnTop', hideIcons: true, titleFontSize: '1.5em', align: 'left'},
@@ -1942,7 +1980,7 @@
       
       //  RANDOM DEMO
       var lastRnd=-1;
-      var demos=[0, 1, 2, 3, 4, 5, 6, 7]
+      var demos=[0, 1, 2, 3, 4, 5, 6, 7, 9]
       var rnd=randomIntFromInterval(0,demos.length-1);
       jQuery('#btn_random_demo').on('click', function() {
         //rnd++;
@@ -1952,7 +1990,7 @@
         //  rnd=randomIntFromInterval(0,4);
         // }
         // lastRnd=rnd;
-        //rnd=7;
+        rnd=9;
         ga('send', 'event', 'click', 'index', 'random');
         switch ( rnd ) {
           case 0:
@@ -1974,7 +2012,7 @@
               gallerySorting: 'random',
               galleryTheme : { thumbnail: {titleShadow : 'none', descriptionShadow : 'none'} },
               galleryLastRowFull: true,
-              locationHash: true
+              locationHash: false
             });
             break;
             
@@ -2001,7 +2039,7 @@
               thumbnailLabel: { display: true, position:'onBottomOverImage', titleFontSize: '2.0em', align: 'left', titleMultiLine:true, displayDescription: true},
               gallerySorting: 'random',
               //galleryTheme : { thumbnail: { labelBackground: '#eef', titleShadow : 'none', descriptionShadow : 'none', titleColor: '#000', descriptionColor: '#000'} },
-              locationHash: true
+              locationHash: false
             });
             break;
             
@@ -2024,7 +2062,7 @@
               thumbnailLabel: { display: true, position:'onBottom', titleFontSize: '1.0em', align: 'left', titleMultiLine:true, displayDescription: true},
               gallerySorting: 'random',
               galleryTheme : { thumbnail: { labelBackground: '#eef', titleShadow : 'none', descriptionShadow : 'none', titleColor: '#000', descriptionColor: '#000'} },
-              locationHash: true
+              locationHash: false
             });
             break;
           case 3:
@@ -2043,7 +2081,7 @@
               thumbnailLabel: { display: true, position:'overImageOnMiddle', titleFontSize: '1.5em', align: 'center', titleMultiLine:true},
               gallerySorting: 'random',
               galleryTheme : { thumbnail: { labelBackground: 'rgba(34, 34, 34, .3)', titleShadow : 'none'} },
-              locationHash: true,
+              locationHash: false,
               galleryTheme: 'light'
             });
             break;
@@ -2070,7 +2108,7 @@
               thumbnailLabel: { display: true, position:'overImageOnTop', hideIcons: false, titleFontSize: '1.2em', align: 'left', titleMultiLine:true},
               gallerySorting: 'random',
               galleryTheme : { thumbnail: { labelBackground: 'rgba(34, 34, 34, .0)', titleShadow : 'none', borderColor: '#fff'} },
-              locationHash: true
+              locationHash: false
             });
             break;
             
@@ -2096,7 +2134,7 @@
               galleryTheme : { thumbnail: { labelBackground: 'rgba(34, 34, 34, .0)', titleShadow : 'none', borderColor: '#54840C'} },
               galleryLastRowFull  : true,
               galleryMaxRows: 1,
-              locationHash: true
+              locationHash: false
             });
             break;
           
@@ -2122,7 +2160,7 @@
               gallerySorting: 'random',
               //galleryTheme : { thumbnail: { labelBackground: 'rgba(34, 34, 34, .0)', titleShadow : 'none'} },
               galleryLastRowFull: true,
-              locationHash: true,
+              locationHash: false,
               fnThumbnailInit: myTnInit
             });
             break;
@@ -2151,7 +2189,32 @@
               //fnThumbnailHoverOut: myTnEffectHBlurHoverOut,
               thumbnailOpenImage: false,
               galleryDisplayTransition: 'slideup',
-              locationHash: true
+              locationHash: false
+            });
+            break;
+            
+          case 9: // filter on tags
+            jQuery("#nanogallery").nanogallery2({
+              kind: 'google',
+              userID: '111186676244625461692',              //userID: '34858669@N00',
+              album: '5911699288924070209',
+              thumbnailHeight: 250, thumbnailWidth: 'auto',
+              breadcrumbOnlyCurrentLevel: true,
+              thumbnailToolbarAlbum:null,
+              gallerySorting: 'random',
+              thumbnailToolbarImage: null,
+              
+              galleryTheme: { navigationFilter :    { color: '#aaa', background: '#19676B', colorSelected: '#fff', backgroundSelected: '#2E7C7F', borderRadius: '6px' } },
+              
+              galleryDisplayMode: 'fullcontent',
+              thumbnailLabel: { display: true, position: 'overImageOnBottom', align: 'left'},
+              thumbnailHoverEffect2 : 'thumbnail_scale_1.00_1.10_1500',
+              thumbnailBorderHorizontal: 5,
+              thumbnailBorderVertical: 5,
+              thumbnailGutterWidth : 0,
+              thumbnailGutterHeight : 0,
+              galleryFilterTags: 'title',
+              locationHash: false
             });
             break;
             
@@ -2176,7 +2239,7 @@
               thumbnailBorderVertical: 0,
               thumbnailGutterWidth : 1,
               thumbnailGutterHeight : 1,
-              locationHash: true
+              locationHash: false
             });
             break;
           default:
@@ -2203,7 +2266,7 @@
     });
   </script>
 
-
+	
 
   <!-- ######################## -->
   <!-- ##### START FOOTER ##### -->
