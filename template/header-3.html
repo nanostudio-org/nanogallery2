@@ -4,13 +4,9 @@
   <!-- #################################################################################################################### -->
 
   <style>
-
     body { font-size:1.3em; color:#000; line-height:1.5; }
     p { font-size:1.3em; }
     td { font-size:1.2em; }
-    .ngy2documentation p { font-size:1.2em; }
-    .ngy2documentation td { font-size:1.2em; }
-    .ngy2documentation blockquote { font-size:1.2em; }
    
     * { font-family: 'News Cycle', sans-serif; }
     h1 {
@@ -35,6 +31,55 @@
 
 
     
+    
+    /*****************/
+    /* DOCUMENTATION */
+    /*****************/
+    .ngy2documentation { font-size: 1.7rem; }
+    .ngy2documentation p { font-size: 1.7rem; }
+    .ngy2documentation h2 { font-size: 2rem; }
+    .ngy2documentation h3 { font-size: 1.9rem; }
+    .ngy2documentation h4 { font-size: 1.8rem; }
+    .ngy2documentation h5 { font-size: 1.7rem; }
+    .ngy2documentation h6 { font-size: 1.6rem; }
+    
+    .ngy2documentation td,
+    .ngy2documentation td *{ 
+      font-size: 1.4rem;
+      font-family: "Source Sans Pro",sans-serif;
+    }
+    .ngy2documentation td:nth-child(1) { 
+      font-weight: bold;
+    }
+    .ngy2documentation td.ngy2_object { 
+      padding-left: 40px;
+    }
+    .ngy2documentation .table>tbody>tr>td { padding-bottom: 30px; }
+    .ngy2documentation blockquotex { font-size:1.2rem; }
+
+    .ngy2documentation :not(pre) > code {
+        background: #eee;
+        font-weight: normal;
+        color: #19676B;
+        text-shadow: 0 1px #fff;
+    }
+    
+    .ngy2documentation .badge {
+      background-color: #19676B;
+    }
+    .ngy2documentation .badge.ngy2_ver{
+      background-color: #888;
+    }
+    .ngy2documentation .badge.ngy2_code_markup {
+      background-color: #800;
+      font-size: 1.4rem;
+    }
+    .ngy2documentation .badge.ngy2_code_js {
+      background-color: #008;
+      font-size: 1.4rem;
+    }
+    
+
     /**********************/
     /* TOP NAVIGATION BAR */
     /**********************/
@@ -83,7 +128,7 @@
 
     background: #0F1934
     buttons: #3C4B5B
-    */    
+    */
     
     .ngy2_bgdark {
       background-color: #0F1934;
@@ -132,6 +177,7 @@
       font-weight: bold;
     }
 		
+
     /************/
     /* FEATURES */
     /************/
@@ -144,8 +190,6 @@
       text-transform: uppercase;
       border: 5px solid #0F1934;
     }
-		
-
 		
     /***********/
     /* BUTTONS */
@@ -307,12 +351,13 @@
     /*******************************************/
     #ngy2_vert_nav {
       border-left: 4px solid #499295;
+      font-size:1.5rem;
     }
     
     #ngy2_vert_nav_style .nav > li > a {
         position: relative;
         display: block;
-        padding: 2px 5px;
+        padding: 1px 5px;
         color:#000;
     }    
     #ngy2_vert_nav_style .nav .active {
@@ -322,7 +367,7 @@
     }
     #ngy2_vert_nav_style .nav .active a{
       color:#499295;
-      font-size:1.2em;
+      /* font-size:1.2rem; */
     }
 
     #ngy2_vert_nav_style .nav .nav {
@@ -335,7 +380,7 @@
 
     #ngy2_vert_nav_style .nav .nav a {
       font-weight: normal;
-      font-size: .85em;
+      font-size: .85rem;
     }
 
     #ngy2_vert_nav_style .nav .nav span {
@@ -619,7 +664,6 @@
     }    
     
 
-	  
 
   </style>
 
