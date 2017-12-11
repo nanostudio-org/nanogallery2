@@ -1,5 +1,4 @@
-  
-  <div class="container ngy2documentation">
+  <div class="container  ngy2documentation">
   <div class="row" >
   <div class="col-md-10">
 
@@ -86,7 +85,7 @@
             All thumbnails have the same size. Define the height and the width of the thumbnails. Images may be cropped to fit the thumbnail.
             <br><br>
             Example:
-            <br><br>
+            <br>
             <code>thumbnailWidth: 300, thumbnailHeight: 200</code>
           </div>
           <div class="col-md-6 text-center">
@@ -107,7 +106,7 @@
             Set the special value <code>'auto'</code> to <code>thumbnailWidth</code>
             <br><br>
             Example:
-            <br><br>
+            <br>
             <code>thumbnailWidth: <b>'auto'</b>, thumbnailHeight: 200</code>
           </div>
           <div class="col-md-6 text-center">
@@ -128,7 +127,7 @@
             Set the special value <code>'auto'</code> to <code>thumbnailHeight</code>
             <br><br>
             Example:
-            <br><br>
+            <br>
             <code>thumbnailWidth: 300, thumbnailHeight: <b>'auto'</b></code>
           </div>
           <div class="col-md-6 text-center">
@@ -141,7 +140,7 @@
             The cascading layout may be enhanced by applying a grid with the option <code>thumbnailBaseGridHeight</code>.
             <br><br>
             Example:
-            <br><br>
+            <br>
             <code>
               thumbnailWidth: 300, thumbnailHeight: <b>'auto'</b>, <br>
               thumbnailBaseGridHeight: 100
@@ -168,7 +167,7 @@
             Gallery will be scaled down to fit its container's width if necessary.
             <br><br>
             Example:
-            <br><br>
+            <br>
             <pre>
       thumbnailHeight: '200', thumbnailWidth: '200',
       galleryMosaic : [
@@ -179,6 +178,7 @@
           { c: 3, r: 3, w: 2, h: 1 }
       ]
             </pre>
+            <br>
             Properties <code>c</code> and <code>r</code> define the position of the thumbnail (column number and row number).
             <br>
             Properties <code>w</code> and <code>h</code> define the size of the thumbnail (width and height multiplicator).
@@ -211,11 +211,18 @@
     <h3><b><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> Launching the gallery</b></h3>
     <hr>
     <blockquote>
+      There are 2 ways for defining one gallery: HTML markup or Javascript.
       <br>
-        Settings are passed to the script on initialization, and are <b>CaSe sEnSiTiVe</b>: 
-      <br><br><br>
-      <h3><u>HTML markup example:</u></h3>
+      Settings are passed to the library on initialization, and are <b>CaSe sEnSiTiVe</b>: 
+    </blockquote>
+    <br>
+    
+    <p>
+      <h3><u>HTML markup method:</u></h3>
       use the <code>data-nanogallery2</code> attribute.
+      <br><br>
+      <span class="badge ngy2_code_markup"> HTML markup example</span>
+      <a href="https://codepen.io/Kris-B/pen/LyBwvN" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
       <pre>
 &lt;div data-nanogallery2 = '{
     &lt;!-- ### gallery settings ### -->
@@ -234,8 +241,11 @@
       Property names and string values must be between double-quotes <code style="background:whitesmoke;">"</code>.
 
       <br><br>
-      <h3><u>Javascript example:</u></h3>
+      <h3><u>Javascript method:</u></h3>
       settings are passed to the <code>nanogallery2()</code> function.
+      <br>
+      <span class="badge ngy2_code_js" >Javascript example</span>
+      <a href="https://codepen.io/Kris-B/pen/mROmKM" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
       <pre>
 $("#my_nanogallery2").nanogallery2({
   &lt;!-- ### gallery settings ### -->
@@ -256,7 +266,7 @@ $("#my_nanogallery2").nanogallery2({
       <br><br>
       You may also use the visual <b><u><a href="builder.html">BUILDER</a></u></b> to quickly test some of the available options.
 
-    </blockquote>
+    </p>
     <br><br><br><br>
 
     
@@ -491,20 +501,21 @@ $("#my_nanogallery2").nanogallery2({
       Configure the behaviour of the gallery.
     </blockquote>
       <div class="table-responsive">
-        <table class="table table-striped table-hover">
+        <table class="table table-stripedX table-hoverX">
         <thead>
           <tr>
             <th>property</th>
-            <th>type</th>
             <th>default</th>
             <th>description</th>
-            <th>min<br>version</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>thumbnailOpenImage</td>
-            <td>boolean</td>
+            <td>
+              thumbnailOpenImage
+              <br><span class="badge">boolean</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>true</td>
             <td>
               Gallery with or without lightbox.
@@ -517,11 +528,13 @@ $("#my_nanogallery2").nanogallery2({
                 </li>
               </ul>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>galleryDisplayMode</td>
-            <td>string</td>
+            <td>
+              galleryDisplayMode
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>'fullContent'</td>
             <td>
               Define the elements to display.
@@ -542,22 +555,26 @@ $("#my_nanogallery2").nanogallery2({
                 </li>
               </ul>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>galleryDisplayMoreStep</td>
-            <td>integer</td>
+            <td>
+              galleryDisplayMoreStep
+              <br><span class="badge">integer</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>2</td>
             <td>
               Set the number of rows to display each time the "more button" is hit.
               <br>
               <br>only for <code>galleryDisplayMode: 'moreButton'</code>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>galleryPaginationMode</td>
-            <td>string</td>
+            <td>
+              galleryPaginationMode
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>'rectangles'</td>
             <td>
               Display type in pagination mode (<code>galleryDisplayMode: 'pagination'</code>).
@@ -573,13 +590,15 @@ $("#my_nanogallery2").nanogallery2({
                 <li>
                   <b>'numbers'</b>
                 </li>
-              </ul
+              </ul>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>galleryMaxRows</td>
-            <td>integer</td>
+            <td>
+              galleryMaxRows
+              <br><span class="badge">integer</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>2</td>
             <td>
               Maximum number of rows to display
@@ -588,66 +607,81 @@ $("#my_nanogallery2").nanogallery2({
               <br>
               <br>Not supported if <code>thumbnailHeight: 'auto'</code>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>paginationVisiblePages</td>
-            <td>integer</td>
+            <td>
+              paginationVisiblePages
+              <br><span class="badge">integer</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>10</td>
             <td>
               Maximum number of pagination items displayed
               <br>
               <br>only for <code>galleryDisplayMode: 'pagination'</code> and <code>galleryPaginationMode: 'numbers'</code>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>paginationSwipe</td>
-            <td>boolean</td>
+            <td>
+              paginationSwipe
+              <br><span class="badge">boolean</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>true</td>
             <td>
               Enables swipe gesture to display next/previous gallery page.
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>galleryLastRowFull</td>
-            <td>boolean</td>
+            <td>
+              galleryLastRowFull
+              <br><span class="badge">boolean</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>false</td>
             <td>
               When enabled, the last thumbnail's row will not be displayed if it doesn't fill the full width.
               <br><br>
               Only for grid and justified layouts.
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>gallerySorting</td>
-            <td>string</td>
+            <td>
+              gallerySorting
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>''</td>
             <td>
               Sort order. No sorting by default.
               <br>
-              Possible values: <b>'titleAsc'</b>, <b>'titleDesc'</b>, <b>'reversed'</b>, <b>'random'</b> (=shuffle).</td>
-            <td>1.0</td>
+              Possible values: <b>'titleAsc'</b>, <b>'titleDesc'</b>, <b>'reversed'</b>, <b>'random'</b> (=shuffle).
+            </td>
           </tr>
           <tr>
-            <td>galleryMaxItems</td>
-            <td>integer</td>
+            <td>
+              galleryMaxItems
+              <br><span class="badge">integer</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>0</td>
             <td>Maximum number of items per album. 0 = display all.</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>galleryResizeAnimation</td>
-            <td>boolean</td>
+            <td>
+              galleryResizeAnimation
+              <br><span class="badge">boolean</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>true</td>
             <td>Animate the moving of thumbnails to their new position when the gallery is resized.</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>galleryTheme<br>colorScheme</td>
-            <td>string<br>object</td>
+            <td>
+              galleryTheme<br>colorScheme
+              <br><span class="badge">string</span><span class="badge">object</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>'dark'</td>
             <td>
               Gallery theme (thumbnails, navigation...).
@@ -657,58 +691,69 @@ $("#my_nanogallery2").nanogallery2({
               <br>
               <b>since v1.5, properties 'colorScheme' and 'galleryTheme' are synonymous</b>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>openOnStart</td>
-            <td>string</td>
+            <td>
+              openOnStart
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>
               Opens the specified album or display the specified image on library start.
               <br>Syntax: <b>'albumID'</b> or <b>'albumID/imageID'</b>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>thumbnailSelectable</td>
-            <td>boolean</td>
+            <td>
+              thumbnailSelectable
+              <br><span class="badge">boolean</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>false</td>
             <td>Enable/disable the selection mode. A checkbox is displayed over each thumbnail to allow the user to select multiple thumbnails.</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>galleryRenderDelay</td>
-            <td>integer</td>
+            <td>
+              galleryRenderDelay
+              <br><span class="badge">integer</span>
+              <br><span class="badge ngy2_ver">v1.3</span>
+            </td>
             <td>60</td>
             <td>Delay in ms before starting the gallery rendering.</td>
-            <td>1.3</td>
           </tr>
           <tr>
-            <td>thumbnailDisplayOutsideScreen</td>
-            <td>boolean</td>
+            <td>
+              thumbnailDisplayOutsideScreen
+              <br><span class="badge">boolean</span>
+              <br><span class="badge ngy2_ver">v1.2</span>
+            </td>
             <td>false</td>
             <td>Display or hide thumbnails which are displayed outside of the screen (display may impact performances)</td>
-            <td>1.2</td>
           </tr>
           <tr>
-            <td>galleryDisplayTransition</td>
-            <td>string</td>
+            <td>
+              galleryDisplayTransition
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.4</span>
+            </td>
             <td>'none'</td>
             <td>
               Transition for displaing the gallery. Applied on the whole gallery.
               <br>
               Possible values: 'none', 'rotateX', 'slideUp'
             </td>
-            <td>1.4</td>
           </tr>
           <tr>
-            <td>galleryDisplayTransitionDuration</td>
-            <td>integer</td>
+            <td>
+              galleryDisplayTransitionDuration
+              <br><span class="badge">integer</span>
+              <br><span class="badge ngy2_ver">v1.4</span>
+            </td>
             <td>1000</td>
             <td>
               Duration of the gallery display transition, in milliseconds.
             </td>
-            <td>1.4</td>
           </tr>
         </tbody>
         </table>
@@ -727,42 +772,47 @@ $("#my_nanogallery2").nanogallery2({
     </blockquote>
 
     <div class="table-responsive">
-      <table class="table table-striped table-hover">
+      <table class="table table-stripedx table-hoverx">
       <thead>
         <tr>
           <th>property</th>
-          <th>type</th>
           <th>default</th>
           <th>description</th>
-          <th>min<br>version</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>thumbnailWidth</td>
-          <td>integer<br>string</td>
+          <td>
+            thumbnailWidth
+            <br><span class="badge">integer</span><span class="badge">string</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>300</td>
           <td>
             <b>MANDATORY</b><br>
             Thumbnails image width in pixels, or 'auto'.
             <br>Use <b>'auto'</b> for <b>justified layout</b>.
           </td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>thumbnailHeight</td>
-          <td>integer<br>string</td>
+          <td>
+            thumbnailHeight
+            <br><span class="badge">integer</span><span class="badge">string</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>200</td>
           <td>
             <b>MANDATORY</b><br>
             Thumbnails image height in pixels, or 'auto'.
             <br>Use <b>'auto'</b> for <b>cascading/masonry layout</b>.
           </td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>thumbnailAlignment</td>
-          <td>string</td>
+          <td>
+            thumbnailAlignment
+            <br><span class="badge">string</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>'fillWidth'</td>
           <td>
             Horizontal thumbnail alignement in the available space width.
@@ -806,57 +856,71 @@ $("#my_nanogallery2").nanogallery2({
               </li>
             </ul>
           </td>
-          <td>1.0</td>
         </tr>
 
         <tr>
-          <td>thumbnailGutterWidth</td>
-          <td>integer</td>
+          <td>
+            thumbnailGutterWidth
+            <br><span class="badge">integer</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>2</td>
           <td>Sets the horizontal gutter space between thumbnails.</td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>thumbnailGutterHeight</td>
-          <td>integer</td>
+          <td>
+            thumbnailGutterHeight
+            <br><span class="badge">integer</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>2</td>
           <td>Sets the vertical gutter space between thumbnails.</td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>thumbnailBorderHorizontal</td>
-          <td>integer</td>
+          <td>
+            thumbnailBorderHorizontal
+            <br><span class="badge">integer</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>2</td>
           <td>Set the left and right thumbnail border size.</td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>thumbnailBorderVertical</td>
-          <td>integer</td>
+          <td>
+            thumbnailBorderVertical
+            <br><span class="badge">integer</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>2</td>
           <td>Set the top and bottom thumbnail border size.</td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>thumbnailFeaturedKeyword</td>
-          <td>string</td>
+          <td>
+            thumbnailFeaturedKeyword
+            <br><span class="badge">string</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>'*featured'</td>
           <td>
             Keyword to set the feature status of a thumbnail. The keyword is searched in the title and the description.<br>
             If the keyword is found, the featured icon will be displayed over the thumbnail.
           </td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>thumbnailDisplayInterval</td>
-          <td>integer</td>
+          <td>
+            thumbnailDisplayInterval
+            <br><span class="badge">integer</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>15</td>
           <td>Interval in ms between the display of 2 thumbnails.</td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>thumbnailDisplayTransition</td>
-          <td>string</td>
+          <td>
+            thumbnailDisplayTransition
+            <br><span class="badge">string</span>
+            <br><span class="badge ngy2_ver">v1.0</span><span class="badge ngy2_ver">v1.3</span>
+          </td>
           <td>'fadeIn'</td>
           <td>
             Transition used to display each thumbnail.
@@ -884,41 +948,51 @@ $("#my_nanogallery2").nanogallery2({
             <br>- <b>slideLeft</b>: VAL is the start distance in pixel (default is 150)
             <br>
           </td>
-          <td>1.0<br>1.3</td>
         </tr>
         <tr>
-          <td>thumbnailDisplayTransitionDuration</td>
-          <td>integer</td>
+          <td>
+            thumbnailDisplayTransitionDuration
+            <br><span class="badge">integer</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>240</td>
           <td>Duration of the display transition.</td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>thumbnailStacks</td>
-          <td>integer</td>
+          <td>
+            thumbnailStacks
+            <br><span class="badge">integer</span>
+            <br><span class="badge ngy2_ver">v1.2</span>
+          </td>
           <td>0</td>
           <td>Adds <b>N</b> stacks behind each thumbnail. Usefull for thumbnails hover effects</td>
-          <td>1.2</td>
         </tr>
         <tr>
-          <td>thumbnailWaitImageLoaded</td>
-          <td>boolean</td>
+          <td>
+            thumbnailWaitImageLoaded
+            <br><span class="badge">boolean</span>
+            <br><span class="badge ngy2_ver">v1.4</span>
+          </td>
           <td>true</td>
           <td>Waits until thumbails images are fully downloaded before displaying them smoothly.</td>
-          <td>1.4</td>
         </tr>
         <tr>
-          <td>thumbnailCrop</td>
-          <td>boolean</td>
+          <td>
+            thumbnailCrop
+            <br><span class="badge">boolean</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>true</td>
           <td>
             If needed, thumbnail image will be cropped to avoid black borders (only for grid layout).<br>
           </td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>thumbnailSliderDelay</td>
-          <td>integer</td>
+          <td>
+            thumbnailSliderDelay
+            <br><span class="badge">integer</span>
+            <br><span class="badge ngy2_ver">v2.0</span>
+          </td>
           <td>2000</td>
           <td>
             Image slider on last displayed thumbnail.
@@ -931,7 +1005,6 @@ $("#my_nanogallery2").nanogallery2({
             <br>
             Supported when <b>galleryDisplayMode</b> set to <b>'rows'</b> or to <b>'fullContent'</b> with <b>galleryLastRowFull</b> enabled.
           </td>
-          <td>2.0</td>
         </tr>
       </tbody>
       </table>
@@ -990,33 +1063,50 @@ $("#my_nanogallery2").nanogallery2({
       <br><br>
       <img src="img/ngy2_thumbnail3.png" class="img-responsive center-block">
     </blockquote>
-    <p>Exemple:<br>
+    <p>
+
+      <span class="badge ngy2_code_markup"> HTML markup example</span> 
+      <pre>
+      &lt;div id="my_nanogallery2" data-nanogallery2 = '{ &gt;
+        "thumbnailHeight":    200,
+        "thumbnailWidth":     300,
+        "thumbnailAlignment": "center",
+        "thumbnailLabel":     { "position": "overImageOnBottom", "hideIcons": true },
+        ...
+      &lt;/div&gt;
+      </pre>
+      <br><br>
+
+      <span class="badge ngy2_code_js" >Javascript example</span>
       <pre>
       $("#myNanoGallery").nanogallery2({
         ...
-        thumbnailHeight: 200,
-        thumbnailWidth: 300,
+        thumbnailHeight:    200,
+        thumbnailWidth:     300,
         thumbnailAlignment: 'center',
-        thumbnailLabel: { position: 'overImageOnBottom', hideIcons: true },
+        thumbnailLabel:     { position: 'overImageOnBottom', hideIcons: true },
         ...
       });
       </pre>
     </p>
+    <br><br><br>
+    
     <div class="table-responsive">
-      <table class="table table-striped table-hover">
+      <table class="table table-stripedx table-hoverx">
       <thead>
         <tr>
           <th>property</th>
-          <th>type</th>
           <th>default</th>
           <th>description</th>
-          <th>min<br>version</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>position</td>
-          <td>string</td>
+          <td>
+            position
+            <br><span class="badge">string</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>'overImageOnBottom'</td>
           <td>
             Position of the label on the thumbnail.
@@ -1024,56 +1114,70 @@ $("#my_nanogallery2").nanogallery2({
             <br><br>
             <img src="img/ngy2_thumbnail_position.png">
           </td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>align</td>
-          <td>string</td>
+          <td>
+            align
+            <br><span class="badge">string</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>'center'</td>
           <td>
             Horizontal text alignment.
             <br>Possible values: <b>'right'</b>, <b>'center'</b>, <b>'left'</b>
           </td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>display</td>
-          <td>boolean</td>
+          <td>
+            display
+            <br><span class="badge">boolean</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>true</td>
           <td>Displays or hides the label (title and description).</td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>displayDescription</td>
-          <td>boolean</td>
+          <td>
+            displayDescription
+            <br><span class="badge">boolean</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>false</td>
           <td>Displays or hides the description.</td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>hideIcons</td>
-          <td>boolean</td>
+          <td>
+            hideIcons
+            <br><span class="badge">boolean</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>true</td>
           <td>Hides or displays the icons beside the title.</td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>titleMaxLength</td>
-          <td>integer</td>
+          <td>
+            titleMaxLength
+            <br><span class="badge">integer</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>0</td>
           <td>Title maximum length to display.</td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>titleMultiLine</td>
-          <td>boolean</td>
+          <td>
+            titleMultiLine
+            <br><span class="badge">boolean</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>false</td>
           <td>Title can be multiline (not supported with <code>position:'onBottom'</code>).</td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>title</td>
-          <td>string</td>
+          <td>
+            title
+            <br><span class="badge">string</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td></td>
           <td>
             Variable to set the image title (undescores are replaced by spaces).
@@ -1081,48 +1185,48 @@ $("#my_nanogallery2").nanogallery2({
             <br>- <b>'%filename'</b>: use the filemanme without path
             <br>- <b>'%filenameNoExt'</b>: use the filemanme without path and without extension
           </td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>titleFontSize</td>
-          <td>string</td>
+          <td>
+            titleFontSize
+            <br><span class="badge">string</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td></td>
           <td>
             Set the title font size.<br>
             Example: <code>titleFontSize: '2em'</code>
           </td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>descriptionMaxLength</td>
-          <td>integer</td>
+          <td>
+            descriptionMaxLength
+            <br><span class="badge">integer</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>0</td>
           <td>Description maximum length to display.</td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>descriptionMultiLine</td>
-          <td>boolean</td>
+          <td>
+            descriptionMultiLine
+            <br><span class="badge">boolean</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>false</td>
           <td>Description can be multiline (not supported with <code>position:'onBottom'</code>).</td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>descriptionFontSize</td>
-          <td>string</td>
+          <td>
+            descriptionFontSize
+            <br><span class="badge">string</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td></td>
           <td>
             Set the description font size.<br>
             Example: <code>descriptionFontSize: '0.8em'</code>
           </td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>1.0</td>
         </tr>
       </tbody>
       </table>
@@ -1313,20 +1417,21 @@ $("#my_nanogallery2").nanogallery2({
       <br><br>
     </blockquote>
     <div class="table-responsive">
-      <table class="table table-striped table-hover">
+      <table class="table table-stripedx table-hoverx">
       <thead>
         <tr>
           <th>property</th>
-          <th>type</th>
           <th>default</th>
           <th>description</th>
-          <th>min<br>version</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>thumbnailToolbarImage</td>
-          <td>object</td>
+          <td>
+            thumbnailToolbarImage
+            <br><span class="badge">object</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td></td>
           <td>
             Image toolbars<br>
@@ -1336,11 +1441,13 @@ $("#my_nanogallery2").nanogallery2({
             Default:<br>
             <code>thumbnailToolbarImage : { topLeft: 'select', topRight : 'featured' }</code>
           </td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>thumbnailToolbarAlbum</td>
-          <td>object</td>
+          <td>
+            thumbnailToolbarAlbum
+            <br><span class="badge">object</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td></td>
           <td>
             Album toolbars<br>
@@ -1350,7 +1457,6 @@ $("#my_nanogallery2").nanogallery2({
             Default:<br>
             <code>thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'counter' }</code>
           </td>
-          <td>1.0</td>
         </tr>
       </tbody>
       </table>
@@ -1367,48 +1473,57 @@ $("#my_nanogallery2").nanogallery2({
       <img src="img/ngy2_navigation.png" class="img-responsive center-block">
     </blockquote>
     <div class="table-responsive">
-      <table class="table table-striped table-hover">
+      <table class="table table-stripedx table-hoverx">
       <thead>
         <tr>
           <th>property</th>
-          <th>type</th>
           <th>default</th>
           <th>description</th>
-          <th>min<br>version</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>displayBreadcrumb</td>
-          <td>boolean</td>
+          <td>
+            displayBreadcrumb
+            <br><span class="badge">boolean</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>true</td>
           <td>Display the breadcrumb for navigation in albums.</td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>breadcrumbOnlyCurrentLevel</td>
-          <td>boolean</td>
+          <td>
+            breadcrumbOnlyCurrentLevel
+            <br><span class="badge">boolean</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>true</td>
           <td>Display only the name of the current album.</td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>breadcrumbAutoHideTopLevel</td>
-          <td>boolean</td>
+          <td>
+            breadcrumbAutoHideTopLevel
+            <br><span class="badge">boolean</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>true</td>
           <td>No breadcrumb on albums first navigation level.</td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>breadcrumbHideIcons</td>
-          <td>true</td>
+          <td>
+            breadcrumbHideIcons
+            <br><span class="badge">boolean</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td></td>
           <td>Hide or display breadcrumb's icons.</td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>galleryFilterTags</td>
-          <td>boolean<br>string</td>
+          <td>
+            galleryFilterTags
+            <br><span class="badge">boolean</span><span class="badge">string</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>false</td>
           <td>
             Display tags to filter the thumbnails.
@@ -1418,18 +1533,22 @@ $("#my_nanogallery2").nanogallery2({
             <br>- <b>'title'</b>: extract the tags from the title (string starting with @)
             <br>- <b>'description'</b>: extract the tags from the description (string starting with @)
           </td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>thumbnailLevelUp</td>
-          <td>boolean</td>
+          <td>
+            thumbnailLevelUp
+            <br><span class="badge">boolean</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>false</td>
           <td>Display one thumbnail to navigate in the parent album.</td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>locationHash</td>
-          <td>boolean</td>
+          <td>
+            locationHash
+            <br><span class="badge">boolean</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>true</td>
           <td>
             Enables hash tracking.
@@ -1437,47 +1556,45 @@ $("#my_nanogallery2").nanogallery2({
             <br>Must be enabled to allow sharing of images/albums.
             <br>Note: only one gallery per HTML page should use this feature.
           </td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>touchAnimation</td>
-          <td>boolean</td>
+          <td>
+            touchAnimation
+            <br><span class="badge">boolean</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>true</td>
           <td>
             Enables thumbnail hover animation on touch event.
             <br>The user must tap a thumbnail twice to show the image or open a album.
           </td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>touchAutoOpenDelay</td>
-          <td>integer</td>
+          <td>
+            touchAutoOpenDelay
+            <br><span class="badge">integer</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td>0</td>
           <td>
             When a user touch a thumbnail, delay in ms before opening the touched thumbnail.
             <br>Particular values:
-            <br>-1= disabled (user needs to tap twice to open the thumbnail),
-            <br>0= automatic (the library will calculate automatically the delay).
+            <br>-1 = disabled (user needs to tap twice to open the thumbnail),
+            <br>&nbsp;0 = automatic (the library will calculate automatically the delay).
             <br>Note: the parameter is ignored when <code>touchAnimation=false</code>.
           </td>
-          <td>1.0</td>
         </tr>
         <tr>
-          <td>navigationFontSize</td>
-          <td>string</td>
+          <td>
+            navigationFontSize
+            <br><span class="badge">string</span>
+            <br><span class="badge ngy2_ver">v1.0</span>
+          </td>
           <td></td>
           <td>
             Define the font size for the navigation (breadcrumb and filters).<br>
             Example: <code>navigationFontSize: '1.2em'</code>
           </td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>1.0</td>
         </tr>
       </tbody>
       </table>
@@ -1594,114 +1711,170 @@ $("#my_nanogallery2").nanogallery2({
       The lightbox is used to display images in full size.
       <br><br>
       <img src="img/ngy2_lightbox.png" class="img-responsive center-block">
-      <br><br>
-      All available tools can be displaued in each of the 3 toolbar.
-      <br>
-      Possible tools: <b>'previousButton', 'pageCounter', 'nextButton', 'playPauseButton', 'fullscreenButton', 'infoButton', 'linkOriginalButton', 'closeButton', 'downloadButton', 'label', 'customN'</b><br>
-      To add custom elements in a toolbar, use the label <b>customN</b>, where <b>N</b> is an integer (e.g. custom1, custom2...).
     </blockquote>
+    <p>
+      The available tools can be displayed in each of the 3 toolbars (standard, top-left and top-right).
+      The standard toolbar has 2 states which are toggled with the 'minimizeButton' tool. Each state has is own configuration.
+      <br>
+      <br>
+      Possible tools: <b>'previousButton', 'pageCounter', 'nextButton', 'playPauseButton', 'fullscreenButton', 'infoButton', 'linkOriginalButton', 'closeButton', 'downloadButton', 'zoomButton', 'shareButton', 'label', 'customN'</b><br>
+      To add custom elements in a toolbar, use the label <b>customN</b>, where <b>N</b> is an integer (e.g. custom1, custom2...).
+      <br><br><br>
+
+      <span class="badge ngy2_code_markup"> HTML markup example</span> 
+      <a href="https://codepen.io/Kris-B/pen/EoYLpN" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+      <pre>
+&lt;div id="my_nanogallery2" data-nanogallery2 = '{ &gt;
+  "viewerToolbar":   {
+       "standard":   "minimizeButton, label, shareButton, fullscreenButton",
+       "minimized":  "minimizeButton, label, fullscreenButton, downloadButton, infoButton" },
+   "viewerTools":    {
+        "topLeft":   "label",
+        "topRight":  "playPauseButton, zoomButton, fullscreenButton, closeButton" }   
+  ...
+&lt;/div&gt;
+      </pre>
+      <br><br>
+      
+      <span class="badge ngy2_code_js" >Javascript example</span>
+      <a href="https://codepen.io/Kris-B/pen/VyZdOJ" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+      <pre>
+viewerToolbar:    {
+         standard:  'minimizeButton, label, shareButton, fullscreenButton',
+         minimized: 'minimizeButton, label, fullscreenButton, downloadButton, infoButton' },
+ viewerTools:    {
+         topLeft:   'label',
+         topRight:  'playPauseButton, zoomButton, fullscreenButton, closeButton' }   
+      </pre>
+      
+    </p>
+    <br><br><br>
+    
     <div class="table-responsive">
-      <table class="table table-striped table-hover">
+      <table class="table table-stripedx table-hoverx">
         <thead>
           <tr>
             <th>property</th>
-            <th>type</th>
             <th>default</th>
             <th>description</th>
-            <th>min<br>version</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>imageTransition</td>
-            <td>string</td>
+            <td>
+              imageTransition
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>'swipe'</td>
             <td>
               Animation from one image to the next one.
               <br>
               Possible values: <b>'slideAppear', 'swipe'</b>.
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>slideshowAutoStart</td>
-            <td>boolean</td>
+            <td>
+              slideshowAutoStart
+              <br><span class="badge">boolean</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>false</td>
             <td>
               Starts automatically the slideshow when an image is displayed.
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>slideshowDelay</td>
-            <td>integer</td>
+            <td>
+              slideshowDelay
+              <br><span class="badge">integer</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>3000</td>
             <td>
               Duration of the photo display in slideshow mode (in ms).
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>viewerHideToolsDelay</td>
-            <td>integre</td>
+            <td>
+              viewerHideToolsDelay
+              <br><span class="badge">integer</span>
+              <br><span class="badge ngy2_ver">v1.3</span>
+            </td>
             <td>3000</td>
             <td>Delay of inactivity before hidding the tools and labels.</td>
-            <td>1.3</td>
           </tr>
           <tr>
-            <td>viewerFullscreen</td>
-            <td>boolean</td>
+            <td>
+              viewerFullscreen
+              <br><span class="badge">boolean</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>false</td>
             <td>Displays images in fullscreen (on supported browser).</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td><b>viewerToolbar</b></td>
-            <td>object</td>
+            <td>
+              <b>viewerToolbar</b>
+              <br><span class="badge">object</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
-            <td>Display options for the light main toolbar.</td>
-            <td>1.0</td>
+            <td>Display options for the lightbox main toolbar.</td>
           </tr>
           <tr>
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;viewerToolbar.display</td>
-            <td>boolean</td>
+            <td class="ngy2_object">
+              display
+              <br><span class="badge">boolean</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>true</td>
             <td>Displays/hides the main toolbar.</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;viewerToolbar.position</td>
-            <td>string</td>
+            <td class="ngy2_object">
+              position
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>'bottomOverImage'</td>
             <td>Vertical position.<br>
             Possible values: <b>'top', 'topOverImage', 'bottom', 'bottomOverImage'</b></td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;viewerToolbar.align</td>
-            <td>string</td>
+            <td class="ngy2_object">
+              align
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>'center'</td>
             <td>Horizontal alignement.<br>
             Possible values: <b>'left', 'right', 'center'</b></td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;viewerToolbar.fullWidth</td>
-            <td>boolean</td>
+            <td class="ngy2_object">
+              fullWidth
+              <br><span class="badge">boolean</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>false</td>
             <td>Toolbar is as width as the screen.</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;viewerToolbar.autoMinimize</td>
-            <td>integer</td>
+            <td class="ngy2_object">
+              autoMinimize
+              <br><span class="badge">integer</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>800</td>
             <td>Breakpoint for switching between minimized and standard toolbar.<br>If the width is lower than this value, the toolbar is switched to minimized.</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;viewerToolbar.standard</td>
-            <td>string</td>
+            <td class="ngy2_object">
+              standard
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>
               List of items to display in the standard toolbar (comma separated).<br>
@@ -1710,11 +1883,13 @@ $("#my_nanogallery2").nanogallery2({
               <br>
               <code>viewerToolbar: { standard :'minimizeButton, label'}</code><br>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;viewerToolbar.minimized</td>
-            <td>string</td>
+            <td class="ngy2_object">
+              minimized
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>
               List of items to display in the minimized toolbar (comma separated).<br>
@@ -1723,40 +1898,48 @@ $("#my_nanogallery2").nanogallery2({
               <br>
               <code>viewerToolbar: { standard :'minimizeButton, label, infoButton, shareButton, downloadButton, linkOriginalButton, fullscreenButton'}</code><br>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td><b>viewerTools</b></td>
-            <td>object</td>
+            <td>
+              <b>viewerTools</b>
+              <br><span class="badge">object</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>Tools positionned in the corners.</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;viewerTools.topLeft</td>
-            <td>string</td>
+            <td class="ngy2_object">
+              topLeft
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>
               Toolbar positioned in the top left corner.<br>
               Default value:<br>
               <code>viewerTools : { topLeft: 'pageCounter, playPauseButton'}</code>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;viewerTools.topRight</td>
-            <td>string</td>
+            <td class="ngy2_object">
+              topRight
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>
               Toolbar positioned in the top right corner.<br>
               Default value:<br>
               <code>viewerTools : { topRight: 'zoomButton, closeButton'}</code>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>viewerTheme<br>colorSchemeViewer</td>
-            <td>string<br>object</td>
+            <td>
+              viewerTheme<br>colorSchemeViewer
+              <br><span class="badge">string</span><span class="badge">object</span>
+              <br><span class="badge ngy2_ver">v1.0</span><span class="badge ngy2_ver">v1.5</span>
+            </td>
             <td>'dark'</td>
             <td>
               Image display theme.
@@ -1765,18 +1948,22 @@ $("#my_nanogallery2").nanogallery2({
               <br><br>
               <b>since v1.5, properties 'colorSchemeViewer' and 'viewerTheme' are synonymous</b>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>viewerDisplayLogo</td>
-            <td>boolean</td>
+            <td>
+              viewerDisplayLogo
+              <br><span class="badge">boolean</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>false</td>
             <td>To display a logo over the image.</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>viewerImageDisplay</td>
-            <td>string</td>
+            <td>
+              viewerImageDisplay
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.5</span>
+            </td>
             <td></td>
             <td>
               Manage the image display zoom factor.
@@ -1789,11 +1976,13 @@ $("#my_nanogallery2").nanogallery2({
               <br>
               &nbsp; - '<b>upscale</b>': upscale image to screen size
             </td>
-            <td>1.5</td>
           </tr>
           <tr>
-            <td>viewerTransitionMediaKind</td>
-            <td>string</td>
+            <td>
+              viewerTransitionMediaKind
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v2.0</span>
+            </td>
             <td>'img'</td>
             <td>
               Enables or disables the display transition for each media kind.
@@ -1802,7 +1991,6 @@ $("#my_nanogallery2").nanogallery2({
               <br>
               Example: viewerTransitionMediaKind: 'img,iframe'
             </td>
-            <td>2.0</td>
           </tr>
         </tbody>
       </table>
@@ -2571,3 +2759,4 @@ $("#my_nanogallery2").nanogallery2({
   </div>
   </div>
   </div>
+  
