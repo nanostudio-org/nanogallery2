@@ -1,3 +1,4 @@
+  
   <div class="container ngy2documentation">
   <div class="row" >
   <div class="col-md-10">
@@ -8,8 +9,8 @@
     <br><br><br>
     <br><br><br>
     <blockquote>
-      On this page, you will learn how to configure a content source.<br><br>
-      A content source is a place where your images and albums are stored. As for nanogallery2's settings, definition can be made with <b>HTML markup</b> or can be passed to the <code>nanogallery2()</code> function.<br>
+      On this page, you will learn how to configure the content of a gallery.<br><br>
+      A content source is a place where your images, videos and albums are stored. As for nanogallery2's settings, definition can be made with <b>HTML markup</b> or can be passed to the <code>nanogallery2()</code> function.<br>
       <br>
       <br>
       Natively, you can display self hosted images and videos (hosted on Youtube, Vimeo, Dailymotion), just by listing all your medias individually in your HTML page.
@@ -25,8 +26,10 @@
       Content source is defined on gallery initialization:
     </p>
     
-        <h3><u>HTML markup example:</u></h3>
+        <h3><u>- HTML markup method:</u></h3>
         <p>use the <code>data-nanogallery2</code> attribute.</p>
+        <span class="badge ngy2_code_markup"> HTML markup example</span> 
+
     <pre>
 &lt;div data-nanogallery2 = '{
     &lt;!-- ### gallery settings ### -->
@@ -42,8 +45,9 @@
 &lt;/div&gt;
     </pre>
         <br><br>
-        <h3><u>Javascript example:</u></h3>
+        <h3><u>- Javascript method:</u></h3>
         <p>settings are passed to the <code>nanogallery2()</code> function.</p>
+        <span class="badge ngy2_code_js" >Javascript example</span>
     <pre>
 $("#my_nanogallery2").nanogallery2({
   &lt;!-- ### gallery settings ### -->
@@ -65,38 +69,38 @@ $("#my_nanogallery2").nanogallery2({
     
     <div id="ngy2_comparison"></div>
     <br><br><br>
-    <h3><i class="fa fa-asterisk ngy2_color1" aria-hidden="true"></i> Media source comparison</h3>
+    <h3><i class="fa fa-asterisk ngy2_color1" aria-hidden="true"></i> Component feature comparison</h3>
     <hr>
     <div class="table-responsive" style="overflow-y: hidden;">
-      <table class="table table-stripedx table-hover">
+      <table class="table table-borderless2 table-stripedX table-hoverX ngy2_comparison2">
         <colgroup>
-          <col class="bg-info"></col>
-          <col span="2" class="bg-success">
-          <col span="2" class="bg-danger">
+          <col class="bg-infoX"></col>
+          <col span="2" class="bg-successX">
+          <col span="2" class="bg-dangerX">
         </colgroup>
         <thead>
         <tr>
             <th></th>
-            <th class="text-center bg-info" colspan="4">CONTENT DEFINITION</th>
+            <th class="text-center bg-X" colspan="4">COMPONENT</th>
             <!-- <th class="text-center" colspan="2">cloud</th> -->
         </tr>
         <tr>
             <th class="" style="font-size:1.2em;">feature</th>
-            <th class="text-center"><span style="font-size:1.2em;">markup or javascript</span><br>&nbsp;</th>
-            <th class="text-center"><span style="font-size:1.2em;"><a href="http://nanophotosprovider2.nanostudio.org/" target="_blank">nanoPhotosProvider2 <i class="fa fa-external-link" aria-hidden="true"></i></a></span><br>optional module</th>
+            <th class="text-center"><span style="font-size:1.2em;">nanogallery2</span><br>&nbsp;</th>
+            <th class="text-center"><span style="font-size:1.2em;"><a href="#ngy2_npp2"" target="_blank">nanoPhotosProvider2</a></span><br>optional module</th>
             <th class="text-center"><span style="font-size:1.2em;"><a href="#ngy2_google">Google Photos</a></span><br>optional module</th>
             <th class="text-center"><span style="font-size:1.2em;"><a href="#ngy2_flickr">Flickr</a></span><br>optional module</th>
           </tr>
         </thead>
         <tbody>
-          <tr style="border-top:3px solid #000;border-left:2px solid #000;border-right:2px solid #000;">
+          <tr>
             <td>self hosted media</td>
             <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
             <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
             <td class="text-center"><i class="fa fa-close" style="color:#e00;" aria-hidden="true"></i></td>
             <td class="text-center"><i class="fa fa-close" style="color:#e00;" aria-hidden="true"></i></td>
           </tr>
-          <tr style="border-bottom:2px solid #000;border-left:2px solid #000;border-right:2px solid #000;">
+          <tr>
             <td>cloud hosted media</td>
             <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
             <td class="text-center"><i class="fa fa-close" style="color:#e00;" aria-hidden="true"></i></td>
@@ -110,6 +114,7 @@ $("#my_nanogallery2").nanogallery2({
             <td class="text-center"><i class="fa fa-close" style="color:#e00;" aria-hidden="true"></i><i class="fa fa-close" style="color:#e00;" aria-hidden="true"></i></td>
             <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
           </tr>
+          <!--
           <tr>
             <td>no dependency to any external service</td>
             <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></i><i class="fa fa-close" style="color:#e00;" aria-hidden="true"></i></td>
@@ -117,15 +122,16 @@ $("#my_nanogallery2").nanogallery2({
             <td class="text-center"><i class="fa fa-close" style="color:#e00;" aria-hidden="true"></i></td>
             <td class="text-center"><i class="fa fa-close" style="color:#e00;" aria-hidden="true"></i></td>
           </tr>
-          <tr style="border-top:2px solid #000;border-left:2px solid #000;border-right:2px solid #000;">
+          -->
+          <tr>
             <td><b>images</b></td>
             <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
             <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
             <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
             <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
           </tr>
-          <tr style="border-bottom:2px solid #000;border-left:2px solid #000;border-right:2px solid #000;">
-            <td><b>videos</b><br>Youtube, Vimeo, Dailymotion</td>
+          <tr>
+            <td><b>videos</b><br> &nbsp; Youtube, Vimeo, Dailymotion</td>
             <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
             <td class="text-center"><i class="fa fa-close" style="color:#e00;" aria-hidden="true"></i></td>
             <td class="text-center"><i class="fa fa-close" style="color:#e00;" aria-hidden="true"></i></td>
@@ -193,7 +199,7 @@ $("#my_nanogallery2").nanogallery2({
     
 
     <div id="ngy2_self_hosted"></div>
-    <br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     <div style="padding: 5px 10px;19676B;background-color: #499195;">
       <h2 style="color:#fff;"><i class="fa fa-hashtag" aria-hidden="true"></i> Media content definition</h2>
     </div>
@@ -207,173 +213,209 @@ $("#my_nanogallery2").nanogallery2({
     </h4>
     <hr>
     <blockquote>
-      Live examples:<br><br>
-        &nbsp; &nbsp; <a href="http://codepen.io/Kris-B/pen/LyBwvN" type="button" class="btn btn-primary" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> demo - image gallery (markup)</a>
-        <br><br>
-        &nbsp; &nbsp; <a href="http://codepen.io/Kris-B/pen/eWLOZY" type="button" class="btn btn-primary" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> demo - gallery with albums (markup)</a>
-      <br><br><br>
-      Elements (images and albums) are defined using the <b>&lt;A&gt;</b> tag and <b>data-</b> attributs.<br>
-      <u><b>Example:</b></u><br>
-      <pre>
-&lt;div id="my_nanogallery2" data-nanogallery2&gt;
+      <h4>Image gallery</h4>
+      Images are defined using the <b>&lt;A&gt;</b> tag and <b>data-</b> attributes.<br>
+      <b>Note</b>: use the attribut <code>itemsBaseURL</code> to define the base URL where images are stored.<br>
+    </blockquote>
+    <span class="badge ngy2_code_markup"> HTML markup example</span> 
+    <a href="https://codepen.io/Kris-B/pen/LyBwvN" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+    <pre>
+&lt;div id="my_nanogallery2" data-nanogallery2 = '{ "itemsBaseURL": "https://mywebserver/gallery/myimages/"}' &gt;
   &lt;a href="img_01.jpg" data-ngthumb="img_01t.jpg"  data-ngdesc="Description1"        &gt;Title Image1&lt;/a&gt;
   &lt;a href="img_02.jpg" data-ngthumb="img_02ts.jpg" data-ngdesc="Image 2 description" &gt;Title Image2&lt;/a&gt;
   &lt;a href="img_03.jpg" data-ngthumb="img_03t.jpg"                                    &gt;Title Image3&lt;/a&gt;
 &lt;/div&gt;
-      </pre>
-      <br>
-      For albums, you need to define a kind and an ID for each element.<br>
-      Default kind is 'photo'. Use the attribut <code>data-ngid</code> for an element ID, and <code>data-ngalbumid</code> for an album ID.<br>
-      <u><b>Example:</b></u><br>
-      <pre>
-&lt;div id="my_nanogallery2" data-nanogallery2&gt;
-  &lt;!-- first album --&gt;
-  &lt;a href=""           data-ngkind="album" data-ngid="1"                     data-ngthumb="img01Ta.jpg"&gt;Album A&lt;/a&gt;
-  &lt;a href="img02a.jpg"                     data-ngid="10" data-ngalbumid="1" data-ngthumb="img02Ta.jpg"&gt;Image 1 / album A&lt;/a&gt;
-  &lt;a href="img03a.jpg"                     data-ngid="11" data-ngalbumid="1" data-ngthumb="img03Ta.jpg"&gt;Image 2 / album A&lt;/a&gt;
-
-  &lt;!-- second album --&gt;
-  &lt;a href=""          data-ngkind="album" data-ngid="2"                     data-ngthumb="image_02t.jpg"&gt;Album B&lt;/a&gt;
-  &lt;a href="img02.jpg"                     data-ngid="20" data-ngalbumid="2" data-ngthumb="img02T.jpg"   &gt;Image1&lt;/a&gt;
-  &lt;a href="img03.jpg"                     data-ngid="21" data-ngalbumid="2" data-ngthumb="img03T.jpg"   &gt;Image2&lt;/a&gt;
-  &lt;a href="img04.jpg"                     data-ngid="22" data-ngalbumid="2" data-ngthumb="img04T.jpg"   &gt;Image3&lt;/a&gt;
-&lt;/div&gt;    
-      </pre>
-      <br>
-      <b>Note</b>: use the attribut <code>itemsBaseURL</code> to define the base URL where images are stored.<br>
-      <u><b>Example:</b></u><br>
-      <pre>
-&lt;div id="my_nanogallery2" data-nanogallery2 <b>= '{ "itemsBaseURL": "http://mywebserver/gallery/myimages/"}'</b> &gt;
-  &lt;a href="img_01.jpg" data-ngthumb="img_01t.jpg"&gt;Title Image1&lt;/a&gt;
-  ...
-&lt;/div&gt;
-      </pre>
-      <br><br>
-      <h3><u>Video</u></h3>
-      <p>
-        <b>Supported video platforms: Youtube, Vimeo and Dailymotion.</b>
-        <br>
-        Define the URL of each video. Thumbnails are retrieved automatically for Youtube and Dialymotion. For Vimeo, you have to set the URL of the thumbnail for each video.
-        <br>
-        Videos and images can mixed in one gallery.
-        <br><br>
-        <b>Example:</b></u><br>
-        <pre>
-&lt;div id="my_nanogallery2" data-nanogallery2&gt;
-  &lt;a href="https://www.youtube.com/watch?v=Ir098VWCv8Q"  &gt;Youtube video&lt;/a&gt;
-  &lt;a href="http://www.dailymotion.com/video/x4wtyl6"     &gt;Dailymotion video&lt;/a&gt;
-  &lt;a href="https://vimeo.com/32875422"  data-ngthumb="https://i.vimeocdn.com/video/222726041_1280x720.jpg" &gt;Vimeo video&lt;/a&gt;
-  &lt;a href="img_01.jpg"   data-ngthumb="img_01t.jpg"      &gt;Title image&lt;/a&gt;
-&lt;/div&gt;
-        </pre>
-      </p>
+    </pre>
+    <br><br>
+    
+    <blockquote>
+    <h4>Gallery with albums</h4>
+    Albums are defined like images using the <b>&lt;A&gt;</b> tag and <b>data-</b> attributes.<br>
+    Must also be set for each album:<br>
+      &nbsp; - the data <b>kind</b> must be set: <code>data-ngkind="album"</code><br>
+      &nbsp; - an <b>unique ID</b>: use the HTML <code>ID</code> attribute or the <code>data-ngid</code> attribute<br>
+    To assign an item (image, video or album) to an album, use the attribute <code>data-ngalbumid</code> to point to the album.<br>
+    <br>
     </blockquote>
+    <span class="badge ngy2_code_markup"> HTML markup example</span> 
+    <a href="https://codepen.io/Kris-B/pen/eWLOZY" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+    <pre>
+&lt;div id="my_nanogallery2" data-nanogallery2 = '{ "itemsBaseURL": "https://mywebserver/gallery/myimages/"}' &gt;
+  &lt;!-- FIRST ALBUM --&gt;
+  &lt;a href=""           data-ngkind="album" data-ngid="1"                     data-ngthumb="img01Ta.jpg" &gt;Album A&lt;/a&gt;
+  &lt;a href="img02a.jpg"                     data-ngid="10" data-ngalbumid="1" data-ngthumb="img02Ta.jpg" &gt;Image 1 / album A&lt;/a&gt;
+  &lt;a href="img03a.jpg"                     data-ngid="11" data-ngalbumid="1" data-ngthumb="img03Ta.jpg" &gt;Image 2 / album A&lt;/a&gt;
+
+  &lt;!-- SECOND ALBUM --&gt;
+  &lt;a href=""          data-ngkind="album" data-ngid="2"                     data-ngthumb="image_02t.jpg" &gt;Album B&lt;/a&gt;
+  &lt;a href="img02.jpg"                     data-ngid="20" data-ngalbumid="2" data-ngthumb="img02T.jpg"    &gt;Image1&lt;/a&gt;
+  &lt;a href="img03.jpg"                     data-ngid="21" data-ngalbumid="2" data-ngthumb="img03T.jpg"    &gt;Image2&lt;/a&gt;
+  &lt;a href="img04.jpg"                     data-ngid="22" data-ngalbumid="2" data-ngthumb="img04T.jpg"    &gt;Image3&lt;/a&gt;
+&lt;/div&gt;    
+    </pre>
+    <br><br>
+    
+    <blockquote>
+      <h4>Video gallery</h4>
+      Videos are defined like images.<br>
+      Define the URL of each video. Thumbnails are retrieved automatically for Youtube and Dailymotion. For Vimeo, you have to set the URL of the video's thumbnail.<br>
+      <b>Supported video platforms: Youtube, Vimeo and Dailymotion.</b>
+    </blockquote>
+    <span class="badge ngy2_code_markup"> HTML markup example</span> 
+    <a href="https://codepen.io/Kris-B/pen/badZPw" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+    <pre>
+&lt;div id="my_nanogallery2" data-nanogallery2&gt;
+  &lt;a href="https://www.youtube.com/watch?v=Ir098VWCv8Q"                                                     &gt;Youtube&lt;/a&gt;
+  &lt;a href="http://www.dailymotion.com/video/x4wtyl6"                                                        &gt;Dailymotion&lt;/a&gt;
+  &lt;a href="https://vimeo.com/32875422"  data-ngthumb="https://i.vimeocdn.com/video/222726041_1280x720.jpg"  &gt;Vimeo&lt;/a&gt;
+&lt;/div&gt;
+    </pre>
+
+    <br><br>
+    
+    <blockquote>
+      <h4>Video and image gallery</h4>
+      Videos, images and album can be conbined in a single gallery.<br>
+    </blockquote>
+    <span class="badge ngy2_code_markup"> HTML markup example</span> 
+    <pre>
+&lt;div id="my_nanogallery2" data-nanogallery2 = '{ "itemsBaseURL": "https://mywebserver/gallery/myimages/"}' &gt;
+  &lt;a href="https://www.youtube.com/watch?v=Ir098VWCv8Q"                                                     &gt;Youtube&lt;/a&gt;
+  &lt;a href="http://www.dailymotion.com/video/x4wtyl6"                                                        &gt;Dailymotion&lt;/a&gt;
+  &lt;a href="https://vimeo.com/32875422"  data-ngthumb="https://i.vimeocdn.com/video/222726041_1280x720.jpg"  &gt;Vimeo&lt;/a&gt;
+  &lt;a href="img_01.jpg"                  data-ngthumb="img_01t.jpg"                                          &gt;Title Image1&lt;/a&gt;
+&lt;/div&gt;
+    </pre>
+    <br><br><br>
+    
+    
     
     <p>
-      This is the list of supported attributes (case-sensitive) to define one item (image or album). All values must be defined between double-quotes, even if the content is not a string.
+      This is the list of supported attributes (case-sensitive) to define one item (image, video or album).
     </p>
     
     <div class="table-responsive">
-      <table class="table table-striped table-hover">
+      <table class="table table-borderless table-stripedX table-hoverX">
         <thead>
           <tr>
             <th>property</th>
-            <th>type</th>
             <th>default</th>
             <th>description</th>
-            <th>min<br>version</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>data-ngdesc</td>
-            <td>string</td>
+            <td>
+              data-ngdesc
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
-            <td>Element description.</td>
-            <td>1.0</td>
+            <td>Item's description.</td>
           </tr>
           <tr>
-            <td>data-ngid</td>
-            <td>integer</td>
+            <td>
+              data-ngid
+              <br><span class="badge">integer</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
-            <td>Item ID.<br><span class="label label-primary">MANDATORY if your gallery contains albums -> assign an ID to each item (image and album).</span></td>
-            <td>1.0</td>
+            <td>Item's ID.<br><span class="label label-primary">MANDATORY if your gallery contains albums -> assign an ID to each item (image and album).</span></td>
           </tr>
           <tr>
-            <td>data-ngalbumid</td>
-            <td>integer</td>
+            <td>
+              data-ngalbumid
+              <br><span class="badge">integer</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>ID of the album containing the item.<br><span class="label label-primary">MANDATORY if your gallery contains albums.</span></td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>data-ngkind</td>
-            <td>string</td>
-            <td>'image'</td>
-            <td>Item's kind. Possible values: 'image', 'album'.</td>
-            <td>1.0</td>
+            <td>
+              data-ngkind
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
+            <td>"image"</td>
+            <td>Item's kind. Possible values: <b>"image"</b>, <b>"album"</b>.</td>
           </tr>
           <tr>
-            <td>data-ngthumb</td>
-            <td>string</td>
+            <td>
+              data-ngthumb
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>URL of the thumbnail image.<br><b>Image URL will be used if this parameter is not defined.</b></td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>data-ngthumbImgHeight</td>
-            <td>integer</td>
+            <td>
+              data-ngthumbImgHeight
+              <br><span class="badge">integer</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>0</td>
             <td>
               Height of the thumbnail image (in pixels).
               <br>
               <span class="label label-info">Not mandatory, but should be defined to improve overall performances.</span>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>data-ngthumbImgWidth</td>
-            <td>integer</td>
+            <td>
+              data-ngthumbImgWidth
+              <br><span class="badge">integer</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>0</td>
             <td>
               Width of the thumbnail image (in pixels).
               <br>
               <span class="label label-info">Not mandatory, but should be defined to improve overall performances.</span>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>data-ngimageWidth</td>
-            <td>integer</td>
+            <td>
+              data-ngimageWidth
+              <br><span class="badge">integer</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>0</td>
             <td>
               Width of the image (in pixels).
               <br>
               <span class="label label-info">Not mandatory, but should be defined to improve overall performances.</span>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>data-ngimageHeight</td>
-            <td>integer</td>
+            <td>
+              data-ngimageHeight
+              <br><span class="badge">integer</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>0</td>
             <td>
               Height of the image (in pixels).
               <br>
               <span class="label label-info">Not mandatory, but should be defined to improve overall performances.</span>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>data-ngdest</td>
-            <td>string</td>
+            <td>
+              data-ngdest
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
-            <td>Destination URL on thumbnail click (instead of displaying an image, the user is redirected to the specified URL).</td>
-            <td>1.0</td>
+            <td>Destination URL on thumbnail click (instead of displaying an image/video, the user is redirected to the specified URL).</td>
           </tr>
           <tr>
-            <td>data-ngimagedominantcolor</td>
-            <td>string</td>
+            <td>
+              data-ngimagedominantcolor
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.3</span>
+            </td>
             <td></td>
             <td>
               Thumbnail's image dominant color. RGB value in HEX-format.
@@ -381,11 +423,13 @@ $("#my_nanogallery2").nanogallery2({
               <br><b>Example:</b>
               <br><code>"data-ngimagedominantcolor": "#808080"</code>
             </td>
-            <td>1.3</td>
           </tr>
           <tr>
-            <td>data-ngimagedominantcolors</td>
-            <td>base64-string</td>
+            <td>
+              data-ngimagedominantcolors
+              <br><span class="badge">base64-string</span>
+              <br><span class="badge ngy2_ver">v1.3</span>
+            </td>
             <td></td>
             <td>
               Thumbnail's image dominant colors (gradient/blurred image).
@@ -394,97 +438,111 @@ $("#my_nanogallery2").nanogallery2({
               <br><b>Example:</b>
               <br><code>"data-ngimagedominantcolors": "data:image/gif;base64,R0lGODdhAwADAOMAAMnjXJi..........."</code>
             </td>
-            <td>1.3</td>
           </tr>
           <tr>
-            <td>data-ngcustomData</td>
-            <td>object</td>
+            <td>
+              data-ngcustomData
+              <br><span class="badge">object</span>
+              <br><span class="badge ngy2_ver">v1.2</span>
+            </td>
             <td></td>
             <td>
               Object to store custom data.
               <br>
               <b>Example:</b>
               <br>
-              <code>data-ngcustomData='{"property1": "value1", "property2": "value2"}'</code>
+              <code>"data-ngcustomData" = '{ "property1": "value1", "property2": "value2" }'</code>
             </td>
-            <td>1.2</td>
           </tr>
           <tr>
-            <td>data-ngtags</td>
-            <td>string</td>
+            <td>
+              data-ngtags
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
-            <td>Image tags</td>
-            <td>1.0</td>
+            <td>Image tags - used for filtering</td>
           </tr>
           <tr>
-            <td>data-ngexifmodel</td>
-            <td>string</td>
+            <td>
+              data-ngexifmodel
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>Exif model</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>data-ngexifflash</td>
-            <td>string</td>
+            <td>
+              data-ngexifflash
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>Exif flash</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>data-ngexiffocallength</td>
-            <td>string</td>
+            <td>
+              data-ngexiffocallength
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>Exif focal length</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>data-ngexiffstop</td>
-            <td>string</td>
+            <td>
+              data-ngexiffstop
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>Exif fstop</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>data-ngexifexposure</td>
-            <td>string</td>
+            <td>
+              data-ngexifexposure
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>Exif exposure</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>data-ngexifiso</td>
-            <td>string</td>
+            <td>
+              data-ngexifiso
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>Exif ISO</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>data-ngexiftime</td>
-            <td>string</td>
+            <td>
+              data-ngexiftime
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>Exif date/time</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>data-ngexiflocation</td>
-            <td>string</td>
+            <td>
+              data-ngexiflocation
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>Exif location - this value is used to display the image location with Google Maps on the image info window.</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>data-ngdownloadurl</td>
-            <td>string</td>
+            <td>
+              data-ngdownloadurl
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.2</span>
+            </td>
             <td></td>
             <td>URL to define a specific image for download</td>
-            <td>1.2</td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
           </tr>
         </tbody>
       </table>
@@ -497,233 +555,290 @@ $("#my_nanogallery2").nanogallery2({
     <h3><b><i class="fa fa-asterisk ngy2_color1" aria-hidden="true"></i> Javascript method</b></h3>
     <h4 class="lead">for images and videos</h4>
     <hr>
+    
     <blockquote>
-      Live examples:
-        <br><br>      
-        &nbsp; &nbsp; <a href="http://codepen.io/Kris-B/pen/mROmKM" type="button" class="btn btn-primary" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> demo - image gallery (javascript)</a>
-        <br><br>
-        &nbsp; &nbsp; <a href="http://codepen.io/Kris-B/pen/GrNmxv" type="button" class="btn btn-primary" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> demo - gallery with albums (javascript)</a>
-      <br><br><br>
-      Define the elements on gallery initialization.<br>
-      <u><b>Example:</b></u><br>
-      <pre>
-&lt;div id="my_nanogallery2" data-nanogallery2&gt;&lt;/div&gt;
-
-&lt;script>
-$(document).ready(function () {
-  $("#my_nanogallery2").nanoGallery({
-    items: [
-      {
-        src:          'image_01.jpg',    // image url
-        srct:         'image_01ts.jpg',  // thumbnail url
-        title:        'Title Image1',    // media title
-        description:  'Description1'     // media description
-      },
-      { src: 'image_02.jpg', srct: 'image_02t.jpg',  title: 'Title Image2' },
-      { src: 'image_03.jpg', srct: 'image_03ts.jpg', title: 'Title Image3' }
-    ]
-  )};
-)};
-&lt;/script>
-      </pre>
-      <br>
-      <br>
-      For albums, you need to define a <code>kind</code> and an <code>ID</code> for each element.<br>
-      Default kind is 'photo'. Use the option <code>ID</code> for an element ID, and <code>albumID</code> for an album ID.
-      <br>
-      <u><b>Example:</b></u><br>
-      <pre>
-&lt;div id="my_nanogallery2" data-nanogallery2&gt;&lt;/div&gt;
-
-&lt;script>
-$(document).ready(function () {
-  $("#my_nanogallery2 ").nanoGallery({
-    items: [
-      // album 1
-      { src: 'image_01.jpg',                         title: 'album A',  ID: 1,	kind:'album' },
-      { src: 'image_01.jpg', srct: 'image_01ts.jpg', title: 'image A1', ID: 10, albumID: 1 },
-      { src: 'image_02.jpg', srct: 'image_02ts.jpg', title: 'image A2', ID: 11, albumID: 1 },
-      { src: 'image_03.jpg', srct: 'image_03ts.jpg', title: 'image A3', ID: 12, albumID: 1 },
-      
-      // album 2
-      {	src: 'image_02.jpg',                         title: 'album B',  ID: 2,  kind:'album' },
-      { src: 'image_01.jpg', srct: 'image_01ts.jpg', title: 'image B1', ID: 20, albumID: 2 },
-      { src: 'image_02.jpg', srct: 'image_02ts.jpg', title: 'image B2', ID: 21, albumID: 2 },
-      { src: 'image_03.jpg', srct: 'image_03ts.jpg', title: 'image B3', ID: 22, albumID: 2 }
-    ]
-  )};
-)};
-&lt;/script>
-      </pre>
-      <br>
-      Note: use the option <code>itemsBaseURL</code> to define the base URL where images are stored.
-      <br><br>
-      <br><br>
-      <h3><u>Video</u></h3>
-      <p>
-        <b>Supported video platforms: Youtube, Vimeo and Dailymotion.</b>
-        <br>
-        Define the URL of each video. Thumbnails are retrieved automatically for Youtube and Dialymotion. For Vimeo, you have to set the URL of the thumbnail for each video.
-        <br>
-        Videos and images can mixed in one gallery.
-        <br><br>
-        <b>Example:</b></u><br>
-        <pre>
-&lt;div id="my_nanogallery2" data-nanogallery2&gt;&lt;/div&gt;
-
-&lt;script>
-$(document).ready(function () {
-  $("#my_nanogallery2").nanoGallery({
-    items: [
-      {
-        src:          'https://vimeo.com/32875422',                           // media url
-        srct:         'https://i.vimeocdn.com/video/222726041_1280x720.jpg',  // media thumbnail url
-        title:        'Vimeo video',                                          // media title
-        description:  'Video'                                                 // media description
-      },
-      { src: 'https://www.youtube.com/watch?v=Ir098VWCv8Q', title: 'Youtube video' },
-      { src: 'http://www.dailymotion.com/video/x4wtyl6',    title: 'Dailymotion video' },
-      { src: 'image_01.jpg',      srct: 'image_01ts.jpg',   title: 'Title Image' }
-    ]
-  )};
-)};
-&lt;/script>
-        </pre>
-      </p>
+      <h4>Image gallery</h4>
+      Images are defined on gallery initialization, using javascript objects.<br>
     </blockquote>
+    <span class="badge ngy2_code_js" >Javascript example</span>
+    <a href="https://codepen.io/Kris-B/pen/mROmKM" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+    <pre>
+&lt;div id="my_nanogallery2" data-nanogallery2&gt;&lt;/div&gt;
+
+&lt;script>
+  $(document).ready(function () {
+    $("#my_nanogallery2").nanoGallery({
+      items: [
+        {
+          src:          'image_01.jpg',    // image url
+          srct:         'image_01ts.jpg',  // thumbnail url
+          title:        'Title Image1',    // media title
+          description:  'Description1'     // media description
+        },
+        { src: 'image_02.jpg', srct: 'image_02t.jpg',  title: 'Title Image2' },
+        { src: 'image_03.jpg', srct: 'image_03ts.jpg', title: 'Title Image3' }
+      ]
+    )};
+  )};
+&lt;/script>
+    </pre>
+    <br><br>
+
+    <blockquote>
+    <h4>Gallery with albums</h4>
+    Albums are defined like images.<br>
+    Must also be set for each album:<br>
+      &nbsp; - the data <b>kind</b> must be set: <code>kind: 'album'</code><br>
+      &nbsp; - an <b>unique ID</b>: use the property <code>ID</code><br>
+      To assign an item (image, video or album) to an album, use the property <code>albumID</code> to point to the album.<br>
+    <br>
+    </blockquote>
+    <span class="badge ngy2_code_js" >Javascript example</span>
+    <a href="https://codepen.io/Kris-B/pen/GrNmxv" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+    <pre>
+&lt;div id="my_nanogallery2" data-nanogallery2&gt;&lt;/div&gt;
+
+&lt;script>
+  $(document).ready(function () {
+    $("#my_nanogallery2 ").nanoGallery({
+      items: [
+        // album 1
+        { src: 'image_01.jpg',                         title: 'album A',  ID: 1,	kind:'album' },
+        { src: 'image_01.jpg', srct: 'image_01ts.jpg', title: 'image A1', ID: 10, albumID: 1 },
+        { src: 'image_02.jpg', srct: 'image_02ts.jpg', title: 'image A2', ID: 11, albumID: 1 },
+        { src: 'image_03.jpg', srct: 'image_03ts.jpg', title: 'image A3', ID: 12, albumID: 1 },
+        
+        // album 2
+        {	src: 'image_02.jpg',                         title: 'album B',  ID: 2,  kind:'album' },
+        { src: 'image_01.jpg', srct: 'image_01ts.jpg', title: 'image B1', ID: 20, albumID: 2 },
+        { src: 'image_02.jpg', srct: 'image_02ts.jpg', title: 'image B2', ID: 21, albumID: 2 },
+        { src: 'image_03.jpg', srct: 'image_03ts.jpg', title: 'image B3', ID: 22, albumID: 2 }
+      ]
+    )};
+  )};
+&lt;/script>
+    </pre>
+    <br><br>    
+
+    <blockquote>
+      <h4>Video gallery</h4>
+      Videos are defined like images.<br>
+      Define the URL of each video. Thumbnails are retrieved automatically for Youtube and Dailymotion. For Vimeo, you have to set the URL of the video's thumbnail.<br>
+      <b>Supported video platforms: Youtube, Vimeo and Dailymotion.</b>
+    </blockquote>
+    <span class="badge ngy2_code_js" >Javascript example</span>
+    <pre>
+&lt;div id="my_nanogallery2" data-nanogallery2&gt;&lt;/div&gt;
+
+&lt;script>
+  $(document).ready(function () {
+    $("#my_nanogallery2").nanoGallery({
+      items: [
+        {
+          src:          'https://vimeo.com/32875422',                           // video url
+          srct:         'https://i.vimeocdn.com/video/222726041_1280x720.jpg',  // video thumbnail url
+          title:        'Vimeo video',                                          // video title
+          description:  'Video'                                                 // video description
+        },
+        { src: 'https://www.youtube.com/watch?v=Ir098VWCv8Q', title: 'Youtube video' },
+        { src: 'http://www.dailymotion.com/video/x4wtyl6',    title: 'Dailymotion video' },
+      ]
+    )};
+  )};
+&lt;/script>
+    </pre>
+    <br><br>
+
+    <blockquote>
+      <h4>Video and image gallery</h4>
+      Videos, images and album can be conbined in a single gallery.<br>
+    </blockquote>
+    <span class="badge ngy2_code_js" >Javascript example</span>
+    <a href="https://codepen.io/Kris-B/pen/OzVGqx" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+    <pre>
+&lt;div id="my_nanogallery2" data-nanogallery2&gt;&lt;/div&gt;
+
+&lt;script>
+  $(document).ready(function () {
+    $("#my_nanogallery2").nanoGallery({
+      items: [
+        {
+          src:          'https://vimeo.com/32875422',                           // media url
+          srct:         'https://i.vimeocdn.com/video/222726041_1280x720.jpg',  // media thumbnail url
+          title:        'Vimeo video',                                          // media title
+          description:  'Video'                                                 // media description
+        },
+        { src: 'https://www.youtube.com/watch?v=Ir098VWCv8Q', title: 'Youtube video' },
+        { src: 'http://www.dailymotion.com/video/x4wtyl6',    title: 'Dailymotion video' },
+        { src: 'image_01.jpg',      srct: 'image_01ts.jpg',   title: 'Title Image' }
+      ]
+    )};
+  )};
+&lt;/script>
+    </pre>
+    <br><br><br>
+
+
 
     <p>
       This is the list of supported properties to define one item (image or album). The properties are case-sensitive. An item object is an image or an album.
     </p>
     
     <div class="table-responsive">
-      <table class="table table-striped table-hover">
+      <table class="table table-borderless table-stripedX table-hoverX">
         <thead>
           <tr>
             <th>property</th>
-            <th>type</th>
             <th>default</th>
             <th>description</th>
-            <th>min<br>version</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>title</td>
-            <td>string</td>
+            <td>
+              title
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
-            <td>Title of the element.</td>
-            <td>1.0</td>
+            <td>Title of the item.</td>
           </tr>
           <tr>
-            <td>description</td>
-            <td>string</td>
+            <td>
+              description
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
-            <td>Description of the element</td>
-            <td>1.0</td>
+            <td>Description of the item</td>
           </tr>
           <tr>
-            <td>kind</td>
-            <td>string</td>
+            <td>
+              kind
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>'image'</td>
             <td>Type of the item. Possible values: 'image', 'album'.</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>ID</td>
-            <td>integer</td>
+            <td>
+              ID
+              <br><span class="badge">integer</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>
               Item ID.<br>
               <span class="label label-primary">MANDATORY if your gallery contains albums -> assign an ID to each item (image and album).</span>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>albumID</td>
-            <td>integer</td>
+            <td>
+              albumID
+              <br><span class="badge">integer</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>
               ID of the album containing the item.<br>
               <span class="label label-primary">MANDATORY if your gallery contains albums.</span>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>tags</td>
-            <td>string</td>
+            <td>
+              tags
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
-            <td>Tags of the element.</td>
-            <td>1.0</td>
+            <td>Tags of the element - used for filtering.</td>
           </tr>
           <tr>
-            <td>destURL</td>
-            <td>string</td>
+            <td>
+              destURL
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
-            <td>Destination URL on thumbnail click (instead of displaying an image, the user is redirected to the specified URL).</td>
-            <td>1.0</td>
+            <td>Destination URL on thumbnail click (instead of displaying an image/video, the user is redirected to the specified URL).</td>
           </tr>
           <tr>
-            <td>src</td>
-            <td>string</td>
+            <td>
+              src
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>URL of the image.</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>height</td>
-            <td>integer</td>
+            <td>
+              height
+              <br><span class="badge">integer</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>0</td>
             <td>
               Height of the image (in pixels).
               <br>
               <span class="label label-info">Not mandatory, but should be defined to improve overall performances.</span>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>width</td>
+            <td>
+              width
+              <br><span class="badge">integer</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>integer</td>
-            <td>0</td>
             <td>
               Width of the image (in pixels).
               <br>
               <span class="label label-info">Not mandatory, but should be defined to improve overall performances.</span>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>srct</td>
-            <td>string</td>
+            <td>
+              srct
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>URL of the thumbnail image.<br><b>Image URL will be used if this parameter is not defined.</b></td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>imgtHeight</td>
-            <td>integer</td>
+            <td>
+              imgtHeight
+              <br><span class="badge">integer</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>0</td>
             <td>
               Height of the thumbnail image (in pixels).
               <br>
               <span class="label label-info">Not mandatory, but should be defined to improve overall performances.</span>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>imgtWidth</td>
-            <td>integer</td>
+            <td>
+              imgtWidth
+              <br><span class="badge">integer</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>0</td>
             <td>
               Width of the thumbnail image (in pixels).
               <br>
               <span class="label label-info">Not mandatory, but should be defined to improve overall performances.</span>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>imageDominantColor</td>
-            <td>string</td>
+            <td>
+              imageDominantColor
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.3</span>
+            </td>
             <td></td>
             <td>
               Thumbnail's image dominant color. RGB value in HEX-format.
@@ -731,11 +846,13 @@ $(document).ready(function () {
               <br><b>Example:</b>
               <br><code>imageDominantColor: '#808080'</code>
             </td>
-            <td>1.3</td>
           </tr>
           <tr>
-            <td>imageDominantColors</td>
-            <td>string</td>
+            <td>
+              imageDominantColors
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.3</span>
+            </td>
             <td></td>
             <td>
               Thumbnail's image dominant colors (gradient/blurred image).
@@ -744,11 +861,13 @@ $(document).ready(function () {
               <br><b>Example:</b>
               <br><code>imageDominantColors: 'data:image/gif;base64,R0lGODdhAwADAOMAAMnjXJi..................'</code>
             </td>
-            <td>1.3</td>
           </tr>
           <tr>
-            <td>customData</td>
-            <td>object</td>
+            <td>
+              customData
+              <br><span class="badge">object</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>
               Object to store custom data.
@@ -757,77 +876,87 @@ $(document).ready(function () {
               <br>
               <code>{src: 'img.jpg', srct: 'imgt.jpg', title: 'image01', customData:{prop1: val1, prop1: val2} }</code>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>exifModel</td>
-            <td>string</td>
+            <td>
+              exifModel
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>Exif model</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>exifFlash</td>
-            <td>string</td>
+            <td>
+              exifFlash
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>Exif flash</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>exifFocalLength</td>
-            <td>string</td>
+            <td>
+              exifFocalLength
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>Exif focal length</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>exifFStop</td>
-            <td>string</td>
+            <td>
+              exifFStop
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>Exif fstop</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>exifExposure</td>
-            <td>string</td>
+            <td>
+              exifExposure
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>Exif exposure</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>exifIso</td>
-            <td>string</td>
+            <td>
+              exifIso
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>Exif ISO</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>exifTime</td>
-            <td>string</td>
+            <td>
+              exifTime
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>Exif date/time</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>exifLocation</td>
-            <td>string</td>
+            <td>
+              exifLocation
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>Exif location - this value is used to display the image location with Google Maps on the image info window.</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>downloadURL</td>
-            <td>string</td>
+            <td>
+              downloadURL
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.2</span>
+            </td>
             <td></td>
             <td>URL to define a specific image for download</td>
-            <td>1.2</td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>1.0</td>
           </tr>
         </tbody>
       </table>
@@ -852,7 +981,7 @@ $(document).ready(function () {
     <div id="ngy2_npp2"></div>
     <br><br><br><br><br><br><br>
     <h3><b><i class="fa fa-asterisk ngy2_color1" aria-hidden="true"></i> nanoPhotosProvider2</b></h3>
-    <h4>For images and albums stored on your PHP webserver.</h4>
+    <h4  class="lead">For images and albums stored on your PHP webserver.</h4>
     <hr>
     <blockquote>
       <b>nanoPhotosProvider2</b> is a PHP application for your webserver. Very easy to setup, it provides images and albums automatically to nanogallery2.
@@ -860,20 +989,21 @@ $(document).ready(function () {
       Thumbnails for all nanogallery2 layouts (grid, justified, cascading and mosaic) are automatically generated.
       <br>
       Blurred preview images are used for a really nice effect.
-      <br><br>
+    </blockquote>
+
+      <br>
       <u><b>Usage:</b></u>
-      <br><br>
       <ol>
         <li>
           start by installing nanoPhotosProvider2 on your PHP web server. Follow the installation steps on the <a href="http://nanophotosprovider2.nanostudio.org/" type="button" class="btn btn-success " target="_blank"><b>nanoPhotosProvider2</b></a> homepage.
-          <br><br>
+          <br>
         </li>
         <li>
           then configure your HTML page to display the gallery:
               
           <br><br>
           <br>
-          - HTML markup example:
+          <span class="badge ngy2_code_markup"> HTML markup example</span> 
           <pre>
 &lt;div id="nanogallery2" data-nanogallery2='{
     "kind":             "nano_photos_provider2",
@@ -883,8 +1013,8 @@ $(document).ready(function () {
   }'>      
 &lt;/div>
           </pre>
-          <br><br>
-          - Javascript example:
+          <br>
+          <span class="badge ngy2_code_js" >Javascript example</span>
           <pre>
 jQuery("#nanogallery2").nanogallery2({
   kind:             'nano_photos_provider2',
@@ -907,32 +1037,36 @@ jQuery("#nanogallery2").nanogallery2({
           </li>
         </ul>
       </p>
-    </blockquote>
+      <br><br>
+      
     <div class="table-responsive">
-      <table class="table table-striped table-hover">
+      <table class="table table-borderless table-stripedX table-hoverX">
         <thead>
           <tr>
             <th>property</th>
-            <th>type</th>
             <th>default</th>
             <th>description</th>
-            <th>min<br>version</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>kind</td>
-            <td>string</td>
+            <td>
+              kind
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.3</span>
+            </td>
             <td></td>
             <td>
               <span class="label label-primary">MANDATORY</span><br>
               Storage type. Must be set to <code>'nano_photos_provider2'</code> to access nanoPhotosProvider2 data.
             </td>
-            <td>1.3</td>
           </tr>
           <tr>
-            <td>dataProvider</td>
-            <td>string</td>
+            <td>
+              dataProvider
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.3</span>
+            </td>
             <td></td>
             <td>
               <span class="label label-primary">MANDATORY</span><br>
@@ -942,42 +1076,50 @@ jQuery("#nanogallery2").nanogallery2({
               <br>
               <code>dataProvider: 'http://mywebsever.com/nano_photos_provider2/nano_photos_provider2.php'</code>
             </td>
-            <td>1.3</td>
           </tr>
           <tr>
-            <td>blackList</td>
-            <td>string</td>
+            <td>
+              blackList
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.4</span>
+            </td>
             <td></td>
             <td>
               List of keywords to ignore - album's name containing one of the keywords in the title will be ignored.<br>
               Keyword separator is <b>|</b>
             </td>
-            <td>1.4</td>
           </tr>
           <tr>
-            <td>whiteList</td>
-            <td>string</td>
+            <td>
+              whiteList
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.4</span>
+            </td>
             <td></td>
             <td>
               List of keywords to authorize - album's name must contain one of the keywords to be displayed.<br>
               Keyword separator is <b>|</b>
             </td>
-            <td>1.4</td>
           </tr>
           <tr>
-            <td>album<br>photoset</td>
-            <td>string</td>
+            <td>
+              album<br>photoset
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.4</span>
+            </td>
             <td></td>
             <td>
               To display only the content (=the images) of one specific album/folder.<br>
               <br>
               note: 'photoset' is an alias of 'album'
             </td>
-            <td>1.4</td>
           </tr>
           <tr>
-            <td>albumList2</td>
-            <td>string<br>array</td>
+            <td>
+              albumList2
+              <br><span class="badge">string</span><span class="badge">array</span>
+              <br><span class="badge ngy2_ver">v1.4</span>
+            </td>
             <td></td>
             <td>
               The list of albums to display.<br>
@@ -986,7 +1128,6 @@ jQuery("#nanogallery2").nanogallery2({
               One album: <code>albumList2: 'architecture'</code><br>
               Three albums: <code>albumList2: ['architecture', 'friends', 'into the wild']</code><br>
             </td>
-            <td>1.4</td>
           </tr>
         </tbody>
       </table>
@@ -1006,11 +1147,12 @@ jQuery("#nanogallery2").nanogallery2({
       <span style="color:#d00;"><b>
         This feature is provided "as-is". nanogallery2 is not affiliated to Flickr. Changes by Flickr may affect your galleries. nanogallery2 can not be held responsible for any issue caused by any change on Flickr.
       </b></span>
-      <br>
+    </blockquote>
+
       <br>
       <ul>
         <li>
-          HTML markup example:
+          <span class="badge ngy2_code_markup"> HTML markup example</span> 
           <pre>
 &lt;div id="nanogallery2" data-nanogallery2='{
     "kind":             "flickr",
@@ -1022,7 +1164,7 @@ jQuery("#nanogallery2").nanogallery2({
           </pre>
         </li>
         <li>
-          Javascript example:
+          <span class="badge ngy2_code_js" >Javascript example</span>
           <pre>
 jQuery("#nanogallery2").nanogallery2({
   kind:             'flickr',
@@ -1034,7 +1176,7 @@ jQuery("#nanogallery2").nanogallery2({
         </li>
       </ul>
       
-      <br><br>
+      <br>
       This is an <u>optional module</u>. To use it, include in your HTML page:
       <p>
         <ul>
@@ -1046,32 +1188,36 @@ jQuery("#nanogallery2").nanogallery2({
           </li>
         </ul>
       </p>
-    </blockquote>
+      <br><br>
+      
     <div class="table-responsive">
-      <table class="table table-striped table-hover">
+      <table class="table table-borderless table-stripedX table-hoverX">
         <thead>
           <tr>
             <th>property</th>
-            <th>type</th>
             <th>default</th>
             <th>description</th>
-            <th>min<br>version</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>kind</td>
-            <td>string</td>
+            <td>
+              kind
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>
               <span class="label label-primary">MANDATORY</span><br>
               Storage type. Must be set to <code>'flickr'</code> to access Flickr data.
               </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>userID</td>
-            <td>string</td>
+            <td>
+              userID
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>
               <span class="label label-primary">MANDATORY</span><br>
@@ -1079,11 +1225,13 @@ jQuery("#nanogallery2").nanogallery2({
               <br><br>
               To retrieve your Flickr user ID: <a href="http://www.flickr.com/services/api/explore/flickr.people.findByUsername" target="_blank" style="background-color:#eee;"><b>use this page</b></a>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>album<br>photoset</td>
-            <td>string</td>
+            <td>
+              album<br>photoset
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>
               Photoset ID - to display only the content (=the images) of one specific photoset.<br>
@@ -1091,33 +1239,39 @@ jQuery("#nanogallery2").nanogallery2({
               <br>
               note: 'photoset' is an alias of 'album'
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>blackList</td>
-            <td>string</td>
+            <td>
+              blackList
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>
               List of keywords to ignore - albums containing one of the keywords in the title will be ignored.
               <br>
               Keyword separator is <b><code>|</code></b>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>whiteList</td>
-            <td>string</td>
+            <td>
+              whiteList
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>
               List of keywords to authorize - albums must contain one of the keywords to be displayed.
               <br>
               Keyword separator is <b><code>|</code></b>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>albumList2</td>
-            <td>string<br>array</td>
+            <td>
+              albumList2
+              <br><span class="badge">string</span><span class="badge">array</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>
               The list of albums to display. You can specify an album name or it's ID.<br>
@@ -1126,33 +1280,38 @@ jQuery("#nanogallery2").nanogallery2({
               One album: <code>albumList2: 'architecture'</code><br>
               Three albums: <code>albumList2: ['architecture', 'friends', '5851968929721015169']</code><br>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>flickrSkipOriginal</td>
-            <td>boolean</td>
+            <td>
+              flickrSkipOriginal
+              <br><span class="badge">boolean</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>true</td>
             <td>
               Do not display the original uploaded image (e.g. to <b>avoid rotation issue</b>).
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>thumbnailOpenOriginal</td>
-            <td>boolean</td>
+            <td>
+              thumbnailOpenOriginal
+              <br><span class="badge">boolean</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>false</td>
             <td>Displays the original image in Flickr, without opening the lightbox.</td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>thumbnailCropScaleFactor</td>
-            <td>decimal</td>
+            <td>
+              thumbnailCropScaleFactor
+              <br><span class="badge">decimal</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>1.5</td>
             <td>
               Activating the crop option to avoid black image borders may scale the thumbnail image up.<br>
               For this case and to avoid quality loss, the <code>thumbnailCropScaleFactor</code> will be applied to the thumbnail size to get a better image quality.
             </td>
-            <td>1.0</td>
           </tr>
         </tbody>
       </table>
@@ -1189,9 +1348,9 @@ jQuery("#nanogallery2").nanogallery2({
         To solve this issue, you need to use the server module <b>NANOGP</b> (<a href="https://github.com/nanostudio-org/nanogp" target="_blank">more here</a>) .
         </b>
       </span>
-      <br>
-      <br>
-      <br>
+    </blockquote>
+
+      <br><br>
       <u><b>Usage:</b></u>
       <br>
       <ol>
@@ -1202,7 +1361,7 @@ jQuery("#nanogallery2").nanogallery2({
           then configure your HTML page to display a gallery.
           <br>
           <br>
-          - HTML markup example:
+          <span class="badge ngy2_code_markup"> HTML markup example</span> 
           <pre>
 &lt;div id="nanogallery2" data-nanogallery2='{
     "kind":             "google2",
@@ -1213,7 +1372,7 @@ jQuery("#nanogallery2").nanogallery2({
   }'>      
 &lt;/div>
           </pre>
-          - Javascript example:
+          <span class="badge ngy2_code_js" >Javascript example</span>
           <pre>
 jQuery("#nanogallery2").nanogallery2({
   kind:             'google2',
@@ -1239,45 +1398,49 @@ jQuery("#nanogallery2").nanogallery2({
         </ul>
       </p>
       <br>
-      By default, all your non shared albums are displayed.
-      <br>
-      Image description field is not supported.
-    </blockquote>
+      By default, all your non shared albums are displayed. Image description field is not supported.
+      <br><br>
+    
     <div class="table-responsive">
-      <table class="table table-striped table-hover">
+      <table class="table table-borderless table-stripedX table-hoverX">
         <thead>
           <tr>
             <th>property</th>
-            <th>type</th>
             <th>default</th>
             <th>description</th>
-            <th>min<br>version</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>kind</td>
-            <td>string</td>
+            <td>
+              kind
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>
               <span class="label label-primary">MANDATORY</span><br>
               Storage type. Must be set to '<b>google2</b>' to access Google Photos data.
-              </td>
-            <td>1.0</td>
+            </td>
           </tr>
           <tr>
-            <td>userID</td>
-            <td>string</td>
+            <td>
+              userID
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>
               <span class="label label-primary">MANDATORY</span><br>
               The Google Photos / Google+ user account ID.
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>google2URL</td>
-            <td>string</td>
+            <td>
+              google2URL
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>
               <span class="label label-primary">MANDATORY</span><br>
@@ -1287,19 +1450,21 @@ jQuery("#nanogallery2").nanogallery2({
               <br>
               <code>google2URL: 'https://mywebsever/nanogp/nanogp.php'</code>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>album</td>
-            <td>string</td>
+            <td>
+              album
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>
               To display the content (= the photos) of one single album.<br>
               Set the Album ID.<br>
               Example: <code>album: '5851968929721015169'</code>
               <br><br>
+              <b>Private albums</b> - no more available since Google API changed<br>
               <strike>
-              <b>Private albums</b><br>
               To display the images contained in a private album, you'll need the authKey. It can be found in the tool <a href="http://nanogpvisibility.herokuapp.com/index.html" target="_blank" style="background-color:#eee;"> &nbsp; <b>nanoGPVisibility</b> &nbsp; </a>.
               <br>
               Usage example:<br>
@@ -1308,11 +1473,13 @@ jQuery("#nanogallery2").nanogallery2({
               Note: locationHash is automatically disabled when using private albums.
               </strike>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>albumList2</td>
-            <td>string<br>array</td>
+            <td>
+              albumList2
+              <br><span class="badge">string</span><span class="badge">array</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>
               The list of albums to display. You can specify an album name or it's ID.<br>
@@ -1321,8 +1488,8 @@ jQuery("#nanogallery2").nanogallery2({
               One album: <code>albumList2: 'architecture'</code><br>
               Three albums: <code>albumList2: ['architecture', 'friends', '5851968929721015169']</code><br>
               <br>
+              <b>Private albums</b> - no more available since Google API changed<br>
               <strike>
-              <b>Private albums</b><br>
               Google Photos private album can also be displayed with nanogallery2.<br>
               The authKey of the private albums is required. It can be found in the tool <a href="http://nanogpvisibility.herokuapp.com/index.html" target="_blank" style="background-color:#eee;"> &nbsp; <b>nanoGPVisibility</b> &nbsp; </a>.
               <br>
@@ -1332,47 +1499,54 @@ jQuery("#nanogallery2").nanogallery2({
               Note: locationHash is automatically disabled when using private albums.
               </strike>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>blackList</td>
-            <td>string</td>
+            <td>
+              blackList
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>'scrapbook|profil'</td>
             <td>
               List of keywords to ignore - album's name containing one of the keywords in the title will be ignored.<br>
               Keyword separator is <b>|</b>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>whiteList</td>
-            <td>string</td>
+            <td>
+              whiteList
+              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td></td>
             <td>
               List of keywords to authorize - album's name must contain one of the keywords to be displayed.<br>
               Keyword separator is <b>|</b>
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>viewerZoom</td>
-            <td>boolean</td>
+            <td>
+              viewerZoom
+              <br><span class="badge">boolean</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>true</td>
             <td>
               Enables/disables image zoom in lightbox
               <br>If disabled, then the image size corresponding to the user screen resolution will be downloaded, instead of the full-resolution one.
             </td>
-            <td>1.0</td>
           </tr>
           <tr>
-            <td>thumbnailCropScaleFactor</td>
-            <td>decimal</td>
+            <td>
+              thumbnailCropScaleFactor
+              <br><span class="badge">decimal</span>
+              <br><span class="badge ngy2_ver">v1.0</span>
+            </td>
             <td>1.5</td>
             <td>
               Activating the crop option to avoid black image borders may scale the thumbnail image up.<br>
               For this case and to avoid quality loss, the <code>thumbnailCropScaleFactor</code> will be applied to the thumbnail size to get a better image quality.
             </td>
-            <td>1.0</td>
           </tr>
         </tbody>
       </table>
@@ -1387,7 +1561,7 @@ jQuery("#nanogallery2").nanogallery2({
         <a href="#ngy2_intro">Gallery content</a>
       </li>
       <li>
-        <a href="#ngy2_comparison">Media source comparison</a>
+        <a href="#ngy2_comparison">Component feature comparison</a>
       </li>
       <br>
       <li>
@@ -1437,5 +1611,3 @@ jQuery("#nanogallery2").nanogallery2({
   </div>
   </div>
   </div>
-
-  
