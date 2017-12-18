@@ -1,4 +1,3 @@
-  
   <div class="container ngy2documentation">
     <br><br>
     <h1>nanogallery2 API - reference guide</h1>
@@ -33,101 +32,124 @@
     </blockquote>
     <div class="row">
       <div class="table-responsive">
-        <table class="table table-striped table-hover">
+        <table class="table table-borderless table-stripedX table-hoverX">
           <thead>
             <tr>
               <th>event</th>
               <th>description</th>
-              <th>min<br>version</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>pageChanged.nanogallery2</td>
+              <td>
+                pageChanged.nanogallery2
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 Fired on gallery pagination.
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>galleryRenderStart.nanogallery2</td>
+              <td>
+                galleryRenderStart.nanogallery2
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 The rendering of the gallery is started.
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>galleryRenderEnd.nanogallery2</td>
+              <td>
+                galleryRenderEnd.nanogallery2
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 The galery has been rendered.
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>galleryObjectModelBuilt.nanogallery2</td>
+              <td>
+                galleryObjectModelBuilt.nanogallery2
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 The <b>G</b>allery <b>O</b>bject <b>M</b>odel(<b>GOM</b>) has been populated with all the items.
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>galleryLayoutApplied.nanogallery2</td>
+              <td>
+                galleryLayoutApplied.nanogallery2
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 The layout has been applied to the gallery/thumbnails.
                 <br>
                 This can be called several times, for example when thumbnails image sizes are not defined.
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>galleryDisplayed.nanogallery2</td>
+              <td>
+                galleryDisplayed.nanogallery2
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 The thumbnails have been displayed.
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>lightboxNextImage.nanogallery2</td>
+              <td>
+                lightboxNextImage.nanogallery2
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 Lightbox - display next image.
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>lightboxPreviousImage.nanogallery2</td>
+              <td>
+                lightboxPreviousImage.nanogallery2
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 Lightbox - display previous image.
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>lightboxImageDisplayed.nanogallery2</td>
+              <td>
+                lightboxImageDisplayed.nanogallery2
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 Lightbox - image displayed.
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>shoppingCartUpdated.nanogallery2</td>
+              <td>
+                shoppingCartUpdated.nanogallery2
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 Called when the shopping cart is updated (new item or item updated).<br>
                 <a href="http://codepen.io/Kris-B/pen/NbEWbe" type="button" class="btn btn-primary" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo</a>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>itemSelected.nanogallery2</td>
+              <td>
+                itemSelected.nanogallery2
+                <br><span class="badge ngy2_ver">v1.1</span>
+              </td>
               <td>
                 One thumbnail has been selected.  Not fired when <code>itemsSetSelectedValue</code> is called.
               </td>
-              <td>1.1</td>
             </tr>
             <tr>
-              <td>itemUnSelected.nanogallery2</td>
+              <td>
+                itemUnSelected.nanogallery2
+                <br><span class="badge ngy2_ver">v1.1</span>
+              </td>
               <td>
                 One thumbnail has been un-selecetd. Not fired when <code>itemsSetSelectedValue</code> is called.
               </td>
-              <td>1.1</td>
             </tr>
           </tbody>
         </table>
@@ -147,130 +169,159 @@
     </blockquote>
     <div class="row">
       <div class="table-responsive">
-        <table class="table table-striped table-hover">
+        <table class="table table-borderless table-stripedX table-hoverX">
           <thead>
             <tr>
               <th>callback</th>
               <th>description</th>
-              <th>min<br>version</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>fnShoppingCartUpdated</td>
+              <td>
+                fnShoppingCartUpdated
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 Called when the shopping cart is updated (new item or item updated).
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>fnGalleryRenderStart</td>
+              <td>
+                fnGalleryRenderStart
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 Called before rendering the gallery.
                 <br>
                 Parameter: <code>albumIndex</code>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>fnGalleryRenderEnd</td>
+              <td>
+                fnGalleryRenderEnd
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 Called after the gallery has been rendered.
                 <br>
                 Parameter: <code>albumIndex</code>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>fnGalleryObjectModelBuilt</td>
+              <td>
+                fnGalleryObjectModelBuilt
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 Called after the GOM has been built.
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>fnGalleryLayoutApplied</td>
+              <td>
+                fnGalleryLayoutApplied
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 Called after the layout has been applied to the gallery/thumbnails.
                 <br>
                 This can be called several times, for example when thumbnails image sizes are not defined.
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>fnThumbnailInit</td>
+              <td>
+                fnThumbnailInit
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 Called once after one thumbnail's build. Called for each thumbnail.
                 <br>
                 Parameters: <code>$thumbnail, item, GOMidx</code>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>fnThumbnailHoverInit</td>
+              <td>
+                fnThumbnailHoverInit
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 Called once to initialize the thumbnail hover effect. Called for each thumbnail.
                 <br>
                 Parameters: <code>$thumbnail, item, GOMidx</code>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>fnThumbnailHover</td>
+              <td>
+                fnThumbnailHover
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 Called on thumbnail hover.
                 <br>
                 Parameters: <code>$thumbnail, item, GOMidx</code>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>fnThumbnailHoverOut</td>
+              <td>
+                fnThumbnailHoverOut
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 Called on thumbnail hover out.
                 <br>
                 Parameters: <code>$thumbnail, item, GOMidx</code>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>fnThumbnailDisplayEffect</td>
+              <td>
+                fnThumbnailDisplayEffect
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 Called to display one thumbnail, after it was built.
                 <br>
                 Parameters: <code>$thumbnail, item, GOMidx, delay</code>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>fnThumbnailL1DisplayEffect</td>
+              <td>
+                fnThumbnailL1DisplayEffect
+                <br><span class="badge ngy2_ver">v1.3</span>
+              </td>
               <td>
                 Called to display one thumbnail, after it was built. <b>Only on first album level</b>
                 <br>
                 Parameters: <code>$thumbnail, item, GOMidx, delay</code>
               </td>
-              <td>1.3</td>
             </tr>
             <tr>
-              <td>fnThumbnailOpen</td>
+              <td>
+                fnThumbnailOpen
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 Called when a thumbnail is clicked/touched to display the image.<br>
                 Can be used to replace the standard viewer/lightbox with an external lightbox.
                 <br>
                 Parameter: <code>items</code>, array containing the list of items to display, the first one is the first to display.
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>fnImgDisplayed</td>
+              <td>
+                fnImgDisplayed
+                <br><span class="badge ngy2_ver">v1.1</span>
+              </td>
               <td>
                 Called when an image has been displayed in the lightbox/viewer.
                 <br>
                 Parameter: <code>item</code>
               </td>
-              <td>1.1</td>
-            </tr>            <tr>
-              <td>fnImgToolbarCustInit</td>
+            </tr> 
+            <tr>
+              <td>
+                fnImgToolbarCustInit
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 Lightbox toolbar custom element.<br>
                 To customize the toolbar (custom icons and elements) on image display.<br>
@@ -279,10 +330,12 @@
                 <br>
                 Parameter: <code>customElemntName</code>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>fnImgToolbarCustDisplay</td>
+              <td>
+                fnImgToolbarCustDisplay
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 Lightbox toolbar custom element.<br>
                 Called each time after an image has been displayed.<br>
@@ -290,33 +343,30 @@
                 <br>
                 Parameters: <code>$customToolbarElements, item</code>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>fnImgToolbarCustClick</td>
+              <td>
+                fnImgToolbarCustClick
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 Lightbox toolbar custom element.<br>
                 Fired on click event on image toolbar custom element.
                 <br>
                 Parameters: <code>customElementName, $customIcon, item</code>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>fnProcessData</td>
+              <td>
+                fnProcessData
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>
                 Used to extend data associated to thumbnails/images.<br>
                 Called each time a new element (image or album) is added.
                 <br>
                 Parameters: <code>item, kind, sourceData</code>
               </td>
-              <td>1.0</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td>
-              </td>
-              <td>1.0</td>
             </tr>
           </tbody>
         </table>
@@ -335,27 +385,31 @@
     </blockquote>
     <div class="row">
       <div class="table-responsive">
-        <table class="table table-striped table-hover">
+        <table class="table table-borderless table-stripedX table-hoverX">
           <thead>
             <tr>
               <th>method</th>
               <th>option(s)</th>
               <th>description</th>
-              <th>min<br>version</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>refresh</td>
+              <td>
+                refresh
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td></td>
               <td>
                 Re-desplay the current gallery.<br>
                 Usage: <code>$('#your_nanogallery2').nanogallery2('refresh');</code>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>search</td>
+              <td>
+                search
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>search_string</td>
               <td>
                 Filter the displayed thumbnails based on a search string. Search is done in titles.<br>
@@ -365,10 +419,12 @@
                 <br>
                 <a href="http://codepen.io/Kris-B/pen/ryOMov" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>search2</td>
+              <td>
+                search2
+                <br><span class="badge ngy2_ver">v1.4</span>
+              </td>
               <td>search_title, search_tags</td>
               <td>
                 Set the filter values to search in titles and tags.
@@ -379,10 +435,12 @@
                 <br>
                 <a href="http://codepen.io/Kris-B/pen/ryOMov" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
               </td>
-              <td>1.4</td>
             </tr>
             <tr>
-              <td>search2Execute</td>
+              <td>
+                search2Execute
+                <br><span class="badge ngy2_ver">v1.4</span>
+              </td>
               <td></td>
               <td>
                 Execute the search on title and tags and filters the displayed thumbnails.<br>
@@ -392,10 +450,12 @@
                 <br>
                 <a href="http://codepen.io/Kris-B/pen/ryOMov" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
               </td>
-              <td>1.4</td>
             </tr>
             <tr>
-              <td>instance</td>
+              <td>
+                instance
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td></td>
               <td>
                 Returns a pointer to the data of the gallery instance.<br>
@@ -403,10 +463,12 @@
                 <br>
                 <a href="http://codepen.io/Kris-B/pen/wJKowg" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>data</td>
+              <td>
+                data
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td></td>
               <td>
                 Returns an object pointing to:<br>
@@ -431,19 +493,23 @@ items.forEach( function(curr) {
 });
 </pre>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>destroy</td>
+              <td>
+                destroy
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td></td>
               <td>
                 Removes the gallery.<br>
                 Usage: <code>$('#your_nanogallery2').nanogallery2('destroy');</code>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>displayItem</td>
+              <td>
+                displayItem
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>itemID</td>
               <td>
                 Displays an item (album or image).<br>
@@ -451,34 +517,39 @@ items.forEach( function(curr) {
                 - to display an album: <code>$('#your_nanogallery2').nanogallery2('displayItem', 'albumID');</code><br>
                 - to display an image: <code>$('#your_nanogallery2').nanogallery2('displayItem', 'albumID/imageID');</code>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>reload</td>
+              <td>
+                reload
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td></td>
               <td>
                 Reloads the current album.<br>
                 Usage: <code>$('#your_nanogallery2').nanogallery2('reload');</code>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>option</td>
+              <td>
+                option
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>option_name</td>
               <td>
                 <b>Returns</b> the value of an option.<br>
                 Usage: <code>var optionValue=$('#your_nanogallery2').nanogallery2('option', option_name);</code>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>option</td>
+              <td>
+                option
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>option_name,<br> new_value</td>
               <td>
                 <b>Sets</b> the value of an option (note: only some options are supported).<br>
                 Usage: <code>$('#your_nanogallery2').nanogallery2('option', option_name, new_value);</code>
               </td>
-              <td>1.0</td>
             </tr>
             <!--
             <tr>
@@ -510,91 +581,93 @@ items.forEach( function(curr) {
             </tr>
             -->
             <tr>
-              <td>itemsSelectedGet</td>
+              <td>
+                itemsSelectedGet
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td></td>
               <td>
                 Returns an array with all the selected items (array of objects).<br>
                 Usage: <code>var lstItems=$('#your_nanogallery2').nanogallery2('itemsSelectedGet');</code>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>itemsSetSelectedValue</td>
+              <td>
+                itemsSetSelectedValue
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>[item1, item2, ...]</td>
               <td>
                 Sets/unsets selection value (true/false) of an array of items.<br>
                 Usage: <code>$('#your_nanogallery2').nanogallery2('itemsSetSelectedValue', [item1, item2, item3, ...], new_value);</code>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>closeViewer</td>
+              <td>
+                closeViewer
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td></td>
               <td>
                 Close the image viewer.<br>
                 Usage: <code>$('#your_nanogallery2').nanogallery2('closeViewer');</code>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>minimizeToolbar</td>
+              <td>
+                minimizeToolbar
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td></td>
               <td>
                 Minimize image viewer toolbar.<br>
                 Usage: <code>$('#your_nanogallery2').nanogallery2('minimizeToolbar');</code>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>maximizeToolbar</td>
+              <td>
+                maximizeToolbar
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td></td>
               <td>
                 Maximize image viewer toolbar.<br>
                 Usage: <code>$('#your_nanogallery2').nanogallery2('maximizeToolbar');</code>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>shoppingCartGet</td>
+              <td>
+                shoppingCartGet
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td></td>
               <td>
                 Returns an array containing all the items in the shopping cart.<br>
                 One item content: idx=internal index, ID=your image ID, cnt=counter<br>
                 Usage: <code>var basket=$('#your_nanogallery2').nanogallery2('shoppingCartGet');</code>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>shoppingCartUpdate</td>
+              <td>
+                shoppingCartUpdate
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>image ID, counter</td>
               <td>
                 Update the counter of one image in the shopping cart. Returns the shopping cart.<br>
                 Usage: <code>$('#your_nanogallery2').nanogallery2('shoppingCartUpdate', imageID, newCounter);</code>
               </td>
-              <td>1.0</td>
             </tr>
             <tr>
-              <td>shoppingCartRemove</td>
+              <td>
+                shoppingCartRemove
+                <br><span class="badge ngy2_ver">v1.0</span>
+              </td>
               <td>image ID</td>
               <td>
                 Removes one image from the shopping cart. Returns the shopping cart.<br>
                 Usage: <code>$('#your_nanogallery2').nanogallery2('shoppingCartRemove', imageID);</code>
               </td>
-              <td>1.0</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td>
-              </td>
-              <td>1.0</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td>
-              </td>
-              <td>1.0</td>
             </tr>
           </tbody>
         </table>
@@ -617,4 +690,5 @@ items.forEach( function(curr) {
     
     
   </div>    
+
 
