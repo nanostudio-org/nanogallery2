@@ -918,7 +918,7 @@
   <!-- ##### END LOGO INDEX  ##### -->
   <!-- ########################### -->
 
-  <div class="container  ngy2documentation">
+  <div class="container ngy2documentation">
   <div class="row" >
   <div class="col-md-10">
 
@@ -1420,8 +1420,9 @@ $("#my_nanogallery2").nanogallery2({
     <blockquote>
       Configure the behaviour of the gallery.
     </blockquote>
+    <br>
       <div class="table-responsive">
-        <table class="table table-stripedX table-hoverX">
+        <table class="table table-borderless table-stripedX table-hoverX">
         <thead>
           <tr>
             <th>property</th>
@@ -1692,7 +1693,7 @@ $("#my_nanogallery2").nanogallery2({
     </blockquote>
 
     <div class="table-responsive">
-      <table class="table table-stripedx table-hoverx">
+      <table class="table table-borderless table-stripedx table-hoverx">
       <thead>
         <tr>
           <th>property</th>
@@ -1955,23 +1956,54 @@ $("#my_nanogallery2").nanogallery2({
         <li>The value <b>auto</b> is supported.
         </li>
       </ul>
+    </blockquote>
+    <p>
       <br>
-      <br>Examples:
+      <b>Examples:</b>
       <ul>
         <li>
           Grid layout:
-          <br><code>thumbnailWidth: '300 XS100 LA400 XL500', thumbnailHeight: '200 XS80 LA250 XL350'</code>
+          <br>
+          <span class="badge ngy2_code_markup"> HTML markup example</span> 
+          <pre>
+  "thumbnailWidth":   "300 XS100 LA400 XL500",
+  "thumbnailHeight":  "200 XS80 LA250 XL350"</pre>
+                   
+          <span class="badge ngy2_code_js" >Javascript example</span>
+          <pre>
+  thumbnailWidth:     '300 XS100 LA400 XL500',
+  thumbnailHeight:    '200 XS80 LA250 XL350'</pre>
+          <br>
         </li>
         <li>
           Grid and justified layout depending on the resolution:
-          <br><code>thumbnailWidth: 'auto XS80 SM120', thumbnailHeight: '200 XS80 SM120'</code>
+          <br>
+          <span class="badge ngy2_code_markup"> HTML markup example</span> 
+          <pre>
+  "thumbnailWidth":   "auto XS80 SM120",
+  "thumbnailHeight":  "200 XS80 SM120"</pre>
+                    
+          <span class="badge ngy2_code_js" >Javascript example</span>
+          <pre>
+  thumbnailWidth:     'auto XS80 SM120',
+  thumbnailHeight:    '200 XS80 SM120'</pre>
+          <br>
         </li>
         <li>
           Justified and cascading layout depending on the resolution:
-          <br><code>thumbnailWidth: 'auto XS80 SM120', thumbnailHeight: '200 XSauto SMauto'</code>
+          <br>
+          <span class="badge ngy2_code_markup"> HTML markup example</span> 
+          <pre>
+  "thumbnailWidth":   "auto XS80 SM120",
+  "thumbnailHeight":  "200 XSauto SMauto"</pre>
+                    
+          <span class="badge ngy2_code_js" >Javascript example</span>
+          <pre>
+  thumbnailWidth:     'auto XS80 SM120',
+  thumbnailHeight:    '200 XSauto SMauto'</pre>
         </li>
       </ul>
-    </blockquote>
+    </p>
     
     
     <div id="ngy2_gallery_thumbnails_label"></div>
@@ -1983,8 +2015,8 @@ $("#my_nanogallery2").nanogallery2({
       <br><br>
       <img src="img/ngy2_thumbnail3.png" class="img-responsive center-block">
     </blockquote>
-    <p>
 
+    <p>
       <span class="badge ngy2_code_markup"> HTML markup example</span> 
       <pre>
       &lt;div id="my_nanogallery2" data-nanogallery2 = '{ &gt;
@@ -2012,7 +2044,7 @@ $("#my_nanogallery2").nanogallery2({
     <br><br><br>
     
     <div class="table-responsive">
-      <table class="table table-stripedx table-hoverx">
+      <table class="table table-borderless table-stripedx table-hoverx">
       <thead>
         <tr>
           <th>property</th>
@@ -2337,7 +2369,7 @@ $("#my_nanogallery2").nanogallery2({
       <br><br>
     </blockquote>
     <div class="table-responsive">
-      <table class="table table-stripedx table-hoverx">
+      <table class="table table-borderless table-stripedx table-hoverx">
       <thead>
         <tr>
           <th>property</th>
@@ -2393,7 +2425,7 @@ $("#my_nanogallery2").nanogallery2({
       <img src="img/ngy2_navigation.png" class="img-responsive center-block">
     </blockquote>
     <div class="table-responsive">
-      <table class="table table-stripedx table-hoverx">
+      <table class="table table-borderless table-stripedx table-hoverx">
       <thead>
         <tr>
           <th>property</th>
@@ -2529,99 +2561,79 @@ $("#my_nanogallery2").nanogallery2({
     <blockquote>
       Settings can be defined specificaly for the first album level (root level) and for the other ones.<br>
       Default settings are used for all album levels (including the first one).<br>
-      Example:<br>
-      To use a grid layout for the first level, and a justified layout for all other levels<br>
-      <code>
-        thumbnailHeight: 200, thumbnailWidth: 'auto',<br>
-        thumbnailL1Height: 300, thumbnailL1Width: 300
-      </code>
-      <br><br>
-      <a href="http://codepen.io/Kris-B/pen/ryLaRy" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
     </blockquote>
-    <div class="table-responsive">
-      <table class="table table-striped table-hover">
-        <thead>
-          <tr>
-            <th>property</th>
-            <th>min<br>version</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>thumbnailL1Height, thumbnailL1Width</td>
-            <td>1.0</td>
-          </tr>
-          <tr>
-            <td>thumbnailL1Crop</td>
-            <td>1.0</td>
-          </tr>
-          <tr>
-            <td>thumbnailL1Label</td>
-            <td>1.0</td>
-          </tr>
-          <tr>
-            <td>thumbnailL1HoverEffect2</td>
-            <td>1.0</td>
-          </tr>
-          <tr>
-            <td>galleryL1DisplayMode</td>
-            <td>1.0</td>
-          </tr>
-          <tr>
-            <td>galleryL1MaxRows</td>
-            <td>1.0</td>
-          </tr>
-          <tr>
-            <td>galleryL1LastRowFull</td>
-            <td>1.0</td>
-          </tr>
-          <tr>
-            <td>galleryL1FilterTags</td>
-            <td>1.0</td>
-          </tr>
-          <tr>
-            <td>galleryL1MaxItems</td>
-            <td>1.0</td>
-          </tr>
-          <tr>
-            <td>galleryL1Sorting</td>
-            <td>1.0</td>
-          </tr>
-          <tr>
-            <td>thumbnailL1Stacks</td>
-            <td>1.2</td>
-          </tr>
-          <tr>
-            <td>thumbnailL1GutterWidth, thumbnailL1GutterHeight</td>
-            <td>1.2</td>
-          </tr>
-          <tr>
-            <td>thumbnailL1DisplayTransition</td>
-            <td>1.3</td>
-          </tr>
-          <tr>
-            <td>thumbnailL1DisplayTransitionDuration</td>
-            <td>1.3</td>
-          </tr>
-          <tr>
-            <td>thumbnailL1DisplayInterval</td>
-            <td>1.3</td>
-          </tr>
-          <tr>
-            <td>galleryDisplayTransition</td>
-            <td>1.4</td>
-          </tr>
-          <tr>
-            <td>galleryDisplayTransitionDuration</td>
-            <td>1.4</td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <br>
+    <p>
+      <b>Example:</b> define a grid layout for the first level, and a justified layout for all other levels<br>
+      <br>
+      <span class="badge ngy2_code_markup"> HTML markup example</span> 
+      <pre>
+      &lt;div id="my_nanogallery2" data-nanogallery2 = '{ &gt;
+        "thumbnailHeight":    200,
+        "thumbnailWidth":     "auto",
+        "thumbnailL1Height":  300,
+        "thumbnailL1Width":   300,
+        ...
+      &lt;/div&gt;
+      </pre>
+      <br>
+
+      <span class="badge ngy2_code_js" >Javascript example</span>
+      <pre>
+      $("#myNanoGallery").nanogallery2({
+        ...
+        thumbnailHeight:    200,
+        thumbnailWidth:     "auto",
+        thumbnailL1Height:  300,
+        thumbnailL1Width:   300,
+        ...
+      });
+      </pre>
+    </p>
+    <br><br>
+    
+    <h4>Availables options for level 1:</h4>
+    <ul>
+      <li>
+        <h4>Global</h4>
+        <p class="ngy2_doc_p">
+          <span class="badge ngy2_ver">v1.0</span>
+          touchAnimationL1
+        </p>
+      </li>
+      <li>
+        <h4>Gallery</h4>
+        <p class="ngy2_doc_p">
+          <span class="badge ngy2_ver">v1.0</span>
+          galleryL1DisplayMode, galleryL1MaxRows, galleryL1LastRowFull, galleryL1FilterTags, galleryL1MaxItems, galleryL1Sorting
+          <br>
+          <span class="badge ngy2_ver">v1.4</span>
+          galleryL1DisplayTransition, galleryL1DisplayTransitionDuration
+          <br>
+          <span class="badge ngy2_ver">v2.0</span>
+          galleryL1Mosaic
+        </p>
+      </li>
+      <li>
+        <h4>Thumbnails</h4>
+        <p class="ngy2_doc_p">
+          <span class="badge ngy2_ver">v1.0</span>
+          thumbnailL1Height, thumbnailL1Width, thumbnailL1Crop, thumbnailL1Label, thumbnailL1HoverEffect2
+          <br>
+          <span class="badge ngy2_ver">v1.2</span>
+          thumbnailL1GutterWidth, thumbnailL1GutterHeight,<br>
+          thumbnailL1Stacks, thumbnailL1StacksScale, thumbnailL1StacksTranslateX, thumbnailL1StacksTranslateY, thumbnailL1StacksTranslateZ, thumbnailL1StacksRotateX, thumbnailL1StacksRotateY, thumbnailL1StacksRotateZ
+          <br>
+          <span class="badge ngy2_ver">v1.3</span>
+          thumbnailL1DisplayTransition, thumbnailL1DisplayTransitionDuration, thumbnailL1DisplayInterval
+          <br>
+          <span class="badge ngy2_ver">v2.0</span>
+          thumbnailL1BaseGridHeight
+        </p>
+      </li>
+    </ul>
+   
+   
    
     <div id="ngy2_lightbox"></div>
     <br><br><br><br><br><br><br>
@@ -2671,7 +2683,7 @@ viewerToolbar:    {
     <br><br><br>
     
     <div class="table-responsive">
-      <table class="table table-stripedx table-hoverx">
+      <table class="table table-borderless table-stripedx table-hoverx">
         <thead>
           <tr>
             <th>property</th>
@@ -2921,383 +2933,105 @@ viewerToolbar:    {
     <h3><b><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> CUSTOM ICONS</b></h3>
     <hr>
     <blockquote>
-      All icons used in the gallery can be customized. By default, an icon font is used.<br>
-      Example: replace the default album icon with a red one from Font Awesome:<br>
-      &nbsp;&nbsp;&nbsp;&nbsp; <code>icons.thumbnailAlbum: '&lt;i style="color:#e00;" class="fa fa-search-plus"&gt;&lt;/i&gt;'</code>
+      All icons used in nanogallery2 can be customized. By default, a custom icon font is used.<br>
     </blockquote>
-    <div class="table-responsive">
-      <table class="table table-striped table-hover">
-      <thead>
-        <tr>
-          <th>property</th>
-          <th>type</th>
-          <th>default</th>
-          <th>description</th>
-          <th>min<br>version</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>icons.thumbnailAlbum</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-folder-empty"&gt;&lt;/i&gt;'</td>
-          <td>Thumbnail album icon</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.thumbnailImage</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-picture"&gt;&lt;/i&gt;'</td>
-          <td>Thumbnail image icon</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.breadcrumbAlbum</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-folder-empty"&gt;&lt;/i&gt;'</td>
-          <td>Breadcrum album icon</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.breadcrumbHome</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-home"&gt;&lt;/i&gt;'</td>
-          <td>Breadcrumb home icon</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.breadcrumbSeparator</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-left-open"&gt;&lt;/i&gt;'</td>
-          <td>Breadcrumb separator icon</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.breadcrumbSeparatorRtl</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-right-open"&gt;&lt;/i&gt;'</td>
-          <td>Breadcrumb separator RTL icon</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.navigationFilterSelected</td>
-          <td>string</td>
-          <td>'&lt;i style="color:#bff;" class="nGY2Icon icon-toggle-on"&gt;&lt;/i&gt;'</td>
-          <td>Navigation - thumbnail filter - selected icon</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.navigationFilterUnselected</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-toggle-off"&gt;&lt;/i&gt;'</td>
-          <td>Navigation - thumbnail filter - unselected icon</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.navigationFilterSelectedAll</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-toggle-off"&gt;&lt;/i&gt;'</td>
-          <td>Navigation - thumbnail filter - unselect all icon</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.thumbnailSelected</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-ok-circled"&gt;&lt;/i&gt;'</td>
-          <td>Thumbnail selection - selected icon</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.thumbnailUnselected</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-circle-empty"&gt;&lt;/i&gt;'</td>
-          <td>Thumbnail selection - unselected icon</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.thumbnailFeatured</td>
-          <td>string</td>
-          <td>'&lt;i style="color:#ffa;" class="nGY2Icon icon-star"&gt;&lt;/i&gt;'</td>
-          <td>Thumbnail - featured icon</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.thumbnailCounter</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-picture"&gt;&lt;/i&gt;'</td>
-          <td>Thumbnail - image icon</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.thumbnailShare</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-share"&gt;&lt;/i&gt;'</td>
-          <td>Thumbnail - share icon</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.thumbnailDownload</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-download"&gt;&lt;/i&gt;'</td>
-          <td>Thumbnail - download icon</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.thumbnailInfo</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-ngy2_info2"&gt;&lt;/i&gt;'</td>
-          <td>Thumbnail - info icon</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.thumbnailCart</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-basket"&gt;&lt;/i&gt;'</td>
-          <td>Thumbnail - add to shopping cart icon</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.thumbnailDisplay</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-ngy2_zoom_in2"&gt;&lt;/i&gt;'</td>
-          <td>Thumbnail - display image icon</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.thumbnailCustomTool[1..10]</td>
-          <td>string</td>
-          <td>'T1..T10'</td>
-          <td>Thumbnail - custom tool 1 to 10</td>
-          <td>1.1</td>
-        </tr>
-        <tr>
-          <td>icons.thumbnailAlbumUp</td>
-          <td>string</td>
-          <td>'&lt;i style="font-size: 3em;" class="nGY2Icon icon-level-up"&gt;&lt;/i&gt;'</td>
-          <td>Thumbnail navigation - album up icon</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.paginationNext</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-right-open"&gt;&lt;/i&gt;'</td>
-          <td>Gallery pagination - next page icon</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.paginationPrevious</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-left-open"&gt;&lt;/i&gt;'</td>
-          <td>Gallery pagination - previous page icon</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.galleryMoreButton</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-picture"&gt;&lt;/i&gt; &nbsp; &lt;i class="nGY2Icon icon-right-open"&gt;&lt;/i&gt;'</td>
-          <td>close button icon</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.buttonClose</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-ngy2_close2"&gt;&lt;/i&gt;'</td>
-          <td>close button icon</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.viewerPrevious</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-ngy2_chevron-left"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon for previous image (toolbar)</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.viewerNext</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-ngy2_chevron-right"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon for next image (toolbar)</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.viewerImgPrevious</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-ngy2_chevron_left3"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon for previous image (on the left side of the image)</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.viewerImgNext</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-ngy2_chevron_right3"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon for next image (on the right side of the image)</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.viewerDownload</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-ngy2_download2"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon image download (toolbar)</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.viewerToolbarMin</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-ellipsis-vert"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon for minimized toolbar</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.viewerToolbarStd</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-menu"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon for maximized toolbar</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.viewerPlay</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-play"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon play - to start the slideshow (toolbar)</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.viewerPause</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-pause"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon pause - to stop the slideshow (toolbar)</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.viewerFullscreenOn</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-resize-full"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon to switch on fullscreen (toolbar)</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.viewerFullscreenOff</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-resize-small"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon to switch off fullscreen (toolbar)</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.viewerZoomIn</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-ngy2_zoom_in2"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon zoom in (toolbar)</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.viewerZoomOut</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-ngy2_zoom_out2"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon zoom out (toolbar)</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.viewerLinkOriginal</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-ngy2_external2"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon link to original image (toolbar)</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.viewerInfo</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-ngy2_info2"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon infobox (toolbar)</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.viewerShare</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-ngy2_share2"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon share link (toolbar)</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.user</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-user"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon author (infobox)</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.location</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-location"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon location on Google Maps (infobox)</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.config</td>
-          <td>string</td>
-          <td>'&lt;i class="nGY2Icon icon-wrench"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon config for EXIF (infobox)</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.viewerCustomTool[1..10]</td>
-          <td>string</td>
-          <td>'T1..T10'</td>
-          <td>Lightbox - custom tool 1 to 10</td>
-          <td>1.1</td>
-        </tr>
-        <tr>
-          <td>icons.shareFacebook</td>
-          <td>string</td>
-          <td>'&lt;i style="color:#3b5998;" class="nGY2Icon icon-facebook-squared"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon Facebook (share popup)</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.shareTwitter</td>
-          <td>string</td>
-          <td>'&lt;i style="color:#00aced;" class="nGY2Icon icon-twitter-squared"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon Twitter (share popup)</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.shareGooglePlus</td>
-          <td>string</td>
-          <td>'&lt;i style="color:#dd4b39;" class="nGY2Icon icon-gplus-squared"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon Google plus (share popup)</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.shareTumblr</td>
-          <td>string</td>
-          <td>'&lt;i style="color:#32506d;" class="nGY2Icon icon-tumblr-squared"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon Tumblr (share popup)</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.sharePinterest</td>
-          <td>string</td>
-          <td>'&lt;i style="color:#cb2027;" class="nGY2Icon icon-pinterest-squared"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon Pinterest (share popup)</td>
-          <td>1.0</td>
-        </tr>
-        <tr>
-          <td>icons.shareVK</td>
-          <td>string</td>
-          <td>'&lt;i style="color:#3b5998;" class="nGY2Icon icon-vkontakte"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon Pinterest (share popup)</td>
-          <td>1.3</td>
-        </tr>
-        <tr>
-          <td>icons.shareMail</td>
-          <td>string</td>
-          <td>'&lt;i  style="color:#555;" class="nGY2Icon icon-mail-alt"&gt;&lt;/i&gt;'</td>
-          <td>Lightbox - icon mail-to (share popup)</td>
-          <td>1.0</td>
-        </tr>
-      </tbody>
-      </table>
-    </div>
-    
+    <br>
+    <p>
+      <b>Example:</b> replace the default album icon with a red one from Font Awesome:<br>
+      <br>
+          
+      <span class="badge ngy2_code_markup"> HTML markup example</span> 
+      <pre>
+      &lt;div id="my_nanogallery2" data-nanogallery2 = '{ &gt;
+        ...
+        "icons":    {
+          "thumbnailAlbum": "&lt;i style='color:#e00;' class='fa fa-search-plus'&gt;&lt;/i&gt;"
+        }
+        ...
+      &lt;/div&gt;
+      </pre>
+      <br>
+
+      <span class="badge ngy2_code_js" >Javascript example</span>
+      <a href="https://codepen.io/Kris-B/pen/EWmqdd" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+      <pre>
+      $("#myNanoGallery").nanogallery2({
+        ...
+        icons: {
+          thumbnailAlbum: '&lt;i style="color:#e00;" class="fa fa-search-plus"&gt;&lt;/i&gt;'
+        }
+        ...
+      });
+      </pre>
+      <br><br>
+      
+      <b>List of default icons:</b>
+      <pre>
+// BREADCRUMB:
+breadcrumbAlbum:              '&lt;i class="nGY2Icon icon-folder-empty"&gt;&lt;/i&gt;'        // album icon
+breadcrumbHome:               '&lt;i class="nGY2Icon icon-home"&gt;&lt;/i&gt;'                // home icon
+breadcrumbSeparator:          '&lt;i class="nGY2Icon icon-left-open"&gt;&lt;/i&gt;'           // separator icon
+breadcrumbSeparatorRtl:       '&lt;i class="nGY2Icon icon-right-open"&gt;&lt;/i&gt;'          // separator RTL icon
+
+// FILTERS:
+navigationFilterSelected:     '&lt;i style="color:#bff;" class="nGY2Icon icon-toggle-on"&gt;&lt;/i&gt;' // selected icon
+navigationFilterUnselected:   '&lt;i class="nGY2Icon icon-toggle-off"&gt;&lt;/i&gt;'          // unselected icon
+navigationFilterSelectedAll:  '&lt;i class="nGY2Icon icon-toggle-off"&gt;&lt;/i&gt;'          // unselect all icon
+
+// THUMBNAILS:
+thumbnailAlbum:               '&lt;i class="nGY2Icon icon-folder-empty"&gt;&lt;/i&gt;'        // album icon 
+thumbnailImage:               '&lt;i class="nGY2Icon icon-picture"&gt;&lt;/i&gt;'             // image icon
+thumbnailSelected:            '&lt;i class="nGY2Icon icon-ok-circled"&gt;&lt;/i&gt;'          // selected icon
+thumbnailUnselected:          '&lt;i class="nGY2Icon icon-circle-empty"&gt;&lt;/i&gt;'        // unselected icon
+thumbnailFeatured:            '&lt;i style="color:#ffa;" class="nGY2Icon icon-star"&gt;&lt;/i&gt;'  // featured icon
+thumbnailCounter:             '&lt;i class="nGY2Icon icon-picture"&gt;&lt;/i&gt;'             // image icon
+thumbnailShare:               '&lt;i class="nGY2Icon icon-share"&gt;&lt;/i&gt;'               // share icon
+thumbnailDownload:            '&lt;i class="nGY2Icon icon-download"&gt;&lt;/i&gt;'            // download icon
+thumbnailInfo:                '&lt;i class="nGY2Icon icon-ngy2_info2"&gt;&lt;/i&gt;'          // info icon
+thumbnailCart:                '&lt;i class="nGY2Icon icon-basket"&gt;&lt;/i&gt;'              // add to shopping cart icon
+thumbnailDisplay:             '&lt;i class="nGY2Icon icon-ngy2_zoom_in2"&gt;&lt;/i&gt;'       // display image icon
+thumbnailCustomTool[1..10]:   'T1..T10'                                                       // custom tool 1 to 10
+thumbnailAlbumUp:             '&lt;i style="font-size: 3em;" class="nGY2Icon icon-level-up"&gt;&lt;/i&gt;'  // album up icon
+
+// GALLERY:
+paginationNext:               '&lt;i class="nGY2Icon icon-right-open"&gt;&lt;/i&gt;'          // pagination - next page icon
+paginationPrevious:           '&lt;i class="nGY2Icon icon-left-open"&gt;&lt;/i&gt;'           // pagination - previous page icon
+galleryMoreButton:            '&lt;i class="nGY2Icon icon-picture"&gt;&lt;/i&gt; &nbsp; &lt;i class="nGY2Icon icon-right-open"&gt;&lt;/i&gt;' // close button icon
+
+// LIGHTBOX:
+buttonClose:                  '&lt;i class="nGY2Icon icon-ngy2_close2"&gt;&lt;/i&gt;'         // close button icon
+viewerPrevious:               '&lt;i class="nGY2Icon icon-ngy2_chevron-left"&gt;&lt;/i&gt;'   // icon for previous image (toolbar)
+viewerNext:                   '&lt;i class="nGY2Icon icon-ngy2_chevron-right"&gt;&lt;/i&gt;'  // icon for next image (toolbar)
+viewerImgPrevious:            '&lt;i class="nGY2Icon icon-ngy2_chevron_left3"&gt;&lt;/i&gt;'  // icon for previous image (on the left side of the image)
+viewerImgNext:                '&lt;i class="nGY2Icon icon-ngy2_chevron_right3"&gt;&lt;/i&gt;' // icon for next image (on the right side of the image)
+viewerDownload:               '&lt;i class="nGY2Icon icon-ngy2_download2"&gt;&lt;/i&gt;'      // icon image download (toolbar)
+viewerToolbarMin:             '&lt;i class="nGY2Icon icon-ellipsis-vert"&gt;&lt;/i&gt;'       // icon for minimized toolbar
+viewerToolbarStd:             '&lt;i class="nGY2Icon icon-menu"&gt;&lt;/i&gt;'                // icon for maximized toolbar
+viewerPlay:                   '&lt;i class="nGY2Icon icon-play"&gt;&lt;/i&gt;'                // icon play - to start the slideshow (toolbar)
+viewerPause:                  '&lt;i class="nGY2Icon icon-pause"&gt;&lt;/i&gt;'               // icon pause - to stop the slideshow (toolbar)
+viewerFullscreenOn:           '&lt;i class="nGY2Icon icon-resize-full"&gt;&lt;/i&gt;'         // icon to switch on fullscreen (toolbar)
+viewerFullscreenOff:          '&lt;i class="nGY2Icon icon-resize-small"&gt;&lt;/i&gt;'        // icon to switch off fullscreen (toolbar)
+viewerZoomIn:                 '&lt;i class="nGY2Icon icon-ngy2_zoom_in2"&gt;&lt;/i&gt;'       // icon zoom in (toolbar)
+viewerZoomOut:                '&lt;i class="nGY2Icon icon-ngy2_zoom_out2"&gt;&lt;/i&gt;'      // icon zoom out (toolbar)
+viewerLinkOriginal:           '&lt;i class="nGY2Icon icon-ngy2_external2"&gt;&lt;/i&gt;'      // icon link to original image (toolbar)
+viewerInfo:                   '&lt;i class="nGY2Icon icon-ngy2_info2"&gt;&lt;/i&gt;'          // icon infobox (toolbar)
+viewerShare:                  '&lt;i class="nGY2Icon icon-ngy2_share2"&gt;&lt;/i&gt;'         // icon share link (toolbar)
+user:                         '&lt;i class="nGY2Icon icon-user"&gt;&lt;/i&gt;'                // icon author (infobox)
+location:                     '&lt;i class="nGY2Icon icon-location"&gt;&lt;/i&gt;'            // icon location on Google Maps (infobox)
+config:                       '&lt;i class="nGY2Icon icon-wrench"&gt;&lt;/i&gt;'              // icon config for EXIF (infobox)
+viewerCustomTool[1..10]:      'T1..T10'                                           // custom tool 1 to 10
+
+// SHARE:
+shareFacebook:                '&lt;i style="color:#3b5998;" class="nGY2Icon icon-facebook-squared"&gt;&lt;/i&gt;'   // icon Facebook
+shareTwitter:                 '&lt;i style="color:#00aced;" class="nGY2Icon icon-twitter-squared"&gt;&lt;/i&gt;'    // icon Twitter
+shareGooglePlus:              '&lt;i style="color:#dd4b39;" class="nGY2Icon icon-gplus-squared"&gt;&lt;/i&gt;'      // icon Google plus
+shareTumblr:                  '&lt;i style="color:#32506d;" class="nGY2Icon icon-tumblr-squared"&gt;&lt;/i&gt;'     // icon Tumblr
+sharePinterest:               '&lt;i style="color:#cb2027;" class="nGY2Icon icon-pinterest-squared"&gt;&lt;/i&gt;'  // icon Pinterest
+shareVK:                      '&lt;i style="color:#3b5998;" class="nGY2Icon icon-vkontakte"&gt;&lt;/i&gt;'          // icon Pinterest
+shareMail:                    '&lt;i  style="color:#555;" class="nGY2Icon icon-mail-alt"&gt;&lt;/i&gt;'             // icon mail-to
+      </pre>
+    </p>
+
     
     <div id="ngy2_colorschemes"></div>
     <br><br><br><br><br><br><br>
@@ -3354,7 +3088,7 @@ viewerToolbar:    {
       Here's the list of depreciated and no more supported options.
     </blockquote>
     <div class="table-responsive">
-      <table class="table table-striped table-hover">
+      <table class="table table-borderless table-stripedx table-hoverx">
       <thead>
         <tr>
           <th>property</th>
@@ -3457,7 +3191,7 @@ viewerToolbar:    {
       </tbody>
       </table>
       
-      <table class="table table-striped table-hover">
+      <table class="table table-borderless table-stripedx table-hoverx">
       <thead>
         <tr>
           <th>callbacks</th>
@@ -3476,7 +3210,7 @@ viewerToolbar:    {
       </tbody>
       </table>
       
-      <table class="table table-striped table-hover">
+      <table class="table table-borderless table-stripedx table-hoverx">
       <thead>
         <tr>
           <th>API methods</th>
@@ -3518,7 +3252,7 @@ viewerToolbar:    {
       <br><br>
     </blockquote>
     <p>
-      Thumbnails hover effects:
+      <h4>Thumbnails hover effects:</h4>
     </p>
     <ul>
       <li>
@@ -3528,7 +3262,7 @@ viewerToolbar:    {
       </li>
     </ul>
     <p>
-      Self hosted images:
+      <h4>Self hosted images:</h4>
     </p>
     <ul>
       <li>
@@ -3539,7 +3273,7 @@ viewerToolbar:    {
       </li>
     </ul>
     <p>
-      Social sharing:
+      <h4>Social sharing:</h4>
     </p>
     <ul>
       <li>
