@@ -142,6 +142,20 @@ module.exports = function(grunt) {
           ],
           dest: 'build/comment.html'
         },
+        academy: {
+          src: [
+            'template/header-1.html',
+            'src/academy_meta.html',
+            'template/header-2.html',
+            'template/header-3.html',
+            'template/logo.html',
+            'src/academy.html',
+            'template/javascript.html',
+            'src/academy_js.html',
+            'template/footer.html'
+          ],
+          dest: 'build/comment.html'
+        },
         demonstration: {
           src: [
             'template/header-1.html',
