@@ -53,7 +53,6 @@
   <!-- #################################################################################################################### -->
 
   <style>
-
     body { font-size:1.3em; color:#000; line-height:1.5; }
     p { font-size:1.3em; }
     td { font-size:1.2em; }
@@ -62,9 +61,6 @@
     h1 {
       border-left : 5px solid #499195;
       padding-left: 10px;
-    }
-    .footer {
-      margin: 0;
     }
     h2, h3, h4, h5, h6 {
       font-weight: bold;
@@ -79,6 +75,33 @@
       padding-bottom: 25px;
     }
 
+    /**********/
+    /* FOOTER */
+    /**********/
+    .footer {
+      margin: 0;
+    }
+    .footer a:link,
+    .footer a:visited,
+    .footer a:hover,
+    .footer a:active {
+      color: #fff;
+      text-decoration: none;
+    }
+    .footer .menu {
+      color: #499295;
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+    .footer .menu a:link,
+    .footer .menu a:visited,
+    .footer .menu a:hover,
+    .footer .menu a:active {
+      text-transform: uppercase;
+      margin: 0px 10px;
+      font-size: 1.4rem;
+      font-weight: normal;
+    }
 
     
     
@@ -268,6 +291,12 @@
       color: #23CB99;
     }
 
+    .ngy2_bgdark .btn-default {
+      color: #fff;
+      background-color: transparent;
+      /* border: 5px solid #3C4B5B; */
+    }
+    
     .ngy2_bgdark .btn-primary {
       color: #fff;
       background-color: #3C4B5B;
@@ -771,12 +800,7 @@
       width:100%;
       height:100%;
     }    
-    
-
-
-
-
-  </style>
+</style>
 
 
   <!-- Asynchronous Google Analytics snippet -->
