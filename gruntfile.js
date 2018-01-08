@@ -154,7 +154,7 @@ module.exports = function(grunt) {
             'src/academy_js.html',
             'template/footer.html'
           ],
-          dest: 'build/comment.html'
+          dest: 'build/academy.html'
         },
         demonstration: {
           src: [
