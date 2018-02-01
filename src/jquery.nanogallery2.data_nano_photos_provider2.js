@@ -28,7 +28,7 @@
 // ;(function ($) {
   
   jQuery.nanogallery2.data_nano_photos_provider2 = function (instance, fnName){
-    var G=instance;      // current nanogallery2 instance
+    var G = instance;      // current nanogallery2 instance
     
     /** @function AlbumGetContent */
     var AlbumGetContent = function(albumID, fnToCall, fnParam1, fnParam2) {
@@ -53,7 +53,6 @@
       url += '&wla=' + G.tn.settings.getW(G.GOM.curNavLevel, 'la');
       url += '&hxl=' + G.tn.settings.getH(G.GOM.curNavLevel, 'xl');
       url += '&wxl=' + G.tn.settings.getW(G.GOM.curNavLevel, 'xl');
-
       // url += '&wxs=' + G.tn.settings.width[G.GOM.curNavLevel].xs;
       // url += '&hxs=' + G.tn.settings.height[G.GOM.curNavLevel].xs;
       // url += '&wsm=' + G.tn.settings.width[G.GOM.curNavLevel].sm;
@@ -73,7 +72,7 @@
         var tId = setTimeout( function() {
           // workaround to handle JSONP (cross-domain) errors
           PreloaderDisplay(false);
-          NanoAlert('Could not retrieve nanoPhotosProvider2 data (timeout).');
+          NanoAlert(G, 'Could not retrieve nanoPhotosProvider2 data (timeout).');
         }, 60000 );
 
         if( G.O.debugMode ) { console.log('nanoPhotosProvider2 URL: ' + url); }
