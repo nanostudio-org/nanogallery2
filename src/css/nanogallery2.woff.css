@@ -245,6 +245,8 @@
 }
 .nGY2 .nGY2GThumbnailSub {
 	/* no border or padding allowed here */
+  width: 100%;
+  height: 100%;
   display: block;
   box-sizing: border-box;
 	-webkit-box-sizing: border-box;
