@@ -21,6 +21,9 @@
 
 /*
 
+todo:
+- thumbnail background color
+
 V2.1.0 BETA
 
 - new: API methods 'closeViewer', 'minimizeToolbar', 'maximizeToolbar', 'paginationPreviousPage', 'paginationNextPage', 'paginationGotoPage', 'paginationCountPages'
@@ -30,6 +33,7 @@ V2.1.0 BETA
 - fixed: incorrect .nGY2GThumbnailSub size
 - fixed: lightbox support for empty top-left or top-right toolbar
 - fixed: single touch to open thumbnail when no hover effect defined
+- fixed: functions NGY2Item.thumbSet(), NGY2Item.imageSet(), NGY2Item.thumbSetImgHeight(), NGY2Item.thumbSetImgWidth()
 
 
 */
@@ -644,6 +648,90 @@ V2.1.0 BETA
             return false;
           };
 
+          //--- set one image (url and size)
+          NGY2Item.prototype.imageSet = function( src, w, h ) {
+            this.src = src;
+            this.width = w;
+            this.height = h;
+          };
+          
+          //--- set one thumbnail (url and size) - screenSize and level are optionnal
+          NGY2Item.prototype.thumbSet = function( src, w, h, screenSize, level ) {
+            var lst=['xs','sm','me','la','xl'];
+            if( typeof screenSize === 'undefined' || screenSize == '' || screenSize == null ) {
+              for( var i=0; i< lst.length; i++ ) {
+                if( typeof level === 'undefined' || level == '' ) {
+                  this.thumbs.url.l1[lst[i]]=src;
+                  this.thumbs.height.l1[lst[i]]=h;
+                  this.thumbs.width.l1[lst[i]]=w;
+                  this.thumbs.url.lN[lst[i]]=src;
+                  this.thumbs.height.lN[lst[i]]=h;
+                  this.thumbs.width.lN[lst[i]]=w;
+                }
+                else {
+                  this.thumbs.url[level][lst[i]]=src;
+                  this.thumbs.height[level][lst[i]]=h;
+                  this.thumbs.width[level][lst[i]]=w;
+                }
+              }
+            }
+            else {
+              if( typeof level === 'undefined' || level == '' || level == null ) {
+                this.thumbs.url.l1[screenSize]=src;
+                this.thumbs.height.l1[screenSize]=h;
+                this.thumbs.width.l1[screenSize]=w;
+                this.thumbs.url.lN[screenSize]=src;
+                this.thumbs.height.lN[screenSize]=h;
+                this.thumbs.width.lN[screenSize]=w;
+              }
+              else {
+                this.thumbs.url[level][screenSize]=src;
+                this.thumbs.height[level][screenSize]=h;
+                this.thumbs.width[level][screenSize]=w;
+              }
+            }
+          
+            var lst=['xs','sm','me','la','xl'];
+            for( var i=0; i< lst.length; i++ ) {
+              this.thumbs.height.l1[lst[i]]=h;
+            }
+            for( var i=0; i< lst.length; i++ ) {
+              if( this.G.tn.settings.height.lN[lst[i]] == this.G.tn.settings.getH() && this.G.tn.settings.width.l1[lst[i]] == this.G.tn.settings.getW() ) {
+                this.thumbs.height.lN[lst[i]]=h;
+              }
+            }
+          };
+
+          //--- set thumbnail image real height for current level/resolution, and for all others level/resolutions having the same settings
+          NGY2Item.prototype.thumbSetImgHeight = function( h ) {              
+            var lst=['xs','sm','me','la','xl'];
+            for( var i=0; i< lst.length; i++ ) {
+              if( this.G.tn.settings.height.l1[lst[i]] == this.G.tn.settings.getH() && this.G.tn.settings.width.l1[lst[i]] == this.G.tn.settings.getW() ) {
+                this.thumbs.height.l1[lst[i]]=h;
+              }
+            }
+            for( var i=0; i< lst.length; i++ ) {
+              if( this.G.tn.settings.height.lN[lst[i]] == this.G.tn.settings.getH() && this.G.tn.settings.width.l1[lst[i]] == this.G.tn.settings.getW() ) {
+                this.thumbs.height.lN[lst[i]]=h;
+              }
+            }
+          };
+
+          //--- set thumbnail image real width for current level/resolution, and for all others level/resolutions having the same settings
+          NGY2Item.prototype.thumbSetImgWidth = function( w ) {              
+            var lst=['xs','sm','me','la','xl'];
+            for( var i=0; i< lst.length; i++ ) {
+              if( this.G.tn.settings.height.l1[lst[i]] == this.G.tn.settings.getH() && this.G.tn.settings.width.l1[lst[i]] == this.G.tn.settings.getW() ) {
+                this.thumbs.width.l1[lst[i]]=w;
+              }
+            }
+            for( var i=0; i< lst.length; i++ ) {
+              if( this.G.tn.settings.height.lN[lst[i]] == this.G.tn.settings.getH() && this.G.tn.settings.width.l1[lst[i]] == this.G.tn.settings.getW() ) {
+                this.thumbs.width.lN[lst[i]]=w;
+              }
+            }
+          };
+          
           //--- Returns Thumbnail image (depending of the screen resolution)
           NGY2Item.prototype.thumbImg = function () {   
             var tnImg = { src: '', width: 0, height: 0 };
@@ -3273,85 +3361,85 @@ V2.1.0 BETA
     // copy items (album content) to GOM
     function GalleryPopulateGOM() {
       
-      var preloadImages='';
-      var imageSizeRequested=false;
-      var albumID=G.I[G.GOM.albumIdx].GetID();
-      var l=G.I.length;
-      var cnt=0;
+      var preloadImages = '';
+      var imageSizeRequested = false;
+      var albumID = G.I[G.GOM.albumIdx].GetID();
+      var l = G.I.length;
+      var cnt = 0;
 
-      for( var idx=0; idx < l; idx++ ) {
-        var item=G.I[idx];
+      for( var idx = 0; idx < l; idx++ ) {
+        var item = G.I[idx];
         // check album
         if( item.isToDisplay(albumID) ) {
-        var w=item.thumbImg().width;
-          var h=item.thumbImg().height;
+        var w = item.thumbImg().width;
+          var h = item.thumbImg().height;
           // if unknown image size and layout is not grid --> we need to retrieve the size of the images
           if( G.layout.prerequisite.imageSize && ( w == 0 || h == 0) ) {
           // if( true ) {
-            imageSizeRequested=true;
-            preloadImages+='<img src="'+item.thumbImg().src+'" data-idx="'+cnt+'" data-albumidx="'+G.GOM.albumIdx+'">';
+            imageSizeRequested = true;
+            preloadImages += '<img src="'+item.thumbImg().src+'" data-idx="'+cnt+'" data-albumidx="'+G.GOM.albumIdx+'">';
           }
           
           // set default size if required
           if( h == 0 ) {
-            h=G.tn.defaultSize.getHeight();
+            h = G.tn.defaultSize.getHeight();
           }
           if( w == 0 ) {
-            w=G.tn.defaultSize.getWidth();
+            w = G.tn.defaultSize.getWidth();
           }
-          var tn=new GTn(idx, w, h);
+          var tn = new GTn(idx, w, h);
           G.GOM.items.push(tn);
           cnt++;
         }
       }
 
       TriggerCustomEvent('galleryObjectModelBuilt');
-      var fu=G.O.fnGalleryObjectModelBuilt;
+      var fu = G.O.fnGalleryObjectModelBuilt;
       if( fu !== null ) {
         fu == 'function' ? fu() : window[fu]();
       }
       
       if( imageSizeRequested ) {
         // preload images to retrieve their size and then resize the gallery (=GallerySetLayout()+ GalleryDisplay())
-        var $newImg=jQuery(preloadImages);
+        var $newImg = jQuery(preloadImages);
         var gi_imgLoad = ngimagesLoaded( $newImg );
-        $newImg=null;
+        $newImg = null;
         gi_imgLoad.on( 'progress', function( instance, image ) {
         
           if( image.isLoaded ) {
-            var idx=image.img.getAttribute('data-idx');
-            var albumIdx=image.img.getAttribute('data-albumidx');
+            var idx = image.img.getAttribute('data-idx');
+            var albumIdx = image.img.getAttribute('data-albumidx');
             if( albumIdx == G.GOM.albumIdx ) {
               // ignore event if not on current album
-              var curTn=G.GOM.items[idx];
-              curTn.imageWidth=image.img.naturalWidth;
-              curTn.imageHeight=image.img.naturalHeight;
-              var item=G.I[curTn.thumbnailIdx];
-              item.thumbs.width[G.GOM.curNavLevel][G.GOM.curWidth]=curTn.imageWidth;
-              item.thumbs.height[G.GOM.curNavLevel][G.GOM.curWidth]=curTn.imageHeight;
+              var curTn = G.GOM.items[idx];
+              curTn.imageWidth = image.img.naturalWidth;
+              curTn.imageHeight = image.img.naturalHeight;
+              var item = G.I[curTn.thumbnailIdx];
+              item.thumbs.width[G.GOM.curNavLevel][G.GOM.curWidth] = curTn.imageWidth;
+              item.thumbs.height[G.GOM.curNavLevel][G.GOM.curWidth] = curTn.imageHeight;
  
               // resize the gallery
               G.GalleryResizeThrottled();
               
               // set the retrieved size to all levels with same configuration  
-              var object=item.thumbs.width.l1;
+              var object = item.thumbs.width.l1;
               for (var property in object) {
                 if (object.hasOwnProperty(property)) {
                   if( property != G.GOM.curWidth ) {
                     if( G.tn.settings.width.l1[property] == G.tn.settings.getW() && G.tn.settings.height.l1[property] == G.tn.settings.getH() ) {
-                      item.thumbs.width.l1[property]=curTn.imageWidth;
-                      item.thumbs.height.l1[property]=curTn.imageHeight;
+                      item.thumbs.width.l1[property] = curTn.imageWidth;
+                      item.thumbs.height.l1[property] = curTn.imageHeight;
                     }
                   }
                 }
               }
-              object=item.thumbs.width.lN;
+              object = item.thumbs.width.lN;
               for (var property in object) {
                 if (object.hasOwnProperty(property)) {
                   if( property != G.GOM.curWidth ) {
                     if( G.tn.settings.width.lN[property] == G.tn.settings.getW() && G.tn.settings.height.lN[property] == G.tn.settings.getH() ) {
-                      item.thumbs.width.lN[property]=curTn.imageWidth;
-                      item.thumbs.height.lN[property]=curTn.imageHeight;
+                      item.thumbs.width.lN[property] = curTn.imageWidth;
+                      item.thumbs.height.lN[property] = curTn.imageHeight;
                     }
                   }
                 }
@@ -3359,7 +3447,7 @@ V2.1.0 BETA
             }
           }
         });
-        G.galleryResizeEventEnabled=true;
+        G.galleryResizeEventEnabled = true;
         return false;
       }
       else {
@@ -9036,15 +9124,16 @@ V2.1.0 BETA
         // http://www.picresize.com/
         // http://base64encode.net/base64-image-encoder
         // var logo='data:image/png;base64,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';
-        var logo='data:image/png;base64,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';
-        G.$E.ngy2i=jQuery('<div class="nGY2PortInfo"><a href="http://nano.gallery" target="_blank" title="nanogallery2 | easy photo gallery for your website" style="font-weight: bold !important;color: #888 !important;font-size: 11px !important;"><img src="'+logo+'" style="height:16px !important;box-shadow: none !important;vertical-align: middle !important;"/> &nbsp; nanogallery2</a></div>').appendTo(G.$E.base);
+        var logo = 'data:image/png;base64,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';
+        var st = "font-weight:bold !important;color: #FF0075 !important;font-size: 14px !important;text-transform: lowercase !important;cursor:pointer !important;text-align: center !important;Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px !important;";
+        G.$E.ngy2i=jQuery('<div class="nGY2PortInfo"><a href="http://nano.gallery" target="_blank" title="nanogallery2 | easy photo gallery for your website" style="' + st + '"><img src="' + logo + '" style="height:32px !important;width:initial !important;box-shadow: none !important;vertical-align: middle !important;"/> &nbsp; nanogallery2</a></div>').appendTo(G.$E.base);
         
         G.$E.ngy2i.find('a').on({
           mouseenter: function () {
-            jQuery(this).attr('style', 'color: #73A623 !important');
+            jQuery(this).attr('style', st);
           },
           mouseleave: function () {
-            jQuery(this).attr('style', 'color: #888 !important');
+            jQuery(this).attr('style', st);
           }
         });
       }
