@@ -245,6 +245,8 @@
 }
 .nGY2 .nGY2GThumbnailSub {
 	/* no border or padding allowed here */
+  width: 100%;
+  height: 100%;
   display: block;
   box-sizing: border-box;
 	-webkit-box-sizing: border-box;
@@ -652,11 +654,11 @@
 /**************************************/
 .nGY2PortInfo {
   padding: 3px !important;
-  font-size: 11px !important;
-  color: #888 !important;
+  font-size: 14px !important;
+  color: #FF0075 !important;
   text-align: center !important;
   z-index:0 !important;
-  text-transform: uppercase !important;
+  text-transform: lowercase !important;
   cursor:pointer !important;
 }
 
@@ -665,7 +667,7 @@
 .nGY2PortInfo > a:visited,
 .nGY2PortInfo a:hover,
 .nGY2PortInfo a:active {
-  color: #888 !important;
+  color: #FF0075 !important;
   text-decoration: none !important;
 }
 
