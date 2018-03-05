@@ -129,14 +129,14 @@
 
   // avoid if possible (performance issue)
   function inViewport( $elt, threshold ) {
-    var wp=getViewport(),
-    eltOS=$elt.offset(),
-    th=$elt.outerHeight(true),
-    tw=$elt.outerWidth(true);
-    if( eltOS.top >= (wp.t-threshold) 
-      && (eltOS.top+th) <= (wp.t+wp.h+threshold)
-      && eltOS.left >= (wp.l-threshold) 
-      && (eltOS.left+tw) <= (wp.l+wp.w+threshold) ) {
+    var wp = getViewport(),
+    eltOS = $elt.offset(),
+    th = $elt.outerHeight(true),
+    tw = $elt.outerWidth(true);
+    if( eltOS.top >= (wp.t - threshold) 
+      && (eltOS.top + th) <= (wp.t + wp.h + threshold)
+      && eltOS.left >= (wp.l - threshold) 
+      && (eltOS.left + tw) <= (wp.l + wp.w + threshold) ) {
       return true;
     }
     else {
@@ -146,15 +146,15 @@
 
   // avoid if possible (performance issue)
   function inViewportVert( $elt, threshold ) {
-    var wp=getViewport(),
-    eltOS=$elt.offset(),
-    th=$elt.outerHeight(true);
+    var wp = getViewport(),
+    eltOS = $elt.offset(),
+    th = $elt.outerHeight(true);
     //var tw=$elt.outerWidth(true);
 
-    if( wp.t == 0 && (eltOS.top) <= (wp.t+wp.h ) ) { return true; }
+    if( wp.t == 0 && (eltOS.top) <= (wp.t + wp.h ) ) { return true; }
 
     if( eltOS.top >= (wp.t) 
-      && (eltOS.top+th) <= (wp.t+wp.h-threshold) ) {
+      && (eltOS.top + th) <= (wp.t + wp.h - threshold) ) {
         return true;
     }
     else {
@@ -179,7 +179,7 @@
   // set z-index to display element on top of all others
   function setElementOnTop( start, elt ) {
     var highest_index = 0;
-    if( start=='' ) { start= '*'; }
+    if( start == '' ) { start = '*'; }
     jQuery(start).each(function() {
       var cur = parseInt(jQuery(this).css('z-index'));
       highest_index = cur > highest_index ? cur : highest_index;
@@ -195,9 +195,6 @@
   };    
     
 
-    
-    
-    
   $.nanogallery2 = function (elt, options) {
     // To avoid scope issues, use '_this' instead of 'this'
     // to reference this class from internal events and functions.
@@ -223,7 +220,7 @@
 
           // check album name - albumList/blackList/whiteList
           NGY2Tools.FilterAlbumName = function( title, ID ) {
-            var s=title.toUpperCase();
+            var s = title.toUpperCase();
             if( this.albumList.length > 0 ) {
               for( var j=0; j < this.albumList.length; j++) {
                 if( s === this.albumList[j].toUpperCase() || ID === this.albumList[j] ) {
@@ -232,12 +229,12 @@
               }
             }
             else {
-              var found=false;
+              var found = false;
               if( this.whiteList !== null ) {
                 //whiteList : authorize only album cointaining one of the specified keyword in the title
-                for( var j=0; j<this.whiteList.length; j++) {
+                for( var j = 0; j < this.whiteList.length; j++) {
                   if( s.indexOf(this.whiteList[j]) !== -1 ) {
-                    found=true;
+                    found = true;
                   }
                 }
                 if( !found ) { return false; }
@@ -246,13 +243,12 @@
 
               if( this.blackList !== null ) {
                 //blackList : ignore album cointaining one of the specified keyword in the title
-                for( var j=0; j<this.blackList.length; j++) {
+                for( var j = 0; j < this.blackList.length; j++) {
                   if( s.indexOf(this.blackList[j]) !== -1 ) { 
                     return false;
                   }
                 }
               }
-              
               return true;
             }
           };
@@ -263,12 +259,12 @@
           NGY2Tools.NanoAlert = function(context, msg, verbose) {
             NGY2Tools.NanoConsoleLog.call(context, msg);
             if( context.$E.conConsole != null ) {
-              context.$E.conConsole.css({visibility:'visible', minHeight:'100px'});
+              context.$E.conConsole.css({visibility: 'visible', minHeight: '100px'});
               if( verbose == false ) {
-                context.$E.conConsole.append('<p>'+ msg + '</p>');
+                context.$E.conConsole.append('<p>' + msg + '</p>');
               }
               else {
-                context.$E.conConsole.append('<p>nanogallery2: '+msg+ ' ['+context.baseEltID+']</p>');
+                context.$E.conConsole.append('<p>nanogallery2: '+ msg + ' [' + context.baseEltID + ']</p>');
               }
               //alert('nanoGALLERY: ' + msg);
             }
@@ -322,13 +318,13 @@
 
             // this function can probably be optimized....
           
-            var sortOrder=this.gallerySorting[this.GOM.curNavLevel];
-            var maxItems=this.galleryMaxItems[this.GOM.curNavLevel];
+            var sortOrder = this.gallerySorting[this.GOM.curNavLevel];
+            var maxItems = this.galleryMaxItems[this.GOM.curNavLevel];
           
             if( sortOrder != '' || maxItems > 0 ) {
             
               // copy album's items to a new array
-              var currentAlbum=this.I.filter( function( obj ) {
+              var currentAlbum = this.I.filter( function( obj ) {
                 return( obj.albumID == albumID && obj.kind != 'albumUp' );
               });
         
@@ -354,7 +350,7 @@
 
               // max Items
               if( maxItems > 0 && currentAlbum.length > maxItems ) {
-                currentAlbum.splice(maxItems-1,currentAlbum.length-maxItems );
+                currentAlbum.splice(maxItems - 1, currentAlbum.length-maxItems );
               }
               
               // remove the albums's items from the global items array
@@ -367,7 +363,6 @@
 
             }
           };
-          
           
           return NGY2Tools;
         })(); 
@@ -445,14 +440,14 @@
             this.tags =                 [];       // list of tags of the current item
             this.albumTagList =         [];       // list of all the tags of the items contained in the current album
             this.albumTagListSel =      [];       // list of currently selected tags (only for albums)
-            this.exif= { exposure: '', flash: '', focallength: '', fstop: '', iso: '', model: '', time: '', location: ''};
+            this.exif = { exposure: '', flash: '', focallength: '', fstop: '', iso: '', model: '', time: '', location: ''};
           }
 
           // public static
           
           NGY2Item.Get = function( instance, ID ) {
-            var l=instance.I.length;
-            for( var i=0; i<l; i++ ) {
+            var l = instance.I.length;
+            for( var i = 0; i < l; i++ ) {
               if( instance.I[i].GetID() == ID ) {
                 return instance.I[i];
               }
@@ -461,8 +456,8 @@
           };
             
           NGY2Item.GetIdx = function( instance, ID ) {
-            var l=instance.I.length;
-            for( var i=0; i<l; i++ ) {
+            var l = instance.I.length;
+            for( var i = 0; i < l; i++ ) {
               if( instance.I[i].GetID() == ID ) {
                 return i;
               }
@@ -634,6 +629,90 @@
             return false;
           };
 
+          //--- set one image (url and size)
+          NGY2Item.prototype.imageSet = function( src, w, h ) {
+            this.src = src;
+            this.width = w;
+            this.height = h;
+          };
+          
+          //--- set one thumbnail (url and size) - screenSize and level are optionnal
+          NGY2Item.prototype.thumbSet = function( src, w, h, screenSize, level ) {
+            var lst=['xs','sm','me','la','xl'];
+            if( typeof screenSize === 'undefined' || screenSize == '' || screenSize == null ) {
+              for( var i=0; i< lst.length; i++ ) {
+                if( typeof level === 'undefined' || level == '' ) {
+                  this.thumbs.url.l1[lst[i]]=src;
+                  this.thumbs.height.l1[lst[i]]=h;
+                  this.thumbs.width.l1[lst[i]]=w;
+                  this.thumbs.url.lN[lst[i]]=src;
+                  this.thumbs.height.lN[lst[i]]=h;
+                  this.thumbs.width.lN[lst[i]]=w;
+                }
+                else {
+                  this.thumbs.url[level][lst[i]]=src;
+                  this.thumbs.height[level][lst[i]]=h;
+                  this.thumbs.width[level][lst[i]]=w;
+                }
+              }
+            }
+            else {
+              if( typeof level === 'undefined' || level == '' || level == null ) {
+                this.thumbs.url.l1[screenSize]=src;
+                this.thumbs.height.l1[screenSize]=h;
+                this.thumbs.width.l1[screenSize]=w;
+                this.thumbs.url.lN[screenSize]=src;
+                this.thumbs.height.lN[screenSize]=h;
+                this.thumbs.width.lN[screenSize]=w;
+              }
+              else {
+                this.thumbs.url[level][screenSize]=src;
+                this.thumbs.height[level][screenSize]=h;
+                this.thumbs.width[level][screenSize]=w;
+              }
+            }
+          
+            var lst=['xs','sm','me','la','xl'];
+            for( var i=0; i< lst.length; i++ ) {
+              this.thumbs.height.l1[lst[i]]=h;
+            }
+            for( var i=0; i< lst.length; i++ ) {
+              if( this.G.tn.settings.height.lN[lst[i]] == this.G.tn.settings.getH() && this.G.tn.settings.width.l1[lst[i]] == this.G.tn.settings.getW() ) {
+                this.thumbs.height.lN[lst[i]]=h;
+              }
+            }
+          };
+
+          //--- set thumbnail image real height for current level/resolution, and for all others level/resolutions having the same settings
+          NGY2Item.prototype.thumbSetImgHeight = function( h ) {              
+            var lst=['xs','sm','me','la','xl'];
+            for( var i=0; i< lst.length; i++ ) {
+              if( this.G.tn.settings.height.l1[lst[i]] == this.G.tn.settings.getH() && this.G.tn.settings.width.l1[lst[i]] == this.G.tn.settings.getW() ) {
+                this.thumbs.height.l1[lst[i]]=h;
+              }
+            }
+            for( var i=0; i< lst.length; i++ ) {
+              if( this.G.tn.settings.height.lN[lst[i]] == this.G.tn.settings.getH() && this.G.tn.settings.width.l1[lst[i]] == this.G.tn.settings.getW() ) {
+                this.thumbs.height.lN[lst[i]]=h;
+              }
+            }
+          };
+
+          //--- set thumbnail image real width for current level/resolution, and for all others level/resolutions having the same settings
+          NGY2Item.prototype.thumbSetImgWidth = function( w ) {              
+            var lst=['xs','sm','me','la','xl'];
+            for( var i=0; i< lst.length; i++ ) {
+              if( this.G.tn.settings.height.l1[lst[i]] == this.G.tn.settings.getH() && this.G.tn.settings.width.l1[lst[i]] == this.G.tn.settings.getW() ) {
+                this.thumbs.width.l1[lst[i]]=w;
+              }
+            }
+            for( var i=0; i< lst.length; i++ ) {
+              if( this.G.tn.settings.height.lN[lst[i]] == this.G.tn.settings.getH() && this.G.tn.settings.width.l1[lst[i]] == this.G.tn.settings.getW() ) {
+                this.thumbs.width.lN[lst[i]]=w;
+              }
+            }
+          };
+          
           //--- Returns Thumbnail image (depending of the screen resolution)
           NGY2Item.prototype.thumbImg = function () {   
             var tnImg = { src: '', width: 0, height: 0 };
@@ -711,7 +790,7 @@
             this.src = url;
             this.mediaKind = mediaKind;
             if( mediaKind == 'img' ) {
-              this.mediaMarkup = '<img class="nGY2ViewerMedia" src="' + url + '" alt=" " itemprop="contentURL">';
+              this.mediaMarkup = '<img class="nGY2ViewerMedia" src="' + url + '" alt=" " itemprop="contentURL" draggable="false">';
             }
           };
           
@@ -1210,6 +1289,7 @@
     portable :                    false,
     
     touchAnimation :              true,
+    touchAnimationL1 :            undefined,
     touchAutoOpenDelay :          0,
 
     thumbnailLabel : {
@@ -1388,21 +1468,27 @@
         case 'displayItem':
           nG2.DisplayItem(option);
           break;
+          
         case 'search':
           return( nG2.Search(option));
           break;
+          
         case 'search2':
           return nG2.Search2(option, value);
           break;
+          
         case 'search2Execute':
           return nG2.Search2Execute();
           break;
+          
         case 'refresh':
           nG2.Refresh();
           break;
+          
         case 'instance':
           return nG2;
           break;
+          
         case 'data':
           nG2.data= {
             items: nG2.I,
@@ -1411,16 +1497,20 @@
           };
           return nG2.data;
           break;
+          
         case 'reload':
           nG2.ReloadAlbum();
           return $(this);
           break;
+          
         case 'itemsSelectedGet':
           return nG2.ItemsSelectedGet();
           break;
+          
         case 'itemsSetSelectedValue':
           nG2.ItemsSetSelectedValue(option, value);
           break;
+          
         case 'option':
           if(typeof value === 'undefined'){
             return nG2.Get(option);
@@ -1432,13 +1522,16 @@
             }
           }
           break;
+          
         case 'destroy':
           nG2.Destroy();
           $(this).removeData('nanogallery2data');
           break;
+          
         case 'shoppingCartGet':
           return nG2.shoppingCart;
           break;
+          
         case 'shoppingCartUpdate':
           if( typeof value === 'undefined' || typeof option === 'undefined' ){
             return false;
@@ -1456,6 +1549,7 @@
           }
           return nG2.shoppingCart;
           break;
+          
         case 'shoppingCartRemove':
           if( typeof option === 'undefined' ){
             return false;
@@ -1473,6 +1567,29 @@
           }
           return nG2.shoppingCart;
           break;
+         
+        case 'closeViewer':
+          nG2.CloseViewer();
+          break;
+        case 'minimizeToolbar':
+          nG2.MinimizeToolbar();
+          break;
+        case 'maximizeToolbar':
+          nG2.MaximizeToolbar();
+          break;
+        case 'paginationPreviousPage':
+          nG2.PaginationPreviousPage();
+          break;
+        case 'paginationNextPage':
+          nG2.paginationNextPage();
+          break;
+        case 'paginationGotoPage':
+          nG2.PaginationGotoPage( option );
+          break;
+        case 'paginationCountPages':
+          nG2.PaginationCountPages();
+          break;
+         
       }
       return $(this);
 
@@ -1635,6 +1752,7 @@
       }
       return CountItemsToDisplay( G.GOM.albumIdx );
     };
+    
     /**
      * Search2 - execute the search on title and tags
      */
@@ -1681,6 +1799,74 @@
       jQuery(window).off('scroll.nanogallery2.'+G.baseEltID);
       G.GOM.firstDisplay=false;
     };
+    
+    /**
+     * CloseViewer - close the media viewer
+     */
+    this.CloseViewer = function() {
+      CloseInternalViewer(null);
+      return false;
+    };
+    
+    /**
+     * MinimizeToolbar - display the minimized lightbox main toolbar
+     */
+    this.MinimizeToolbar = function() {
+      ViewerToolbarForVisibilityMin();
+      return false;
+    };
+    
+    /**
+     * MaximizeToolbar - display the maximized/standard lightbox main toolbar
+     */
+    this.MaximizeToolbar = function() {
+      ViewerToolbarForVisibilityStd();
+      return false;
+    };
+    
+    /**
+     * PaginationPreviousPage - gallery paginate to previous page
+     */
+    this.PaginationPreviousPage = function() {
+      paginationPreviousPage();
+      return false;
+    };
+    
+    
+    /**
+     * PaginationNextPage - gallery paginate to next page
+     */
+    this.PaginationNextPage = function() {
+      paginationNextPage();
+      return false;
+    };
+    
+    
+    /**
+     * PaginationGotoPage - gallery paginate to specific page
+     */
+    this.PaginationGotoPage = function( page ) {
+      var aIdx = G.$E.conPagin.data('galleryIdx');
+      // if( !inViewportVert(G.$E.base, 0) ) {
+        // $('html, body').animate({scrollTop: G.$E.base.offset().top}, 200);
+      // }
+      if( page > 1 ) { page--; }
+      G.GOM.pagination.currentPage = page;
+      GalleryDisplayPart1( true );
+      GalleryDisplayPart2( true );
+      return false;
+    };
+
+    /**
+     * PaginationCountPages - gallery pagination - returns the number of pages
+     */
+    this.PaginationCountPages = function() {
+      if( G.GOM.items.length == 0 ) { return 0; }   // no thumbnail to display
+
+      var nbPages = Math.ceil((G.GOM.items[G.GOM.items.length - 1].row + 1) / G.galleryMaxRows.Get());
+      return nbPages;
+    };
+    
     
     
     
@@ -2403,7 +2589,7 @@
       // Check location hash + start parameters -> determine what to do on start
       // openOnStart parameter
       if( G.O.openOnStart != '' ) {
-        var IDs=parseIDs(G.O.openOnStart);
+        var IDs = parseIDs(G.O.openOnStart);
         if( IDs.imageID != '0' ) {
           DisplayPhoto(IDs.imageID, IDs.albumID);
         }
@@ -2423,9 +2609,9 @@
       
       var t=IDs.split('/');
       if( t.length > 0 ) {
-        r.albumID=t[0];
+        r.albumID = t[0];
         if( t.length > 1 ) {
-          r.imageID=t[1];
+          r.imageID = t[1];
         }
       }
       return r;
@@ -2440,19 +2626,17 @@
       }
     
       // set current navigation level (l1 or lN)
-      var albumIdx=NGY2Item.GetIdx(G, albumID);
+      var albumIdx = NGY2Item.GetIdx(G, albumID);
+      G.GOM.curNavLevel = 'lN';
       if( albumIdx == 0 ) {
-        G.GOM.curNavLevel='l1';
-      }
-      else {
-        G.GOM.curNavLevel='lN';
+        G.GOM.curNavLevel = 'l1';
       }
       G.layout.SetEngine();
-      G.galleryResizeEventEnabled=false;
+      G.galleryResizeEventEnabled = false;
 
       if( albumIdx == -1 ) {
         NGY2Item.New( G, '', '', albumID, '0', 'album' );    // create empty album
-        albumIdx=G.I.length-1;
+        albumIdx = G.I.length - 1;
       }
     
       if( !G.I[albumIdx].contentIsLoaded ) {
@@ -2463,7 +2647,7 @@
     
       ThumbnailSelectionClear();
     
-      G.GOM.pagination.currentPage=0;
+      G.GOM.pagination.currentPage = 0;
       SetLocationHash( albumID, '' );
       GalleryRender( albumIdx );
     
@@ -2481,7 +2665,7 @@
           break;
         case 'MOREBUTTON':
           G.$E.conTnBottom.off('click');
-          var nb=G.GOM.items.length-G.GOM.itemsDisplayed;
+          var nb = G.GOM.items.length-G.GOM.itemsDisplayed;
           if( nb == 0 ) {
             G.$E.conTnBottom.empty();
           }
@@ -3158,85 +3342,85 @@
     // copy items (album content) to GOM
     function GalleryPopulateGOM() {
       
-      var preloadImages='';
-      var imageSizeRequested=false;
-      var albumID=G.I[G.GOM.albumIdx].GetID();
-      var l=G.I.length;
-      var cnt=0;
+      var preloadImages = '';
+      var imageSizeRequested = false;
+      var albumID = G.I[G.GOM.albumIdx].GetID();
+      var l = G.I.length;
+      var cnt = 0;
 
-      for( var idx=0; idx < l; idx++ ) {
-        var item=G.I[idx];
+      for( var idx = 0; idx < l; idx++ ) {
+        var item = G.I[idx];
         // check album
         if( item.isToDisplay(albumID) ) {
-        var w=item.thumbImg().width;
-          var h=item.thumbImg().height;
+        var w = item.thumbImg().width;
+          var h = item.thumbImg().height;
           // if unknown image size and layout is not grid --> we need to retrieve the size of the images
           if( G.layout.prerequisite.imageSize && ( w == 0 || h == 0) ) {
           // if( true ) {
-            imageSizeRequested=true;
-            preloadImages+='<img src="'+item.thumbImg().src+'" data-idx="'+cnt+'" data-albumidx="'+G.GOM.albumIdx+'">';
+            imageSizeRequested = true;
+            preloadImages += '<img src="'+item.thumbImg().src+'" data-idx="'+cnt+'" data-albumidx="'+G.GOM.albumIdx+'">';
           }
           
           // set default size if required
           if( h == 0 ) {
-            h=G.tn.defaultSize.getHeight();
+            h = G.tn.defaultSize.getHeight();
           }
           if( w == 0 ) {
-            w=G.tn.defaultSize.getWidth();
+            w = G.tn.defaultSize.getWidth();
           }
-          var tn=new GTn(idx, w, h);
+          var tn = new GTn(idx, w, h);
           G.GOM.items.push(tn);
           cnt++;
         }
       }
 
       TriggerCustomEvent('galleryObjectModelBuilt');
-      var fu=G.O.fnGalleryObjectModelBuilt;
+      var fu = G.O.fnGalleryObjectModelBuilt;
       if( fu !== null ) {
         fu == 'function' ? fu() : window[fu]();
       }
       
       if( imageSizeRequested ) {
         // preload images to retrieve their size and then resize the gallery (=GallerySetLayout()+ GalleryDisplay())
-        var $newImg=jQuery(preloadImages);
+        var $newImg = jQuery(preloadImages);
         var gi_imgLoad = ngimagesLoaded( $newImg );
-        $newImg=null;
+        $newImg = null;
         gi_imgLoad.on( 'progress', function( instance, image ) {
         
           if( image.isLoaded ) {
-            var idx=image.img.getAttribute('data-idx');
-            var albumIdx=image.img.getAttribute('data-albumidx');
+            var idx = image.img.getAttribute('data-idx');
+            var albumIdx = image.img.getAttribute('data-albumidx');
             if( albumIdx == G.GOM.albumIdx ) {
               // ignore event if not on current album
-              var curTn=G.GOM.items[idx];
-              curTn.imageWidth=image.img.naturalWidth;
-              curTn.imageHeight=image.img.naturalHeight;
-              var item=G.I[curTn.thumbnailIdx];
-              item.thumbs.width[G.GOM.curNavLevel][G.GOM.curWidth]=curTn.imageWidth;
-              item.thumbs.height[G.GOM.curNavLevel][G.GOM.curWidth]=curTn.imageHeight;
+              var curTn = G.GOM.items[idx];
+              curTn.imageWidth = image.img.naturalWidth;
+              curTn.imageHeight = image.img.naturalHeight;
+              var item = G.I[curTn.thumbnailIdx];
+              item.thumbs.width[G.GOM.curNavLevel][G.GOM.curWidth] = curTn.imageWidth;
+              item.thumbs.height[G.GOM.curNavLevel][G.GOM.curWidth] = curTn.imageHeight;
  
               // resize the gallery
               G.GalleryResizeThrottled();
               
               // set the retrieved size to all levels with same configuration  
-              var object=item.thumbs.width.l1;
+              var object = item.thumbs.width.l1;
               for (var property in object) {
                 if (object.hasOwnProperty(property)) {
                   if( property != G.GOM.curWidth ) {
                     if( G.tn.settings.width.l1[property] == G.tn.settings.getW() && G.tn.settings.height.l1[property] == G.tn.settings.getH() ) {
-                      item.thumbs.width.l1[property]=curTn.imageWidth;
-                      item.thumbs.height.l1[property]=curTn.imageHeight;
+                      item.thumbs.width.l1[property] = curTn.imageWidth;
+                      item.thumbs.height.l1[property] = curTn.imageHeight;
                     }
                   }
                 }
               }
-              object=item.thumbs.width.lN;
+              object = item.thumbs.width.lN;
               for (var property in object) {
                 if (object.hasOwnProperty(property)) {
                   if( property != G.GOM.curWidth ) {
                     if( G.tn.settings.width.lN[property] == G.tn.settings.getW() && G.tn.settings.height.lN[property] == G.tn.settings.getH() ) {
-                      item.thumbs.width.lN[property]=curTn.imageWidth;
-                      item.thumbs.height.lN[property]=curTn.imageHeight;
+                      item.thumbs.width.lN[property] = curTn.imageWidth;
+                      item.thumbs.height.lN[property] = curTn.imageHeight;
                     }
                   }
                 }
@@ -3244,7 +3428,7 @@
             }
           }
         });
-        G.galleryResizeEventEnabled=true;
+        G.galleryResizeEventEnabled = true;
         return false;
       }
       else {
@@ -5321,18 +5505,18 @@
       if( G.O.debugMode ) { console.log('#DisplayPhoto : '+  albumID +'-'+ imageID); }
       var albumIdx = NGY2Item.GetIdx(G, albumID);
       if( albumIdx == 0 ) {
-        G.GOM.curNavLevel='l1';
+        G.GOM.curNavLevel = 'l1';
       }
       else {
-        G.GOM.curNavLevel='lN';
+        G.GOM.curNavLevel = 'lN';
       }
 
       if( albumIdx == -1 ) {
         // get content of album on root level
         if( G.O.kind != '' ) {
-          // do not add adlbum if Markup or Javascript data
+          // do not add album if Markup or Javascript data
           NGY2Item.New( G, '', '', albumID, '0', 'album' );    // create empty album
-          albumIdx=G.I.length-1;
+          albumIdx = G.I.length - 1;
         }
       }
 
@@ -5483,13 +5667,13 @@
         GetContentApiObject();
       }
       else {
-        if( G.O.$markup.length > 0 ) {
+      if( G.O.$markup.length > 0 ) {
           // data defined as markup (href elements)
           GetContentMarkup( G.O.$markup );
           G.O.$markup=[]  ;
         }
         else {
-          NanoConsoleLog(G, 'error: no image to process.');
+          NanoConsoleLog(G, 'error: no media to process.');
           return;
         }
       }
@@ -6242,6 +6426,12 @@
       }
       G.tn.hoverEffects.std = ThumbnailOverEffectsPreset(G.tn.hoverEffects.std);
 
+      
+      if( G.O.touchAnimationL1 == undefined ) {
+        G.O.touchAnimationL1 = G.O.touchAnimation;
+      }
+      
+      // disable thumbnail touch animation when no hover effect defined
       if( G.tn.hoverEffects.std.length == 0 ) {
         if( G.tn.hoverEffects.level1.length == 0 ) {
           G.O.touchAnimationL1 = false;
@@ -6331,13 +6521,13 @@
         G.tn.settings.mosaicCalcFactor('lN', 'la');
         G.tn.settings.mosaicCalcFactor('lN', 'xl');
       }
-      if( G.O.galleryMosaicL1 != undefined ) {
+      if( G.O.galleryL1Mosaic != undefined ) {
         // default L1 pattern
-        G.tn.settings.mosaic.l1.xs = JSON.parse(JSON.stringify(G.O.galleryMosaicL1));
-        G.tn.settings.mosaic.l1.sm = JSON.parse(JSON.stringify(G.O.galleryMosaicL1));
-        G.tn.settings.mosaic.l1.me = JSON.parse(JSON.stringify(G.O.galleryMosaicL1));
-        G.tn.settings.mosaic.l1.la = JSON.parse(JSON.stringify(G.O.galleryMosaicL1));
-        G.tn.settings.mosaic.l1.xl = JSON.parse(JSON.stringify(G.O.galleryMosaicL1));
+        G.tn.settings.mosaic.l1.xs = JSON.parse(JSON.stringify(G.O.galleryL1Mosaic));
+        G.tn.settings.mosaic.l1.sm = JSON.parse(JSON.stringify(G.O.galleryL1Mosaic));
+        G.tn.settings.mosaic.l1.me = JSON.parse(JSON.stringify(G.O.galleryL1Mosaic));
+        G.tn.settings.mosaic.l1.la = JSON.parse(JSON.stringify(G.O.galleryL1Mosaic));
+        G.tn.settings.mosaic.l1.xl = JSON.parse(JSON.stringify(G.O.galleryL1Mosaic));
         G.tn.settings.mosaicCalcFactor('l1', 'xs');
         G.tn.settings.mosaicCalcFactor('l1', 'sm');
         G.tn.settings.mosaicCalcFactor('l1', 'me');
@@ -6353,8 +6543,8 @@
         }
       }
       for( var w = 0; w < G.tn.settings.mosaic.l1; w++ ) {
-        if( G.O['galleryMosaicL1'+G.tn.settings.mosaic.l1[w].toUpperCase()] != undefined ) {
-          G.tn.settings.mosaic.l1[tn.settings.mosaic.l1[w]] = JSON.parse(JSON.stringify( G.O['galleryMosaicL1'+G.tn.settings.mosaic.l1[w].toUpperCase()] ));
+        if( G.O['galleryL1Mosaic'+G.tn.settings.mosaic.l1[w].toUpperCase()] != undefined ) {
+          G.tn.settings.mosaic.l1[tn.settings.mosaic.l1[w]] = JSON.parse(JSON.stringify( G.O['galleryL1Mosaic'+G.tn.settings.mosaic.l1[w].toUpperCase()] ));
           G.tn.settings.mosaicCalcFactor('l1', G.tn.settings.mosaic.l1[w]);
         }
       }
@@ -7432,7 +7622,15 @@
             ThumbnailSelectionToggle(idx);
           }
           else {
-            DisplayAlbum('-1', item.GetID());
+            if( G.O.thumbnailAlbumDisplayImage && idx != 0 ) {
+              // display album content in lightbox
+              DisplayFirstMediaInAlbum(idx);
+              return;
+            }
+            else {
+              // display album content in gallery
+              DisplayAlbum('-1', item.GetID());
+            }
           }
           break;
         case 'albumUp':
@@ -7440,6 +7638,24 @@
           DisplayAlbum('-1', parent.albumID);
           break;
       }
+    }
+    
+    function DisplayFirstMediaInAlbum( albumIdx ) {
+      if( G.O.debugMode ) { console.log('#DisplayFirstPhotoInAlbum : '+  albumIdx); }
+
+      var item = G.I[albumIdx];
+      
+      var l = G.I.length;
+      for( var i = 0; i < l; i++ ) {
+        if( G.I[i].albumID == item.GetID() ) {
+          DisplayPhotoIdx( i );
+          return;
+        }
+      }
+      
+      // load album content
+      AlbumGetContent( item.GetID(), DisplayFirstMediaInAlbum, albumIdx, null );
+      
     }
     
 
@@ -8001,8 +8217,12 @@
     
     function ViewerToolsOpacity( op ) {
       G.VOM.$toolbar.css('opacity', op);
-      G.VOM.$toolbarTL.css('opacity', op);
-      G.VOM.$toolbarTR.css('opacity', op);
+      if( G.VOM.$toolbarTL != null ) {
+        G.VOM.$toolbarTL.css('opacity', op);
+      }
+      if( G.VOM.$toolbarTR != null ) { 
+        G.VOM.$toolbarTR.css('opacity', op);
+      }
       G.VOM.$content.find('.nGY2ViewerAreaNext').css('opacity', op);
       G.VOM.$content.find('.nGY2ViewerAreaPrevious').css('opacity', op);
     }
@@ -8683,15 +8903,38 @@
         G.VOM.$cont.hide(0).off().show(0).html('').remove();
         G.VOM.viewerDisplayed = false;
 
-        if( vomIdx != null ) {
-          if( G.GOM.albumIdx == -1 ) {
-            // album not displayed --> display gallery
-            DisplayAlbum( '', G.I[G.VOM.items[vomIdx].ngy2ItemIdx].albumID );
+        if( G.O.thumbnailAlbumDisplayImage ) {
+          // content of album displayed directly in lightbox (no gallery display for album content)
+          if( vomIdx == null ) {
+            // lightbox closed with browser back-button
+            // the gallery is already displayed
           }
           else {
-            GalleryResize();        
-            SetLocationHash( G.I[G.VOM.items[vomIdx].ngy2ItemIdx].albumID, '' );
-            ThumbnailHoverReInitAll();
+            var item = G.I[G.VOM.items[vomIdx].ngy2ItemIdx];
+            var parent = NGY2Item.Get(G, item.albumID);
+            if( G.GOM.albumIdx != parent.albumID ) {
+              // display album only if not already displayed
+              DisplayAlbum('-1', parent.albumID);
+            }
+            else {
+              GalleryResize();        
+              SetLocationHash( '', '' );
+              ThumbnailHoverReInitAll();
+            }
+          }
+            // DisplayAlbum( '-', G.I[G.VOM.items[vomIdx].ngy2ItemIdx].albumID );
+        }
+        else {
+          if( vomIdx != null ) {
+            if( G.GOM.albumIdx == -1 ) {
+              // album not displayed --> display gallery
+              DisplayAlbum( '', G.I[G.VOM.items[vomIdx].ngy2ItemIdx].albumID );
+            }
+            else {
+              GalleryResize();        
+              SetLocationHash( G.I[G.VOM.items[vomIdx].ngy2ItemIdx].albumID, '' );
+              ThumbnailHoverReInitAll();
+            }
           }
         }
         G.VOM.timeImgChanged = new Date().getTime();
@@ -8772,9 +9015,9 @@
     function BuildSkeleton() {
     
       // store markup if defined
-      var $elements=G.$E.base.children('a');
+      var $elements = G.$E.base.children('a');
       if( $elements.length > 0 ) {
-        G.O.$markup=$elements;
+        G.O.$markup = $elements;
       }
       G.$E.base.text('');
       G.$E.base.addClass('ngy2_container');
@@ -8862,15 +9105,16 @@
         // http://www.picresize.com/
         // http://base64encode.net/base64-image-encoder
         // var logo='data:image/png;base64,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';
-        var logo='data:image/png;base64,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';
-        G.$E.ngy2i=jQuery('<div class="nGY2PortInfo"><a href="http://nano.gallery" target="_blank" title="nanogallery2 | easy photo gallery for your website" style="font-weight: bold !important;color: #888 !important;font-size: 11px !important;"><img src="'+logo+'" style="height:16px !important;box-shadow: none !important;vertical-align: middle !important;"/> &nbsp; nanogallery2</a></div>').appendTo(G.$E.base);
+        var logo = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAYCAYAAACbU/80AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH4QgDBCAWVVC/hwAABRxJREFUSMetll9oVFcexz/nnDvJRBmSzWTrmD9uNGZsHta0/qFIFQTxRcnCBgTFNlX0YR8W+1AK9lGwCBJYgn0KKr5136S4gpUQTR4caJRslcxYWV3iaphQapJJppO5957z60Mmk4mN1q75wg/OPefc+/v9vt/fueenKEFEqICqsNWAVNiCA7XwaS0iZeejo6OIiCltdIBdJXMLOYp5/PjxsoTVS5nr0mYDJIE/lObeBhaYAn4oJbboAwBvBedHJicnPx8YGGh/8eJF1dvKoJSShoYGf//+/Zl4PP4l8M2yIEoSLErx6c2bN6W1tXVRglWzLVu2SCqVEhE5LiI457SIoEREW2udMaZtcnLy+2QyWZ3L5XRHR4f+4MNdoBUahUJhcWilmZ/NE4ZhOQHn3LIi1lqjtS6vjY6O8uTJE9vc3MyDBw+mYrHYn0Uk63me8gCtlHLA7uHh4bW5XC7oePddPTQ8xHffDjM/PYe3thqMws35iAcHPj5ENBp9Yxmy2Sw7d+40z549C+7du9ewb9++D6y13wDaK+kE0DAzMyNKKbXtvfd5EfzM+Ef/4C+8x23+wzPm+IhtfMf3/Ksuyl+7u9FaY63l+vXrpFIpCoUCmzdvpquri9bWVoIgQClFIpFg48aNPH/+XE9NTQkQLTGmvEXKRERprZWIEIYhQRjQbN6hmUb+tCaPNnM055v40f3If7XBGMPT8af0fNLD0NDQsozPnDlDb28vx44dIwxDRARrLSKCKmUbiUQQkWWnoLJ20UpjFYAjVA6rBJTFV5ZIJIIfBBw4eICxsTHq6uo4dOgQ8XicgYEB7t69y/Hjx4nH43R1dVHB8q+w4hlXSmGd5edwmjCco5DLkZ+aJvTnyIdTrFmzhn9+/TVjY2M0NTVx+/Zt+vv7OXfuHKlUip6eHgBOnz6N7/vlYl0JKzIw78/T+sdGbn6yjf5ZS2HtJgIP+mcC5kySI1uSXPjqAlprTp06RWdnJ8ViEaUUVVVVnD9/nqtXr5LJZHj48CFbt279fQEEYUisZi2fXel9bWU750gmkwRBgNYaz/Ow1lJfX088Hmd2dpZcLvdaBl4pgQChH4B1iHU4a8E6Qj9ARGhpaUFrzeDgIJFIBGMM1lqMMWQyGSYmJohEIqxfv/7314CIoADtGTAaZTTaLI2VUhw+fBjnHBcvXuTy5cs45/A8j3Q6zcmTJ/F9n71799LW1rbgSOs3D+B1lBljcM7R3d3N0aNHKRQKnDhxgs7OTnbt2sX27dsZGRkhHo/T19e3+Kt/fQ1YawFwzolSCs/zUEqVtX1VcJcuXSKRSNDf3086nS6v79mzh76+Pjo6OigWi1RXV2OMWZC29PL8/PxSAL7vE41Gf4rFYkpEePToEb7vU1VVxW+ht7eXs2fPcv/+fQqFAps2baKlpaW8Xl1dTS6XY3x8HBFxtbW1BiiW4hAlInp8fNxt2LChPZvN/ru9vT2Sz+e93bt3qx07diwrzJWYcM5RU1NDNBots5bP53HOlS+kO3fuMDIy4hKJhKTT6ena2tqtxWJxoqamRr98HX9x7do1qaurExYaiXCVzK5bt04GBwdFRP728nVcWZAO+Hsmk/nsxo0bTTMzM5FXHZ83hYhQX1/vHzx48H9tbW1ngSsVvpYCmJ2dJRaLKRbapjpgOxB7K+9LmAbuAnOAnpiYcI2NjUsRLlo2myUMQ1M5t5rmnDO3bt1aNlfmd4W2XL/0/H8pUDF2rNCW/wLRuCkxx8V6wgAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxNy0wOC0wM1QwNDozMjoyMi0wNDowMO7mdkwAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTctMDgtMDNUMDQ6MzI6MjItMDQ6MDCfu87wAAAAAElFTkSuQmCC';
+        var st = "font-weight:bold !important;color: #FF0075 !important;font-size: 14px !important;text-transform: lowercase !important;cursor:pointer !important;text-align: center !important;Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px !important;";
+        G.$E.ngy2i=jQuery('<div class="nGY2PortInfo"><a href="http://nano.gallery" target="_blank" title="nanogallery2 | easy photo gallery for your website" style="' + st + '"><img src="' + logo + '" style="height:32px !important;width:initial !important;box-shadow: none !important;vertical-align: middle !important;"/> &nbsp; nanogallery2</a></div>').appendTo(G.$E.base);
         
         G.$E.ngy2i.find('a').on({
           mouseenter: function () {
-            jQuery(this).attr('style', 'color: #73A623 !important');
+            jQuery(this).attr('style', st);
           },
           mouseleave: function () {
-            jQuery(this).attr('style', 'color: #888 !important');
+            jQuery(this).attr('style', st);
           }
         });
       }
@@ -8977,8 +9221,14 @@
               return;
             }
 
+            if( (G.GOM.curNavLevel == 'l1' && G.O.touchAnimationL1 == false) ||  (G.GOM.curNavLevel == 'lN' && G.O.touchAnimation == false) ) {
+              // open on single touch (no hover animation)
+              ThumbnailOpen(G.GOM.items[r.GOMidx].thumbnailIdx, true);
+              return;
+            }
+            
             if( G.O.touchAutoOpenDelay > 0 ) {
-              // one touch scenario
+              // open on single touch after end of hover animation (=defined delay)
               ThumbnailHoverOutAll();
               ThumbnailHover( r.GOMidx );
               window.clearInterval( G.touchAutoOpenDelayTimerID );
@@ -14353,7 +14603,7 @@ if (typeof define === 'function' && define.amdDISABLED) {
       // standard mode
       var t=document.querySelectorAll('[data-nanogallery2]');
       for( var i=0; i < t.length; i++ ) {
-        jQuery(t[i]).nanogallery2(jQuery(t[i]).data('nanogallery2'));
+        jQuery( t[i] ).nanogallery2( jQuery(t[i]).data('nanogallery2') );
       }
     // }
     
