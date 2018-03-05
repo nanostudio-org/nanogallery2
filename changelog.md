@@ -1,6 +1,20 @@
 nanogallery2 - ChangeLog
 ===========
 
+
+v2.1.0
+------
+- new: API methods 'closeViewer', 'minimizeToolbar', 'maximizeToolbar', 'paginationPreviousPage', 'paginationNextPage', 'paginationGotoPage', 'paginationCountPages'
+- fixed: single touch to open thumbnail when no hover effect defined
+- fixed: lightbox support for empty top-left or top-right toolbar
+- fixed: option 'galleryMosaicL1' renamed to 'galleryL1Mosaic'
+- fixed: options 'touchAnimation' and 'touchAnimationL1'
+- fixed: #82 option 'thumbnailAlbumDisplayImage'
+- fixed: incorrect .nGY2GThumbnailSub size
+- fixed: functions NGY2Item.thumbSet(), NGY2Item.imageSet(), NGY2Item.thumbSetImgHeight(), NGY2Item.thumbSetImgWidth()
+
+
+
 v2.0.0
 ------
 - new: mosaic layout
