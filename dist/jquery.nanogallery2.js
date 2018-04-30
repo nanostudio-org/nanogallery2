@@ -1,4 +1,4 @@
-/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2018-02-28 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2018-04-30 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /**!
  * @preserve nanogallery2 - javascript image gallery
  * Homepage: http://nanogallery2.nanostudio.org
@@ -19,22 +19,14 @@
  *  - ICO online converter: https://iconverticons.com/online/
  */
 
-
 /*
+v2.1.1 - beta
 
-todo:
-- thumbnail background color
+- fixed issue on callbacks fnGalleryLayoutApplied, fnGalleryObjectModelBuilt, fnGalleryRenderStart (#121), galleryRenderEnd, fnShoppingCartUpdated, fnShoppingCartUpdated
 
-V2.1.0 BETA
-
-- new: API methods 'closeViewer', 'minimizeToolbar', 'maximizeToolbar', 'paginationPreviousPage', 'paginationNextPage', 'paginationGotoPage', 'paginationCountPages'
-- fixed: option 'galleryMosaicL1' renamed to 'galleryL1Mosaic'
-- fixed: options 'touchAnimation' and 'touchAnimationL1'
-- fixed: #82 option 'thumbnailAlbumDisplayImage'
-- fixed: incorrect .nGY2GThumbnailSub size
-- fixed: lightbox support for empty top-left or top-right toolbar
-- fixed: single touch to open thumbnail when no hover effect defined
-- fixed: functions NGY2Item.thumbSet(), NGY2Item.imageSet(), NGY2Item.thumbSetImgHeight(), NGY2Item.thumbSetImgWidth()
+TODO:
+- thumbnailDisplayOutsideScreen  -> default to true
+- AMD
 
 
 */
@@ -1565,7 +1557,7 @@ V2.1.0 BETA
           }
           var fu=G.O.fnShoppingCartUpdated;
           if( fu !== null ) {
-            fu == 'function' ? fu(nG2.shoppingCart) : window[fu](nG2.shoppingCart);
+            typeof  fu == 'function' ? fu(nG2.shoppingCart) : window[fu](nG2.shoppingCart);
           }
           return nG2.shoppingCart;
           break;
@@ -1583,7 +1575,7 @@ V2.1.0 BETA
           }
           var fu=G.O.fnShoppingCartUpdated;
           if( fu !== null ) {
-            fu == 'function' ? fu(nG2.shoppingCart) : window[fu](nG2.shoppingCart);
+            typeof fu == 'function' ? fu(nG2.shoppingCart) : window[fu](nG2.shoppingCart);
           }
           return nG2.shoppingCart;
           break;
@@ -1894,7 +1886,7 @@ V2.1.0 BETA
     // author: underscore.js - http://underscorejs.org/docs/underscore.html
     // Returns a function, that, when invoked, will only be triggered at most once during a given window of time.
     // Normally, the throttled function will run as much as it can, without ever going more than once per wait duration;
-    // but if you�d like to disable the execution on the leading edge, pass {leading: false}.
+    // but if you’d like to disable the execution on the leading edge, pass {leading: false}.
     // To disable execution on the trailing edge, ditto.
     var throttle = function(func, wait, options) {
       var context, args, result;
@@ -3151,7 +3143,7 @@ V2.1.0 BETA
       
       var fu=G.O.fnGalleryRenderStart;
       if( fu !== null ) {
-        fu == 'function' ? fu(albumIdx) : window[fu](albumIdx);
+        typeof fu == 'function' ? fu(albumIdx) : window[fu](albumIdx);
       }
 
       G.layout.SetEngine();
@@ -3315,7 +3307,7 @@ V2.1.0 BETA
       TriggerCustomEvent('galleryRenderEnd');
       var fu=G.O.fnGalleryRenderEnd;
       if( fu !== null ) {
-        fu == 'function' ? fu(albumIdx) : window[fu](albumIdx);
+        typeof fu == 'function' ? fu(albumIdx) : window[fu](albumIdx);
       }
 
       // Step 1: populate GOM
@@ -3397,7 +3389,7 @@ V2.1.0 BETA
       TriggerCustomEvent('galleryObjectModelBuilt');
       var fu = G.O.fnGalleryObjectModelBuilt;
       if( fu !== null ) {
-        fu == 'function' ? fu() : window[fu]();
+        typeof fu == 'function' ? fu() : window[fu]();
       }
       
       if( imageSizeRequested ) {
@@ -3483,7 +3475,7 @@ V2.1.0 BETA
       TriggerCustomEvent('galleryLayoutApplied');
       var fu = G.O.fnGalleryLayoutApplied;
       if( fu !== null ) {
-        fu == 'function' ? fu() : window[fu]();
+        typeof fu == 'function' ? fu() : window[fu]();
       }
       return r;
 
@@ -7235,7 +7227,7 @@ V2.1.0 BETA
         };
       }
 
-      // requestAnimationFrame polyfill by Erik M�ller. fixes from Paul Irish and Tino Zijdel
+      // requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
       // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
       // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
       // MIT license
@@ -7722,7 +7714,7 @@ V2.1.0 BETA
       var vimg = new VImg(ngy2ItemIdx);
       G.VOM.items.push(vimg);
       items.push(G.I[ngy2ItemIdx]);
-      //TODO -> danger? -> pourquoi reconstruire la liste si d�j� ouvert (back/forward)     
+      //TODO -> danger? -> pourquoi reconstruire la liste si déjà ouvert (back/forward)     
       var l = G.I.length;
       for( var idx = ngy2ItemIdx+1; idx < l ; idx++) {
         var item = G.I[idx];
