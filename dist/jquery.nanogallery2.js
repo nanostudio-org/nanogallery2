@@ -1,4 +1,4 @@
-/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2018-04-30 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2018-05-09 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /**!
  * @preserve nanogallery2 - javascript image gallery
  * Homepage: http://nanogallery2.nanostudio.org
@@ -22,12 +22,17 @@
 /*
 v2.1.1 - beta
 
+- new API method 'resize' - force a gallery resize 
+- new internal NGY2Item object method 'delete' - deletes the current item
+- new internal NGY2Item object method 'addToGOM' - adds the current item to the Gallery Object Modell
 - fixed issue on callbacks fnGalleryLayoutApplied, fnGalleryObjectModelBuilt, fnGalleryRenderStart (#121), galleryRenderEnd, fnShoppingCartUpdated, fnShoppingCartUpdated
+- fixed #120 - thumbnails with a Single Quote wont load
+- changed: 'thumbnailDisplayOutsideScreen' default value to true
+- fixed #115 - loading nanogallery2 with AMD
 
 TODO:
-- thumbnailDisplayOutsideScreen  -> default to true
-- AMD
-
+- lazy load tuning
+- CSS icon
 
 */
  
@@ -42,7 +47,8 @@ TODO:
     "use strict";
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
-        define('nanogallery2', ['jquery'], factory);
+        // define('nanogallery2', ['jquery'], factory);
+        define(['jquery'], factory);
     } else if (typeof exports === 'object' && typeof require === 'function') {
         // Browserify
         factory(require('jquery'));
@@ -453,6 +459,7 @@ TODO:
             this.albumTagList =         [];       // list of all the tags of the items contained in the current album
             this.albumTagListSel =      [];       // list of currently selected tags (only for albums)
             this.exif = { exposure: '', flash: '', focallength: '', fstop: '', iso: '', model: '', time: '', location: ''};
+            this.deleted =              false;    // item is deleted -> do not display anymore
           }
 
           // public static
@@ -580,6 +587,84 @@ TODO:
             item.description = escapeHtml(instance, description);
             return item;
           };
+          
+          
+          // removes logically current item
+          NGY2Item.prototype.delete = function( ) {
+            this.deleted = true;
+            
+            // update content length of parent album
+            this.G.I[NGY2Item.GetIdx(this.G, this.albumID)].contentLength--;
+            this.G.I[NGY2Item.GetIdx(this.G, this.albumID)].numberItems--;
+            
+            // check if in DOM and removes it
+            var nbTn = this.G.GOM.items.length;
+            var ID = this.GetID();
+            var foundIdx = -1;
+            var foundGOMidx = -1;
+            for( var i = 0; i < nbTn ; i++ ) {
+              var curTn = this.G.GOM.items[i];
+              var item=this.G.I[curTn.thumbnailIdx];
+              if( item.GetID() == ID ) {
+                // FOUND
+                if( !curTn.neverDisplayed ) {
+                  console.log('remove');
+                  foundIdx= curTn.thumbnailIdx;
+                  foundGOMidx= i;
+                }
+              }
+              else {
+                if( foundIdx != -1 ) {
+                  if( !curTn.neverDisplayed ) {
+                    // update index value
+                    item.$getElt('.nGY2GThumbnail').data('index', i-1);
+                    item.$getElt('.nGY2GThumbnailImg').data('index', i-1);
+                  }
+                }
+              }
+            }
+            if( foundIdx != -1 ) {
+              // delete item in GOM and delete thumbnail
+              var G = this.G;
+              if( this.selected == true ) {
+                this.selected = false;
+                G.GOM.nbSelected--;    // update the global counter
+              }
+              if( G.I[foundIdx].$elt !== null ) {
+                G.I[foundIdx].$elt.remove();      // delete thumbnail DOM object
+              }
+              G.GOM.items.splice(foundGOMidx, 1);   // delete in GOM
+              if( G.GOM.lastDisplayedIdx != -1 ) {
+                G.GOM.lastDisplayedIdx-=1;
+              }
+            }
+          }
+
+          NGY2Item.prototype.addToGOM = function( ) {
+            // retrieve index
+            var ID = this.GetID();
+            var l = this.G.I.length;
+            for( var idx = 0; idx < l; idx++ ) {
+              var item = this.G.I[idx];
+              if( item.GetID() == ID ) {
+                var w = item.thumbImg().width;
+                var h = item.thumbImg().height;
+                // set default size if required
+                if( h == 0 ) {
+                  h = this.G.tn.defaultSize.getHeight();
+                }
+                if( w == 0 ) {
+                  w = this.G.tn.defaultSize.getWidth();
+                }
+                // add to GOM -> will be displayed on next refresh/resize
+                var tn = new this.G.GOM.GTn(idx, w, h);
+                this.G.GOM.items.push(tn);
+                break;
+              }
+            }
+            
+          }
+          
           
           // function to avoid XSS issue - Cross Site Scripting
           // original: https://github.com/janl/mustache.js/blob/master/mustache.js#L55
@@ -807,9 +892,9 @@ TODO:
           };
           
           
-          //--- check if current item can be displayed
+          //--- check if current item should be displayed
           NGY2Item.prototype.isToDisplay = function( albumID ) {
-            return this.albumID == albumID && this.checkTagFilter() && this.isSearchFound() && this.isSearchTagFound();
+            return this.albumID == albumID && this.checkTagFilter() && this.isSearchFound() && this.isSearchTagFound() && this.deleted == false;
           };
           
           
@@ -1294,7 +1379,7 @@ TODO:
     thumbnailL1StacksRotateZ :    null,
     thumbnailStacksScale :        0,
     thumbnailL1StacksScale :      null,
-    thumbnailDisplayOutsideScreen: false,
+    thumbnailDisplayOutsideScreen: true,
     thumbnailWaitImageLoaded:     true,
     thumbnailSliderDelay:         2000,
     galleryBuildInit2 :           '',
@@ -1495,6 +1580,10 @@ TODO:
           
         case 'refresh':
           nG2.Refresh();
+          break;
+
+        case 'resize':
+          nG2.Resize();
           break;
           
         case 'instance':
@@ -1703,6 +1792,13 @@ TODO:
       // refresh the displayed gallery
       GalleryRender( G.GOM.albumIdx );
     };
+    /**
+     * resize the current gallery
+     */
+    this.Resize = function() {
+      // resize the displayed gallery
+      GalleryResize();
+    };
 
     /**
      * display one item (image or gallery)
@@ -1750,14 +1846,14 @@ TODO:
      */
     this.Search2 = function( searchTitle, searchTags ) {
       if( searchTitle != null && searchTitle != undefined ) {
-        G.GOM.albumSearch=searchTitle.toUpperCase();
+        G.GOM.albumSearch = searchTitle.toUpperCase();
       }
       else {
-        G.GOM.albumSearch='';
+        G.GOM.albumSearch = '';
       }
       
       if( searchTags != null && searchTags != undefined ) {
-        G.GOM.albumSearchTags=searchTags.toUpperCase();
+        G.GOM.albumSearchTags = searchTags.toUpperCase();
       }
       else {
         G.GOM.albumSearchTags = '';
@@ -1769,7 +1865,7 @@ TODO:
      * Search2 - execute the search on title and tags
      */
     this.Search2Execute = function() {
-      var gIdx=G.GOM.albumIdx;
+      var gIdx = G.GOM.albumIdx;
       GalleryRender( G.GOM.albumIdx );
       return CountItemsToDisplay( gIdx );
     };
@@ -1886,7 +1982,7 @@ TODO:
     // author: underscore.js - http://underscorejs.org/docs/underscore.html
     // Returns a function, that, when invoked, will only be triggered at most once during a given window of time.
     // Normally, the throttled function will run as much as it can, without ever going more than once per wait duration;
-    // but if you’d like to disable the execution on the leading edge, pass {leading: false}.
+    // but if you�d like to disable the execution on the leading edge, pass {leading: false}.
     // To disable execution on the trailing edge, ditto.
     var throttle = function(func, wait, options) {
       var context, args, result;
@@ -2225,10 +2321,10 @@ TODO:
         containerOffset:          null,
         areaWidth:                100         // available area width
       },
-      nbSelected :                0, // number of selected items
+      nbSelected :                0,        // number of selected items
       pagination :                { currentPage: 0 }, // pagination data
-      lastFullRow :               -1, // number of the last row without holes
-      lastDisplayedIdx:           -1, // used to display the counter of not displayed items
+      lastFullRow :               -1,       // number of the last row without holes
+      lastDisplayedIdx:           -1,       // used to display the counter of not displayed items
       displayInterval :           { from: 0, len: 0 },
       userEvents:                 null,
       hammertime:                 null,
@@ -2250,26 +2346,26 @@ TODO:
         if( G.GOM.items[idx] == undefined || G.GOM.items[idx] == null ) { return null; }
         var i = G.GOM.items[idx].thumbnailIdx;
         return G.I[i];
+      },
+      // One GOM item (thumbnail)
+      // function GTn(index, width, height) {
+      GTn: function(index, width, height) {
+        this.thumbnailIdx = index;
+        this.width =                0;      // thumbnail width
+        this.height =               0;      // thumbnail height
+        this.top =                  0;      // position: top
+        this.left =                 0;      // position: left
+        this.row =                  0;      // position: row number
+        this.imageWidth =           width;  // image width
+        this.imageHeight =          height; // image height
+        this.resizedContentWidth =  0;
+        this.resizedContentHeight = 0;
+        this.displayed =            false;
+        this.neverDisplayed =       true;
+        this.inDisplayArea =        false;
       }
     };
     
-    // One GOM item (thumbnail)
-    function GTn(index, width, height) {
-      this.thumbnailIdx = index;
-      this.width =                0;      // thumbnail width
-      this.height =               0;      // thumbnail height
-      this.top =                  0;      // position: top
-      this.left =                 0;      // position: left
-      this.row =                  0;      // position: row number
-      this.imageWidth =           width;  // image width
-      this.imageHeight =          height; // image height
-      this.resizedContentWidth =  0;
-      this.resizedContentHeight = 0;
-      this.displayed =            false;
-      this.neverDisplayed =       true;
-      this.inDisplayArea =        false;
-     
-    }
     
     //------------------------
     //--- Viewer Object Model
@@ -2325,16 +2421,16 @@ TODO:
         }
       },
       IdxNext: function() {
-        var n=0;
-        if( G.VOM.currItemIdx != G.VOM.items.length-1 ) {
-          n=G.VOM.currItemIdx+1;
+        var n = 0;
+        if( G.VOM.currItemIdx != (G.VOM.items.length-1) ) {
+          n = G.VOM.currItemIdx + 1;
         }
         return n;
       },
       IdxPrevious: function() {
-        var n=G.VOM.currItemIdx-1;
+        var n = G.VOM.currItemIdx-1;
         if( G.VOM.currItemIdx == 0 ) {
-          n=G.VOM.items.length-1;
+          n = G.VOM.items.length - 1;
         }
         return n;
       },
@@ -3364,7 +3460,7 @@ TODO:
         var item = G.I[idx];
         // check album
         if( item.isToDisplay(albumID) ) {
-        var w = item.thumbImg().width;
+          var w = item.thumbImg().width;
           var h = item.thumbImg().height;
           // if unknown image size and layout is not grid --> we need to retrieve the size of the images
           if( G.layout.prerequisite.imageSize && ( w == 0 || h == 0) ) {
@@ -3380,7 +3476,7 @@ TODO:
           if( w == 0 ) {
             w = G.tn.defaultSize.getWidth();
           }
-          var tn = new GTn(idx, w, h);
+          var tn = new G.GOM.GTn(idx, w, h);
           G.GOM.items.push(tn);
           cnt++;
         }
@@ -3531,6 +3627,7 @@ TODO:
       var baseHeight = G.tn.opt.Get('baseGridHeight') * scaleFactor;
       for( var i = 0; i < nbTn ; i++ ) {
         var curTn = G.GOM.items[i];
+        if( curTn.deleted == true ) { break; }    // item is logically deleted
         if( curTn.imageHeight > 0 && curTn.imageWidth > 0 ) {
           var curPosX = 0,
           curPosY = 0;
@@ -3617,6 +3714,7 @@ TODO:
       // first loop --> retrieve each row image height
       for( var i = 0; i < nbTn ; i++ ) {
         var curTn = G.GOM.items[i];
+        if( curTn.deleted == true ) { break; }    // item is logically deleted
         if( curTn.imageWidth > 0 ) {
           var imageRatio = curTn.imageWidth / curTn.imageHeight;
           var imageWidth = Math.floor( tnHeight * imageRatio );
@@ -4542,7 +4640,8 @@ TODO:
         mp = 'cursor:default;'
       }
 
-      var src = item.thumbImg().src,
+      // var src = encodeURI(item.thumbImg().src),
+      var src = (item.thumbImg().src).replace(/'/g, "%27"),   // replace single quote with %27
       sTitle = getThumbnailTitle(item);
 
       // image background -> visible during image download
@@ -4594,7 +4693,6 @@ TODO:
       newElt[newEltIdx++]='<div class="nGY2GThumbnailImage nGY2TnImg" style="' + s2 + '">';
       newElt[newEltIdx++]='  <img class="nGY2GThumbnailImg nGY2TnImg2" src="' + src + '" alt="' + sTitle + '" style="opacity:0;" data-idx="' + idx + '" data-albumidx="' + G.GOM.albumIdx + '" >';
       newElt[newEltIdx++]='</div>';
-
       
       // ##### layer for user customization purposes
       newElt[newEltIdx++]='<div class="nGY2GThumbnailCustomLayer"></div>';
@@ -5855,21 +5953,21 @@ TODO:
         
         // dominant colors (needs to be a base64 gif)
         if( item.imageDominantColors !== undefined ) {
-          newItem.imageDominantColors=item.imageDominantColors;
+          newItem.imageDominantColors = item.imageDominantColors;
         }
         // dominant color (rgb hex)
         if( item.imageDominantColor !== undefined ) {
-          newItem.imageDominantColor=item.imageDominantColor;
+          newItem.imageDominantColor = item.imageDominantColor;
         }
         
         // dest url
         if( item.destURL !== undefined && item.destURL.length>0 ) {
-          newItem.destinationURL=item.destURL;
+          newItem.destinationURL = item.destURL;
         }
         
         // download image url
         if( item.downloadURL !== undefined && item.downloadURL.length>0 ) {
-          newItem.downloadURL=item.downloadURL;
+          newItem.downloadURL = item.downloadURL;
         }
         
         // EXIF DATA
@@ -7227,7 +7325,7 @@ TODO:
         };
       }
 
-      // requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
+      // requestAnimationFrame polyfill by Erik M�ller. fixes from Paul Irish and Tino Zijdel
       // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
       // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
       // MIT license
@@ -7323,15 +7421,18 @@ TODO:
       if( G.I[idx].mediaKind != 'img' ) { return; }
 
       
-      var url=G.I[idx].src;
+      var url = G.I[idx].src;
 
       if( G.I[idx].downloadURL != undefined && G.I[idx].downloadURL != '' ) {
-        url=G.I[idx].downloadURL;
+        url = G.I[idx].downloadURL;
       }
       
       var a = document.createElement('a');
       a.href = url;
-      a.download = url.split('.').pop();
+      // a.download = url.split('.').pop();
+      a.download = url.split('/').pop();
+      a.target = '_blank';
+      a.style.display = 'none';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);      
@@ -7714,7 +7815,7 @@ TODO:
       var vimg = new VImg(ngy2ItemIdx);
       G.VOM.items.push(vimg);
       items.push(G.I[ngy2ItemIdx]);
-      //TODO -> danger? -> pourquoi reconstruire la liste si déjà ouvert (back/forward)     
+      //TODO -> danger? -> pourquoi reconstruire la liste si d�j� ouvert (back/forward)     
       var l = G.I.length;
       for( var idx = ngy2ItemIdx+1; idx < l ; idx++) {
         var item = G.I[idx];
