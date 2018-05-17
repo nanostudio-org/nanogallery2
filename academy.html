@@ -996,17 +996,14 @@
     
       <br><br><br><br>
       <div class="row text-left">
-        <div class="col-md-1" ></div>
-        <div class="col-md-10" >
+        <div class="col-md-12" >
           <h3>Live examples on Codepen</h3>
           <br>
         </div>
-        <div class="col-md-1" ></div>
       </div>
       
       <div class="row text-left">
-        <div class="col-md-1"></div>
-        <div class="col-md-5">
+        <div class="col-md-6">
           <span class="badge ngy2_code_markup">HTML markup</span><br>
           <p>
             - <a href="https://codepen.io/Kris-B/pen/LyBwvN" target="_blank">Image gallery</a>
@@ -1018,7 +1015,7 @@
             - <a href="https://codepen.io/Kris-B/pen/EoYLpN" target="_blank">Custom lightbox toolbars</a>
           </p>
         </div>
-        <div class="col-md-5 ">
+        <div class="col-md-6">
           <span class="badge ngy2_code_js">Javascript</span><br>
           <p>
             - <a class="ngy2_changelog" href="https://codepen.io/Kris-B/pen/mROmKM" target="_blank">Image gallery</a>
@@ -1037,18 +1034,70 @@
             <br>
             - <a href="https://codepen.io/Kris-B/pen/ryOMov" target="_blank">API - Search in gallery</a>
             <br>
-            - <a href="https://codepen.io/Kris-B/pen/wJKowg" target="_blank">API - Add items dynamically</a>
+            - <a href="https://codepen.io/Kris-B/pen/wJKowg" target="_blank">API - Add / delete items dynamically</a>
             <br>
             - <a href="https://codepen.io/Kris-B/pen/zZNMJj" target="_blank">API - Replace default lightbox with FancyBox3</a>
+            <br>
+            - <a href="https://codepen.io/Kris-B/pen/RyaLaG" target="_blank">API - Retrieve user selected images</a>
           </p>
         </div>
-        <div class="col-md-1" ></div>
       </div>
+
+
+      <br><br><br><br>
+      <div class="row text-left">
+        <div class="col-md-12" >
+          <h3>Quick tips</h3>
+          <br>
+        </div>
+      </div>
+
+      <div class="row text-left">
+        <div class="col-md-12">
+          <h4>Lightbox - do not display image title</h4>
+        </div>
+      </div>
+      <div class="row text-left">
+        <div class="col-md-6">
+          <span class="badge ngy2_code_js" >Javascript</span>
+          <pre>
+viewerToolbar: { display: false }
+</pre>
+        </div>
+        <div class="col-md-6">
+          <span class="badge ngy2_code_markup"> HTML markup</span> 
+          <pre>
+"viewerToolbar": { "display": false }
+</pre>
+        </div>
+      </div>
+      <br>
+
+      <div class="row text-left">
+        <div class="col-md-12">
+          <h4>Gallery - single TAP on thumbnails</h4>
+        </div>
+      </div>
+      <div class="row text-left">
+        <div class="col-md-6">
+          <span class="badge ngy2_code_js" >Javascript</span>
+          <pre>
+touchAnimation: false
+</pre>
+        </div>
+        <div class="col-md-6">
+          <span class="badge ngy2_code_markup"> HTML markup</span> 
+          <pre>
+"touchAnimation": false
+</pre>
+        </div>
+      </div>
+      <br><br>
 
 
 
       <br><br><br><br><br><br>
-      <div class="row text-left">
+      <div class="row text-left" id="releases">
         <div class="col-md-1" ></div>
         <div class="col-md-10" >
           <h3>Latest news</h3>
@@ -1199,7 +1248,6 @@
 
     
     </div>
-  
 
   <!-- ######################## -->
   <!-- #####  INCLUDE JS  ##### -->
