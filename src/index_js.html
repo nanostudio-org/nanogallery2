@@ -1,7 +1,7 @@
   <!-- ######################## -->
   <!-- ##### JS FOR PAGE  ##### -->
   <!-- ######################## -->
-<script type="text/javascript">
+	<script type="text/javascript">
 
 
     $(document).ready(function () {
@@ -271,7 +271,7 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
  
         if( ngy2_layout_cnt > 0 ) {
           goToByScroll('ngy2_layout_demo');
-          }
+        }
         ngy2_layout_cnt++;
         
         switch( jQuery(e.currentTarget)[0].id ) {
@@ -350,6 +350,7 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
               touchAnimation: false,
               locationHash: true
             });
+            ga('send', 'event', 'click', 'index', 'layout_moisaic');
             break
             
           // GRID LAYOUT
@@ -403,6 +404,7 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
               
               locationHash: true
             });
+            ga('send', 'event', 'click', 'index', 'layout_grid');
             break
 
           // JUSTIFIED LAYOUT
@@ -457,6 +459,7 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
               
               locationHash: true
             });
+            ga('send', 'event', 'click', 'index', 'layout_layout');
             break
 
           // CASCADING LAYOUT
@@ -512,6 +515,7 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
               
               locationHash: true
             });
+            ga('send', 'event', 'click', 'index', 'layout_justified');
             break
         }
       });
@@ -528,6 +532,7 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
         
         jQuery('#ngy2_init2').find('i').removeClass('fa-check-circle-o').addClass('fa-circle-o');
         jQuery('#ngy2_init1').find('i').removeClass('fa-circle-o').addClass('fa-check-circle-o');
+        ga('send', 'event', 'click', 'index', 'template_markup');
         
       });
       jQuery('#ngy2_init2').on( "click", function(e) {
@@ -539,6 +544,7 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
         
         jQuery('#ngy2_init1').find('i').removeClass('fa-check-circle-o').addClass('fa-circle-o');
         jQuery('#ngy2_init2').find('i').removeClass('fa-circle-o').addClass('fa-check-circle-o');
+        ga('send', 'event', 'click', 'index', 'template_javascript');
       });
       $('#ngy2_init1').trigger('click');
 
