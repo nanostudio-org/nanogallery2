@@ -1,4 +1,4 @@
-/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2018-05-09 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2018-05-18 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /**!
  * @preserve nanogallery2 - javascript image gallery
  * Homepage: http://nanogallery2.nanostudio.org
@@ -20,19 +20,28 @@
  */
 
 /*
-v2.1.1 - beta
+v2.2.0 - beta
 
 - new API method 'resize' - force a gallery resize 
 - new internal NGY2Item object method 'delete' - deletes the current item
 - new internal NGY2Item object method 'addToGOM' - adds the current item to the Gallery Object Modell
+- changed: 'thumbnailDisplayOutsideScreen' default value is now 'true'
 - fixed issue on callbacks fnGalleryLayoutApplied, fnGalleryObjectModelBuilt, fnGalleryRenderStart (#121), galleryRenderEnd, fnShoppingCartUpdated, fnShoppingCartUpdated
 - fixed #120 - thumbnails with a Single Quote wont load
-- changed: 'thumbnailDisplayOutsideScreen' default value to true
 - fixed #115 - loading nanogallery2 with AMD
+- fixed #117 - Joomla/Bootstrap icon conflict - changed class in CSS file
+- fixed #126 - custom theme using colorSchemeViewer not working
+- fixed thumbnail effects 'labelSlideUp' and 'labelSlideDown'
+- fixed thumbnail effects using CSS tranform
 
 TODO:
-- lazy load tuning
-- CSS icon
+- lazy load tuning (timer delay + threshold)
+- lightbox without title by default
+- doc: tutorial dev
+- doc: lightbox
+- thumbnail background gradient
+- gallery pre-loader
+- filter mode
 
 */
  
@@ -608,7 +617,6 @@ TODO:
               if( item.GetID() == ID ) {
                 // FOUND
                 if( !curTn.neverDisplayed ) {
-                  console.log('remove');
                   foundIdx= curTn.thumbnailIdx;
                   foundGOMidx= i;
                 }
@@ -1038,7 +1046,7 @@ TODO:
                 for( var n = 0; n < obj.$elt.length; n++ ) {
                   if( obj.$elt[n] != undefined ) {
                     // units must be given with
-                    var v = 'translateX(' + obj.translateX + ') translateY(' + obj.translateY + ') translateZ(' + obj.translateY + ') scale(' + obj.scale + ') translate(' + obj.translate + ')';
+                    var v = 'translateX(' + obj.translateX + ') translateY(' + obj.translateY + ') translateZ(' + obj.translateZ + ') scale(' + obj.scale + ') translate(' + obj.translate + ')';
                     if( !(this.G.IE <= 9) && !this.G.isGingerbread ) {
                       v += ' rotateX(' + obj.rotateX + ') rotateY(' + obj.rotateY + ') rotateZ(' + obj.rotateZ + ') rotate(' + obj.rotate + ')';
                     }
@@ -1046,7 +1054,7 @@ TODO:
                       v += ' rotate(' + obj.rotateZ + ')';
                     }
                     obj.$elt[n].style[this.G.CSStransformName] = v;
-                  }
+                    }
                 }
               }
             }
@@ -1472,24 +1480,24 @@ TODO:
     },
     icons : {
       // sample for font awesome: <i style="color:#eee;" class="fa fa-search-plus"></i>
-      thumbnailAlbum:               '<i class="nGY2Icon icon-folder-empty"></i>',
-      thumbnailImage:               '<i class="nGY2Icon icon-picture"></i>',
-      breadcrumbAlbum:              '<i class="nGY2Icon icon-folder-empty"></i>',
-      breadcrumbHome:               '<i class="nGY2Icon icon-home"></i>',
-      breadcrumbSeparator:          '<i class="nGY2Icon icon-left-open"></i>',
-      breadcrumbSeparatorRtl:       '<i class="nGY2Icon icon-right-open"></i>',
-      navigationFilterSelected:     '<i style="color:#fff;" class="nGY2Icon icon-toggle-on"></i>',
-      navigationFilterUnselected:   '<i style="color:#ddd;" class="nGY2Icon icon-toggle-off"></i>',
-      navigationFilterSelectedAll:  '<i class="nGY2Icon icon-toggle-on"></i><i class="nGY2Icon icon-ok"></i>',
-      thumbnailSelected:            '<i style="color:#bff;" class="nGY2Icon icon-ok-circled"></i>',
-      thumbnailUnselected:          '<i style="color:#bff;" class="nGY2Icon icon-circle-empty"></i>',
-      thumbnailFeatured:            '<i style="color:#dd5;" class="nGY2Icon icon-star"></i>',
-      thumbnailCounter:             '<i class="nGY2Icon icon-picture"></i>',
-      thumbnailShare:               '<i class="nGY2Icon icon-ngy2_share2"></i>',
-      thumbnailDownload:            '<i class="nGY2Icon icon-ngy2_download2"></i>',
-      thumbnailInfo:                '<i class="nGY2Icon icon-ngy2_info2"></i>',
-      thumbnailCart:                '<i class="nGY2Icon icon-basket"></i>',
-      thumbnailDisplay:             '<i class="nGY2Icon icon-ngy2_zoom_in2"></i>',
+      thumbnailAlbum:               '<i class="nGY2Icon-folder-empty"></i>',
+      thumbnailImage:               '<i class="nGY2Icon-picture"></i>',
+      breadcrumbAlbum:              '<i class="nGY2Icon-folder-empty"></i>',
+      breadcrumbHome:               '<i class="nGY2Icon-home"></i>',
+      breadcrumbSeparator:          '<i class="nGY2Icon-left-open"></i>',
+      breadcrumbSeparatorRtl:       '<i class="nGY2Icon-right-open"></i>',
+      navigationFilterSelected:     '<i style="color:#fff;" class="nGY2Icon-toggle-on"></i>',
+      navigationFilterUnselected:   '<i style="color:#ddd;" class="nGY2Icon-toggle-off"></i>',
+      navigationFilterSelectedAll:  '<i class="nGY2Icon-toggle-on"></i><i class="nGY2Icon-ok"></i>',
+      thumbnailSelected:            '<i style="color:#bff;" class="nGY2Icon-ok-circled"></i>',
+      thumbnailUnselected:          '<i style="color:#bff;" class="nGY2Icon-circle-empty"></i>',
+      thumbnailFeatured:            '<i style="color:#dd5;" class="nGY2Icon-star"></i>',
+      thumbnailCounter:             '<i class="nGY2Icon-picture"></i>',
+      thumbnailShare:               '<i class="nGY2Icon-ngy2_share2"></i>',
+      thumbnailDownload:            '<i class="nGY2Icon-ngy2_download2"></i>',
+      thumbnailInfo:                '<i class="nGY2Icon-ngy2_info2"></i>',
+      thumbnailCart:                '<i class="nGY2Icon-basket"></i>',
+      thumbnailDisplay:             '<i class="nGY2Icon-ngy2_zoom_in2"></i>',
       thumbnailCustomTool1:         'T1',
       thumbnailCustomTool2:         'T2',
       thumbnailCustomTool3:         'T3',
@@ -1500,37 +1508,37 @@ TODO:
       thumbnailCustomTool8:         'T8',
       thumbnailCustomTool9:         'T9',
       thumbnailCustomTool10:        'T10',
-      thumbnailAlbumUp:             '<i style="font-size: 3em;" class="nGY2Icon icon-ngy2_chevron_up2"></i>',
-      paginationNext:               '<i class="nGY2Icon icon-right-open"></i>',
-      paginationPrevious:           '<i class="nGY2Icon icon-left-open"></i>',
-      galleryMoreButton:            '<i class="nGY2Icon icon-picture"></i> &nbsp; <i class="nGY2Icon icon-right-open"></i>',
-      buttonClose:                  '<i class="nGY2Icon icon-ngy2_close2"></i>',
-      viewerPrevious:               '<i class="nGY2Icon icon-ngy2_chevron-left"></i>',
-      viewerNext:                   '<i class="nGY2Icon icon-ngy2_chevron-right"></i>',
-      viewerImgPrevious:            '<i class="nGY2Icon icon-ngy2_chevron_left3"></i>',
-      viewerImgNext:                '<i class="nGY2Icon icon-ngy2_chevron_right3"></i>',
-      viewerDownload:               '<i class="nGY2Icon icon-ngy2_download2"></i>',
-      viewerToolbarMin:             '<i class="nGY2Icon icon-ellipsis-vert"></i>',
-      viewerToolbarStd:             '<i class="nGY2Icon icon-menu"></i>',
-      viewerPlay:                   '<i class="nGY2Icon icon-play"></i>',
-      viewerPause:                  '<i class="nGY2Icon icon-pause"></i>',
-      viewerFullscreenOn:           '<i class="nGY2Icon icon-resize-full"></i>',
-      viewerFullscreenOff:          '<i class="nGY2Icon icon-resize-small"></i>',
-      viewerZoomIn:                 '<i class="nGY2Icon icon-ngy2_zoom_in2"></i>',
-      viewerZoomOut:                '<i class="nGY2Icon icon-ngy2_zoom_out2"></i>',
-      viewerLinkOriginal:           '<i class="nGY2Icon icon-ngy2_external2"></i>',
-      viewerInfo:                   '<i class="nGY2Icon icon-ngy2_info2"></i>',
-      viewerShare:                  '<i class="nGY2Icon icon-ngy2_share2"></i>',
-      user:                         '<i class="nGY2Icon icon-user"></i>',
-      location:                     '<i class="nGY2Icon icon-location"></i>',
-      config:                       '<i class="nGY2Icon icon-wrench"></i>',
-      shareFacebook:                '<i style="color:#3b5998;" class="nGY2Icon icon-facebook-squared"></i>',
-      shareTwitter:                 '<i style="color:#00aced;" class="nGY2Icon icon-twitter-squared"></i>',
-      shareGooglePlus:              '<i style="color:#dd4b39;" class="nGY2Icon icon-gplus-squared"></i>',
-      shareTumblr:                  '<i style="color:#32506d;" class="nGY2Icon icon-tumblr-squared"></i>',
-      sharePinterest:               '<i style="color:#cb2027;" class="nGY2Icon icon-pinterest-squared"></i>',
-      shareVK:                      '<i style="color:#3b5998;" class="nGY2Icon icon-vkontakte"></i>',
-      shareMail:                    '<i style="color:#555;" class="nGY2Icon icon-mail-alt"></i>',
+      thumbnailAlbumUp:             '<i style="font-size: 3em;" class="nGY2Icon-ngy2_chevron_up2"></i>',
+      paginationNext:               '<i class="nGY2Icon-right-open"></i>',
+      paginationPrevious:           '<i class="nGY2Icon-left-open"></i>',
+      galleryMoreButton:            '<i class="nGY2Icon-picture"></i> &nbsp; <i class="nGY2Icon-right-open"></i>',
+      buttonClose:                  '<i class="nGY2Icon-ngy2_close2"></i>',
+      viewerPrevious:               '<i class="nGY2Icon-ngy2_chevron-left"></i>',
+      viewerNext:                   '<i class="nGY2Icon-ngy2_chevron-right"></i>',
+      viewerImgPrevious:            '<i class="nGY2Icon-ngy2_chevron_left3"></i>',
+      viewerImgNext:                '<i class="nGY2Icon-ngy2_chevron_right3"></i>',
+      viewerDownload:               '<i class="nGY2Icon-ngy2_download2"></i>',
+      viewerToolbarMin:             '<i class="nGY2Icon-ellipsis-vert"></i>',
+      viewerToolbarStd:             '<i class="nGY2Icon-menu"></i>',
+      viewerPlay:                   '<i class="nGY2Icon-play"></i>',
+      viewerPause:                  '<i class="nGY2Icon-pause"></i>',
+      viewerFullscreenOn:           '<i class="nGY2Icon-resize-full"></i>',
+      viewerFullscreenOff:          '<i class="nGY2Icon-resize-small"></i>',
+      viewerZoomIn:                 '<i class="nGY2Icon-ngy2_zoom_in2"></i>',
+      viewerZoomOut:                '<i class="nGY2Icon-ngy2_zoom_out2"></i>',
+      viewerLinkOriginal:           '<i class="nGY2Icon-ngy2_external2"></i>',
+      viewerInfo:                   '<i class="nGY2Icon-ngy2_info2"></i>',
+      viewerShare:                  '<i class="nGY2Icon-ngy2_share2"></i>',
+      user:                         '<i class="nGY2Icon-user"></i>',
+      location:                     '<i class="nGY2Icon-location"></i>',
+      config:                       '<i class="nGY2Icon-wrench"></i>',
+      shareFacebook:                '<i style="color:#3b5998;" class="nGY2Icon-facebook-squared"></i>',
+      shareTwitter:                 '<i style="color:#00aced;" class="nGY2Icon-twitter-squared"></i>',
+      shareGooglePlus:              '<i style="color:#dd4b39;" class="nGY2Icon-gplus-squared"></i>',
+      shareTumblr:                  '<i style="color:#32506d;" class="nGY2Icon-tumblr-squared"></i>',
+      sharePinterest:               '<i style="color:#cb2027;" class="nGY2Icon-pinterest-squared"></i>',
+      shareVK:                      '<i style="color:#3b5998;" class="nGY2Icon-vkontakte"></i>',
+      shareMail:                    '<i style="color:#555;" class="nGY2Icon-mail-alt"></i>',
       viewerCustomTool1:            'T1',
       viewerCustomTool2:            'T2',
       viewerCustomTool3:            'T3',
@@ -6846,6 +6854,13 @@ TODO:
           case 'LABELOPACITY50':
             newEffects.push(ThumbnailHoverEffectExtract('label_opacity_1.00_0.50', effects[i]));
             break;
+          case 'LABELSLIDEUPTOP':
+          case 'LABELSLIDEUP':
+            newEffects.push(ThumbnailHoverEffectExtract('label_translateY_100%_0%', effects[i]));
+            break;
+          case 'LABELSLIDEDOWN':
+            newEffects.push(ThumbnailHoverEffectExtract('label_translateY_-100%_0%', effects[i]));
+            break;
           case 'SCALELABELOVERIMAGE':
             newEffects.push(ThumbnailHoverEffectExtract('label_scale_0.00_1.00', effects[i]));
             var n = cloneJSObject(effects[i]);
@@ -7244,7 +7259,7 @@ TODO:
       }
 
       if( typeof G.O.colorSchemeViewer  !== 'undefined' ) {
-        G.VOM.viewerTheme = G.O.colorSchemeViewer;
+        G.O.viewerTheme = G.O.colorSchemeViewer;
       }
 
       var cs=null;
