@@ -1702,7 +1702,7 @@
   <!-- ######################## -->
   <!-- ##### JS FOR PAGE  ##### -->
   <!-- ######################## -->
-	<script type="text/javascript">
+<script type="text/javascript">
 
 
     $(document).ready(function () {
@@ -1737,8 +1737,8 @@
       
       // ##### TEXT ROTATOR - display features
       var rotatorlst=[ 'photo gallery with multiple layouts', 'lightbox with customizable tools', 'responsive thumbnails sizes', 'display animations', 'gallery pagination',
-          'javascript API', 'chainable hover effects', 'social sharing', 'retina and hi-dpi screen support', 'customizable tools on thumbnails', 'pinch zoom', 'swipe to paginate',
-          'location on Google Maps', 'thumbnails with blurred preview', 'justified, grid and cascading layouts',
+          'javascript API', 'video support (Youtube, Vimeo, Dailymotion)', 'chainable hover effects', 'social sharing', 'retina and hi-dpi screen support', 'customizable tools on thumbnails', 'pinch zoom', 'swipe to paginate',
+          'location on Google Maps', 'thumbnails with blurred preview', 'justified, grid, cascading and mosaic layouts',
           'filter by keywords', 'navigation in albums', 'self hosted images', 'google photos and flickr data sources',
           'thumbnail selection mode with checkboxes', 'support multi-touch gesture', 'hover effects on touchscreen', 'deep linking',
           'highly customizable', 'browser back/forward navigation', 'slideshow', 'image lazy loading and pre-loading', 'keyboard support',
@@ -1784,6 +1784,440 @@
       // RotatorNext(0);
 
       
+      // DEBUG GALLERY
+      jQuery("#nanogallery_debug_off").nanogallery2({
+        // imageTransition : 'slideAppear',
+        // debugMode: true,
+        
+        //kind: 'google',
+        //userID: '111186676244625461692',
+        // photoset: 'NONE',
+        // allowHTMLinData: true,
+        // fnImgDisplayed: fnOpenNewTab,
+        itemsBaseURL:     '../samples/',
+        items: [
+            { src: 'https://www.youtube.com/watch?v=Ir098VWCv8Q', srct: 'berlin1_t.jpg', title: 'youtube' },
+            { src: 'https://vimeo.com/32875422', srct: 'https://i.vimeocdn.com/video/222726041_1280x720.jpg', title: 'vimeo' },
+            { src: 'http://www.dailymotion.com/video/x4wtyl6', srct: 'berlin1_t.jpg', title: 'dailymotion' },
+            { src: 'berlin1.jpg', srct: 'berlin1_t.jpg', title: 'Berlin 1' },
+            { src: 'berlin2.jpg', srct: 'berlin2_t.jpg', title: 'Berlin 2' },
+            { src: 'berlin3.jpg', srct: 'berlin3_t.jpg', title: 'Berlin 3' }
+          ],
+
+        kind: 'nano_photos_provider2',
+        dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
+        // kind: 'flickr',
+        // userID: '149035168@N08',    // nano studio
+        //album: 'none',
+        // userID: '148691806@N05',  
+        // flickrSkipOriginal: false,
+        //album: 'into%20the%20wild',
+        // albumList2: ['into the wild', 'fun'],
+        //dataProvider: 'http://localhost:12345/nano_photos_provider2/dist/nano_photos_provider2.php',
+               
+        galleryRenderDelay: 1200,
+        galleryDisplayTransition: 'rotateX',
+        galleryDisplayTransitionDuration: 1500,
+        galleryL1DisplayTransition: 'slideUp',
+      
+
+        // kind : 'google2', 
+        // userID : '111186676244625461692', 
+        // google2URL : 'http://lvh.me:12345/nanogp/nanogp.php',
+        google2URL : 'https://nano.gallery/nanogp/nanogp.php',
+        //album: '6325352440922789105',
+        //albumList2:['6137218671601042145','5851968929721015169','5851895073106049313'],
+        
+        //userID: '143414466@N06',
+        
+        //        userID: '68188170@N06',   //--> huge albums+photos collection
+        //        photoset: '72157656850365463',
+
+        blackList: 'forhomepage|scrapbook|profil',
+
+    // breakpointSizeME :            992,
+    // breakpointSizeLA :            1200,
+    // 992 >= WIDTH < 1200
+       
+       
+        galleryMosaicXXX : [
+          { w: 2, h: 2, c: 1, r: 1 },
+          { w: 2, h: 1, c: 3, r: 1 },
+          { w: 2, h: 1, c: 3, r: 2 },
+          { w: 1, h: 1, c: 5, r: 1 },
+          { w: 1, h: 1, c: 5, r: 2 },
+          { w: 1, h: 2, c: 6, r: 1 },
+          { w: 1, h: 1, c: 1, r: 3 },
+          { w: 1, h: 1, c: 2, r: 3 },
+          { w: 1, h: 1, c: 3, r: 3 },
+          { w: 1, h: 1, c: 4, r: 3 },
+          { w: 1, h: 1, c: 5, r: 3 },
+          { w: 1, h: 1, c: 6, r: 3 }
+        ],
+        galleryMosaicXXX : [
+          { w: 2, h: 2, c: 1, r: 2 },
+          { w: 2, h: 2, c: 3, r: 1 },
+          { w: 2, h: 2, c: 3, r: 3 },
+          { w: 2, h: 2, c: 5, r: 2 },
+          { w: 2, h: 2, c: 7, r: 1 },
+          { w: 2, h: 2, c: 7, r: 3 },
+        ],
+        galleryMosaic : [
+          { w: 4, h: 3, c: 1, r: 1 },
+          { w: 2, h: 2, c: 5, r: 1 },
+          { w: 2, h: 2, c: 7, r: 1 },
+          { w: 4, h: 3, c: 5, r: 3 },
+          { w: 2, h: 2, c: 1, r: 4 },
+          { w: 2, h: 2, c: 3, r: 4 },
+        ],
+
+
+
+        
+        thumbnailAlignment: 'scaled',
+
+        thumbnailL1Height: '80', thumbnailL1Width: '120',
+        thumbnailHeight: '250', thumbnailWidth: 'auto',
+        // thumbnailHeight: '250', thumbnailWidth: 250,
+        thumbnailBaseGridHeight: 80,
+        
+        thumbnailDisplayTransition: 'slideLeft',
+        thumbnailDisplayTransitionDuration: 600,
+        thumbnailDisplayInterval: 90,
+        thumbnailL1DisplayInterval: 200,
+        galleryMaxRows: 3,
+        galleryDisplayMode: 'rows',
+
+        thumbnailL1GutterWidth: 10,
+        thumbnailL1GutterHeight: 10,
+        thumbnailBorderHorizontal: 0,
+        thumbnailBorderVertical: 0,
+        thumbnailGutterWidth: 2,
+        thumbnailGutterHeight: 2,
+
+
+        galleryPaginationMode: 'rectangles',
+      
+        
+        //galleryBuildInit2 : 'transform-origin_top right',
+        //thumbnailL1BuildInit2: 'thumbnail_transform-origin_50% 150%',
+
+
+        thumbnailL1BuildInit2: '.nGY2GThumbnailAlbumTitle_border-left_5px solid #23CB99|.nGY2GThumbnailAlbumTitle_margin_20px|\
+              title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
+
+         thumbnailL1HoverEffect2: 'label_left_-100%_0%|thumbnail_scale_1.00_0.95',
+        
+        
+        thumbnailL2HoverEffect2: 'image_scale_1.00_1.20|labelAppear|customlayer_backgroundColor_rgba(35,203,153,0.0)_rgba(35,203,153,0.8)|\
+                thumbnail_translateZ_0px_150px_easeOutQuad_400| \
+                thumbnail_rotateX_0deg_-10deg_easeOutBack_200| \
+                thumbnail_rotateX_-10deg_0deg_delay250_keyframe_hoverin_easeOutBack_400',
+
+        thumbnailL2BuildInit2: 'customlayer_scale_1.3|customlayer_translateY_-15px|customlayer_translateX_-60%|customlayer_rotateZ_10deg',
+        galleryBuildInit2 : 'perspective_900px|perspective-origin_50% 150%',
+
+        thumbnailHoverEffect2: 'label_font-size_1em_1.5em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((35,203,153,0.8)|title_color_#000_#fff|image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
+
+thumbnailSelectable : true,
+thumbnailToolbarImage : { topLeft: 'select', topRight : 'share,featured,download' },
+thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download,counter' },
+//        thumbnailToolbarImage : null,
+//        thumbnailToolbarAlbum: null,
+
+        // thumbnailL1Label: { display: true, position:'overImageOnMiddle', hideIcons: true, titleFontSize: '1.5em', align: 'center'},
+        thumbnailL1Label: { display: true, position:'overImageOnTop', hideIcons: true, titleFontSize: '1.5em', align: 'left'},
+        thumbnailLabel: { display: true, position:'onBottomOverImage', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true, displayDescription: false},
+        
+//        thumbnailSelectable: false,
+        breadcrumbHideIcons: true,
+        navigationFontSize: '1.2em',
+        gallerySorting: 'random',
+//        thumbnailDisplayInterval: 30,
+
+        galleryTheme : { 
+          thumbnail: { titleShadow : 'none', descriptionShadow : 'none', titleColor: '#fff' },
+          navigationBreadcrumb: { background : '#3C4B5B' },
+          navigationFilter: { background : '#2E7C7F', backgroundSelected: '#19676B', color: '#eee' }
+        },
+        
+        galleryFilterTags: true,
+        galleryL1FilterTags: false,
+        paginationSwipe: true,
+        // fnImgToolbarCustInit: fnImgToolbarCustClick,
+        // fnImgToolbarCustDisplay: myImgToolbarCustDisplay,
+        // fnImgToolbarCustClick: myImgToolbarCustClick,
+        fnGalleryRenderStart : myfnGalleryRenderStart,
+        viewerToolbar : { display: true },
+        locationHash: true
+      });
+
+            
+      
+      function goToByScroll(id){
+            // Remove "link" from the ID
+          id = id.replace("link", "");
+            // Scroll
+          $('html,body').animate({
+              scrollTop: $("#"+id).offset().top},
+              'slow');
+      }
+      
+      // ##### LAYOUT DEMO SELECTION
+      var ngy2_layout_cnt=0;
+      jQuery('.ngy2_layout_selection').on( "click", function(e) {
+        jQuery('.ngy2_layout_selection').css({ 'border-color': '#eee', color: '#eee' });
+        jQuery(e.currentTarget).css({ 'border-color': '#23CB99', color: '#23CB99' });
+        jQuery("#nanogallery").nanogallery2('destroy');
+ 
+        if( ngy2_layout_cnt > 0 ) {
+          goToByScroll('ngy2_layout_demo');
+          }
+        ngy2_layout_cnt++;
+        
+        switch( jQuery(e.currentTarget)[0].id ) {
+          
+          // MOSAIC LAYOUT
+          case 'btn_layout1':
+            jQuery("#nanogallery").nanogallery2({
+
+              kind: 'nano_photos_provider2',
+              dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
+              album: 'oceans',
+              galleryDisplayTransition: 'rotateX',
+              galleryDisplayTransitionDuration: 1500,
+             
+              ZgalleryMosaic : [
+                { w: 4, h: 3, c: 1, r: 1 },
+                { w: 2, h: 2, c: 5, r: 1 },
+                { w: 2, h: 2, c: 7, r: 1 },
+                { w: 4, h: 3, c: 5, r: 3 },
+                { w: 2, h: 2, c: 1, r: 4 },
+                { w: 2, h: 2, c: 3, r: 4 }
+              ],
+              galleryMosaic : [
+                { w: 2, h: 2, c: 1, r: 1 },
+                { w: 1, h: 1, c: 3, r: 1 },
+                { w: 1, h: 1, c: 3, r: 2 },
+                { w: 1, h: 2, c: 4, r: 1 },
+                { w: 2, h: 1, c: 5, r: 1 },
+                { w: 2, h: 2, c: 5, r: 2 },
+                { w: 1, h: 1, c: 4, r: 3 },
+                { w: 2, h: 1, c: 2, r: 3 },
+                { w: 1, h: 2, c: 1, r: 3 },
+                { w: 1, h: 1, c: 2, r: 4 },
+                { w: 2, h: 1, c: 3, r: 4 },
+                { w: 1, h: 1, c: 5, r: 4 },
+                { w: 1, h: 1, c: 6, r: 4 }
+              ],
+
+              thumbnailAlignment: 'scaled',
+
+              thumbnailHeight: '180', thumbnailWidth: '220',
+              thumbnailBaseGridHeight: 80,
+              
+              thumbnailDisplayTransition: 'slideLeft',
+              thumbnailDisplayTransitionDuration: 600,
+              thumbnailDisplayInterval: 90,
+              galleryMaxRows: 1,
+              galleryDisplayMode: 'rows',
+
+              thumbnailL1GutterWidth: 0,
+              thumbnailL1GutterHeight: 0,
+              thumbnailBorderHorizontal: 0,
+              thumbnailBorderVertical: 0,
+
+              thumbnailL1BuildInit2: '.nGY2GThumbnailAlbumTitle_border-left_5px solid #23CB99|.nGY2GThumbnailAlbumTitle_margin_20px|\
+                    title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
+
+              thumbnailL1HoverEffect2: 'label_left_-100%_0%|thumbnail_scale_1.00_0.95',
+
+              galleryBuildInit2 : 'perspective_900px|perspective-origin_50% 150%',
+
+              thumbnailHoverEffect2: 'label_font-size_1em_1.5em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((35,203,153,0.8)|title_color_#000_#fff|image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
+
+              thumbnailToolbarImage : null,
+              thumbnailToolbarAlbum: null,
+
+              thumbnailLabel: { display: false, position:'onBottomOverImage', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true, displayDescription: false},
+              
+              gallerySorting: 'random',
+
+              galleryTheme : { 
+                thumbnail: { titleShadow : 'none', descriptionShadow : 'none', titleColor: '#fff' },
+                navigationBreadcrumb: { background : '#3C4B5B' },
+                navigationFilter: { background : '#2E7C7F', backgroundSelected: '#19676B', color: '#eee' }
+              },
+              touchAnimation: false,
+              locationHash: true
+            });
+            break
+            
+          // GRID LAYOUT
+          case 'btn_layout2':
+            jQuery("#nanogallery").nanogallery2({
+
+              kind: 'nano_photos_provider2',
+              dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
+              album: 'motors',
+              galleryDisplayTransition: 'slideUp',
+              galleryDisplayTransitionDuration: 1500,
+             
+              thumbnailAlignment: 'fillWidth',
+
+              thumbnailHeight: '250', thumbnailWidth: '250',
+              thumbnailBaseGridHeight: 80,
+              
+              thumbnailDisplayTransition: 'scaleDown',
+              thumbnailDisplayTransitionDuration: 600,
+              thumbnailDisplayInterval: 90,
+              galleryMaxRows: 3,
+              galleryDisplayMode: 'moreButton',
+
+              thumbnailL1GutterWidth: 10,
+              thumbnailL1GutterHeight: 10,
+              thumbnailBorderHorizontal: 2,
+              thumbnailBorderVertical: 2,
+
+              xthumbnailL1BuildInit2: '.nGY2GThumbnailAlbumTitle_border-left_5px solid #23CB99|.nGY2GThumbnailAlbumTitle_margin_20px|\
+                    title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
+
+              xthumbnailL1HoverEffect2: 'label_left_-100%_0%|thumbnail_scale_1.00_0.95',
+
+              galleryBuildInit2 : 'perspective_900px|perspective-origin_50% 150%',
+
+              thumbnailHoverEffect2: 'label_font-size_1em_1.5em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((35,203,153,0.8)|title_color_#000_#fff|image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
+
+              thumbnailToolbarImage : null,
+              thumbnailToolbarAlbum: null,
+
+              thumbnailL1Label: { display: true, position:'overImageOnTop', hideIcons: true, titleFontSize: '1.5em', align: 'left'},
+              thumbnailLabel: { display: true, position:'onBottomOverImage', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true, displayDescription: false},
+              
+              gallerySorting: 'random',
+
+              galleryTheme : { 
+                thumbnail: { titleShadow : 'none', descriptionShadow : 'none', titleColor: '#fff', borderColor: '#fff' },
+                navigationBreadcrumb: { background : '#3C4B5B' },
+                navigationFilter: { background : '#2E7C7F', backgroundSelected: '#19676B', color: '#eee' }
+              },
+              
+              locationHash: true
+            });
+            break
+
+          // JUSTIFIED LAYOUT
+          case 'btn_layout3':
+            jQuery("#nanogallery").nanogallery2({
+
+              kind: 'nano_photos_provider2',
+              dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
+              album: 'people',
+              galleryDisplayTransition: 'rotateX',
+              galleryDisplayTransitionDuration: 1500,
+             
+              thumbnailAlignment: 'fillWidth',
+
+              thumbnailHeight: '250', thumbnailWidth: 'auto',
+              thumbnailBaseGridHeight: 80,
+              
+              thumbnailDisplayTransition: 'flipUp',
+              thumbnailDisplayTransitionDuration: 400,
+              thumbnailDisplayInterval: 90,
+              galleryMaxRows: 3,
+              galleryDisplayMode: 'pagination',
+
+              thumbnailL1GutterWidth: 20,
+              thumbnailL1GutterHeight: 20,
+              thumbnailBorderHorizontal: 1,
+              thumbnailBorderVertical: 1,
+
+              xthumbnailL1BuildInit2: '.nGY2GThumbnailAlbumTitle_border-left_5px solid #23CB99|.nGY2GThumbnailAlbumTitle_margin_20px|\
+                    title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
+
+              xthumbnailL1HoverEffect2: 'label_left_-100%_0%|thumbnail_scale_1.00_0.95',
+
+              galleryBuildInit2 : 'perspective_900px|perspective-origin_50% 150%',
+
+              xthumbnailHoverEffect2: 'label_font-size_1em_1.5em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((35,203,153,0.8)|title_color_#000_#fff|image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
+              thumbnailHoverEffect2: 'toolsSlideUp|labelSlideDown',
+
+              thumbnailToolbarImage :  { topLeft: 'select', bottomRight : 'featured,download,info,share' },
+              xthumbnailToolbarAlbum: null,
+
+              thumbnailL1Label: { display: true, position:'overImageOnTop', hideIcons: true, titleFontSize: '1.5em', align: 'left'},
+              thumbnailLabel: { display: true, position:'onBottomOverImage', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true, displayDescription: false},
+              
+              gallerySorting: 'random',
+
+              galleryTheme : { 
+                thumbnail: { titleShadow : 'none', descriptionShadow : 'none', titleColor: '#fff', borderColor: '#fff' },
+                navigationBreadcrumb: { background : '#3C4B5B' },
+                navigationFilter: { background : '#2E7C7F', backgroundSelected: '#19676B', color: '#eee' }
+              },
+              
+              locationHash: true
+            });
+            break
+
+          // CASCADING LAYOUT
+          case 'btn_layout4':
+          default:
+            jQuery("#nanogallery").nanogallery2({
+
+              kind: 'nano_photos_provider2',
+              dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
+              album: 'nature',
+              galleryDisplayTransition: 'slideUp',
+              galleryDisplayTransitionDuration: 1500,
+             
+              thumbnailAlignment: 'fillWidth',
+
+              thumbnailHeight: 'auto', thumbnailWidth: '200',
+              thumbnailBaseGridHeight: 100,
+              
+              thumbnailDisplayTransition: 'slideUp',
+              thumbnailDisplayTransitionDuration: 500,
+              thumbnailDisplayInterval: 90,
+              galleryMaxRows: 3,
+              galleryDisplayMode: 'rows',
+
+              thumbnailL1GutterWidth: 1,
+              thumbnailL1GutterHeight: 1,
+              thumbnailBorderHorizontal: 10,
+              thumbnailBorderVertical: 10,
+
+              xthumbnailL1BuildInit2: '.nGY2GThumbnailAlbumTitle_border-left_5px solid #23CB99|.nGY2GThumbnailAlbumTitle_margin_20px|\
+                    title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
+
+              xthumbnailL1HoverEffect2: 'label_left_-100%_0%|thumbnail_scale_1.00_0.95',
+
+              galleryBuildInit2 : 'perspective_900px|perspective-origin_50% 150%',
+
+              xthumbnailHoverEffect2: 'image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
+              thumbnailHoverEffect2: 'imageSepiaOn|imageBlurOn',
+
+              thumbnailToolbarImage : null,
+              thumbnailToolbarAlbum: null,
+
+              // thumbnailL1Label: { display: true, position:'overImageOnTop', hideIcons: true, titleFontSize: '1.5em', align: 'left'},
+              thumbnailLabel: { display: true, position:'onBottom', hideIcons: true, titleFontSize: '1em', align: 'center', titleMultiLine:true, displayDescription: false},
+              
+              gallerySorting: 'random',
+
+              galleryTheme : { 
+                thumbnail: { titleShadow : 'none', descriptionShadow : 'none', titleColor: '#fff', borderColor: '#fff' },
+                navigationBreadcrumb: { background : '#3C4B5B' },
+                navigationFilter: { background : '#2E7C7F', backgroundSelected: '#19676B', color: '#eee' }
+              },
+              
+              locationHash: true
+            });
+            break
+        }
+      });
+      $( "#btn_layout1" ).trigger( "click" );
+      
       
       // ##### TEMPLATE TAB
       jQuery('#ngy2_init1').on( "click", function(e) {
@@ -1821,6 +2255,8 @@
         });
       }
       
+      // BOOTSTRAP TOGGLE BUTTONS -> activate
+      $().button('toggle')
       
 
       jQuery('#btnsearch').on('click', function() {
@@ -1841,170 +2277,16 @@
         //$('#modal-container').modal('hide');
       }      
 
+      
+      
+      
+      var  myfnGalleryRenderStart =  function( idx ) {
+//        alert('ok');
+      }
 
 
       
-      jQuery("#nanogallery").nanogallery2({
-        // imageTransition : 'slideAppear',
-        // debugMode: true,
-        
-        //kind: 'google',
-        //userID: '111186676244625461692',
-        // photoset: 'NONE',
-        // allowHTMLinData: true,
-        // fnImgDisplayed: fnOpenNewTab,
-        itemsBaseURL:     '../samples/',
-        items: [
-            { src: 'https://www.youtube.com/watch?v=Ir098VWCv8Q', srct: 'berlin1_t.jpg', title: 'youtube' },
-            { src: 'https://vimeo.com/32875422', srct: 'https://i.vimeocdn.com/video/222726041_1280x720.jpg', title: 'vimeo' },
-            { src: 'http://www.dailymotion.com/video/x4wtyl6', srct: 'berlin1_t.jpg', title: 'dailymotion' },
-            { src: 'berlin1.jpg', srct: 'berlin1_t.jpg', title: 'Berlin 1' },
-            { src: 'berlin2.jpg', srct: 'berlin2_t.jpg', title: 'Berlin 2' },
-            { src: 'berlin3.jpg', srct: 'berlin3_t.jpg', title: 'Berlin 3' }
-          ],
-// fnThumbnailOpen: selectImage,
-        kind: 'nano_photos_provider2',
-        dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
-        // kind: 'flickr',
-        // userID: '149035168@N08',    // nano studio
-        //album: 'none',
-        // userID: '148691806@N05',  
-        // flickrSkipOriginal: false,
-        //album: 'into%20the%20wild',
-        // albumList2: ['into the wild', 'fun'],
-        //dataProvider: 'http://localhost:12345/nano_photos_provider2/dist/nano_photos_provider2.php',
-               
-        galleryRenderDelay: 1200,
-        galleryDisplayTransition: 'rotateX',
-        galleryDisplayTransitionDuration: 1500,
-        galleryL1DisplayTransition: 'slideUp',
-      
 
-        // kind : 'google2', 
-        // userID : '111186676244625461692', 
-        // google2URL : 'http://lvh.me:12345/nanogp/nanogp.php',
-        google2URL : 'https://nano.gallery/nanogp/nanogp.php',
-        //album: '6325352440922789105',
-        //albumList2:['6137218671601042145','5851968929721015169','5851895073106049313'],
-        
-        //userID: '143414466@N06',
-        
-        //        userID: '68188170@N06',   //--> huge albums+photos collection
-        //        photoset: '72157656850365463',
-
-        blackList: 'forhomepage|scrapbook|profil',
-
-        
-        
-    // breakpointSizeME :            992,
-    // breakpointSizeLA :            1200,
-    // 992 >= WIDTH < 1200
-       
-       
-        galleryMosaicXXX : [
-          { w: 2, h: 2, c: 1, r: 1 },
-          { w: 2, h: 1, c: 3, r: 1 },
-          { w: 2, h: 1, c: 3, r: 2 },
-          { w: 1, h: 1, c: 5, r: 1 },
-          { w: 1, h: 1, c: 5, r: 2 },
-          { w: 1, h: 2, c: 6, r: 1 },
-          { w: 1, h: 1, c: 1, r: 3 },
-          { w: 1, h: 1, c: 2, r: 3 },
-          { w: 1, h: 1, c: 3, r: 3 },
-          { w: 1, h: 1, c: 4, r: 3 },
-          { w: 1, h: 1, c: 5, r: 3 },
-          { w: 1, h: 1, c: 6, r: 3 }
-        ],
-        galleryMosaicXXX : [
-          { w: 2, h: 2, c: 1, r: 2 },
-          { w: 2, h: 2, c: 3, r: 1 },
-          { w: 2, h: 2, c: 3, r: 3 },
-          { w: 2, h: 2, c: 5, r: 2 },
-          { w: 2, h: 2, c: 7, r: 1 },
-          { w: 2, h: 2, c: 7, r: 3 },
-        ],
-        galleryMosaicL1 : [
-          { w: 4, h: 3, c: 1, r: 1 },
-          { w: 2, h: 2, c: 5, r: 1 },
-          { w: 2, h: 2, c: 7, r: 1 },
-          { w: 4, h: 3, c: 5, r: 3 },
-          { w: 2, h: 2, c: 1, r: 4 },
-          { w: 2, h: 2, c: 3, r: 4 },
-        ],
-        
-        thumbnailAlignment: 'scaled',
-
-        thumbnailL1Height: '80', thumbnailL1Width: '120',
-        thumbnailHeight: '250', thumbnailWidth: 'auto',
-        // thumbnailHeight: '250', thumbnailWidth: 250,
-        thumbnailBaseGridHeight: 80,
-        
-        thumbnailDisplayTransition: 'slideLeft',
-        thumbnailDisplayTransitionDuration: 600,
-        thumbnailDisplayInterval: 90,
-        thumbnailL1DisplayInterval: 200,
-        galleryMaxRows: 3,
-        galleryDisplayMode: 'rows',
-
-        thumbnailL1GutterWidth: 10,
-        thumbnailL1GutterHeight: 10,
-        thumbnailBorderHorizontal: 0,
-        thumbnailBorderVertical: 0,
-        thumbnailGutterWidth: 2,
-        thumbnailGutterHeight: 2,
-
-
-        galleryPaginationMode: 'rectangles',
-        
-        
-        //galleryBuildInit2 : 'transform-origin_top right',
-        //thumbnailL1BuildInit2: 'thumbnail_transform-origin_50% 150%',
-
-
-        thumbnailL1BuildInit2: '.nGY2GThumbnailAlbumTitle_border-left_5px solid #23CB99|.nGY2GThumbnailAlbumTitle_margin_20px|\
-              title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
-
-         thumbnailL1HoverEffect2: 'label_left_-100%_0%|thumbnail_scale_1.00_0.95',
-        
-        
-        thumbnailL2HoverEffect2: 'image_scale_1.00_1.20|labelAppear|customlayer_backgroundColor_rgba(35,203,153,0.0)_rgba(35,203,153,0.8)|\
-                thumbnail_translateZ_0px_150px_easeOutQuad_400| \
-                thumbnail_rotateX_0deg_-10deg_easeOutBack_200| \
-                thumbnail_rotateX_-10deg_0deg_delay250_keyframe_hoverin_easeOutBack_400',
-
-        thumbnailL2BuildInit2: 'customlayer_scale_1.3|customlayer_translateY_-15px|customlayer_translateX_-60%|customlayer_rotateZ_10deg',
-        galleryBuildInit2 : 'perspective_900px|perspective-origin_50% 150%',
-
-        thumbnailHoverEffect2: 'label_font-size_1em_1.5em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((35,203,153,0.8)|title_color_#000_#fff|image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
-
-        // thumbnailToolbarImage : { topLeft: 'select', topRight : 'share,featured,download' },
-        thumbnailToolbarImage : null,
-        thumbnailToolbarAlbum: null,
-
-        // thumbnailL1Label: { display: true, position:'overImageOnMiddle', hideIcons: true, titleFontSize: '1.5em', align: 'center'},
-        thumbnailL1Label: { display: true, position:'overImageOnTop', hideIcons: true, titleFontSize: '1.5em', align: 'left'},
-        thumbnailLabel: { display: true, position:'onBottomOverImage', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true, displayDescription: false},
-        
-        thumbnailSelectable: false,
-        breadcrumbHideIcons: true,
-        navigationFontSize: '1.2em',
-        gallerySorting: 'random',
-//        thumbnailDisplayInterval: 30,
-
-        galleryTheme : { 
-          thumbnail: { titleShadow : 'none', descriptionShadow : 'none', titleColor: '#fff' },
-          navigationBreadcrumb: { background : '#3C4B5B' },
-          navigationFilter: { background : '#2E7C7F', backgroundSelected: '#19676B', color: '#eee' }
-        },
-        
-        galleryFilterTags: true,
-        galleryL1FilterTags: false,
-        paginationSwipe: true,
-        // fnImgToolbarCustInit: fnImgToolbarCustClick,
-        // fnImgToolbarCustDisplay: myImgToolbarCustDisplay,
-        // fnImgToolbarCustClick: myImgToolbarCustClick,
-        locationHash: true
-      });
       
       
       
@@ -2046,7 +2328,6 @@
         breadcrumbHideIcons: true,
         navigationFontSize: '1.2em',
         gallerySorting: 'random',
-
         galleryTheme : { 
           thumbnail: { titleShadow : 'none', descriptionShadow : 'none', titleColor: '#fff' },
           navigationBreadcrumb: { background : '#3C4B5B' },
@@ -2054,6 +2335,51 @@
         }
       });      
 
+      
+      
+      // https://codepen.io/Kris-B/pen/wJKowg
+      
+      jQuery('#btn_test').on('click', function() {
+        //rnd++;
+        // jQuery("#nanogallery").nanogallery2('destroy');
+//        alert('ok');
+        var instance=$("#nanogallery").nanogallery2('instance');
+
+
+        var ngy2data = $("#nanogallery").nanogallery2('data');
+
+
+        var baseURL = 'https://nanogallery2.nanostudio.org/samples/';        
+        // create the new item
+        var ID = ngy2data.items.length + 1;
+        var albumID = '0';
+        var newItem = NGY2Item.New(instance, 'new berlin ' + ID, '', ID, albumID, 'image', '' );
+
+        // define thumbnail -> image displayed in the gallery
+        newItem.thumbSet( baseURL + 'berlin2t.jpg', 135, 204); // w,h
+
+        // define URL of the media to display in lightbox
+        newItem.setMediaURL( baseURL + 'berlin2.jpg', 'img');        
+        newItem.addToGOM();
+        
+        //$("#nanogallery").nanogallery2('refresh');
+  
+  // selected items
+//  var sel = '';
+//  ngy2data.items.forEach( function(item) {
+//    if( item.selected ) {
+//      item.delete();
+//    }
+//  });
+
+        
+        
+//        $("#nanogallery").nanogallery2('refresh');
+        $("#nanogallery").nanogallery2('resize');
+        
+      });
+      
+      
       
       
       
@@ -2272,6 +2598,7 @@
               blackList: 'forhomepage|scrapbook|profil',
               thumbnailDisplayTransition: 'slideUp',
               thumbnailHeight: 'auto', thumbnailWidth: '180',
+              thumbnailBaseGridHeight: 50,
               thumbnailGutterWidth: 15,
               thumbnailGutterHeight: 15,
               thumbnailBorderHorizontal: 0,
