@@ -2059,7 +2059,9 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
               touchAnimation: false,
               locationHash: true
             });
-            ga('send', 'event', 'click', 'index', 'layout_moisaic');
+            if( ngy2_layout_cnt > 1) {
+              ga('send', 'event', 'click', 'index', 'layout_moisaic');
+            }
             break
             
           // GRID LAYOUT
@@ -2168,7 +2170,7 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
               
               locationHash: true
             });
-            ga('send', 'event', 'click', 'index', 'layout_layout');
+            ga('send', 'event', 'click', 'index', 'layout_justified');
             break
 
           // CASCADING LAYOUT
@@ -2224,7 +2226,7 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
               
               locationHash: true
             });
-            ga('send', 'event', 'click', 'index', 'layout_justified');
+            ga('send', 'event', 'click', 'index', 'layout_cascading');
             break
         }
       });
@@ -2232,6 +2234,7 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
       
       
       // ##### TEMPLATE TAB
+      var ngy2_template_cnt = 0;
       jQuery('#ngy2_init1').on( "click", function(e) {
         jQuery('#init_markup').css({ 'display': 'block' });
         jQuery('#init_js').css({ 'display': 'none' });
@@ -2241,8 +2244,10 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
         
         jQuery('#ngy2_init2').find('i').removeClass('fa-check-circle-o').addClass('fa-circle-o');
         jQuery('#ngy2_init1').find('i').removeClass('fa-circle-o').addClass('fa-check-circle-o');
-        ga('send', 'event', 'click', 'index', 'template_markup');
-        
+        if( ngy2_template_cnt > 0 ) {
+          ga('send', 'event', 'click', 'index', 'template_markup');
+        }
+        ngy2_template_cnt++;
       });
       jQuery('#ngy2_init2').on( "click", function(e) {
         jQuery('#init_js').css({ 'display': 'block' });
@@ -2253,7 +2258,10 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
         
         jQuery('#ngy2_init1').find('i').removeClass('fa-check-circle-o').addClass('fa-circle-o');
         jQuery('#ngy2_init2').find('i').removeClass('fa-circle-o').addClass('fa-check-circle-o');
-        ga('send', 'event', 'click', 'index', 'template_javascript');
+        if( ngy2_template_cnt > 0 ) {
+          ga('send', 'event', 'click', 'index', 'template_javascript');
+        }
+        ngy2_template_cnt++;
       });
       $('#ngy2_init1').trigger('click');
 
