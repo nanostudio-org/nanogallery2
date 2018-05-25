@@ -18,7 +18,8 @@
  *  - ICO online converter: https://iconverticons.com/online/
  */
 
-
+ 
+ 
 // ###########################################
 // ##### nanogallery2 as a JQUERY PLUGIN #####
 // ###########################################
@@ -29,7 +30,8 @@
     "use strict";
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
-        define('nanogallery2', ['jquery'], factory);
+        // define('nanogallery2', ['jquery'], factory);
+        define(['jquery'], factory);
     } else if (typeof exports === 'object' && typeof require === 'function') {
         // Browserify
         factory(require('jquery'));
@@ -49,11 +51,11 @@
     if (obj === null) {
       obj = document.createElement('div');
       obj.id = "ngyColorHelperToRGB";
-      obj.style.cssText = 'display: none; color:'+color+';';
+      obj.style.cssText = 'display: none; color:' + color + ';';
       document.body.appendChild(obj);
     }
     
-    var rgb=getComputedStyle(obj).color;
+    var rgb = getComputedStyle(obj).color;
 
     // to get HEX value:
     // var rgb = getComputedStyle(obj).color.match(/\d+/g);
@@ -440,6 +442,7 @@
             this.albumTagList =         [];       // list of all the tags of the items contained in the current album
             this.albumTagListSel =      [];       // list of currently selected tags (only for albums)
             this.exif = { exposure: '', flash: '', focallength: '', fstop: '', iso: '', model: '', time: '', location: ''};
+            this.deleted =              false;    // item is deleted -> do not display anymore
           }
 
           // public static
@@ -567,6 +570,83 @@
             item.description = escapeHtml(instance, description);
             return item;
           };
+          
+          
+          // removes logically current item
+          NGY2Item.prototype.delete = function( ) {
+            this.deleted = true;
+            
+            // update content length of parent album
+            this.G.I[NGY2Item.GetIdx(this.G, this.albumID)].contentLength--;
+            this.G.I[NGY2Item.GetIdx(this.G, this.albumID)].numberItems--;
+            
+            // check if in DOM and removes it
+            var nbTn = this.G.GOM.items.length;
+            var ID = this.GetID();
+            var foundIdx = -1;
+            var foundGOMidx = -1;
+            for( var i = 0; i < nbTn ; i++ ) {
+              var curTn = this.G.GOM.items[i];
+              var item=this.G.I[curTn.thumbnailIdx];
+              if( item.GetID() == ID ) {
+                // FOUND
+                if( !curTn.neverDisplayed ) {
+                  foundIdx= curTn.thumbnailIdx;
+                  foundGOMidx= i;
+                }
+              }
+              else {
+                if( foundIdx != -1 ) {
+                  if( !curTn.neverDisplayed ) {
+                    // update index value
+                    item.$getElt('.nGY2GThumbnail').data('index', i-1);
+                    item.$getElt('.nGY2GThumbnailImg').data('index', i-1);
+                  }
+                }
+              }
+            }
+            if( foundIdx != -1 ) {
+              // delete item in GOM and delete thumbnail
+              var G = this.G;
+              if( this.selected == true ) {
+                this.selected = false;
+                G.GOM.nbSelected--;    // update the global counter
+              }
+              if( G.I[foundIdx].$elt !== null ) {
+                G.I[foundIdx].$elt.remove();      // delete thumbnail DOM object
+              }
+              G.GOM.items.splice(foundGOMidx, 1);   // delete in GOM
+              if( G.GOM.lastDisplayedIdx != -1 ) {
+                G.GOM.lastDisplayedIdx-=1;
+              }
+            }
+          }
+
+          NGY2Item.prototype.addToGOM = function( ) {
+            // retrieve index
+            var ID = this.GetID();
+            var l = this.G.I.length;
+            for( var idx = 0; idx < l; idx++ ) {
+              var item = this.G.I[idx];
+              if( item.GetID() == ID ) {
+                var w = item.thumbImg().width;
+                var h = item.thumbImg().height;
+                // set default size if required
+                if( h == 0 ) {
+                  h = this.G.tn.defaultSize.getHeight();
+                }
+                if( w == 0 ) {
+                  w = this.G.tn.defaultSize.getWidth();
+                }
+                // add to GOM -> will be displayed on next refresh/resize
+                var tn = new this.G.GOM.GTn(idx, w, h);
+                this.G.GOM.items.push(tn);
+                break;
+              }
+            }
+            
+          }
+          
           
           // function to avoid XSS issue - Cross Site Scripting
           // original: https://github.com/janl/mustache.js/blob/master/mustache.js#L55
@@ -794,9 +874,9 @@
           };
           
           
-          //--- check if current item can be displayed
+          //--- check if current item should be displayed
           NGY2Item.prototype.isToDisplay = function( albumID ) {
-            return this.albumID == albumID && this.checkTagFilter() && this.isSearchFound() && this.isSearchTagFound();
+            return this.albumID == albumID && this.checkTagFilter() && this.isSearchFound() && this.isSearchTagFound() && this.deleted == false;
           };
           
           
@@ -940,7 +1020,7 @@
                 for( var n = 0; n < obj.$elt.length; n++ ) {
                   if( obj.$elt[n] != undefined ) {
                     // units must be given with
-                    var v = 'translateX(' + obj.translateX + ') translateY(' + obj.translateY + ') translateZ(' + obj.translateY + ') scale(' + obj.scale + ') translate(' + obj.translate + ')';
+                    var v = 'translateX(' + obj.translateX + ') translateY(' + obj.translateY + ') translateZ(' + obj.translateZ + ') scale(' + obj.scale + ') translate(' + obj.translate + ')';
                     if( !(this.G.IE <= 9) && !this.G.isGingerbread ) {
                       v += ' rotateX(' + obj.rotateX + ') rotateY(' + obj.rotateY + ') rotateZ(' + obj.rotateZ + ') rotate(' + obj.rotate + ')';
                     }
@@ -948,7 +1028,7 @@
                       v += ' rotate(' + obj.rotateZ + ')';
                     }
                     obj.$elt[n].style[this.G.CSStransformName] = v;
-                  }
+                    }
                 }
               }
             }
@@ -1281,11 +1361,12 @@
     thumbnailL1StacksRotateZ :    null,
     thumbnailStacksScale :        0,
     thumbnailL1StacksScale :      null,
-    thumbnailDisplayOutsideScreen: false,
+    thumbnailDisplayOutsideScreen: true,
     thumbnailWaitImageLoaded:     true,
     thumbnailSliderDelay:         2000,
     galleryBuildInit2 :           '',
     portable :                    false,
+    eventsDebounceDelay:          50,
     
     touchAnimation :              true,
     touchAnimationL1 :            undefined,
@@ -1374,24 +1455,24 @@
     },
     icons : {
       // sample for font awesome: <i style="color:#eee;" class="fa fa-search-plus"></i>
-      thumbnailAlbum:               '<i class="nGY2Icon icon-folder-empty"></i>',
-      thumbnailImage:               '<i class="nGY2Icon icon-picture"></i>',
-      breadcrumbAlbum:              '<i class="nGY2Icon icon-folder-empty"></i>',
-      breadcrumbHome:               '<i class="nGY2Icon icon-home"></i>',
-      breadcrumbSeparator:          '<i class="nGY2Icon icon-left-open"></i>',
-      breadcrumbSeparatorRtl:       '<i class="nGY2Icon icon-right-open"></i>',
-      navigationFilterSelected:     '<i style="color:#fff;" class="nGY2Icon icon-toggle-on"></i>',
-      navigationFilterUnselected:   '<i style="color:#ddd;" class="nGY2Icon icon-toggle-off"></i>',
-      navigationFilterSelectedAll:  '<i class="nGY2Icon icon-toggle-on"></i><i class="nGY2Icon icon-ok"></i>',
-      thumbnailSelected:            '<i style="color:#bff;" class="nGY2Icon icon-ok-circled"></i>',
-      thumbnailUnselected:          '<i style="color:#bff;" class="nGY2Icon icon-circle-empty"></i>',
-      thumbnailFeatured:            '<i style="color:#dd5;" class="nGY2Icon icon-star"></i>',
-      thumbnailCounter:             '<i class="nGY2Icon icon-picture"></i>',
-      thumbnailShare:               '<i class="nGY2Icon icon-ngy2_share2"></i>',
-      thumbnailDownload:            '<i class="nGY2Icon icon-ngy2_download2"></i>',
-      thumbnailInfo:                '<i class="nGY2Icon icon-ngy2_info2"></i>',
-      thumbnailCart:                '<i class="nGY2Icon icon-basket"></i>',
-      thumbnailDisplay:             '<i class="nGY2Icon icon-ngy2_zoom_in2"></i>',
+      thumbnailAlbum:               '<i class="nGY2Icon-folder-empty"></i>',
+      thumbnailImage:               '<i class="nGY2Icon-picture"></i>',
+      breadcrumbAlbum:              '<i class="nGY2Icon-folder-empty"></i>',
+      breadcrumbHome:               '<i class="nGY2Icon-home"></i>',
+      breadcrumbSeparator:          '<i class="nGY2Icon-left-open"></i>',
+      breadcrumbSeparatorRtl:       '<i class="nGY2Icon-right-open"></i>',
+      navigationFilterSelected:     '<i style="color:#fff;" class="nGY2Icon-toggle-on"></i>',
+      navigationFilterUnselected:   '<i style="color:#ddd;" class="nGY2Icon-toggle-off"></i>',
+      navigationFilterSelectedAll:  '<i class="nGY2Icon-toggle-on"></i><i class="nGY2Icon-ok"></i>',
+      thumbnailSelected:            '<i style="color:#bff;" class="nGY2Icon-ok-circled"></i>',
+      thumbnailUnselected:          '<i style="color:#bff;" class="nGY2Icon-circle-empty"></i>',
+      thumbnailFeatured:            '<i style="color:#dd5;" class="nGY2Icon-star"></i>',
+      thumbnailCounter:             '<i class="nGY2Icon-picture"></i>',
+      thumbnailShare:               '<i class="nGY2Icon-ngy2_share2"></i>',
+      thumbnailDownload:            '<i class="nGY2Icon-ngy2_download2"></i>',
+      thumbnailInfo:                '<i class="nGY2Icon-ngy2_info2"></i>',
+      thumbnailCart:                '<i class="nGY2Icon-basket"></i>',
+      thumbnailDisplay:             '<i class="nGY2Icon-ngy2_zoom_in2"></i>',
       thumbnailCustomTool1:         'T1',
       thumbnailCustomTool2:         'T2',
       thumbnailCustomTool3:         'T3',
@@ -1402,37 +1483,37 @@
       thumbnailCustomTool8:         'T8',
       thumbnailCustomTool9:         'T9',
       thumbnailCustomTool10:        'T10',
-      thumbnailAlbumUp:             '<i style="font-size: 3em;" class="nGY2Icon icon-ngy2_chevron_up2"></i>',
-      paginationNext:               '<i class="nGY2Icon icon-right-open"></i>',
-      paginationPrevious:           '<i class="nGY2Icon icon-left-open"></i>',
-      galleryMoreButton:            '<i class="nGY2Icon icon-picture"></i> &nbsp; <i class="nGY2Icon icon-right-open"></i>',
-      buttonClose:                  '<i class="nGY2Icon icon-ngy2_close2"></i>',
-      viewerPrevious:               '<i class="nGY2Icon icon-ngy2_chevron-left"></i>',
-      viewerNext:                   '<i class="nGY2Icon icon-ngy2_chevron-right"></i>',
-      viewerImgPrevious:            '<i class="nGY2Icon icon-ngy2_chevron_left3"></i>',
-      viewerImgNext:                '<i class="nGY2Icon icon-ngy2_chevron_right3"></i>',
-      viewerDownload:               '<i class="nGY2Icon icon-ngy2_download2"></i>',
-      viewerToolbarMin:             '<i class="nGY2Icon icon-ellipsis-vert"></i>',
-      viewerToolbarStd:             '<i class="nGY2Icon icon-menu"></i>',
-      viewerPlay:                   '<i class="nGY2Icon icon-play"></i>',
-      viewerPause:                  '<i class="nGY2Icon icon-pause"></i>',
-      viewerFullscreenOn:           '<i class="nGY2Icon icon-resize-full"></i>',
-      viewerFullscreenOff:          '<i class="nGY2Icon icon-resize-small"></i>',
-      viewerZoomIn:                 '<i class="nGY2Icon icon-ngy2_zoom_in2"></i>',
-      viewerZoomOut:                '<i class="nGY2Icon icon-ngy2_zoom_out2"></i>',
-      viewerLinkOriginal:           '<i class="nGY2Icon icon-ngy2_external2"></i>',
-      viewerInfo:                   '<i class="nGY2Icon icon-ngy2_info2"></i>',
-      viewerShare:                  '<i class="nGY2Icon icon-ngy2_share2"></i>',
-      user:                         '<i class="nGY2Icon icon-user"></i>',
-      location:                     '<i class="nGY2Icon icon-location"></i>',
-      config:                       '<i class="nGY2Icon icon-wrench"></i>',
-      shareFacebook:                '<i style="color:#3b5998;" class="nGY2Icon icon-facebook-squared"></i>',
-      shareTwitter:                 '<i style="color:#00aced;" class="nGY2Icon icon-twitter-squared"></i>',
-      shareGooglePlus:              '<i style="color:#dd4b39;" class="nGY2Icon icon-gplus-squared"></i>',
-      shareTumblr:                  '<i style="color:#32506d;" class="nGY2Icon icon-tumblr-squared"></i>',
-      sharePinterest:               '<i style="color:#cb2027;" class="nGY2Icon icon-pinterest-squared"></i>',
-      shareVK:                      '<i style="color:#3b5998;" class="nGY2Icon icon-vkontakte"></i>',
-      shareMail:                    '<i style="color:#555;" class="nGY2Icon icon-mail-alt"></i>',
+      thumbnailAlbumUp:             '<i style="font-size: 3em;" class="nGY2Icon-ngy2_chevron_up2"></i>',
+      paginationNext:               '<i class="nGY2Icon-right-open"></i>',
+      paginationPrevious:           '<i class="nGY2Icon-left-open"></i>',
+      galleryMoreButton:            '<i class="nGY2Icon-picture"></i> &nbsp; <i class="nGY2Icon-right-open"></i>',
+      buttonClose:                  '<i class="nGY2Icon-ngy2_close2"></i>',
+      viewerPrevious:               '<i class="nGY2Icon-ngy2_chevron-left"></i>',
+      viewerNext:                   '<i class="nGY2Icon-ngy2_chevron-right"></i>',
+      viewerImgPrevious:            '<i class="nGY2Icon-ngy2_chevron_left3"></i>',
+      viewerImgNext:                '<i class="nGY2Icon-ngy2_chevron_right3"></i>',
+      viewerDownload:               '<i class="nGY2Icon-ngy2_download2"></i>',
+      viewerToolbarMin:             '<i class="nGY2Icon-ellipsis-vert"></i>',
+      viewerToolbarStd:             '<i class="nGY2Icon-menu"></i>',
+      viewerPlay:                   '<i class="nGY2Icon-play"></i>',
+      viewerPause:                  '<i class="nGY2Icon-pause"></i>',
+      viewerFullscreenOn:           '<i class="nGY2Icon-resize-full"></i>',
+      viewerFullscreenOff:          '<i class="nGY2Icon-resize-small"></i>',
+      viewerZoomIn:                 '<i class="nGY2Icon-ngy2_zoom_in2"></i>',
+      viewerZoomOut:                '<i class="nGY2Icon-ngy2_zoom_out2"></i>',
+      viewerLinkOriginal:           '<i class="nGY2Icon-ngy2_external2"></i>',
+      viewerInfo:                   '<i class="nGY2Icon-ngy2_info2"></i>',
+      viewerShare:                  '<i class="nGY2Icon-ngy2_share2"></i>',
+      user:                         '<i class="nGY2Icon-user"></i>',
+      location:                     '<i class="nGY2Icon-location"></i>',
+      config:                       '<i class="nGY2Icon-wrench"></i>',
+      shareFacebook:                '<i style="color:#3b5998;" class="nGY2Icon-facebook-squared"></i>',
+      shareTwitter:                 '<i style="color:#00aced;" class="nGY2Icon-twitter-squared"></i>',
+      shareGooglePlus:              '<i style="color:#dd4b39;" class="nGY2Icon-gplus-squared"></i>',
+      shareTumblr:                  '<i style="color:#32506d;" class="nGY2Icon-tumblr-squared"></i>',
+      sharePinterest:               '<i style="color:#cb2027;" class="nGY2Icon-pinterest-squared"></i>',
+      shareVK:                      '<i style="color:#3b5998;" class="nGY2Icon-vkontakte"></i>',
+      shareMail:                    '<i style="color:#555;" class="nGY2Icon-mail-alt"></i>',
       viewerCustomTool1:            'T1',
       viewerCustomTool2:            'T2',
       viewerCustomTool3:            'T3',
@@ -1482,6 +1563,10 @@
           
         case 'refresh':
           nG2.Refresh();
+          break;
+
+        case 'resize':
+          nG2.Resize();
           break;
           
         case 'instance':
@@ -1544,7 +1629,7 @@
           }
           var fu=G.O.fnShoppingCartUpdated;
           if( fu !== null ) {
-            fu == 'function' ? fu(nG2.shoppingCart) : window[fu](nG2.shoppingCart);
+            typeof  fu == 'function' ? fu(nG2.shoppingCart) : window[fu](nG2.shoppingCart);
           }
           return nG2.shoppingCart;
           break;
@@ -1562,7 +1647,7 @@
           }
           var fu=G.O.fnShoppingCartUpdated;
           if( fu !== null ) {
-            fu == 'function' ? fu(nG2.shoppingCart) : window[fu](nG2.shoppingCart);
+            typeof fu == 'function' ? fu(nG2.shoppingCart) : window[fu](nG2.shoppingCart);
           }
           return nG2.shoppingCart;
           break;
@@ -1690,6 +1775,13 @@
       // refresh the displayed gallery
       GalleryRender( G.GOM.albumIdx );
     };
+    /**
+     * resize the current gallery
+     */
+    this.Resize = function() {
+      // resize the displayed gallery
+      GalleryResize();
+    };
 
     /**
      * display one item (image or gallery)
@@ -1737,14 +1829,14 @@
      */
     this.Search2 = function( searchTitle, searchTags ) {
       if( searchTitle != null && searchTitle != undefined ) {
-        G.GOM.albumSearch=searchTitle.toUpperCase();
+        G.GOM.albumSearch = searchTitle.toUpperCase();
       }
       else {
-        G.GOM.albumSearch='';
+        G.GOM.albumSearch = '';
       }
       
       if( searchTags != null && searchTags != undefined ) {
-        G.GOM.albumSearchTags=searchTags.toUpperCase();
+        G.GOM.albumSearchTags = searchTags.toUpperCase();
       }
       else {
         G.GOM.albumSearchTags = '';
@@ -1756,7 +1848,7 @@
      * Search2 - execute the search on title and tags
      */
     this.Search2Execute = function() {
-      var gIdx=G.GOM.albumIdx;
+      var gIdx = G.GOM.albumIdx;
       GalleryRender( G.GOM.albumIdx );
       return CountItemsToDisplay( gIdx );
     };
@@ -1791,12 +1883,12 @@
       G.$E.base.empty();
       G.$E.base.removeData();
       if( G.O.locationHash ) {
-        jQuery(window).off('hashchange.nanogallery2.'+G.baseEltID);
+        jQuery(window).off('hashchange.nanogallery2.' + G.baseEltID);
       }
-      jQuery(window).off('resize.nanogallery2.'+G.baseEltID);
-      jQuery(window).off('orientationChange.nanogallery2.'+G.baseEltID);
-      jQuery(window).off('scroll.nanogallery2.'+G.baseEltID);
-      G.GOM.firstDisplay=false;
+      jQuery(window).off('resize.nanogallery2.' + G.baseEltID);
+      jQuery(window).off('orientationChange.nanogallery2.' + G.baseEltID);
+      jQuery(window).off('scroll.nanogallery2.' + G.baseEltID);
+      G.GOM.firstDisplay = false;
     };
     
     /**
@@ -2212,10 +2304,10 @@
         containerOffset:          null,
         areaWidth:                100         // available area width
       },
-      nbSelected :                0, // number of selected items
+      nbSelected :                0,        // number of selected items
       pagination :                { currentPage: 0 }, // pagination data
-      lastFullRow :               -1, // number of the last row without holes
-      lastDisplayedIdx:           -1, // used to display the counter of not displayed items
+      lastFullRow :               -1,       // number of the last row without holes
+      lastDisplayedIdx:           -1,       // used to display the counter of not displayed items
       displayInterval :           { from: 0, len: 0 },
       userEvents:                 null,
       hammertime:                 null,
@@ -2237,26 +2329,26 @@
         if( G.GOM.items[idx] == undefined || G.GOM.items[idx] == null ) { return null; }
         var i = G.GOM.items[idx].thumbnailIdx;
         return G.I[i];
+      },
+      // One GOM item (thumbnail)
+      // function GTn(index, width, height) {
+      GTn: function(index, width, height) {
+        this.thumbnailIdx = index;
+        this.width =                0;      // thumbnail width
+        this.height =               0;      // thumbnail height
+        this.top =                  0;      // position: top
+        this.left =                 0;      // position: left
+        this.row =                  0;      // position: row number
+        this.imageWidth =           width;  // image width
+        this.imageHeight =          height; // image height
+        this.resizedContentWidth =  0;
+        this.resizedContentHeight = 0;
+        this.displayed =            false;
+        this.neverDisplayed =       true;
+        this.inDisplayArea =        false;
       }
     };
     
-    // One GOM item (thumbnail)
-    function GTn(index, width, height) {
-      this.thumbnailIdx = index;
-      this.width =                0;      // thumbnail width
-      this.height =               0;      // thumbnail height
-      this.top =                  0;      // position: top
-      this.left =                 0;      // position: left
-      this.row =                  0;      // position: row number
-      this.imageWidth =           width;  // image width
-      this.imageHeight =          height; // image height
-      this.resizedContentWidth =  0;
-      this.resizedContentHeight = 0;
-      this.displayed =            false;
-      this.neverDisplayed =       true;
-      this.inDisplayArea =        false;
-     
-    }
     
     //------------------------
     //--- Viewer Object Model
@@ -2312,16 +2404,16 @@
         }
       },
       IdxNext: function() {
-        var n=0;
-        if( G.VOM.currItemIdx != G.VOM.items.length-1 ) {
-          n=G.VOM.currItemIdx+1;
+        var n = 0;
+        if( G.VOM.currItemIdx != (G.VOM.items.length-1) ) {
+          n = G.VOM.currItemIdx + 1;
         }
         return n;
       },
       IdxPrevious: function() {
-        var n=G.VOM.currItemIdx-1;
+        var n = G.VOM.currItemIdx-1;
         if( G.VOM.currItemIdx == 0 ) {
-          n=G.VOM.items.length-1;
+          n = G.VOM.items.length - 1;
         }
         return n;
       },
@@ -2436,7 +2528,7 @@
       navigationBar :         { background: 'none', borderTop: '', borderBottom: '', borderRight: '', borderLeft: '' },
       navigationBreadcrumb :  { background: '#111', color: '#fff', colorHover: '#ccc', borderRadius: '4px' },
       navigationFilter :      { color: '#ddd', background: '#111', colorSelected: '#fff', backgroundSelected: '#111', borderRadius: '4px' },
-      thumbnail :             { background: '#444', backgroundImage: 'linear-gradient(315deg, #111 0%, #667 90%)', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#aaa' },
+      thumbnail :             { background: '#444', backgroundImage: 'linear-gradient(315deg, #111 0%, #445 90%)', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#aaa' },
       thumbnailIcon :         { padding: '5px', color: '#fff' },
       pagination :            { background: '#181818', backgroundSelected: '#666', color: '#fff', borderRadius: '2px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
     };
@@ -2445,7 +2537,7 @@
       navigationBar :         { background: 'none', borderTop: '', borderBottom: '', borderRight: '', borderLeft: '' },
       navigationBreadcrumb :  { background: '#eee', color: '#000', colorHover: '#333', borderRadius: '4px' },
       navigationFilter :      { background: '#eee', color: '#222', colorSelected: '#000', backgroundSelected: '#eee', borderRadius: '4px' },
-      thumbnail :             { background: '#444', backgroundImage: 'linear-gradient(315deg, #111 0%, #667 90%)', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#888' },
+      thumbnail :             { background: '#444', backgroundImage: 'linear-gradient(315deg, #111 0%, #445 90%)', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#888' },
       thumbnailIcon :         { padding: '5px', color: '#fff' },
       pagination :            { background: '#eee', backgroundSelected: '#aaa', color: '#000', borderRadius: '2px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
     };
@@ -3130,7 +3222,7 @@
       
       var fu=G.O.fnGalleryRenderStart;
       if( fu !== null ) {
-        fu == 'function' ? fu(albumIdx) : window[fu](albumIdx);
+        typeof fu == 'function' ? fu(albumIdx) : window[fu](albumIdx);
       }
 
       G.layout.SetEngine();
@@ -3294,7 +3386,7 @@
       TriggerCustomEvent('galleryRenderEnd');
       var fu=G.O.fnGalleryRenderEnd;
       if( fu !== null ) {
-        fu == 'function' ? fu(albumIdx) : window[fu](albumIdx);
+        typeof fu == 'function' ? fu(albumIdx) : window[fu](albumIdx);
       }
 
       // Step 1: populate GOM
@@ -3351,7 +3443,7 @@
         var item = G.I[idx];
         // check album
         if( item.isToDisplay(albumID) ) {
-        var w = item.thumbImg().width;
+          var w = item.thumbImg().width;
           var h = item.thumbImg().height;
           // if unknown image size and layout is not grid --> we need to retrieve the size of the images
           if( G.layout.prerequisite.imageSize && ( w == 0 || h == 0) ) {
@@ -3367,7 +3459,7 @@
           if( w == 0 ) {
             w = G.tn.defaultSize.getWidth();
           }
-          var tn = new GTn(idx, w, h);
+          var tn = new G.GOM.GTn(idx, w, h);
           G.GOM.items.push(tn);
           cnt++;
         }
@@ -3376,7 +3468,7 @@
       TriggerCustomEvent('galleryObjectModelBuilt');
       var fu = G.O.fnGalleryObjectModelBuilt;
       if( fu !== null ) {
-        fu == 'function' ? fu() : window[fu]();
+        typeof fu == 'function' ? fu() : window[fu]();
       }
       
       if( imageSizeRequested ) {
@@ -3462,7 +3554,7 @@
       TriggerCustomEvent('galleryLayoutApplied');
       var fu = G.O.fnGalleryLayoutApplied;
       if( fu !== null ) {
-        fu == 'function' ? fu() : window[fu]();
+        typeof fu == 'function' ? fu() : window[fu]();
       }
       return r;
 
@@ -3518,6 +3610,7 @@
       var baseHeight = G.tn.opt.Get('baseGridHeight') * scaleFactor;
       for( var i = 0; i < nbTn ; i++ ) {
         var curTn = G.GOM.items[i];
+        if( curTn.deleted == true ) { break; }    // item is logically deleted
         if( curTn.imageHeight > 0 && curTn.imageWidth > 0 ) {
           var curPosX = 0,
           curPosY = 0;
@@ -3604,6 +3697,7 @@
       // first loop --> retrieve each row image height
       for( var i = 0; i < nbTn ; i++ ) {
         var curTn = G.GOM.items[i];
+        if( curTn.deleted == true ) { break; }    // item is logically deleted
         if( curTn.imageWidth > 0 ) {
           var imageRatio = curTn.imageWidth / curTn.imageHeight;
           var imageWidth = Math.floor( tnHeight * imageRatio );
@@ -4529,7 +4623,8 @@
         mp = 'cursor:default;'
       }
 
-      var src = item.thumbImg().src,
+      // var src = encodeURI(item.thumbImg().src),
+      var src = (item.thumbImg().src).replace(/'/g, "%27"),   // replace single quote with %27
       sTitle = getThumbnailTitle(item);
 
       // image background -> visible during image download
@@ -4581,7 +4676,6 @@
       newElt[newEltIdx++]='<div class="nGY2GThumbnailImage nGY2TnImg" style="' + s2 + '">';
       newElt[newEltIdx++]='  <img class="nGY2GThumbnailImg nGY2TnImg2" src="' + src + '" alt="' + sTitle + '" style="opacity:0;" data-idx="' + idx + '" data-albumidx="' + G.GOM.albumIdx + '" >';
       newElt[newEltIdx++]='</div>';
-
       
       // ##### layer for user customization purposes
       newElt[newEltIdx++]='<div class="nGY2GThumbnailCustomLayer"></div>';
@@ -5842,21 +5936,21 @@
         
         // dominant colors (needs to be a base64 gif)
         if( item.imageDominantColors !== undefined ) {
-          newItem.imageDominantColors=item.imageDominantColors;
+          newItem.imageDominantColors = item.imageDominantColors;
         }
         // dominant color (rgb hex)
         if( item.imageDominantColor !== undefined ) {
-          newItem.imageDominantColor=item.imageDominantColor;
+          newItem.imageDominantColor = item.imageDominantColor;
         }
         
         // dest url
         if( item.destURL !== undefined && item.destURL.length>0 ) {
-          newItem.destinationURL=item.destURL;
+          newItem.destinationURL = item.destURL;
         }
         
         // download image url
         if( item.downloadURL !== undefined && item.downloadURL.length>0 ) {
-          newItem.downloadURL=item.downloadURL;
+          newItem.downloadURL = item.downloadURL;
         }
         
         // EXIF DATA
@@ -6735,6 +6829,13 @@
           case 'LABELOPACITY50':
             newEffects.push(ThumbnailHoverEffectExtract('label_opacity_1.00_0.50', effects[i]));
             break;
+          case 'LABELSLIDEUPTOP':
+          case 'LABELSLIDEUP':
+            newEffects.push(ThumbnailHoverEffectExtract('label_translateY_100%_0%', effects[i]));
+            break;
+          case 'LABELSLIDEDOWN':
+            newEffects.push(ThumbnailHoverEffectExtract('label_translateY_-100%_0%', effects[i]));
+            break;
           case 'SCALELABELOVERIMAGE':
             newEffects.push(ThumbnailHoverEffectExtract('label_scale_0.00_1.00', effects[i]));
             var n = cloneJSObject(effects[i]);
@@ -7133,7 +7234,7 @@
       }
 
       if( typeof G.O.colorSchemeViewer  !== 'undefined' ) {
-        G.VOM.viewerTheme = G.O.colorSchemeViewer;
+        G.O.viewerTheme = G.O.colorSchemeViewer;
       }
 
       var cs=null;
@@ -7310,15 +7411,18 @@
       if( G.I[idx].mediaKind != 'img' ) { return; }
 
       
-      var url=G.I[idx].src;
+      var url = G.I[idx].src;
 
       if( G.I[idx].downloadURL != undefined && G.I[idx].downloadURL != '' ) {
-        url=G.I[idx].downloadURL;
+        url = G.I[idx].downloadURL;
       }
       
       var a = document.createElement('a');
       a.href = url;
-      a.download = url.split('.').pop();
+      // a.download = url.split('.').pop();
+      a.download = url.split('/').pop();
+      a.target = '_blank';
+      a.style.display = 'none';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);      
@@ -9261,13 +9365,13 @@
       }
       
       // Page resize / orientation change
-      jQuery(window).on('resize.nanogallery2.' + G.baseEltID + ' orientationChange.nanogallery2.' + G.baseEltID, debounce( ResizeWindowEvent, 100, false) );
+      jQuery(window).on('resize.nanogallery2.' + G.baseEltID + ' orientationChange.nanogallery2.' + G.baseEltID, debounce( ResizeWindowEvent, G.O.eventsDebounceDelay, false) );
       
       // Event page scrolled
-      jQuery(window).on('scroll.nanogallery2.' + G.baseEltID, debounce( OnScrollEvent, 50, false) );
+      jQuery(window).on('scroll.nanogallery2.' + G.baseEltID, debounce( OnScrollEvent, G.O.eventsDebounceDelay, false) );
       
       // Debounced function to hide the toolbars on the viewer
-      G.VOM.toolsHide=debounce( ViewerToolsHide, G.O.viewerHideToolsDelay, false );
+      G.VOM.toolsHide = debounce( ViewerToolsHide, G.O.viewerHideToolsDelay, false );
       
       // Keyboard management
       jQuery(document).keyup(function(e) {
@@ -9447,9 +9551,9 @@
     
     
     function ResizeWindowEvent() {
-      G.GOM.cache.viewport=getViewport();
-      G.GOM.cache.areaWidth=G.$E.conTnParent.width();
-      G.GOM.cache.containerOffset=G.$E.conTnParent.offset();
+      G.GOM.cache.viewport = getViewport();
+      G.GOM.cache.areaWidth = G.$E.conTnParent.width();
+      G.GOM.cache.containerOffset = G.$E.conTnParent.offset();
 
       if( G.VOM.viewerDisplayed ) {
         ResizeInternalViewer();
