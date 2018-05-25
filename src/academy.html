@@ -159,6 +159,21 @@ touchAnimation: false
           <div ID="ngy2_changelog" style="background-color:#f8f8f8;">
             <!-- Jan. Feb. Mar. Apr. May. Jun. Jul. Aug. Sep. Oct. Nov. Dec. -->
 
+            <div class="ngy2_changelog_title"><b><i class="fa fa-asterisk" aria-hidden="true"></i> <span class="ngy2_changelog_tool">nanogallery2 v2.2.0</span> [May 25, 2018]</b></div>
+            <div class="ngy2_changelog_version">
+              <span class="label label-success">NEW</span> new option 'eventsDebounceDelay' - thumbnail's lazy display fine tuning (response delay after resizing, rotation and scroll events)
+              <br><span class="label label-success">NEW</span> new internal NGY2Item object method 'delete' - deletes the current item
+              <br><span class="label label-success">NEW</span> new internal NGY2Item object method 'addToGOM' - adds the current item to the Gallery Object Modell
+              <br><span class="label label-success">CHANGED</span> 'thumbnailDisplayOutsideScreen' default value is now 'true'
+              <br><span class="label label-warning">FIXED</span> issue on callbacks fnGalleryLayoutApplied, fnGalleryObjectModelBuilt, fnGalleryRenderStart (#121), galleryRenderEnd, fnShoppingCartUpdated, fnShoppingCartUpdated
+              <br><span class="label label-warning">FIXED</span> thumbnails with a Single Quote wont load
+              <br><span class="label label-warning">FIXED</span> Joomla/Bootstrap icon conflict - changed class in CSS file
+              <br><span class="label label-warning">FIXED</span> custom theme using colorSchemeViewer not working
+              <br><span class="label label-warning">FIXED</span> thumbnail effects 'labelSlideUp' and 'labelSlideDown'
+              <br><span class="label label-warning">FIXED</span> thumbnail effects with CSS 2D/3D transformations
+              <br><a href="https://github.com/nanostudio-org/nanogallery2/releases/tag/v2.2.0" target="_blank">[more...]</a>
+            </div>
+            
             <div class="ngy2_changelog_title"><b><i class="fa fa-asterisk" aria-hidden="true"></i> <span class="ngy2_changelog_tool">nanogallery2 v2.1.0</span> [Mar 5, 2018]</b></div>
             <div class="ngy2_changelog_version">
               <span class="label label-success">NEW</span> API methods 'closeViewer', 'minimizeToolbar', 'maximizeToolbar', 'paginationPreviousPage', 'paginationNextPage', 'paginationGotoPage', 'paginationCountPages'
@@ -303,3 +318,5 @@ touchAnimation: false
 
     
     </div>
+  
+  
