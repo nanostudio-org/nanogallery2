@@ -1749,7 +1749,7 @@
         attachment: { $e: jQuery('#ngy2logo') },
         easing:     'easeInOutSine',
         duration:   1000,
-        delay:      500,
+        delay:      300,
         step: function (state, att) {
           att.$e.css('opacity', state.opacity);
         }
@@ -1761,9 +1761,21 @@
         attachment: { $e: jQuery('#ngy2logo2') },
         easing:     'easeInOutSine',
         duration:   1000,
-        delay:      1000,
+        delay:      500,
         step: function (state, att) {
           att.$e.css('opacity', state.opacity);
+        }
+      });
+      var tweenable = new NGTweenable();
+      tweenable.tween({
+        from:       { opacity: 0, scale: 3 },
+        to:         { opacity: 1, scale: 1 },
+        attachment: { $e: jQuery('#ngy2logo3') },
+        easing:     'easeOutQuad',
+        duration:   1000,
+        delay:      700,
+        step: function (state, att) {
+          att.$e.css({ 'opacity': state.opacity, transform: 'scale('+state.scale+')' });
         }
       });
     
@@ -2206,7 +2218,7 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
               kind: 'nano_photos_provider2',
               dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
               album: 'nature',
-              galleryDisplayTransition: 'slideUp',
+              galleryDisplayTransition: 'rotateX',
               galleryDisplayTransitionDuration: 1500,
              
               thumbnailAlignment: 'fillWidth',
@@ -2860,6 +2872,7 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
       
     });
   </script>
+
 
   <!-- ######################## -->
   <!-- ##### START FOOTER ##### -->
