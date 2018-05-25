@@ -1,6 +1,20 @@
 nanogallery2 - ChangeLog
 ===========
 
+v2.2.0
+------
+- new option 'eventsDebounceDelay' - thumbnail's lazy display fine tuning (response delay after resizing, rotation and scroll events)
+- new API method 'resize' - force a gallery resize. To be used when adding/removing items dynamically, to avoid a full re-display of the thumbnails.
+- new internal NGY2Item object method 'delete' - deletes the current item
+- new internal NGY2Item object method 'addToGOM' - adds the current item to the Gallery Object Modell
+- changed: 'thumbnailDisplayOutsideScreen' default value is now 'true'
+- fixed issue on callbacks fnGalleryLayoutApplied, fnGalleryObjectModelBuilt, fnGalleryRenderStart (#121), galleryRenderEnd, fnShoppingCartUpdated, fnShoppingCartUpdated
+- fixed #120 - thumbnails with a Single Quote wont load
+- fixed #117 - Joomla/Bootstrap icon conflict - changed class in CSS file
+- fixed #126 - custom theme using colorSchemeViewer not working
+- fixed thumbnail effects 'labelSlideUp' and 'labelSlideDown'
+- fixed thumbnail effects with CSS 2D/3D transformations
+
 
 v2.1.0
 ------
@@ -12,7 +26,6 @@ v2.1.0
 - fixed: #82 option 'thumbnailAlbumDisplayImage'
 - fixed: incorrect .nGY2GThumbnailSub size
 - fixed: functions NGY2Item.thumbSet(), NGY2Item.imageSet(), NGY2Item.thumbSetImgHeight(), NGY2Item.thumbSetImgWidth()
-
 
 
 v2.0.0
