@@ -19,30 +19,20 @@
  */
 
 /*
-v2.2.0 - beta
+  V2.3.0BETA - only for test purposes
+ 
+- new loading spinner - added support for transparent gif/png
+- fixed #130 Joomla3/Bootstrap2 Image Zoom In Bug
+  
+ToDo:
+- var - let
+- embed all external libraries
+- image swipe -> optimize scale/translate distance / do not swipe all the media 
+- https://speckyboy.com/page-transition-effects/
 
-- new API method 'resize' - force a gallery resize 
-- new internal NGY2Item object method 'delete' - deletes the current item
-- new internal NGY2Item object method 'addToGOM' - adds the current item to the Gallery Object Modell
-- changed: 'thumbnailDisplayOutsideScreen' default value is now 'true'
-- fixed issue on callbacks fnGalleryLayoutApplied, fnGalleryObjectModelBuilt, fnGalleryRenderStart (#121), galleryRenderEnd, fnShoppingCartUpdated, fnShoppingCartUpdated
-- fixed #120 - thumbnails with a Single Quote wont load
-- fixed #115 - loading nanogallery2 with AMD
-- fixed #117 - Joomla/Bootstrap icon conflict - changed class in CSS file
-- fixed #126 - custom theme using colorSchemeViewer not working
-- fixed thumbnail effects 'labelSlideUp' and 'labelSlideDown'
-- fixed thumbnail effects using CSS tranform
-
-TODO:
-- lazy load tuning (timer delay + threshold)
-- lightbox without title by default
-- doc: tutorial dev
-- doc: lightbox
-- thumbnail background gradient
-- gallery pre-loader
-- filter mode
 
 */
+ 
  
  
 // ###########################################
@@ -76,11 +66,11 @@ TODO:
     if (obj === null) {
       obj = document.createElement('div');
       obj.id = "ngyColorHelperToRGB";
-      obj.style.cssText = 'display: none; color:'+color+';';
+      obj.style.cssText = 'display: none; color:' + color + ';';
       document.body.appendChild(obj);
     }
     
-    var rgb=getComputedStyle(obj).color;
+    var rgb = getComputedStyle(obj).color;
 
     // to get HEX value:
     // var rgb = getComputedStyle(obj).color.match(/\d+/g);
@@ -1391,6 +1381,7 @@ TODO:
     thumbnailSliderDelay:         2000,
     galleryBuildInit2 :           '',
     portable :                    false,
+    eventsDebounceDelay:          50,
     
     touchAnimation :              true,
     touchAnimationL1 :            undefined,
@@ -1907,12 +1898,12 @@ TODO:
       G.$E.base.empty();
       G.$E.base.removeData();
       if( G.O.locationHash ) {
-        jQuery(window).off('hashchange.nanogallery2.'+G.baseEltID);
+        jQuery(window).off('hashchange.nanogallery2.' + G.baseEltID);
       }
-      jQuery(window).off('resize.nanogallery2.'+G.baseEltID);
-      jQuery(window).off('orientationChange.nanogallery2.'+G.baseEltID);
-      jQuery(window).off('scroll.nanogallery2.'+G.baseEltID);
-      G.GOM.firstDisplay=false;
+      jQuery(window).off('resize.nanogallery2.' + G.baseEltID);
+      jQuery(window).off('orientationChange.nanogallery2.' + G.baseEltID);
+      jQuery(window).off('scroll.nanogallery2.' + G.baseEltID);
+      G.GOM.firstDisplay = false;
     };
     
     /**
@@ -2456,7 +2447,7 @@ TODO:
         intervalHandle :  null,
 
         loadImage : function (callback, ngitem) {
-          if( ngitem.mediaKind != 'img' ) { return; }
+          if( ngitem.mediaKind != 'img' ) { return; }     // ignore - only for images
           var img = new Image ();
           img.src = ngitem.responsiveURL();
           if (img.width && img.height) {
@@ -2471,7 +2462,7 @@ TODO:
               }
             this.list[i] = obj;
             if (!this.intervalHandle)
-              this.intervalHandle = setInterval(this.interval, 100);
+              this.intervalHandle = setInterval(this.interval, 50);
             }
           },
 
@@ -2552,7 +2543,7 @@ TODO:
       navigationBar :         { background: 'none', borderTop: '', borderBottom: '', borderRight: '', borderLeft: '' },
       navigationBreadcrumb :  { background: '#111', color: '#fff', colorHover: '#ccc', borderRadius: '4px' },
       navigationFilter :      { color: '#ddd', background: '#111', colorSelected: '#fff', backgroundSelected: '#111', borderRadius: '4px' },
-      thumbnail :             { background: '#444', backgroundImage: 'linear-gradient(315deg, #111 0%, #667 90%)', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#aaa' },
+      thumbnail :             { background: '#444', backgroundImage: 'linear-gradient(315deg, #111 0%, #445 90%)', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#aaa' },
       thumbnailIcon :         { padding: '5px', color: '#fff' },
       pagination :            { background: '#181818', backgroundSelected: '#666', color: '#fff', borderRadius: '2px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
     };
@@ -2561,7 +2552,7 @@ TODO:
       navigationBar :         { background: 'none', borderTop: '', borderBottom: '', borderRight: '', borderLeft: '' },
       navigationBreadcrumb :  { background: '#eee', color: '#000', colorHover: '#333', borderRadius: '4px' },
       navigationFilter :      { background: '#eee', color: '#222', colorSelected: '#000', backgroundSelected: '#eee', borderRadius: '4px' },
-      thumbnail :             { background: '#444', backgroundImage: 'linear-gradient(315deg, #111 0%, #667 90%)', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#888' },
+      thumbnail :             { background: '#444', backgroundImage: 'linear-gradient(315deg, #111 0%, #445 90%)', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#888' },
       thumbnailIcon :         { padding: '5px', color: '#fff' },
       pagination :            { background: '#eee', backgroundSelected: '#aaa', color: '#000', borderRadius: '2px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
     };
@@ -7871,11 +7862,16 @@ TODO:
       else {
         // viewer already displayed -> display new media in current viewer
         G.VOM.$mediaCurrent.empty();
-        G.VOM.$mediaCurrent.append(G.VOM.NGY2Item(0).mediaMarkup);
+        var item = G.VOM.NGY2Item(0);
+        var spreloader = '<div class="nGY2ViewerMediaLoaderDisplayed"></div>';
+        if( item.mediaKind == 'img' && item.imageWidth != 0 && item.imageHeight != 0 ) {
+          spreloader = '<div class="nGY2ViewerMediaLoaderHidden"></div>';
+        }
+        G.VOM.$mediaCurrent.append( spreloader + item.mediaMarkup);
         ViewerSetMediaVisibility(G.VOM.NGY2Item(1), G.VOM.$mediaNext, 0);
         ViewerSetMediaVisibility(G.VOM.NGY2Item(-1), G.VOM.$mediaPrevious, 0);
-        if( G.VOM.NGY2Item(0).mediaKind == 'img' ) {
-          G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.NGY2Item(0));
+        if( item.mediaKind == 'img' ) {
+          G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, item);
         }
         // G.VOM.$mediaCurrent.css({ opacity:0 }).attr('src','');
         // G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.NGY2Item(0));
@@ -7940,7 +7936,7 @@ TODO:
     
     // Media which is not IMG -> center and set size
     function ViewerMediaCenterNotImg( $mediaContainer ) {
-      var $media = $mediaContainer.children().eq(0);
+      var $media = $mediaContainer.children().eq(1);
       $media.css( {'height': '80%' });
       $media.css( {'width':  '90%' });
       $media[0].style[G.CSStransformName] = 'translate(0px, "50%") ';
@@ -7978,8 +7974,8 @@ TODO:
 
       var imageCurrentHeight = (item.imageHeight / dpr) * zoomUserFactor * zoomBaseFactor;
       var imageCurrentWidth  = (item.imageWidth / dpr)  * zoomUserFactor * zoomBaseFactor;
-      $img.children().eq(0).css( {'height': imageCurrentHeight });
-      $img.children().eq(0).css( {'width':  imageCurrentWidth  });
+      $img.children().eq(1).css( {'height': imageCurrentHeight });
+      $img.children().eq(1).css( {'width':  imageCurrentWidth  });
 
       // retrieve posX/Y to center image
       var posX = 0;
@@ -8005,6 +8001,10 @@ TODO:
       // else {
         //$img[0].style[G.CSStransformName]= 'translate3D('+ posX+'px, '+ posY+'px, 0) ';
       // }
+      else {
+        // set the pan position of each media container
+        ViewerMediaPanX( G.VOM.swipePosX );
+      }
       
     }
 
@@ -8018,7 +8018,7 @@ TODO:
 
       posX += G.VOM.zoom.posX;
       posY += G.VOM.zoom.posY;
-      imageContainer.children()[0].style[G.CSStransformName]= 'translate('+ posX + 'px, '+ posY + 'px) ';
+      imageContainer.children().eq(1)[0].style[G.CSStransformName]= 'translate('+ posX + 'px, '+ posY + 'px) ';
     }
     
 
@@ -8040,9 +8040,9 @@ TODO:
       G.VOM.$viewer.css({ msTouchAction: 'none', touchAction: 'none' });            // avoid pinch zoom
 
       G.VOM.currItemIdx = 0;
-      var sMedia = '<div class="nGY2ViewerMediaPan">' + G.VOM.NGY2Item(-1).mediaMarkup + '</div>';    // previous media
-      sMedia    += '<div class="nGY2ViewerMediaPan">' + G.VOM.NGY2Item(0).mediaMarkup  + '</div>';    // current media
-      sMedia    += '<div class="nGY2ViewerMediaPan">' + G.VOM.NGY2Item(1).mediaMarkup  + '</div>';    // next media
+      var sMedia = '<div class="nGY2ViewerMediaPan"><div class="nGY2ViewerMediaLoaderDisplayed"></div>' + G.VOM.NGY2Item(-1).mediaMarkup + '</div>';    // previous media
+      sMedia    += '<div class="nGY2ViewerMediaPan"><div class="nGY2ViewerMediaLoaderDisplayed"></div>' + G.VOM.NGY2Item(0).mediaMarkup  + '</div>';    // current media
+      sMedia    += '<div class="nGY2ViewerMediaPan"><div class="nGY2ViewerMediaLoaderDisplayed"></div>' + G.VOM.NGY2Item(1).mediaMarkup  + '</div>';    // next media
 
       var sNav = '';
       var iconP = G.O.icons.viewerImgPrevious;
@@ -8655,6 +8655,8 @@ TODO:
         // G.VOM.$mediaCurrent.css({ left: posX }); 
       }
       else {
+      
+        // pan left/right the current media
         G.VOM.$mediaCurrent[0].style[G.CSStransformName] = 'translate(' + posX + 'px, 0px)';
 
         
@@ -8665,22 +8667,26 @@ TODO:
           if( G.VOM.NGY2Item(1).mediaTransition() ) {
             ViewerSetMediaVisibility(G.VOM.NGY2Item(1), G.VOM.$mediaNext, 1);
           }
+
+          var o = Math.abs(posX) / G.VOM.window.lastWidth;
+
+
           if( posX > 0 ) {
             var dir = G.VOM.window.lastWidth;
             if( G.VOM.NGY2Item(-1).mediaTransition() ) {
-              G.VOM.$mediaPrevious[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px)';
+              G.VOM.$mediaPrevious[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px) scale('+o+')';
             }
             if( G.VOM.NGY2Item(1).mediaTransition() ) {
-              G.VOM.$mediaNext[0].style[G.CSStransformName] = 'translate(' + (-dir) + 'px, 0px)';
+              G.VOM.$mediaNext[0].style[G.CSStransformName] = 'translate(' + (dir) + 'px, 0px) scale('+o+')';
             }
           }
           else {
             var dir = -G.VOM.window.lastWidth;
             if( G.VOM.NGY2Item(1).mediaTransition() ) {
-              G.VOM.$mediaNext[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px)';
+              G.VOM.$mediaNext[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px) scale('+o+')';
             }
             if( G.VOM.NGY2Item(-1).mediaTransition() ) {
-              G.VOM.$mediaPrevious[0].style[G.CSStransformName] = 'translate(' + (-dir) + 'px, 0px)';
+              G.VOM.$mediaPrevious[0].style[G.CSStransformName] = 'translate(' + (dir) + 'px, 0px) scale('+o+')';
             }
           }
         }
@@ -8801,10 +8807,11 @@ TODO:
             else {
               var dir = ( displayType == 'nextImage' ? - vP.w : vP.w );
               $new[0].style[G.CSStransformName] = 'translate('+(-dir)+'px, 0px) '
+              var op = (Math.abs(G.VOM.swipePosX)) / G.VOM.window.lastWidth;
               var tweenable = new NGTweenable();
               tweenable.tween({
-                from:         { t: G.VOM.swipePosX  },
-                to:           { t: (displayType == 'nextImage' ? - vP.w : vP.w) },
+                from:         { t: G.VOM.swipePosX, o: op  },
+                to:           { t: (displayType == 'nextImage' ? - vP.w : vP.w), o: 1 },
                 attachment:   { dT: displayType, $e: $new, item: itemOld, itemNew: itemNew, dir: dir },
                 delay:        30,
                 duration:     dur,
@@ -8816,7 +8823,7 @@ TODO:
                   // new media
                   if( att.itemNew.mediaTransition() ) {
                     ViewerSetMediaVisibility(att.itemNew, att.$e, 1);
-                    att.$e[0].style[G.CSStransformName] = 'translate(' + (-att.dir+state.t) + 'px, 0px)';
+                    att.$e[0].style[G.CSStransformName] = 'translate(' + (-att.dir+state.t) + 'px, 0px) scale('+state.o+')';
                   }
                 },
                 finish:       function (state, att) {
@@ -8903,40 +8910,56 @@ TODO:
             break;
         }
         G.VOM.$mediaCurrent.addClass('imgCurrent');
+        
+        // re-sort the media containers --> current on top
+        var $pans = G.VOM.$content.find('.nGY2ViewerMediaPan');
+        G.VOM.$mediaCurrent.insertAfter($pans.last());
+        
         if( ngy2item.mediaKind == 'img' && ngy2item.imageWidth == 0 ) {
           ViewerSetMediaVisibility(G.VOM.NGY2Item(0), G.VOM.$mediaCurrent, 0);
         }
         else {
+          G.VOM.$mediaCurrent.children().eq(0).attr('class', 'nGY2ViewerMediaLoaderHidden');    // hide preloader
           ViewerSetMediaVisibility(G.VOM.NGY2Item(0), G.VOM.$mediaCurrent, 1);
         }
       }
       
-      // set the new next media
+      // set the new NEXT media
       G.VOM.$mediaNext.empty();
-      G.VOM.$mediaNext.append( G.VOM.NGY2Item(1).mediaMarkup );
-      ViewerSetMediaVisibility(G.VOM.NGY2Item(1), G.VOM.$mediaNext, 0);
-      if( G.VOM.NGY2Item(1).mediaKind == 'img' ) {
-        G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.NGY2Item(1));
+      var nextItem = G.VOM.NGY2Item(1);
+      var spreloader = '<div class="nGY2ViewerMediaLoaderDisplayed"></div>';
+      if( nextItem.mediaKind == 'img' && nextItem.imageWidth != 0 && nextItem.imageHeight != 0 ) {
+        spreloader = '<div class="nGY2ViewerMediaLoaderHidden"></div>';
+      }
+      G.VOM.$mediaNext.append( spreloader + nextItem.mediaMarkup );
+      ViewerSetMediaVisibility(nextItem, G.VOM.$mediaNext, 0);
+      if( nextItem.mediaKind == 'img' ) {
+        G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, nextItem);
       }
       else {
-        ViewerMediaCenterNotImg(G.VOM.$mediaNext);
+        ViewerMediaCenterNotImg( G.VOM.$mediaNext );
       }
 
-      // set the new previous media
+      // set the new PREVIOUS media
       G.VOM.$mediaPrevious.empty();
-      G.VOM.$mediaPrevious.append(G.VOM.NGY2Item(-1).mediaMarkup);
-      ViewerSetMediaVisibility(G.VOM.NGY2Item(-1), G.VOM.$mediaPrevious, 0);
-      if( G.VOM.NGY2Item(-1).mediaKind == 'img' ) {
-        G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, G.VOM.NGY2Item(-1));
+      var previousItem = G.VOM.NGY2Item(-1);
+      spreloader = '<div class="nGY2ViewerMediaLoaderDisplayed"></div>';
+      if( previousItem.mediaKind == 'img' && previousItem.imageWidth != 0 && previousItem.imageHeight != 0 ) {
+        spreloader = '<div class="nGY2ViewerMediaLoaderHidden"></div>';
+      }
+      G.VOM.$mediaPrevious.append( spreloader + previousItem.mediaMarkup );
+      ViewerSetMediaVisibility(previousItem, G.VOM.$mediaPrevious, 0);
+      if( previousItem.mediaKind == 'img' ) {
+        G.VOM.ImageLoader.loadImage( VieweImgSizeRetrieved, previousItem );
       }
       else {
-        ViewerMediaCenterNotImg(G.VOM.$mediaPrevious);
+        ViewerMediaCenterNotImg( G.VOM.$mediaPrevious );
       }
 
         
       // slideshow mode - wait until image is loaded to start the delay for next image
       if( G.VOM.playSlideshow ) {
-        G.VOM.$mediaCurrent.children().eq(0).ngimagesLoaded().always( function( instance ) {
+        G.VOM.$mediaCurrent.children().eq(1).ngimagesLoaded().always( function( instance ) {
           if( G.VOM.playSlideshow ) {
             // in the meantime the user could have stopped the slideshow
             G.VOM.playSlideshowTimerID = window.setTimeout( function(){ DisplayNextMedia(); }, G.VOM.slideshowDelay );
@@ -8961,18 +8984,27 @@ TODO:
     }
 
     
-    // Is fired as soon as the size of an image has been retrieved
+    // Is fired as soon as the size of an image has been retrieved (the download may not be finished)
     function VieweImgSizeRetrieved(w, h, item, n) {
       item.imageWidth = w;
       item.imageHeight = h;
-
+  
       // image sized retrieved for currently displayed media
       // if( G.VOM.$mediaCurrent !== null && G.VOM.$mediaCurrent.children().attr('src') == item.responsiveURL() ) {
       if( G.VOM.NGY2Item(0) == item ) {
         // it is the current displayed media
+        G.VOM.$mediaCurrent.children().eq(0).attr('class', 'nGY2ViewerMediaLoaderHidden');    // hide preloader
         ViewerSetMediaVisibility(G.VOM.NGY2Item(0), G.VOM.$mediaCurrent, 1);
         G.VOM.zoom.userFactor = 1;
       }
+      
+      if( G.VOM.NGY2Item(1) == item ) {   // next media
+        G.VOM.$mediaNext.children().eq(0).attr('class', 'nGY2ViewerMediaLoaderHidden');    // hide preloader
+      }
+      if( G.VOM.NGY2Item(-1) == item ) {   // previous media
+        G.VOM.$mediaPrevious.children().eq(0).attr('class', 'nGY2ViewerMediaLoaderHidden');    // hide preloader
+      }
+      
       ViewerMediaSetPosAndZoom();
 
     }
@@ -8983,19 +9015,20 @@ TODO:
       if( item.mediaKind == 'img' && item.imageWidth == 0 ) {
         // do not display image if width is unknown (--> callback will set the width when know)
         // setting opacity to 0 is not enough -> it is mandatory to change also the visibility to hidden to avoid responds to events (click/touch)
-        $media.children().css({ opacity: 0, visibility: 'hidden' });
-        $media.css({ opacity: 0, visibility: 'hidden' });
+        // $media.children().css({ opacity: 0, visibility: 'hidden' });
+        $media.children().eq(1).css({ opacity: 0, visibility: 'hidden' });    // hide media
+        // $media.css({ opacity: 0, visibility: 'hidden' });
         return;
       }
       
       if( opacity == 0 ) {
         // setting opacity to 0 is not enough -> it is mandatory to change also the visibility to hidden to avoid responds to events (click/touch)
-        $media.css({ opacity: 0, visibility: 'hidden' });
-        $media.children().css({ opacity: 0, visibility: 'hidden' });
+        // $media.css({ opacity: 0, visibility: 'hidden' });
+        $media.children().css({ opacity: 0, visibility: 'hidden' });    // hide media
       }
       else {
-        $media.css({ opacity: opacity, visibility: 'visible' });
-        $media.children().css({ opacity: opacity, visibility: 'visible' });
+        // $media.css({ opacity: opacity, visibility: 'visible' });
+        $media.children().css({ opacity: opacity, visibility: 'visible' });      // display media
       }
     }
     
@@ -9079,7 +9112,7 @@ TODO:
       // window.requestAnimationFrame( function() {    // synchronize with screen
       var windowsW = G.VOM.$viewer.width();
       var windowsH = G.VOM.$viewer.height();
-      var $elt = G.VOM.$mediaCurrent.children().eq(0);
+      var $elt = G.VOM.$mediaCurrent.children().eq(1);
       if( $elt == null || G.VOM.currItemIdx == -1 ) { return; }
       
       if( !forceUpdate && G.VOM.window.lastWidth == windowsW  && G.VOM.window.lastHeight == windowsH ) { return; }
@@ -9389,13 +9422,13 @@ TODO:
       }
       
       // Page resize / orientation change
-      jQuery(window).on('resize.nanogallery2.' + G.baseEltID + ' orientationChange.nanogallery2.' + G.baseEltID, debounce( ResizeWindowEvent, 100, false) );
+      jQuery(window).on('resize.nanogallery2.' + G.baseEltID + ' orientationChange.nanogallery2.' + G.baseEltID, debounce( ResizeWindowEvent, G.O.eventsDebounceDelay, false) );
       
       // Event page scrolled
-      jQuery(window).on('scroll.nanogallery2.' + G.baseEltID, debounce( OnScrollEvent, 50, false) );
+      jQuery(window).on('scroll.nanogallery2.' + G.baseEltID, debounce( OnScrollEvent, G.O.eventsDebounceDelay, false) );
       
       // Debounced function to hide the toolbars on the viewer
-      G.VOM.toolsHide=debounce( ViewerToolsHide, G.O.viewerHideToolsDelay, false );
+      G.VOM.toolsHide = debounce( ViewerToolsHide, G.O.viewerHideToolsDelay, false );
       
       // Keyboard management
       jQuery(document).keyup(function(e) {
@@ -9575,9 +9608,9 @@ TODO:
     
     
     function ResizeWindowEvent() {
-      G.GOM.cache.viewport=getViewport();
-      G.GOM.cache.areaWidth=G.$E.conTnParent.width();
-      G.GOM.cache.containerOffset=G.$E.conTnParent.offset();
+      G.GOM.cache.viewport = getViewport();
+      G.GOM.cache.areaWidth = G.$E.conTnParent.width();
+      G.GOM.cache.containerOffset = G.$E.conTnParent.offset();
 
       if( G.VOM.viewerDisplayed ) {
         ResizeInternalViewer();
