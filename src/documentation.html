@@ -675,7 +675,7 @@ $("#my_nanogallery2").nanogallery2({
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td>true</td>
-            <td>Animate the moving of thumbnails to their new position when the gallery is resized.</td>
+            <td>Animates the thumbnails to their new position when the gallery/display is resized.</td>
           </tr>
           <tr>
             <td>
@@ -729,8 +729,12 @@ $("#my_nanogallery2").nanogallery2({
               <br><span class="badge">boolean</span>
               <br><span class="badge ngy2_ver">v1.2</span>
             </td>
-            <td>false</td>
-            <td>Display or hide thumbnails which are displayed outside of the screen (display may impact performances)</td>
+            <td>true</td>
+            <td>
+              Thumbnails are displayed (true) or hidden (false) when they are positioned outside of the screen / viewport.
+              <br>
+              For better performances with large galleries, use false.              
+            </td>
           </tr>
           <tr>
             <td>
@@ -914,7 +918,7 @@ $("#my_nanogallery2").nanogallery2({
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>15</td>
-          <td>Interval in ms between the display of 2 thumbnails.</td>
+          <td>Interval in ms between the display of 2 thumbnails (in ms).</td>
         </tr>
         <tr>
           <td>
@@ -957,7 +961,7 @@ $("#my_nanogallery2").nanogallery2({
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>240</td>
-          <td>Duration of the display transition.</td>
+          <td>Duration of the display transition (in ms).</td>
         </tr>
         <tr>
           <td>
@@ -1339,7 +1343,7 @@ $("#my_nanogallery2").nanogallery2({
     </ul>
       <br>
       <br>
-      Live example on codepen: <a href="http://codepen.io/Kris-B/pen/zZBxwB" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> demo - advanced thumbnail hover effect</a>
+      Live example on codepen: <a href="https://codepen.io/Kris-B/pen/ryLaRy" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> demo - advanced thumbnail hover effect</a>
     <br><br>
     <p>Some examples:</p>
     <ul>
@@ -1729,7 +1733,7 @@ $("#my_nanogallery2").nanogallery2({
       The standard toolbar has 2 states which are toggled with the 'minimizeButton' tool. Each state has is own configuration.
       <br>
       <br>
-      Possible tools: <b>'previousButton', 'pageCounter', 'nextButton', 'playPauseButton', 'fullscreenButton', 'infoButton', 'linkOriginalButton', 'closeButton', 'downloadButton', 'zoomButton', 'shareButton', 'label', 'customN'</b><br>
+      Possible tools: <b>'previousButton', 'pageCounter', 'nextButton', 'playPauseButton', 'fullscreenButton', 'infoButton', 'linkOriginalButton', 'closeButton', 'downloadButton', 'zoomButton', 'shareButton', 'label' (image title and description), 'customN'</b><br>
       To add custom elements in a toolbar, use the label <b>customN</b>, where <b>N</b> is an integer (e.g. custom1, custom2...).
       <br><br><br>
 
@@ -2008,6 +2012,44 @@ viewerToolbar:    {
       </table>
     </div>
 
+    
+    
+    
+    <div id="ngy2_global"></div>
+    <br><br><br><br><br><br><br>
+    <h3><b><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> GLOBAL SETTINGS</b></h3>
+    <hr>
+
+    <br><br><br>
+    
+    <div class="table-responsive">
+      <table class="table table-borderless table-stripedx table-hoverx">
+        <thead>
+          <tr>
+            <th>property</th>
+            <th>default</th>
+            <th>description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              eventsDebounceDelay
+              <br><span class="badge">integer</span>
+              <br><span class="badge ngy2_ver">v2.2</span>
+            </td>
+            <td>50</td>
+            <td>
+              Thumbnail's lazy display fine tuning<br>
+              Response delay in ms after resizing, rotation and scroll events.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>    
+    
+    
+    
     <div id="ngy2_icons"></div>
     <br><br><br><br><br><br><br>
     <h3><b><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> CUSTOM ICONS</b></h3>
@@ -2048,67 +2090,67 @@ viewerToolbar:    {
       <b>List of default icons:</b>
       <pre>
 // BREADCRUMB:
-breadcrumbAlbum:              '&lt;i class="nGY2Icon icon-folder-empty"&gt;&lt;/i&gt;'        // album icon
-breadcrumbHome:               '&lt;i class="nGY2Icon icon-home"&gt;&lt;/i&gt;'                // home icon
-breadcrumbSeparator:          '&lt;i class="nGY2Icon icon-left-open"&gt;&lt;/i&gt;'           // separator icon
-breadcrumbSeparatorRtl:       '&lt;i class="nGY2Icon icon-right-open"&gt;&lt;/i&gt;'          // separator RTL icon
+breadcrumbAlbum:              '&lt;i class="nGY2Icon-folder-empty"&gt;&lt;/i&gt;'        // album icon
+breadcrumbHome:               '&lt;i class="nGY2Icon-home"&gt;&lt;/i&gt;'                // home icon
+breadcrumbSeparator:          '&lt;i class="nGY2Icon-left-open"&gt;&lt;/i&gt;'           // separator icon
+breadcrumbSeparatorRtl:       '&lt;i class="nGY2Icon-right-open"&gt;&lt;/i&gt;'          // separator RTL icon
 
 // FILTERS:
-navigationFilterSelected:     '&lt;i style="color:#bff;" class="nGY2Icon icon-toggle-on"&gt;&lt;/i&gt;' // selected icon
-navigationFilterUnselected:   '&lt;i class="nGY2Icon icon-toggle-off"&gt;&lt;/i&gt;'          // unselected icon
-navigationFilterSelectedAll:  '&lt;i class="nGY2Icon icon-toggle-off"&gt;&lt;/i&gt;'          // unselect all icon
+navigationFilterSelected:     '&lt;i style="color:#bff;" class="nGY2Icon-toggle-on"&gt;&lt;/i&gt;' // selected icon
+navigationFilterUnselected:   '&lt;i class="nGY2Icon-toggle-off"&gt;&lt;/i&gt;'          // unselected icon
+navigationFilterSelectedAll:  '&lt;i class="nGY2Icon-toggle-off"&gt;&lt;/i&gt;'          // unselect all icon
 
 // THUMBNAILS:
-thumbnailAlbum:               '&lt;i class="nGY2Icon icon-folder-empty"&gt;&lt;/i&gt;'        // album icon 
-thumbnailImage:               '&lt;i class="nGY2Icon icon-picture"&gt;&lt;/i&gt;'             // image icon
-thumbnailSelected:            '&lt;i class="nGY2Icon icon-ok-circled"&gt;&lt;/i&gt;'          // selected icon
-thumbnailUnselected:          '&lt;i class="nGY2Icon icon-circle-empty"&gt;&lt;/i&gt;'        // unselected icon
-thumbnailFeatured:            '&lt;i style="color:#ffa;" class="nGY2Icon icon-star"&gt;&lt;/i&gt;'  // featured icon
-thumbnailCounter:             '&lt;i class="nGY2Icon icon-picture"&gt;&lt;/i&gt;'             // image icon
-thumbnailShare:               '&lt;i class="nGY2Icon icon-share"&gt;&lt;/i&gt;'               // share icon
-thumbnailDownload:            '&lt;i class="nGY2Icon icon-download"&gt;&lt;/i&gt;'            // download icon
-thumbnailInfo:                '&lt;i class="nGY2Icon icon-ngy2_info2"&gt;&lt;/i&gt;'          // info icon
-thumbnailCart:                '&lt;i class="nGY2Icon icon-basket"&gt;&lt;/i&gt;'              // add to shopping cart icon
-thumbnailDisplay:             '&lt;i class="nGY2Icon icon-ngy2_zoom_in2"&gt;&lt;/i&gt;'       // display image icon
+thumbnailAlbum:               '&lt;i class="nGY2Icon-folder-empty"&gt;&lt;/i&gt;'        // album icon 
+thumbnailImage:               '&lt;i class="nGY2Icon-picture"&gt;&lt;/i&gt;'             // image icon
+thumbnailSelected:            '&lt;i class="nGY2Icon-ok-circled"&gt;&lt;/i&gt;'          // selected icon
+thumbnailUnselected:          '&lt;i class="nGY2Icon-circle-empty"&gt;&lt;/i&gt;'        // unselected icon
+thumbnailFeatured:            '&lt;i style="color:#ffa;" class="nGY2Icon-star"&gt;&lt;/i&gt;'  // featured icon
+thumbnailCounter:             '&lt;i class="nGY2Icon-picture"&gt;&lt;/i&gt;'             // image icon
+thumbnailShare:               '&lt;i class="nGY2Icon-share"&gt;&lt;/i&gt;'               // share icon
+thumbnailDownload:            '&lt;i class="nGY2Icon-download"&gt;&lt;/i&gt;'            // download icon
+thumbnailInfo:                '&lt;i class="nGY2Icon-ngy2_info2"&gt;&lt;/i&gt;'          // info icon
+thumbnailCart:                '&lt;i class="nGY2Icon-basket"&gt;&lt;/i&gt;'              // add to shopping cart icon
+thumbnailDisplay:             '&lt;i class="nGY2Icon-ngy2_zoom_in2"&gt;&lt;/i&gt;'       // display image icon
 thumbnailCustomTool[1..10]:   'T1..T10'                                                       // custom tool 1 to 10
-thumbnailAlbumUp:             '&lt;i style="font-size: 3em;" class="nGY2Icon icon-level-up"&gt;&lt;/i&gt;'  // album up icon
+thumbnailAlbumUp:             '&lt;i style="font-size: 3em;" class="nGY2Icon-level-up"&gt;&lt;/i&gt;'  // album up icon
 
 // GALLERY:
-paginationNext:               '&lt;i class="nGY2Icon icon-right-open"&gt;&lt;/i&gt;'          // pagination - next page icon
-paginationPrevious:           '&lt;i class="nGY2Icon icon-left-open"&gt;&lt;/i&gt;'           // pagination - previous page icon
-galleryMoreButton:            '&lt;i class="nGY2Icon icon-picture"&gt;&lt;/i&gt; &nbsp; &lt;i class="nGY2Icon icon-right-open"&gt;&lt;/i&gt;' // close button icon
+paginationNext:               '&lt;i class="nGY2Icon-right-open"&gt;&lt;/i&gt;'          // pagination - next page icon
+paginationPrevious:           '&lt;i class="nGY2Icon-left-open"&gt;&lt;/i&gt;'           // pagination - previous page icon
+galleryMoreButton:            '&lt;i class="nGY2Icon-picture"&gt;&lt;/i&gt; &nbsp; &lt;i class="nGY2Icon-right-open"&gt;&lt;/i&gt;' // close button icon
 
 // LIGHTBOX:
-buttonClose:                  '&lt;i class="nGY2Icon icon-ngy2_close2"&gt;&lt;/i&gt;'         // close button icon
-viewerPrevious:               '&lt;i class="nGY2Icon icon-ngy2_chevron-left"&gt;&lt;/i&gt;'   // icon for previous image (toolbar)
-viewerNext:                   '&lt;i class="nGY2Icon icon-ngy2_chevron-right"&gt;&lt;/i&gt;'  // icon for next image (toolbar)
-viewerImgPrevious:            '&lt;i class="nGY2Icon icon-ngy2_chevron_left3"&gt;&lt;/i&gt;'  // icon for previous image (on the left side of the image)
-viewerImgNext:                '&lt;i class="nGY2Icon icon-ngy2_chevron_right3"&gt;&lt;/i&gt;' // icon for next image (on the right side of the image)
-viewerDownload:               '&lt;i class="nGY2Icon icon-ngy2_download2"&gt;&lt;/i&gt;'      // icon image download (toolbar)
-viewerToolbarMin:             '&lt;i class="nGY2Icon icon-ellipsis-vert"&gt;&lt;/i&gt;'       // icon for minimized toolbar
-viewerToolbarStd:             '&lt;i class="nGY2Icon icon-menu"&gt;&lt;/i&gt;'                // icon for maximized toolbar
-viewerPlay:                   '&lt;i class="nGY2Icon icon-play"&gt;&lt;/i&gt;'                // icon play - to start the slideshow (toolbar)
-viewerPause:                  '&lt;i class="nGY2Icon icon-pause"&gt;&lt;/i&gt;'               // icon pause - to stop the slideshow (toolbar)
-viewerFullscreenOn:           '&lt;i class="nGY2Icon icon-resize-full"&gt;&lt;/i&gt;'         // icon to switch on fullscreen (toolbar)
-viewerFullscreenOff:          '&lt;i class="nGY2Icon icon-resize-small"&gt;&lt;/i&gt;'        // icon to switch off fullscreen (toolbar)
-viewerZoomIn:                 '&lt;i class="nGY2Icon icon-ngy2_zoom_in2"&gt;&lt;/i&gt;'       // icon zoom in (toolbar)
-viewerZoomOut:                '&lt;i class="nGY2Icon icon-ngy2_zoom_out2"&gt;&lt;/i&gt;'      // icon zoom out (toolbar)
-viewerLinkOriginal:           '&lt;i class="nGY2Icon icon-ngy2_external2"&gt;&lt;/i&gt;'      // icon link to original image (toolbar)
-viewerInfo:                   '&lt;i class="nGY2Icon icon-ngy2_info2"&gt;&lt;/i&gt;'          // icon infobox (toolbar)
-viewerShare:                  '&lt;i class="nGY2Icon icon-ngy2_share2"&gt;&lt;/i&gt;'         // icon share link (toolbar)
-user:                         '&lt;i class="nGY2Icon icon-user"&gt;&lt;/i&gt;'                // icon author (infobox)
-location:                     '&lt;i class="nGY2Icon icon-location"&gt;&lt;/i&gt;'            // icon location on Google Maps (infobox)
-config:                       '&lt;i class="nGY2Icon icon-wrench"&gt;&lt;/i&gt;'              // icon config for EXIF (infobox)
+buttonClose:                  '&lt;i class="nGY2Icon-ngy2_close2"&gt;&lt;/i&gt;'         // close button icon
+viewerPrevious:               '&lt;i class="nGY2Icon-ngy2_chevron-left"&gt;&lt;/i&gt;'   // icon for previous image (toolbar)
+viewerNext:                   '&lt;i class="nGY2Icon-ngy2_chevron-right"&gt;&lt;/i&gt;'  // icon for next image (toolbar)
+viewerImgPrevious:            '&lt;i class="nGY2Icon-ngy2_chevron_left3"&gt;&lt;/i&gt;'  // icon for previous image (on the left side of the image)
+viewerImgNext:                '&lt;i class="nGY2Icon-ngy2_chevron_right3"&gt;&lt;/i&gt;' // icon for next image (on the right side of the image)
+viewerDownload:               '&lt;i class="nGY2Icon-ngy2_download2"&gt;&lt;/i&gt;'      // icon image download (toolbar)
+viewerToolbarMin:             '&lt;i class="nGY2Icon-ellipsis-vert"&gt;&lt;/i&gt;'       // icon for minimized toolbar
+viewerToolbarStd:             '&lt;i class="nGY2Icon-menu"&gt;&lt;/i&gt;'                // icon for maximized toolbar
+viewerPlay:                   '&lt;i class="nGY2Icon-play"&gt;&lt;/i&gt;'                // icon play - to start the slideshow (toolbar)
+viewerPause:                  '&lt;i class="nGY2Icon-pause"&gt;&lt;/i&gt;'               // icon pause - to stop the slideshow (toolbar)
+viewerFullscreenOn:           '&lt;i class="nGY2Icon-resize-full"&gt;&lt;/i&gt;'         // icon to switch on fullscreen (toolbar)
+viewerFullscreenOff:          '&lt;i class="nGY2Icon-resize-small"&gt;&lt;/i&gt;'        // icon to switch off fullscreen (toolbar)
+viewerZoomIn:                 '&lt;i class="nGY2Icon-ngy2_zoom_in2"&gt;&lt;/i&gt;'       // icon zoom in (toolbar)
+viewerZoomOut:                '&lt;i class="nGY2Icon-ngy2_zoom_out2"&gt;&lt;/i&gt;'      // icon zoom out (toolbar)
+viewerLinkOriginal:           '&lt;i class="nGY2Icon-ngy2_external2"&gt;&lt;/i&gt;'      // icon link to original image (toolbar)
+viewerInfo:                   '&lt;i class="nGY2Icon-ngy2_info2"&gt;&lt;/i&gt;'          // icon infobox (toolbar)
+viewerShare:                  '&lt;i class="nGY2Icon-ngy2_share2"&gt;&lt;/i&gt;'         // icon share link (toolbar)
+user:                         '&lt;i class="nGY2Icon-user"&gt;&lt;/i&gt;'                // icon author (infobox)
+location:                     '&lt;i class="nGY2Icon-location"&gt;&lt;/i&gt;'            // icon location on Google Maps (infobox)
+config:                       '&lt;i class="nGY2Icon-wrench"&gt;&lt;/i&gt;'              // icon config for EXIF (infobox)
 viewerCustomTool[1..10]:      'T1..T10'                                           // custom tool 1 to 10
 
 // SHARE:
-shareFacebook:                '&lt;i style="color:#3b5998;" class="nGY2Icon icon-facebook-squared"&gt;&lt;/i&gt;'   // icon Facebook
-shareTwitter:                 '&lt;i style="color:#00aced;" class="nGY2Icon icon-twitter-squared"&gt;&lt;/i&gt;'    // icon Twitter
-shareGooglePlus:              '&lt;i style="color:#dd4b39;" class="nGY2Icon icon-gplus-squared"&gt;&lt;/i&gt;'      // icon Google plus
-shareTumblr:                  '&lt;i style="color:#32506d;" class="nGY2Icon icon-tumblr-squared"&gt;&lt;/i&gt;'     // icon Tumblr
-sharePinterest:               '&lt;i style="color:#cb2027;" class="nGY2Icon icon-pinterest-squared"&gt;&lt;/i&gt;'  // icon Pinterest
-shareVK:                      '&lt;i style="color:#3b5998;" class="nGY2Icon icon-vkontakte"&gt;&lt;/i&gt;'          // icon Pinterest
-shareMail:                    '&lt;i  style="color:#555;" class="nGY2Icon icon-mail-alt"&gt;&lt;/i&gt;'             // icon mail-to
+shareFacebook:                '&lt;i style="color:#3b5998;" class="nGY2Icon-facebook-squared"&gt;&lt;/i&gt;'   // icon Facebook
+shareTwitter:                 '&lt;i style="color:#00aced;" class="nGY2Icon-twitter-squared"&gt;&lt;/i&gt;'    // icon Twitter
+shareGooglePlus:              '&lt;i style="color:#dd4b39;" class="nGY2Icon-gplus-squared"&gt;&lt;/i&gt;'      // icon Google plus
+shareTumblr:                  '&lt;i style="color:#32506d;" class="nGY2Icon-tumblr-squared"&gt;&lt;/i&gt;'     // icon Tumblr
+sharePinterest:               '&lt;i style="color:#cb2027;" class="nGY2Icon-pinterest-squared"&gt;&lt;/i&gt;'  // icon Pinterest
+shareVK:                      '&lt;i style="color:#3b5998;" class="nGY2Icon-vkontakte"&gt;&lt;/i&gt;'          // icon Pinterest
+shareMail:                    '&lt;i  style="color:#555;" class="nGY2Icon-mail-alt"&gt;&lt;/i&gt;'             // icon mail-to
       </pre>
     </p>
 
@@ -2368,6 +2410,7 @@ shareMail:                    '&lt;i  style="color:#555;" class="nGY2Icon icon-m
     </ul>
 
 
+
     <div id="ngy2_security"></div>
     <br><br><br><br><br><br><br>
     <h3><b><i class="fa fa-asterisk ngy2color1" aria-hidden="true"></i> SECURITY</b></h3>
@@ -2453,6 +2496,9 @@ shareMail:                    '&lt;i  style="color:#555;" class="nGY2Icon icon-m
         <a href="#ngy2_lightbox"> &nbsp; Lightbox</a>
       </li>
       <li>
+        <a href="#ngy2_global"> &nbsp; Global settings</a>
+      </li>
+      <li>
         <a href="#ngy2_icons"> &nbsp; Custom icons</a>
       </li>
       <li>
@@ -2493,4 +2539,3 @@ shareMail:                    '&lt;i  style="color:#555;" class="nGY2Icon icon-m
   </div>
   </div>
   </div>
-  
