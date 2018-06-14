@@ -1744,24 +1744,26 @@
       // LOGO APPEAR
       var tweenable = new NGTweenable();
       tweenable.tween({
-        from:       { opacity: 0 },
-        to:         { opacity: 1 },
-        attachment: { $e: jQuery('#ngy2logo') },
+        from:       { opacity: 0, t: 50, r:40, s:0.7 },
+        to:         { opacity: 1, t: 0, r:0, s:1.0 },
+        attachment: { $e: jQuery('#ngy2logo') },        // logo
         easing:     'easeInOutSine',
         duration:   1000,
         delay:      300,
         step: function (state, att) {
-          att.$e.css('opacity', state.opacity);
+          // att.$e.css({ 'opacity': state.opacity, transform: 'translateY('+state.t+'px)' });
+          att.$e.css({ 'opacity': state.opacity, transform: 'translateY('+state.t+'px) scale('+state.s+') rotateX('+state.r+'deg)' });
+          // att.$e.css('opacity', state.opacity);
         }
       });
       var tweenable = new NGTweenable();
       tweenable.tween({
         from:       { opacity: 0 },
         to:         { opacity: 1 },
-        attachment: { $e: jQuery('#ngy2logo2') },
+        attachment: { $e: jQuery('#ngy2logo2') },       // title
         easing:     'easeInOutSine',
         duration:   1000,
-        delay:      500,
+        delay:      800,
         step: function (state, att) {
           att.$e.css('opacity', state.opacity);
         }
@@ -1770,11 +1772,12 @@
       tweenable.tween({
         from:       { opacity: 0, scale: 3 },
         to:         { opacity: 1, scale: 1 },
-        attachment: { $e: jQuery('#ngy2logo3') },
+        attachment: { $e: jQuery('#ngy2logo3') },       // description
         easing:     'easeOutQuad',
         duration:   1000,
-        delay:      700,
+        delay:      1200,
         step: function (state, att) {
+          // letter-spacing: 1.5vw
           att.$e.css({ 'opacity': state.opacity, transform: 'scale('+state.scale+')' });
         }
       });
@@ -2872,7 +2875,6 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
       
     });
   </script>
-
 
   <!-- ######################## -->
   <!-- ##### START FOOTER ##### -->
