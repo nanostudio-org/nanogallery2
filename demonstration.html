@@ -81,7 +81,7 @@
 
   <!-- #################################################################################################################### -->
 
-  <style>
+    <style>
     body { font-size:1.3em; color:#000; line-height:1.5; }
     p { font-size:1.3em; }
     td { font-size:1.2em; }
@@ -857,123 +857,74 @@
     }    
     
 
+    
+    /*****************************/
+    /* index page logo animation */
+    /*****************************/
+    
+    .ngy2logo_transition {
+      animation: ngy2logo_transition_t 1s 1;
+      animation-delay: 0.3s;
+      animation-fill-mode: both;
+      animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+    @keyframes ngy2logo_transition_t {
+      from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.7) rotateX(40deg) rotateZ(-3deg);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0px) scale(1) rotateX(0deg) rotateZ(0deg);
+      }
+    }
+    
+    .ngy2logo2_transition {
+      animation: ngy2logo2_transition_t 1s 1;
+      animation-delay: 0.6s;
+      animation-fill-mode: both;
+      animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);      /* easeOutQuart */
+    }
+    @keyframes ngy2logo2_transition_t {
+      from {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0px);
+      }
+    }
+    
+    .ngy2logo3_transition {
+      animation: ngy2logo3_transition_t 1s 1;
+      animation-delay: 0.7s;
+      animation-fill-mode: both;
+      animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+    @keyframes ngy2logo3_transition_t {
+      from {
+        opacity: 0;
+        transform: scale(3) rotateZ(5deg);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) rotateZ(0deg);
+      }
+    }
 
 
   </style>
 
-
   <!-- Asynchronous Google Analytics snippet -->
   <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-39069349-8', 'auto');
-      // ga('require', 'GTM-NNSW2KX');
-      ga('send', 'pageview');
-
-    </script>
-    
-
-<!-- Global Site Tag (gtag.js) - Google Analytics -->
-<!--
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-39069349-8" ></script>
-<script data-cfasync="false" type="text/javascript">
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments)};
-  gtag('js', new Date());
-
-  gtag('config', 'UA-39069349-8');
-</script>
--->
-  
-</head>
-
-
-<body data-spy="scroll" data-target=".scrollspy" style="position: relative;">
-
-  <!-- ############## -->
-  <!-- ### NAVBAR ### -->
-  <nav class="navbar navbar-inverse navbar-fixed-topX">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand form-horizontal" href="http://nanogallery2.nanostudio.org/" rel="home" title="nanogallery2">
-          <img src="img/nanogallery2s.png" alt="nanogallery2" style="height:30px;"> &nbsp; <span class="ngy2_version">v2.2.0</span>
-        </a>
-      </div>
-      <div id="navbar" class="collapse navbar-collapse">
-        <ul class="nav navbar-nav navbar-right text-uppercase">
-          <li><a href="index.html">Intro</a></li>
-          <!--
-          <li><a href="quickstart.html">Get started</a></li>
-          -->
-          <li><a href="demonstration.html">Showcase</a></li>
-          <li><a href="builder.html"><i class="fa fa-wrench ngy2_color2" aria-hidden="true"></i> Builder</a></li>
-          <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Learn
-            <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <!-- <li><a href="quickstart.html">Get started</a></li> -->
-              <li><a href="academy.html">Academy</a></li>
-              <li><a href="documentation.html">User Guide</a></li>
-              <li><a href="datasource.html">Content Source</a></li>
-              <li><a href="api.html">API</a></li>
-            </ul>
-          </li>
-          <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Discuss
-            <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="https://nanostudio.typeform.com/to/P8SFe8" target="_blank">Mailing List</a></li>
-            
-              <li><a href="reviews.html">review 
-                <i class="ngy2_stars_on fa fa-star" aria-hidden="true"></i>
-                <i class="ngy2_stars_on fa fa-star" aria-hidden="true"></i>
-                <i class="ngy2_stars_on fa fa-star" aria-hidden="true"></i>
-                <i class="ngy2_stars_on fa fa-star" aria-hidden="true"></i>
-                <i class="ngy2_stars_on fa fa-star-half-o" aria-hidden="true"></i>
-              </a></li>
-              <li><a href="https://github.com/nanostudio-org/nanogallery2/issues" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> Feature and Issue tracker</a></li>
-              <li><a href="https://github.com/nanostudio-org/nanogallery2" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> Github</a></li>
-              <li><a href="comment.html">Comments</a></li>
-            </ul>
-          </li>
-          <li><a href="support.html">Support nanogallery2</a></li>
-          <!-- 
-          <li><a href="documentation.html">Guide</a></li>
-          <li><a href="datasource.html">Content source</a></li>
-          <li><a href="api.html">API</a></li>
-          <li><a href="reviews.html">
-            <i class="ngy2_stars_on fa fa-star" aria-hidden="true"></i>
-            <i class="ngy2_stars_on fa fa-star" aria-hidden="true"></i>
-            <i class="ngy2_stars_on fa fa-star" aria-hidden="true"></i>
-            <i class="ngy2_stars_on fa fa-star" aria-hidden="true"></i>
-            <i class="ngy2_stars_on fa fa-star-half-o" aria-hidden="true"></i>
-          </a></li>
-          <li><a href="https://github.com/nanostudio-org/nanogallery2" target="_blank"><i class="fa fa-github" aria-hidden="true"></i></a></li>
-          -->
-        </ul>
-      </div><!--/.nav-collapse -->
-    </div>
-  </nav>
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      var p=location.pathname.substring(location.pathname.lastIndexOf("/") + 1);
-      var current=document.querySelectorAll('.navbar a[href="'+p+'"]');
-      if( current[0] == undefined ) {
-        document.querySelectorAll('.navbar a[href="index.html"]')[0].parentNode.classList.add('active');
-      }
-      else {
-        current[0].parentNode.classList.add('active');
-      }
-    });
+    ga('create', 'UA-39069349-8', 'auto');
+    ga('send', 'pageview');
   </script>
   <!-- ### NAVBAR ### -->
   <!-- ############## -->
