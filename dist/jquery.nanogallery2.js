@@ -1,6 +1,6 @@
-/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2018-06-01 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2018-08-02 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /**!
- * @preserve nanogallery2 - javascript image gallery
+ * @preserve nanogallery2 - javascript photo / video gallery and lightbox
  * Homepage: http://nanogallery2.nanostudio.org
  * Sources:  https://github.com/nanostudio-org/nanogallery2
  *
@@ -21,15 +21,25 @@
 
 /*
   V2.3.0BETA - only for test purposes
- 
+
 - new loading spinner - added support for transparent gif/png
 - fixed #130 Joomla3/Bootstrap2 Image Zoom In Bug
+- optimized thumbnails lazy loading and display animation
+
   
 ToDo:
 - var - let
+- bug : click on image icon hidden -> next/previous not displayed
 - embed all external libraries
 - image swipe -> optimize scale/translate distance / do not swipe all the media 
 - https://speckyboy.com/page-transition-effects/
+- block zoom out to screen size
+- mobile pan up/down on gallery --> avoid jump left/right
+- looping hover effects --> CSS animations
+- scroll debouncing with requestanimationframe instead of SetTilmeOut 
+    https://www.html5rocks.com/en/tutorials/speed/animations/
+    https://gist.github.com/joelambert/1002116
+- https://github.com/wilsonpage/fastdom
 
 
 */
@@ -283,7 +293,6 @@ ToDo:
               else {
                 context.$E.conConsole.append('<p>nanogallery2: '+ msg + ' [' + context.baseEltID + ']</p>');
               }
-              //alert('nanoGALLERY: ' + msg);
             }
           };
           
@@ -491,7 +500,7 @@ ToDo:
               if( instance.O.thumbnailLevelUp && album.getContentLength(false) == 0 && instance.O.album == '' ) {
                 // add navigation thumbnail (album up)
                 var item = new NGY2Item('0');
-                instance.I.push(item);
+                instance.I.push( item );
                 album.contentLength += 1;
                 item.title = 'UP';
                 item.albumID = albumID;
@@ -716,7 +725,7 @@ ToDo:
             return this.G.I[NGY2Item.GetIdx(this.G, this.albumID)];
           };
           
-          //--- viewer - transition can be disabled per media kind
+          //--- viewer - transition can be disabled per media kind - returns true if current media supports transition (swipe)
           NGY2Item.prototype.mediaTransition = function( ) {
             if( this.G.O.viewerTransitionMediaKind.indexOf( this.mediaKind ) > -1 ) {
               return true;
@@ -1199,12 +1208,16 @@ ToDo:
                 
                 switch( att.cssKind ) {
                   case 'transform':
-                    att.item.CSSTransformSet(att.effect.element, att.effect.type, state.v);
-                    att.item.CSSTransformApply( att.effect.element );
+                    window.ng_draf( function() {
+                      att.item.CSSTransformSet(att.effect.element, att.effect.type, state.v);
+                      att.item.CSSTransformApply( att.effect.element );
+                    });
                     break;
                   case 'filter':
-                    att.item.CSSFilterSet(att.effect.element, att.effect.type, state.v);
-                    att.item.CSSFilterApply( att.effect.element );
+                    window.ng_draf( function() {
+                      att.item.CSSFilterSet(att.effect.element, att.effect.type, state.v);
+                      att.item.CSSFilterApply( att.effect.element );
+                    });
                     break;
                   default:
                     var v=state.v;
@@ -1213,7 +1226,9 @@ ToDo:
                       // v=ngtinycolor(state.v).toRgbString();
                       v = ShadeBlendConvert(0, v);
                     }
-                    att.item.$getElt( att.effect.element ).css( att.effect.type, v );
+                    window.ng_draf( function() {
+                      att.item.$getElt( att.effect.element ).css( att.effect.type, v );
+                    });
                     break;
                 }
                 if( hoverIn ) {
@@ -1241,19 +1256,21 @@ ToDo:
                   return;
                 }
 
-                switch( att.cssKind ) {
-                  case 'transform':
-                    att.item.CSSTransformSet(att.effect.element, att.effect.type, att.animeTo);
-                    att.item.CSSTransformApply(att.effect.element);
-                    break;
-                  case 'filter':
-                    att.item.CSSFilterSet(att.effect.element, att.effect.type, att.animeTo);
-                    att.item.CSSFilterApply(att.effect.element);
-                    break;
-                  default:
-                    att.item.$getElt(att.effect.element).css(att.effect.type, att.animeTo);
-                    break;
-                }
+                window.ng_draf( function() {
+                  switch( att.cssKind ) {
+                    case 'transform':
+                      att.item.CSSTransformSet(att.effect.element, att.effect.type, att.animeTo);
+                      att.item.CSSTransformApply(att.effect.element);
+                      break;
+                    case 'filter':
+                      att.item.CSSFilterSet(att.effect.element, att.effect.type, att.animeTo);
+                      att.item.CSSFilterApply(att.effect.element);
+                      break;
+                    default:
+                      att.item.$getElt(att.effect.element).css(att.effect.type, att.animeTo);
+                      break;
+                  }
+                });
               }
             });
           };
@@ -2031,12 +2048,82 @@ ToDo:
    
           if (timeout)
               clearTimeout(timeout);
+              // clearRequestTimeout(timeout);
           else if (execAsap)
               func.apply(obj, args);
           timeout = setTimeout(delayed, threshold || 100); 
+          // timeout = requestTimeout(delayed, threshold || 100); 
       };
     }
 
+    // Double requestAnimationFrame
+    window.ng_draf = function (cb) {
+      return requestAnimationFrame(function() {
+        window.requestAnimationFrame(cb)
+      })
+    }    
+    
+    // REQUESTTIMEOUT - replace SETTIMEOUT - https://gist.github.com/joelambert/1002116
+    /**
+     * Behaves the same as setTimeout except uses requestAnimationFrame() where possible for better performance
+     * @param {function} fn The callback function
+     * @param {int} delay The delay in milliseconds
+     */
+
+    window.requestTimeout = function(fn, delay) {
+      // if( !window.requestAnimationFrame      	&& 
+        // !window.webkitRequestAnimationFrame && 
+        // !(window.mozRequestAnimationFrame && window.mozCancelRequestAnimationFrame) && // Firefox 5 ships without cancel support
+        // !window.oRequestAnimationFrame      && 
+        // !window.msRequestAnimationFrame)
+          return window.setTimeout(fn, delay);
+          
+      var start = new Date().getTime(),
+        handle = new Object();
+        
+      function loop(){
+        var current = new Date().getTime(),
+          delta = current - start;
+  delta = delay;
+  
+        delta >= delay ? fn.call() : handle.value = requestAnimFrame(loop);
+      };
+      
+      handle.value = requestAnimFrame(loop);
+      return handle;
+    };
+
+    
+    // requestAnimationFrame() shim by Paul Irish
+    // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+    window.requestAnimFrame = (function() {
+      return  window.requestAnimationFrame       || 
+          window.webkitRequestAnimationFrame || 
+          window.mozRequestAnimationFrame    || 
+          window.oRequestAnimationFrame      || 
+          window.msRequestAnimationFrame     || 
+          function(/* function */ callback, /* DOMElement */ element){
+            window.setTimeout(callback, 1000 / 60);
+          };
+    })();    
+    
+    
+    // CLEARREQUESTTIMEOUT - to replace CLEARTIMEOUT - https://gist.github.com/joelambert/1002116
+    /**
+     * Behaves the same as clearTimeout except uses cancelRequestAnimationFrame() where possible for better performance
+     * @param {int|object} fn The callback function
+     */
+    window.clearRequestTimeout = function(handle) {
+        window.cancelAnimationFrame ? window.cancelAnimationFrame(handle.value) :
+        window.webkitCancelAnimationFrame ? window.webkitCancelAnimationFrame(handle.value) :
+        window.webkitCancelRequestAnimationFrame ? window.webkitCancelRequestAnimationFrame(handle.value) : /* Support for legacy API */
+        window.mozCancelRequestAnimationFrame ? window.mozCancelRequestAnimationFrame(handle.value) :
+        window.oCancelRequestAnimationFrame	? window.oCancelRequestAnimationFrame(handle.value) :
+        window.msCancelRequestAnimationFrame ? window.msCancelRequestAnimationFrame(handle.value) :
+        clearTimeout(handle);
+    };    
+    
+    
     
     /*
     ** Global data for this nanogallery2 instance
@@ -2308,6 +2395,7 @@ ToDo:
       displayedMoreSteps :        0,  // current number of displayed steps (moreButton mode)
       items:                      [], // current items of the GOMS
       $imgPreloader:              [],
+      thumbnails2Display:         [],
       itemsDisplayed :            0, // number of currently displayed thumbnails
       firstDisplay :              true,
       firstDisplayTime :          0,      // in conjunction with galleryRenderDelay
@@ -3259,7 +3347,8 @@ ToDo:
         G.GOM.firstDisplay = false;
         var d = Date.now()-G.GOM.firstDisplayTime;
         if( d < G.O.galleryRenderDelay ) {
-          setTimeout( function() { GalleryRenderPart1( albumIdx )}, G.O.galleryRenderDelay-d );
+          // setTimeout( function() { GalleryRenderPart1( albumIdx )}, G.O.galleryRenderDelay-d );
+          requestTimeout( function() { GalleryRenderPart1( albumIdx )}, G.O.galleryRenderDelay-d );
         }
         else {
           GalleryRenderPart1( albumIdx );
@@ -3282,27 +3371,30 @@ ToDo:
           easing:       'easeInQuart',
           attachment:   { h: hideNavigationBar },
           step:         function (state, att) {
-            G.$E.conTnParent.css({'opacity': state.opacity });
-            if( att.h ) {
-              G.$E.conNavigationBar.css({ 'opacity': state.opacity });
-            }
+            window.ng_draf( function() {
+              G.$E.conTnParent.css({'opacity': state.opacity });
+              if( att.h ) {
+                G.$E.conNavigationBar.css({ 'opacity': state.opacity });
+              }
+            });
           },
           finish:       function (state, att) {
-            G.$E.conTnParent.css({'opacity': 0});
-            if( att.h ) {
-              G.$E.conNavigationBar.css({ 'opacity': 0, 'display': 'none' });
-            }
-            // scroll to top of the gallery if needed
-            var galleryOTop = G.$E.base.offset().top;
-            if( galleryOTop < G.GOM.cache.viewport.t ) {
-              // jQuery('html, body').animate({scrollTop: galleryOTop}, 200);
-              jQuery('html, body').animate({scrollTop: galleryOTop}, 500, "linear", function() {
+            window.ng_draf( function() {
+              if( att.h ) {
+                G.$E.conNavigationBar.css({ 'opacity': 0, 'display': 'none' });
+              }
+              // scroll to top of the gallery if needed
+              var galleryOTop = G.$E.base.offset().top;
+              if( galleryOTop < G.GOM.cache.viewport.t ) {
+                // jQuery('html, body').animate({scrollTop: galleryOTop}, 200);
+                jQuery('html, body').animate({scrollTop: galleryOTop}, 500, "linear", function() {
+                  GalleryRenderPart1( albumIdx );
+                });
+              }
+              else {
                 GalleryRenderPart1( albumIdx );
-              });
-            }
-            else {
-              GalleryRenderPart1( albumIdx );
-            }
+              }
+            });
           }
         });
       }
@@ -3324,20 +3416,26 @@ ToDo:
           duration: 200,
           easing:   'easeInQuart',
           step:     function (state) {
-            G.$E.conNavigationBar.css( state );
+            window.ng_draf( function() {
+              G.$E.conNavigationBar.css( state );
+            });
           },
           finish:   function (state) {
-            G.$E.conNavigationBar.css({ 'opacity': 1 });
-            // display gallery
-            // GalleryRenderPart2( albumIdx );
-            setTimeout(function(){ GalleryRenderPart2(albumIdx) }, 60);
+            window.ng_draf( function() {
+              G.$E.conNavigationBar.css({ 'opacity': 1 });
+              // display gallery
+              // GalleryRenderPart2( albumIdx );
+              // setTimeout(function(){ GalleryRenderPart2(albumIdx) }, 60);
+              requestTimeout(function(){ GalleryRenderPart2(albumIdx) }, 60);
+            });
           }
         });
       }
       else {
         // display gallery
         // GalleryRenderPart2( albumIdx );
-            setTimeout(function(){ GalleryRenderPart2(albumIdx) }, 60);
+            // setTimeout(function(){ GalleryRenderPart2(albumIdx) }, 60);
+            requestTimeout(function(){ GalleryRenderPart2(albumIdx) }, 60);
       }
 
     }
@@ -3376,7 +3474,8 @@ ToDo:
         G.$E.conTn.css( G.CSStransformName, 'none');
       }
       
-      setTimeout(function(){ GalleryRenderPart3(albumIdx) }, 60);
+      // setTimeout(function(){ GalleryRenderPart3(albumIdx) }, 60);
+      requestTimeout(function(){ GalleryRenderPart3(albumIdx) }, 60);
       // GalleryRenderPart3(albumIdx);
 
     }
@@ -3415,7 +3514,8 @@ ToDo:
         GalleryAppear();
         // GalleryDisplay( false );
         GalleryDisplayPart1( false );
-        setTimeout(function(){ GalleryDisplayPart2( false ) }, 120);
+        // setTimeout(function(){ GalleryDisplayPart2( false ) }, 120);
+        requestTimeout(function(){ GalleryDisplayPart2( false ) }, 120);
       }
       else {
         G.galleryResizeEventEnabled=true;
@@ -4197,6 +4297,7 @@ ToDo:
       // batch set position (and display animation) to all thumbnails
       // first display newly built thumbnails
       var nbBuild = tnToDisplay.length;
+      G.GOM.thumbnails2Display=[];
       for( var i = 0; i < nbBuild ; i++ ) {
         // ThumbnailSetPosition(tnToDisplay[i].idx, tnToDisplay[i].delay+10);
         ThumbnailSetPosition(tnToDisplay[i].idx, i);
@@ -4208,6 +4309,8 @@ ToDo:
         // ThumbnailSetPosition(tnToReDisplay[i].idx, nbBuild+1);
         ThumbnailSetPosition(tnToReDisplay[i].idx, i);
       }
+      
+      ThumbnailDisplayAnimBatch();
 
       if( G.tn.opt.Get('displayTransition') == 'NONE' ) {
         G.galleryResizeEventEnabled = true;
@@ -4215,7 +4318,8 @@ ToDo:
         TriggerCustomEvent('galleryDisplayed');
       }
       else {
-        setTimeout(function() {
+        // setTimeout(function() {
+        requestTimeout( function() {
           // change value after the end of the display transistion of the newly built thumbnails
           G.galleryResizeEventEnabled = true;
           // GalleryThumbnailSliderBuildAndStart();  // image slider on last displayed thumbnail
@@ -4287,13 +4391,18 @@ ToDo:
                   attachment: { $e: item.$elt },
                   duration:   100,
                   delay:      cnt * G.tn.opt.Get('displayInterval') / 5,
-                  easing:     'easeInOutQuad',
+                  // easing:     'easeInOutQuad',
+                  easing:     'easeOutQuart',
                   step:       function (state, att) {
-                    att.$e.css(state);
+                    window.ng_draf( function() {
+                      att.$e.css(state);
+                    });
                   },
                   finish:     function (state, att) {
-                    att.$e.css(state);
-                    this.dispose();
+                    var _this=this;
+                    window.ng_draf( function() {
+                      _this.dispose();
+                    });
                   }
                 });
               }
@@ -4416,7 +4525,8 @@ ToDo:
       GalleryThumbnailSliderSetNextContent();
       
       // clearTimeout(G.GOM.slider.timerID);
-      G.GOM.slider.timerID = setTimeout(function(){ GalleryThumbnailSliderStartTransition() }, G.O.thumbnailSliderDelay);
+      // G.GOM.slider.timerID = setTimeout(function(){ GalleryThumbnailSliderStartTransition() }, G.O.thumbnailSliderDelay);
+      G.GOM.slider.timerID = requestTimeout(function(){ GalleryThumbnailSliderStartTransition() }, G.O.thumbnailSliderDelay);
     }
 
     
@@ -4455,7 +4565,8 @@ ToDo:
           to:           { 'left': 0 },
           duration:     800,
           delay:        0,
-          easing:       'easeInOutQuad',
+          // easing:       'easeInOutQuad',
+          easing:       'easeOutQuart',
           
           step: function (state) {
             if( G.GOM.slider.hostItem.$getElt() == null ) {
@@ -4464,17 +4575,20 @@ ToDo:
               return;
             }
 
-            // slide current content
-            G.GOM.slider.hostItem.CSSTransformSet('.nGY2TnImgBack', 'translateX', -(100 - state.left) + '%');
-            G.GOM.slider.hostItem.CSSTransformApply( '.nGY2TnImgBack' );
-            G.GOM.slider.hostItem.CSSTransformSet('.nGY2TnImg', 'translateX', -(100 - state.left) + '%');
-            G.GOM.slider.hostItem.CSSTransformApply( '.nGY2TnImg' );
+            window.ng_draf( function() {
+              // slide current content
+              G.GOM.slider.hostItem.CSSTransformSet('.nGY2TnImgBack', 'translateX', -(100 - state.left) + '%');
+              G.GOM.slider.hostItem.CSSTransformApply( '.nGY2TnImgBack' );
+              G.GOM.slider.hostItem.CSSTransformSet('.nGY2TnImg', 'translateX', -(100 - state.left) + '%');
+              G.GOM.slider.hostItem.CSSTransformApply( '.nGY2TnImg' );
 
-            // slide new content
-            G.GOM.slider.hostItem.CSSTransformSet('.nGY2TnImgBackNext', 'translateX', state.left + '%');
-            G.GOM.slider.hostItem.CSSTransformApply( '.nGY2TnImgBackNext' );
-            G.GOM.slider.hostItem.CSSTransformSet('.nGY2TnImgNext', 'translateX', state.left + '%');
-            G.GOM.slider.hostItem.CSSTransformApply( '.nGY2TnImgNext' );
+              // slide new content
+              G.GOM.slider.hostItem.CSSTransformSet('.nGY2TnImgBackNext', 'translateX', state.left + '%');
+              G.GOM.slider.hostItem.CSSTransformApply( '.nGY2TnImgBackNext' );
+              G.GOM.slider.hostItem.CSSTransformSet('.nGY2TnImgNext', 'translateX', state.left + '%');
+              G.GOM.slider.hostItem.CSSTransformApply( '.nGY2TnImgNext' );
+            });
+
             
           },
           finish: function (state) {
@@ -4485,13 +4599,16 @@ ToDo:
            
             if( G.GOM.NGY2Item(G.GOM.slider.nextIdx) == null ) { return; } // item does not exist anymore
             
-            // set new content as current content
-            GalleryThumbnailSliderSetContent( G.GOM.NGY2Item(G.GOM.slider.nextIdx) );
-            G.GOM.slider.currentIdx = G.GOM.slider.nextIdx;
-            GalleryThumbnailSliderSetNextContent();
-            
-            clearTimeout(G.GOM.slider.timerID);
-            G.GOM.slider.timerID=setTimeout(function(){ GalleryThumbnailSliderStartTransition() }, G.O.thumbnailSliderDelay);
+            window.ng_draf( function() {
+              // set new content as current content
+              GalleryThumbnailSliderSetContent( G.GOM.NGY2Item(G.GOM.slider.nextIdx) );
+              G.GOM.slider.currentIdx = G.GOM.slider.nextIdx;
+              GalleryThumbnailSliderSetNextContent();
+              
+              clearTimeout(G.GOM.slider.timerID);
+              // G.GOM.slider.timerID=setTimeout(function(){ GalleryThumbnailSliderStartTransition() }, G.O.thumbnailSliderDelay);
+              G.GOM.slider.timerID = requestTimeout(function(){ GalleryThumbnailSliderStartTransition() }, G.O.thumbnailSliderDelay);
+            });
           }
         });
       }
@@ -4987,7 +5104,8 @@ ToDo:
             }
           }
           else {
-            ThumbnailDisplayAnim[G.tn.opt.Get('displayTransition')](item, delay);
+            G.GOM.thumbnails2Display.push({itm: item, d: delay});
+            // ThumbnailDisplayAnim2(item, delay);
           }
           return;
         }
@@ -5018,361 +5136,240 @@ ToDo:
     }
     
 
-
-    var ThumbnailDisplayAnim = {
-      RANDOMSCALE: function( item, delay ) {
-
-        function randomIntFromInterval(min,max) {
-          return Math.floor(Math.random()*(max-min+1)+min);
-        }
-        var scales = [0.95, 1, 1.05, 1.1];
-        var zi = [1, 2, 3, 4];
-        
-        var r = randomIntFromInterval(0,3);
-        while( r == G.GOM.lastRandomValue ) {
-          r = randomIntFromInterval(0,3);
-        }
-        G.GOM.lastRandomValue = r;
-        var f = scales[r];
-        // item.$elt.css({ 'z-index': G.GOM.lastZIndex+zi[r], 'box-shadow': '-1px 2px 5px 1px rgba(0, 0, 0, 0.7)' });
-        item.$elt.css({ 'z-index': G.GOM.lastZIndex+zi[r], 'box-shadow': '0px 0px 5px 3px rgba(0,0,0,0.74)' });
-        
-        var tweenable = new NGTweenable();
-        tweenable.tween({
-          from:         { scale: 0.5, opacity:0 },
-          to:           { scale: f,   opacity:1 },
-          attachment:   { $e:item.$elt, item: item, tw: tweenable },
-          delay:        delay,
-          duration:     G.tn.opt.Get('displayTransitionDuration'),
-          easing:       { opacity: 'easeOutQuint', scale: G.tn.opt.Get('displayTransitionEasing') },
-          step:         function (state, att) {
-            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
-              att.tw.stop(false);
-              return;
-            }
-            att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity',state.opacity);
-          },
-          finish:       function (state, att) {
-            if( att.item.$elt === null ) { return; }
-            att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity', '');
-            ThumbnailAppearFinish(att.item);
-          }
-        });
-      },
-      
-      SCALEUP: function( item, delay ) {
-        var f = G.tn.opt.Get('displayTransitionStartVal');
-        if( f == 0 ) { f = 0.6; }   // default value
-
-        var tweenable = new NGTweenable();
-        tweenable.tween({
-          from:         { scale: f, opacity: 0 },
-          to:           { scale: 1, opacity: 1 },
-          attachment:   { $e: item.$elt, item: item, tw: tweenable },
-          delay:        delay,
-          duration:     G.tn.opt.Get('displayTransitionDuration'),
-          easing:       { opacity: 'easeOutQuint', scale: G.tn.opt.Get('displayTransitionEasing') },
-          step:         function (state, att) {
-            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
-              att.tw.stop(false);
-              return;
-            }
-            att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity',state.opacity);
-          },
-          finish:       function (state, att) {
-            if( att.item.$elt === null ) { return; }
-            att.$e.css( G.CSStransformName , '').css('opacity', '');
-            ThumbnailAppearFinish(att.item);
-          }
-        });
-      },
-      
-      SCALEDOWN: function( item, delay ) {
-        var f = G.tn.opt.Get('displayTransitionStartVal');
-        if( f == 0 ) { f=1.3; }   // default value
-   
-        var tweenable = new NGTweenable();
-        tweenable.tween({
-          from:         { scale: f, opacity: 0 },
-          to:           { scale: 1, opacity: 1 },
-          attachment:   { item: item, tw: tweenable },
-          delay:        delay,
-          duration:     G.tn.opt.Get('displayTransitionDuration'),
-          easing:       { opacity: 'easeOutQuint', scale: G.tn.opt.Get('displayTransitionEasing') },
-          step:         function (state, att) {
-            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
-              att.tw.stop(false);
-              return;
-            }
-            att.item.$elt.last().css('opacity', state.opacity);
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
-            att.item.CSSTransformApply('.nGY2GThumbnail');
-          },
-          finish:       function (state, att) {
-            if( att.item.$elt === null ) { return; }
-            att.item.$elt.last().css('opacity', '');
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
-            att.item.CSSTransformApply('.nGY2GThumbnail');
-            ThumbnailAppearFinish(att.item);
-          }
-        });
-      },
-      
-      SLIDEUP: function( item, delay ) {
-      var f = G.tn.opt.Get('displayTransitionStartVal');
-        if( f == 0 ) { f=50; }   // default value
-        var tweenable = new NGTweenable();
-        tweenable.tween({
-          from:         { 'opacity': 0, translateY: f },
-          to:           { 'opacity': 1, translateY: 0 },
-          attachment:   { item: item, tw: tweenable },
-          delay:        delay,
-          duration:     G.tn.opt.Get('displayTransitionDuration'),
-          easing:       { opacity: 'easeOutQuint', scale: 'easeOutQuart', translateY: G.tn.opt.Get('displayTransitionEasing') },
-          step:         function (state, att) {
-            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
-              att.tw.stop(false);
-              return;
-            }
-            att.item.$elt.css('opacity', state.opacity);
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px, '+state.translateY + 'px');
-            att.item.CSSTransformApply('.nGY2GThumbnail');
-          },
-          finish:       function (state, att) {
-            if( att.item.$elt === null ) { return; }
-            this._step(state, att);
-            att.item.$elt.css('opacity', '');
-            ThumbnailAppearFinish(att.item);
-          }
-        });
-      }, 
-      
-      SLIDEDOWN: function( item, delay ) {
-        var f=G.tn.opt.Get('displayTransitionStartVal');
-        if( f == 0 ) { f=-50; }   // default value
-        var tweenable = new NGTweenable();
-        tweenable.tween({
-          from:         { opacity: 0, translateY: f },
-          to:           { opacity: 1, translateY: 0 },
-          attachment:   { item: item, tw: tweenable },
-          delay:        delay,
-          duration:     G.tn.opt.Get('displayTransitionDuration'),
-          easing:       { opacity: 'easeOutQuint', scale: 'easeOutQuart', translateY: G.tn.opt.Get('displayTransitionEasing') },
-          step:         function (state, att) {
-            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
-              att.tw.stop(false);
-              return;
-            }
-            att.item.$elt.css('opacity', state.opacity);
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px,'+state.translateY+'px');
-            att.item.CSSTransformApply('.nGY2GThumbnail');
-          },
-          finish:       function (state, att) {
-            if( att.item.$elt === null ) { return; }
-            this._step(state, att);
-            att.item.$elt.css('opacity', '');
-            ThumbnailAppearFinish(att.item);
-          }
-        });
-      },
-
-      FLIPUP: function( item, delay ) {
-        var f=G.tn.opt.Get('displayTransitionStartVal');
-        if( f == 0 ) { f=100; }   // default value
-        var tweenable = new NGTweenable();
-        tweenable.tween({
-          from:         { opacity: 0, translateY: f, rotateX: 45 },
-          to:           { opacity: 1, translateY: 0, rotateX: 0  },
-          attachment:   { item: item, tw: tweenable },
-          delay:        delay,
-          duration:     G.tn.opt.Get('displayTransitionDuration'),
-          easing:       { opacity: 'easeOutQuint', scale: 'easeOutQuart', translateY: G.tn.opt.Get('displayTransitionEasing') },
-          step:         function (state, att) {
-            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
-              att.tw.stop(false);
-              return;
-            }
-            att.item.$elt.css('opacity', state.opacity);
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px,'+state.translateY+'px');
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateX', state.rotateX+'deg');
-            att.item.CSSTransformApply('.nGY2GThumbnail');
-          },
-          finish:       function (state, att) {
-            if( att.item.$elt === null ) { return; }
-            this._step(state, att);
-            att.item.$elt.css('opacity', '');
-            ThumbnailAppearFinish(att.item);
-          }
-        });
-      },
-      FLIPDOWN: function( item, delay ) {
-        var f=G.tn.opt.Get('displayTransitionStartVal');
-        if( f == 0 ) { f=-100; }   // default value
-        var tweenable = new NGTweenable();
-        tweenable.tween({
-          from:         { opacity: 0, translateY: f, rotateX: -45 },
-          to:           { opacity: 1, translateY: 0, rotateX: 0 },
-          attachment:   { item: item, tw: tweenable },
-          delay:        delay,
-          duration:     G.tn.opt.Get('displayTransitionDuration'),
-          easing:       { opacity: 'easeOutQuint', scale:'easeOutQuart', translateY: G.tn.opt.Get('displayTransitionEasing')},
-          step:         function (state, att) {
-            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
-              att.tw.stop(false);
-              return;
-            }
-            att.item.$elt.css('opacity', state.opacity);
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px,' + state.translateY + 'px');
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateX', state.rotateX + 'deg');
-            att.item.CSSTransformApply('.nGY2GThumbnail');
-          },
-          finish:       function (state, att) {
-            if( att.item.$elt === null ) { return; }
-            this._step(state, att);
-            att.item.$elt.css('opacity', '');
-            ThumbnailAppearFinish(att.item);
-          }
-        });
-      },
-      
-      SLIDEUP2: function( item, delay ) {
-        var f=G.tn.opt.Get('displayTransitionStartVal');
-        if( f == 0 ) { f=100; }   // default value
-        var tweenable = new NGTweenable();
-        tweenable.tween({
-          from:         { opacity: 0, translateY: f, rotateY: 40 },
-          to:           { opacity: 1, translateY: 0, rotateY: 0  },
-          attachment:   { item: item, tw: tweenable },
-          delay:        delay,
-          duration:     G.tn.opt.Get('displayTransitionDuration'),
-          easing:       { opacity: 'easeOutQuint', scale:'easeOutQuart', translateY: G.tn.opt.Get('displayTransitionEasing') },
-          step:         function (state, att) {
-            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
-              att.tw.stop(false);
-              return;
-            }
-            att.item.$elt.css('opacity', state.opacity);
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px,' + state.translateY + 'px');
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateY', state.rotateY + 'deg');
-            att.item.CSSTransformApply('.nGY2GThumbnail');
-          },
-          finish:       function (state, att) {
-            if( att.item.$elt === null ) { return; }
-            this._step(state, att);
-            att.item.$elt.css('opacity', '');
-            ThumbnailAppearFinish(att.item);
-          }
-        });
-      },
-      SLIDEDOWN2: function( item, delay ) {
-        var f=G.tn.opt.Get('displayTransitionStartVal');
-        if( f == 0 ) { f=-100; }   // default value
-        var tweenable = new NGTweenable();
-        tweenable.tween({
-          from:         { opacity: 0, translateY: f, rotateY: 40 },
-          to:           { opacity: 1, translateY: 0, rotateY: 0  },
-          attachment:   { item: item, tw: tweenable },
-          delay:        delay,
-          duration:     G.tn.opt.Get('displayTransitionDuration'),
-          easing:       { opacity: 'easeOutQuint', scale: 'easeOutQuart', translateY: G.tn.opt.Get('displayTransitionEasing') },
-          step:         function (state, att) {
-            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
-              att.tw.stop(false);
-              return;
-            }
-            att.item.$elt.css('opacity', state.opacity);
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px, ' + state.translateY + 'px');
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateY', state.rotateY + 'deg');
-            att.item.CSSTransformApply('.nGY2GThumbnail');
-          },
-          finish:       function (state, att) {
-            this._step(state, att);
-            att.item.$elt.css('opacity', '');
-            att.item.CSSTransformApply('.nGY2GThumbnail');
-            ThumbnailAppearFinish(att.item);
-          }
-        });
-      },
-      SLIDERIGHT: function( item, delay ) {
-        var f=G.tn.opt.Get('displayTransitionStartVal');
-        if( f == 0 ) { f=-150; }   // default value
-        var tweenable = new NGTweenable();
-        tweenable.tween({
-          from:         { opacity: 0, translateX: f },
-          to:           { opacity: 1, translateX: 0 },
-          attachment:   { item: item, tw: tweenable },
-          delay:        delay,
-          duration:     G.tn.opt.Get('displayTransitionDuration'),
-          easing:       { opacity: 'easeOutQuint', translateX: G.tn.opt.Get('displayTransitionEasing') },
-          step:         function (state, att) {
-            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
-              att.tw.stop(false);
-              return;
-            }
-            att.item.$elt.css('opacity', state.opacity);
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', state.translateX + 'px, 0px');
-            att.item.CSSTransformApply('.nGY2GThumbnail');
-          },
-          finish:       function (state, att) {
-            if( att.item.$elt === null ) { return; }
-            this._step(state, att);
-            att.item.$elt.css('opacity', '');
-            ThumbnailAppearFinish(att.item);
-          }
-        });
-      },
-      SLIDELEFT: function( item, delay ) {
-        var f=G.tn.opt.Get('displayTransitionStartVal');
-        if( f == 0 ) { f=150; }   // default value
-        var tweenable = new NGTweenable();
-        tweenable.tween({
-          from:         { opacity: 0, translateX: f },
-          to:           { opacity: 1, translateX: 0 },
-          attachment:   { item: item, tw: tweenable },
-          delay:        delay,
-          duration:     G.tn.opt.Get('displayTransitionDuration'),
-          easing:       { opacity: 'easeOutQuint', translateX: G.tn.opt.Get('displayTransitionEasing') },
-          step:         function (state, att) {
-            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
-              att.tw.stop(false);
-              return;
-            }
-            att.item.$elt.css('opacity', state.opacity);
-            att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', state.translateX + 'px, 0px');
-            att.item.CSSTransformApply('.nGY2GThumbnail');
-          },
-          finish:       function (state, att) {
-            if( att.item.$elt === null ) { return; }
-            this._step(state, att);
-            att.item.$elt.css('opacity', '');
-            ThumbnailAppearFinish(att.item);
-          }
-        });
-      },
-
-      FADEIN: function( item, delay ) {
-        var tweenable = new NGTweenable();
-        tweenable.tween({
-          from:         { 'opacity': 0 },
-          to:           { 'opacity': 1 },
-          attachment:   { $e:item.$elt, item: item, tw: tweenable },
-          delay:        delay,
-          duration:     G.tn.opt.Get('displayTransitionDuration'),
-          easing:       'easeInOutSine',
-          step:         function (state, att) {
-            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
-              att.tw.stop(false);
-              return;
-            }
-            att.$e.css(state);
-          },
-          finish:       function (state, att) {
-            if( att.item.$elt === null ) { return; }
-            att.$e.css('opacity', '');
-            ThumbnailAppearFinish(att.item);
-          }
-        });
+    function ThumbnailDisplayAnim2( item, delay ) {
+      function randomIntFromInterval(min,max) {
+        return Math.floor(Math.random()*(max-min+1)+min);
       }
+      var oFrom = {};
+      var oTo = {};
+    
+      switch (G.tn.opt.Get('displayTransition')) {
+        case 'RANDOMSCALE':
+          var scales = [0.95, 1, 1.05, 1.1];
+          var zi = [1, 2, 3, 4];
+          
+          var r = randomIntFromInterval(0,3);
+          while( r == G.GOM.lastRandomValue ) {
+            r = randomIntFromInterval(0,3);
+          }
+          G.GOM.lastRandomValue = r;
+          var f = scales[r];
+          // item.$elt.css({ 'z-index': G.GOM.lastZIndex+zi[r], 'box-shadow': '-1px 2px 5px 1px rgba(0, 0, 0, 0.7)' });
+          item.$elt.css({ 'z-index': G.GOM.lastZIndex+zi[r], 'box-shadow': '0px 0px 5px 3px rgba(0,0,0,0.74)' });
+          
+          oFrom = { scale: 0.5, opacity:0 };
+          oTo =   { scale: f,   opacity:1 };
+          break;
+
+        case 'SCALEUP':
+          var f = G.tn.opt.Get('displayTransitionStartVal');
+          if( f == 0 ) { f = 0.6; }   // default value
+          oFrom = { scale: f, opacity: 0 };
+          oTo =   { scale: 1, opacity: 1 };
+          break;
+
+        case 'SCALEDOWN':
+          var f = G.tn.opt.Get('displayTransitionStartVal');
+          if( f == 0 ) { f=1.3; }   // default value
+          oFrom = { scale: f, opacity: 0 };
+          oTo =   { scale: 1, opacity: 1 };
+          break;
+        case 'SLIDEUP':
+          var f = G.tn.opt.Get('displayTransitionStartVal');
+          if( f == 0 ) { f=50; }   // default value
+          oFrom = { opacity: 0, translateY: f };
+          oTo =   { opacity: 1, translateY: 0 };
+          break;
+        case 'SLIDEDOWN':
+          var f=G.tn.opt.Get('displayTransitionStartVal');
+          if( f == 0 ) { f=-50; }   // default value
+          oFrom = { opacity: 0, translateY: f };
+          oTo =   { opacity: 1, translateY: 0 };
+          break;
+        case 'FLIPUP':
+          var f=G.tn.opt.Get('displayTransitionStartVal');
+          if( f == 0 ) { f=100; }   // default value
+          oFrom = { opacity: 0, translateY: f, rotateX: 45 };
+          oTo =   { opacity: 1, translateY: 0, rotateX: 0  };
+          break;
+          
+        case 'FLIPDOWN':
+          var f=G.tn.opt.Get('displayTransitionStartVal');
+          if( f == 0 ) { f=-100; }   // default value
+          oFrom = { opacity: 0, translateY: f, rotateX: -45 };
+          oTo =   { opacity: 1, translateY: 0, rotateX: 0 };
+          break;
+        case 'SLIDEUP2':
+          var f=G.tn.opt.Get('displayTransitionStartVal');
+          if( f == 0 ) { f=100; }   // default value
+          oFrom = { opacity: 0, translateY: f, rotateY: 40 };
+          oTo =   { opacity: 1, translateY: 0, rotateY: 0  };
+          break;
+        case 'SLIDEDOWN2':
+          var f=G.tn.opt.Get('displayTransitionStartVal');
+          if( f == 0 ) { f=-100; }   // default value
+          oFrom = { opacity: 0, translateY: f, rotateY: 40 };
+          oTo =   { opacity: 1, translateY: 0, rotateY: 0  };
+          break;
+        case 'SLIDERIGHT':
+          var f=G.tn.opt.Get('displayTransitionStartVal');
+          if( f == 0 ) { f=-150; }   // default value
+          oFrom = { opacity: 0, translateX: f };
+          oTo =   { opacity: 1, translateX: 0 };
+          break;
+
+        case 'SLIDELEFT':
+          var f=G.tn.opt.Get('displayTransitionStartVal');
+          if( f == 0 ) { f=150; }   // default value
+          oFrom = { opacity: 0, translateX: f };
+          oTo =   { opacity: 1, translateX: 0 };
+          break;
+          
+        case 'FADEIN':
+          oFrom = { opacity: 0 };
+          oTo =   { opacity: 1 };
+          break;
+          
+          
+      }
+    
+      var tweenable = new NGTweenable();
+      tweenable.tween({
+        from:         oFrom,
+        to:           oTo,
+        attachment:   { $e:item.$elt, item: item, tw: tweenable },
+        delay:        delay,
+        duration:     G.tn.opt.Get('displayTransitionDuration'),
+        easing:       G.tn.opt.Get('displayTransitionEasing'),
+        step:         function (state, att) {
+          window.requestAnimationFrame( function() {
+            if( att.item.$elt === null ) {  // the thumbnail may have been destroyed since the start of the animation
+              att.tw.stop(false);
+              return;
+            }
+            switch (G.tn.opt.Get('displayTransition')) {
+              case 'RANDOMSCALE':
+                att.$e.css( G.CSStransformName , 'scale(' + state.scale + ')').css('opacity', state.opacity);
+                break;
+              case 'SCALEUP':
+                att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity',state.opacity);
+                break;
+              case 'SCALEDOWN':
+                att.item.$elt.last().css('opacity', state.opacity);
+                att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+                att.item.CSSTransformApply('.nGY2GThumbnail');
+                break;
+              case 'SLIDEUP':
+                att.item.$elt.css('opacity', state.opacity);
+                att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px, '+state.translateY + 'px');
+                att.item.CSSTransformApply('.nGY2GThumbnail');
+                break;
+              case 'SLIDEDOWN':
+                att.item.$elt.css('opacity', state.opacity);
+                att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px,'+state.translateY+'px');
+                att.item.CSSTransformApply('.nGY2GThumbnail');
+                break;
+              case 'FLIPUP':
+                att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px,'+state.translateY+'px');
+                att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateX', state.rotateX+'deg');
+                att.item.$elt.css('opacity', state.opacity);
+                att.item.CSSTransformApply('.nGY2GThumbnail');
+                break;
+              case 'FLIPDOWN':
+                att.item.$elt.css('opacity', state.opacity);
+                att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px,' + state.translateY + 'px');
+                att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateX', state.rotateX + 'deg');
+                att.item.CSSTransformApply('.nGY2GThumbnail');
+                break;
+              case 'SLIDEUP2':
+                att.item.$elt.css('opacity', state.opacity);
+                att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px,' + state.translateY + 'px');
+                att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateY', state.rotateY + 'deg');
+                att.item.CSSTransformApply('.nGY2GThumbnail');
+                break;
+              case 'SLIDEDOWN2':
+                att.item.$elt.css('opacity', state.opacity);
+                att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px, ' + state.translateY + 'px');
+                att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateY', state.rotateY + 'deg');
+                att.item.CSSTransformApply('.nGY2GThumbnail');
+                break;
+              case 'SLIDERIGHT':
+                att.item.$elt.css('opacity', state.opacity);
+                att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', state.translateX + 'px, 0px');
+                att.item.CSSTransformApply('.nGY2GThumbnail');
+                break;
+              case 'SLIDELEFT':
+                att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', state.translateX + 'px, 0px');
+                att.item.$elt.css('opacity', state.opacity);
+                att.item.CSSTransformApply('.nGY2GThumbnail');
+                break;
+              case 'FADEIN':
+                att.$e.css(state);
+                break;
+            }
+          });
+          // att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity',state.opacity);
+        },
+        finish:       function (state, att) {
+          window.requestAnimationFrame( function() {
+            if( att.item.$elt === null ) { return; }
+            
+            switch (G.tn.opt.Get('displayTransition')) {
+              case 'RANDOMSCALE':
+                att.$e.css( G.CSStransformName , 'scale('+state.scale+')').css('opacity', '');
+                break;
+              case 'SCALEUP':
+                att.$e.css( G.CSStransformName , '').css('opacity', '');
+                break;
+              case 'SCALEDOWN':
+                att.item.$elt.last().css('opacity', '');
+                att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
+                att.item.CSSTransformApply('.nGY2GThumbnail');
+                break;
+              case 'SLIDEUP':
+                att.item.$elt.css('opacity', '');
+                break;
+              case 'SLIDEDOWN':
+                att.item.$elt.css('opacity', '');
+                break;
+              case 'FLIPUP':
+                att.item.$elt.css('opacity', '');
+                break;
+              case 'FLIPDOWN':
+                att.item.$elt.css('opacity', '');
+                break;
+              case 'SLIDEUP2':
+                att.item.$elt.css('opacity', '');
+                break;
+              case 'SLIDEDOWN2':
+                att.item.$elt.css('opacity', '');
+                att.item.CSSTransformApply('.nGY2GThumbnail');
+                break;
+              case 'SLIDERIGHT':
+                att.item.$elt.css('opacity', '');
+                break;
+              case 'SLIDELEFT':
+                att.item.$elt.css('opacity', '');
+                break;
+              case 'FADEIN':
+                att.$e.css('opacity', '');
+                break;
+            }
+            ThumbnailAppearFinish(att.item);
+          });
+
+        }
+      });
+    
+    }
+    
+    // batch display thumbnails with animation
+    function ThumbnailDisplayAnimBatch() {
+      
+      G.GOM.thumbnails2Display.forEach( function(one) {
+        ThumbnailDisplayAnim2(one.itm, one.d);
+      });
+      G.GOM.thumbnails2Display=[];
     }
     
     
@@ -5394,7 +5391,9 @@ ToDo:
             easing:       'easeOutCirc',
             step:         function (state, att) {
               if( att.orgIdx == G.GOM.albumIdx ) {
-                G.$E.conTnParent.css( G.CSStransformName , 'rotateX(' + state.r + 'deg)');
+                window.ng_draf( function() {
+                  G.$E.conTnParent.css( G.CSStransformName , 'rotateX(' + state.r + 'deg)');
+                });
               }
             }
           });
@@ -5410,7 +5409,9 @@ ToDo:
             easing:       'easeOutCirc',
             step:         function (state, att) {
               if( att.orgIdx == G.GOM.albumIdx ) {
-                G.$E.conTnParent.css( G.CSStransformName , 'translate( 0px, '+state.y + 'px)').css('opacity', state.o);
+                window.ng_draf( function() {
+                  G.$E.conTnParent.css( G.CSStransformName , 'translate( 0px, '+state.y + 'px)').css('opacity', state.o);
+                });
               }
             }
           });
@@ -7286,15 +7287,15 @@ ToDo:
       }
 
       var s1 = '.' + G.VOM.viewerTheme + ' ';
-      var s = s1+'.nGY2Viewer { background:'+cs.background+'; }'+'\n';
-      s += s1+'.nGY2ViewerMedia { border:'+cs.imageBorder+'; box-shadow:'+cs.imageBoxShadow+'; }'+'\n';
-      s += s1+'.nGY2Viewer .toolbarBackground { background:'+cs.barBackground+'; }'+'\n';
-      s += s1+'.nGY2Viewer .toolbar { border:'+cs.barBorder+'; color:'+cs.barColor+'; }'+'\n';
-      s += s1+'.nGY2Viewer .toolbar .previousButton:after { color:'+cs.barColor+'; }'+'\n';
-      s += s1+'.nGY2Viewer .toolbar .nextButton:after { color:'+cs.barColor+'; }'+'\n';
-      s += s1+'.nGY2Viewer .toolbar .closeButton:after { color:'+cs.barColor+'; }'+'\n';
-      s += s1+'.nGY2Viewer .toolbar .label .title { color:'+cs.barColor+'; }'+'\n';
-      s += s1+'.nGY2Viewer .toolbar .label .description { color:'+cs.barDescriptionColor+'; }'+'\n';
+      var s = s1 + '.nGY2Viewer { background:'+cs.background+'; }'+'\n';
+      s += s1 + '.nGY2ViewerMedia { border:'+cs.imageBorder+'; box-shadow:'+cs.imageBoxShadow+'; }'+'\n';
+      s += s1 + '.nGY2Viewer .toolbarBackground { background:'+cs.barBackground+'; }'+'\n';
+      s += s1 + '.nGY2Viewer .toolbar { border:'+cs.barBorder+'; color:'+cs.barColor+'; }'+'\n';
+      s += s1 + '.nGY2Viewer .toolbar .previousButton:after { color:'+cs.barColor+'; }'+'\n';
+      s += s1 + '.nGY2Viewer .toolbar .nextButton:after { color:'+cs.barColor+'; }'+'\n';
+      s += s1 + '.nGY2Viewer .toolbar .closeButton:after { color:'+cs.barColor+'; }'+'\n';
+      s += s1 + '.nGY2Viewer .toolbar .label .title { color:'+cs.barColor+'; }'+'\n';
+      s += s1 + '.nGY2Viewer .toolbar .label .description { color:'+cs.barDescriptionColor+'; }'+'\n';
       jQuery('head').append('<style>' + s + '</style>');
       G.VOM.$cont.addClass(G.VOM.viewerTheme);
     };
@@ -7896,7 +7897,8 @@ ToDo:
     }
           
     function ViewerZoomIn( zoomIn ) {
-      if( zoomIn ) {
+console.log(zoomIn);
+    if( zoomIn ) {
         // zoom in
         G.VOM.zoom.userFactor+=0.1;
         ViewerZoomMax();
@@ -7915,6 +7917,10 @@ ToDo:
       }
     }
     function ViewerZoomMin() {
+console.dir(G.VOM.NGY2Item(0));      
+      // var imageCurrentHeight = (item.imageHeight / dpr) * zoomUserFactor * zoomBaseFactor;
+      // var imageCurrentWidth  = (item.imageWidth / dpr)  * zoomUserFactor * zoomBaseFactor;
+    
       if( G.VOM.zoom.userFactor < 0.2 ) {
         G.VOM.zoom.userFactor = 0.2;
       }
@@ -7928,9 +7934,11 @@ ToDo:
       if( !G.VOM.zoom.isZooming ) {
         G.VOM.zoom.userFactor = 1;
       }
-      ViewerMediaSetPosAndZoomOne( G.VOM.NGY2Item(0), G.VOM.$mediaCurrent, true );
-      ViewerMediaSetPosAndZoomOne( G.VOM.NGY2Item(-1), G.VOM.$mediaPrevious, false );
-      ViewerMediaSetPosAndZoomOne( G.VOM.NGY2Item(1), G.VOM.$mediaNext, false );
+      window.ng_draf( function() {
+        ViewerMediaSetPosAndZoomOne( G.VOM.NGY2Item(0), G.VOM.$mediaCurrent, true );
+        ViewerMediaSetPosAndZoomOne( G.VOM.NGY2Item(-1), G.VOM.$mediaPrevious, false );
+        ViewerMediaSetPosAndZoomOne( G.VOM.NGY2Item(1), G.VOM.$mediaNext, false );
+      });
     }
     
 
@@ -8020,6 +8028,8 @@ ToDo:
       posX += G.VOM.zoom.posX;
       posY += G.VOM.zoom.posY;
       imageContainer.children().eq(1)[0].style[G.CSStransformName]= 'translate('+ posX + 'px, '+ posY + 'px) ';
+
+
     }
     
 
@@ -8243,7 +8253,7 @@ ToDo:
             if( !ViewerEvents() ) { return; }
             StopPropagationPreventDefault(ev.srcEvent);
             if( G.VOM.toolbarsDisplayed == false ) {
-              debounce( ViewerToolsUnHide, 400, false)();
+              debounce( ViewerToolsUnHide, 100, false)();
             }
             else {
               if( ev.target.className.indexOf('nGY2ViewerMedia') !== -1 ) {
@@ -8303,7 +8313,7 @@ ToDo:
             StopPropagationPreventDefault(ev.srcEvent);
             if( G.VOM.toolbarsDisplayed == false  ){
               // display tools on tap if hidden
-              debounce( ViewerToolsUnHide, 400, false)();
+              debounce( ViewerToolsUnHide, 100, false)();
             }
             else {
               // display next/previous image if tools not hidden
@@ -8658,9 +8668,12 @@ ToDo:
       else {
       
         // pan left/right the current media
-        G.VOM.$mediaCurrent[0].style[G.CSStransformName] = 'translate(' + posX + 'px, 0px)';
+        window.ng_draf( function() {
+          G.VOM.$mediaCurrent[0].style[G.CSStransformName] = 'translate(' + posX + 'px, 0px)';
+        });
 
         
+        // next/previous media
         if(  G.O.imageTransition == 'swipe' ) {
           if( G.VOM.NGY2Item(-1).mediaTransition() ) {
             ViewerSetMediaVisibility(G.VOM.NGY2Item(-1), G.VOM.$mediaPrevious, 1);
@@ -8671,23 +8684,30 @@ ToDo:
 
           var o = Math.abs(posX) / G.VOM.window.lastWidth;
 
-
           if( posX > 0 ) {
             var dir = G.VOM.window.lastWidth;
             if( G.VOM.NGY2Item(-1).mediaTransition() ) {
-              G.VOM.$mediaPrevious[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px) scale('+o+')';
+              window.ng_draf( function() {
+                G.VOM.$mediaPrevious[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px) scale('+o+')';
+              });
             }
             if( G.VOM.NGY2Item(1).mediaTransition() ) {
-              G.VOM.$mediaNext[0].style[G.CSStransformName] = 'translate(' + (dir) + 'px, 0px) scale('+o+')';
+              window.ng_draf( function() {
+                G.VOM.$mediaNext[0].style[G.CSStransformName] = 'translate(' + (dir) + 'px, 0px) scale('+o+')';
+              });
             }
           }
           else {
             var dir = -G.VOM.window.lastWidth;
             if( G.VOM.NGY2Item(1).mediaTransition() ) {
-              G.VOM.$mediaNext[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px) scale('+o+')';
+              window.ng_draf( function() {
+                G.VOM.$mediaNext[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px) scale('+o+')';
+              });
             }
             if( G.VOM.NGY2Item(-1).mediaTransition() ) {
-              G.VOM.$mediaPrevious[0].style[G.CSStransformName] = 'translate(' + (dir) + 'px, 0px) scale('+o+')';
+              window.ng_draf( function() {
+                G.VOM.$mediaPrevious[0].style[G.CSStransformName] = 'translate(' + (dir) + 'px, 0px) scale('+o+')';
+              });
             }
           }
         }
@@ -9488,7 +9508,7 @@ ToDo:
       // mouse mouse -> unhide lightbox toolbars
       jQuery(window).bind('mousemove', function(e){
         if( G.VOM.viewerDisplayed ) {
-          debounce( ViewerToolsUnHide, 400, false )();
+          debounce( ViewerToolsUnHide, 100, false )();
         }
       });
       
