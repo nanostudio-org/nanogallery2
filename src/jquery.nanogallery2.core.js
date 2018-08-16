@@ -59,7 +59,7 @@
 
   // Convert color to RGB/RGBA
   function ColorHelperToRGB( color ) {
-    let obj = document.getElementById('ngyColorHelperToRGB');
+    var obj = document.getElementById('ngyColorHelperToRGB');
     if (obj === null) {
       obj = document.createElement('div');
       obj.id = "ngyColorHelperToRGB";
