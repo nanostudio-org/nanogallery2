@@ -8668,12 +8668,12 @@ console.dir(G.VOM.NGY2Item(0));
             ViewerSetMediaVisibility(G.VOM.NGY2Item(1), G.VOM.$mediaNext, 1);
           }
 
-          let o = Math.max( Math.abs(posX) / G.VOM.window.lastWidth, .8);
+          var o = Math.max( Math.abs(posX) / G.VOM.window.lastWidth, .8);
           o = Math.min(o, 1);
           if( G.O.imageTransition == 'swipe' ) { o=1; }
 
           if( posX > 0 ) {
-            let dir = G.VOM.window.lastWidth;
+            var dir = G.VOM.window.lastWidth;
             if( G.VOM.NGY2Item(-1).mediaTransition() ) {
               // window.ng_draf( function() {
                 G.VOM.$mediaPrevious[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px) scale('+o+')';
@@ -8686,7 +8686,7 @@ console.dir(G.VOM.NGY2Item(0));
             }
           }
           else {
-            let dir = -G.VOM.window.lastWidth;
+            var dir = -G.VOM.window.lastWidth;
             if( G.VOM.NGY2Item(1).mediaTransition() ) {
               // window.ng_draf( function() {
                 G.VOM.$mediaNext[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px) scale('+o+')';
@@ -8705,7 +8705,7 @@ console.dir(G.VOM.NGY2Item(0));
           G.VOM.$mediaPrevious[0].style[G.CSStransformName] = '';
           G.VOM.$mediaNext[0].style[G.CSStransformName] = '';
           if( posX < 0 ) {
-            let o = (-posX) / G.VOM.window.lastWidth;
+            var o = (-posX) / G.VOM.window.lastWidth;
             if( G.VOM.NGY2Item(1).mediaTransition() ) {
               ViewerSetMediaVisibility(G.VOM.NGY2Item(1), G.VOM.$mediaNext, o);
             }
@@ -8714,7 +8714,7 @@ console.dir(G.VOM.NGY2Item(0));
             }
           }
           else {
-            let o = posX / G.VOM.window.lastWidth;
+            var o = posX / G.VOM.window.lastWidth;
             if( G.VOM.NGY2Item(-1).mediaTransition() ) {
               ViewerSetMediaVisibility(G.VOM.NGY2Item(-1), G.VOM.$mediaPrevious, o);
             }
