@@ -87,7 +87,7 @@
   // https://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
   // http://www.pimptrizkit.com/?t=20%20Shades
   function ShadeBlendConvert (p, from, to) {
-    let rgba='';
+    var rgba='';
     if( from.toUpperCase().substring(0,5) == 'RGBA(' ) {
       rgba='a';
       from='rgb('+from.substring(5);
@@ -96,7 +96,7 @@
     if(typeof(p)!="number"||p<-1||p>1||typeof(from)!="string"||(from[0]!='r'&&from[0]!='#')||(typeof(to)!="string"&&typeof(to)!="undefined"))return null;
     //if(!this.sbcRip)this.sbcRip=function(d){
     function sbcRip(d){
-      let l=d.length,RGB=new Object();
+      var l=d.length,RGB=new Object();
       if(l>9){
         d=d.split(",");
         if(d.length<3||d.length>4)return null;
@@ -108,7 +108,7 @@
       }
       return RGB;
     }
-    let i=parseInt,r=Math.round,h=from.length>9,h=typeof(to)=="string"?to.length>9?true:to=="c"?!h:false:h,b=p<0,p=b?p*-1:p,to=to&&to!="c"?to:b?"#000000":"#FFFFFF",f=sbcRip(from),t=sbcRip(to);
+    var i=parseInt,r=Math.round,h=from.length>9,h=typeof(to)=="string"?to.length>9?true:to=="c"?!h:false:h,b=p<0,p=b?p*-1:p,to=to&&to!="c"?to:b?"#000000":"#FFFFFF",f=sbcRip(from),t=sbcRip(to);
     if(!f||!t)return null;
     if(h)return "rgb"+rgba+"("+r((t[0]-f[0])*p+f[0])+","+r((t[1]-f[1])*p+f[1])+","+r((t[2]-f[2])*p+f[2])+(f[3]<0&&t[3]<0?")":","+(f[3]>-1&&t[3]>-1?r(((t[3]-f[3])*p+f[3])*10000)/10000:t[3]<0?f[3]:t[3])+")");
     else return "#"+(0x100000000+(f[3]>-1&&t[3]>-1?r(((t[3]-f[3])*p+f[3])*255):t[3]>-1?r(t[3]*255):f[3]>-1?r(f[3]*255):255)*0x1000000+r((t[0]-f[0])*p+f[0])*0x10000+r((t[1]-f[1])*p+f[1])*0x100+r((t[2]-f[2])*p+f[2])).toString(16).slice(f[3]>-1||t[3]>-1?1:3);
@@ -121,8 +121,8 @@
       return obj;
     }
 
-    let temp = obj.constructor(); // give temp the original obj's constructor
-    for (let key in obj) {
+    var temp = obj.constructor(); // give temp the original obj's constructor
+    for (var key in obj) {
         temp[key] = cloneJSObject(obj[key]);
     }
     return temp;
@@ -130,7 +130,7 @@
   
   // get viewport coordinates and size
   function getViewport() {
-    let $win = jQuery(window);
+    var $win = jQuery(window);
     return {
       l: $win.scrollLeft(),
       t: $win.scrollTop(),
@@ -142,7 +142,7 @@
 
   // avoid if possible (performance issue)
   function inViewport( $elt, threshold ) {
-    let wp = getViewport(),
+    var wp = getViewport(),
     eltOS = $elt.offset(),
     th = $elt.outerHeight(true),
     tw = $elt.outerWidth(true);
@@ -159,7 +159,7 @@
 
   // avoid if possible (performance issue)
   function inViewportVert( $elt, threshold ) {
-    let wp = getViewport(),
+    var wp = getViewport(),
     eltOS = $elt.offset(),
     th = $elt.outerHeight(true);
     //var tw=$elt.outerWidth(true);
@@ -178,10 +178,10 @@
 
   // set z-index to display 2 elements on top of all others
   function set2ElementsOnTop( start, elt1, elt2 ) {
-    let highest_index = 0;
+    var highest_index = 0;
     if( start=='' ) { start= '*'; }
     jQuery(start).each(function() {
-      let cur = parseInt(jQuery(this).css('z-index'));
+      var cur = parseInt(jQuery(this).css('z-index'));
       highest_index = cur > highest_index ? cur : highest_index;
     });
     highest_index++;
@@ -191,10 +191,10 @@
 
   // set z-index to display element on top of all others
   function setElementOnTop( start, elt ) {
-    let highest_index = 0;
+    var highest_index = 0;
     if( start == '' ) { start = '*'; }
     jQuery(start).each(function() {
-      let cur = parseInt(jQuery(this).css('z-index'));
+      var cur = parseInt(jQuery(this).css('z-index'));
       highest_index = cur > highest_index ? cur : highest_index;
     });
     highest_index++;
@@ -211,7 +211,7 @@
   $.nanogallery2 = function (elt, options) {
     // To avoid scope issues, use '_this' instead of 'this'
     // to reference this class from internal events and functions.
-    let _this = this;
+    var _this = this;
 
     // Access to jQuery and DOM versions of element
     _this.$e  = jQuery(elt);
