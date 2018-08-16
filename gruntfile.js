@@ -6,7 +6,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-bump');
   grunt.loadNpmTasks('grunt-codepainter');
-  grunt.loadNpmTasks('grunt-contrib-yuidoc');
+  // grunt.loadNpmTasks('grunt-contrib-yuidoc');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-gh-pages');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
