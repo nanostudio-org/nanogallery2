@@ -5969,7 +5969,7 @@
         // Exif - iso
         if( item.exifTime !== undefined ) { newItem.exif.time = item.exifTime; }
         // Exif - location
-        if( item.exifLocation !== undefined ) { newItem.exif.exifLocation = item.exifTime; }
+        if( item.exifLocation !== undefined ) { newItem.exif.exifLocation = item.exifLocation; }
         
         
         // custom data
