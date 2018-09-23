@@ -26,7 +26,7 @@
 - optimized thumbnails lazy loading and display animation
 - fixed #130 Joomla3/Bootstrap2 Image Zoom In Bug
 - fixed #131 deep linking to image when only one album loaded
-
+- fixed #144 copy-n-paste error - thanks to citrin for the fix
 
 */
  
@@ -948,8 +948,7 @@
 
             if( this.thumbnailImgRevealed == false ) {
               this.thumbnailImgRevealed = true;
-              var tweenable = new NGTweenable();
-              tweenable.tween({
+              new NGTweenable().tween({
                 from:         { opacity: 0 },
                 to:           { opacity: 1 },
                 attachment:   { item: this },
@@ -1268,8 +1267,8 @@
 
       _this.options = jQuery.extend(true, {}, jQuery.nanogallery2.defaultOptions, options);
       // Initialization code
-      _this.nG2=null;
-      _this.nG2= new nanoGALLERY2();
+      _this.nG2 = null;
+      _this.nG2 = new nanoGALLERY2();
       _this.nG2.initiateGallery2(_this.e, _this.options );
 
     };
@@ -5972,7 +5971,7 @@
         // Exif - iso
         if( item.exifTime !== undefined ) { newItem.exif.time = item.exifTime; }
         // Exif - location
-        if( item.exifLocation !== undefined ) { newItem.exif.exifLocation = item.exifTime; }
+        if( item.exifLocation !== undefined ) { newItem.exif.location  = item.exifLocation; }
         
         
         // custom data
@@ -6219,7 +6218,7 @@
       // management of screen width
       G.GOM.cache.viewport = getViewport();
       G.GOM.curWidth = RetrieveCurWidth();
-
+      
       // tumbnail toolbar
       jQuery.extend(true, G.tn.toolbar.image, G.O.thumbnailToolbarImage );
       jQuery.extend(true, G.tn.toolbar.album, G.O.thumbnailToolbarAlbum );
@@ -6644,6 +6643,8 @@
           G.tn.settings.mosaicCalcFactor('l1', G.tn.settings.mosaic.l1[w]);
         }
       }
+      
+      G.O.imageTransition = G.O.imageTransition.toUpperCase();
 
       G.layout.SetEngine();
       
@@ -7883,7 +7884,7 @@
     }
           
     function ViewerZoomIn( zoomIn ) {
-console.log(zoomIn);
+//console.log(zoomIn);
     if( zoomIn ) {
         // zoom in
         G.VOM.zoom.userFactor+=0.1;
@@ -7903,7 +7904,7 @@ console.log(zoomIn);
       }
     }
     function ViewerZoomMin() {
-console.dir(G.VOM.NGY2Item(0));      
+//console.dir(G.VOM.NGY2Item(0));      
       // var imageCurrentHeight = (item.imageHeight / dpr) * zoomUserFactor * zoomBaseFactor;
       // var imageCurrentWidth  = (item.imageWidth / dpr)  * zoomUserFactor * zoomBaseFactor;
     
@@ -8660,7 +8661,7 @@ console.dir(G.VOM.NGY2Item(0));
 
         
         // next/previous media
-        if(  G.O.imageTransition.startsWith('swipe') ) {
+        if(  G.O.imageTransition.startsWith('SWIPE') ) {
           if( G.VOM.NGY2Item(-1).mediaTransition() ) {
             ViewerSetMediaVisibility(G.VOM.NGY2Item(-1), G.VOM.$mediaPrevious, 1);
           }
@@ -8668,20 +8669,19 @@ console.dir(G.VOM.NGY2Item(0));
             ViewerSetMediaVisibility(G.VOM.NGY2Item(1), G.VOM.$mediaNext, 1);
           }
 
-          var o = Math.max( Math.abs(posX) / G.VOM.window.lastWidth, .8);
-          o = Math.min(o, 1);
-          if( G.O.imageTransition == 'swipe' ) { o=1; }
+          var sc = Math.min( Math.max( Math.abs(posX) / G.VOM.window.lastWidth, .8), 1);
+          if( G.O.imageTransition == 'SWIPE' ) { sc = 1; }
 
           if( posX > 0 ) {
             var dir = G.VOM.window.lastWidth;
             if( G.VOM.NGY2Item(-1).mediaTransition() ) {
               // window.ng_draf( function() {
-                G.VOM.$mediaPrevious[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px) scale('+o+')';
+                G.VOM.$mediaPrevious[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px) scale(' + sc + ')';
               // });
             }
             if( G.VOM.NGY2Item(1).mediaTransition() ) {
               // window.ng_draf( function() {
-                G.VOM.$mediaNext[0].style[G.CSStransformName] = 'translate(' + (dir) + 'px, 0px) scale('+o+')';
+                G.VOM.$mediaNext[0].style[G.CSStransformName] = 'translate(' + (dir) + 'px, 0px) scale(' + sc + ')';
               // });
             }
           }
@@ -8689,19 +8689,19 @@ console.dir(G.VOM.NGY2Item(0));
             var dir = -G.VOM.window.lastWidth;
             if( G.VOM.NGY2Item(1).mediaTransition() ) {
               // window.ng_draf( function() {
-                G.VOM.$mediaNext[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px) scale('+o+')';
+                G.VOM.$mediaNext[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px) scale(' + sc + ')';
               // });
             }
             if( G.VOM.NGY2Item(-1).mediaTransition() ) {
               // window.ng_draf( function() {
-                G.VOM.$mediaPrevious[0].style[G.CSStransformName] = 'translate(' + (dir) + 'px, 0px) scale('+o+')';
+                G.VOM.$mediaPrevious[0].style[G.CSStransformName] = 'translate(' + (dir) + 'px, 0px) scale(' + sc + ')';
               // });
             }
           }
         }
         
         
-        if(  G.O.imageTransition == 'slideAppear' ) {
+        if(  G.O.imageTransition == 'SLIDEAPPEAR' ) {
           G.VOM.$mediaPrevious[0].style[G.CSStransformName] = '';
           G.VOM.$mediaNext[0].style[G.CSStransformName] = '';
           if( posX < 0 ) {
@@ -8810,19 +8810,16 @@ console.dir(G.VOM.NGY2Item(0));
           DisplayInternalViewerComplete(displayType, newVomIdx);
         }
         else {
-          switch( G.O.imageTransition.toUpperCase() ) {
+          switch( G.O.imageTransition ) {
             case 'SWIPE':
             case 'SWIPE2':
               var dir = ( displayType == 'nextImage' ? - vP.w : vP.w );
               $new[0].style[G.CSStransformName] = 'translate('+(-dir)+'px, 0px) '
-              var op = Math.max( (Math.abs(G.VOM.swipePosX)) / G.VOM.window.lastWidth, .8);
-              op = Math.min(op, 1);
-              if( G.O.imageTransition == 'swipe' ) { op = 1; }
 
               new NGTweenable().tween({
-                from:         { t: G.VOM.swipePosX, s: op  },
-                to:           { t: (displayType == 'nextImage' ? - vP.w : vP.w), s: 1 },
-                attachment:   { dT: displayType, $e: $new, item: itemOld, itemNew: itemNew, dir: dir },
+                from:         { t: G.VOM.swipePosX  },
+                to:           { t: (displayType == 'nextImage' ? - vP.w : vP.w) },
+                attachment:   { dT: displayType, $e: $new, itemNew: itemNew, dir: dir },
                 delay:        30,
                 duration:     dur,
                 easing:       (G.O.imageTransition == 'swipe' ? 'easeInOutSine' : 'easeInOutCubic'),
@@ -8833,12 +8830,15 @@ console.dir(G.VOM.NGY2Item(0));
                   // new media
                   if( att.itemNew.mediaTransition() ) {
                     ViewerSetMediaVisibility(att.itemNew, att.$e, 1);
-                    att.$e[0].style[G.CSStransformName] = 'translate(' + (-att.dir+state.t) + 'px, 0px) scale('+state.s+')';
+
+                    var sc = Math.min( Math.max( (Math.abs(state.t)) / G.VOM.window.lastWidth, .8), 1);
+                    if( G.O.imageTransition == 'swipe' ) { sc = 1; }
+                    att.$e[0].style[G.CSStransformName] = 'translate(' + (-att.dir+state.t) + 'px, 0px) scale(' + sc + ')';
                   }
                 },
                 finish:       function (state, att) {
-                  G.VOM.$mediaCurrent[0].style[G.CSStransformName]= '';
-                  att.$e[0].style[G.CSStransformName]= '';
+                  G.VOM.$mediaCurrent[0].style[G.CSStransformName] = '';
+                  att.$e[0].style[G.CSStransformName] = '';
                   DisplayInternalViewerComplete(att.dT, newVomIdx);
                 }
               });
@@ -8852,7 +8852,7 @@ console.dir(G.VOM.NGY2Item(0));
               new NGTweenable().tween({
                 from:         { o: op, t: G.VOM.swipePosX },
                 to:           { o: 1, t: (displayType == 'nextImage' ? - vP.w : vP.w) },
-                attachment:   { dT:displayType, $e:$new, item: itemOld, itemNew: itemNew, dir: dir },
+                attachment:   { dT:displayType, $e:$new, itemNew: itemNew, dir: dir },
                 delay:        30,
                 duration:     dur,
                 easing:       'easeInOutSine',
