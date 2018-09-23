@@ -654,13 +654,13 @@
 /* INFO                               */
 /**************************************/
 .nGY2PortInfo {
-  padding: 3px !important;
-  font-size: 14px !important;
-  color: #FF0075 !important;
-  text-align: center !important;
-  z-index:0 !important;
+  padding:        3px !important;
+  font-size:      14px !important;
+  color:          #FF0075 !important;
+  text-align:     center !important;
+  z-index:0       !important;
   text-transform: lowercase !important;
-  cursor:pointer !important;
+  cursor:         pointer !important;
 }
 
 .nGY2PortInfo a, 
@@ -668,8 +668,8 @@
 .nGY2PortInfo > a:visited,
 .nGY2PortInfo a:hover,
 .nGY2PortInfo a:active {
-  color: #FF0075 !important;
-  text-decoration: none !important;
+  color:            #FF0075 !important;
+  text-decoration:  none !important;
 }
 
 
@@ -697,12 +697,12 @@
 	background-color: rgba(1, 1, 1, 0.85);
 	text-align: center;
   clear: both;
-  user-drag: none; 
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-drag: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
+  user-drag:            none;
+  user-select:          none;
+  -moz-user-select:     none;
+  -webkit-user-drag:    none;
+  -webkit-user-select:  none;
+  -ms-user-select:      none;
 }
 .nGY2 .nGY2ViewerLogo {
   text-align: center;
@@ -735,20 +735,21 @@
 	cursor: -moz-zoom-out;
 	cursor: zoom-out;
   */
-  user-drag: none; 
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-drag: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
+  user-drag:            none;
+  user-select:          none;
+  -moz-user-select:     none;
+  -webkit-user-drag:    none;
+  -webkit-user-select:  none;
+  -ms-user-select:      none;
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-o-box-sizing: border-box;
 }
 .nGY2 .nGY2ViewerMediaPan{
+  transform-origin: 50% 50% 0;
   visibility: visible;
-  opacity: 0;
+  opacity: 1;
   position: absolute;
   display: inline-block;
 	padding:0px;
@@ -758,18 +759,19 @@
   right: 0;
   margin: auto;   /* never change this value */
   zoom: 1;
-  user-drag: none; 
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-drag: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;  
+  user-drag:            none;
+  user-select:          none;
+  -moz-user-select:     none;
+  -webkit-user-drag:    none;
+  -webkit-user-select:  none;
+  -ms-user-select:      none;
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-o-box-sizing: border-box;
 }
 .nGY2 .nGY2ViewerMedia {
+  max-width: none;
   visibility: visible;
   opacity: 1;
   will-change: transform;
@@ -781,18 +783,108 @@
   right: 0;
   margin: auto;    /* never change this value */
   zoom: 1;
-  user-drag: none; 
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-drag: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-	background-image:     url('data:image/gif;base64,R0lGODlhEAALAPQAAP///wAAANra2tDQ0Orq6gYGBgAAAC4uLoKCgmBgYLq6uiIiIkpKSoqKimRkZL6+viYmJgQEBE5OTubm5tjY2PT09Dg4ONzc3PLy8ra2tqCgoMrKyu7u7gAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCwAAACwAAAAAEAALAAAFLSAgjmRpnqSgCuLKAq5AEIM4zDVw03ve27ifDgfkEYe04kDIDC5zrtYKRa2WQgAh+QQJCwAAACwAAAAAEAALAAAFJGBhGAVgnqhpHIeRvsDawqns0qeN5+y967tYLyicBYE7EYkYAgAh+QQJCwAAACwAAAAAEAALAAAFNiAgjothLOOIJAkiGgxjpGKiKMkbz7SN6zIawJcDwIK9W/HISxGBzdHTuBNOmcJVCyoUlk7CEAAh+QQJCwAAACwAAAAAEAALAAAFNSAgjqQIRRFUAo3jNGIkSdHqPI8Tz3V55zuaDacDyIQ+YrBH+hWPzJFzOQQaeavWi7oqnVIhACH5BAkLAAAALAAAAAAQAAsAAAUyICCOZGme1rJY5kRRk7hI0mJSVUXJtF3iOl7tltsBZsNfUegjAY3I5sgFY55KqdX1GgIAIfkECQsAAAAsAAAAABAACwAABTcgII5kaZ4kcV2EqLJipmnZhWGXaOOitm2aXQ4g7P2Ct2ER4AMul00kj5g0Al8tADY2y6C+4FIIACH5BAkLAAAALAAAAAAQAAsAAAUvICCOZGme5ERRk6iy7qpyHCVStA3gNa/7txxwlwv2isSacYUc+l4tADQGQ1mvpBAAIfkECQsAAAAsAAAAABAACwAABS8gII5kaZ7kRFGTqLLuqnIcJVK0DeA1r/u3HHCXC/aKxJpxhRz6Xi0ANAZDWa+kEAA7AAAAAAAAAAAA');
-  background-repeat:    no-repeat;
-  background-position:  center;
-  background-color:     #000;
-	/*display:block;*/
+  user-drag:            none;
+  user-select:          none;
+  -moz-user-select:     none;
+  -webkit-user-drag:    none;
+  -webkit-user-select:  none;
+  -ms-user-select:      none;
 	padding: 0px;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+}
+
+/* spinner by https://codepen.io/fox_hover/pen/YZxGed */
+.nGY2 .nGY2ViewerMediaLoaderDisplayed {
+  visibility: visible;
+  opacity: 1;
+  position: absolute;
+  top:    0;
+  bottom: 0;
+  left:   0;
+  right:  0;
+  margin: auto;    /* never change this value */
+  zoom:   1;
+  user-drag:            none;
+  user-select:          none;
+  -moz-user-select:     none;
+  -webkit-user-drag:    none;
+  -webkit-user-select:  none;
+  -ms-user-select:      none;
+  width:  50px;
+  height: 50px;
+}
+  
+.nGY2 .nGY2ViewerMediaLoaderDisplayed:before {      /* bigger circle */
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    content: "";
+    display: block;
+    position: absolute;
+    border-width: 7px;
+    border-style: solid;
+    border-radius: 50%;
+    width:  38px;
+    height: 38px;
+    border-bottom-color:  #23CB99;
+    border-right-color:   #23CB99;
+    border-top-color:     #444;
+    border-left-color:    #444;
+    animation: nGY2-spinner-rotate-animation 1s linear 0s infinite;
+  }
+  
+ .nGY2 .nGY2ViewerMediaLoaderDisplayed:after {     /* smaller circle */
+    content: "";
+    display: block;
+    position: absolute;
+    border-width: 4px;
+    border-style: solid;
+    border-radius: 50%;
+    width:  24px;
+    height: 24px;
+    border-bottom-color:  #23CB99;
+    border-right-color:   #23CB99;
+    border-top-color:     #333;
+    border-left-color:    #333;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    animation: nGY2-spinner-anti-rotate-animation 0.85s linear 0s infinite;
+}
+@keyframes nGY2-spinner-rotate-animation {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+@keyframes nGY2-spinner-anti-rotate-animation {
+  0%    { transform: rotate(0deg);     }
+  100%   { transform: rotate(-360deg);  }
+}
+
+.nGY2 .nGY2ViewerMediaLoaderHidden {
+  visibility: visible;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;    /* never change this value */
+  zoom: 1;
+  user-drag:            none;
+  user-select:          none;
+  -moz-user-select:     none;
+  -webkit-user-drag:    none;
+  -webkit-user-select:  none;
+  -ms-user-select:      none;
+	background-image:     none;
+	/*display:block;*/
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -820,12 +912,12 @@
 	text-align: left;
 	cursor: pointer;
 	opacity: 1;
-  user-drag: none; 
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-drag: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
+  user-drag:            none;
+  user-select:          none;
+  -moz-user-select:     none;
+  -webkit-user-drag:    none;
+  -webkit-user-select:  none;
+  -ms-user-select:      none;
 	transition: all 0.2s ease;
 	-webkit-transition: all 0.2s ease;
 	-moz-transition: all 0.2s ease;
@@ -852,12 +944,12 @@
 	text-align: right;
 	cursor: pointer;
 	opacity: 1;
-  user-drag: none; 
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-drag: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
+  user-drag:            none;
+  user-select:          none;
+  -moz-user-select:     none;
+  -webkit-user-drag:    none;
+  -webkit-user-select:  none;
+  -ms-user-select:      none;
 	transition: all 0.2s ease;
 	-webkit-transition: all 0.2s ease;
 	-moz-transition: all 0.2s ease;
