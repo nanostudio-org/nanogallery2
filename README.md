@@ -12,13 +12,7 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 [![Twitter](https://img.shields.io/twitter/url/https/github.com/nanostudio-org/nanogallery2.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=%5Bobject%20Object%5D)
   
 ## Documentation, Demonstrations and Tutorials
-[Get started](http://nanogallery2.nanostudio.org/quickstart.html)   
-[Examples](http://nanogallery2.nanostudio.org/demonstration.html)   
-[Documentation](http://nanogallery2.nanostudio.org/documentation.html)   
-[API](http://nanogallery2.nanostudio.org/api.html)   
-[Content source](http://nanogallery2.nanostudio.org/datasource.html)   
-[Visual Builder](http://nanogallery2.nanostudio.org/builder.html)   
-  
+[Check the homepage of the projet](http://nanogallery2.nanostudio.org/academy.html)   
   
   
 [![nanogallery2 youtube demo](https://github.com/nanostudio-org/nanogallery2/raw/gh-pages/videos/youtube_nanogallery2.png)](https://www.youtube.com/watch?v=Ir098VWCv8Q)
@@ -83,20 +77,8 @@ Dual licenced:
 
 ## Thanks
 **Many thanks to these contributors for their work on [nanoGALLERY](http://nanogallery.brisbois.fr/), [nanogallery2](https://nanogallery2.nanostudio.org/), [nanoPhotosProvider](https://github.com/Kris-B/nanoPhotosProvider), [nanoPhotosProvider2](https://github.com/nanostudio-org/nano_photos_provider2) or [nanogp](https://github.com/nanostudio-org/nanogp):**
-- [Victor A. Banuelos](https://github.com/vbanuelos)
-- [Raphaël Renaudon](https://github.com/sevarg)
-- [antonio r.](https://github.com/grief-of-these-days)
-- [Daniel Eck](https://github.com/Ecksters)
-- [Dio Vayne](https://github.com/DioVayne)
-- [Sean Kenny](https://github.com/seankenny)
-- [eae710](https://github.com/eae710)
-- [Jeff Mills](https://github.com/jefftmills)
-- [Andrea Grassi](https://github.com/andrea-sdl)
-- [AlexRed Alessandro Rossi](https://github.com/AlexRed)
-- Giovanni Chiodi
-- [Ruplahlava](https://github.com/Ruplahlava)
-- [EelcoA](https://github.com/EelcoA)
-- [eae710](https://github.com/eae710)
+
+[Victor A. Banuelos](https://github.com/vbanuelos), [Raphaël Renaudon](https://github.com/sevarg), [antonio r.](https://github.com/grief-of-these-days), [Daniel Eck](https://github.com/Ecksters), [Dio Vayne](https://github.com/DioVayne), [Sean Kenny](https://github.com/seankenny), [eae710](https://github.com/eae710), [Jeff Mills](https://github.com/jefftmills), [Andrea Grassi](https://github.com/andrea-sdl), [AlexRed Alessandro Rossi](https://github.com/AlexRed), Giovanni Chiodi, [Ruplahlava](https://github.com/Ruplahlava), [EelcoA](https://github.com/EelcoA), [eae710](https://github.com/eae710)
   
 **Many thanks to these technology contributors:** 
 - for [shifty](https://github.com/jeremyckahn/shifty):
@@ -111,7 +93,5 @@ Dual licenced:
 [Jorik Tangelder](https://github.com/jtangelder)
 - for [fontello.com](http://fontello.com):
 [Vitaly Puzrin](https://github.com/puzrin)
-- for [TinyColor](https://github.com/bgrins/TinyColor):
-[Brian Grinstead](https://github.com/bgrins)
   
 **Testing services provided by [BrowserStack](https://www.browserstack.com/)**   
