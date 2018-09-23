@@ -95,3 +95,4 @@ Dual licenced:
 [Vitaly Puzrin](https://github.com/puzrin)
   
 **Testing services provided by [BrowserStack](https://www.browserstack.com/)**   
+<img src="http://nanogallery.brisbois.fr/img/browserstack2.png"/>
