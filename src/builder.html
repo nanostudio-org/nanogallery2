@@ -86,7 +86,7 @@
         <div class="row rowGoogle hide ">
           <div class="form-group col-md-4">
             <label>
-              <input id="googleOpenOriginal" name="googleOpenOriginal" type="checkbox"> Open Google Photos to display images.
+              <input id="googleOpenOriginal" name="googleOpenOriginal" type="checkbox" checked> Open Google Photos to display images.
             </label>
           </div>
         </div>
@@ -144,7 +144,7 @@
         <div class="row rowFlickr hide">
           <div class="form-group col-md-4">
             <label>
-              Open Flickr to display images &nbsp; <input name="flickrOpenOriginal" id="flickrOpenOriginal" type="checkbox" class="switchbutton"> 
+              Open Flickr to display images &nbsp; <input name="flickrOpenOriginal" id="flickrOpenOriginal" type="checkbox" checked class="switchbutton"> 
             </label>
           </div>
         </div>
@@ -188,6 +188,18 @@
             </textarea>
           </div>
         </div>
+        
+        
+        
+        <br><br>
+        <div class="row rowGalleryID">
+          <div class="form-group col-md-6">
+            <label for="ngy2GalleryID" class="control-label">Gallery name <span style="color:#e00;"><b>(each gallery on a same page MUST have a UNIQUE name)</b></span></label>
+            <input id="ngy2GalleryID" name="ngy2GalleryID" class="form-control" type="text" value="ngy2p">
+          </div>
+        </div>
+
+        
       </div>
     </div>
   </div>
@@ -225,7 +237,7 @@
               <div class="panel-heading" role="tab" id="headingOne">
                 <h4 class="panel-title">
                   <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    Thumbnail
+                    <i style="color:#23CB99;" class="fa fa-picture-o" aria-hidden="true"></i> &nbsp; Thumbnail
                   </a>
                 </h4>
               </div>
@@ -299,7 +311,7 @@
               <div class="panel-heading" role="tab" id="headingTwo">
                 <h4 class="panel-title">
                   <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Thumbnail label
+                    <i style="color:#23CB99;" class="fa fa-align-center" aria-hidden="true"></i>&nbsp; Thumbnail label
                   </a>
                 </h4>
               </div>
@@ -379,7 +391,7 @@
               <div class="panel-heading" role="tab" id="headingThree">
                 <h4 class="panel-title">
                   <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                    Navigation / Filters
+                    <i style="color:#23CB99;" class="fa fa-ship" aria-hidden="true"></i>&nbsp; Navigation / Filters
                   </a>
                 </h4>
               </div>
@@ -441,7 +453,7 @@
               <div class="panel-heading" role="tab" id="headingFive">
                 <h4 class="panel-title">
                   <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                    Gallery
+                    <i style="color:#23CB99;" class="fa fa-th" aria-hidden="true"></i>&nbsp; Gallery
                   </a>
                 </h4>
               </div>
@@ -513,7 +525,7 @@
               <div class="panel-heading" role="tab" id="headingFour">
                 <h4 class="panel-title">
                   <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    Thumbnails hover effects
+                    <i style="color:#23CB99;" class="fa fa-magic" aria-hidden="true"></i>&nbsp; Thumbnails hover effects
                   </a>
                 </h4>
               </div>
@@ -645,7 +657,7 @@
               <div class="panel-heading" role="tab" id="headingSix">
                 <h4 class="panel-title">
                   <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
-                    Image display
+                    <i style="color:#23CB99;" class="fa fa-television" aria-hidden="true"></i>&nbsp; Image display
                   </a>
                 </h4>
               </div>
@@ -681,7 +693,7 @@
         <div class="col-md-9 ngy2toolbar" style="font-size: 100%;" >
           <br>
           <div class="text-center ">
-            <button type="button" class="btn btn-info btn-lg" id="btnNGY2Builder"><i class="fa fa-cog fa-spin"></i> &nbsp; apply settings and build gallery</button>
+            <button type="button" class="btn btn-info btn-lg" id="btnNGY2Builder" style="background-color:#23CB99;border:none;"><i class="fa fa-cog fa-spin"></i> &nbsp; apply settings and build gallery</button>
           </div>
           <br>
           <div id="nanoGalleryBuilder" style="background-color:#fff;padding:5px;">
@@ -966,6 +978,7 @@
     
     
   </div>
+
 
 
 
