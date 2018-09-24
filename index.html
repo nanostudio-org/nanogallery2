@@ -83,6 +83,7 @@
   <!-- #################################################################################################################### -->
 
     <style>
+
     body { font-size:1.3em; color:#000; line-height:1.5; }
     p { font-size:1.3em; }
     td { font-size:1.2em; }
@@ -376,15 +377,19 @@
     /************/
     
     .ngy2_features div {
-      /* background-color: #46D6AB; */
-      background-color: #23CB99;
+      /* background-color: #23CB99; */
       font-size: 2em;
       color: #fff;
       padding: 5px;
       text-transform: uppercase;
-      border: 5px solid #0F1934;
+      /* border: 5px solid #0F1934; */
     }
-		
+    .ngy2_features div::before {
+      content: "■";
+      color: #23CB99;
+      /* font-family:"Arial Black"; */
+    }
+    
     /***********/
     /* BUTTONS */
     /***********/
@@ -786,8 +791,8 @@
       padding: 0px 5px;
       border-radius: 0px;
       color: #eee;
-      background-color: #000;
-      border: 0px solid #111;
+      background-color: #333;
+      border: 1px solid #555;
     }
     #ngy2tools .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
       background-color: #333;
@@ -796,12 +801,12 @@
 
     #ngy2tools .panel-heading,
     #ngy2tools .ngy2toolbar {
-      background-color: #222;
+      background-color: #111;
       color: #eee;
     }
 
     #ngy2tools .panel-body {
-      background-color: #333;
+      background-color: #000;
     }
     #ngy2tools .panel {
       border-radius:0px;
@@ -811,11 +816,16 @@
       padding-top:0px;
     }
     
+    /* bootstrap panel */
+    .panel-default>.panel-heading+.panel-collapse>.panel-body {
+      border-top-color: #23CB99;
+      border-top-width: 3px;
+    }
     
     
-    /****************/
+    
+    
     /* color picker */
-    /****************/
     #ngy2tools  .colorpicker-component .input-group-addon {
       padding : 0px;
       border-radius: 0px;
@@ -824,17 +834,17 @@
 
     /* switch */
     .bootstrap-switch {
-      border: none;
+      /* border: none; */
+      border-color: #555;
     }
     .bootstrap-switch .bootstrap-switch-label{
-      background-colorcolor: #000;
+      background-color: #000;
     }
     .bootstrap-switch.bootstrap-switch-focused {
-      border-color: #000;
+      border-color: #555;
       box-shadow: none;
     }
-
-
+    
 
 
     
@@ -913,7 +923,6 @@
         transform: scale(1) rotateZ(0deg);
       }
     }
-
 
   </style>
 
