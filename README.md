@@ -64,7 +64,7 @@ HTML markup configuration example:
 
 ## License
 Dual licenced:
-- GPLv3 for personal or open source projects
+- GPLv3 for personal or open source projects with GPLv3 license
 - Commercial license for use in a revenue-generating product
 
 <br />
