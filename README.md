@@ -71,7 +71,7 @@ Dual licenced:
 
 ## Requirements
 * Javascript must be enabled
-* jQuery 1.7.1+
+* jQuery 1.12.4+
   
 <br />
 
