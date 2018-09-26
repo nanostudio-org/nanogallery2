@@ -30,5 +30,8 @@
   },
   "scripts": {
     "test": "grunt build-nanogallery2"
+  },
+  "dependencies": {
+    "jquery": ">=1.12.4"
   }
 }
