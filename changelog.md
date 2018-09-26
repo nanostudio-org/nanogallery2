@@ -1,6 +1,16 @@
 nanogallery2 - ChangeLog
 ===========
 
+v2.3.0
+------
+- new loading spinner with support of gif/png files with transparency
+- new default lightbox image transition 'swipe2'
+- optimized thumbnails lazy loading and display animation
+- fixed #130 Joomla3/Bootstrap2 Image Zoom In Bug
+- fixed #131 deep linking to image when only one album loaded
+- fixed #144 copy-n-paste error - thanks to citrin for the fix
+
+
 v2.2.0
 ------
 - new option 'eventsDebounceDelay' - thumbnail's lazy display fine tuning (response delay after resizing, rotation and scroll events)

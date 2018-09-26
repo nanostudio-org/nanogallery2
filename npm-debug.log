@@ -1,0 +1,117 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files (x86)\\nodejs\\\\node.exe',
+1 verbose cli   'C:\\Program Files (x86)\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'publish' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.35
+4 verbose node symlink C:\Program Files (x86)\nodejs\\node.exe
+5 verbose publish [ '.' ]
+6 verbose cache add [ '.', null ]
+7 verbose cache add name=undefined spec="." args=[".",null]
+8 verbose parsed url { protocol: null,
+8 verbose parsed url   slashes: null,
+8 verbose parsed url   auth: null,
+8 verbose parsed url   host: null,
+8 verbose parsed url   port: null,
+8 verbose parsed url   hostname: null,
+8 verbose parsed url   hash: null,
+8 verbose parsed url   search: null,
+8 verbose parsed url   query: null,
+8 verbose parsed url   pathname: '.',
+8 verbose parsed url   path: '.',
+8 verbose parsed url   href: '.' }
+9 silly lockFile 3a52ce78- .
+10 verbose lock . C:\Users\kris_pc\AppData\Roaming\npm-cache\3a52ce78-.lock
+11 verbose tar pack [ 'C:\\Users\\kris_pc\\AppData\\Roaming\\npm-cache\\nanogallery2\\2.1.0\\package.tgz',
+11 verbose tar pack   '.' ]
+12 verbose tarball C:\Users\kris_pc\AppData\Roaming\npm-cache\nanogallery2\2.1.0\package.tgz
+13 verbose folder .
+14 info prepublish nanogallery2@2.1.0
+15 silly lockFile 1f1177db-tar tar://.
+16 verbose lock tar://. C:\Users\kris_pc\AppData\Roaming\npm-cache\1f1177db-tar.lock
+17 silly lockFile b3619006-e-nanogallery2-2-1-0-package-tgz tar://C:\Users\kris_pc\AppData\Roaming\npm-cache\nanogallery2\2.1.0\package.tgz
+18 verbose lock tar://C:\Users\kris_pc\AppData\Roaming\npm-cache\nanogallery2\2.1.0\package.tgz C:\Users\kris_pc\AppData\Roaming\npm-cache\b3619006-e-nanogallery2-2-1-0-package-tgz.lock
+19 silly lockFile 1f1177db-tar tar://.
+20 silly lockFile 1f1177db-tar tar://.
+21 silly lockFile b3619006-e-nanogallery2-2-1-0-package-tgz tar://C:\Users\kris_pc\AppData\Roaming\npm-cache\nanogallery2\2.1.0\package.tgz
+22 silly lockFile b3619006-e-nanogallery2-2-1-0-package-tgz tar://C:\Users\kris_pc\AppData\Roaming\npm-cache\nanogallery2\2.1.0\package.tgz
+23 silly lockFile 722c11a5-cache-nanogallery2-2-1-0-package C:\Users\kris_pc\AppData\Roaming\npm-cache\nanogallery2\2.1.0\package
+24 verbose lock C:\Users\kris_pc\AppData\Roaming\npm-cache\nanogallery2\2.1.0\package C:\Users\kris_pc\AppData\Roaming\npm-cache\722c11a5-cache-nanogallery2-2-1-0-package.lock
+25 silly lockFile 722c11a5-cache-nanogallery2-2-1-0-package C:\Users\kris_pc\AppData\Roaming\npm-cache\nanogallery2\2.1.0\package
+26 silly lockFile 722c11a5-cache-nanogallery2-2-1-0-package C:\Users\kris_pc\AppData\Roaming\npm-cache\nanogallery2\2.1.0\package
+27 silly lockFile 3a52ce78- .
+28 silly lockFile 3a52ce78- .
+29 silly publish { name: 'nanogallery2',
+29 silly publish   description: 'Everything you need to add beautiful, modern and high quality photo galleries to your website.',
+29 silly publish   author:
+29 silly publish    { name: 'Christophe Brisbois',
+29 silly publish      email: 'chr@brisbois.fr',
+29 silly publish      url: 'http://brisbois.fr' },
+29 silly publish   version: '2.1.0',
+29 silly publish   homepage: 'http://nanogallery2.nanostudio.org',
+29 silly publish   keywords: [ 'gallery galleries photo lightbox image album' ],
+29 silly publish   repository:
+29 silly publish    { type: 'git',
+29 silly publish      url: 'git://github.com/nanostudio-org/nanogallery2.git' },
+29 silly publish   bugs: { url: 'https://github.com/nanostudio-org/nanogallery2/issues' },
+29 silly publish   devDependencies:
+29 silly publish    { grunt: '~0.4.1',
+29 silly publish      'grunt-bump': '0.0.13',
+29 silly publish      'grunt-codepainter': 'latest',
+29 silly publish      'grunt-contrib-concat': '~0.1.3',
+29 silly publish      'grunt-contrib-copy': '^0.7.0',
+29 silly publish      'grunt-contrib-jshint': 'latest',
+29 silly publish      'grunt-contrib-qunit': 'latest',
+29 silly publish      'grunt-contrib-uglify': '^0.9.2',
+29 silly publish      'grunt-contrib-cssmin': '^1.0.2',
+29 silly publish      'grunt-gh-pages': 'latest' },
+29 silly publish   scripts: { test: 'grunt build-nanogallery2' },
+29 silly publish   readme: '\r\n# nanogallery2  \r\n  \r\n  \r\nnanogallery2 is a javascript library for building beautiful, modern and high-quality image galleries for your website or your blog.\r\n   \r\n   \r\n<img src="http://nanogallery2.nanostudio.org/img/nanogallery2si.png" alt="nanogallery2"/>  \r\n  \r\n  \r\n  \r\n[![Build Status](https://travis-ci.org/nanostudio-org/nanogallery2.svg?branch=dev-gh-pages)](https://travis-ci.org/nanostudio-org/nanogallery2)\r\n[![Twitter](https://img.shields.io/twitter/url/https/github.com/nanostudio-org/nanogallery2.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=%5Bobject%20Object%5D)\r\n  \r\n## Documentation, Demonstrations and Tutorials\r\n[Get started](http://nanogallery2.nanostudio.org/quickstart.html)   \r\n[Examples](http://nanogallery2.nanostudio.org/demonstration.html)   \r\n[Documentation](http://nanogallery2.nanostudio.org/documentation.html)   \r\n[API](http://nanogallery2.nanostudio.org/api.html)   \r\n[Content source](http://nanogallery2.nanostudio.org/datasource.html)   \r\n[Visual Builder](http://nanogallery2.nanostudio.org/builder.html)   \r\n  \r\n  \r\n  \r\n[![nanogallery2 youtube demo](https://github.com/nanostudio-org/nanogallery2/raw/gh-pages/videos/youtube_nanogallery2.png)](https://www.youtube.com/watch?v=Ir098VWCv8Q)\r\n  \r\n    \r\n    \r\n    \r\n## Some from many features\r\n\r\n\r\n#### - Thumbnail display animations\r\n\r\n#### - Thumbnails hover effects, photo albums, lightbox, social sharing\r\n\r\n#### - Multiple layouts, builder for online testing\r\n\r\n#### - Content source : self hosted photos, Flickr, Google Photos\r\n\r\n#### - Shopping cart\r\n\r\n#### - keyword filtering\r\n\r\n#### - blurred images for thumbnail preview \r\n\r\n#### - API, callbacks, events\r\n\r\n#### - Endless customization\r\n\r\n<br />\r\n  \r\n## Usage\r\n\r\nHTML markup configuration example:\r\n```\r\n<body>\r\n  <div id="my_nanogallery2" \r\n    data-nanogallery2=\'{ "userID": "34858669@N00", "kind": "flickr", "thumbnailHeight": 150, "thumbnailWidth": 150 }\'>\r\n  </div>\r\n</body>\r\n```\r\n\r\n<br />\r\n\r\n## Package managers\r\n\r\n[npmjs](https://www.npmjs.com/package/nanogallery2): `npm install nanogallery2`\r\n\r\n<br />\r\n\r\n## License\r\nDual licenced:\r\n- GPLv3 for personal or open source projects\r\n- Commercial license for use in a revenue-generating product\r\n\r\n<br />\r\n\r\n## Requirements\r\n* Javascript must be enabled\r\n* jQuery 1.7.1+\r\n  \r\n<br />\r\n\r\n## Thanks\r\n**Many thanks to these contributors for their work on [nanoGALLERY](http://nanogallery.brisbois.fr/), [nanogallery2](https://nanogallery2.nanostudio.org/), [nanoPhotosProvider](https://github.com/Kris-B/nanoPhotosProvider), [nanoPhotosProvider2](https://github.com/nanostudio-org/nano_photos_provider2) or [nanogp](https://github.com/nanostudio-org/nanogp):**\r\n- [Victor A. Banuelos](https://github.com/vbanuelos)\r\n- [Raphaël Renaudon](https://github.com/sevarg)\r\n- [antonio r.](https://github.com/grief-of-these-days)\r\n- [Daniel Eck](https://github.com/Ecksters)\r\n- [Dio Vayne](https://github.com/DioVayne)\r\n- [Sean Kenny](https://github.com/seankenny)\r\n- [eae710](https://github.com/eae710)\r\n- [Jeff Mills](https://github.com/jefftmills)\r\n- [Andrea Grassi](https://github.com/andrea-sdl)\r\n- [AlexRed Alessandro Rossi](https://github.com/AlexRed)\r\n- Giovanni Chiodi\r\n- [Ruplahlava](https://github.com/Ruplahlava)\r\n- [EelcoA](https://github.com/EelcoA)\r\n- [eae710](https://github.com/eae710)\r\n  \r\n**Many thanks to these technology contributors:** \r\n- for [shifty](https://github.com/jeremyckahn/shifty):\r\n**[Jeremy Kahn](https://github.com/jeremyckahn) - special thanks for all you help!**\r\n- for [imagesloaded](https://github.com/desandro/imagesloaded): \r\n[David DeSandro](https://github.com/desandro)\r\n- for [screenfull.js](https://github.com/sindresorhus/screenfull.js):\r\n[Sindre Sorhus](https://github.com/sindresorhus)\r\n- for [Hammer.js](http://hammerjs.github.io/):\r\n[Alexander Schmitz](https://github.com/arschmitz),\r\n[Chris Thoburn](https://github.com/runspired),\r\n[Jorik Tangelder](https://github.com/jtangelder)\r\n- for [fontello.com](http://fontello.com):\r\n[Vitaly Puzrin](https://github.com/puzrin)\r\n- for [TinyColor](https://github.com/bgrins/TinyColor):\r\n[Brian Grinstead](https://github.com/bgrins)\r\n  \r\n**Testing services provided by [BrowserStack](https://www.browserstack.com/)**   \r\n',
+29 silly publish   readmeFilename: 'README.md',
+29 silly publish   gitHead: '0de25fed02c8a96618ba5652b2a1541fab81e8ca',
+29 silly publish   _id: 'nanogallery2@2.1.0',
+29 silly publish   _shasum: 'a02ee6a3271b3ebacedfeeee1e56d561bc9b0fb3',
+29 silly publish   _from: '.' }
+30 verbose request where is /nanogallery2
+31 verbose request registry https://registry.npmjs.org/
+32 verbose request id 08209ab30d89a7e1
+33 verbose url raw /nanogallery2
+34 verbose url resolving [ 'https://registry.npmjs.org/', './nanogallery2' ]
+35 verbose url resolved https://registry.npmjs.org/nanogallery2
+36 verbose request where is https://registry.npmjs.org/nanogallery2
+37 info trying registry request attempt 1 at 22:22:51
+38 http PUT https://registry.npmjs.org/nanogallery2
+39 http 401 https://registry.npmjs.org/nanogallery2
+40 verbose headers { 'content-type': 'application/json',
+40 verbose headers   'cache-control': 'max-age=300',
+40 verbose headers   'content-length': '54',
+40 verbose headers   'accept-ranges': 'bytes',
+40 verbose headers   date: 'Mon, 05 Mar 2018 21:22:54 GMT',
+40 verbose headers   via: '1.1 varnish',
+40 verbose headers   connection: 'keep-alive',
+40 verbose headers   'x-served-by': 'cache-lcy19237-LCY',
+40 verbose headers   'x-cache': 'MISS',
+40 verbose headers   'x-cache-hits': '0',
+40 verbose headers   'x-timer': 'S1520284972.038475,VS0,VE2959',
+40 verbose headers   vary: 'Accept-Encoding, Accept' }
+41 error publish Failed PUT 401
+42 error Error: You must be logged in to publish packages. : nanogallery2
+42 error     at RegClient.<anonymous> (C:\Program Files (x86)\nodejs\node_modules\npm\node_modules\npm-registry-client\lib\request.js:308:14)
+42 error     at Request._callback (C:\Program Files (x86)\nodejs\node_modules\npm\node_modules\npm-registry-client\lib\request.js:246:65)
+42 error     at Request.self.callback (C:\Program Files (x86)\nodejs\node_modules\npm\node_modules\request\request.js:236:22)
+42 error     at Request.emit (events.js:98:17)
+42 error     at Request.<anonymous> (C:\Program Files (x86)\nodejs\node_modules\npm\node_modules\request\request.js:1142:14)
+42 error     at Request.emit (events.js:117:20)
+42 error     at IncomingMessage.<anonymous> (C:\Program Files (x86)\nodejs\node_modules\npm\node_modules\request\request.js:1096:12)
+42 error     at IncomingMessage.emit (events.js:117:20)
+42 error     at _stream_readable.js:944:16
+42 error     at process._tickCallback (node.js:442:13)
+43 error If you need help, you may report this *entire* log,
+43 error including the npm and node versions, at:
+43 error     <http://github.com/npm/npm/issues>
+44 error System Windows_NT 6.2.9200
+45 error command "C:\\Program Files (x86)\\nodejs\\\\node.exe" "C:\\Program Files (x86)\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "publish"
+46 error cwd F:\GitHub\nanogallery2
+47 error node -v v0.10.35
+48 error npm -v 1.4.28
+49 verbose exit [ 1, true ]
