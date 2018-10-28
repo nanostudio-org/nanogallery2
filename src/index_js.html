@@ -7,8 +7,6 @@
     $(document).ready(function () {
 
       
-
-    
       
       // ##### TEXT ROTATOR - display features
       var rotatorlst=[ 'photo gallery with multiple layouts', 'lightbox with customizable tools', 'responsive thumbnails sizes', 'display animations', 'gallery pagination',
@@ -237,6 +235,9 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
               scrollTop: $("#"+id).offset().top},
               'slow');
       }
+
+
+
       
       // ##### LAYOUT DEMO SELECTION
       var ngy2_layout_cnt=0;
@@ -252,14 +253,17 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
         
         switch( jQuery(e.currentTarget)[0].id ) {
           
+          
+          
           // MOSAIC LAYOUT
           case 'btn_layout1':
             jQuery("#nanogallery").nanogallery2({
-
+            
+            
               kind: 'nano_photos_provider2',
               dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
               album: 'oceans',
-              galleryDisplayTransition: 'rotateX',
+              // galleryDisplayTransition: 'rotateX',
               galleryDisplayTransitionDuration: 1500,
              
               ZgalleryMosaic : [
@@ -402,7 +406,7 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
               
               thumbnailDisplayTransition: 'flipUp',
               thumbnailDisplayTransitionDuration: 400,
-              thumbnailDisplayInterval: 90,
+              thumbnailDisplayInterval: 60,
               galleryMaxRows: 3,
               galleryDisplayMode: 'pagination',
 
@@ -448,7 +452,7 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
               kind: 'nano_photos_provider2',
               dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
               album: 'nature',
-              galleryDisplayTransition: 'rotateX',
+              // galleryDisplayTransition: 'rotateX',
               galleryDisplayTransitionDuration: 1500,
              
               thumbnailAlignment: 'fillWidth',
