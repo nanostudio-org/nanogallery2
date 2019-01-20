@@ -68,7 +68,7 @@
         // retrieve the list of albums
         if( gat != '' ) {
           // in builder
-          url += '?alt=json&v=3&kind=album&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime()) + '&access_token=' + gat;
+          url += '?alt=json&v=3&kind=album&deprecation-extension=true&thumbsize='+G.picasa.thumbSizes+maxResults+'&rnd=' + (new Date().getTime()) + '&access_token=' + gat;
         }
         else {
           if( G.O.google2URL == undefined || G.O.google2URL == '' ) {
