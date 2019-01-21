@@ -19,15 +19,29 @@
  */
 
 /*
-  V2.3.0BETA - only for test purposes
+  V2.4.0beta
 
-- new loading spinner with support of gif/png files with transparency
-- new default lightbox image transition 'swipe2'
-- optimized thumbnails lazy loading and display animation
-- fixed #130 Joomla3/Bootstrap2 Image Zoom In Bug
-- fixed #131 deep linking to image when only one album loaded
-- fixed #144 copy-n-paste error - thanks to citrin for the fix
+- new : lightbox rotate images left and right
+- fixed #160 - IE11: css can not be accessed
+- fixed #161 - IE 11: startsWith not defined
+- fixed #175 - gallery display shaking when pagination activated on mobile device
+- enhancement : lightbox vertical span handling
 
+  
+TODO:
+- turn off / optimize lazy loading
+- self hosted videos
+- API / button (+ event) to delete image in lightbox
+- filters tags
+- swipe2 not ok when user moves the image
+- github
+- loading spinner over album thumbnail
+- font icons -> svg icons
+- lightbox : on exit zoom -> animate image resize/position to new siez/position
+- lightbox : enhance zoom handling
+- check swipe vs swipe2
+
+ 
 */
  
  
@@ -454,6 +468,7 @@
             this.albumTagListSel =      [];       // list of currently selected tags (only for albums)
             this.exif = { exposure: '', flash: '', focallength: '', fstop: '', iso: '', model: '', time: '', location: ''};
             this.deleted =              false;    // item is deleted -> do not display anymore
+            this.rotationAngle =        0;        // image display rotation angle
           }
 
           // public static
@@ -1436,7 +1451,7 @@
     },
     viewerTools : {
       topLeft :                   'pageCounter,playPauseButton',
-      topRight :                  'zoomButton,closeButton' 
+      topRight :                  'zoomButton,rotateLeft,rotateRight,closeButton' 
     },
     
     breakpointSizeSM :            480,
@@ -1522,6 +1537,8 @@
       viewerLinkOriginal:           '<i class="nGY2Icon-ngy2_external2"></i>',
       viewerInfo:                   '<i class="nGY2Icon-ngy2_info2"></i>',
       viewerShare:                  '<i class="nGY2Icon-ngy2_share2"></i>',
+      viewerRotateLeft:             '<i class="nGY2Icon-ccw"></i>',
+      viewerRotateRight:            '<i class="nGY2Icon-cw"></i>',
       user:                         '<i class="nGY2Icon-user"></i>',
       location:                     '<i class="nGY2Icon-location"></i>',
       config:                       '<i class="nGY2Icon-wrench"></i>',
@@ -2395,6 +2412,8 @@
       },
       nbSelected :                0,        // number of selected items
       pagination :                { currentPage: 0 }, // pagination data
+      panThreshold:               60,       // threshold value (in pixels) to block horizontal pan/swipe
+      panYOnly:                   false,    // threshold value reach -> definitively block horizontal pan until end of pan
       lastFullRow :               -1,       // number of the last row without holes
       lastDisplayedIdx:           -1,       // used to display the counter of not displayed items
       displayInterval :           { from: 0, len: 0 },
@@ -2511,6 +2530,8 @@
       swipePosX:          0,      // current horizontal swip position
       panPosX:            0,      // position for manual pan
       panPosY:            0,
+      panThreshold:       60,     // threshold value (in pixels) to block vertical pan
+      panXOnly:           false,  // threshold value reach -> definitively block vertical pan until end of pan
       viewerTheme:        '',
       timeImgChanged:     0,
       ImageLoader: {
@@ -7353,7 +7374,16 @@
             this.splice(i, 1);
           }
         }
-      };      
+      };  
+
+      // IE11 for startsWith 
+      // thanks to @lichtamberg - https://github.com/lichtamberg
+      if (!String.prototype.startsWith) {
+        String.prototype.startsWith = function(searchString, position) {
+          position = position || 0;
+          return this.indexOf(searchString, position) === position;
+        };
+      }
       
     }
     
@@ -8014,7 +8044,8 @@
 
       posX += G.VOM.zoom.posX;
       posY += G.VOM.zoom.posY;
-      imageContainer.children().eq(1)[0].style[G.CSStransformName]= 'translate('+ posX + 'px, '+ posY + 'px) ';
+      
+      imageContainer.children().eq(1)[0].style[G.CSStransformName]= 'translate('+ posX + 'px, '+ posY + 'px)';
 
 
     }
@@ -8183,21 +8214,24 @@
 
           if( G.VOM.zoom.isZooming ) {
             // pan zoomed image
-            ViewerImagePanSetPosition(G.VOM.panPosX+ev.deltaX, G.VOM.panPosY+ev.deltaY, G.VOM.$mediaCurrent, false);
+            ViewerImagePanSetPosition(G.VOM.panPosX + ev.deltaX, G.VOM.panPosY + ev.deltaY, G.VOM.$mediaCurrent, false);
             if( G.VOM.toolbarsDisplayed == true ) {
               G.VOM.toolsHide();
             }
           }
           else {
-            if( ev.deltaY > 50 && Math.abs(ev.deltaX) < 50 ) {
+            if( ev.deltaY > G.VOM.panThreshold && Math.abs(ev.deltaX) < G.VOM.panThreshold && !G.VOM.panXOnly ) {
               // pan viewer down
               ViewerMediaPanX( 0 );
-              var dist=Math.min(ev.deltaY, 200);
+              var dist = Math.min(ev.deltaY, 200);
               G.VOM.$viewer[0].style[G.CSStransformName] = 'translateY(' + dist + 'px) ';
               G.VOM.$viewer.css('opacity', 1-dist/200/2);
             }
             else {
               // pan media left/right
+              if( Math.abs(ev.deltaX) > G.VOM.panThreshold ) {
+                G.VOM.panXOnly = true;
+              }
               ViewerMediaPanX( ev.deltaX );
               G.VOM.$viewer[0].style[G.CSStransformName] = 'translateY(0px)';
               G.VOM.$viewer.css('opacity', 1);
@@ -8213,11 +8247,15 @@
             ViewerImagePanSetPosition(G.VOM.panPosX+ev.deltaX, G.VOM.panPosY+ev.deltaY, G.VOM.$mediaCurrent, true);
           }
           else {
-            if( ev.deltaY > 50 && Math.abs(ev.deltaX) < 50 ) {
-              // close viewer
-              CloseInternalViewer(G.VOM.currItemIdx);
+            var panY = false;
+            if( !G.VOM.panXOnly ) {
+              if( ev.deltaY > 50 && Math.abs(ev.deltaX) < 50 ) {
+                // close viewer
+                CloseInternalViewer(G.VOM.currItemIdx);
+                panY = true;
+              }
             }
-            else {
+            if( !panY ) {
               if( Math.abs( ev.deltaX ) < 50 ) {
                 ViewerMediaPanX(0);
               }
@@ -8226,6 +8264,7 @@
               }
             }
           }
+          G.VOM.panXOnly = false;
         });
         
         if( G.O.viewerZoom ) {
@@ -8341,7 +8380,9 @@
     }
     
     function ViewerToolsOpacity( op ) {
-      G.VOM.$toolbar.css('opacity', op);
+      if( G.VOM.$toolbar != null ) {
+        G.VOM.$toolbar.css('opacity', op);
+      }
       if( G.VOM.$toolbarTL != null ) {
         G.VOM.$toolbarTL.css('opacity', op);
       }
@@ -8431,6 +8472,14 @@
           StopPropagationPreventDefault(e);
           OpenOriginal( G.VOM.NGY2Item(0) );
           break;
+        case 'rotateLeft':
+          StopPropagationPreventDefault(e);
+          ViewerImageRotate(-90);
+          break;
+        case 'rotateRight':
+          StopPropagationPreventDefault(e);
+          ViewerImageRotate(90);
+          break;
       }
       
       // custom button
@@ -8439,10 +8488,23 @@
         typeof fu == 'function' ? fu(ngy2action, $this, G.VOM.NGY2Item(0)) : window[fu](ngy2action, $this, G.VOM.NGY2Item(0));
       }
     }
+
+    // rotate displayed image
+    function ViewerImageRotate( angle ) {
+      var item = G.VOM.NGY2Item(0);
+      if( item.mediaKind == 'img' ) {
+        item.rotationAngle += angle;
+        item.rotationAngle = item.rotationAngle % 360;
+        if( item.rotationAngle < 0 ) {
+          item.rotationAngle += 360;
+        }
+        ViewerMediaPanX( 0 );
+      }
+    }
      
 
     // Display photo infos
-    function ItemDisplayInfo( item) {
+    function ItemDisplayInfo( item ) {
 
       var content = '<div class="nGY2PopupOneItemText">' + item.title + '</div>';
       content    += '<div class="nGY2PopupOneItemText">' + item.description + '</div>';
@@ -8499,6 +8561,12 @@
           break;
         case 'playPauseButton':
           r += 'playButton playPauseButton nGEvent" data-ngy2action="playPause">'+G.O.icons.viewerPlay+'</div>';
+          break;
+        case 'rotateLeft':
+          r += 'rotateLeftButton nGEvent" data-ngy2action="rotateLeft">'+G.O.icons.viewerRotateLeft+'</div>';
+          break;
+        case 'rotateRight':
+          r += 'rotateRightButton nGEvent" data-ngy2action="rotateRight">'+G.O.icons.viewerRotateRight+'</div>';
           break;
         case 'downloadButton':
           r += 'downloadButton nGEvent" data-ngy2action="download">'+G.O.icons.viewerDownload+'</div>';
@@ -8656,16 +8724,18 @@
       
         // pan left/right the current media
         // window.ng_draf( function() {
-          G.VOM.$mediaCurrent[0].style[G.CSStransformName] = 'translate(' + posX + 'px, 0px)';
+          G.VOM.$mediaCurrent[0].style[G.CSStransformName] = 'translate(' + posX + 'px, 0px) rotate(' +  G.VOM.NGY2Item(0).rotationAngle + 'deg)';
         // });
 
+        var itemPrevious = G.VOM.NGY2Item(-1);
+        var itemNext = G.VOM.NGY2Item(1);
         
         // next/previous media
         if(  G.O.imageTransition.startsWith('SWIPE') ) {
-          if( G.VOM.NGY2Item(-1).mediaTransition() ) {
+          if( itemPrevious.mediaTransition() ) {
             ViewerSetMediaVisibility(G.VOM.NGY2Item(-1), G.VOM.$mediaPrevious, 1);
           }
-          if( G.VOM.NGY2Item(1).mediaTransition() ) {
+          if( itemNext.mediaTransition() ) {
             ViewerSetMediaVisibility(G.VOM.NGY2Item(1), G.VOM.$mediaNext, 1);
           }
 
@@ -8674,27 +8744,27 @@
 
           if( posX > 0 ) {
             var dir = G.VOM.window.lastWidth;
-            if( G.VOM.NGY2Item(-1).mediaTransition() ) {
+            if( itemPrevious.mediaTransition() ) {
               // window.ng_draf( function() {
-                G.VOM.$mediaPrevious[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px) scale(' + sc + ')';
+                G.VOM.$mediaPrevious[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px) scale(' + sc + ') rotate(' + itemPrevious.rotationAngle + 'deg)';
               // });
             }
-            if( G.VOM.NGY2Item(1).mediaTransition() ) {
+            if( itemNext.mediaTransition() ) {
               // window.ng_draf( function() {
-                G.VOM.$mediaNext[0].style[G.CSStransformName] = 'translate(' + (dir) + 'px, 0px) scale(' + sc + ')';
+                G.VOM.$mediaNext[0].style[G.CSStransformName] = 'translate(' + (dir) + 'px, 0px) scale(' + sc + ') rotate(' + itemNext.rotationAngle + 'deg)';
               // });
             }
           }
           else {
             var dir = -G.VOM.window.lastWidth;
-            if( G.VOM.NGY2Item(1).mediaTransition() ) {
+            if( itemNext.mediaTransition() ) {
               // window.ng_draf( function() {
-                G.VOM.$mediaNext[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px) scale(' + sc + ')';
+                G.VOM.$mediaNext[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px) scale(' + sc + ') rotate(' + itemNext.rotationAngle + 'deg)';
               // });
             }
-            if( G.VOM.NGY2Item(-1).mediaTransition() ) {
+            if( itemPrevious.mediaTransition() ) {
               // window.ng_draf( function() {
-                G.VOM.$mediaPrevious[0].style[G.CSStransformName] = 'translate(' + (dir) + 'px, 0px) scale(' + sc + ')';
+                G.VOM.$mediaPrevious[0].style[G.CSStransformName] = 'translate(' + (dir) + 'px, 0px) scale(' + sc + ') rotate(' + itemPrevious.rotationAngle + 'deg)';
               // });
             }
           }
@@ -8706,20 +8776,20 @@
           G.VOM.$mediaNext[0].style[G.CSStransformName] = '';
           if( posX < 0 ) {
             var o = (-posX) / G.VOM.window.lastWidth;
-            if( G.VOM.NGY2Item(1).mediaTransition() ) {
-              ViewerSetMediaVisibility(G.VOM.NGY2Item(1), G.VOM.$mediaNext, o);
+            if( itemNext.mediaTransition() ) {
+              ViewerSetMediaVisibility(itemNext, G.VOM.$mediaNext, o);
             }
-            if( G.VOM.NGY2Item(-1).mediaTransition() ) {
-              ViewerSetMediaVisibility(G.VOM.NGY2Item(-1), G.VOM.$mediaPrevious, 0);
+            if( itemPrevious.mediaTransition() ) {
+              ViewerSetMediaVisibility(itemPrevious, G.VOM.$mediaPrevious, 0);
             }
           }
           else {
             var o = posX / G.VOM.window.lastWidth;
-            if( G.VOM.NGY2Item(-1).mediaTransition() ) {
-              ViewerSetMediaVisibility(G.VOM.NGY2Item(-1), G.VOM.$mediaPrevious, o);
+            if( itemPrevious.mediaTransition() ) {
+              ViewerSetMediaVisibility(itemPrevious, G.VOM.$mediaPrevious, o);
             }
-            if( G.VOM.NGY2Item(1).mediaTransition() ) {
-              ViewerSetMediaVisibility(G.VOM.NGY2Item(1), G.VOM.$mediaNext, 0);
+            if( itemNext.mediaTransition() ) {
+              ViewerSetMediaVisibility(itemNext, G.VOM.$mediaNext, 0);
             }
           }
         }
@@ -8819,21 +8889,21 @@
               new NGTweenable().tween({
                 from:         { t: G.VOM.swipePosX  },
                 to:           { t: (displayType == 'nextImage' ? - vP.w : vP.w) },
-                attachment:   { dT: displayType, $e: $new, itemNew: itemNew, dir: dir },
+                attachment:   { dT: displayType, $e: $new, itemNew: itemNew, itemOld: itemOld, dir: dir },
                 delay:        30,
                 duration:     dur,
                 easing:       (G.O.imageTransition == 'swipe' ? 'easeInOutSine' : 'easeInOutCubic'),
                 step:         function (state, att) {
                   // current media
                   ViewerSetMediaVisibility(G.VOM.NGY2Item(0), G.VOM.$mediaCurrent, 1);
-                  G.VOM.$mediaCurrent[0].style[G.CSStransformName] = 'translate(' + state.t + 'px, 0px)';
+                  G.VOM.$mediaCurrent[0].style[G.CSStransformName] = 'translate(' + state.t + 'px, 0px) rotate(' + att.itemOld.rotationAngle + 'deg)';
                   // new media
                   if( att.itemNew.mediaTransition() ) {
                     ViewerSetMediaVisibility(att.itemNew, att.$e, 1);
 
                     var sc = Math.min( Math.max( (Math.abs(state.t)) / G.VOM.window.lastWidth, .8), 1);
                     if( G.O.imageTransition == 'swipe' ) { sc = 1; }
-                    att.$e[0].style[G.CSStransformName] = 'translate(' + (-att.dir+state.t) + 'px, 0px) scale(' + sc + ')';
+                    att.$e[0].style[G.CSStransformName] = 'translate(' + (-att.dir+state.t) + 'px, 0px) scale(' + sc + ') rotate(' + att.itemNew.rotationAngle + 'deg)';
                   }
                 },
                 finish:       function (state, att) {
@@ -8852,13 +8922,13 @@
               new NGTweenable().tween({
                 from:         { o: op, t: G.VOM.swipePosX },
                 to:           { o: 1, t: (displayType == 'nextImage' ? - vP.w : vP.w) },
-                attachment:   { dT:displayType, $e:$new, itemNew: itemNew, dir: dir },
+                attachment:   { dT:displayType, $e:$new, itemNew: itemNew, itemOld: itemOld, dir: dir },
                 delay:        30,
                 duration:     dur,
                 easing:       'easeInOutSine',
                 step:         function (state, att) {
                   // current media - translate
-                  G.VOM.$mediaCurrent[0].style[G.CSStransformName]= 'translate('+state.t+'px, 0px)';
+                  G.VOM.$mediaCurrent[0].style[G.CSStransformName]= 'translate('+state.t+'px, 0px) rotate(' + att.itemOld.rotationAngle + 'deg)';
                   // new media - opacity
                   if( att.itemNew.mediaTransition() ) {
                     ViewerSetMediaVisibility(att.itemNew, att.$e, state.o);
@@ -9330,26 +9400,29 @@
       G.GOM.hammertime.on('pan', function(ev) {
         if( !G.VOM.viewerDisplayed ) {
           if( G.O.paginationSwipe && G.layout.support.rows && G.galleryDisplayMode.Get() == 'PAGINATION' ) {
-            G.$E.conTn.css( G.CSStransformName , 'translate('+(ev.deltaX)+'px,0px)');
+            if( Math.abs(ev.deltaY) > G.GOM.panThreshold ) {
+              G.GOM.panYOnly = true;
+            }
+            if( !G.GOM.panYOnly ) {
+              G.$E.conTn.css( G.CSStransformName , 'translate('+(ev.deltaX)+'px,0px)');
+            }
           }
         }
       });
       G.GOM.hammertime.on('panend', function(ev) {
         if( !G.VOM.viewerDisplayed ) {
           if( G.O.paginationSwipe && G.layout.support.rows && G.galleryDisplayMode.Get() == 'PAGINATION' ) {
-            if( Math.abs(ev.deltaY) > 100 ) {
-              // user moved vertically -> cancel pagination
-              G.$E.conTn.css( G.CSStransformName , 'translate(0px,0px)');
-              return;
+            if( !G.GOM.panYOnly ) {
+              if( ev.deltaX > 50 ) {
+                paginationPreviousPage();
+                return;
+              }
+              if(  ev.deltaX < -50 ) {
+                paginationNextPage();
+                return;
+              }
             }
-            if( ev.deltaX > 50 ) {
-              paginationPreviousPage();
-              return;
-            }
-            if(  ev.deltaX < -50 ) {
-              paginationNextPage();
-              return;
-            }
+            G.GOM.panYOnly = false;
             G.$E.conTn.css( G.CSStransformName , 'translate(0px,0px)');
             // pX=0;
           }
