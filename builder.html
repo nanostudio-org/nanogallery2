@@ -2117,7 +2117,7 @@
       
       // retrieve the list of public albums
       jQuery.ajax( {
-          url:        'https://picasaweb.google.com/data/feed/api/user/' + profile.getId() + '?alt=json&v=3&access=all&access_token=' + access_token,
+          url:        'https://picasaweb.google.com/data/feed/api/user/' + profile.getId() + '?alt=json&v=3&deprecation-extension=true&access=all&access_token=' + access_token,
           dataType:   'json',
           method:     'GET',
           success: function(data){
