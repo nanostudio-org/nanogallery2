@@ -8031,6 +8031,7 @@ TODO:
       else {
         // set the pan position of each media container
         ViewerMediaPanX( G.VOM.swipePosX );
+        $img.children().eq(1)[0].style[G.CSStransformName]= 'translate(0px, 0px) rotate('+ item.rotationAngle +'deg)';
       }
       
     }
@@ -8046,7 +8047,8 @@ TODO:
       posX += G.VOM.zoom.posX;
       posY += G.VOM.zoom.posY;
       
-      imageContainer.children().eq(1)[0].style[G.CSStransformName]= 'translate('+ posX + 'px, '+ posY + 'px)';
+      // imageContainer.children().eq(1)[0].style[G.CSStransformName]= 'translate('+ posX + 'px, '+ posY + 'px)';
+      imageContainer.children().eq(1)[0].style[G.CSStransformName]= 'translate('+ posX + 'px, '+ posY + 'px) rotate('+ G.VOM.NGY2Item(0).rotationAngle +'deg)';
 
 
     }
@@ -8500,6 +8502,8 @@ TODO:
           item.rotationAngle += 360;
         }
         ViewerMediaPanX( 0 );
+        ViewerMediaSetPosAndZoomOne( G.VOM.NGY2Item(0), G.VOM.$mediaCurrent, true );
+// pipo
       }
     }
      
@@ -8714,7 +8718,7 @@ TODO:
       ViewerToolsOn();
     }
     
-    // Pan the media in the lightbox (left/right)
+    // Pan the media container in the lightbox (left/right)
     function ViewerMediaPanX( posX ) {
       G.VOM.swipePosX = posX;
       if( G.CSStransformName == null ) {
@@ -8725,7 +8729,7 @@ TODO:
       
         // pan left/right the current media
         // window.ng_draf( function() {
-          G.VOM.$mediaCurrent[0].style[G.CSStransformName] = 'translate(' + posX + 'px, 0px) rotate(' +  G.VOM.NGY2Item(0).rotationAngle + 'deg)';
+          G.VOM.$mediaCurrent[0].style[G.CSStransformName] = 'translate(' + posX + 'px, 0px)';
         // });
 
         var itemPrevious = G.VOM.NGY2Item(-1);
@@ -8747,12 +8751,12 @@ TODO:
             var dir = G.VOM.window.lastWidth;
             if( itemPrevious.mediaTransition() ) {
               // window.ng_draf( function() {
-                G.VOM.$mediaPrevious[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px) scale(' + sc + ') rotate(' + itemPrevious.rotationAngle + 'deg)';
+                G.VOM.$mediaPrevious[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px) scale(' + sc + ')';
               // });
             }
             if( itemNext.mediaTransition() ) {
               // window.ng_draf( function() {
-                G.VOM.$mediaNext[0].style[G.CSStransformName] = 'translate(' + (dir) + 'px, 0px) scale(' + sc + ') rotate(' + itemNext.rotationAngle + 'deg)';
+                G.VOM.$mediaNext[0].style[G.CSStransformName] = 'translate(' + (dir) + 'px, 0px) scale(' + sc + ')';
               // });
             }
           }
@@ -8760,12 +8764,12 @@ TODO:
             var dir = -G.VOM.window.lastWidth;
             if( itemNext.mediaTransition() ) {
               // window.ng_draf( function() {
-                G.VOM.$mediaNext[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px) scale(' + sc + ') rotate(' + itemNext.rotationAngle + 'deg)';
+                G.VOM.$mediaNext[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px) scale(' + sc + ')';
               // });
             }
             if( itemPrevious.mediaTransition() ) {
               // window.ng_draf( function() {
-                G.VOM.$mediaPrevious[0].style[G.CSStransformName] = 'translate(' + (dir) + 'px, 0px) scale(' + sc + ') rotate(' + itemPrevious.rotationAngle + 'deg)';
+                G.VOM.$mediaPrevious[0].style[G.CSStransformName] = 'translate(' + (dir) + 'px, 0px) scale(' + sc + ')';
               // });
             }
           }
@@ -8897,14 +8901,16 @@ TODO:
                 step:         function (state, att) {
                   // current media
                   ViewerSetMediaVisibility(G.VOM.NGY2Item(0), G.VOM.$mediaCurrent, 1);
-                  G.VOM.$mediaCurrent[0].style[G.CSStransformName] = 'translate(' + state.t + 'px, 0px) rotate(' + att.itemOld.rotationAngle + 'deg)';
+                  // G.VOM.$mediaCurrent[0].style[G.CSStransformName] = 'translate(' + state.t + 'px, 0px) rotate(' + att.itemOld.rotationAngle + 'deg)';
+                  G.VOM.$mediaCurrent[0].style[G.CSStransformName] = 'translate(' + state.t + 'px, 0px)';
                   // new media
                   if( att.itemNew.mediaTransition() ) {
                     ViewerSetMediaVisibility(att.itemNew, att.$e, 1);
 
                     var sc = Math.min( Math.max( (Math.abs(state.t)) / G.VOM.window.lastWidth, .8), 1);
                     if( G.O.imageTransition == 'swipe' ) { sc = 1; }
-                    att.$e[0].style[G.CSStransformName] = 'translate(' + (-att.dir+state.t) + 'px, 0px) scale(' + sc + ') rotate(' + att.itemNew.rotationAngle + 'deg)';
+                    // att.$e[0].style[G.CSStransformName] = 'translate(' + (-att.dir+state.t) + 'px, 0px) scale(' + sc + ') rotate(' + att.itemNew.rotationAngle + 'deg)';
+                    att.$e[0].style[G.CSStransformName] = 'translate(' + (-att.dir+state.t) + 'px, 0px) scale(' + sc + ')';
                   }
                 },
                 finish:       function (state, att) {
@@ -8929,7 +8935,8 @@ TODO:
                 easing:       'easeInOutSine',
                 step:         function (state, att) {
                   // current media - translate
-                  G.VOM.$mediaCurrent[0].style[G.CSStransformName]= 'translate('+state.t+'px, 0px) rotate(' + att.itemOld.rotationAngle + 'deg)';
+                  // G.VOM.$mediaCurrent[0].style[G.CSStransformName]= 'translate('+state.t+'px, 0px) rotate(' + att.itemOld.rotationAngle + 'deg)';
+                  G.VOM.$mediaCurrent[0].style[G.CSStransformName]= 'translate('+state.t+'px, 0px)';
                   // new media - opacity
                   if( att.itemNew.mediaTransition() ) {
                     ViewerSetMediaVisibility(att.itemNew, att.$e, state.o);
