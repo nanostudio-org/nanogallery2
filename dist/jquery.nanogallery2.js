@@ -1,4 +1,4 @@
-/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2019-01-21 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2019-01-22 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /**!
  * @preserve nanogallery2 - javascript photo / video gallery and lightbox
  * Homepage: http://nanogallery2.nanostudio.org
@@ -19,14 +19,16 @@
  *  - ICO online converter: https://iconverticons.com/online/
  */
 
+
 /*
   V2.4.0beta
 
-- new : lightbox rotate images left and right
+- new: lightbox - rotate images left and right
+- new: lightbox - fluid transition from zoomed to unzoomed image when displaying a new image
 - fixed #160 - IE11: css can not be accessed
 - fixed #161 - IE 11: startsWith not defined
 - fixed #175 - gallery display shaking when pagination activated on mobile device
-- enhancement : lightbox vertical span handling
+- enhancement : lightbox vertical pan handling
 
   
 TODO:
@@ -38,7 +40,6 @@ TODO:
 - github
 - loading spinner over album thumbnail
 - font icons -> svg icons
-- lightbox : on exit zoom -> animate image resize/position to new siez/position
 - lightbox : enhance zoom handling
 - check swipe vs swipe2
 
@@ -8305,7 +8306,7 @@ TODO:
               // double tap only on image
               if( G.VOM.zoom.isZooming ) {
                 G.VOM.zoom.isZooming = false;
-                G.VOM.zoom.userFactor = 1;
+                // G.VOM.zoom.userFactor = 1;
                 ResizeInternalViewer(true);
               }
               else {
@@ -8503,7 +8504,6 @@ TODO:
         }
         ViewerMediaPanX( 0 );
         ViewerMediaSetPosAndZoomOne( G.VOM.NGY2Item(0), G.VOM.$mediaCurrent, true );
-// pipo
       }
     }
      
@@ -9230,17 +9230,38 @@ TODO:
         ViewerMediaSetPosAndZoom();
       }
       else {
-        G.VOM.zoom.userFactor = 1;
-        G.VOM.zoom.isZooming = false;
-        G.VOM.panPosX = 0;
-        G.VOM.panPosY = 0;
-        G.VOM.zoom.posX = 0;
-        G.VOM.zoom.posY = 0;
-        // G.VOM.$mediaCurrent[0].style[G.CSStransformName] = 'translate3D(0,0,0) ';
-        // if( G.VOM.NGY2Item(0).mediaKind == 'img' ) {
-          // G.VOM.$mediaCurrent[0].style[G.CSStransformName] = '';
-        // }
-        ViewerMediaSetPosAndZoom();
+				if( !G.VOM.zoom.isZooming && ( G.VOM.zoom.userFactor != 0 || G.VOM.panPosX != 0 || G.VOM.panPosY != 0 || G.VOM.zoom.posX != 0 || G.VOM.zoom.posY != 0 )) {
+					// animate image zoom factor and position back to initial values
+					G.VOM.zoom.isZooming= true;		// activate zooming temporarily
+          new NGTweenable().tween({
+            from:           { userFactor: G.VOM.zoom.userFactor, panPosX: G.VOM.panPosX, panPosY: G.VOM.panPosY, zoomPosX: G.VOM.zoom.posX, zoomPosY: G.VOM.zoom.posY },
+            to:           { userFactor: 1, panPosX: 0, panPosY: 0, zoomPosX: 0, zoomPosY: 0 },
+            easing:       'easeInOutSine',
+            delay:        0,
+            duration:     150,
+            step:         function (state) {
+							G.VOM.zoom.userFactor=state.userFactor;
+							G.VOM.panPosX=state.panPosX;
+							G.VOM.panPosY=state.panPosY;
+							G.VOM.zoom.posX=state.zoomPosX;
+							G.VOM.zoom.posY=state.zoomPosY;
+							ViewerMediaSetPosAndZoom();
+            },
+            finish:       function (state) {
+							G.VOM.zoom.isZooming=false;
+            }
+          });
+			
+				}
+				else {
+					G.VOM.zoom.userFactor = 1;
+					G.VOM.zoom.isZooming = false;
+					G.VOM.panPosX = 0;
+					G.VOM.panPosY = 0;
+					G.VOM.zoom.posX = 0;
+					G.VOM.zoom.posY = 0;
+					ViewerMediaSetPosAndZoom();
+				}
       }
     }
 
