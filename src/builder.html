@@ -31,6 +31,14 @@
     <button id="btnModify" class="btn btn-primary hide" >Edit</button>
 
   
+    <h4 class="google_photo_portable" style="color:#f00;border:2px solid #f00;padding:5px;float:left;display:none;"><b>
+      Important: due to changes by Google, integration with Google Photos will stop to work on March 7, 2019.
+      <br>
+      Your existing galleries can still be displayed until this date.
+    </b></h4>
+    <br><br>
+    <br><br>
+    
     <!-- <h3 class="text-left"><span class="circle-singleline" > 1</span> DEFINE THE CONTENT SOURCE</h3> -->
     <h3 class="text-left">CONTENT SOURCE</h3>
     <br>
@@ -48,45 +56,13 @@
           </div>
         </div>
         
-        <!-- GOOGLE -->
-        <div class="row rowGoogle hide">
-          <div class="form-group col-md-3 hidden">
-            <label for="googleUserID" class="control-label">Google Photos user ID</label>
-            <input id="googleUserID" name="googleUserID" class="form-control" type="text" value="111186676244625461692">
-          </div>
-          <div class="col-md-12">
-            <p>
-              <p id="pleaseSignIn" style="color:#fff;">Sign-in to Google to authorize the BUILDER to access your Google Photos content.<br><span style="font-size:0.8em;"></span></p>
-              <a style="display:none; float: left; margin-right: 10px; height: 36px;" class="btn btn-warning" id="google-sign-out" href="#">Sign out from Google</a>
-              <div class="g-signin2" data-onsuccess="onSignIn" ></div>
-            </p>
-          </div>
-        </div>
-
-        <div class="row rowGoogle hide">
-          <div class="form-group col-md-4">
-            <label for="googleAlbum" class="control-label">What do you want to display in your gallery?</label>
-            <select id="googleAlbum" name="googleAlbum" class="selectpicker" multiple data-selected-text-format="count > 1">
-              <option value="lstAlbums" selected="selected" >display album list</option>
-            </select>            
-          </div>
-          <div class="form-group col-md-4">
-            <label for="googleWhiteLst" class="control-label">Authorize filter: album names must contain any these keywords</label>
-            <input id="googleWhiteLst" name="googleWhiteLst" class="form-control" type="text" value="">
-          </div>
-          <div class="form-group col-md-4">
-            <label for="googleBlackLst" class="control-label">Block filter: album names must <u>NOT</u> contain any these keywords</label>
-            <input id="googleBlackLst" name="googleBlackLst" class="form-control" type="text" value="scrapbook profil">
-          </div>
-        </div>
-        
-        <div class="row rowGoogle hide ">
-          <div class="form-group col-md-4">
-            <label>
-              <input id="googleOpenOriginal" name="googleOpenOriginal" type="checkbox" > Open Google Photos to display images.
-            </label>
-          </div>
-        </div>
+    <h4 class="google_photo_js_page" style="color:#f00;border:1px solid #f00;padding:5px;float:left;display:none;"><b>
+      Important: due to changes by Google, Google Photos is no more supported in the Builder.
+      <br><br>
+      You can still use Google Photos as a content provider for nanogallery2 with the add-on <a href="https://github.com/nanostudio-org/nanogp2">nanogp2</a>
+    </b></h4>
+    <br><br>
+    <br><br>
 
 
         <!-- 
@@ -222,8 +198,8 @@
     
     
   </div>  
-    
-  <div class="jumbotron jumbotronNGY2 ngy2-builder" style="background-color:#222;">
+
+  <div id="ng2builder_tools" class="jumbotron jumbotronNGY2 ngy2-builder" style="background-color:#222;">
     <div class="container">
 
       <div class="row" id="ngy2tools" >
@@ -883,8 +859,8 @@
       <div class="col-md-12">
     </div>
 -->
-    <br><br>
-    <div>
+    <br><br>	
+    <div id="ng2builder_template">
       <!-- TABS - SHORTCODE / HTML -->
       <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active lead builder_mode_js_library" style="display:none;"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">portable shortcode</a></li>
@@ -897,55 +873,7 @@
           <p><b>Check the <a href="http://nano.gallery/quickstart.html">quick start</a> page to learn how to use this shortcode.</b></p>
           <p>note: to remove the max. 10 images limit, <a href="http://nano.gallery/register.html" target="_blank">please register your website</a></p>
 
-          <div class="row rowGoogleXXX rowGoogleOAuthGrant hide">
-            <div class="col-md-12">
-              <br>
-              <label><u>IMPORTANT:</u> To embed a gallery in your website, you need to authorize nanogallery2 portable:</label><br>
-              <button class="btn btn-primary" data-toggle="modal" data-target="#myGoogleGrant">authorize nanogallery2 to access my Google Photos content</button>
-              <label>Authorization is permanent until you revoke it.</label>
-              <br><br><br>
-              <p>
-                This service is provided "as-is". nanogallery2 displays albums and photos stored on Google Photos. nanogallery2 is not affiliated to Google. Changes by Google may affect your galleries. nanogallery2 can not be held responsible for any issue resulting from any change on Google Photos.
-              </p>
-              <br><br>
-            </div>
-          </div>
-          <div class="row rowGoogleXXX rowGoogleOAuthRevoke hide">
-            <div class="col-md-12">
-              <br>
-              <label>
-                You have authorized <b>nanogallery2 portable</b> to access your Google Photos content.
-                <br>
-                To stop using it in your web pages, you can revoke it:
-              </label>
-              <br>
-              <button id="btnGoogleOAuthRevoke" class="btn btn-primary" >stop using nanogallery2 on my web pages</button>
-              <br><br><br>
-              <p>
-                This service is provided "as-is". nanogallery2 displays albums and photos stored on Google Photos. nanogallery2 is not affiliated to Google. Changes by Google may affect your galleries. nanogallery2 can not be held responsible for any issue resulting from any change on Google Photos.
-              </p>
-              <br><br>
-            </div>
-          </div>
 
-          <div class="modal fade" id="myGoogleGrant" tabindex="-1" role="dialog"  aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                  <h3 class="modal-title" >nanogallery2 portable - grant access to Google Photos</h3>
-                </div>
-                <div class="modal-body">
-                  <p>
-                    After authorizing nanogallery2 portable to access your Google Photos content, you must <b>refresh this page (F5)</b> for activation.
-                  </p>
-                  
-                  <button id="btnGoogleOAuthGrant" class="btn btn-primary" >authorize nanogallery2 to access my Google Photos content</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          
           
           
           <div class="row">
