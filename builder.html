@@ -2001,110 +2001,28 @@
   <!-- ##### JS FOR PAGE  ##### -->
   <!-- ######################## -->
 
-  <script src="vendors/jquery-ui/jquery-ui.min.js"></script>
-  <script src="vendors/bootstrap-select/js/bootstrap-select.min.js"></script>
-  <script src="vendors/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
-  <script src="vendors/bootstrap-switch/bootstrap-switch.min.js"></script>
-  <script type="text/javascript" src="vendors/tabulator/tabulator.js"></script>
+  <!-- for https://nanogallery2.nanostudio.org -->
+  <!--
+  <script src="../vendors/bootstrap-select/js/bootstrap-select.min.js"></script>
+  <script src="../vendors/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+  <script src="../vendors/bootstrap-switch/bootstrap-switch.min.js"></script>
+  <script src="../vendors/jquery-ui/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="../vendors/tabulator/tabulator.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js"></script>
-    
+  <script type="text/javascript" src="../js/jquery.nanogallery2.builder.js"></script>
+  -->
+
+
+
+  
   <!-- GOOGLE+ API - to access Google Photos -->
-  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
 
 
   
 	<script>
   
-    // GOOGLE PLUS SIGN IN
-    function onSignIn(googleUser) {
-
-      // Useful data for client-side script
-      var profile = googleUser.getBasicProfile(),
-      id_token = googleUser.getAuthResponse().id_token,
-      access_token = googleUser.getAuthResponse().access_token;
-      
-      ngy2_pwa_at=access_token;
-      
-      jQuery('#google-sign-out').show();
-      jQuery('#pleaseSignIn').hide();
-      $('#googleUserID').val(profile.getId());
-      // alert(profile.getName());
-      //jQuery('#userID').text('hello, ' + profile.getName() + '. Your userID is: '+ profile.getId());
-
-      $('#googleAlbum').empty();
-      $('#googleAlbum').append('<option selected="selected" value="lstAlbums">display the list of albums</option>');
-      
-      // retrieve the list of public albums
-      jQuery.ajax( {
-          url:        'https://picasaweb.google.com/data/feed/api/user/' + profile.getId() + '?alt=json&v=3&deprecation-extension=true&access=all&access_token=' + access_token,
-          dataType:   'json',
-          method:     'GET',
-          success: function(data){
-
-          var i, j;
-            tableEntries = [];
-            $('#googleAlbum').append('<optgroup label="albums">');
-
-            if( data.feed.openSearch$totalResults.$t == 0 ) {
-              $('#googleAlbum').append('<option disabled value="">This account has no album in Google Photos.</option>');
-            }
-            else {
-              for(var i=0; i<data.feed.entry.length; i++) {
-              
-                var entry = data.feed.entry[i];
-                var title=entry.title.$t;
-                var rights=entry.rights.$t;
-                var albumid = entry.gphoto$id.$t;
-                var link;
-                for(var j=0; j<entry.link.length; j++) {
-                  if (entry.link[j].rel === "alternate") {
-                    link = entry.link[j].href;
-                    break;
-                  }
-                }
-                var authKey='';
-                var authKeyMatchResult = link.match(/authkey=([^&]*)/);
-                
-                if (null !== authKeyMatchResult && authKeyMatchResult.length > 1) {
-                  authKey = authKeyMatchResult[1];
-                }
-
-                if( rights == 'private' ) {
-                  // $('#googleAlbum').append('<option value="'+albumid+'&authkey='+authKey+'" style="background: #eaa;">'+title+' (private album)</option>');
-                }
-                if( rights == 'public' ) {
-                  // $('#googleAlbum').append('<option value="'+albumid+'">'+title+' (public album)</option>');
-                }
-                $('#googleAlbum').append('<option value="'+albumid+'">'+title+'</option>');
-              }
-            }
-            $('#googleAlbum').append('</optgroup>');
-            // $('#googleAlbum').selectpicker('refresh');
-
-            $('#btnNGY2Builder').prop('disabled', false);
-            $('#googleAlbum').prop('disabled', false);
-            $('#googleAlbum').selectpicker('refresh');
-            
-            // manage filters visibility
-            var v=$('#googleAlbum').selectpicker('val');
-            if( v.length == 1 && v[0] == 'lstAlbums' ) {
-              $('#googleWhiteLst').prop('disabled', false);
-              $('#googleBlackLst').prop('disabled', false);
-            }
-            else {
-              $('#googleWhiteLst').prop('disabled', true);
-              $('#googleBlackLst').prop('disabled', true);
-            }
-          }
-        });
-
-
-
-
-
-
-    }
-        
+       
     $(document).ready(function () {
     
       // Display shortcode or html template - depending on the used homepage
@@ -2113,9 +2031,13 @@
       if( p == 'builder.html' ) {
         // javascript library homepage
         $('.builder_mode_portable').css('display','inline');
+        
+        
       }
       else {
         // portable homepage
+        // display google photos only for portable version
+        jQuery('.google_photo_portable').show();
         $('.builder_mode_js_library').css('display','inline');
         portable=true;
       }
@@ -2181,6 +2103,22 @@
       // BUILD THE GALLERY
       jQuery('#btnNGY2Builder').on('click', function() {
         var v=$f.find('select[name=dataSource]').val();
+
+        
+        if( v == 'google' && portable ) {
+          // End of google photo in portable mode
+          alert("Due to changes by Google, content from Google Photos is no more available here. We're sorry for the inconvenience.");
+          return;
+        }
+        
+
+        if( v == 'google' ) {
+          // End of google photo in non-portable mode
+          alert("Due to changes by Google, content from Google Photos is no more available in the Builder. We're sorry for the inconvenience.test");
+          return;
+        }
+
+
         if( v == 'google' && typeof ngy2_pwa_at === 'undefined' ) {
           alert('Please sign-in to Google to access Google Photos.');
         }
@@ -2308,101 +2246,6 @@
           }
         }
 
-        
-        // GOOGLE
-        jQuery(document).on('click', '#google-sign-out', function(e){
-          // Google+ sign out
-          var auth2 = gapi.auth2.getAuthInstance();
-          auth2.signOut().then(function () {
-            location.reload();
-          });
-        });
-        $('#googleAlbum').on("changed.bs.select",function(e, clickedIndex, newValue, oldValue){
-          switch( clickedIndex ) {
-            case 0:
-              $('#googleAlbum').selectpicker('deselectAll');
-              $('#googleAlbum').selectpicker('val', 'lstAlbums');
-              break;
-            default:
-              var v=$('#googleAlbum').selectpicker('val');
-              if( v !== null ) {
-                var s=[];
-                for( var i=0; i<v.length; i++ ) {
-                  if( v[i] != 'lstAlbums' && v[i] != 'none' ) {
-                    s.push(v[i]);
-                  }
-                }
-                $('#googleAlbum').selectpicker('val', s);
-              }
-              break;
-          }
-          var v=$('#googleAlbum').selectpicker('val');
-          if( v == null ) {
-            $('#googleAlbum').selectpicker('val', 'lstAlbums');
-          }
-          
-          // manage filters visibility
-          var v=$('#googleAlbum').selectpicker('val');
-          if( v.length == 1 && v[0] == 'lstAlbums' ) {
-            $('#googleWhiteLst').prop('disabled', false);
-            $('#googleBlackLst').prop('disabled', false);
-          }
-          else {
-            $('#googleWhiteLst').prop('disabled', true);
-            $('#googleBlackLst').prop('disabled', true);
-          }
-        });
-
-        // grant access to Google Photos
-        jQuery('#btnGoogleOAuthGrant').on('click', function(e){
-          jQuery.ajaxSetup({ cache: false });
-          jQuery.support.cors = true;
-          window.open('https://nano.gallery/nanogp/authorize.php')  //,"_self")
-          // var url = 'https://nano.gallery/nanogp/authorize.php?jsoncallback=?';
-        });
-
-        // revoke access to Google Photos
-        jQuery('#btnGoogleOAuthRevoke').on('click', function(e){
-          if( typeof ngy2_pwa_at === 'undefined' ) {
-            alert('Please, first sign-in to Google.');
-            return;
-          }
-
-        
-          jQuery.ajaxSetup({ cache: false });
-          jQuery.support.cors = true;
-          var url = 'https://nano.gallery/nanogp/authorize.php?revoke='+$('#googleUserID').val();
-          jQuery.getJSON(url+'&callback=?', function(data, status, xhr) {
-            console.dir(data);
-            alert(data.nano_status + ' - ' + data.nano_message);
-            window.location.reload(false); 
-          })
-          .fail( function(jqxhr, textStatus, error) {
-            alert("Could not revoke your authorization: " + textStatus + ', ' + error);
-          });
-        });
-
-        function GooglePhotosCheckAuthorization() {
-
-          jQuery.ajaxSetup({ cache: false });
-          jQuery.support.cors = true;
-          var url = 'https://nano.gallery/nanogp/authorize.php?user_info='+$('#googleUserID').val();
-          jQuery.getJSON(url+'&callback=?', function(data, status, xhr) {
-            console.dir(data);
-            // alert(data.nano_status + ' - ' + nano_message);
-            if( data.nano_status == 'ok' ) {
-              $f.find('.rowGoogleOAuthRevoke').removeClass('hide');
-              return;
-            }
-            $f.find('.rowGoogleOAuthGrant').removeClass('hide');
-            
-          })
-          .fail( function(jqxhr, textStatus, error) {
-            alert("Could not get user's authorization info: " + textStatus + ', ' + error);
-            $f.find('.rowGoogleOAuthGrant').removeClass('hide');
-          });
-        }
-        
 
         // DATA SOURCE
         $f.find('select[name=dataSource]').on("change",function(){
@@ -2410,40 +2253,37 @@
           var v=$f.find('select[name=dataSource]').val();
           switch( v ) {
             case 'google':
-              $f.find('.rowGoogle').removeClass('hide');
               $f.find('.rowFlickr').addClass('hide');
               $f.find('.rowHtmlMarkup').addClass('hide');
-              //$f.find('[name=userID]').val('111186676244625461692');
+              $f.find('.rowGalleryID').addClass('hide');
+              $('#ng2builder_tools').addClass('hide');
+              $('#ng2builder_template').addClass('hide');
+							
+							// show google photos EOF message
+							if( !portable ) {
+								jQuery('.google_photo_js_page').show();
+							}
 
-              $f.find('.rowGoogleOAuthGrant').addClass('hide');
-              $f.find('.rowGoogleOAuthRevoke').addClass('hide');
-              if( typeof ngy2_pwa_at === 'undefined' ) {
-                // not connected to google
-                $('#btnNGY2Builder').prop('disabled', true);
-                $('#googleAlbum').prop('disabled', true);
-                $('#googleAlbum').selectpicker('refresh');
-                $('#googleWhiteLst').prop('disabled', true);
-                $('#googleBlackLst').prop('disabled', true);
-                $('#googleOpenOriginal').prop('disabled', true);
-              }
-              else {
-                if( portable ) {
-                  GooglePhotosCheckAuthorization();
-                }
-              }
 
               break;
             case 'flickr':
-              $f.find('.rowGoogle').addClass('hide');
               $f.find('.rowFlickr').removeClass('hide');
               $f.find('.rowHtmlMarkup').addClass('hide');
               $('#btnNGY2Builder').prop('disabled', false);
+              $f.find('.rowGalleryID').removeClass('hide');
+              $('#ng2builder_tools').removeClass('hide');
+              $('#ng2builder_template').removeClass('hide');
+							jQuery('.google_photo_js_page').hide();
               //$f.find('[name=userID]').val('149035168@N08');
               break;
             default:
-              $f.find('.rowGoogle').addClass('hide');
               $f.find('.rowFlickr').addClass('hide');
               $f.find('.rowHtmlMarkup').removeClass('hide');
+              $f.find('.rowGalleryID').removeClass('hide');
+              // $f.find('.ngy2tools').removeClass('hide');
+              $('#ng2builder_tools').removeClass('hide');
+              $('#ng2builder_template').removeClass('hide');
+							jQuery('.google_photo_js_page').hide();
               // $('#btnNGY2Builder').prop('disabled', true);
               break;
           }
@@ -2687,7 +2527,6 @@
     
 		});
 	</script>
-
 
   <!-- <script type="text/javascript" src="js/jquery.nanogallery2.builder.js"></script> -->
   <script type="text/javascript" src="https://nano.gallery/js/jquery.nanogallery2.builder.js"></script>
