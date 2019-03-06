@@ -39,8 +39,8 @@ module.exports = function(grunt) {
         },
         standardTargetGoogle2: {
           files: {
-            'build/dist/jquery.nanogallery2.data_google2.min.js': [
-              'src/jquery.nanogallery2.data_google2.js'
+            'build/dist/jquery.nanogallery2.data_google3.min.js': [
+              'src/jquery.nanogallery2.data_google3.js'
             ]
           }
         },
@@ -67,7 +67,7 @@ module.exports = function(grunt) {
           src: [
             'src/jquery.nanogallery2.core.js',
             'src/jquery.nanogallery2.data_nano_photos_provider2.js',
-            'src/jquery.nanogallery2.data_google2.js',
+            'src/jquery.nanogallery2.data_google3.js',
             'src/jquery.nanogallery2.data_flickr.js'
           ],
           dest: 'build/dist/jquery.nanogallery2.js'
