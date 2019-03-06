@@ -37,7 +37,7 @@ module.exports = function(grunt) {
             ]
           }
         },
-        standardTargetGoogle2: {
+        standardTargetGoogle3: {
           files: {
             'build/dist/jquery.nanogallery2.data_google3.min.js': [
               'src/jquery.nanogallery2.data_google3.js'
@@ -107,7 +107,7 @@ module.exports = function(grunt) {
       'concat:package',
       'uglify:standardTarget',
       'uglify:standardTargetCore',
-      'uglify:standardTargetGoogle2',
+      'uglify:standardTargetGoogle3',
       'uglify:standardTargetFlickr',
       'uglify:standardTargetNanoPhotosProvider2',
       'cssmin',
