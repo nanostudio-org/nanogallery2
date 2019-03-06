@@ -22,26 +22,19 @@
 /*
   V2.4.0beta
 
-- new: lightbox - rotate images left and right
+- new: lightbox - button to rotate images
 - new: lightbox - fluid transition from zoomed to unzoomed image when displaying a new image
+- new! self hosted videos (mp4)
+- fixed: new data provider for the new Google Photos API (nanogp2)
 - fixed #160 - IE11: css can not be accessed
 - fixed #161 - IE 11: startsWith not defined
-- fixed #175 - gallery display shaking when pagination activated on mobile device
+- fixed #155 - image transition effect SWIPE
+- enhancement #175 - gallery display shaking when pagination activated on mobile device
 - enhancement : lightbox vertical pan handling
+- Google Photos : videos cannot be played in the lightbox, but download is possible
+- removed: option 'albumListHidden' depreciated
 
   
-TODO:
-- turn off / optimize lazy loading
-- self hosted videos
-- API / button (+ event) to delete image in lightbox
-- filters tags
-- swipe2 not ok when user moves the image
-- github
-- loading spinner over album thumbnail
-- font icons -> svg icons
-- lightbox : enhance zoom handling
-- check swipe vs swipe2
-
  
 */
  
@@ -301,7 +294,7 @@ TODO:
           /** @function NanoConsoleLog */
           /* write message to the browser console */
           NGY2Tools.NanoConsoleLog = function(context, msg) {
-            if (window.console) { console.log('nanogallery2: ' + msg + ' ['+context.baseEltID+']'); }
+            if (window.console) { console.log('nanogallery2: ' + msg + ' [' + context.baseEltID + ']'); }
           };
           
 
@@ -2379,7 +2372,6 @@ TODO:
     G.blackList =                 null;     // album white list
     G.whiteList =                 null;     // album black list
     G.albumList =                 [];       // album list
-    G.albumListHidden =           [];       // for Google Photos -> hidden albums with private key
     G.locationHashLastUsed =      '';
     G.custGlobals =               {};
     G.touchAutoOpenDelayTimerID = 0;
@@ -2774,11 +2766,11 @@ TODO:
       // 3. check openOnStart parameter
       // 4. open root album (ID=-1)
 
-      // hidden/private albums are loaded on plugin start
-      if( G.albumListHidden.length > 0 ) {
-        jQuery.nanogallery2['data_'+G.O.kind](G, 'GetHiddenAlbums', G.albumListHidden, processStartOptionsPart2);
-        return;
-      }
+      // hidden/private albums are loaded on plugin start (Picasa) --> no more available in Google Photos
+      // if( G.albumListHidden.length > 0 ) {
+      //  jQuery.nanogallery2['data_'+G.O.kind](G, 'GetHiddenAlbums', G.albumListHidden, processStartOptionsPart2);
+      //  return;
+      //}
       
       if( !ProcessLocationHash() ) {
         processStartOptionsPart2();
@@ -5728,7 +5720,8 @@ TODO:
           return 'https://www.youtube.com/embed/' + id;
         },
         markup: function( id ) {
-          return '<iframe class="nGY2ViewerMedia" src="https://www.youtube.com/embed/' + id + '?rel=0" frameborder="0" gesture="media" allowfullscreen></iframe>';
+          // return '<iframe class="nGY2ViewerMedia" src="https://www.youtube.com/embed/' + id + '?rel=0" frameborder="0" gesture="media" allowfullscreen></iframe>';
+          return '<iframe class="nGY2ViewerMedia" src="https://www.youtube.com/embed/' + id + '?rel=0" frameborder="0" allow="autoplay" allowfullscreen></iframe>';
         },
         kind: 'iframe'
       },
@@ -5742,7 +5735,8 @@ TODO:
           return 'https://player.vimeo.com/video/' + id;
         },
         markup: function( id ) {
-          return '<iframe class="nGY2ViewerMedia" src="https://player.vimeo.com/video/' + id + '?rel=0" frameborder="0" gesture="media" allowfullscreen></iframe>';
+          // return '<iframe class="nGY2ViewerMedia" src="https://player.vimeo.com/video/' + id + '?rel=0" frameborder="0" gesture="media" allowfullscreen></iframe>';
+          return '<iframe class="nGY2ViewerMedia" src="https://player.vimeo.com/video/' + id + '?rel=0" frameborder="0" allow="autoplay" allowfullscreen></iframe>';
         },
         kind: 'iframe'
       },
@@ -5765,9 +5759,30 @@ TODO:
           return 'https://www.dailymotion.com/embed/video/' + id;
         },
         markup: function( id ) {
-          return '<iframe class="nGY2ViewerMedia" src="https://www.dailymotion.com/embed/video/' + id + '?rel=0" frameborder="0" gesture="media" allowfullscreen></iframe>';
+          // return '<iframe class="nGY2ViewerMedia" src="https://www.dailymotion.com/embed/video/' + id + '?rel=0" frameborder="0" gesture="media" allowfullscreen></iframe>';
+          return '<iframe class="nGY2ViewerMedia" src="https://www.dailymotion.com/embed/video/' + id + '?rel=0" frameborder="0" allow="autoplay" allowfullscreen></iframe>';
         },
         kind: 'iframe'
+      },
+      selfhosted : {
+				// selhosted videos
+        getID: function( url ) {
+          // In order to leave things as is, i used id to identify the extension
+          // https://stackoverflow.com/questions/6997262/how-to-pull-url-file-extension-out-of-url-string-using-javascript
+          // Make sure the method used for verifying the extension matches the kind of url your selfhosted video has
+          var extension = url.split('.').pop();
+
+          // Add more extensions as required
+          var s = ( extension === 'mp4' || extension === '3gp' ) ? extension : null ;
+          return s;
+        },
+        markup: function( url ) {
+          // return '<video controls class="nGY2ViewerMedia"><source src="${id.src}" type="video/${id.type}" preload="auto">Your browser does not support the video tag (HTML 5).</video>';
+          var extension = url.split('.').pop();
+          return '<video controls class="nGY2ViewerMedia"><source src="'+ url +'" type="video/'+ extension +'" preload="auto">Your browser does not support the video tag (HTML 5).</video>';
+        },
+        kind: 'video',
+        selfhosted : true
       }
     };
         
@@ -5903,10 +5918,10 @@ TODO:
         jQuery.each(mediaList, function ( n, media ) {
           var id = media.getID(src);
           if( id != null ) {
-            src = media.url(id);
+            if( typeof media.url == 'function' ) { src = media.url(id);  }
             if( typeof media.thumbUrl == 'function' ) { thumbsrc = media.thumbUrl(id);  }
             newItem.mediaKind = media.kind;
-            newItem.mediaMarkup = media.markup(id);
+            newItem.mediaMarkup = ( media.selfhosted ) ? media.markup( src ) : media.markup(id);
             return false;
           }
         });
@@ -6119,12 +6134,22 @@ TODO:
         jQuery.each(mediaList, function ( n, media ) {
           var id = media.getID(src);
           if( id != null ) {
+            src = ( media.selfhosted ) ? media.url( src ) : media.url(id);
+            if( typeof media.thumbUrl == 'function' ) { thumbsrc = media.thumbUrl(id);  }
+            newItem.mediaKind = media.kind;
+            newItem.mediaMarkup = ( media.selfhosted ) ? media.markup( { 'src' : src, 'type' : id } ) : media.markup(id);
+            return false;
+          }
+// selhosted videos          
+/*
+          var id = media.getID(src);
+          if( id != null ) {
             src = media.url(id);
             if( typeof media.thumbUrl == 'function' ) { thumbsrc = media.thumbUrl(id);  }
             newItem.mediaKind = media.kind;
             newItem.mediaMarkup = media.markup(id);
             return false;
-          }
+*/
         });
         
         
@@ -6276,27 +6301,12 @@ TODO:
       if( G.O.albumList2 !== undefined && G.O.albumList2 !== null && G.O.albumList2.constructor === Array  ) {
         var l=G.O.albumList2.length;
         for(var i=0; i< l; i++ ) {
-          if( G.O.albumList2[i].indexOf('&authkey') !== -1 || G.O.albumList2[i].indexOf('?authkey') !== -1 ) {
-            // private Google Photos album
-            G.albumListHidden.push(G.O.albumList2[i]);
-          }
-          else {
-            G.albumList.push(G.O.albumList2[i]);
-          }
+          G.albumList.push(G.O.albumList2[i]);
         }
         // G.albumList=G.O.albumList.toUpperCase().split('|');
       }
       if( G.O.albumList2 !== undefined && typeof G.O.albumList2 == 'string'   ) {
-        if( G.O.albumList2.indexOf('&authkey') !== -1 ) {
-          // private Google Photos album
-          G.albumListHidden.push(G.O.albumList2);
-        }
-        else {
-          G.albumList.push(G.O.albumList2);
-        }
-      }
-      if( G.albumListHidden.length > 0 ) {
-        G.O.locationHash = false;   // disable hash location for hidden/privat albums --> combination is impossible
+        G.albumList.push(G.O.albumList2);
       }
       
       
@@ -8907,7 +8917,7 @@ TODO:
                     ViewerSetMediaVisibility(att.itemNew, att.$e, 1);
 
                     var sc = Math.min( Math.max( (Math.abs(state.t)) / G.VOM.window.lastWidth, .8), 1);
-                    if( G.O.imageTransition == 'swipe' ) { sc = 1; }
+                    if( G.O.imageTransition == 'SWIPE' ) { sc = 1; }
                     // att.$e[0].style[G.CSStransformName] = 'translate(' + (-att.dir+state.t) + 'px, 0px) scale(' + sc + ') rotate(' + att.itemNew.rotationAngle + 'deg)';
                     att.$e[0].style[G.CSStransformName] = 'translate(' + (-att.dir+state.t) + 'px, 0px) scale(' + sc + ')';
                   }
