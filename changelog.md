@@ -1,6 +1,23 @@
 nanogallery2 - ChangeLog
 ===========
 
+v2.4.0
+------
+- new: support for self hosted videos (mp4)
+- new: lightbox - button to rotate images
+- new: lightbox - fluid transition from zoomed to unzoomed image when displaying a new image
+- new: API shopping cart update event now returns also the concerned item
+- fixed: new data provider for the new Google Photos API (nanogp2 - https://github.com/nanostudio-org/nanogp2)
+- note: Google Photos - videos cannot be played in the lightbox (only download is available)
+- fixed #160: IE11: CSS can not be accessed
+- fixed #161: IE11: startsWith not defined
+- fixed #157: pagination - scroll to top of the gallery in mode pagination
+- fixed #155: image transition effect SWIPE
+- enhancement #175: gallery display shaking when pagination activated on mobile device
+- enhancement: lightbox vertical pan handling
+- removed: option 'albumListHidden' depreciated
+  
+	 
 v2.3.0
 ------
 - new loading spinner with support of gif/png files with transparency
