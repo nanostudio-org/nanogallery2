@@ -22,18 +22,22 @@
 /*
   V2.4.0beta
 
+- new: support for self hosted videos (mp4)
 - new: lightbox - button to rotate images
 - new: lightbox - fluid transition from zoomed to unzoomed image when displaying a new image
-- new! self hosted videos (mp4)
-- fixed: new data provider for the new Google Photos API (nanogp2)
-- fixed #160 - IE11: css can not be accessed
-- fixed #161 - IE 11: startsWith not defined
-- fixed #155 - image transition effect SWIPE
-- enhancement #175 - gallery display shaking when pagination activated on mobile device
-- enhancement : lightbox vertical pan handling
-- Google Photos : videos cannot be played in the lightbox, but download is possible
+- new: API shopping cart update event now returns also the concerned item
+- fixed: new data provider for the new Google Photos API (nanogp2 - https://github.com/nanostudio-org/nanogp2)
+- note: Google Photos - videos cannot be played in the lightbox (only download is possible)
+- fixed #160: IE11: css can not be accessed
+- fixed #161: IE11: startsWith not defined
+- fixed #157: pagination - scroll to top of the gallery pagination
+- fixed #155: image transition effect SWIPE
+- enhancement #175: gallery display shaking when pagination activated on mobile device
+- enhancement: lightbox vertical pan handling
 - removed: option 'albumListHidden' depreciated
 
+TODO:
+- loading spin on album thumbnail
   
  
 */
@@ -1393,7 +1397,7 @@
     thumbnailSliderDelay:         2000,
     galleryBuildInit2 :           '',
     portable :                    false,
-    eventsDebounceDelay:          50,
+    eventsDebounceDelay:          30,
     
     touchAnimation :              true,
     touchAnimationL1 :            undefined,
@@ -1967,11 +1971,13 @@
      */
     this.PaginationGotoPage = function( page ) {
       var aIdx = G.$E.conPagin.data('galleryIdx');
-      // if( !inViewportVert(G.$E.base, 0) ) {
-        // $('html, body').animate({scrollTop: G.$E.base.offset().top}, 200);
-      // }
       if( page > 1 ) { page--; }
       G.GOM.pagination.currentPage = page;
+
+      // scroll to top of gallery if not displayed
+      if( !inViewportVert(G.$E.base, 0) ) {
+        $('html, body').animate({scrollTop: G.$E.base.offset().top}, 200);
+      }
       GalleryDisplayPart1( true );
       GalleryDisplayPart2( true );
       return false;
@@ -2367,7 +2373,7 @@
     G.CSSbackfaceVisibilityName = FirstSupportedPropertyName(["backfaceVisibility", "msBackfaceVisibility", "MozBackfaceVisibility", "WebkitBackfaceVisibility", "OBackfaceVisibility"]);
     G.CSStransitionName =         FirstSupportedPropertyName(["transition", "msTransition", "MozTransition", "WebkitTransition", "OTransition"]);
     G.CSSanimationName =          FirstSupportedPropertyName(["animation", "msAnimation", "MozAnimation", "WebkitAnimation", "OAnimation"]);
-    G.GalleryResizeThrottled =    throttle(GalleryResize, 100, {leading: false});
+    G.GalleryResizeThrottled =    throttle(GalleryResize, 30, {leading: false});
     
     G.blackList =                 null;     // album white list
     G.whiteList =                 null;     // album black list
@@ -3166,6 +3172,11 @@
         elt$.click( function(e) {
           G.GOM.pagination.currentPage = jQuery(this).data('pageNumber');
           TriggerCustomEvent('pageChanged');
+
+          // scroll to top of gallery if not displayed
+          if( !inViewportVert(G.$E.base, 0) ) {
+            $('html, body').animate({scrollTop: G.$E.base.offset().top}, 200);
+          }
           GalleryDisplayPart1( true );
           GalleryDisplayPart2( true );
         });
@@ -3208,6 +3219,10 @@
       G.GOM.pagination.currentPage = pn;
       TriggerCustomEvent('pageChanged');
 
+      // scroll to top of gallery if not displayed
+      if( !inViewportVert(G.$E.base, 0) ) {
+        $('html, body').animate({scrollTop: G.$E.base.offset().top}, 200);
+      }
       GalleryDisplayPart1( true );
       GalleryDisplayPart2( true );
     }
@@ -3238,6 +3253,11 @@
 
       G.GOM.pagination.currentPage = pn;
       TriggerCustomEvent('pageChanged');
+
+      // scroll to top of gallery if not displayed
+      if( !inViewportVert(G.$E.base, 0) ) {
+        $('html, body').animate({scrollTop: G.$E.base.offset().top}, 200);
+      }
       GalleryDisplayPart1( true );
       GalleryDisplayPart2( true );
     }
@@ -3329,7 +3349,7 @@
       }
 
       G.layout.SetEngine();
-      G.galleryResizeEventEnabled=false;
+      G.galleryResizeEventEnabled = false;
       G.GOM.albumIdx = -1;
       G.GOM.lastDisplayedIdx = -1;
 
@@ -3517,7 +3537,7 @@
         requestTimeout(function(){ GalleryDisplayPart2( false ) }, 120);
       }
       else {
-        G.galleryResizeEventEnabled=true;
+        G.galleryResizeEventEnabled = true;
       }
       
       if( G.O.debugMode ) { console.log('GalleryRenderPart3: '+ (new Date()-d)); }
@@ -9717,9 +9737,7 @@
     
     
     function ResizeWindowEvent() {
-      G.GOM.cache.viewport = getViewport();
-      G.GOM.cache.areaWidth = G.$E.conTnParent.width();
-      G.GOM.cache.containerOffset = G.$E.conTnParent.offset();
+      CacheViewport();
 
       if( G.VOM.viewerDisplayed ) {
         ResizeInternalViewer();
@@ -9799,7 +9817,7 @@
 
     
     function RetrieveCurWidth() {
-      var vpW= G.GOM.cache.viewport.w;
+      var vpW = G.GOM.cache.viewport.w;
       
       if( G.O.breakpointSizeSM > 0 && vpW < G.O.breakpointSizeSM) { return 'xs'; }
       if( G.O.breakpointSizeME > 0 && vpW < G.O.breakpointSizeME) { return 'sm'; }
