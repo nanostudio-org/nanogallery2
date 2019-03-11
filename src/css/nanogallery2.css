@@ -36,8 +36,8 @@
 
 @font-face {
   font-family: 'ngy2_icon_font';
-  src: url('font/ngy2_icon_font.woff2?62863819') format('woff2'),
-       url('font/ngy2_icon_font.woff?62863819') format('woff');
+  src: url('font/ngy2_icon_font.woff2?64889571') format('woff2'),
+       url('font/ngy2_icon_font.woff?64889571') format('woff');
   font-weight: normal;
   font-style: normal;
 }
@@ -112,6 +112,10 @@
 .nGY2Icon-twitter-squared:before { content: '\f304'; } /* '?' */
 .nGY2Icon-youtube-play:before { content: '\f16a'; } /* '?' */
 .nGY2Icon-vkontakte:before { content: '\f189'; } /* '?' */
+.nGY2Icon-cw:before { content: '\e809'; } /* '?' */
+.nGY2Icon-ccw:before { content: '\e80c'; } /* '?' */
+
+
 
 
 [class^="nGY2Icon-"] {
