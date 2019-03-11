@@ -1,4 +1,4 @@
-/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2019-03-06 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2019-03-11 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /**!
  * @preserve nanogallery2 - javascript photo / video gallery and lightbox
  * Homepage: http://nanogallery2.nanostudio.org
@@ -1650,16 +1650,16 @@
           if( typeof value === 'undefined' || typeof option === 'undefined' ){
             return false;
           }
-          var ID=option;
-          var cnt=value;
-          for( var i=0; i<nG2.shoppingCart.length; i++) {
-            if( nG2.shoppingCart[i].ID=ID ) {
-              nG2.shoppingCart[i].cnt=cnt;
+          var ID = option;
+          var cnt = value;
+          for( var i = 0; i < nG2.shoppingCart.length; i++) {
+            if( nG2.shoppingCart[i].ID = ID ) {
+              nG2.shoppingCart[i].cnt = cnt;
             }
           }
-          var fu=G.O.fnShoppingCartUpdated;
+          var fu = G.O.fnShoppingCartUpdated;
           if( fu !== null ) {
-            typeof  fu == 'function' ? fu(nG2.shoppingCart) : window[fu](nG2.shoppingCart);
+            typeof  fu == 'function' ? fu(nG2.shoppingCart, NGY2Item.Get(G, ID)) : window[fu](nG2.shoppingCart, NGY2Item.Get(G, ID));
           }
           return nG2.shoppingCart;
           break;
@@ -1675,9 +1675,9 @@
               break;
             }
           }
-          var fu=G.O.fnShoppingCartUpdated;
+          var fu = G.O.fnShoppingCartUpdated;
           if( fu !== null ) {
-            typeof fu == 'function' ? fu(nG2.shoppingCart) : window[fu](nG2.shoppingCart);
+            typeof fu == 'function' ? fu(nG2.shoppingCart, NGY2Item.Get(G, ID)) : window[fu](nG2.shoppingCart, NGY2Item.Get(G, ID));
           }
           return nG2.shoppingCart;
           break;
@@ -1727,7 +1727,7 @@
         throw 'Not supported for this content source:' + G.O.kind;
       }
 
-      var albumIdx=G.GOM.albumIdx;
+      var albumIdx = G.GOM.albumIdx;
       if( albumIdx == -1 ) {
         throw ('Current album not found.');
       }
@@ -2493,11 +2493,11 @@
         switch( n ) {
           case -1:   // previous
             var idx=this.IdxPrevious();
-            return G.I[this.items[idx].ngy2ItemIdx]
+            return G.I[this.items[idx].ngy2ItemIdx];
             break;
           case 1:   // next
             var idx=this.IdxNext();
-            return G.I[this.items[idx].ngy2ItemIdx]
+            return G.I[this.items[idx].ngy2ItemIdx];
             break;
           case 0:   // current
           default:
@@ -2513,7 +2513,7 @@
         return n;
       },
       IdxPrevious: function() {
-        var n = G.VOM.currItemIdx-1;
+        var n = G.VOM.currItemIdx - 1;
         if( G.VOM.currItemIdx == 0 ) {
           n = G.VOM.items.length - 1;
         }
@@ -7482,9 +7482,9 @@
       for( var i=0; i<G.shoppingCart.length; i++ ) {
         if( G.shoppingCart[i].idx == idx ) {
           G.shoppingCart[i].cnt++;
-          var fu=G.O.fnShoppingCartUpdated;
+          var fu = G.O.fnShoppingCartUpdated;
           if( fu !== null ) {
-            typeof fu == 'function' ? fu(G.shoppingCart) : window[fu](G.shoppingCart);
+            typeof fu == 'function' ? fu(G.shoppingCart, G.I[idx]) : window[fu](G.shoppingCart, G.I[idx]);
           }
           TriggerCustomEvent('shoppingCartUpdated');
           return;
@@ -7496,7 +7496,7 @@
         G.shoppingCart.push( { idx:idx, ID:G.I[idx].GetID(), cnt:1} );
         var fu=G.O.fnShoppingCartUpdated;
         if( fu !== null ) {
-          typeof fu == 'function' ? fu(G.shoppingCart) : window[fu](G.shoppingCart);
+          typeof fu == 'function' ? fu(G.shoppingCart, G.I[idx]) : window[fu](G.shoppingCart, G.I[idx]);
         }
         TriggerCustomEvent('shoppingCartUpdated');
       }
