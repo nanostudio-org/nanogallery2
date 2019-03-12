@@ -94,5 +94,7 @@ Dual licenced:
 - for [fontello.com](http://fontello.com):
 [Vitaly Puzrin](https://github.com/puzrin)
   
+&nbsp;  
+&nbsp;  
 **Many thanks to [BrowserStack](https://www.browserstack.com/) for their testing services!**   
 <img src="http://nanogallery.brisbois.fr/img/browserstack2.png"/>
