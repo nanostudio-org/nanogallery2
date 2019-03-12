@@ -82,7 +82,7 @@ Dual licenced:
   
 **Many thanks to these technology contributors:** 
 - for [shifty](https://github.com/jeremyckahn/shifty):
-**[Jeremy Kahn](https://github.com/jeremyckahn) - special thanks for all you help!**
+**[Jeremy Kahn](https://github.com/jeremyckahn) - special thanks for all your help!**
 - for [imagesloaded](https://github.com/desandro/imagesloaded): 
 [David DeSandro](https://github.com/desandro)
 - for [screenfull.js](https://github.com/sindresorhus/screenfull.js):
