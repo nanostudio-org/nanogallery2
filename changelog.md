@@ -1,7 +1,7 @@
 nanogallery2 - ChangeLog
 ===========
 
-v2.4.0
+v2.4.1
 ------
 - new: support for self hosted videos (mp4)
 - new: lightbox - button to rotate images
