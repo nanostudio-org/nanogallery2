@@ -372,6 +372,45 @@
       color: #fff !important;
       font-weight: bold;
     }
+	    
+		
+    /* animated logo */
+    .ngy2_logo svg {
+        display: block;
+        letter-spacing: 1.5vw;
+        font-size: 3vw;
+    }
+    .ngy2_logo .text-copy {
+        fill: none;
+        stroke: #000;
+        stroke-dasharray: 6% 29%;
+        stroke-width: 0.5px;
+        stroke-dashoffset: 0%;
+        animation: stroke-offset 5.5s infinite linear;
+    }
+    .ngy2_logo .text-copy:nth-child(1){
+      stroke: #23CB99;
+      animation-delay: -1;
+    }
+    .ngy2_logo .text-copy:nth-child(2){
+      stroke: #46D6AB;
+      animation-delay: -2s;
+    }
+    .ngy2_logo .text-copy:nth-child(3){
+      stroke: #23CB99;
+      animation-delay: -3s;
+    }
+    .ngy2_logo .text-copy:nth-child(4){
+      stroke: #23CB99;
+      animation-delay: -4s;
+    }
+    .ngy2_logo .text-copy:nth-child(5){
+      stroke: #23CB99;
+      animation-delay: -5s;
+    }
+    @keyframes stroke-offset{
+      100% {stroke-dashoffset: -35%;}
+    }    
 		
 
     /************/
@@ -957,7 +996,7 @@
           <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand form-horizontal" href="http://nanogallery2.nanostudio.org/" rel="home" title="nanogallery2">
-          <img src="img/nanogallery2s.png" alt="nanogallery2" style="height:30px;"> &nbsp; <span class="ngy2_version">v2.4.0</span>
+          <img src="img/nanogallery2s.png" alt="nanogallery2" style="height:30px;"> &nbsp; <span class="ngy2_version">v2.4.1</span>
         </a>
       </div>
       <div id="navbar" class="collapse navbar-collapse">
