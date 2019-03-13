@@ -13,6 +13,7 @@ v2.4.0
 - fixed #161: IE11: startsWith not defined
 - fixed #157: pagination - scroll to top of the gallery in mode pagination
 - fixed #155: image transition effect SWIPE
+- fixed: fullscreen issue in Chrome
 - enhancement #175: gallery display shaking when pagination activated on mobile device
 - enhancement: lightbox vertical pan handling
 - removed: option 'albumListHidden' depreciated
