@@ -19,7 +19,6 @@
  *  - ICO online converter: https://iconverticons.com/online/
  */
 
-
  
  
 // ###########################################
@@ -1427,7 +1426,7 @@
     },
     viewerTools : {
       topLeft :                   'pageCounter,playPauseButton',
-      topRight :                  'zoomButton,rotateLeft,rotateRight,closeButton' 
+      topRight :                  'rotateLeft,rotateRight,fullscreenButton,closeButton' 
     },
     
     breakpointSizeSM :            480,
@@ -2634,7 +2633,7 @@
       background:             '#000',
       imageBorder:            'none',
       imageBoxShadow:         'none',
-      barBackground:          'rgba(4, 4, 4, 0.7)',
+      barBackground:          'rgba(4, 4, 4, 0.2)',
       barBorder:              '0px solid #111',
       barColor:               '#eee',
       barDescriptionColor:    '#aaa'
@@ -2643,7 +2642,7 @@
       background:             'rgba(1, 1, 1, 0.75)',
       imageBorder:            '4px solid #f8f8f8',
       imageBoxShadow:         '#888 0px 0px 20px',
-      barBackground:          'rgba(4, 4, 4, 0.7)',
+      barBackground:          'rgba(4, 4, 4, 0.2)',
       barBorder:              '0px solid #111',
       barColor:               '#eee',
       barDescriptionColor:    '#aaa'
@@ -7275,8 +7274,8 @@
       switch(toType(G.O.viewerTheme)) {
         case 'object':    // user custom color scheme object 
           cs = G.viewerTheme_dark;
-          jQuery.extend(true,cs,G.O.viewerTheme);
-          G.VOM.viewerTheme = 'nanogallery_viewertheme_custom_'+G.baseEltID;
+          jQuery.extend(true, cs, G.O.viewerTheme);
+          G.VOM.viewerTheme = 'nanogallery_viewertheme_custom_' + G.baseEltID;
           break;
         case 'string':    // name of an internal defined color scheme
           switch( G.O.viewerTheme ) {
@@ -7304,15 +7303,19 @@
       }
 
       var s1 = '.' + G.VOM.viewerTheme + ' ';
-      var s = s1 + '.nGY2Viewer { background:'+cs.background+'; }'+'\n';
-      s += s1 + '.nGY2ViewerMedia { border:'+cs.imageBorder+'; box-shadow:'+cs.imageBoxShadow+'; }'+'\n';
-      s += s1 + '.nGY2Viewer .toolbarBackground { background:'+cs.barBackground+'; }'+'\n';
-      s += s1 + '.nGY2Viewer .toolbar { border:'+cs.barBorder+'; color:'+cs.barColor+'; }'+'\n';
-      s += s1 + '.nGY2Viewer .toolbar .previousButton:after { color:'+cs.barColor+'; }'+'\n';
-      s += s1 + '.nGY2Viewer .toolbar .nextButton:after { color:'+cs.barColor+'; }'+'\n';
-      s += s1 + '.nGY2Viewer .toolbar .closeButton:after { color:'+cs.barColor+'; }'+'\n';
-      s += s1 + '.nGY2Viewer .toolbar .label .title { color:'+cs.barColor+'; }'+'\n';
-      s += s1 + '.nGY2Viewer .toolbar .label .description { color:'+cs.barDescriptionColor+'; }'+'\n';
+      var s = s1 + '.nGY2Viewer { background:' + cs.background + '; }'+'\n';
+      s += s1 + '.nGY2ViewerMedia { border:' + cs.imageBorder + '; box-shadow:' + cs.imageBoxShadow + '; }'+'\n';
+      s += s1 + '.nGY2Viewer .toolbarBackground { background:' + cs.barBackground + '; }'+'\n';
+      s += s1 + '.nGY2Viewer .nGY2ViewerToolsTopLeft { background:' + cs.barBackground + '; }'+'\n';
+      s += s1 + '.nGY2Viewer .nGY2ViewerToolsTopRight { background:' + cs.barBackground + '; }'+'\n';
+      s += s1 + '.nGY2Viewer .nGY2ViewerAreaNext { background:' + cs.barBackground + '; }'+'\n';
+      s += s1 + '.nGY2Viewer .nGY2ViewerAreaPrevious { background:' + cs.barBackground + '; }'+'\n';
+      s += s1 + '.nGY2Viewer .toolbar { border:' + cs.barBorder + '; color:' + cs.barColor + '; }'+'\n';
+      s += s1 + '.nGY2Viewer .toolbar .previousButton:after { color:' + cs.barColor + '; }'+'\n';
+      s += s1 + '.nGY2Viewer .toolbar .nextButton:after { color:' + cs.barColor + '; }'+'\n';
+      s += s1 + '.nGY2Viewer .toolbar .closeButton:after { color:' + cs.barColor + '; }'+'\n';
+      s += s1 + '.nGY2Viewer .toolbar .label .title { color:' + cs.barColor + '; }'+'\n';
+      s += s1 + '.nGY2Viewer .toolbar .label .description { color:' + cs.barDescriptionColor + '; }'+'\n';
       jQuery('head').append('<style>' + s + '</style>');
       G.VOM.$cont.addClass(G.VOM.viewerTheme);
     };
@@ -10343,7 +10346,7 @@ return ngImagesLoaded;
 //##########################################################################################################################
 
 // screenfull.js
-// v3.2.0
+// v4.0.1
 // by sindresorhus - https://github.com/sindresorhus
 // from: https://github.com/sindresorhus/screenfull.js
 
@@ -10355,7 +10358,7 @@ return ngImagesLoaded;
 (function () {
 	'use strict';
 
-	var document = typeof window === 'undefined' ? {} : window.document;
+	var document = typeof window !== 'undefined' && typeof window.document !== 'undefined' ? window.document : {};
 	var isCommonjs = typeof module !== 'undefined' && module.exports;
 	var keyboardAllowed = typeof Element !== 'undefined' && 'ALLOW_KEYBOARD_INPUT' in Element;
 
@@ -10426,37 +10429,73 @@ return ngImagesLoaded;
 		return false;
 	})();
 
+	var eventNameMap = {
+		change: fn.fullscreenchange,
+		error: fn.fullscreenerror
+	};
+
 	var ngscreenfull = {
 		request: function (elem) {
-			var request = fn.requestFullscreen;
+			return new Promise(function (resolve) {
+				var request = fn.requestFullscreen;
 
-			elem = elem || document.documentElement;
+				var onFullScreenEntered = function () {
+					this.off('change', onFullScreenEntered);
+					resolve();
+				}.bind(this);
 
-			// Work around Safari 5.1 bug: reports support for
-			// keyboard in fullscreen even though it doesn't.
-			// Browser sniffing, since the alternative with
-			// setTimeout is even worse.
-			if (/5\.1[.\d]* Safari/.test(navigator.userAgent)) {
-				elem[request]();
-			} else {
-				elem[request](keyboardAllowed && Element.ALLOW_KEYBOARD_INPUT);
-			}
+				elem = elem || document.documentElement;
+
+				// Work around Safari 5.1 bug: reports support for
+				// keyboard in fullscreen even though it doesn't.
+				// Browser sniffing, since the alternative with
+				// setTimeout is even worse.
+				if (/ Version\/5\.1(?:\.\d+)? Safari\//.test(navigator.userAgent)) {
+					elem[request]();
+				} else {
+					elem[request](keyboardAllowed ? Element.ALLOW_KEYBOARD_INPUT : {});
+				}
+
+				this.on('change', onFullScreenEntered);
+			}.bind(this));
 		},
 		exit: function () {
-			document[fn.exitFullscreen]();
+			return new Promise(function (resolve) {
+				if (!this.isFullscreen) {
+					resolve();
+					return;
+				}
+
+				var onFullScreenExit = function () {
+					this.off('change', onFullScreenExit);
+					resolve();
+				}.bind(this);
+
+				document[fn.exitFullscreen]();
+
+				this.on('change', onFullScreenExit);
+			}.bind(this));
 		},
 		toggle: function (elem) {
-			if (this.isFullscreen) {
-				this.exit();
-			} else {
-				this.request(elem);
-			}
+			return this.isFullscreen ? this.exit() : this.request(elem);
 		},
 		onchange: function (callback) {
-			document.addEventListener(fn.fullscreenchange, callback, false);
+			this.on('change', callback);
 		},
 		onerror: function (callback) {
-			document.addEventListener(fn.fullscreenerror, callback, false);
+			this.on('error', callback);
+		},
+		on: function (event, callback) {
+			var eventName = eventNameMap[event];
+			if (eventName) {
+				document.addEventListener(eventName, callback, false);
+			}
+		},
+		off: function (event, callback) {
+			var eventName = eventNameMap[event];
+			if (eventName) {
+				document.removeEventListener(eventName, callback, false);
+			}
 		},
 		raw: fn
 	};
