@@ -86,14 +86,13 @@
   <!-- #################################################################################################################### -->
 
     <style>
-
     body { font-size:1.3em; color:#000; line-height:1.5; }
     p { font-size:1.3em; }
     td { font-size:1.2em; }
    
     * { font-family: 'News Cycle', sans-serif; }
     h1 {
-      border-left : 5px solid #499195;
+      border-left : 5px solid #009688;
       padding-left: 10px;
     }
     h2, h3, h4, h5, h6 {
@@ -102,9 +101,11 @@
     
 
     blockquote {
-      color: #000;
+      color: #fff;
       background-color: #AEDADC;
+      background-color: #009688;
       border-color: #499195;
+      border-color: #00796B;
       padding-top: 25px;
       padding-bottom: 25px;
     }
@@ -150,10 +151,10 @@
     .ngy2documentation h5 { font-size: 1.7rem; }
     .ngy2documentation h6 { font-size: 1.6rem; }
     
-    .ngy2documentation table:not(.ngy2_comparison2) td {
+    .ngy2documentation table:not(.ngy2_comparison2) td { 
       font-size: 1.4rem;
       font-family: "Source Sans Pro",sans-serif;
-		}
+    }
     .ngy2documentation table:not(.ngy2_comparison2) td *{ 
       font-size: 1.4rem;
     }
@@ -176,25 +177,39 @@
 
 
     .ngy2documentation :not(pre) > code {
-        background: #eee;
-        font-weight: normal;
-        color: #19676B;
-        text-shadow: 0 1px #fff;
+      background: #eee;
+      background: #f4f4f0;
+      font-weight: normal;
+      color: #19676B;
+      color: #000;
+      text-shadow: 0 1px #fff;
     }
     
     .ngy2documentation .badge {
       background-color: #19676B;
+      padding: 4px 10px;
+      margin: 1px;
     }
-    .ngy2documentation .badge.ngy2_ver{
+    .ngy2documentation .badge.ngy2_ver {
       background-color: #888;
+      background-color: #0288D1;
+      padding: 4px 10px;
+      margin: 1px;
+    }
+    .ngy2documentation .badge.ngy2_type {
+      background-color: #1976D2;
+      padding: 4px 10px;
+      margin: 1px;
     }
     .ngy2documentation .badge.ngy2_code_markup {
-      background-color: #800;
+      background-color: #303F9F;
       font-size: 1.4rem;
+      padding: 4px 10px;
     }
     .ngy2documentation .badge.ngy2_code_js {
-      background-color: #008;
+      background-color: #F57C00 !important;
       font-size: 1.4rem;
+      padding: 4px 10px;
     }
 
     .ngy2documentation p.ngy2_doc_p {
@@ -321,7 +336,8 @@
     }
 
     h1, h2, h3, h4, h5, h6 {
-      color : #499295
+      color : #499295;
+      color : #009688;
     }
     .ngy2_bgdark h1, .ngy2_bgdark h2, .ngy2_bgdark h3, .ngy2_bgdark h4, .ngy2_bgdark h5, .ngy2_bgdark h6 {
       /* color : #76B6B9; */
@@ -375,8 +391,7 @@
       color: #fff !important;
       font-weight: bold;
     }
-	    
-		
+    
     /* animated logo */
     .ngy2_logo svg {
         display: block;
@@ -429,7 +444,7 @@
       /* border: 5px solid #0F1934; */
     }
     .ngy2_features div::before {
-      content: "■";
+      content: "¦";
       color: #23CB99;
       /* font-family:"Arial Black"; */
     }
@@ -766,11 +781,14 @@
 
     /* Code blocks */
     pre {
-      padding: 1em 1.5em;
-      margin: .5em .5em;
+      padding: 1rem 1.5rem 0rem 1.5rem;
+      margin: .5rem .5rem;
       overflow: auto;
       background: #f0f0f0;
-      border-radius: .5em;
+      background: #FBFEDA;
+      color: #000;
+      border-radius: .0em;
+      border-color: #CDDC39;
     }
     pre > code {
       background: transparent;
@@ -967,6 +985,9 @@
         transform: scale(1) rotateZ(0deg);
       }
     }
+
+  
+
 
   </style>
 
