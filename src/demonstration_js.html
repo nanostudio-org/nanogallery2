@@ -16,8 +16,8 @@
       html_part1+='  &lt;head&gt;\n';
       html_part1+='    &lt;meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"&gt;\n\n';
       html_part1+='    &lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"&gt;&lt;/script&gt;\n\n';
-      html_part1+='    &lt;link href="https://unpkg.com/nanogallery2@2.3.0/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css"&gt;\n';
-      html_part1+='    &lt;script type="text/javascript" src="https://unpkg.com/nanogallery2@2.3.0/dist/jquery.nanogallery2.min.js"&gt;&lt;/script&gt;\n';
+      html_part1+='    &lt;link href="https://unpkg.com/nanogallery2@2.4.1/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css"&gt;\n';
+      html_part1+='    &lt;script type="text/javascript" src="https://unpkg.com/nanogallery2@2.4.1/dist/jquery.nanogallery2.min.js"&gt;&lt;/script&gt;\n';
       html_part1+='\n';
       html_part1+='  &lt;/head&gt;\n';
       html_part1+='  &lt;body&gt;\n\n';
@@ -109,7 +109,7 @@
           jQuery("#nanogallery2").nanogallery2({
             kind: 'google2',
             userID: '111186676244625461692',
-            google2URL: 'https://nano.gallery/nanogp/nanogp.php',
+            google2URL: 'https://nano.gallery/nanogp2/nanogp2.php',
             whiteList: 'nature|life|traditions|people',
             thumbnailHeight: 150, thumbnailWidth:150,
             locationHash: false
@@ -117,7 +117,7 @@
           var html=html_part1;
           html+='        "kind":            "google2",\n';
           html+='        "userID":          "111186676244625461692",\n';
-          html+='        "google2URL":      "https://YOUR_WEB_SERVER/nanogp/nanogp.php",\n';
+          html+='        "google2URL":      "https://YOUR_WEB_SERVER/nanogp2/nanogp2.php",\n';
           html+='        "thumbnailHeight": 150, "thumbnailWidth": 150\n';
           html+=html_part2+html_part3;
           jQuery('#ngy2_template').html(html);
@@ -125,22 +125,22 @@
           html2+=' "kind": "google", "userID": "111186676244625461692", "thumbnailHeight": 150, "thumbnailWidth": 150';
           html2+=portable_part2;
           jQuery('#ngy2_portable').html(html2);
-          jQuery('#ngy2_description').text('Content source = Google Photos. Displays the list of public albums. Requires the server module NANOGP.');
+          jQuery('#ngy2_description').text('Content source = Google Photos. Displays the list of public albums. Requires the server module NANOGP2.');
         },
         btnNGY2_source_demo2a: function() {
           jQuery("#nanogallery2").nanogallery2({
             kind: 'google2',
             userID: '111186676244625461692',
-            album: '5852572882905112961',
-            google2URL: 'https://nano.gallery/nanogp/nanogp.php',
+            album: 'AMKf1Ieg7h2GRPRBt_FkbAlqbrLpZyTMHOmMxXe7-qDWuW8UzbcvowTPGRlY8OJxW6B_AyEAfKxJ',      //  
+            google2URL: 'https://nano.gallery/nanogp2/nanogp2.php',
             thumbnailHeight: 150, thumbnailWidth:150,
             locationHash: false
           });
           var html=html_part1;
           html+='        "kind":            "google2",\n';
           html+='        "userID":          "111186676244625461692",\n';
-          html+='        "google2URL":      "https://YOUR_WEB_SERVER/nanogp/nanogp.php",\n';
-          html+='        "album":           "5852572882905112961",\n';
+          html+='        "google2URL":      "https://YOUR_WEB_SERVER/nanogp2/nanogp2.php",\n';
+          html+='        "album":           "1234567890",\n';
           html+='        "thumbnailHeight": 150, "thumbnailWidth": 150\n';
           html+=html_part2+html_part3;
           jQuery('#ngy2_template').html(html);
@@ -148,12 +148,12 @@
           html2+=' "kind": "google", "userID": "111186676244625461692", "album": "5852572882905112961", "thumbnailHeight": 150, "thumbnailWidth": 150';
           html2+=portable_part2;
           jQuery('#ngy2_portable').html(html2);
-          jQuery('#ngy2_description').text('Content source = Google Photos. Displays the photos contained in one specific public album. Requires the server module NANOGP.');
+          jQuery('#ngy2_description').text('Content source = Google Photos. Displays the photos contained in one specific public album. Requires the server module NANOGP2.');
         },
         btnNGY2_source_demo2b: function() {
           jQuery("#nanogallery2").nanogallery2({
             kind: 'google2',
-            google2URL: 'https://nano.gallery/nanogp/nanogp.php',
+            google2URL: 'https://nano.gallery/nanogp2/nanogp2.php',
             userID: '111186676244625461692',
             albumList2: ['Traditions', 'People'],
             thumbnailHeight: 150, thumbnailWidth:150,
@@ -162,8 +162,8 @@
           var html=html_part1;
           html+='        "kind":            "google2",\n';
           html+='        "userID":          "111186676244625461692",\n';
-          html+='        "google2URL":      "https://YOUR_WEB_SERVER/nanogp/nanogp.php",\n';
-          html+='        "album":           "5852572882905112961",\n';
+          html+='        "google2URL":      "https://YOUR_WEB_SERVER/nanogp2/nanogp2.php",\n';
+          html+='        "album":           "1234567890",\n';
           //html+='        "album": "5851968929721015169&authkey=CJSlhdKSgoiXtgE",\n';
           html+='        "thumbnailHeight": 150, "thumbnailWidth": 150\n';
           html+=html_part2+html_part3;
