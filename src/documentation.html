@@ -52,7 +52,7 @@
         <pre>
           &lt;div id="nanogallery2" data-nanogallery2='{
               "kind":             "nano_photos_provider2",
-              "dataProvider":     "http://mywebsever.com/mypath/nano_photos_provider2/nano_photos_provider2.php",
+              "dataProvider":     "https://mywebsever.com/mypath/nano_photos_provider2/nano_photos_provider2.php",
               "thumbnailHeight":  150,
               "thumbnailWidth":   150
             }'>      
@@ -228,7 +228,7 @@
     &lt;!-- ### gallery settings ### -->
     "thumbnailHeight":  150,
     "thumbnailWidth":   150,
-    "itemsBaseURL":     "http://nanogallery2.nanostudio.org/samples/"
+    "itemsBaseURL":     "https://nanogallery2.nanostudio.org/samples/"
   }'&gt;
 
   &lt;!-- ### gallery content ### -->
@@ -251,7 +251,7 @@ $("#my_nanogallery2").nanogallery2({
   &lt;!-- ### gallery settings ### -->
   thumbnailHeight:  150,
   thumbnailWidth:   150,
-  itemsBaseURL:     'http://nanogallery2.nanostudio.org/samples/',
+  itemsBaseURL:     'https://nanogallery2.nanostudio.org/samples/',
 
   &lt;!-- ### gallery content ### -->
   items: [
@@ -489,8 +489,10 @@ $("#my_nanogallery2").nanogallery2({
     <div id="ngy2_ref"></div>
     <br><br><br><br><br><br><br>
 
-    <div style="padding: 5px 10px;19676B;background-color: #499195;">
-      <h2 style="color:#fff;"><i class="fa fa-hashtag" aria-hidden="true"></i> Reference guide</h2>
+    <div style="padding: 5px 10px;19676B;background-color: #009688;">
+      <h2>&nbsp;</h2>
+      <h2>&nbsp;</h2>
+      <h2 style="color:#fff;font-size:5rem;"><i class="fa fa-hashtag" aria-hidden="true"></i> Reference guide</h2>
     </div>
     
     <div id="ngy2_gallery"></div>
@@ -514,7 +516,7 @@ $("#my_nanogallery2").nanogallery2({
           <tr>
             <td>
               thumbnailOpenImage
-              <br><span class="badge">boolean</span>
+              <br><span class="badge ngy2_type">boolean</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td>true</td>
@@ -533,7 +535,7 @@ $("#my_nanogallery2").nanogallery2({
           <tr>
             <td>
               galleryDisplayMode
-              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_type">string</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td>'fullContent'</td>
@@ -560,7 +562,7 @@ $("#my_nanogallery2").nanogallery2({
           <tr>
             <td>
               galleryDisplayMoreStep
-              <br><span class="badge">integer</span>
+              <br><span class="badge ngy2_type">integer</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td>2</td>
@@ -573,7 +575,7 @@ $("#my_nanogallery2").nanogallery2({
           <tr>
             <td>
               galleryPaginationMode
-              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_type">string</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td>'rectangles'</td>
@@ -597,7 +599,7 @@ $("#my_nanogallery2").nanogallery2({
           <tr>
             <td>
               galleryMaxRows
-              <br><span class="badge">integer</span>
+              <br><span class="badge  ngy2_type">integer</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td>2</td>
@@ -612,7 +614,7 @@ $("#my_nanogallery2").nanogallery2({
           <tr>
             <td>
               paginationVisiblePages
-              <br><span class="badge">integer</span>
+              <br><span class="badge  ngy2_type">integer</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td>10</td>
@@ -625,7 +627,7 @@ $("#my_nanogallery2").nanogallery2({
           <tr>
             <td>
               paginationSwipe
-              <br><span class="badge">boolean</span>
+              <br><span class="badge  ngy2_type">boolean</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td>true</td>
@@ -636,7 +638,7 @@ $("#my_nanogallery2").nanogallery2({
           <tr>
             <td>
               galleryLastRowFull
-              <br><span class="badge">boolean</span>
+              <br><span class="badge ngy2_type">boolean</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td>false</td>
@@ -649,7 +651,7 @@ $("#my_nanogallery2").nanogallery2({
           <tr>
             <td>
               gallerySorting
-              <br><span class="badge">string</span>
+              <br><span class="badge ngy2_type">string</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td>''</td>
@@ -662,7 +664,7 @@ $("#my_nanogallery2").nanogallery2({
           <tr>
             <td>
               galleryMaxItems
-              <br><span class="badge">integer</span>
+              <br><span class="badge  ngy2_type">integer</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td>0</td>
@@ -671,7 +673,7 @@ $("#my_nanogallery2").nanogallery2({
           <tr>
             <td>
               galleryResizeAnimation
-              <br><span class="badge">boolean</span>
+              <br><span class="badge  ngy2_type">boolean</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td>true</td>
@@ -680,7 +682,7 @@ $("#my_nanogallery2").nanogallery2({
           <tr>
             <td>
               galleryTheme<br>colorScheme
-              <br><span class="badge">string</span><span class="badge">object</span>
+              <br><span class="badge  ngy2_type">string</span><span class="badge  ngy2_type">object</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td>'dark'</td>
@@ -696,7 +698,7 @@ $("#my_nanogallery2").nanogallery2({
           <tr>
             <td>
               openOnStart
-              <br><span class="badge">string</span>
+              <br><span class="badge  ngy2_type">string</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td></td>
@@ -708,7 +710,7 @@ $("#my_nanogallery2").nanogallery2({
           <tr>
             <td>
               thumbnailSelectable
-              <br><span class="badge">boolean</span>
+              <br><span class="badge  ngy2_type">boolean</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td>false</td>
@@ -717,7 +719,7 @@ $("#my_nanogallery2").nanogallery2({
           <tr>
             <td>
               galleryRenderDelay
-              <br><span class="badge">integer</span>
+              <br><span class="badge  ngy2_type">integer</span>
               <br><span class="badge ngy2_ver">v1.3</span>
             </td>
             <td>60</td>
@@ -726,7 +728,7 @@ $("#my_nanogallery2").nanogallery2({
           <tr>
             <td>
               thumbnailDisplayOutsideScreen
-              <br><span class="badge">boolean</span>
+              <br><span class="badge  ngy2_type">boolean</span>
               <br><span class="badge ngy2_ver">v1.2</span>
             </td>
             <td>true</td>
@@ -739,7 +741,7 @@ $("#my_nanogallery2").nanogallery2({
           <tr>
             <td>
               galleryDisplayTransition
-              <br><span class="badge">string</span>
+              <br><span class="badge  ngy2_type">string</span>
               <br><span class="badge ngy2_ver">v1.4</span>
             </td>
             <td>'none'</td>
@@ -752,7 +754,7 @@ $("#my_nanogallery2").nanogallery2({
           <tr>
             <td>
               galleryDisplayTransitionDuration
-              <br><span class="badge">integer</span>
+              <br><span class="badge  ngy2_type">integer</span>
               <br><span class="badge ngy2_ver">v1.4</span>
             </td>
             <td>1000</td>
@@ -789,7 +791,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             thumbnailWidth
-            <br><span class="badge">integer</span><span class="badge">string</span>
+            <br><span class="badge  ngy2_type">integer</span><span class="badge  ngy2_type">string</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>300</td>
@@ -802,7 +804,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             thumbnailHeight
-            <br><span class="badge">integer</span><span class="badge">string</span>
+            <br><span class="badge  ngy2_type">integer</span><span class="badge  ngy2_type">string</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>200</td>
@@ -815,7 +817,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             thumbnailAlignment
-            <br><span class="badge">string</span>
+            <br><span class="badge  ngy2_type">string</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>'fillWidth'</td>
@@ -866,7 +868,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             thumbnailGutterWidth
-            <br><span class="badge">integer</span>
+            <br><span class="badge  ngy2_type">integer</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>2</td>
@@ -875,7 +877,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             thumbnailGutterHeight
-            <br><span class="badge">integer</span>
+            <br><span class="badge  ngy2_type">integer</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>2</td>
@@ -884,7 +886,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             thumbnailBorderHorizontal
-            <br><span class="badge">integer</span>
+            <br><span class="badge  ngy2_type">integer</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>2</td>
@@ -893,7 +895,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             thumbnailBorderVertical
-            <br><span class="badge">integer</span>
+            <br><span class="badge  ngy2_type">integer</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>2</td>
@@ -902,7 +904,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             thumbnailFeaturedKeyword
-            <br><span class="badge">string</span>
+            <br><span class="badge  ngy2_type">string</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>'*featured'</td>
@@ -914,7 +916,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             thumbnailDisplayInterval
-            <br><span class="badge">integer</span>
+            <br><span class="badge  ngy2_type">integer</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>15</td>
@@ -923,7 +925,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             thumbnailDisplayTransition
-            <br><span class="badge">string</span>
+            <br><span class="badge  ngy2_type">string</span>
             <br><span class="badge ngy2_ver">v1.0</span><span class="badge ngy2_ver">v1.3</span>
           </td>
           <td>'fadeIn'</td>
@@ -957,7 +959,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             thumbnailDisplayTransitionDuration
-            <br><span class="badge">integer</span>
+            <br><span class="badge  ngy2_type">integer</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>240</td>
@@ -966,7 +968,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             thumbnailStacks
-            <br><span class="badge">integer</span>
+            <br><span class="badge  ngy2_type">integer</span>
             <br><span class="badge ngy2_ver">v1.2</span>
           </td>
           <td>0</td>
@@ -975,7 +977,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             thumbnailWaitImageLoaded
-            <br><span class="badge">boolean</span>
+            <br><span class="badge  ngy2_type">boolean</span>
             <br><span class="badge ngy2_ver">v1.4</span>
           </td>
           <td>true</td>
@@ -984,7 +986,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             thumbnailCrop
-            <br><span class="badge">boolean</span>
+            <br><span class="badge  ngy2_type">boolean</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>true</td>
@@ -995,7 +997,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             thumbnailSliderDelay
-            <br><span class="badge">integer</span>
+            <br><span class="badge  ngy2_type">integer</span>
             <br><span class="badge ngy2_ver">v2.0</span>
           </td>
           <td>2000</td>
@@ -1140,7 +1142,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             position
-            <br><span class="badge">string</span>
+            <br><span class="badge  ngy2_type">string</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>'overImageOnBottom'</td>
@@ -1154,7 +1156,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             align
-            <br><span class="badge">string</span>
+            <br><span class="badge  ngy2_type">string</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>'center'</td>
@@ -1166,7 +1168,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             display
-            <br><span class="badge">boolean</span>
+            <br><span class="badge  ngy2_type">boolean</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>true</td>
@@ -1175,7 +1177,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             displayDescription
-            <br><span class="badge">boolean</span>
+            <br><span class="badge  ngy2_type">boolean</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>false</td>
@@ -1184,7 +1186,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             hideIcons
-            <br><span class="badge">boolean</span>
+            <br><span class="badge  ngy2_type">boolean</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>true</td>
@@ -1193,7 +1195,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             titleMaxLength
-            <br><span class="badge">integer</span>
+            <br><span class="badge  ngy2_type">integer</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>0</td>
@@ -1202,7 +1204,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             titleMultiLine
-            <br><span class="badge">boolean</span>
+            <br><span class="badge  ngy2_type">boolean</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>false</td>
@@ -1211,7 +1213,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             title
-            <br><span class="badge">string</span>
+            <br><span class="badge  ngy2_type">string</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td></td>
@@ -1225,7 +1227,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             titleFontSize
-            <br><span class="badge">string</span>
+            <br><span class="badge  ngy2_type">string</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td></td>
@@ -1237,7 +1239,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             descriptionMaxLength
-            <br><span class="badge">integer</span>
+            <br><span class="badge  ngy2_type">integer</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>0</td>
@@ -1246,7 +1248,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             descriptionMultiLine
-            <br><span class="badge">boolean</span>
+            <br><span class="badge  ngy2_type">boolean</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>false</td>
@@ -1255,7 +1257,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             descriptionFontSize
-            <br><span class="badge">string</span>
+            <br><span class="badge  ngy2_type">string</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td></td>
@@ -1396,7 +1398,7 @@ $("#my_nanogallery2").nanogallery2({
       <ul>
         <li><b>duration</b>: the duration of the effect in ms</li>
         <li><b>delay</b>: the delay in ms before the transformation is started</li>
-        <li><b>easing</b>: specify the rate of change of the transformation over time (see <a href="http://easings.net/" target="_blank">easings.net</a>)</li>
+        <li><b>easing</b>: specify the rate of change of the transformation over time (see <a href="https://easings.net/" target="_blank">easings.net</a>)</li>
         <ul>
           <li class="well"><u>Possible values:</u><br> easeInQuad, easeOutQuad, easeInOutQuad, easeInCubic, easeOutCubic, easeInOutCubic, easeInQuart, easeOutQuart, easeInOutQuart, easeInQuint, easeOutQuint, easeInOutQuint, easeInSine, easeOutSine, easeInOutSine, easeInExpo, easeOutExpo, easeInOutExpo, easeInCirc, easeOutCirc, easeInOutCirc, easeOutBounce, easeInBack, easeOutBack, easeInOutBack, elastic, bounce</li>
         </ul>
@@ -1465,7 +1467,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             thumbnailToolbarImage
-            <br><span class="badge">object</span>
+            <br><span class="badge  ngy2_type">object</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td></td>
@@ -1481,7 +1483,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             thumbnailToolbarAlbum
-            <br><span class="badge">object</span>
+            <br><span class="badge  ngy2_type">object</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td></td>
@@ -1521,7 +1523,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             displayBreadcrumb
-            <br><span class="badge">boolean</span>
+            <br><span class="badge  ngy2_type">boolean</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>true</td>
@@ -1530,7 +1532,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             breadcrumbOnlyCurrentLevel
-            <br><span class="badge">boolean</span>
+            <br><span class="badge  ngy2_type">boolean</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>true</td>
@@ -1539,7 +1541,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             breadcrumbAutoHideTopLevel
-            <br><span class="badge">boolean</span>
+            <br><span class="badge  ngy2_type">boolean</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>true</td>
@@ -1548,7 +1550,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             breadcrumbHideIcons
-            <br><span class="badge">boolean</span>
+            <br><span class="badge  ngy2_type">boolean</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td></td>
@@ -1557,7 +1559,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             galleryFilterTags
-            <br><span class="badge">boolean</span><span class="badge">string</span>
+            <br><span class="badge  ngy2_type">boolean</span><span class="badge  ngy2_type">string</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>false</td>
@@ -1573,7 +1575,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             thumbnailLevelUp
-            <br><span class="badge">boolean</span>
+            <br><span class="badge  ngy2_type">boolean</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>false</td>
@@ -1582,7 +1584,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             locationHash
-            <br><span class="badge">boolean</span>
+            <br><span class="badge  ngy2_type">boolean</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>true</td>
@@ -1596,7 +1598,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             touchAnimation
-            <br><span class="badge">boolean</span>
+            <br><span class="badge  ngy2_type">boolean</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>true</td>
@@ -1608,7 +1610,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             touchAutoOpenDelay
-            <br><span class="badge">integer</span>
+            <br><span class="badge  ngy2_type">integer</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td>0</td>
@@ -1623,7 +1625,7 @@ $("#my_nanogallery2").nanogallery2({
         <tr>
           <td>
             navigationFontSize
-            <br><span class="badge">string</span>
+            <br><span class="badge  ngy2_type">string</span>
             <br><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td></td>
@@ -1733,7 +1735,7 @@ $("#my_nanogallery2").nanogallery2({
       The standard toolbar has 2 states which are toggled with the 'minimizeButton' tool. Each state has is own configuration.
       <br>
       <br>
-      Possible tools: <b>'previousButton', 'pageCounter', 'nextButton', 'playPauseButton', 'fullscreenButton', 'infoButton', 'linkOriginalButton', 'closeButton', 'downloadButton', 'zoomButton', 'shareButton', 'label' (image title and description), 'customN'</b><br>
+      Possible tools: <b>'previousButton', 'nextButton', 'rotateLeft', 'rotateRight', 'pageCounter', 'playPauseButton', 'fullscreenButton', 'infoButton', 'linkOriginalButton', 'closeButton', 'downloadButton', 'zoomButton', 'shareButton', 'label' (image title and description), 'customN'</b><br>
       To add custom elements in a toolbar, use the label <b>customN</b>, where <b>N</b> is an integer (e.g. custom1, custom2...).
       <br><br><br>
 
@@ -1779,7 +1781,7 @@ viewerToolbar:    {
           <tr>
             <td>
               imageTransition
-              <br><span class="badge">string</span>
+              <br><span class="badge  ngy2_type">string</span>
               <br><span class="badge ngy2_ver">v1.0</span><span class="badge ngy2_ver">v2.3.0</span>
             </td>
             <td>'swipe2'</td>
@@ -1792,7 +1794,7 @@ viewerToolbar:    {
           <tr>
             <td>
               slideshowAutoStart
-              <br><span class="badge">boolean</span>
+              <br><span class="badge  ngy2_type">boolean</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td>false</td>
@@ -1803,7 +1805,7 @@ viewerToolbar:    {
           <tr>
             <td>
               slideshowDelay
-              <br><span class="badge">integer</span>
+              <br><span class="badge  ngy2_type">integer</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td>3000</td>
@@ -1814,7 +1816,7 @@ viewerToolbar:    {
           <tr>
             <td>
               viewerHideToolsDelay
-              <br><span class="badge">integer</span>
+              <br><span class="badge  ngy2_type">integer</span>
               <br><span class="badge ngy2_ver">v1.3</span>
             </td>
             <td>3000</td>
@@ -1823,7 +1825,7 @@ viewerToolbar:    {
           <tr>
             <td>
               viewerFullscreen
-              <br><span class="badge">boolean</span>
+              <br><span class="badge  ngy2_type">boolean</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td>false</td>
@@ -1832,7 +1834,7 @@ viewerToolbar:    {
           <tr>
             <td>
               <b>viewerToolbar</b>
-              <br><span class="badge">object</span>
+              <br><span class="badge  ngy2_type">object</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td></td>
@@ -1841,7 +1843,7 @@ viewerToolbar:    {
           <tr>
             <td class="ngy2_object">
               display
-              <br><span class="badge">boolean</span>
+              <br><span class="badge  ngy2_type">boolean</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td>true</td>
@@ -1850,7 +1852,7 @@ viewerToolbar:    {
           <tr>
             <td class="ngy2_object">
               position
-              <br><span class="badge">string</span>
+              <br><span class="badge  ngy2_type">string</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td>'bottomOverImage'</td>
@@ -1860,7 +1862,7 @@ viewerToolbar:    {
           <tr>
             <td class="ngy2_object">
               align
-              <br><span class="badge">string</span>
+              <br><span class="badge  ngy2_type">string</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td>'center'</td>
@@ -1870,7 +1872,7 @@ viewerToolbar:    {
           <tr>
             <td class="ngy2_object">
               fullWidth
-              <br><span class="badge">boolean</span>
+              <br><span class="badge  ngy2_type">boolean</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td>false</td>
@@ -1879,7 +1881,7 @@ viewerToolbar:    {
           <tr>
             <td class="ngy2_object">
               autoMinimize
-              <br><span class="badge">integer</span>
+              <br><span class="badge  ngy2_type">integer</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td>800</td>
@@ -1888,7 +1890,7 @@ viewerToolbar:    {
           <tr>
             <td class="ngy2_object">
               standard
-              <br><span class="badge">string</span>
+              <br><span class="badge  ngy2_type">string</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td></td>
@@ -1903,7 +1905,7 @@ viewerToolbar:    {
           <tr>
             <td class="ngy2_object">
               minimized
-              <br><span class="badge">string</span>
+              <br><span class="badge  ngy2_type">string</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td></td>
@@ -1918,7 +1920,7 @@ viewerToolbar:    {
           <tr>
             <td>
               <b>viewerTools</b>
-              <br><span class="badge">object</span>
+              <br><span class="badge  ngy2_type">object</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td></td>
@@ -1927,7 +1929,7 @@ viewerToolbar:    {
           <tr>
             <td class="ngy2_object">
               topLeft
-              <br><span class="badge">string</span>
+              <br><span class="badge  ngy2_type">string</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td></td>
@@ -1940,7 +1942,7 @@ viewerToolbar:    {
           <tr>
             <td class="ngy2_object">
               topRight
-              <br><span class="badge">string</span>
+              <br><span class="badge  ngy2_type">string</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td></td>
@@ -1953,7 +1955,7 @@ viewerToolbar:    {
           <tr>
             <td>
               viewerTheme<br>colorSchemeViewer
-              <br><span class="badge">string</span><span class="badge">object</span>
+              <br><span class="badge  ngy2_type">string</span><span class="badge  ngy2_type">object</span>
               <br><span class="badge ngy2_ver">v1.0</span><span class="badge ngy2_ver">v1.5</span>
             </td>
             <td>'dark'</td>
@@ -1968,7 +1970,7 @@ viewerToolbar:    {
           <tr>
             <td>
               viewerDisplayLogo
-              <br><span class="badge">boolean</span>
+              <br><span class="badge  ngy2_type">boolean</span>
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td>false</td>
@@ -1977,7 +1979,7 @@ viewerToolbar:    {
           <tr>
             <td>
               viewerImageDisplay
-              <br><span class="badge">string</span>
+              <br><span class="badge  ngy2_type">string</span>
               <br><span class="badge ngy2_ver">v1.5</span>
             </td>
             <td></td>
@@ -1996,7 +1998,7 @@ viewerToolbar:    {
           <tr>
             <td>
               viewerTransitionMediaKind
-              <br><span class="badge">string</span>
+              <br><span class="badge  ngy2_type">string</span>
               <br><span class="badge ngy2_ver">v2.0</span>
             </td>
             <td>'img'</td>
@@ -2035,7 +2037,7 @@ viewerToolbar:    {
           <tr>
             <td>
               eventsDebounceDelay
-              <br><span class="badge">integer</span>
+              <br><span class="badge  ngy2_type">integer</span>
               <br><span class="badge ngy2_ver">v2.2</span>
             </td>
             <td>50</td>
@@ -2539,4 +2541,3 @@ shareMail:                    '&lt;i  style="color:#555;" class="nGY2Icon-mail-a
   </div>
   </div>
   </div>
- 
