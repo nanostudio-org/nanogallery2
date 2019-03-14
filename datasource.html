@@ -1117,7 +1117,6 @@
   <!-- ##### END LOGO INDEX  ##### -->
   <!-- ########################### -->
 
-  
   <div class="container ngy2documentation">
   <div class="row" >
   <div class="col-md-10">
@@ -1132,7 +1131,7 @@
       A content source is a place where your images, videos and albums are stored. As for nanogallery2's settings, definition can be made with <b>HTML markup</b> or can be passed to the <code>nanogallery2()</code> function.<br>
       <br>
       <br>
-      Natively, you can display self hosted images and videos (hosted on Youtube, Vimeo, Dailymotion), just by listing all your medias individually in your HTML page.
+      Natively, you can display self hosted images and videos (hosted on Youtube, Vimeo, Dailymotion, self hosted), just by listing all your medias individually in your HTML page.
       <br><br>
       Additionally, you can use an optional module for displaying images :<br>
       &nbsp; &nbsp; &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i> with automatic generation of responsive thumbnails from your web server: <b><a href="#ngy2_npp2">nanoPhotosProvider2</a></b><br>
@@ -1319,8 +1318,10 @@ $("#my_nanogallery2").nanogallery2({
 
     <div id="ngy2_self_hosted"></div>
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <div style="padding: 5px 10px;19676B;background-color: #499195;">
-      <h2 style="color:#fff;"><i class="fa fa-hashtag" aria-hidden="true"></i> Media content definition</h2>
+    <div style="padding: 5px 10px;19676B;background-color: #009688;">
+      <h2>&nbsp;</h2>
+      <h2>&nbsp;</h2>
+      <h2 style="color:#fff;font-size:5rem;"><i class="fa fa-hashtag" aria-hidden="true"></i> Media content definition</h2>
     </div>
     
     
@@ -1332,7 +1333,7 @@ $("#my_nanogallery2").nanogallery2({
     </h4>
     <hr>
     <blockquote>
-      <h4>Image gallery</h4>
+      <h4 style="color:#fff">Image gallery</h4><br>
       Images are defined using the <b>&lt;A&gt;</b> tag and <b>data-</b> attributes.<br>
       <b>Note</b>: use the attribut <code>itemsBaseURL</code> to define the base URL where images are stored.<br>
     </blockquote>
@@ -1345,10 +1346,10 @@ $("#my_nanogallery2").nanogallery2({
   &lt;a href="img_03.jpg" data-ngthumb="img_03t.jpg"                                    &gt;Title Image3&lt;/a&gt;
 &lt;/div&gt;
     </pre>
-    <br><br>
+    <br><br><br><br>
     
     <blockquote>
-    <h4>Gallery with albums</h4>
+    <h4 style="color:#fff">Gallery with albums</h4><br>
     Albums are defined like images using the <b>&lt;A&gt;</b> tag and <b>data-</b> attributes.<br>
     Must also be set for each album:<br>
       &nbsp; - the data <b>kind</b> must be set: <code>data-ngkind="album"</code><br>
@@ -1372,10 +1373,10 @@ $("#my_nanogallery2").nanogallery2({
   &lt;a href="img04.jpg"                     data-ngid="22" data-ngalbumid="2" data-ngthumb="img04T.jpg"    &gt;Image3&lt;/a&gt;
 &lt;/div&gt;    
     </pre>
-    <br><br>
+    <br><br><br><br>
     
     <blockquote>
-      <h4>Video gallery</h4>
+      <h4 style="color:#fff">Video gallery</h4><br>
       Videos are defined like images.<br>
       Define the URL of each video. Thumbnails are retrieved automatically for Youtube and Dailymotion. For Vimeo, you have to set the URL of the video's thumbnail.<br>
       <b>Supported video platforms: Youtube, Vimeo and Dailymotion.</b>
@@ -1387,13 +1388,15 @@ $("#my_nanogallery2").nanogallery2({
   &lt;a href="https://www.youtube.com/watch?v=Ir098VWCv8Q"                                                     &gt;Youtube&lt;/a&gt;
   &lt;a href="http://www.dailymotion.com/video/x4wtyl6"                                                        &gt;Dailymotion&lt;/a&gt;
   &lt;a href="https://vimeo.com/32875422"  data-ngthumb="https://i.vimeocdn.com/video/222726041_1280x720.jpg"  &gt;Vimeo&lt;/a&gt;
+  &lt;a href="my_video.mp4"  data-ngthumb="my_video_thumbnail.jpg"  &gt;Self hosted&lt;/a&gt;                           &gt;Self hosted&lt;/a&gt; 
 &lt;/div&gt;
     </pre>
 
     <br><br>
+    <br><br>
     
     <blockquote>
-      <h4>Video and image gallery</h4>
+      <h4  style="color:#fff">Video and image gallery</h4><br>
       Videos, images and album can be conbined in a single gallery.<br>
     </blockquote>
     <span class="badge ngy2_code_markup"> HTML markup example</span> 
@@ -1402,6 +1405,7 @@ $("#my_nanogallery2").nanogallery2({
   &lt;a href="https://www.youtube.com/watch?v=Ir098VWCv8Q"                                                     &gt;Youtube&lt;/a&gt;
   &lt;a href="http://www.dailymotion.com/video/x4wtyl6"                                                        &gt;Dailymotion&lt;/a&gt;
   &lt;a href="https://vimeo.com/32875422"  data-ngthumb="https://i.vimeocdn.com/video/222726041_1280x720.jpg"  &gt;Vimeo&lt;/a&gt;
+  &lt;a href="my_video.mp4"  data-ngthumb="my_video_thumbnail.jpg"  &gt;Self hosted&lt;/a&gt;                           &gt;Self hosted&lt;/a&gt; 
   &lt;a href="img_01.jpg"                  data-ngthumb="img_01t.jpg"                                          &gt;Title Image1&lt;/a&gt;
 &lt;/div&gt;
     </pre>
@@ -1439,7 +1443,7 @@ $("#my_nanogallery2").nanogallery2({
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td></td>
-            <td>Item's ID.<br><span class="label label-primary">MANDATORY if your gallery contains albums -> assign an ID to each item (image and album).</span></td>
+            <td>Item's ID.<br><br><span class="label label-primary">MANDATORY if your gallery contains albums -> assign an ID to each item (image and album).</span></td>
           </tr>
           <tr>
             <td>
@@ -1448,7 +1452,7 @@ $("#my_nanogallery2").nanogallery2({
               <br><span class="badge ngy2_ver">v1.0</span>
             </td>
             <td></td>
-            <td>ID of the album containing the item.<br><span class="label label-primary">MANDATORY if your gallery contains albums.</span></td>
+            <td>ID of the album containing the item.<br><br><span class="label label-primary">MANDATORY if your gallery contains albums.</span></td>
           </tr>
           <tr>
             <td>
@@ -1477,7 +1481,7 @@ $("#my_nanogallery2").nanogallery2({
             <td>0</td>
             <td>
               Height of the thumbnail image (in pixels).
-              <br>
+              <br><br>
               <span class="label label-info">Not mandatory, but should be defined to improve overall performances.</span>
             </td>
           </tr>
@@ -1490,7 +1494,7 @@ $("#my_nanogallery2").nanogallery2({
             <td>0</td>
             <td>
               Width of the thumbnail image (in pixels).
-              <br>
+              <br><br>
               <span class="label label-info">Not mandatory, but should be defined to improve overall performances.</span>
             </td>
           </tr>
@@ -1503,7 +1507,7 @@ $("#my_nanogallery2").nanogallery2({
             <td>0</td>
             <td>
               Width of the image (in pixels).
-              <br>
+              <br><br>
               <span class="label label-info">Not mandatory, but should be defined to improve overall performances.</span>
             </td>
           </tr>
@@ -1516,7 +1520,7 @@ $("#my_nanogallery2").nanogallery2({
             <td>0</td>
             <td>
               Height of the image (in pixels).
-              <br>
+              <br><br>
               <span class="label label-info">Not mandatory, but should be defined to improve overall performances.</span>
             </td>
           </tr>
@@ -1672,11 +1676,11 @@ $("#my_nanogallery2").nanogallery2({
     <div id="ngy2_define_javascript"></div>
     <br><br><br><br><br><br><br>
     <h3><b><i class="fa fa-asterisk ngy2_color1" aria-hidden="true"></i> Javascript method</b></h3>
-    <h4 class="lead">for images and videos</h4>
+    <h4 class="lead" >for images and videos</h4>
     <hr>
     
     <blockquote>
-      <h4>Image gallery</h4>
+      <h4 style="color:#fff;">Image gallery</h4><br>
       Images are defined on gallery initialization, using javascript objects.<br>
     </blockquote>
     <span class="badge ngy2_code_js" >Javascript example</span>
@@ -1704,7 +1708,7 @@ $("#my_nanogallery2").nanogallery2({
     <br><br>
 
     <blockquote>
-    <h4>Gallery with albums</h4>
+    <h4 style="color:#fff;">Gallery with albums</h4><br>
     Albums are defined like images.<br>
     Must also be set for each album:<br>
       &nbsp; - the data <b>kind</b> must be set: <code>kind: 'album'</code><br>
@@ -1740,9 +1744,9 @@ $("#my_nanogallery2").nanogallery2({
     <br><br>    
 
     <blockquote>
-      <h4>Video gallery</h4>
+      <h4  style="color:#fff;">Video gallery</h4><br>
       Videos are defined like images.<br>
-      Define the URL of each video. Thumbnails are retrieved automatically for Youtube and Dailymotion. For Vimeo, you have to set the URL of the video's thumbnail.<br>
+      Define the URL of each video. Thumbnails are retrieved automatically for Youtube and Dailymotion. For Vimeo and for self hoset videos, you have to set the URL of the video's thumbnail.<br>
       <b>Supported video platforms: Youtube, Vimeo and Dailymotion.</b>
     </blockquote>
     <span class="badge ngy2_code_js" >Javascript example</span>
@@ -1769,7 +1773,7 @@ $("#my_nanogallery2").nanogallery2({
     <br><br>
 
     <blockquote>
-      <h4>Video and image gallery</h4>
+      <h4  style="color:#fff;">Video and image gallery</h4><br>
       Videos, images and album can be conbined in a single gallery.<br>
     </blockquote>
     <span class="badge ngy2_code_js" >Javascript example</span>
@@ -1848,7 +1852,7 @@ $("#my_nanogallery2").nanogallery2({
             </td>
             <td></td>
             <td>
-              Item ID.<br>
+              Item ID.<br><br>
               <span class="label label-primary">MANDATORY if your gallery contains albums -> assign an ID to each item (image and album).</span>
             </td>
           </tr>
@@ -1860,7 +1864,7 @@ $("#my_nanogallery2").nanogallery2({
             </td>
             <td></td>
             <td>
-              ID of the album containing the item.<br>
+              ID of the album containing the item.<br><br>
               <span class="label label-primary">MANDATORY if your gallery contains albums.</span>
             </td>
           </tr>
@@ -1900,7 +1904,7 @@ $("#my_nanogallery2").nanogallery2({
             <td>0</td>
             <td>
               Height of the image (in pixels).
-              <br>
+              <br><br>
               <span class="label label-info">Not mandatory, but should be defined to improve overall performances.</span>
             </td>
           </tr>
@@ -1913,7 +1917,7 @@ $("#my_nanogallery2").nanogallery2({
             <td>integer</td>
             <td>
               Width of the image (in pixels).
-              <br>
+              <br><br>
               <span class="label label-info">Not mandatory, but should be defined to improve overall performances.</span>
             </td>
           </tr>
@@ -1935,7 +1939,7 @@ $("#my_nanogallery2").nanogallery2({
             <td>0</td>
             <td>
               Height of the thumbnail image (in pixels).
-              <br>
+              <br><br>
               <span class="label label-info">Not mandatory, but should be defined to improve overall performances.</span>
             </td>
           </tr>
@@ -1948,7 +1952,7 @@ $("#my_nanogallery2").nanogallery2({
             <td>0</td>
             <td>
               Width of the thumbnail image (in pixels).
-              <br>
+              <br><br>
               <span class="label label-info">Not mandatory, but should be defined to improve overall performances.</span>
             </td>
           </tr>
@@ -2086,8 +2090,10 @@ $("#my_nanogallery2").nanogallery2({
     <br><br><br><br><br><br><br>
     <div id="ngy2_cloud"></div>
     <br><br><br><br><br><br><br>
-    <div style="padding: 5px 10px;19676B;background-color: #499195;">
-      <h2 style="color:#fff;"><i class="fa fa-hashtag" aria-hidden="true"></i> Optional modules for automatic content fetching</h2>
+    <div style="padding: 5px 10px;19676B;background-color: #009688;">
+      <h2>&nbsp;</h2>
+      <h2>&nbsp;</h2>
+      <h2 style="color:#fff;font-size:5rem;"><i class="fa fa-hashtag" aria-hidden="true"></i> Optional modules for automatic content fetching</h2>
     </div>
     
 
@@ -2263,11 +2269,11 @@ jQuery("#nanogallery2").nanogallery2({
     <blockquote>
       nanogallery2 can display your Flickr albums, or the content of a specific album, or your full photostream.
       <br><br>
+    </blockquote>
       <span style="color:#d00;"><b>
         This feature is provided "as-is". nanogallery2 is not affiliated to Flickr. Changes by Flickr may affect your galleries. nanogallery2 can not be held responsible for any issue caused by any change on Flickr.
       </b></span>
-    </blockquote>
-
+      <br><br><br>
       <br>
       <ul>
         <li>
@@ -2454,6 +2460,7 @@ jQuery("#nanogallery2").nanogallery2({
         <li>Step 3: make your albums public.</li>
       </ul>
       -->
+    </blockquote>
       <span style="color:#d00;">
         <!--
           To retrieve your Google user ID and to manage the visibility of your Google Photos albums, you can use the tool <a href="http://nanogpvisibility.herokuapp.com/index.html" target="_blank" style="background-color:#eee;"> &nbsp; <b>nanoGPVisibility</b> &nbsp; </a> <br>
@@ -2464,17 +2471,16 @@ jQuery("#nanogallery2").nanogallery2({
         <br>
         nanogallery2 requires a permanent authorization, which is only possible for server side applications.
         <br>
-        To solve this issue, you need to use the server module <b>NANOGP</b> (<a href="https://github.com/nanostudio-org/nanogp" target="_blank">more here</a>) .
+        To solve this issue, you need to use the server module <b>NANOGP2</b> (<a href="https://github.com/nanostudio-org/nanogp2" target="_blank">more here</a>) .
         </b>
       </span>
-    </blockquote>
 
       <br><br>
       <u><b>Usage:</b></u>
       <br>
       <ol>
         <li>
-          start by installing <b>NANOGP</b> on your PHP web server. Follow the installation steps on the <a href="https://github.com/nanostudio-org/nanogp" type="button" class="btn btn-success " target="_blank"><b>NANOGP</b></a> homepage.
+          start by installing <b>NANOGP2</b> on your PHP web server. Follow the installation steps on the <a href="https://github.com/nanostudio-org/nanogp2" type="button" class="btn btn-success " target="_blank"><b>NANOGP2</b></a> homepage.
         </li>
         <li>
           then configure your HTML page to display a gallery.
