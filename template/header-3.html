@@ -8,7 +8,9 @@
 
   <!-- #################################################################################################################### -->
 
-    <style>
+  <style>
+  
+  
     body { font-size:1.3em; color:#000; line-height:1.5; }
     p { font-size:1.3em; }
     td { font-size:1.2em; }
@@ -303,6 +305,18 @@
       border-color: #3C4B5B;
     }
 
+
+    /* GLOWING BUTTON */
+    @keyframes glowing {
+      0% { box-shadow: 0 0 -10px #23CB99; }
+      40% { box-shadow: 0 0 20px #23CB99; }
+      60% { box-shadow: 0 0 20px #23CB99; }
+      100% { box-shadow: 0 0 -10px #23CB99; }
+    }
+
+    .button-glow {
+      animation: glowing 2000ms infinite;
+    }
     
     
     /********/
@@ -367,9 +381,12 @@
       /* border: 5px solid #0F1934; */
     }
     .ngy2_features div::before {
-      content: "¦";
-      color: #23CB99;
-      /* font-family:"Arial Black"; */
+      background-color: #23CB99;
+      display: inline-block;
+      content: "";
+      width: 16px;
+      height: 16px;
+      margin: 6px 2px 2px 0;
     }
     
     /***********/
@@ -910,9 +927,10 @@
     }
 
   
-
+  
 
   </style>
+   
 
   <!-- Asynchronous Google Analytics snippet -->
   <script>
