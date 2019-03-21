@@ -2112,20 +2112,20 @@
 
         btnNGY2_nav_demo1: function() {
           jQuery("#nanogallery2").nanogallery2({
-            kind: 'google',
-            userID: '111186676244625461692',
+            kind: 'flickr',
+            userID: '149035168@N08',
             blackList: 'forhomepage|scrapbook|profil',
             breadcrumbAutoHideTopLevel: false,
             locationHash: false
           });
           var html=html_part1;
-          html+='        "kind":    "google",\n';
-          html+='        "userID":  "111186676244625461692",\n';
+          html+='        "kind":    "flickr",\n';
+          html+='        "userID":  "149035168@N08",\n';
           html+='        "breadcrumbAutoHideTopLevel": false\n';
           html+=html_part2+html_part3;
           jQuery('#ngy2_template').html(html);
           var html2=portable_part1;
-          html2+=' "kind": "google", "userID": "111186676244625461692", "breadcrumbAutoHideTopLevel": false';
+          html2+=' "kind": "flickr", "userID": "149035168@N08", "breadcrumbAutoHideTopLevel": false';
           html2+=portable_part2;
           jQuery('#ngy2_portable').html(html2);
           jQuery('#ngy2_description').text('Display a breadcrumb for navigation in the albums.');
@@ -2133,8 +2133,8 @@
         
         btnNGY2_nav_demo2: function() {
           jQuery("#nanogallery2").nanogallery2({
-            kind: 'google',
-            userID: '111186676244625461692',
+            kind: 'flickr',
+            userID: '149035168@N08',
             thumbnailHeight: 150, thumbnailWidth:150,
             blackList: 'forhomepage|scrapbook|profil',
             thumbnailLevelUp: true,
@@ -2142,15 +2142,15 @@
             locationHash: false
           });
           var html=html_part1;
-          html+='        "kind":              "google",\n';
-          html+='        "userID":            "111186676244625461692",\n';
+          html+='        "kind":              "flickr",\n';
+          html+='        "userID":            "149035168@N08",\n';
           html+='        "thumbnailHeight":   150, "thumbnailWidth": 150,\n';
           html+='        "thumbnailLevelUp":  true,\n';
           html+='        "displayBreadcrumb": false\n';
           html+=html_part2+html_part3;
           jQuery('#ngy2_template').html(html);
           var html2=portable_part1;
-          html2+=' "kind": "google", "userID": "111186676244625461692", "thumbnailHeight": 150, "thumbnailWidth": 150, "thumbnailLevelUp": true, "displayBreadcrumb": false';
+          html2+=' "kind": "flickr", "userID": "149035168@N08", "thumbnailHeight": 150, "thumbnailWidth": 150, "thumbnailLevelUp": true, "displayBreadcrumb": false';
           html2+=portable_part2;
           jQuery('#ngy2_portable').html(html2);
           jQuery('#ngy2_description').text('No breadcrumb for navigation in the albums. User can instead use the first thumbnail to go to upper level.');
@@ -2161,6 +2161,10 @@
             kind: 'google',
             userID: '111186676244625461692',
             album: '5911699288924070209',
+            kind: 'google2',
+            userID: '111186676244625461692',
+            album: 'AMKf1Ieg7h2GRPRBt_FkbAlqbrLpZyTMHOmMxXe7-qDWuW8UzbcvowTPGRlY8OJxW6B_AyEAfKxJ',      //  
+            google2URL: 'https://nano.gallery/nanogp2/nanogp2.php',
             thumbnailHeight: 150, thumbnailWidth:150,
             blackList: 'forhomepage|scrapbook|profil',
             galleryFilterTags: 'title',
