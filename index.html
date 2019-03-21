@@ -2141,9 +2141,7 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
             // Remove "link" from the ID
           id = id.replace("link", "");
             // Scroll
-          $('html,body').animate({
-              scrollTop: $("#"+id).offset().top},
-              'slow');
+          $('html,body').animate({ scrollTop: $("#"+id).offset().top}, 200);
       }
 
 
@@ -2152,8 +2150,8 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
       // ##### LAYOUT DEMO SELECTION
       var ngy2_layout_cnt=0;
       jQuery('.ngy2_layout_selection').on( "click", function(e) {
-        jQuery('.ngy2_layout_selection').css({ 'border-color': '#eee', color: '#eee' });
-        jQuery(e.currentTarget).css({ 'border-color': '#23CB99', color: '#23CB99' });
+        jQuery('.ngy2_layout_selection').css({ 'border-color': '#eee', color: '#eee' }).removeClass('button-glow');
+        jQuery(e.currentTarget).css({ 'border-color': '#23CB99', color: '#23CB99' }).addClass("button-glow");;
         jQuery("#nanogallery").nanogallery2('destroy');
  
         if( ngy2_layout_cnt > 0 ) {
@@ -2165,8 +2163,8 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
           
           
           
-          // MOSAIC LAYOUT
-          case 'btn_layout1':
+          // MOSAIC LAYOUT - sample 1
+          case 'btn_layout1a':
             jQuery("#nanogallery").nanogallery2({
             
             
@@ -2221,10 +2219,91 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
               thumbnailBorderHorizontal: 0,
               thumbnailBorderVertical: 0,
 
+              
+              thumbnailL1BuildInit2: 'image_scale_1.20',
+
+              thumbnailL1HoverEffect2: 'thumbnail_scale_1.00_1.05_300|image_translateX_-20px_20px',
+
+
+              thumbnailToolbarImage : null,
+              thumbnailToolbarAlbum: null,
+
+              thumbnailLabel: { display: false, position:'onBottomOverImage', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true, displayDescription: false},
+              
+              gallerySorting: 'random',
+
+              galleryTheme : { 
+                thumbnail: { titleShadow : 'none', descriptionShadow : 'none', titleColor: '#fff' },
+                navigationBreadcrumb: { background : '#3C4B5B' },
+                navigationFilter: { background : '#2E7C7F', backgroundSelected: '#19676B', color: '#eee' }
+              },
+
+              XviewerTheme : { barBackground : 'rgba(35, 203, 153, 0.7)' },
+              
+              viewerToolbar: { display: false },
+              viewerTools:    {
+                topLeft:   'label',
+                topRight:  'shareButton, rotateLeft, rotateRight, fullscreenButton, closeButton'
+              },
+          
+              touchAnimation: false,
+              locationHash: true
+            });
+            if( ngy2_layout_cnt > 1) {
+              ga('send', 'event', 'click', 'index', 'layout_moisaic');
+            }
+            break
+          
+          case 'btn_layout1b':
+            jQuery("#nanogallery").nanogallery2({
+            
+            
+              kind: 'nano_photos_provider2',
+              dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
+              album: 'oceans',
+              // galleryDisplayTransition: 'rotateX',
+              galleryDisplayTransitionDuration: 1500,
+             
+              galleryMosaic : [
+                { w: 1, h: 1, c: 1, r: 1 },
+                { w: 1, h: 1, c: 2, r: 1 },
+                { w: 1, h: 1, c: 3, r: 1 },
+                { w: 1, h: 1, c: 4, r: 1 },
+                { w: 1, h: 1, c: 5, r: 1 },
+                { w: 1, h: 1, c: 6, r: 1 },
+                { w: 1, h: 2, c: 1, r: 2 },
+                { w: 2, h: 2, c: 2, r: 2 },
+                { w: 2, h: 2, c: 4, r: 2 },
+                { w: 1, h: 2, c: 6, r: 2 },
+                { w: 1, h: 1, c: 1, r: 4 },
+                { w: 1, h: 1, c: 2, r: 4 },
+                { w: 1, h: 1, c: 3, r: 4 },
+                { w: 1, h: 1, c: 4, r: 4 },
+                { w: 1, h: 1, c: 5, r: 4 },
+                { w: 1, h: 1, c: 6, r: 4 }
+              ],
+
+              thumbnailAlignment: 'scaled',
+
+              thumbnailHeight: '180', thumbnailWidth: '220',
+              thumbnailBaseGridHeight: 80,
+              
+              thumbnailDisplayTransition: 'flipDown',
+              thumbnailDisplayTransitionDuration: 600,
+              thumbnailDisplayInterval: 30,
+              galleryMaxRows: 1,
+              galleryDisplayMode: 'rows',
+
+              thumbnailL1GutterWidth: 0,
+              thumbnailL1GutterHeight: 0,
+              thumbnailBorderHorizontal: 0,
+              thumbnailBorderVertical: 0,
+
+              
               thumbnailL1BuildInit2: '.nGY2GThumbnailAlbumTitle_border-left_5px solid #23CB99|.nGY2GThumbnailAlbumTitle_margin_20px|\
                     title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
 
-              thumbnailL1HoverEffect2: 'label_left_-100%_0%|thumbnail_scale_1.00_0.95',
+              thumbnailL1HoverEffect2: 'image_scale_1.00_1.15_500_bounce|image_rotateZ_0deg_05deg',
 
               galleryBuildInit2 : 'perspective_900px|perspective-origin_50% 150%',
 
@@ -2384,7 +2463,7 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
               thumbnailHeight: 'auto', thumbnailWidth: '200',
               thumbnailBaseGridHeight: 100,
               
-              thumbnailDisplayTransition: 'slideUp',
+              thumbnailDisplayTransition: 'slideDown',
               thumbnailDisplayTransitionDuration: 500,
               thumbnailDisplayInterval: 30,
               galleryMaxRows: 3,
@@ -2395,15 +2474,9 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
               thumbnailBorderHorizontal: 10,
               thumbnailBorderVertical: 10,
 
-              xthumbnailL1BuildInit2: '.nGY2GThumbnailAlbumTitle_border-left_5px solid #23CB99|.nGY2GThumbnailAlbumTitle_margin_20px|\
-                    title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
-
-              xthumbnailL1HoverEffect2: 'label_left_-100%_0%|thumbnail_scale_1.00_0.95',
-
               galleryBuildInit2 : 'perspective_900px|perspective-origin_50% 150%',
 
-              xthumbnailHoverEffect2: 'image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
-              thumbnailHoverEffect2: 'imageSepiaOn|imageBlurOn',
+              thumbnailHoverEffect2: 'thumbnail_scale_1.00_1.15|imageBlurOn',
 
               thumbnailToolbarImage : null,
               thumbnailToolbarAlbum: null,
@@ -2425,7 +2498,7 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
             break
         }
       });
-      $( "#btn_layout1" ).trigger( "click" );
+      $( "#btn_layout1a" ).trigger( "click" );
       
       
       // ##### TEMPLATE TAB
@@ -2434,8 +2507,8 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
         jQuery('#init_markup').css({ 'display': 'block' });
         jQuery('#init_js').css({ 'display': 'none' });
 
-        jQuery('#ngy2_init1').css({ 'color': '#499295' });
-        jQuery('#ngy2_init2').css({ 'text-decoration': 'none', 'color':'#111' });
+        jQuery('#ngy2_init1').css({ 'background-color': '#23CB99', 'color': '#000' });
+        jQuery('#ngy2_init2').css({ 'text-decoration': 'none', 'background-color':'#fff', 'color': '#000' });
         
         jQuery('#ngy2_init2').find('i').removeClass('fa-check-circle-o').addClass('fa-circle-o');
         jQuery('#ngy2_init1').find('i').removeClass('fa-circle-o').addClass('fa-check-circle-o');
@@ -2447,9 +2520,9 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
       jQuery('#ngy2_init2').on( "click", function(e) {
         jQuery('#init_js').css({ 'display': 'block' });
         jQuery('#init_markup').css({ 'display': 'none' });
-        //jQuery('#ngy2_lic2').css({ 'text-decoration': 'underline', 'color': '#fff' });
-        jQuery('#ngy2_init2').css({ 'color': '#499295' });
-        jQuery('#ngy2_init1').css({ 'text-decoration': 'none', 'color':'#111' });
+        //jQuery('#ngy2_lic2').css({ 'text-decoration': 'underline', 'background-color': '#fff' });
+        jQuery('#ngy2_init2').css({ 'background-color': '#23CB99', 'color': '#000' });
+        jQuery('#ngy2_init1').css({ 'text-decoration': 'none', 'background-color':'#fff', 'color': '#000' });
         
         jQuery('#ngy2_init1').find('i').removeClass('fa-check-circle-o').addClass('fa-circle-o');
         jQuery('#ngy2_init2').find('i').removeClass('fa-circle-o').addClass('fa-check-circle-o');
