@@ -1,7 +1,11 @@
   <div class="container">
     <br><br>
-    <h1>nanogallery2 demonstrations and inspiration</h1>
+    <h1>nanogallery2 demonstrations</h1>
     <br><br><br>
+    <p>
+      Here's a selection of demonstrations to help you get started with nanogallery2. Demonstrations are grouped by family.
+      For each example, you'll find the corresponding HTML template at the bottom of the page.
+    </p>
     <br><br><br>
     <br><br><br>
     <br><br><br>
@@ -12,116 +16,111 @@
     <br><br><br><br>
     -->
   
-  
-  
     <!-- <h3>View a demonstration</h3> -->
     
-    <div class="row" >
-      <div class="col-md-3 text-left" style="height:38px;font-size:24px;">
-        <b>1. Select a demo family :</b>
-      </div>
-      <div class="col-md-4">
+    <div class="row" style="border:5px solid #eee;">
+      <div class="col-md-6 text-left" >
+        <b style="font-size:24px;">1. Select a demo family:</b>
         <!-- <select name="demoCat" class="selectpicker" > -->
         <select id="demoCat" name="demoCat" class="form-control" style="height:auto;background: #00796B;color: #fff;font-size: 20px;">
-          <option value="catLayout">Layouts</option>
+          <option value="catLayout">Gallery layouts</option>
           <option value="catDisplayMode">Gallery display modes</option>
           <option value="catNavigation">Navigation in albums & filtering</option>
           <option value="catContentSource">Content source</option>
           <option value="catHoverEffects">Thumbnails hover effects</option>
         </select>
-      </div>
-      <div class="col-md-5">
-      </div>
-    </div>
-    <br>
-    <div class="row" >
-      <div class="col-md-3 text-left" style="height:38px;font-size:24px;">
-        <b>2. Select demonstration :</b>
-      </div>
-    </div>
-    <br>
-    <ul id="demos">
-      
-      <li id="catContentSource">
-        <button type="button" class="btn btn-primary" id="btnNGY2_source_demo3">Self hosted</button>
-        <button type="button" class="btn btn-primary" id="btnNGY2_source_demo3a">Self hosted - albums</button>
-        <br><br>
-        <button type="button" class="btn btn-primary" id="btnNGY2_source_npp2_demo1">nanoPhotosProvider (self hosted photos and albums)</button>
+        <br>
+        <b style="font-size:24px;">2. Select demonstration:</b>
+        <br>
+        <ul id="demos">
+          
+          <li id="catContentSource">
+            <button type="button" class="btn btn-primary" id="btnNGY2_source_demo3">Self hosted: IMAGES and VIDEOS</button>
+            <button type="button" class="btn btn-primary" id="btnNGY2_source_demo3a">Self hosted: ALBUMS</button>
+            <br><br>
+            <button type="button" class="btn btn-primary" id="btnNGY2_source_npp2_demo1">Self hosted - delivered automatically with <b>nanoPhotosProvider2</b></button>
+            <br>
+            nanoPhotosProvider2 is a PHP application available on 
+              <a href="https://github.com/nanostudio-org/nanoPhotosProvider2" type="button" class="btn btn-warning" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> &nbsp; Github</a>
+            <br><br>
+            <button type="button" class="btn btn-primary" id="btnNGY2_source_demo1">Flickr - photostream</button>
+            <button type="button" class="btn btn-primary" id="btnNGY2_source_demo1a">Flickr - albums</button>
+            <button type="button" class="btn btn-primary" id="btnNGY2_source_demo1b">Flickr - one album</button>
+            <br><br>
+            <button type="button" class="btn btn-primary" id="btnNGY2_source_demo2">Google Photos - list of albums</button>
+            <button type="button" class="btn btn-primary" id="btnNGY2_source_demo2a">Google Photos - content of one album</button>
+            <!--
+            <button type="button" class="btn btn-primary" id="btnNGY2_source_demo2b">Google Photos - one private album</button>
+            -->
+          </li>
+          <li>
+            <!-- <p>Thumbnail components</p> -->
+            <p>
+              <button type="button" class="btn btn-primary" disabled id="btnNGY2_demo1">images</button>
+              <button type="button" class="btn btn-primary" disabled id="btnNGY2_demo2">images + 1 hover effect</button>
+              <button type="button" class="btn btn-primary" disabled id="btnNGY2_demo3">images + title</button>
+              <button type="button" class="btn btn-primary" disabled id="btnNGY2_demo4">images + title + hover effects</button>
+              <button type="button" class="btn btn-primary" disabled id="btnNGY2_demo5">images + title + description</button>
+            </p>
+          </li>
+          <li id="catLayout">
+            <!-- <p>Layouts</p> -->
+            <p>
+              <button type="button" class="btn btn-success" id="btnNGY2_layout_demo4">Mosaic gallery</button>
+              <button type="button" class="btn btn-primary" id="btnNGY2_layout_demo1">Justified gallery</button>
+              <button type="button" class="btn btn-primary" id="btnNGY2_layout_demo2">Grid gallery</button>
+              <button type="button" class="btn btn-primary" id="btnNGY2_layout_demo3">Cascading gallery</button>
+            </p>
+          </li>
+          <li id="catHoverEffects">
+            <!-- <p>Thumbnail hover effects</p> -->
+            <p>
+              <button type="button" class="btn btn-primary" id="btnNGY2_hover_demo1">Shuffle thumbnails</button>
+              <!-- <button type="button" class="btn btn-primary" id="btnNGY2_hover_demo5">3D rotate</button> -->
+              <button type="button" class="btn btn-primary" id="btnNGY2_hover_demo4">Parallax</button>
+              <button type="button" class="btn btn-primary" id="btnNGY2_hover_demo3">Image rotate</button>
+              <button type="button" class="btn btn-primary" id="btnNGY2_hover_demo2">Popout thumbnails</button>
+              <!-- 
+              <button type="button" class="btn btn-primary" disabled id="btnNGY2_hover_demo1">image: zoom in</button>
+              <button type="button" class="btn btn-primary" disabled id="btnNGY2_hover_demo2">image: zoom in + blur</button>
+              <button type="button" class="btn btn-primary" disabled id="btnNGY2_hover_demo3">image: zoom in + blur + sepia</button>
+              <button type="button" class="btn btn-primary" disabled id="btnNGY2_hover_demo4">image: zoom in | label: appear</button>
+              -->
+            </p>
+          </li>
+          <li id="catDisplayMode">
+            <!-- <p>Gallery display modes</p> -->
+            <p>
+              <button type="button" class="btn btn-primary" id="btnNGY2_displaymode_demo1">full content</button>
+              <button type="button" class="btn btn-primary" id="btnNGY2_displaymode_demo2">add content with more button</button>
+              <button type="button" class="btn btn-primary" id="btnNGY2_displaymode_demo3">pagination - numbers</button>
+              <button type="button" class="btn btn-primary" id="btnNGY2_displaymode_demo4">pagination - dots</button>
+              <button type="button" class="btn btn-primary" id="btnNGY2_displaymode_demo5">gallery on 2 rows</button>
+            </p>
+          </li>
+          <li id="catNavigation">
+            <button type="button" class="btn btn-primary" id="btnNGY2_nav_demo1">Breadcrumb</button>
+            <button type="button" class="btn btn-primary" id="btnNGY2_nav_demo2">No breadcrumb</button>
+            <button type="button" class="btn btn-primary" id="btnNGY2_nav_demo3">Filter on keywords</button>
+          </li>
+          <li>
+            <p>Touch thumbnail:</p>
+          </li>
+          <li>
+            <p>simple touch / double touch</p>
+          </li>
+        </ul>
         
-        nanoPhotosProvider2 is a PHP application available on 
-          <a href="https://github.com/nanostudio-org/nanoPhotosProvider2" type="button" class="btn btn-warning" target="_blank"><i class="fa fa-github" aria-hidden="true"></i> &nbsp; Github</a>
-        <br><br>
-        <button type="button" class="btn btn-primary" id="btnNGY2_source_demo1">Flickr - photostream</button>
-        <button type="button" class="btn btn-primary" id="btnNGY2_source_demo1a">Flickr - albums</button>
-        <button type="button" class="btn btn-primary" id="btnNGY2_source_demo1b">Flickr - one album</button>
-        <br><br>
-        <button type="button" class="btn btn-primary" id="btnNGY2_source_demo2">Google Photos - list of albums</button>
-        <button type="button" class="btn btn-primary" id="btnNGY2_source_demo2a">Google Photos - content of one album</button>
-        <!--
-        <button type="button" class="btn btn-primary" id="btnNGY2_source_demo2b">Google Photos - one private album</button>
-        -->
-      </li>
-      <li>
-        <!-- <p>Thumbnail components</p> -->
-        <p>
-          <button type="button" class="btn btn-primary" disabled id="btnNGY2_demo1">images</button>
-          <button type="button" class="btn btn-primary" disabled id="btnNGY2_demo2">images + 1 hover effect</button>
-          <button type="button" class="btn btn-primary" disabled id="btnNGY2_demo3">images + title</button>
-          <button type="button" class="btn btn-primary" disabled id="btnNGY2_demo4">images + title + hover effects</button>
-          <button type="button" class="btn btn-primary" disabled id="btnNGY2_demo5">images + title + description</button>
-        </p>
-      </li>
-      <li id="catLayout">
-        <!-- <p>Layouts</p> -->
-        <p>
-          <button type="button" class="btn btn-success" id="btnNGY2_layout_demo4">mosaic</button>
-          <button type="button" class="btn btn-primary" id="btnNGY2_layout_demo1">justified</button>
-          <button type="button" class="btn btn-primary" id="btnNGY2_layout_demo2">grid</button>
-          <button type="button" class="btn btn-primary" id="btnNGY2_layout_demo3">cascading</button>
-        </p>
-      </li>
-      <li id="catHoverEffects">
-        <!-- <p>Thumbnail hover effects</p> -->
-        <p>
-          <button type="button" class="btn btn-primary" id="btnNGY2_hover_demo1">Shuffle thumbnails</button>
-          <!-- <button type="button" class="btn btn-primary" id="btnNGY2_hover_demo5">3D rotate</button> -->
-          <button type="button" class="btn btn-primary" id="btnNGY2_hover_demo4">Parallax</button>
-          <button type="button" class="btn btn-primary" id="btnNGY2_hover_demo3">Image rotate</button>
-          <button type="button" class="btn btn-primary" id="btnNGY2_hover_demo2">Popout thumbnails</button>
-          <!-- 
-          <button type="button" class="btn btn-primary" disabled id="btnNGY2_hover_demo1">image: zoom in</button>
-          <button type="button" class="btn btn-primary" disabled id="btnNGY2_hover_demo2">image: zoom in + blur</button>
-          <button type="button" class="btn btn-primary" disabled id="btnNGY2_hover_demo3">image: zoom in + blur + sepia</button>
-          <button type="button" class="btn btn-primary" disabled id="btnNGY2_hover_demo4">image: zoom in | label: appear</button>
-          -->
-        </p>
-      </li>
-      <li id="catDisplayMode">
-        <!-- <p>Gallery display modes</p> -->
-        <p>
-          <button type="button" class="btn btn-primary" id="btnNGY2_displaymode_demo1">full content</button>
-          <button type="button" class="btn btn-primary" id="btnNGY2_displaymode_demo2">add content with more button</button>
-          <button type="button" class="btn btn-primary" id="btnNGY2_displaymode_demo3">pagination - numbers</button>
-          <button type="button" class="btn btn-primary" id="btnNGY2_displaymode_demo4">pagination - dots</button>
-          <button type="button" class="btn btn-primary" id="btnNGY2_displaymode_demo5">gallery on 2 rows</button>
-        </p>
-      </li>
-      <li id="catNavigation">
-        <button type="button" class="btn btn-primary" id="btnNGY2_nav_demo1">Breadcrumb</button>
-        <button type="button" class="btn btn-primary" id="btnNGY2_nav_demo2">No breadcrumb</button>
-        <button type="button" class="btn btn-primary" id="btnNGY2_nav_demo3">Filter on keywords</button>
-      </li>
-      <li>
-        <p>Touch thumbnail:</p>
-      </li>
-      <li>
-        <p>simple touch / double touch</p>
-      </li>
-    </ul>
-    <br><br>
+      </div>
+      <div class="col-md-6">
+        <b style="font-size:24px;">Description:</b>
+        <blockquote id="ngy2_description"></blockquote>
+      </div>
+    </div>
+    <br>
     
-    <h3>Result</h3>
-    <blockquote id="ngy2_description"></blockquote>
+    <h3>Result:</h3>
+    
   </div>    
   
   <div class="jumbotron " style="background-color:#f8f8f8;">
@@ -158,8 +157,8 @@
           <div class="row">
             <button id="copyclipboard" type="button" class="btn-primary pull-right" data-clipboard-target="#ngy2_template">copy to clipboard</button>
           </div>
-          <div class="row">
-            <pre><code id="ngy2_template">
+          <div class="row language-markup">
+            <pre><code id="ngy2_template" style="background:transparent;font-size:1.5rem;line-height: 1.5rem;">
             </code></pre>
           </div>   
         </div>
