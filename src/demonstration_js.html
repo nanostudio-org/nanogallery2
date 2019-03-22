@@ -12,29 +12,29 @@
     
     
     
-      var html_part1='&lt;html&gt;\n';
-      html_part1+='  &lt;head&gt;\n';
-      html_part1+='    &lt;meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"&gt;\n\n';
-      html_part1+='    &lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"&gt;&lt;/script&gt;\n\n';
-      html_part1+='    &lt;link href="https://unpkg.com/nanogallery2@2.4.1/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css"&gt;\n';
-      html_part1+='    &lt;script type="text/javascript" src="https://unpkg.com/nanogallery2@2.4.1/dist/jquery.nanogallery2.min.js"&gt;&lt;/script&gt;\n';
+      var html_part1='<html>\n';
+      html_part1+='  <head>\n';
+      html_part1+='    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">\n\n';
+      html_part1+='    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"><\/script>\n\n';
+      html_part1+='    <link href="https://unpkg.com/nanogallery2@2.4.1/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css">\n';
+      html_part1+='    <script type="text/javascript" src="https://unpkg.com/nanogallery2@2.4.1/dist/jquery.nanogallery2.min.js"><\/script>\n';
       html_part1+='\n';
-      html_part1+='  &lt;/head&gt;\n';
-      html_part1+='  &lt;body&gt;\n\n';
-      html_part1+='    &lt;h1&gt;gallery made with nanogallery2&lt;/h1&gt;\n';
+      html_part1+='  </head>\n';
+      html_part1+='  <body>\n\n';
+      html_part1+='    <h1>gallery made with nanogallery2</h1>\n';
       html_part1+='\n';
-      html_part1+="    &lt;div id=\"nanogallery2\" data-nanogallery2='{\n";
-      var html_part2="      }'&gt;\n";
-      var html_part3='    &lt;/div&gt;\n';
-      html_part3+='  &lt;/body&gt;\n';
-      html_part3+='&lt;/html&gt;\n';
+      html_part1+="    <div id=\"nanogallery2\" data-nanogallery2='{\n";
+      var html_part2="      }'>\n";
+      var html_part3='    </div>\n';
+      html_part3+='  </body>\n';
+      html_part3+='</html>\n';
 
-      var portable_part1='&lt;!-- nanogallery2 portable - http://nano.gallery -->\n';
-      portable_part1+='&lt;div id="ngy2" data-nanogallery2-portable=\'{';
-      var portable_part2='}\'>nanogallery2&lt;/div>\n';
-      portable_part2+="&lt;script> var st = document.createElement('script'); st.type = 'text/javascript'; st.src = '//nano.gallery/portable.php?u='+encodeURI(window.location.href); document.getElementsByTagName('head')[0].appendChild(st); &lt;/script>\n";
-      portable_part2+='&lt;noscript>Please enable javascript to view the &lt;a href="//nano.gallery">gallery powered by nanogallery2.&lt;/a>&lt;/noscript>\n';
-      portable_part2+='&lt;!-- end nanogallery2 -->';
+      var portable_part1='<!-- nanogallery2 portable - http://nano.gallery -->\n';
+      portable_part1+='<div id="ngy2" data-nanogallery2-portable=\'{';
+      var portable_part2='}\'>nanogallery2</div>\n';
+      portable_part2+="<script> var st = document.createElement('script'); st.type = 'text/javascript'; st.src = '//nano.gallery/portable.php?u='+encodeURI(window.location.href); document.getElementsByTagName('head')[0].appendChild(st);<\/script>\n";
+      portable_part2+='<noscript>Please enable javascript to view the <a href="//nano.gallery">gallery powered by nanogallery2.</a></noscript>\n';
+      portable_part2+='<!-- end nanogallery2 -->';
       
       var mydemos = {
         
@@ -57,11 +57,11 @@
           html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
           html+='        "album":           "none"\n';
           html+=html_part2+html_part3;
-          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
           var html2=portable_part1;
           html2+=' "kind": "flickr", "userID": "149035168@N08", "thumbnailHeight": 150, "thumbnailWidth": 150, "album": "none"';
           html2+=portable_part2;
-          jQuery('#ngy2_portable').html(html2);
+          jQuery('#ngy2_portable').html( Prism.highlight(html2, Prism.languages.markup, 'markup') );
           jQuery('#ngy2_description').text('Content source = Flickr. Display the full photostream.');
         },
         btnNGY2_source_demo1a: function() {
@@ -76,12 +76,13 @@
           html+='        "userID":          "149035168@N08",\n';
           html+='        "thumbnailHeight": 150, "thumbnailWidth": 150\n';
           html+=html_part2+html_part3;
-          jQuery('#ngy2_template').html(html);
+//          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
+          jQuery('#ngy2_template').html(Prism.highlight(html, Prism.languages.javascript, 'javascript'));
           var html2=portable_part1;
           html2+=' "kind": "flickr", "userID": "149035168@N08", "thumbnailHeight": 150, "thumbnailWidth": 150';
           html2+=portable_part2;
-          jQuery('#ngy2_portable').html(html2);
-          jQuery('#ngy2_description').text('Content source = Flickr. Display photo albums.');
+          jQuery('#ngy2_portable').html( Prism.highlight(html2, Prism.languages.markup, 'markup') );
+          jQuery('#ngy2_description').text('Content source = Flickr. Display the list of photo albums.');
         },
         btnNGY2_source_demo1b: function() {
           jQuery("#nanogallery2").nanogallery2({
@@ -97,11 +98,11 @@
           html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
           html+='        "photoset":        "72157675219521270"\n';
           html+=html_part2+html_part3;
-          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
           var html2=portable_part1;
           html2+=' "kind": "flickr", "userID": "149035168@N08", "thumbnailHeight": 150, "thumbnailWidth": 150, "photoset": "72157675219521270"';
           html2+=portable_part2;
-          jQuery('#ngy2_portable').html(html2);
+          jQuery('#ngy2_portable').html( Prism.highlight(html2, Prism.languages.markup, 'markup') );
           jQuery('#ngy2_description').text('Content source = Flickr. Display the photos contained in one specific album.');
         },
      
@@ -120,12 +121,12 @@
           html+='        "google2URL":      "https://YOUR_WEB_SERVER/nanogp2/nanogp2.php",\n';
           html+='        "thumbnailHeight": 150, "thumbnailWidth": 150\n';
           html+=html_part2+html_part3;
-          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
           var html2=portable_part1;
           html2+=' "kind": "google", "userID": "111186676244625461692", "thumbnailHeight": 150, "thumbnailWidth": 150';
           html2+=portable_part2;
-          jQuery('#ngy2_portable').html(html2);
-          jQuery('#ngy2_description').text('Content source = Google Photos. Displays the list of public albums. Requires the server module NANOGP2.');
+          jQuery('#ngy2_portable').html( Prism.highlight(html2, Prism.languages.markup, 'markup') );
+          jQuery('#ngy2_description').text('Content source = Google Photos. Displays the list of albums. Requires the server module NANOGP2.');
         },
         btnNGY2_source_demo2a: function() {
           jQuery("#nanogallery2").nanogallery2({
@@ -143,12 +144,12 @@
           html+='        "album":           "1234567890",\n';
           html+='        "thumbnailHeight": 150, "thumbnailWidth": 150\n';
           html+=html_part2+html_part3;
-          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
           var html2=portable_part1;
           html2+=' "kind": "google", "userID": "111186676244625461692", "album": "5852572882905112961", "thumbnailHeight": 150, "thumbnailWidth": 150';
           html2+=portable_part2;
-          jQuery('#ngy2_portable').html(html2);
-          jQuery('#ngy2_description').text('Content source = Google Photos. Displays the photos contained in one specific public album. Requires the server module NANOGP2.');
+          jQuery('#ngy2_portable').html( Prism.highlight(html2, Prism.languages.markup, 'markup') );
+          jQuery('#ngy2_description').text('Content source = Google Photos. Displays the photos contained in one specific album. Requires the server module NANOGP2.');
         },
         btnNGY2_source_demo2b: function() {
           jQuery("#nanogallery2").nanogallery2({
@@ -167,11 +168,11 @@
           //html+='        "album": "5851968929721015169&authkey=CJSlhdKSgoiXtgE",\n';
           html+='        "thumbnailHeight": 150, "thumbnailWidth": 150\n';
           html+=html_part2+html_part3;
-          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
           var html2=portable_part1;
           html2+=' "kind": "google", "userID": "111186676244625461692", "album": "5851968929721015169&authkey=CJSlhdKSgoiXtgE", "thumbnailHeight": 150, "thumbnailWidth": 150';
           html2+=portable_part2;
-          jQuery('#ngy2_portable').html(html2);
+          jQuery('#ngy2_portable').html( Prism.highlight(html2, Prism.languages.markup, 'markup') );
           jQuery('#ngy2_description').text('Content source = Google Photos. Displays 2 specified albums.  Requires the server module NANOGP.');
         },
         
@@ -184,7 +185,9 @@
             items:[
               { src: 'berlin1.jpg', srct: 'berlin1t.jpg', title: 'Berlin 1' },
               { src: 'berlin2.jpg', srct: 'berlin2t.jpg', title: 'Berlin 2' },
-              { src: 'berlin3.jpg', srct: 'berlin3t.jpg', title: 'Berlin 3' }            
+              { src: 'berlin3.jpg', srct: 'berlin3t.jpg', title: 'Berlin 3' },   
+              { src: 'blocks.mp4', srct: 'blocks_mp4_t.jpg', title: 'Blocks video MP4' },  
+              { src: 'blocks.webm', srct: 'blocks_webm_t.jpg', title: 'Blocks video WEBM' }   
             ]
           });
           var html=html_part1;
@@ -193,12 +196,14 @@
           html+='        "itemsBaseURL":            "http://nanogallery2.nanostudio.org/samples/"\n';
           html+=html_part2;
           html+='      \n';
-          html+='      &lt;!-- IMAGES -->\n';
-          html+='      &lt;a href="berlin1.jpg" data-ngthumb="berlin1_t.jpg">Berlin 1&lt;/a>\n';
-          html+='      &lt;a href="berlin2.jpg" data-ngthumb="berlin2_t.jpg">Berlin 2&lt;/a>\n';
-          html+='      &lt;a href="berlin3.jpg" data-ngthumb="berlin3_t.jpg">Berlin 3&lt;/a>\n';
+          html+='      <!-- IMAGES -->\n';
+          html+='      <a href="berlin1.jpg" data-ngthumb="berlin1_t.jpg">Berlin 1</a>\n';
+          html+='      <a href="berlin2.jpg" data-ngthumb="berlin2_t.jpg">Berlin 2</a>\n';
+          html+='      <a href="berlin3.jpg" data-ngthumb="berlin3_t.jpg">Berlin 3</a>\n';
+          html+='      <a href="blocks.mp4" data-ngthumb="blocks_mp4_t.jpg">Blocks video MP4</a>\n';
+          html+='      <a href="blocks.webm" data-ngthumb="blocks_webm_t.jpg">Blocks video WEBM</a>\n';
           html+=html_part3;
-          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
           jQuery('#ngy2_description').text('Self hosted images. Note the use of the parameter "itemsBaseURL" to avoid full URL for each image and thumbnail.');
         },
         // Self hosted images - 2 albums
@@ -221,17 +226,17 @@
           html+='        "itemsBaseURL": "http://nanogallery2.nanostudio.org/samples/"\n';
           html+=html_part2;
           html+='      \n';
-          html+='      &lt;!-- FIRST ALBUM -->\n';
-          html+='      &lt;a href="" data-ngkind="album" data-ngid="1"  data-ngthumb="berlin1_t.jpg">Album A&lt;/a>\n';
-          html+='      &lt;a href="berlin1.jpg"          data-ngid="10" data-ngalbumid="1" data-ngthumb="berlin1_t.jpg">Image A1&lt;/a>\n';
-          html+='      &lt;a href="berlin1.jpg"          data-ngid="11" data-ngalbumid="1" data-ngthumb="berlin1_t.jpg">Image A2&lt;/a>\n';
+          html+='      <!-- FIRST ALBUM -->\n';
+          html+='      <a href="" data-ngkind="album" data-ngid="1"  data-ngthumb="berlin1_t.jpg">Album A</a>\n';
+          html+='      <a href="berlin1.jpg"          data-ngid="10" data-ngalbumid="1" data-ngthumb="berlin1_t.jpg">Image A1</a>\n';
+          html+='      <a href="berlin1.jpg"          data-ngid="11" data-ngalbumid="1" data-ngthumb="berlin1_t.jpg">Image A2</a>\n';
           html+='      \n';
-          html+='      &lt;!-- SECOND ALBUM -->\n';
-          html+='      &lt;a href="" data-ngkind="album" data-ngid="2"  data-ngthumb="berlin2t">Album B&lt;/a>\n';
-          html+='      &lt;a href="berlin2.jpg"          data-ngid="20" data-ngalbumid="2" data-ngthumb="berlin2_t.jpg">Image B1&lt;/a>\n';
-          html+='      &lt;a href="berlin2.jpg"          data-ngid="21" data-ngalbumid="2" data-ngthumb="berlin2_t.jpg">Image B2&lt;/a>\n';
+          html+='      <!-- SECOND ALBUM -->\n';
+          html+='      <a href="" data-ngkind="album" data-ngid="2"  data-ngthumb="berlin2t">Album B</a>\n';
+          html+='      <a href="berlin2.jpg"          data-ngid="20" data-ngalbumid="2" data-ngthumb="berlin2_t.jpg">Image B1</a>\n';
+          html+='      <a href="berlin2.jpg"          data-ngid="21" data-ngalbumid="2" data-ngthumb="berlin2_t.jpg">Image B2</a>\n';
           html+=html_part3;
-          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
           jQuery('#ngy2_description').text('Self hosted images. When using albums, IDs must be assigned to each element (images and albums).');
         },
         
@@ -252,8 +257,8 @@
           html+=html_part2;
           html+='      \n';
           html+=html_part3;
-          jQuery('#ngy2_template').html(html);
-          jQuery('#ngy2_description').text('Self hosted images with nanoPhotosProvider2.');
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
+          jQuery('#ngy2_description').text('Self hosted images delivered with nanoPhotosProvider2. Thumbnails are generated automatically.');
         },
 
         
@@ -297,12 +302,12 @@
           html+='        "thumbnailHoverEffect2":   "thumbnail_rotateZ_0deg_15deg_easeOutQuad_200_hoverin | thumbnail_rotateZ_15deg_-10deg_delay250_keyframe_hoverin_easeOutBack_400 | thumbnail_rotateZ_-10deg_0deg_keyframe_hoverout_easeOutBack_400"\n';
           html+=html_part2;
           html+='      \n';
-          html+='      &lt;!-- IMAGES -->\n';
-          html+='      &lt;a href="berlin1.jpg" data-ngthumb="berlin1_t.jpg">Berlin 1&lt;/a>\n';
-          html+='      &lt;a href="berlin2.jpg" data-ngthumb="berlin2_t.jpg">Berlin 2&lt;/a>\n';
-          html+='      &lt;a href="berlin3.jpg" data-ngthumb="berlin3_t.jpg">Berlin 3&lt;/a>\n';
+          html+='      <!-- IMAGES -->\n';
+          html+='      <a href="berlin1.jpg" data-ngthumb="berlin1_t.jpg">Berlin 1</a>\n';
+          html+='      <a href="berlin2.jpg" data-ngthumb="berlin2_t.jpg">Berlin 2</a>\n';
+          html+='      <a href="berlin3.jpg" data-ngthumb="berlin3_t.jpg">Berlin 3</a>\n';
           html+=html_part3;
-          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
           jQuery('#ngy2_description').text('Move the mouse over a thumbnail or touch a thumbnail to see the hover effect (requires v1.2.0+).');
         },
         
@@ -337,12 +342,12 @@
           html+='        "thumbnailHoverEffect2":   "image_rotateZ_0deg_7deg_easeOutQuad_150_hoverin|image_rotateZ_7deg_-7deg_delay160_keyframe_hoverin_easeOutQuad_200|image_rotateZ_-7deg_0deg_delay320_keyframe_hoverin_easeOutQuad_150"\n';
           html+=html_part2;
           html+='      \n';
-          html+='      &lt;!-- IMAGES -->\n';
-          html+='      &lt;a href="berlin1.jpg" data-ngthumb="berlin1_t.jpg">Berlin 1&lt;/a>\n';
-          html+='      &lt;a href="berlin2.jpg" data-ngthumb="berlin2_t.jpg">Berlin 2&lt;/a>\n';
-          html+='      &lt;a href="berlin3.jpg" data-ngthumb="berlin3_t.jpg">Berlin 3&lt;/a>\n';
+          html+='      <!-- IMAGES -->\n';
+          html+='      <a href="berlin1.jpg" data-ngthumb="berlin1_t.jpg">Berlin 1</a>\n';
+          html+='      <a href="berlin2.jpg" data-ngthumb="berlin2_t.jpg">Berlin 2</a>\n';
+          html+='      <a href="berlin3.jpg" data-ngthumb="berlin3_t.jpg">Berlin 3</a>\n';
           html+=html_part3;
-          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
           jQuery('#ngy2_description').text('Move the mouse over a thumbnail or touch a thumbnail to see the hover effect (requires v1.2.0+).');
         },
 
@@ -383,12 +388,12 @@
           html+='        "thumbnailHoverEffect2":   "thumbnail_rotateY_0deg_30deg_easeOutQuad_150_hoverin|thumbnail_rotateY_30deg_-30deg_delay160_keyframe_hoverin_easeOutQuad_200|thumbnail_rotateY_-30deg_0deg_delay320_keyframe_hoverin_easeOutQuad_150|title_translateX_0px_20px_easeOutQuad_150_hoverin|title_translateX_20px_-20px_delay160_keyframe_hoverin_easeOutQuad_200|title_translateX_-20px_0px_delay320_keyframe_hoverin_easeOutQuad_150|description_translateX_0px_12px_easeOutQuad_150_hoverin|description_translateX_12px_-12px_delay160_keyframe_hoverin_easeOutQuad_200|description_translateX_-12px_0px_delay320_keyframe_hoverin_easeOutQuad_150"\n';
           html+=html_part2;
           html+='      \n';
-          html+='      &lt;!-- IMAGES -->\n';
-          html+='      &lt;a href="berlin1.jpg" data-ngthumb="berlin1_t.jpg" data-ngdescription="Brandenburg Gate">Berlin 1&lt;/a>\n';
-          html+='      &lt;a href="berlin2.jpg" data-ngthumb="berlin2_t.jpg" data-ngdescription="Alltag in der DDR">Berlin 2&lt;/a>\n';
-          html+='      &lt;a href="berlin3.jpg" data-ngthumb="berlin3_t.jpg" data-ngdescription="Fernsehturm">Berlin 3&lt;/a>\n';
+          html+='      <!-- IMAGES -->\n';
+          html+='      <a href="berlin1.jpg" data-ngthumb="berlin1_t.jpg" data-ngdescription="Brandenburg Gate">Berlin 1</a>\n';
+          html+='      <a href="berlin2.jpg" data-ngthumb="berlin2_t.jpg" data-ngdescription="Alltag in der DDR">Berlin 2</a>\n';
+          html+='      <a href="berlin3.jpg" data-ngthumb="berlin3_t.jpg" data-ngdescription="Fernsehturm">Berlin 3</a>\n';
           html+=html_part3;
-          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
           jQuery('#ngy2_description').text('Move the mouse over a thumbnail or touch a thumbnail to see the hover effect (requires v1.2.0+).');
         },
 
@@ -427,12 +432,12 @@
           html+='        "thumbnailHoverEffect2":     "thumbnail_translateZ_0px_100px_easeOutQuad_400 | thumbnail_rotateX_0deg_10deg_easeOutBack_200 | thumbnail_rotateX_10deg_0deg_delay250_keyframe_hoverin_easeOutBack_400"\n';
           html+=html_part2;
           html+='      \n';
-          html+='      &lt;!-- IMAGES -->\n';
-          html+='      &lt;a href="berlin1.jpg" data-ngthumb="berlin1_t.jpg">Berlin 1&lt;/a>\n';
-          html+='      &lt;a href="berlin2.jpg" data-ngthumb="berlin2_t.jpg">Berlin 2&lt;/a>\n';
-          html+='      &lt;a href="berlin3.jpg" data-ngthumb="berlin3_t.jpg">Berlin 3&lt;/a>\n';
+          html+='      <!-- IMAGES -->\n';
+          html+='      <a href="berlin1.jpg" data-ngthumb="berlin1_t.jpg">Berlin 1</a>\n';
+          html+='      <a href="berlin2.jpg" data-ngthumb="berlin2_t.jpg">Berlin 2</a>\n';
+          html+='      <a href="berlin3.jpg" data-ngthumb="berlin3_t.jpg">Berlin 3</a>\n';
           html+=html_part3;
-          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
           jQuery('#ngy2_description').text('Move the mouse over a thumbnail or touch a thumbnail to see the hover effect. (requires v1.2.0+)');
         },
 
@@ -486,12 +491,12 @@
           html+='        "thumbnailLabel":            { "display": true, position: "overImageOnMiddle", "hideIcons": true, "titleFontSize": "1.5em", "align": "left" },\n';
           html+=html_part2;
           html+='      \n';
-          html+='      &lt;!-- IMAGES -->\n';
-          html+='      &lt;a href="berlin1.jpg" data-ngthumb="berlin1_t.jpg">Berlin 1&lt;/a>\n';
-          html+='      &lt;a href="berlin2.jpg" data-ngthumb="berlin2_t.jpg">Berlin 2&lt;/a>\n';
-          html+='      &lt;a href="berlin3.jpg" data-ngthumb="berlin3_t.jpg">Berlin 3&lt;/a>\n';
+          html+='      <!-- IMAGES -->\n';
+          html+='      <a href="berlin1.jpg" data-ngthumb="berlin1_t.jpg">Berlin 1</a>\n';
+          html+='      <a href="berlin2.jpg" data-ngthumb="berlin2_t.jpg">Berlin 2</a>\n';
+          html+='      <a href="berlin3.jpg" data-ngthumb="berlin3_t.jpg">Berlin 3</a>\n';
           html+=html_part3;
-          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
           jQuery('#ngy2_description').text('Move the mouse over a thumbnail or touch a thumbnail to see the hover effect.');
         },
 
@@ -513,12 +518,12 @@
           html+='        "thumbnailHeight": 150, "thumbnailWidth": 150,\n';
           html+='        "album":           "none"\n';
           html+=html_part2+html_part3;
-          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
           var html2=portable_part1;
           html2+=' "kind": "flickr", "userID": "149035168@N08", "thumbnailHeight": 150, "thumbnailWidth": 150, "album": "none"';
           html2+=portable_part2;
-          jQuery('#ngy2_portable').html(html2);
-          jQuery('#ngy2_description').text('Display all thumbnails.');
+          jQuery('#ngy2_portable').html( Prism.highlight(html2, Prism.languages.markup, 'markup') );
+          jQuery('#ngy2_description').text('All thumbnails of the gallery are displayed.');
         },
         
         btnNGY2_displaymode_demo2: function() {
@@ -540,12 +545,12 @@
           html+='        "galleryDisplayMoreStep":  2\n';
           html+=html_part2+html_part3;
           //html+=html_part3;
-          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
           var html2=portable_part1;
           html2+=' "kind": "flickr", "userID": "149035168@N08", "thumbnailHeight": 150, "thumbnailWidth": 150, "album": "none", "galleryDisplayMode": "moreButton", "galleryDisplayMoreStep": 2';
           html2+=portable_part2;
-          jQuery('#ngy2_portable').html(html2);
-          jQuery('#ngy2_description').text('Display 2 rows of thumbnails. Click the "more button" to show 2 more rows.');
+          jQuery('#ngy2_portable').html( Prism.highlight(html2, Prism.languages.markup, 'markup') );
+          jQuery('#ngy2_description').text('Only the first 2 rows of thumbnails are displayed. The user can click on the button on the bottom of the gallery to display 2 more rows.');
         },
 
         btnNGY2_displaymode_demo3: function() {
@@ -562,18 +567,18 @@
           var html=html_part1;
           html+='        "kind":                  "flickr",\n';
           html+='        "userID":                "149035168@N08",\n';
-          html+='        "thumbnailHeight":       150, "thumbnailWidth": 150,\n';
           html+='        "album":                 "none",\n';
+          html+='        "thumbnailHeight":       150, "thumbnailWidth": 150,\n';
           html+='        "galleryDisplayMode":    "pagination",\n';
           html+='        "galleryMaxRows":        2,\n';
           html+='        "galleryPaginationMode": "numbers"\n';
           html+=html_part2+html_part3;
-          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
           var html2=portable_part1;
           html2+=' "kind": "flickr", "userID": "149035168@N08", "thumbnailHeight": 150, "thumbnailWidth": 150, "album": "none", "galleryDisplayMode": "pagination", "galleryMaxRows": 2, "galleryPaginationMode": "numbers"';
           html2+=portable_part2;
-          jQuery('#ngy2_portable').html(html2);
-          jQuery('#ngy2_description').text('Display 2 rows of thumbnails and numbers below to paginate.');
+          jQuery('#ngy2_portable').html( Prism.highlight(html2, Prism.languages.markup, 'markup') );
+          jQuery('#ngy2_description').text('Gallery with 2 rows of thumbnails. The user can select the page number on the bottom of the gallery to jump to the corresponding page.');
         },
 
         btnNGY2_displaymode_demo4: function() {
@@ -596,12 +601,12 @@
           html+='        "galleryMaxRows":        2,\n';
           html+='        "galleryPaginationMode": "dots"\n';
           html+=html_part2+html_part3;
-          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
           var html2=portable_part1;
           html2+=' "kind": "flickr", "userID": "149035168@N08", "thumbnailHeight": 150, "thumbnailWidth": 150, "album": "none", "galleryDisplayMode": "pagination", "galleryMaxRows": 2, "galleryPaginationMode": "dots"';
           html2+=portable_part2;
-          jQuery('#ngy2_portable').html(html2);
-          jQuery('#ngy2_description').text('Display 2 rows of thumbnails and dots below to paginate.');
+          jQuery('#ngy2_portable').html( Prism.highlight(html2, Prism.languages.markup, 'markup') );
+          jQuery('#ngy2_description').text('Gallery with 2 rows of thumbnails. The user can select a dot on the bottom of the gallery to jump to the corresponding page.');
         },
 
         btnNGY2_displaymode_demo5: function() {
@@ -611,6 +616,7 @@
             thumbnailHeight: 150, thumbnailWidth:150,
             album: 'none',
             galleryDisplayMode: 'rows',
+            galleryLastRowFull: true,
             galleryMaxRows: 2,
             locationHash: false
           });
@@ -620,14 +626,15 @@
           html+='        "thumbnailHeight":     150, "thumbnailWidth": 150,\n';
           html+='        "album":               "none",\n';
           html+='        "galleryDisplayMode":  "rows",\n';
-          html+='        "galleryMaxRows":      2\n';
+          html+='        "galleryMaxRows":      2,\n';
+          html+='        "galleryLastRowFull":  true\n';
           html+=html_part2+html_part3;
-          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
           var html2=portable_part1;
           html2+=' "kind": "flickr", "userID": "149035168@N08", "thumbnailHeight": 150, "thumbnailWidth": 150, "album": "none", "galleryDisplayMode": "rows", "galleryMaxRows": 2';
           html2+=portable_part2;
-          jQuery('#ngy2_portable').html(html2);
-          jQuery('#ngy2_description').text('Display 2 rows of thumbnails.');
+          jQuery('#ngy2_portable').html( Prism.highlight(html2, Prism.languages.markup, 'markup') );
+          jQuery('#ngy2_description').text('Gallery with max. 2 rows of thumbnails.');
         },
 
         
@@ -642,21 +649,23 @@
             photoset: '72157675219521270',
             thumbnailHeight: 150, thumbnailWidth:'auto',
             gallerySorting: 'random',
+            galleryLastRowFull : true,
             locationHash: false
           });
           var html=html_part1;
-          html+='        "kind":            "flickr",\n';
-          html+='        "userID":          "149035168@N08",\n';
-          html+='        "photoset":        "72157675219521270",\n';
-          html+='        "thumbnailHeight": 150,\n';
-          html+='        "thumbnailWidth":  "auto"\n';
+          html+='        "kind":               "flickr",\n';
+          html+='        "userID":             "149035168@N08",\n';
+          html+='        "photoset":           "72157675219521270",\n';
+          html+='        "thumbnailHeight":    150,\n';
+          html+='        "thumbnailWidth":     "auto",\n';
+          html+='        "galleryLastRowFull":  true\n';
           html+=html_part2+html_part3;
-          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
           var html2=portable_part1;
           html2+=' "kind": "flickr", "userID": "149035168@N08", "photoset": "72157675219521270", "thumbnailHeight": 150, "thumbnailWidth": "auto"';
           html2+=portable_part2;
-          jQuery('#ngy2_portable').html(html2);
-          jQuery('#ngy2_description').text('Display an album with the justified layout. The thumbnail width is set to "auto".');
+          jQuery('#ngy2_portable').html( Prism.highlight(html2, Prism.languages.markup, 'markup') );
+          jQuery('#ngy2_description').text('Gallery with the justified layout. The thumbnail width is set to "auto", the thumbnail height is set to a value in pixels.');
         },
         
         btnNGY2_layout_demo2: function() {
@@ -665,6 +674,7 @@
             userID: '149035168@N08',
             photoset: '72157675219521270',
             thumbnailHeight: 150, thumbnailWidth:150,
+            galleryLastRowFull: true,
             gallerySorting: 'random',
             locationHash: false
           });
@@ -673,14 +683,15 @@
           html+='        "userID":          "149035168@N08",\n';
           html+='        "photoset":        "72157675219521270",\n';
           html+='        "thumbnailHeight": 150,\n';
-          html+='        "thumbnailWidth":  150\n';
+          html+='        "thumbnailWidth":  150,\n';
+          html+='        "galleryLastRowFull":  true\n';
           html+=html_part2+html_part3;
-          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
           var html2=portable_part1;
           html2+=' "kind": "flickr", "userID": "149035168@N08", "photoset": "72157675219521270", "thumbnailHeight": 150, "thumbnailWidth": 150';
           html2+=portable_part2;
-          jQuery('#ngy2_portable').html(html2);
-          jQuery('#ngy2_description').text('Display an album with the grid layout. Thumbnail width and height are fixed.');
+          jQuery('#ngy2_portable').html( Prism.highlight(html2, Prism.languages.markup, 'markup') );
+          jQuery('#ngy2_description').text('Gallery with grid layout. Thumbnail width and height are defined in pixels.');
         },
         
         btnNGY2_layout_demo3: function() {
@@ -701,12 +712,12 @@
           html+='        "thumbnailHeight": "auto",\n';
           html+='        "thumbnailWidth":  200\n';
           html+=html_part2+html_part3;
-          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
           var html2=portable_part1;
           html2+=' "kind": "flickr", "userID": "149035168@N08", "photoset": "72157675219521270", "thumbnailLabel": { "position" : "onBottom" }, "thumbnailHeight": "auto", "thumbnailWidth": 200';
           html2+=portable_part2;
-          jQuery('#ngy2_portable').html(html2);
-          jQuery('#ngy2_description').text('Display an album with the cascading layout. Label is positioned under the thumbnail. The thumbnail height is set to "auto".');
+          jQuery('#ngy2_portable').html( Prism.highlight(html2, Prism.languages.markup, 'markup') );
+          jQuery('#ngy2_description').text('Gallery with cascading layout. Label is positioned under the thumbnail. The thumbnail height parameter is set to "auto", the thumbnail width is set to a value in pixels.');
         },
         
         btnNGY2_layout_demo4: function() {
@@ -719,15 +730,15 @@
             gallerySorting: 'random',
             thumbnailLabel: {display: false},
             galleryMosaic : [
-              { w: 5, h: 3, c: 2, r: 1 },
-              { w: 2, h: 2, c: 1, r: 2 },
-              { w: 2, h: 2, c: 7, r: 2 },
-              { w: 2, h: 2, c: 2, r: 4 },
-              { w: 3, h: 4, c: 4, r: 4 },
-              { w: 3, h: 4, c: 7, r: 4 },
-              { w: 2, h: 2, c: 10, r: 5 },
-              { w: 4, h: 2, c: 11, r: 6 }
-            ],
+                              { w: 5, h: 3, c: 2, r: 1 },
+                              { w: 2, h: 2, c: 1, r: 2 },
+                              { w: 2, h: 2, c: 7, r: 2 },
+                              { w: 2, h: 2, c: 2, r: 4 },
+                              { w: 3, h: 4, c: 4, r: 4 },
+                              { w: 3, h: 4, c: 7, r: 4 },
+                              { w: 2, h: 2, c: 10, r: 5 },
+                              { w: 4, h: 2, c: 11, r: 6 }
+                             ],
             thumbnailGutterWidth: 0,
             thumbnailGutterHeight: 0,
             thumbnailBorderHorizontal: 5,
@@ -745,12 +756,12 @@
           html+='        "thumbnailHeight":           200,\n';
           html+='        "thumbnailWidth":            200,\n';
           html+='        "galleryMosaic":             [\n';
-          html+='                                       { "w": 5, "h": 3, "c": 2, "r": 1 },\n';
-          html+='                                       { "w": 2, "h": 2, "c": 1, "r": 2 },\n';
-          html+='                                       { "w": 2, "h": 2, "c": 7, "r": 2 },\n';
-          html+='                                       { "w": 2, "h": 2, "c": 2, "r": 4 },\n';
-          html+='                                       { "w": 3, "h": 4, "c": 4, "r": 4 },\n';
-          html+='                                       { "w": 3, "h": 4, "c": 7, "r": 4 },\n';
+          html+='                                       { "w": 5, "h": 3, "c": 2,  "r": 1 },\n';
+          html+='                                       { "w": 2, "h": 2, "c": 1,  "r": 2 },\n';
+          html+='                                       { "w": 2, "h": 2, "c": 7,  "r": 2 },\n';
+          html+='                                       { "w": 2, "h": 2, "c": 2,  "r": 4 },\n';
+          html+='                                       { "w": 3, "h": 4, "c": 4,  "r": 4 },\n';
+          html+='                                       { "w": 3, "h": 4, "c": 7,  "r": 4 },\n';
           html+='                                       { "w": 2, "h": 2, "c": 10, "r": 5 },\n';
           html+='                                       { "w": 4, "h": 2, "c": 11, "r": 6 }\n';
           html+='                                     ],\n';
@@ -762,13 +773,13 @@
           html+='        "galleryDisplayMode":        "rows",\n';
           html+='        "galleryDisplayMode":        "pagination", \n';
           html+='        "thumbnailLabel":            { "display" : false }\n';
-          html+=html_part2+html_part3;
-          jQuery('#ngy2_template').html(html);
-          var html2=portable_part1;
-          html2+=' "kind": "flickr", "userID": "149035168@N08", "photoset": "72157675219521270", "thumbnailLabel": { "position" : "onBottom" }, "thumbnailHeight": "auto", "thumbnailWidth": 200';
-          html2+=portable_part2;
-          jQuery('#ngy2_portable').html(html2);
-          jQuery('#ngy2_description').text('Display an album with the mosaic layout. Mosaic layout is defined with "galleryMosaic".');
+          html += html_part2+html_part3;
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
+          var html2 = portable_part1;
+          html2 +=' "kind": "flickr", "userID": "149035168@N08", "photoset": "72157675219521270", "thumbnailLabel": { "position" : "onBottom" }, "thumbnailHeight": "auto", "thumbnailWidth": 200';
+          html2 += portable_part2;
+          jQuery('#ngy2_portable').html( Prism.highlight(html2, Prism.languages.markup, 'markup') );
+          jQuery('#ngy2_description').text('Gallery with mosaic layout. This layout is defined with the parameter "galleryMosaic". Label is hidden on thumbnail.');
         },
         
         // #############################################################
@@ -788,11 +799,11 @@
           html+='        "userID":  "149035168@N08",\n';
           html+='        "breadcrumbAutoHideTopLevel": false\n';
           html+=html_part2+html_part3;
-          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
           var html2=portable_part1;
           html2+=' "kind": "flickr", "userID": "149035168@N08", "breadcrumbAutoHideTopLevel": false';
           html2+=portable_part2;
-          jQuery('#ngy2_portable').html(html2);
+          jQuery('#ngy2_portable').html( Prism.highlight(html2, Prism.languages.markup, 'markup') );
           jQuery('#ngy2_description').text('Display a breadcrumb for navigation in the albums.');
         },
         
@@ -813,11 +824,11 @@
           html+='        "thumbnailLevelUp":  true,\n';
           html+='        "displayBreadcrumb": false\n';
           html+=html_part2+html_part3;
-          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
           var html2=portable_part1;
           html2+=' "kind": "flickr", "userID": "149035168@N08", "thumbnailHeight": 150, "thumbnailWidth": 150, "thumbnailLevelUp": true, "displayBreadcrumb": false';
           html2+=portable_part2;
-          jQuery('#ngy2_portable').html(html2);
+          jQuery('#ngy2_portable').html( Prism.highlight(html2, Prism.languages.markup, 'markup') );
           jQuery('#ngy2_description').text('No breadcrumb for navigation in the albums. User can instead use the first thumbnail to go to upper level.');
         },
         
@@ -826,9 +837,9 @@
             kind: 'google',
             userID: '111186676244625461692',
             album: '5911699288924070209',
-            kind: 'google2',
+            kind:   'google2',
             userID: '111186676244625461692',
-            album: 'AMKf1Ieg7h2GRPRBt_FkbAlqbrLpZyTMHOmMxXe7-qDWuW8UzbcvowTPGRlY8OJxW6B_AyEAfKxJ',      //  
+            album:  'AMKf1Ieg7h2GRPRBt_FkbAlqbrLpZyTMHOmMxXe7-qDWuW8UzbcvowTPGRlY8OJxW6B_AyEAfKxJ',      //  
             google2URL: 'https://nano.gallery/nanogp2/nanogp2.php',
             thumbnailHeight: 150, thumbnailWidth:150,
             blackList: 'forhomepage|scrapbook|profil',
@@ -844,11 +855,11 @@
           html+='        "galleryFilterTags":   "title",\n';
           html+='        "displayBreadcrumb":   false\n';
           html+=html_part2+html_part3;
-          jQuery('#ngy2_template').html(html);
+          jQuery('#ngy2_template').html( Prism.highlight(html, Prism.languages.markup, 'markup') );
           var html2=portable_part1;
           html2+=' "kind": "google", "userID": "111186676244625461692", "thumbnailHeight": 150, "thumbnailWidth": 150, "galleryFilterTags": "title", "displayBreadcrumb": false';
           html2+=portable_part2;
-          jQuery('#ngy2_portable').html(html2);
+          jQuery('#ngy2_portable').html( Prism.highlight(html2, Prism.languages.markup, 'markup') );
           jQuery('#ngy2_description').text('Filter thumbnails by tags. Tags are extracted from the title (words starting with @).');
         },
         
@@ -865,9 +876,9 @@
       jQuery('.btn').on('click', function() {
         jQuery("#nanogallery2").nanogallery2('destroy');
         jQuery('.btn').addClass('btn-primary').removeClass('btn-success');
-        jQuery('#'+this.id).removeClass('btn-primary').addClass('btn-success');
+        jQuery('#' + this.id).removeClass('btn-primary').addClass('btn-success');
         mydemos[this.id]();
-        ga('send', 'event', 'click', 'demonstration', jQuery('#'+this.id).text());
+        ga('send', 'event', 'click', 'demonstration', jQuery('#' + this.id).text());
       });
       
       var hash = window.location.hash;
