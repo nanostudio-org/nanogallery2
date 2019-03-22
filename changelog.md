@@ -1,7 +1,7 @@
 nanogallery2 - ChangeLog
 ===========
 
-v2.4.1
+v2.4.2
 ------
 - new: self hosted videos - support for WEBM and OGV formats (dependant on browser support)
 - fixed: gallery not displayed under certain conditions
