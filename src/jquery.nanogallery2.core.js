@@ -1320,8 +1320,8 @@
     // paginationSwipeSensibilityVert : 10,
     galleryFilterTags :           false,    // possible values: false, true, 'title', 'description'
     galleryL1FilterTags :         null,     // possible values: false, true, 'title', 'description'
-    galleryMaxItems :             0,        // maximum number of items per album  --> only flickr, google+, nano_photos_provider2
-    galleryL1MaxItems :           null,     // maximum number of items per gallery page --> only flickr, google+, nano_photos_provider2
+    galleryMaxItems :             0,        // maximum number of items per album  --> only flickr, google2, nano_photos_provider2
+    galleryL1MaxItems :           null,     // maximum number of items per gallery page --> only flickr, google2, nano_photos_provider2
     gallerySorting :              '',
     galleryL1Sorting :            null,
     galleryDisplayTransition :    'none',
@@ -1518,7 +1518,7 @@
       config:                       '<i class="nGY2Icon-wrench"></i>',
       shareFacebook:                '<i style="color:#3b5998;" class="nGY2Icon-facebook-squared"></i>',
       shareTwitter:                 '<i style="color:#00aced;" class="nGY2Icon-twitter-squared"></i>',
-      shareGooglePlus:              '<i style="color:#dd4b39;" class="nGY2Icon-gplus-squared"></i>',
+      // shareGooglePlus:              '<i style="color:#dd4b39;" class="nGY2Icon-gplus-squared"></i>',
       shareTumblr:                  '<i style="color:#32506d;" class="nGY2Icon-tumblr-squared"></i>',
       sharePinterest:               '<i style="color:#cb2027;" class="nGY2Icon-pinterest-squared"></i>',
       shareVK:                      '<i style="color:#3b5998;" class="nGY2Icon-vkontakte"></i>',
@@ -2033,6 +2033,7 @@
           // timeout = requestTimeout(delayed, threshold || 100); 
       };
     }
+    
 
     // Double requestAnimationFrame
     window.ng_draf = function (cb) {
@@ -5761,15 +5762,15 @@
         kind: 'iframe'
       },
       selfhosted : {
-				// selhosted videos
+				// SELF-HOSTED VIDEOS
         getID: function( url ) {
-          // In order to leave things as is, i used id to identify the extension
+          // In order to leave things as is, I used ID to identify the extension
           // https://stackoverflow.com/questions/6997262/how-to-pull-url-file-extension-out-of-url-string-using-javascript
           // Make sure the method used for verifying the extension matches the kind of url your selfhosted video has
           var extension = url.split('.').pop();
 
-          // Add more extensions as required
-          var s = ( extension === 'mp4' || extension === '3gp' ) ? extension : null ;
+          // supported extensions
+          var s = ( extension === 'mp4' || extension === 'webm' || extension === 'ogv' || extension === '3gp' ) ? extension : null ;
           return s;
         },
         markup: function( url ) {
@@ -6130,22 +6131,12 @@
         jQuery.each(mediaList, function ( n, media ) {
           var id = media.getID(src);
           if( id != null ) {
-            src = ( media.selfhosted ) ? media.url( src ) : media.url(id);
+            if( typeof media.url == 'function' ) { src = media.url(id);  }
             if( typeof media.thumbUrl == 'function' ) { thumbsrc = media.thumbUrl(id);  }
             newItem.mediaKind = media.kind;
-            newItem.mediaMarkup = ( media.selfhosted ) ? media.markup( { 'src' : src, 'type' : id } ) : media.markup(id);
+            newItem.mediaMarkup = ( media.selfhosted ) ? media.markup( src ) : media.markup(id);
             return false;
           }
-// selhosted videos          
-/*
-          var id = media.getID(src);
-          if( id != null ) {
-            src = media.url(id);
-            if( typeof media.thumbUrl == 'function' ) { thumbsrc = media.thumbUrl(id);  }
-            newItem.mediaKind = media.kind;
-            newItem.mediaMarkup = media.markup(id);
-            return false;
-*/
         });
         
         
@@ -7593,7 +7584,7 @@
       content += '<div class="nGY2PopupOneItem" style="text-align:center;" data-share="pinterest">'  + G.O.icons.sharePinterest +  '</div>';
       content += '<div class="nGY2PopupOneItem" style="text-align:center;" data-share="tumblr">'     + G.O.icons.shareTumblr +     '</div>';
       content += '<div class="nGY2PopupOneItem" style="text-align:center;" data-share="twitter">'    + G.O.icons.shareTwitter +    '</div>';
-      content += '<div class="nGY2PopupOneItem" style="text-align:center;" data-share="googleplus">' + G.O.icons.shareGooglePlus + '</div>';
+      // content += '<div class="nGY2PopupOneItem" style="text-align:center;" data-share="googleplus">' + G.O.icons.shareGooglePlus + '</div>';
       content += '<div class="nGY2PopupOneItem" style="text-align:center;" data-share="vk">'         + G.O.icons.shareVK +         '</div>';
       content += '<div class="nGY2PopupOneItem" style="text-align:center;" data-share="mail">'       + G.O.icons.shareMail +       '</div>';
       content += '<div class="nGY2PopupOneItem" style="text-align:center;"></div>';
@@ -7925,7 +7916,6 @@
     }
           
     function ViewerZoomIn( zoomIn ) {
-//console.log(zoomIn);
     if( zoomIn ) {
         // zoom in
         G.VOM.zoom.userFactor+=0.1;
@@ -7945,9 +7935,6 @@
       }
     }
     function ViewerZoomMin() {
-//console.dir(G.VOM.NGY2Item(0));      
-      // var imageCurrentHeight = (item.imageHeight / dpr) * zoomUserFactor * zoomBaseFactor;
-      // var imageCurrentWidth  = (item.imageWidth / dpr)  * zoomUserFactor * zoomBaseFactor;
     
       if( G.VOM.zoom.userFactor < 0.2 ) {
         G.VOM.zoom.userFactor = 0.2;
@@ -8977,7 +8964,6 @@
       }
       
       G.VOM.swipePosX = 0;
-      
       if( displayType != '' ) {
         // not on first media display
         // G.VOM.$mediaCurrent.off("click");
@@ -8994,20 +8980,22 @@
             G.VOM.$mediaPrevious = $tmp;
             break;
         }
-        G.VOM.$mediaCurrent.addClass('imgCurrent');
-        
-        // re-sort the media containers --> current on top
-        var $pans = G.VOM.$content.find('.nGY2ViewerMediaPan');
-        G.VOM.$mediaCurrent.insertAfter($pans.last());
-        
-        if( ngy2item.mediaKind == 'img' && ngy2item.imageWidth == 0 ) {
-          ViewerSetMediaVisibility(G.VOM.NGY2Item(0), G.VOM.$mediaCurrent, 0);
-        }
-        else {
-          G.VOM.$mediaCurrent.children().eq(0).attr('class', 'nGY2ViewerMediaLoaderHidden');    // hide preloader
-          ViewerSetMediaVisibility(G.VOM.NGY2Item(0), G.VOM.$mediaCurrent, 1);
-        }
       }
+      
+      G.VOM.$mediaCurrent.addClass('imgCurrent');
+      
+      // re-sort the media containers --> current on top
+      var $pans = G.VOM.$content.find('.nGY2ViewerMediaPan');
+      G.VOM.$mediaCurrent.insertAfter($pans.last());
+      
+      if( ngy2item.mediaKind == 'img' && ngy2item.imageWidth == 0 ) {
+        ViewerSetMediaVisibility(G.VOM.NGY2Item(0), G.VOM.$mediaCurrent, 0);
+      }
+      else {
+        G.VOM.$mediaCurrent.children().eq(0).attr('class', 'nGY2ViewerMediaLoaderHidden');    // hide preloader
+        ViewerSetMediaVisibility(G.VOM.NGY2Item(0), G.VOM.$mediaCurrent, 1);
+      }
+
       
       // set the new NEXT media
       G.VOM.$mediaNext.empty();
@@ -9535,7 +9523,7 @@
       
       // Event page scrolled
       jQuery(window).on('scroll.nanogallery2.' + G.baseEltID, debounce( OnScrollEvent, G.O.eventsDebounceDelay, false) );
-      
+
       // Debounced function to hide the toolbars on the viewer
       G.VOM.toolsHide = debounce( ViewerToolsHide, G.O.viewerHideToolsDelay, false );
       
@@ -9743,20 +9731,31 @@
     }
     
      
-    function OnScrollEvent() {
-      // if( G.scrollTimeOut ) {
-        // clearTimeout(G.scrollTimeOut);
-      // }
-      
-      // G.scrollTimeOut = setTimeout(function () {
-        if( !G.VOM.viewerDisplayed ) {
-          if( G.galleryResizeEventEnabled ) {
-            GalleryResize();
-          }
-          return;
+    // Depreciated - if gallery currently refreshed (G.galleryResizeEventEnabled=false), page may be scrolled but it will not be refreshed again
+    function OnScrollEvent_OLD() {
+      if( !G.VOM.viewerDisplayed ) {
+        if( G.galleryResizeEventEnabled ) {
+          GalleryResize();
         }
-      // }, 100);
+        return;
+      }
     }
+
+
+    function OnScrollEvent() {
+      if( !G.VOM.viewerDisplayed ) {
+        GalleryResizeOnScrollEvent();
+      }
+    }
+    // the gallery may currently be refreshed, so ensure that at the end of the refresh, the gallery is refreshed again because the page may have been scrolled in the meantime
+    function GalleryResizeOnScrollEvent() {
+      if( G.galleryResizeEventEnabled == false) {
+        window.setTimeout(GalleryResizeOnScrollEvent, 10);  // check again in 10ms
+      } else {
+        GalleryResize();
+      }
+    }
+
 
     
     // I18N : define text translations
