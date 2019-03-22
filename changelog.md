@@ -3,6 +3,14 @@ nanogallery2 - ChangeLog
 
 v2.4.1
 ------
+- new: self hosted videos - support for WEBM and OGV formats (dependant on browser support)
+- fixed: gallery not displayed under certain conditions
+- fixed: first html5 video unclickable
+- fixed: self hosted videos - support in html markup method
+- removed: share on google+
+
+v2.4.1
+------
 - new: support for self hosted videos (mp4)
 - new: lightbox - button to rotate images
 - new: lightbox - fluid transition from zoomed to unzoomed image when displaying a new image
