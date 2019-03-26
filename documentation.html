@@ -4110,19 +4110,184 @@ shareMail:                    '&lt;i  style="color:#555;" class="nGY2Icon-mail-a
           }
       });
       
-      // typeform review
-      jQuery('#btn_enjoy_no').on('click', function() {
-        window.open('https://nanostudio.typeform.com/to/wHRN2N', '_blank');
-        $('#myModalEnjoyNo').modal('hide');
-      });
-      jQuery('#btn_enjoy_yes').on('click', function() {
-        window.open('https://nanostudio.typeform.com/to/zyHSZD', '_blank');
-        $('#myModalEnjoyYes').modal('hide');
-      });
-
+      
     });
+		
+		
+		// #############################
+		// DEMO galleryDisplayTransition
+		jQuery('.ngy2_galleryDisplayTransition').on( "click", function(e) {
+			jQuery("#nanogallery_galleryDisplayTransition").nanogallery2('destroy');
+			
+			var a = "none";
+			switch( jQuery(e.currentTarget)[0].id ) {
+				case 'btn_ngy2_galleryDisplayTransition_demo2':
+					a = "slideUp";
+					break;
+				case 'btn_ngy2_galleryDisplayTransition_demo3':
+					a = "rotateX";
+					break;
+			}
+			
+			jQuery("#nanogallery_galleryDisplayTransition").nanogallery2({
+
+				kind: 'nano_photos_provider2',
+				dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
+				album: 'motors',
+				galleryDisplayTransition: a,
+				galleryDisplayTransitionDuration: 1200,
+			 
+				thumbnailAlignment: 'fillWidth',
+
+				thumbnailHeight: '100', thumbnailWidth: '100',
+				
+				thumbnailDisplayTransition: 'none',
+				thumbnailDisplayTransitionDuration: 600,
+				thumbnailDisplayInterval: 30,
+				galleryMaxRows: 3,
+				galleryDisplayMode: 'rows',
+
+				thumbnailL1GutterWidth: 10,
+				thumbnailL1GutterHeight: 10,
+				thumbnailBorderHorizontal: 2,
+				thumbnailBorderVertical: 2,
+
+				thumbnailHoverEffect2: null,
+
+				thumbnailToolbarImage : null,
+				thumbnailToolbarAlbum: null,
+        thumbnailLabel: { display: false},
+			 
+				gallerySorting: 'random',
+				locationHash: false
+			});
+		});
+		$( "#btn_ngy2_galleryDisplayTransition_demo1" ).trigger( "click" );
+						
+		
+		
+		// ##############################
+		// DEMO thumbnailDisplayTransition
+		jQuery('.ngy2_thumbnailDisplayTransition').on( "click", function(e) {
+			jQuery("#nanogallery_thumbnailDisplayTransition").nanogallery2('destroy');
+			
+			var b = "none";
+			switch( jQuery(e.currentTarget)[0].id ) {
+				case 'btn_thumbnailDisplayTransition_demo2':
+					b = 'slideUp';
+					break;
+				case 'btn_thumbnailDisplayTransition_demo3':
+					b = 'slideDown';
+					break;
+				case 'btn_thumbnailDisplayTransition_demo4':
+					b = 'scaleUp';
+					break;
+				case 'btn_thumbnailDisplayTransition_demo5':
+					b = 'scaleDown';
+					break;
+				case 'btn_thumbnailDisplayTransition_demo6':
+					b = 'fadeIn';
+					break;
+				case 'btn_thumbnailDisplayTransition_demo7':
+					b = 'randomScale';
+					break;
+				case 'btn_thumbnailDisplayTransition_demo8':
+					b = 'flipDown';
+					break;
+				case 'btn_thumbnailDisplayTransition_demo9':
+					b = 'flipUp';
+					break;
+				case 'btn_thumbnailDisplayTransition_demo10':
+					b = 'slideDown2';
+					break;
+				case 'btn_thumbnailDisplayTransition_demo11':
+					b = 'slideUp2';
+					break;
+				case 'btn_thumbnailDisplayTransition_demo12':
+					b = 'slideRight';
+					break;
+				case 'btn_thumbnailDisplayTransition_demo13':
+					b = 'slideLeft';
+					break;
+			}
+			
+			jQuery("#nanogallery_thumbnailDisplayTransition").nanogallery2({
+
+				kind: 'nano_photos_provider2',
+				dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
+				album: 'motors',
+				galleryDisplayTransition: 'none',
+				galleryDisplayTransitionDuration: 1200,
+			 
+				thumbnailAlignment: 'fillWidth',
+
+				thumbnailHeight: '100', thumbnailWidth: '100',
+				
+				thumbnailDisplayTransition: b,
+				thumbnailDisplayTransitionDuration: 600,
+				thumbnailDisplayInterval: 30,
+				galleryMaxRows: 3,
+				galleryDisplayMode: 'rows',
+
+				thumbnailL1GutterWidth: 10,
+				thumbnailL1GutterHeight: 10,
+				thumbnailBorderHorizontal: 2,
+				thumbnailBorderVertical: 2,
+
+				thumbnailHoverEffect2: null,
+
+				thumbnailToolbarImage : null,
+				thumbnailToolbarAlbum: null,
+        thumbnailLabel: { display: false},
+			 
+				gallerySorting: 'random',
+				locationHash: false
+			});
+		});
+		$( "#btn_thumbnailDisplayTransition_demo1" ).trigger( "click" );
+		
+		
+		// ##############################
+		// DEMO thumbnailDisplayTransition COMBINING
+		jQuery('#btn_thumbnailDisplayTransition2_demo1').on( "click", function(e) {
+			jQuery("#nanogallery_thumbnailDisplayTransition2").nanogallery2('destroy');
+			
+			jQuery("#nanogallery_thumbnailDisplayTransition2").nanogallery2({
+
+				kind: 'nano_photos_provider2',
+				dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
+				album: 'motors',
+				galleryDisplayTransition: 'rotateX',
+				galleryDisplayTransitionDuration: 1500,
+			 
+				thumbnailAlignment: 'fillWidth',
+
+				thumbnailHeight: '100', thumbnailWidth: '100',
+				
+				thumbnailDisplayTransition: 'scaleUp',
+				thumbnailDisplayTransitionDuration: 600,
+				thumbnailDisplayInterval: 30,
+				galleryMaxRows: 3,
+				galleryDisplayMode: 'rows',
+
+				thumbnailL1GutterWidth: 10,
+				thumbnailL1GutterHeight: 10,
+				thumbnailBorderHorizontal: 2,
+				thumbnailBorderVertical: 2,
+
+				thumbnailHoverEffect2: null,
+
+				thumbnailToolbarImage : null,
+				thumbnailToolbarAlbum: null,
+        thumbnailLabel: { display: false},
+			 
+				gallerySorting: 'random',
+				locationHash: false
+			});
+		});
+		$( "#btn_thumbnailDisplayTransition2_demo1" ).trigger( "click" );
+		
   </script>
-  
 
   <!-- ######################## -->
   <!-- ##### START FOOTER ##### -->
