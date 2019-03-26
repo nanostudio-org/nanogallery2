@@ -84,7 +84,8 @@
 
   <style>
   
-    
+
+
     body { font-size:1.3em; color:#000; line-height:1.5; }
     p { font-size:1.3em; }
     td { font-size:1.2em; }
@@ -108,8 +109,10 @@
       color: #fff;
       background-color: #AEDADC;
       background-color: #009688;
+      background-color: #0097A7;
       border-color: #499195;
       border-color: #00796B;
+      border-color: #00838F;
       padding-top: 25px;
       padding-bottom: 25px;
     }
@@ -147,9 +150,17 @@
     /*****************/
     /* DOCUMENTATION */
     /*****************/
-    .ngy2documentation { font-size: 1.7rem; }
+    
+    
+    /* bandeau rayé  */
+    .ngy2documentation_section { 
+      padding: 70px 20px 10px 10px;
+      background-color:#000;
+      border-left: 8px solid #FF6D00;
+    }
+    
     .ngy2documentation p { font-size: 1.7rem; }
-    .ngy2documentation h2 { font-size: 2rem; }
+    /* .ngy2documentation h2 { font-size: 2rem; } */ 
     .ngy2documentation h3 { font-size: 1.9rem; }
     .ngy2documentation h4 { font-size: 1.8rem; }
     .ngy2documentation h5 { font-size: 1.7rem; }
@@ -183,6 +194,7 @@
     .ngy2documentation :not(pre) > code {
       background: #eee;
       background: #f4f4f0;
+      background: #ECEFF1;
       font-weight: normal;
       color: #19676B;
       color: #000;
@@ -196,22 +208,22 @@
     }
     .ngy2documentation .badge.ngy2_ver {
       background-color: #888;
-      background-color: #0288D1;
+      background-color: #3949AB;
       padding: 4px 10px;
       margin: 1px;
     }
     .ngy2documentation .badge.ngy2_type {
-      background-color: #1976D2;
+      background-color: #1E88E5;
       padding: 4px 10px;
       margin: 1px;
     }
     .ngy2documentation .badge.ngy2_code_markup {
-      background-color: #303F9F;
+      background-color: #AD1457;
       font-size: 1.4rem;
       padding: 4px 10px;
     }
     .ngy2documentation .badge.ngy2_code_js {
-      background-color: #F57C00 !important;
+      background-color: #7B1FA2 !important;
       font-size: 1.4rem;
       padding: 4px 10px;
     }
@@ -342,6 +354,8 @@
     h1, h2, h3, h4, h5, h6 {
       color : #499295;
       color : #009688;
+      color : #212121;
+      color : #000;
     }
     .ngy2_bgdark h1, .ngy2_bgdark h2, .ngy2_bgdark h3, .ngy2_bgdark h4, .ngy2_bgdark h5, .ngy2_bgdark h6 {
       /* color : #76B6B9; */
@@ -350,9 +364,13 @@
 
     a {
       color: #499295;
+      color: #B71C1C;
       text-decoration: none;
     }    
-
+		a:focus, a:hover {
+      color: #B71C1C;
+		}
+		
     h3 a:link,
     h3 a:hover {
       color: #aaa;
@@ -361,6 +379,7 @@
     h3 a:hover,
     h3 a:active {
       color: #23CB99;
+      color: #B71C1C;
       text-decoration: none;
     }
 
@@ -412,7 +431,7 @@
     .ngy2_logo svg {
         display: block;
         letter-spacing: 1.5vw;
-        font-size: 5rem;
+        font-size: 3vw;
     }
     .ngy2_logo .text-copy {
         fill: none;
@@ -627,7 +646,7 @@
     /* VERTICAL NAVIGATION BAR (documentation) */
     /*******************************************/
     #ngy2_vert_nav {
-      border-left: 4px solid #499295;
+      border-left: 4px solid #0097A7;
       font-size:1.5rem;
     }
     
@@ -639,11 +658,11 @@
     }    
     #ngy2_vert_nav_style .nav .active {
       font-weight: bold;
-      border-left: 4px solid #499295;
+      border-left: 4px solid #FF6D00;
       background-color: #f0f0f0;
     }
     #ngy2_vert_nav_style .nav .active a{
-      color:#499295;
+      color:#FF6D00;
       /* font-size:1.2rem; */
     }
 
@@ -806,11 +825,12 @@
       padding: 1rem 1.5rem 0rem 1.5rem;
       margin: .5rem .5rem;
       overflow: auto;
-      background: #f0f0f0;
-      background: #FBFEDA;
+      background: #fff389;
+      background: #FFF9C4;
       color: #000;
       border-radius: .0em;
       border-color: #CDDC39;
+      border-color: #FDD835;
     }
     pre > code {
       background: transparent;
@@ -1008,6 +1028,8 @@
       }
     }
 
+  
+  
   
 
   </style>
