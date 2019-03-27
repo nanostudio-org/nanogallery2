@@ -85,7 +85,6 @@
 
   <style>
   
-
     body { font-size:1.7em; color:#000; line-height:1.5; }
     p { font-size:1.3em; }
     td { font-size:1.2em; }
@@ -372,6 +371,13 @@
 		a:focus, a:hover {
       color: #B71C1C;
 		}
+    .ngy2_dark a,.ngy2_dark a:link {
+      color: #0097A7;
+      text-decoration: none;
+    }    
+		.ngy2_dark a:focus, .ngy2_dark a:hover {
+      color: #18FFFF;
+		}
 		
     h3 a:link,
     h3 a:hover {
@@ -474,7 +480,7 @@
     
     .ngy2_features div {
       /* background-color: #23CB99; */
-      font-size: 2em;
+      font-size: 1.5em;
       color: #fff;
       padding: 5px;
       text-transform: uppercase;
@@ -1030,6 +1036,7 @@
       }
     }
 
+
   
 
   </style>
@@ -1338,7 +1345,7 @@ $("#my_nanogallery2").nanogallery2({
     <br><br><br><br>
     <h2 style="text-decoration: underline;" id="ngy2_concepts_start_global"><b>3. Global settings</b></h2>
     <br>
-    <p class="lead">
+    <p>
     <!-- 4 basic layouts are available: grid, justified, cascading and mosaic. -->
       <span class="lead">
         In <b>addition to content and layout</b>, you can also configure <b>global settings</b> which are applied to the whole gallery.
@@ -1379,7 +1386,7 @@ thumbnailHoverEffect2:      'scale120'
     <br><br><br><br>
     <h2 style="text-decoration: underline;" id="ngy2_concepts_start_all"><b>4. All together</b></h2>
     <br>
-    <p class="lead">
+    <p>
       <span class="lead">
         You're now ready to put everything together.
         Your gallery can be configured in <b>javascript</b> or in <b>HTML markup</b>.
@@ -1388,10 +1395,12 @@ thumbnailHoverEffect2:      'scale120'
       </span>
 			<br><br>
       <h3><u>HTML markup method:</u></h3>
-      use the <code>data-nanogallery2</code> attribute.
+      <p>
+        use the <code>data-nanogallery2</code> attribute.
+      </p>
       <br><br>
       <span class="badge ngy2_code_markup"> HTML markup example</span>
-      <a href="https://codepen.io/Kris-B/pen/LyBwvN" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+      <a href="https://codepen.io/Kris-B/pen/LyBwvN" type="button" class="btn btn-primary btn-sm" target="_blank"><i class="fa fa-codepen fa-2x" aria-hidden="true"></i> &nbsp; view demo on codepen</a>
       <pre>
 &lt;div data-nanogallery2 = '{
     &lt;!-- ### gallery settings ### -->
@@ -1406,15 +1415,17 @@ thumbnailHoverEffect2:      'scale120'
   &lt;a href="img_03.jpg" data-ngthumb="img_03t.jpg"&gt;Title Image 3&lt;/a&gt;
 &lt;/div&gt;
       </pre>
-      <i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#b00;"></i> with markup, options must respect the JSON format (and <u>not</u> the javascript object syntax).
+      <i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#b00;"></i> HTML markup: options must respect the <b>JSON format</b> (and <u>not</u> the javascript object syntax).
       Property names and string values must be between double-quotes <code style="background:whitesmoke;">"</code>.
 
       <br><br>
       <h3><u>Javascript method:</u></h3>
-      Settings are passed to the <code>nanogallery2()</code> function.
+      <p>
+        Settings are passed to the <code>nanogallery2()</code> function.
+      </p>
       <br><br>
       <span class="badge ngy2_code_js" >Javascript example</span>
-      <a href="https://codepen.io/Kris-B/pen/mROmKM" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+      <a href="https://codepen.io/Kris-B/pen/mROmKM" type="button" class="btn btn-primary btn-sm" target="_blank"><i class="fa fa-codepen fa-2x" aria-hidden="true"></i> &nbsp; view demo on codepen</a>
       <pre>
 $("#my_nanogallery2").nanogallery2({
   // ### gallery settings ###
@@ -1591,11 +1602,11 @@ $("#my_nanogallery2").nanogallery2({
       thumbnailHeight:  "200",
       thumbnailWidth:   "200",
       galleryMosaic :   [
-          { c: 1, r: 1, w: 2, h: 2 },
-          { c: 3, r: 1, w: 1, h: 1 },
-          { c: 3, r: 2, w: 1, h: 1 },
-          { c: 1, r: 3, w: 1, h: 1 },
-          { c: 3, r: 3, w: 2, h: 1 }
+          { "c": 1, "r": 1, "w": 2, "h": 2 },
+          { "c": 3, "r": 1, "w": 1, "h": 1 },
+          { "c": 3, "r": 2, "w": 1, "h": 1 },
+          { "c": 1, "r": 3, "w": 1, "h": 1 },
+          { "c": 3, "r": 3, "w": 2, "h": 1 }
       ]
     </pre>
             <p>
@@ -1909,7 +1920,7 @@ thumbnailDisplayInterval:            30
         <div class="col-md-6" >
         <span><b>HTML markup method:</b></span>
       <pre>
-"thumbnailDisplayTransition":          "scaleUp",
+"thumbnailDisplayTransition":          "slideUp2",
 "thumbnailDisplayTransitionDuration":  500,  
 "thumbnailDisplayInterval":            30,   
 "galleryDisplayTransition":            "rotateX",
@@ -1920,7 +1931,7 @@ thumbnailDisplayInterval:            30
         <div class="col-md-6" >
         <span><b>Javascript method:</b></span>
       <pre>
-thumbnailDisplayTransition:          'scaleUp',
+thumbnailDisplayTransition:          'slideUp2',
 thumbnailDisplayTransitionDuration:  500,
 thumbnailDisplayInterval:            30,   
 galleryDisplayTransition:            'rotateX',
@@ -2025,8 +2036,8 @@ galleryDisplayTransitionDuration:    500
     <br><br><br><br><br><br><br>
     <h2><b><i class="fa fa-certificate ngy2color1" aria-hidden="true"></i> GALLERY SETTINGS</b></h2>
     <hr>
-    <blockquote>
-      Configure the behaviour of the gallery.
+    <blockquote class="lead">
+      Configure the general behaviour of the gallery.
     </blockquote>
     <br>
       <div class="table-responsive">
@@ -2460,13 +2471,16 @@ galleryDisplayTransitionDuration:    500
             <br>
             <br>Possible values: <b>'slideUp', 'slideDown', 'scaleUp', 'scaleDown', 'fadeIn', 'randomScale', 'flipDown', 'flipUp', 'slideDown2', 'slideUp2', 'slideRight', 'slideLeft', 'custom'</b>
             <br>
-            <br><b>Note:</b> some values support the syntax <code>TRANISITION_VAL_EASING</code>
+            <br><b>Note:</b> some values support the syntax <code>[TRANISITION]_[VAL]_[EASING]</code>
             <br>where:
             <br>- <code>TRANISITION</code>: the name of the display transition
             <br>- <code>VAL</code>: a start value for the animation
             <br>- <code>EASING</code>: transition easing formula name (optional)
             <br>
-            <br> Example: <code>scaleDown_2_bounce</code>
+            <br> Examples:
+            <br>&nbsp; - <code>scaleDown_2_bounce</code>
+            <br>&nbsp; - <code>slideUp_100_easeInQuad</code>
+               
             <br>
             <br>List of values supporting the extended syntax:
             <br>- <b>scaleDown</b>: VAL is the start scale factor (default is 1.3)
@@ -3266,7 +3280,7 @@ galleryDisplayTransitionDuration:    500
       <br><br><br>
 
       <span class="badge ngy2_code_markup"> HTML markup example</span> 
-      <a href="https://codepen.io/Kris-B/pen/EoYLpN" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+      <a href="https://codepen.io/Kris-B/pen/EoYLpN" type="button" class="btn btn-primary btn-sm" target="_blank"><i class="fa fa-codepen fa-2x" aria-hidden="true"></i> &nbsp; view demo on codepen</a>
       <pre>
 &lt;div id="my_nanogallery2" data-nanogallery2 = '{ &gt;
   "viewerToolbar":   {
@@ -3281,7 +3295,7 @@ galleryDisplayTransitionDuration:    500
       <br><br>
       
       <span class="badge ngy2_code_js" >Javascript example</span>
-      <a href="https://codepen.io/Kris-B/pen/VyZdOJ" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+      <a href="https://codepen.io/Kris-B/pen/VyZdOJ" type="button" class="btn btn-primary btn-sm" target="_blank"><i class="fa fa-codepen fa-2x" aria-hidden="true"></i> &nbsp; view demo on codepen</a>
       <pre>
 viewerToolbar:    {
          standard:  'minimizeButton, label, shareButton, fullscreenButton',
@@ -3603,7 +3617,7 @@ viewerToolbar:    {
       <br>
 
       <span class="badge ngy2_code_js" >Javascript example</span>
-      <a href="https://codepen.io/Kris-B/pen/EWmqdd" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+      <a href="https://codepen.io/Kris-B/pen/EWmqdd" type="button" class="btn btn-primary btn-sm" target="_blank"><i class="fa fa-codepen fa-2x" aria-hidden="true"></i> &nbsp; view demo on codepen</a>
       <pre>
       $("#myNanoGallery").nanogallery2({
         ...
@@ -3615,7 +3629,8 @@ viewerToolbar:    {
       </pre>
       <br><br>
       
-      <b>List of default icons:</b>
+      <b>List of default icons:</b><br>
+      <span class="badge ngy2_code_js" >Javascript format</span>
       <pre>
 // BREADCRUMB:
 breadcrumbAlbum:              '&lt;i class="nGY2Icon-folder-empty"&gt;&lt;/i&gt;'        // album icon
@@ -3698,7 +3713,8 @@ shareMail:                    '&lt;i  style="color:#555;" class="nGY2Icon-mail-a
       2. assign it to the gallery: <code>galleryTheme: myCS</code>
     </blockquote>
     <p>
-      Gallery theme format (with default values):
+      Gallery theme format (with default values):<br>
+      <span class="badge ngy2_code_js" >Javascript example</span>
     </p>
     <pre>
 {
@@ -3714,6 +3730,8 @@ shareMail:                    '&lt;i  style="color:#555;" class="nGY2Icon-mail-a
     <br>
     <p>
       Lightbox theme format (with default values):
+      <br>
+      <span class="badge ngy2_code_js" >Javascript example</span>
     </p>
     <pre>
 {
@@ -4263,7 +4281,7 @@ shareMail:                    '&lt;i  style="color:#555;" class="nGY2Icon-mail-a
 
 				thumbnailHeight: '100', thumbnailWidth: '100',
 				
-				thumbnailDisplayTransition: 'scaleUp',
+				thumbnailDisplayTransition: 'slideUp2',
 				thumbnailDisplayTransitionDuration: 600,
 				thumbnailDisplayInterval: 30,
 				galleryMaxRows: 3,

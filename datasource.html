@@ -85,7 +85,6 @@
 
   <style>
   
-
     body { font-size:1.7em; color:#000; line-height:1.5; }
     p { font-size:1.3em; }
     td { font-size:1.2em; }
@@ -372,6 +371,13 @@
 		a:focus, a:hover {
       color: #B71C1C;
 		}
+    .ngy2_dark a,.ngy2_dark a:link {
+      color: #0097A7;
+      text-decoration: none;
+    }    
+		.ngy2_dark a:focus, .ngy2_dark a:hover {
+      color: #18FFFF;
+		}
 		
     h3 a:link,
     h3 a:hover {
@@ -474,7 +480,7 @@
     
     .ngy2_features div {
       /* background-color: #23CB99; */
-      font-size: 2em;
+      font-size: 1.5em;
       color: #fff;
       padding: 5px;
       text-transform: uppercase;
@@ -1030,6 +1036,7 @@
       }
     }
 
+
   
 
   </style>
@@ -1168,21 +1175,21 @@
   <div class="col-md-10">
 
     <br><br>
-    <h1 id="ngy2_intro">Gallery content</h1>
+    <h1 id="ngy2_intro">nanogallery2 - Set gallery content</h1>
     <br><br><br>
     <br><br><br>
     <br><br><br>
     <blockquote>
-      On this page, you will learn how to configure the content of a gallery.<br><br>
-      A content source is a place where your images, videos and albums are stored. As for nanogallery2's settings, definition can be made with <b>HTML markup</b> or can be passed to the <code>nanogallery2()</code> function.<br>
+      On this page, you will learn how to configure different kind of media content for your gallery.<br><br>
+      A content source is a place where your images, videos and albums are stored. As for nanogallery2's settings, definition can be made with <b>HTML markup</b> or can be passed in javascript to the <code>nanogallery2()</code> function.<br>
       <br>
       <br>
       Natively, you can display self hosted images and videos (hosted on Youtube, Vimeo, Dailymotion, self hosted), just by listing all your medias individually in your HTML page.
       <br><br>
-      Additionally, you can use an optional module for displaying images :<br>
-      &nbsp; &nbsp; &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i> with automatic generation of responsive thumbnails from your web server: <b><a href="#ngy2_npp2">nanoPhotosProvider2</a></b><br>
-      &nbsp; &nbsp; &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i> from <b><a href="#ngy2_flickr">Flickr</a></b><br>
-      &nbsp; &nbsp; &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i> from <b><a href="#ngy2_google">Google Photos</a></b><br>
+      Additionally, you can use an optional module/service which will send the medias to your gallery:<br>
+      &nbsp; &nbsp; &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i> <b><a href="#ngy2_npp2">nanoPhotosProvider2</a></b> - for self hosted images, with automatic generation of responsive thumbnails<br>
+      &nbsp; &nbsp; &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i> <b><a href="#ngy2_flickr">Flickr</a></b><br>
+      &nbsp; &nbsp; &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i> <b><a href="#ngy2_google">Google Photos</a></b><br>
       <br>
     </blockquote>
     <br>
@@ -1259,24 +1266,24 @@ $("#my_nanogallery2").nanogallery2({
         <tbody>
           <tr>
             <td>self hosted media</td>
-            <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
-            <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
-            <td class="text-center"><i class="fa fa-close" style="color:#e00;" aria-hidden="true"></i></td>
-            <td class="text-center"><i class="fa fa-close" style="color:#e00;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-check fa-2x" style="color:#0a0;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-check fa-2x" style="color:#0a0;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-close fa-2x" style="color:#F44336;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-close fa-2x" style="color:#F44336;" aria-hidden="true"></i></td>
           </tr>
           <tr>
             <td>cloud hosted media</td>
-            <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
-            <td class="text-center"><i class="fa fa-close" style="color:#e00;" aria-hidden="true"></i></td>
-            <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
-            <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-check fa-2x" style="color:#0a0;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-close fa-2x" style="color:#F44336;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-check fa-2x" style="color:#0a0;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-check fa-2x" style="color:#0a0;" aria-hidden="true"></i></td>
           </tr>
           <tr>
             <td>easy setup</td>
-            <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
-            <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
-            <td class="text-center"><i class="fa fa-close" style="color:#e00;" aria-hidden="true"></i><i class="fa fa-close" style="color:#e00;" aria-hidden="true"></i></td>
-            <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-check fa-2x" style="color:#0a0;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-check fa-2x" style="color:#0a0;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-close fa-2x" style="color:#F44336;" aria-hidden="true"></i><i class="fa fa-close fa-2x" style="color:#F44336;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-check fa-2x" style="color:#0a0;" aria-hidden="true"></i></td>
           </tr>
           <!--
           <tr>
@@ -1289,38 +1296,38 @@ $("#my_nanogallery2").nanogallery2({
           -->
           <tr>
             <td><b>images</b></td>
-            <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
-            <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
-            <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
-            <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-check fa-2x" style="color:#0a0;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-check fa-2x" style="color:#0a0;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-check fa-2x" style="color:#0a0;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-check fa-2x" style="color:#0a0;" aria-hidden="true"></i></td>
           </tr>
           <tr>
             <td><b>videos</b><br> &nbsp; Youtube, Vimeo, Dailymotion</td>
-            <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
-            <td class="text-center"><i class="fa fa-close" style="color:#e00;" aria-hidden="true"></i></td>
-            <td class="text-center"><i class="fa fa-close" style="color:#e00;" aria-hidden="true"></i></td>
-            <td class="text-center"><i class="fa fa-close" style="color:#e00;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-check fa-2x" style="color:#0a0;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-close fa-2x" style="color:#F44336;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-close fa-2x" style="color:#F44336;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-close fa-2x" style="color:#F44336;" aria-hidden="true"></i></td>
           </tr>
           <tr>
             <td>auto generation of responsive thumbnails</td>
-            <td class="text-center"><i class="fa fa-close" style="color:#e00;" aria-hidden="true"></i> (1)</td>
-            <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
-            <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
-            <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-close fa-2x" style="color:#F44336;" aria-hidden="true"></i> (1)</td>
+            <td class="text-center"><i class="fa fa-check fa-2x" style="color:#0a0;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-check fa-2x" style="color:#0a0;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-check fa-2x" style="color:#0a0;" aria-hidden="true"></i></td>
           </tr>
           <tr>
             <td>thumbnails dominant colors<br>(blurred preview image)</td>
-            <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
-            <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
-            <td class="text-center"><i class="fa fa-close" style="color:#e00;" aria-hidden="true"></i></td>
-            <td class="text-center"><i class="fa fa-close" style="color:#e00;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-check fa-2x" style="color:#0a0;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-check fa-2x" style="color:#0a0;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-close fa-2x" style="color:#F44336;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-close fa-2x" style="color:#F44336;" aria-hidden="true"></i></td>
           </tr>
           <tr>
             <td>navigation in galleries<br>(filter on tags, breadcrumb)</td>
-            <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
-            <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
-            <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
-            <td class="text-center"><i class="fa fa-check" style="color:#0a0;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-check fa-2x" style="color:#0a0;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-check fa-2x" style="color:#0a0;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-check fa-2x" style="color:#0a0;" aria-hidden="true"></i></td>
+            <td class="text-center"><i class="fa fa-check fa-2x" style="color:#0a0;" aria-hidden="true"></i></td>
           </tr>
           <tr>
             <td>max number of images</td>
@@ -1371,14 +1378,15 @@ $("#my_nanogallery2").nanogallery2({
     
     <div id="ngy2_define_markup"></div>
     <br><br><br><br><br><br><br>
-    <h2><b><i class="fa fa-certificate ngy2color1" aria-hidden="true"></i> HTML markup method</b></h2>
-    <h4 class="lead">for images and videos
+    <h2><b><i class="fa fa-certificate ngy2color1" aria-hidden="true"></i> Using HTML markup</b></h2>
+    <h4 class="lead">for images, videos and albums
     </h4>
     <hr>
+    <h2 style="text-decoration: underline;" id="ngy2_concepts_start_content">Image gallery</h2>
+    <br>
     <blockquote>
-      <h4 style="color:#fff">Image gallery</h4><br>
       Images are defined using the <b>&lt;A&gt;</b> tag and <b>data-</b> attributes.<br>
-      <b>Note</b>: use the attribut <code>itemsBaseURL</code> to define the base URL where images are stored.<br>
+      <b>Note</b>: use the attribut <code>itemsBaseURL</code> to define the base URL where medias are stored.<br>
     </blockquote>
     <span class="badge ngy2_code_markup"> HTML markup example</span> 
     <a href="https://codepen.io/Kris-B/pen/LyBwvN" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
@@ -1389,12 +1397,14 @@ $("#my_nanogallery2").nanogallery2({
   &lt;a href="img_03.jpg" data-ngthumb="img_03t.jpg"                                    &gt;Title Image3&lt;/a&gt;
 &lt;/div&gt;
     </pre>
-    <br><br><br><br>
+    <br><br><br><br><br><br>
     
+
+    <h2 style="text-decoration: underline;" id="ngy2_concepts_start_content">Image gallery with albums</h2>
+    <br>
     <blockquote>
-    <h4 style="color:#fff">Gallery with albums</h4><br>
-    Albums are defined like images using the <b>&lt;A&gt;</b> tag and <b>data-</b> attributes.<br>
-    Must also be set for each album:<br>
+    Albums are defined like images/videos using the <b>&lt;A&gt;</b> tag and <b>data-</b> attributes.<br>
+    And, must also be set for each album:<br>
       &nbsp; - the data <b>kind</b> must be set: <code>data-ngkind="album"</code><br>
       &nbsp; - an <b>unique ID</b>: use the HTML <code>ID</code> attribute or the <code>data-ngid</code> attribute<br>
     To assign an item (image, video or album) to an album, use the attribute <code>data-ngalbumid</code> to point to the album.<br>
@@ -1416,10 +1426,11 @@ $("#my_nanogallery2").nanogallery2({
   &lt;a href="img04.jpg"                     data-ngid="22" data-ngalbumid="2" data-ngthumb="img04T.jpg"    &gt;Image3&lt;/a&gt;
 &lt;/div&gt;    
     </pre>
-    <br><br><br><br>
+    <br><br><br><br><br><br>
     
+    <h2 style="text-decoration: underline;" id="ngy2_concepts_start_content">Video gallery</h2>
+    <br>
     <blockquote>
-      <h4 style="color:#fff">Video gallery</h4><br>
       Videos are defined like images.<br>
       Define the URL of each video. Thumbnails are retrieved automatically for Youtube and Dailymotion. For Vimeo, you have to set the URL of the video's thumbnail.<br>
       <b>Supported video platforms: Youtube, Vimeo and Dailymotion.</b>
@@ -1431,31 +1442,34 @@ $("#my_nanogallery2").nanogallery2({
   &lt;a href="https://www.youtube.com/watch?v=Ir098VWCv8Q"                                                     &gt;Youtube&lt;/a&gt;
   &lt;a href="http://www.dailymotion.com/video/x4wtyl6"                                                        &gt;Dailymotion&lt;/a&gt;
   &lt;a href="https://vimeo.com/32875422"  data-ngthumb="https://i.vimeocdn.com/video/222726041_1280x720.jpg"  &gt;Vimeo&lt;/a&gt;
-  &lt;a href="my_video.mp4"  data-ngthumb="my_video_thumbnail.jpg"  &gt;Self hosted&lt;/a&gt;                           &gt;Self hosted&lt;/a&gt; 
+  &lt;a href="my_video.mp4"                data-ngthumb="my_video_thumbnail.jpg"                               &gt;Self hosted&lt;/a&gt; 
 &lt;/div&gt;
     </pre>
 
     <br><br>
     <br><br>
+    <br><br>
     
+
+    <h2 style="text-decoration: underline;" id="ngy2_concepts_start_content">Video and image gallery</h2>
+    <br>
     <blockquote>
-      <h4  style="color:#fff">Video and image gallery</h4><br>
       Videos, images and album can be conbined in a single gallery.<br>
     </blockquote>
     <span class="badge ngy2_code_markup"> HTML markup example</span> 
     <pre>
 &lt;div id="my_nanogallery2" data-nanogallery2 = '{ "itemsBaseURL": "https://mywebserver/gallery/myimages/"}' &gt;
-  &lt;a href="https://www.youtube.com/watch?v=Ir098VWCv8Q"                                                     &gt;Youtube&lt;/a&gt;
-  &lt;a href="http://www.dailymotion.com/video/x4wtyl6"                                                        &gt;Dailymotion&lt;/a&gt;
-  &lt;a href="https://vimeo.com/32875422"  data-ngthumb="https://i.vimeocdn.com/video/222726041_1280x720.jpg"  &gt;Vimeo&lt;/a&gt;
-  &lt;a href="my_video.mp4"  data-ngthumb="my_video_thumbnail.jpg"  &gt;Self hosted&lt;/a&gt;                           &gt;Self hosted&lt;/a&gt; 
-  &lt;a href="img_01.jpg"                  data-ngthumb="img_01t.jpg"                                          &gt;Title Image1&lt;/a&gt;
+  &lt;a href="https://www.youtube.com/watch?v=Ir098VWCv8Q"                                &gt;Youtube&lt;/a&gt;
+  &lt;a href="my_video.mp4"                data-ngthumb="my_video_thumbnail.jpg"          &gt;Self hosted video&lt;/a&gt; 
+  &lt;a href="img_01.jpg"                  data-ngthumb="img_01t.jpg"                     &gt;Title Image1&lt;/a&gt;
 &lt;/div&gt;
     </pre>
     <br><br><br>
     
     
     
+    <h2 style="text-decoration: underline;" id="ngy2_concepts_start_content">Content settings</h2>
+    <br>
     <p>
       This is the list of supported attributes (case-sensitive) to define one item (image, video or album).
     </p>
@@ -1715,15 +1729,19 @@ $("#my_nanogallery2").nanogallery2({
     </div>
     
    
-    
+
+
+   
     <div id="ngy2_define_javascript"></div>
     <br><br><br><br><br><br><br>
-    <h2><b><i class="fa fa-certificate ngy2color1" aria-hidden="true"></i> Javascript method</b></h2>
-    <h4 class="lead" >for images and videos</h4>
+    <h2><b><i class="fa fa-certificate ngy2color1" aria-hidden="true"></i> Using Javascript</b></h2>
+    <h4 class="lead" >for images, videos and albums</h4>
     <hr>
+    <br><br>
     
+    <h2 style="text-decoration: underline;" id="ngy2_concepts_start_content">Image gallery</h2>
+    <br>
     <blockquote>
-      <h4 style="color:#fff;">Image gallery</h4><br>
       Images are defined on gallery initialization, using javascript objects.<br>
     </blockquote>
     <span class="badge ngy2_code_js" >Javascript example</span>
@@ -1749,9 +1767,13 @@ $("#my_nanogallery2").nanogallery2({
 &lt;/script>
     </pre>
     <br><br>
+    <br><br>
 
+
+
+    <h2 style="text-decoration: underline;" id="ngy2_concepts_start_content">Gallery with albums</h2>
+    <br>
     <blockquote>
-    <h4 style="color:#fff;">Gallery with albums</h4><br>
     Albums are defined like images.<br>
     Must also be set for each album:<br>
       &nbsp; - the data <b>kind</b> must be set: <code>kind: 'album'</code><br>
@@ -1786,8 +1808,9 @@ $("#my_nanogallery2").nanogallery2({
     </pre>
     <br><br>    
 
+    <h2 style="text-decoration: underline;" id="ngy2_concepts_start_content">Video gallery</h2>
+    <br>
     <blockquote>
-      <h4  style="color:#fff;">Video gallery</h4><br>
       Videos are defined like images.<br>
       Define the URL of each video. Thumbnails are retrieved automatically for Youtube and Dailymotion. For Vimeo and for self hoset videos, you have to set the URL of the video's thumbnail.<br>
       <b>Supported video platforms: Youtube, Vimeo and Dailymotion.</b>
@@ -1813,10 +1836,11 @@ $("#my_nanogallery2").nanogallery2({
   )};
 &lt;/script>
     </pre>
-    <br><br>
+    <br><br><br><br>
 
+    <h2 style="text-decoration: underline;" id="ngy2_concepts_start_content">Video and image gallery</h2>
+    <br>
     <blockquote>
-      <h4  style="color:#fff;">Video and image gallery</h4><br>
       Videos, images and album can be conbined in a single gallery.<br>
     </blockquote>
     <span class="badge ngy2_code_js" >Javascript example</span>
@@ -1846,8 +1870,10 @@ $("#my_nanogallery2").nanogallery2({
 
 
 
+    <h2 style="text-decoration: underline;" id="ngy2_concepts_start_content">Content settings</h2>
+    <br>
     <p>
-      This is the list of supported properties to define one item (image or album). The properties are case-sensitive. An item object is an image or an album.
+      This is the list of supported properties to define one item (image, video or album). The properties are case-sensitive. An item object is an image, a video or an album.
     </p>
     
     <div class="table-responsive">
@@ -2564,7 +2590,7 @@ jQuery("#nanogallery2").nanogallery2({
         </ul>
       </p>
       <br>
-      By default, all your non shared albums are displayed. Image description field is not supported.
+      By default, all your albums are displayed. Image description field is not supported.
       <br><br>
     
     <div class="table-responsive">
@@ -2777,8 +2803,6 @@ jQuery("#nanogallery2").nanogallery2({
   </div>
   </div>
   </div>
-
-  
 
   <!-- ######################## -->
   <!-- #####  INCLUDE JS  ##### -->
