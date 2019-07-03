@@ -1955,12 +1955,6 @@
 
 
 
-  <!-- ######################## -->
-  <!-- ##### JS FOR PAGE  ##### -->
-  <!-- ######################## -->
-	<script type="text/javascript">
-
-
     $(document).ready(function () {
 
       
@@ -2022,7 +2016,7 @@
         // var ngy2data=$("#nanogallery_debug_on").nanogallery2('data');
         // console.dir(ngy2data);
       }      
-      jQuery("#nanogallery_debug_OFF").nanogallery2({
+      jQuery("#nanogallery_debug_on").nanogallery2({
         fnShoppingCartUpdated: mylistener,
         // imageTransition : 'slideAppear',
         // debugMode: true,
@@ -2032,19 +2026,23 @@
         // photoset: 'NONE',
         // allowHTMLinData: true,
         // fnImgDisplayed: fnOpenNewTab,
-        itemsBaseURL:     '../samples/',
+        itemsBaseURL:     'https://nanogallery2.nanostudio.org/samples/',
         items: [
             { src: 'https://www.youtube.com/watch?v=Ir098VWCv8Q', srct: 'berlin1_t.jpg', title: 'youtube' },
             { src: 'https://vimeo.com/32875422', srct: 'https://i.vimeocdn.com/video/222726041_1280x720.jpg', title: 'vimeo' },
             { src: 'http://www.dailymotion.com/video/x4wtyl6', srct: 'berlin1_t.jpg', title: 'dailymotion' },
-            { src: 'https://nano.gallery/demo/demo.mp4', srct: 'berlin1_t.jpg', title: 'Berlin 0' },
             { src: 'berlin1.jpg', srct: 'berlin1_t.jpg', title: 'Berlin 1' },
             { src: 'berlin2.jpg', srct: 'berlin2_t.jpg', title: 'Berlin 2' },
-            { src: 'berlin3.jpg', srct: 'berlin3_t.jpg', title: 'Berlin 3' }
+            { src: 'berlin3.jpg', srct: 'berlin3_t.jpg', title: 'Berlin 3' },
+            { src: 'blocks.mp4', srct: 'blocks_mp4_t.jpg', title: 'Blocks video MP4' },
+            { src: 'blocks.ogv', srct: 'blocks_ogv_t.jpg', title: 'Blocks video OGV' },
+            { src: 'blocks.webm', srct: 'blocks_webm_t.jpg', title: 'Blocks video WEBM' }
           ],
 
-//        kind: 'nano_photos_provider2',
+        kind: 'nano_photos_provider2',
 //        dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
+        dataProvider: 'http://kk-hydrobud.eu/_portfolio/nano_photos_provider2.php',
+        dataProvider: 'https://nano.gallery/nano_photos_provider2_kris/nano_photos_provider2.php',
         // kind: 'flickr',
         // userID: '149035168@N08',    // nano studio
         //album: 'none',
@@ -2101,7 +2099,7 @@
           { w: 2, h: 2, c: 7, r: 1 },
           { w: 2, h: 2, c: 7, r: 3 },
         ],
-        galleryMosaic : [
+        galleryMosaicXXX : [
           { w: 4, h: 3, c: 1, r: 1 },
           { w: 2, h: 2, c: 5, r: 1 },
           { w: 2, h: 2, c: 7, r: 1 },
@@ -2115,7 +2113,7 @@
         
         thumbnailAlignment: 'scaled',
 
-        thumbnailL1Height: '80', thumbnailL1Width: '120',
+        thumbnailL1Height: '200', thumbnailL1Width: '200',
         thumbnailHeight: '250', thumbnailWidth: 'auto',
         // thumbnailHeight: '250', thumbnailWidth: 250,
         thumbnailBaseGridHeight: 80,
@@ -2123,8 +2121,8 @@
         thumbnailDisplayTransition: 'slideLeft',
         thumbnailDisplayTransitionDuration: 600,
         thumbnailDisplayInterval: 90,
-        thumbnailL1DisplayInterval: 200,
-        galleryMaxRows: 3,
+        thumbnailL1DisplayInterval: 30,
+        galleryMaxRows: 30,
         galleryDisplayMode: 'rows',
 
         thumbnailL1GutterWidth: 10,
@@ -2221,6 +2219,7 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
           
           // MOSAIC LAYOUT - sample 1
           case 'btn_layout1a':
+            jQuery("#nanogallery_container").css({backgroundColor:'#111' });		
             jQuery("#nanogallery").nanogallery2({
             
             
@@ -2310,7 +2309,10 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
             }
             break
           
+					
           case 'btn_layout1b':
+            jQuery("#nanogallery_container").css({backgroundColor:'#fff' });		
+					
             jQuery("#nanogallery").nanogallery2({
             
             
@@ -2394,8 +2396,11 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
             }
             break
             
+						
           // GRID LAYOUT
-          case 'btn_layout2':
+          case 'btn_layout2b':
+            jQuery("#nanogallery_container").css({backgroundColor:'#111' });
+						
             jQuery("#nanogallery").nanogallery2({
 
               kind: 'nano_photos_provider2',
@@ -2448,8 +2453,60 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
             ga('send', 'event', 'click', 'index', 'layout_grid');
             break
 
+          // GRID LAYOUT 2
+          case 'btn_layout2':
+            jQuery("#nanogallery_container").css({backgroundColor:'#fff' });		
+						
+            jQuery("#nanogallery").nanogallery2({
+
+              kind: 'nano_photos_provider2',
+              dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
+              album: 'motors',
+
+              galleryDisplayTransition: 'slideUp',
+              galleryDisplayTransitionDuration: 1000,
+             
+              thumbnailAlignment: 'center',
+
+              thumbnailHeight: '300', thumbnailWidth: '300',
+              
+              thumbnailDisplayTransition: 'scaleDown',
+              thumbnailDisplayTransitionDuration: 300,
+              thumbnailDisplayInterval: 10,
+              galleryMaxRows: 3,
+              galleryDisplayMode: 'fullContent',
+
+              thumbnailBorderHorizontal: 0,
+              thumbnailBorderVertical: 0,
+							
+							thumbnailGutterWidth : 100,
+							thumbnailGutterHeight : 100,
+
+              thumbnailToolbarImage : null,
+              thumbnailToolbarAlbum: null,
+							
+							thumbnailHoverEffect2 : 'image_scale_1.00_1.20_1000',
+
+              thumbnailLabel: { display: true, position:'onBottom', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true, displayDescription: false},
+              
+              gallerySorting: 'random',
+
+              galleryTheme : { 
+                thumbnail: { titleShadow : 'none', descriptionShadow : 'none', titleColor: '#fff', borderColor: '#fff', labelBackground: '#fff', titleColor: '#000' },
+                navigationBreadcrumb: { background : '#3C4B5B' },
+                navigationFilter: { background : '#2E7C7F', backgroundSelected: '#19676B', color: '#eee' }
+              },
+              
+              locationHash: true
+            });
+            ga('send', 'event', 'click', 'index', 'layout_grid');
+            break
+
+						
+						
           // JUSTIFIED LAYOUT
           case 'btn_layout3':
+            jQuery("#nanogallery_container").css({backgroundColor:'#111' });		
             jQuery("#nanogallery").nanogallery2({
 
               kind: 'nano_photos_provider2',
@@ -2503,9 +2560,12 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
             ga('send', 'event', 'click', 'index', 'layout_justified');
             break
 
+						
+						
           // CASCADING LAYOUT
           case 'btn_layout4':
           default:
+            jQuery("#nanogallery_container").css({backgroundColor:'#111' });
             jQuery("#nanogallery").nanogallery2({
 
               kind: 'nano_photos_provider2',
@@ -3159,6 +3219,8 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
       
     });
   </script>
+
+
 
   <!-- ######################## -->
   <!-- ##### START FOOTER ##### -->
