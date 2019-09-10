@@ -145,7 +145,12 @@
         var itemDescription = '';
 				var itemTitle = '';
         if( kind == 'image') {
-						itemTitle = data.description;
+            if (data.description !== undefined ){
+              itemDescription = data.description
+            }
+            if( G.O.thumbnailLabel.get('title') != '' ) {
+              itemTitle=GetImageTitleFromURL(data.filename);
+            }
         }
 				else {
 					itemTitle = data.title;
