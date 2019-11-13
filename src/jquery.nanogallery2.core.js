@@ -388,6 +388,23 @@ TODO:
             }
           };
           
+          /** @function FilterByTags() */
+          /* filter out images that have black listed tags (flickr only) */
+          NGY2Tools.FilterByTags = function(data, tagBlackList) {
+            if (data != undefined) {
+              data = data.filter(function (item) {
+                var regex = new RegExp( tagBlackList, "i");
+                if ( Array.isArray(item.tags) ) {
+                  var tagsToTest = item.tags;
+                } else {
+                  var tagsToTest = [item.tags];
+                }
+                return ! tagsToTest.some( function (x) { return regex.test(x); } );
+              });
+            }
+            return data;
+          };
+
           return NGY2Tools;
         })(); 
 
@@ -1306,6 +1323,7 @@ TODO:
     album:                        '',
     blackList :                   'scrapbook|profil|auto backup',
     whiteList :                   '',
+    tagBlackList :                '',
     albumList :                   '',
     albumList2 :                  null,
     RTL :                         false,
@@ -2375,8 +2393,9 @@ TODO:
     G.CSSanimationName =          FirstSupportedPropertyName(["animation", "msAnimation", "MozAnimation", "WebkitAnimation", "OAnimation"]);
     G.GalleryResizeThrottled =    throttle(GalleryResize, 30, {leading: false});
     
-    G.blackList =                 null;     // album white list
-    G.whiteList =                 null;     // album black list
+    G.blackList =                 null;     // album black list
+    G.whiteList =                 null;     // album white list
+    G.tagBlackList =              null;     // tag black list
     G.albumList =                 [];       // album list
     G.locationHashLastUsed =      '';
     G.custGlobals =               {};
@@ -6317,6 +6336,7 @@ TODO:
 
       if( G.O.blackList != '' ) { G.blackList=G.O.blackList.toUpperCase().split('|'); }
       if( G.O.whiteList != '' ) { G.whiteList=G.O.whiteList.toUpperCase().split('|'); }
+      if( G.O.tagBlackList != '' ) { G.tagBlackList=G.O.tagBlackList; }
 
       if( G.O.albumList2 !== undefined && G.O.albumList2 !== null && G.O.albumList2.constructor === Array  ) {
         var l=G.O.albumList2.length;
