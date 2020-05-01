@@ -1185,105 +1185,176 @@
       </div>
     </div>
   </div>
+
+
+
   
     <br><br><br><br><br><br><br>
-  
+ 
     <div class="container">
-      <div class="row">
+      <div class="row ngy2_shadow">
+				<br><br><br><br>
         <div class="col-md-4 text-center">
           <h2>
             User guide
+						<br>&nbsp;
           </h2>
           <p class="lead text-center" style="color: #B71C1C;">
             Learn how to build, configure and customize your gallery.
             <br><br>
-            <a href="documentation.html" class="btn btn-default btn-lg" > &nbsp; <b>Read</b> &nbsp; </a>
+            <a href="documentation.html" class="btn btn-default btn-lg" > &nbsp; <b><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Read</b> &nbsp; </a>
 
           </p>
         </div>
         <div class="col-md-4 text-center">
           <h2>
             Content source
+						<br>&nbsp;
           </h2>
           <p class="lead text-center" style="color: #B71C1C;">
             See how to define photos and videos.
             <br><br>
-            <a href="datasource.html" class="btn btn-default btn-lg"> &nbsp; <b>Read</b> &nbsp; </a>
+            <a href="datasource.html" class="btn btn-default btn-lg"> &nbsp; <b><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Read</b> &nbsp; </a>
           </p>
         </div>
         <div class="col-md-4 text-center" style="color: #B71C1C;">
           <h2>
             API
+						<br>&nbsp;
           </h2>
           <p class="lead text-center">
             Extend and manage nanogallery2 with javascript.
             <br><br>
-            <a href="api.html" class="btn btn-default btn-lg"> &nbsp; <b>Read</b> &nbsp; </a>
+            <a href="api.html" class="btn btn-default btn-lg"> &nbsp; <b><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Read</b> &nbsp; </a>
           </p>
         </div>
+				<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;	
       </div>    
     
     
+		
+
+
     
+      <br><br><br><br><br><br>
+			<h2>Quick start</h2>
+			<p class="text-left ">
+				<b>- Get the script:</b>
+				<br>
+				<div class="text-left lead " style="padding:10px;line-height:4rem;">
+					&nbsp; &nbsp; &nbsp; - download it from <a href="https://github.com/nanostudio-org/nanogallery2/releases">Github</a>
+					<br>
+					&nbsp; &nbsp; &nbsp; - or use npmjs: <code>npm install nanogallery2</code>
+					<br>
+					&nbsp; &nbsp; &nbsp; - or use the <b>UNPKG CDN</b> version: <a href="https://unpkg.com/nanogallery2/dist/"><code>https://unpkg.com/nanogallery2/dist/</code></a>
+					<br>
+					&nbsp; &nbsp; &nbsp; - or use the <b>CDNJS</b> version: <a href="https://cdnjs.com/libraries/nanogallery2"><code>https://cdnjs.com/libraries/nanogallery2</code></a>
+				</div>
+			</p>
+			<br>
+
+			<p class="text-left ">
+				<b>- Markup method - use this full working HTML template :</b>
+				<br>
+				No javascript required. Options are configured with the <code>data-nanogallery2</code> attribute.
+			</p>
+        <div id="init_markup" class="text-left" >
+          <pre class=""><code class="language-markup" style="background:transparent;font-size:1.3rem;line-height: 1.5rem;">
+    &lt;html>
+        &lt;head>
+            &lt;meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">          
+            
+            <span style="background-color:#f3f310;">&lt;!-- jQuery --&gt;</span>
+            &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript"&gt;&lt;/script&gt;
+          
+            <span style="background-color:#f3f310;">&lt;!-- nanogallery2 --&gt;</span>
+            &lt;link  href="https://cdnjs.cloudflare.com/ajax/libs/nanogallery2/2.4.2/css/nanogallery2.min.css" rel="stylesheet" type="text/css"&gt;
+            &lt;script  type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/nanogallery2/2.4.2/jquery.nanogallery2.min.js"&gt;&lt;/script&gt;
+        &lt;/head&gt;
+        &lt;body&gt;
+        
+              &lt;h1>gallery made with nanogallery2&lt;/h1>
+
+              <span style="background-color:#f3f310;">&lt;!-- ### start of the gallery definition ### --></span>
+              &lt;div id="nanogallery2"
+              
+                  <span style="background-color:#f3f310;">&lt;!-- gallery settings --></span>
+                  data-nanogallery2 = '{
+                        "thumbnailHeight":  150,
+                        "thumbnailWidth":   150,
+                        "itemsBaseURL":     "https://nanogallery2.nanostudio.org/samples/"
+                      }' &gt;
+                      
+                  <span style="background-color:#f3f310;">&lt;!-- gallery content --></span>
+                  &lt;a href = "berlin1.jpg"   data-ngThumb = "berlin1_t.jpg" > Berlin 1 &lt;/a&gt;
+                  &lt;a href = "berlin2.jpg"   data-ngThumb = "berlin2_t.jpg" > Berlin 2 &lt;/a&gt;
+                  &lt;a href = "berlin3.jpg"   data-ngThumb = "berlin2_t.jpg" > Berlin 3 &lt;/a&gt;
+              &lt;/div&gt;
+              <span style="background-color:#f3f310;">&lt;!-- ### end of the gallery definition ### --></span>
+            
+          &lt;/body&gt;
+      &lt;/html&gt;
+          </code></pre>
+        </div>
+			
+			
+			<br><br>
+			<p class="text-left ">
+				<b>- Javascript method - use this full working HTML template :</b>
+				<br>
+			</p>
+        <div id="init_js" class="text-left">
+          <pre class=""><code class="language-markup" style="background:transparent;font-size:1.3rem;line-height: 1.5rem;">
+    &lt;html>
+        &lt;head>
+            &lt;meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">          
+            
+            <span style="background-color:#f3f310;">&lt;!-- jQuery --&gt;</span>
+            &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript"&gt;&lt;/script&gt;
+          
+            <span style="background-color:#f3f310;">&lt;!-- nanogallery2 --&gt;</span>
+            &lt;link  href="https://cdnjs.cloudflare.com/ajax/libs/nanogallery2/2.4.2/css/nanogallery2.min.css" rel="stylesheet" type="text/css"&gt;
+            &lt;script  type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/nanogallery2/2.4.2/jquery.nanogallery2.min.js"&gt;&lt;/script&gt;
+        &lt;/head&gt;
+        &lt;body&gt;
+        
+              &lt;h1>gallery made with nanogallery2&lt;/h1>
+
+              <span style="background-color:#f3f310;">&lt;!-- ### position of the gallery ### --></span>
+              &lt;div id="nanogallery2"&gt;gallery_made_with_nanogallery2&lt;/div&gt;
+            
+              &lt;script&gt;
+                 jQuery(document).ready(function () {
+
+                    jQuery("#nanogallery2").nanogallery2( {
+                        <span style="background-color:#f3f310;">// ### gallery settings ### </span>
+                        thumbnailHeight:  150,
+                        thumbnailWidth:   150,
+                        itemsBaseURL:     'https://nanogallery2.nanostudio.org/samples/',
+                        
+                        <span style="background-color:#f3f310;">// ### gallery content ### </span>
+                        items: [
+                            { src: 'berlin1.jpg', srct: 'berlin1_t.jpg', title: 'Berlin 1' },
+                            { src: 'berlin2.jpg', srct: 'berlin2_t.jpg', title: 'Berlin 2' },
+                            { src: 'berlin3.jpg', srct: 'berlin3_t.jpg', title: 'Berlin 3' }
+                          ]
+                      });
+                  });
+              &lt;/script&gt;
+
+          &lt;/body&gt;
+      &lt;/html&gt;
+          </code></pre>
+        </div>
 
 
-      <br><br><br><br>
-      <div class="row text-left ngy2documentation" >
-        <div class="col-md-12" >
-          <h3>Quick tips</h3>
-          <br>
-        </div>
-      </div>
 
+			
 
-      <div class="row text-left ngy2documentation">
-        <div class="col-md-12">
-          <h4>Lightbox - Remove the bottom toolbar, including the image title</h4>
-        </div>
-      </div>
-      <div class="row text-left ngy2documentation">
-        <div class="col-md-6">
-          <span class="badge ngy2_code_js" >Javascript</span>
-          <pre>
-viewerToolbar: { display: false }
-</pre>
-        </div>
-        <div class="col-md-6">
-          <span class="badge ngy2_code_markup"> HTML markup</span> 
-          <pre>
-"viewerToolbar": { "display": false }
-</pre>
-        </div>
-      </div>
-      <br>
-
-      <div class="row text-left ngy2documentation">
-        <div class="col-md-12">
-          <h4>Gallery - single TAP on thumbnails to open the lightbox</h4>
-        </div>
-      </div>
-      <div class="row text-left ngy2documentation">
-        <div class="col-md-6">
-          <span class="badge ngy2_code_js" >Javascript</span>
-          <pre>
-touchAnimation: false
-</pre>
-        </div>
-        <div class="col-md-6">
-          <span class="badge ngy2_code_markup"> HTML markup</span> 
-          <pre>
-"touchAnimation": false
-</pre>
-        </div>
-      </div>
-      <br><br>
-
-      
-      
-      <br><br><br><br>
+      <br><br><br><br><br><br>
       <div class="row text-left">
         <div class="col-md-12" >
-          <h3>Live examples on Codepen</h3>
+          <h2>Live examples on Codepen</h2>
           <br>
         </div>
       </div>
@@ -1332,12 +1403,65 @@ touchAnimation: false
       </div>
       
 
+      <br><br><br><br>
+      <div class="row text-left ngy2documentation" >
+        <div class="col-md-12" >
+          <h2>Quick tips</h2>
+          <br>
+        </div>
+      </div>
+
+
+      <div class="row text-left ngy2documentation">
+        <div class="col-md-12">
+          <h4>Lightbox - Remove the bottom toolbar, including the image title</h4>
+        </div>
+      </div>
+      <div class="row text-left ngy2documentation">
+        <div class="col-md-6">
+          <span class="badge ngy2_code_js" >Javascript</span>
+          <pre>
+viewerToolbar: { display: false }
+</pre>
+        </div>
+        <div class="col-md-6">
+          <span class="badge ngy2_code_markup"> HTML markup</span> 
+          <pre>
+"viewerToolbar": { "display": false }
+</pre>
+        </div>
+      </div>
+      <br>
+
+      <div class="row text-left ngy2documentation">
+        <div class="col-md-12">
+          <h4>Gallery - single TAP on thumbnails to open the lightbox</h4>
+        </div>
+      </div>
+      <div class="row text-left ngy2documentation">
+        <div class="col-md-6">
+          <span class="badge ngy2_code_js" >Javascript</span>
+          <pre>
+touchAnimation: false
+</pre>
+        </div>
+        <div class="col-md-6">
+          <span class="badge ngy2_code_markup"> HTML markup</span> 
+          <pre>
+"touchAnimation": false
+</pre>
+        </div>
+      </div>
+      <br><br>
+			
+			
+			
 
       <br><br><br><br><br><br>
-      <div class="row text-left" id="releases">
+			<h2  id="releases">Latest news</h2>
+      <div class="row text-left">
         <div class="col-md-1" ></div>
         <div class="col-md-10" >
-          <h3>Latest news</h3>
           <div ID="ngy2_changelog" style="background-color:#f8f8f8;">
             <!-- Jan. Feb. Mar. Apr. May. Jun. Jul. Aug. Sep. Oct. Nov. Dec. -->
 
