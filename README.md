@@ -12,34 +12,37 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 [![Twitter](https://img.shields.io/twitter/url/https/github.com/nanostudio-org/nanogallery2.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=%5Bobject%20Object%5D)
   
 ## Documentation, Demonstrations and Tutorials
-[Check the homepage of the projet](http://nanogallery2.nanostudio.org/academy.html)   
+-> [Check the homepage of the projet](http://nanogallery2.nanostudio.org/academy.html)   
   
 <!--  
 [![nanogallery2 youtube demo](https://github.com/nanostudio-org/nanogallery2/raw/gh-pages/videos/youtube_nanogallery2.png)](https://www.youtube.com/watch?v=Ir098VWCv8Q)
 -->  
     
+      
     
-    
-## Some from many features
+## Features
 
-
-#### - Thumbnail display animations
-
-#### - Thumbnails hover effects, photo albums, lightbox, social sharing
-
-#### - Multiple layouts, builder for online testing
-
-#### - Content source : self hosted photos, Flickr, Google Photos
-
-#### - Shopping cart
-
-#### - keyword filtering
-
-#### - blurred images for thumbnail preview 
-
-#### - API, callbacks, events
-
-#### - Endless customization
+### Gallery
+- multiple layouts: grid, cascading, justified, mosaic
+- images and videos (Youtube, Vimeo, Dailymotion)
+- responsive
+- tag/keyword filtering
+- display transition on gallery and thumbnails
+- hover/touch effects
+- tools on thumbnails: social sharing, selection, download, shopping cart
+- pagination
+- albums
+- blurred images for thumbnail preview
+### Lightbox
+- swipe / pinch to zoom
+- mouse and keyboard
+- image rotation / zoom
+- fully customizable toolbars
+- previous/next media transitions
+### API / Events / Callbacks
+### Builder for quick online testing
+### ...
+### Endless customization
 
 <br />
   
