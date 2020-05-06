@@ -27,6 +27,9 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 ### Markup or Javascript set up
 ### Images and videos (Youtube, Vimeo, Dailymotion)
 ### Media titles and descriptions, tags
+### Touch and mobile friendly
+### Lazy loading
+### Deeplinking
 ### Gallery
 - multiple layouts: grid, cascading, justified, mosaic
 - responsive
@@ -47,13 +50,13 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 - image rotation / zoom
 - fully customizable toolbars
 - previous/next media transitions
-- slideshow
+- smart slideshow
 - themes
 ### Custom icons
 ### API / Events / Callbacks
 ### Builder for quick online testing
 ### Detailled documentations with samples
-### Endless customization
+### Super customizable
 
 <br />  
 
