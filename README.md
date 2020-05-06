@@ -8,20 +8,15 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
   
 
 
-<img src="https://github.com/nanostudio-org/nanogallery2/raw/master/screenshots/ngy2_cascading.jpg?raw=true" width="300">
-<img src="https://github.com/nanostudio-org/nanogallery2/raw/master/screenshots/ngy2_justified.jpg?raw=true" width="300">
-
-
-
 [![Build Status](https://travis-ci.org/nanostudio-org/nanogallery2.svg?branch=dev-gh-pages)](https://travis-ci.org/nanostudio-org/nanogallery2)
 [![Twitter](https://img.shields.io/twitter/url/https/github.com/nanostudio-org/nanogallery2.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=%5Bobject%20Object%5D)
   
 ## Documentation, Demonstrations and Tutorials
 [Check the homepage of the projet](http://nanogallery2.nanostudio.org/academy.html)   
   
-  
+<!--  
 [![nanogallery2 youtube demo](https://github.com/nanostudio-org/nanogallery2/raw/gh-pages/videos/youtube_nanogallery2.png)](https://www.youtube.com/watch?v=Ir098VWCv8Q)
-  
+-->  
     
     
     
