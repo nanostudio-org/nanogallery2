@@ -6,10 +6,10 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
    
 <img src="http://nanogallery2.nanostudio.org/img/nanogallery2si.png" alt="nanogallery2"/>  
   
-![Alt text](/screenshots/ngy2_cascading.jpg?raw=true "Optional Title")<!-- .element height="50%" width="50%" -->
 
 
 <img src="https://github.com/nanostudio-org/nanogallery2/raw/master/screenshots/ngy2_cascading.jpg?raw=true" width="300">
+<img src="https://github.com/nanostudio-org/nanogallery2/raw/master/screenshots/ngy2_justified.jpg?raw=true" width="300">
 
 
 
