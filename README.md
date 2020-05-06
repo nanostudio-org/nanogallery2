@@ -25,6 +25,7 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 
 ## Features
 ### Markup or Javascript set up
+### Media titles and descriptions
 ### Gallery
 - multiple layouts: grid, cascading, justified, mosaic
 - images and videos (Youtube, Vimeo, Dailymotion)
