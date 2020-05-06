@@ -10,18 +10,19 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 
 [![Build Status](https://travis-ci.org/nanostudio-org/nanogallery2.svg?branch=dev-gh-pages)](https://travis-ci.org/nanostudio-org/nanogallery2)
 [![Twitter](https://img.shields.io/twitter/url/https/github.com/nanostudio-org/nanogallery2.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=%5Bobject%20Object%5D)
-  
+
+<br /><br />  
 ## Documentation, Demonstrations and Tutorials
--> [Check the homepage of the projet](http://nanogallery2.nanostudio.org/academy.html)   
+-> [Check the homepage of the project](http://nanogallery2.nanostudio.org/academy.html)   
   
 <!--  
 [![nanogallery2 youtube demo](https://github.com/nanostudio-org/nanogallery2/raw/gh-pages/videos/youtube_nanogallery2.png)](https://www.youtube.com/watch?v=Ir098VWCv8Q)
 -->  
     
       
-    
+<br />    
 ## Features
-
+### Markup or Javascript set up
 ### Gallery
 - multiple layouts: grid, cascading, justified, mosaic
 - images and videos (Youtube, Vimeo, Dailymotion)
@@ -41,11 +42,15 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 - previous/next media transitions
 ### API / Events / Callbacks
 ### Builder for quick online testing
-### ...
+### Detailled documentations with samples
 ### Endless customization
 
 <br />
-  
+## Screenshots
+<img src="https://github.com/nanostudio-org/nanogallery2/raw/master/screenshots/ngy2_cascading.jpg?raw=true" width="200px">
+
+
+<br />
 ## Usage
 
 HTML markup configuration example:
