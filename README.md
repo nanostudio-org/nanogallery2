@@ -12,6 +12,7 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 [![Twitter](https://img.shields.io/twitter/url/https/github.com/nanostudio-org/nanogallery2.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=%5Bobject%20Object%5D)
 
 <br /><br />  
+
 ## Documentation, Demonstrations and Tutorials
 -> [Check the homepage of the project](http://nanogallery2.nanostudio.org/academy.html)   
   
@@ -20,7 +21,8 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 -->  
     
       
-<br />    
+<br />   
+
 ## Features
 ### Markup or Javascript set up
 ### Gallery
@@ -45,12 +47,14 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 ### Detailled documentations with samples
 ### Endless customization
 
-<br />
+<br />  
+
 ## Screenshots
 <img src="https://github.com/nanostudio-org/nanogallery2/raw/master/screenshots/ngy2_cascading.jpg?raw=true" width="200px">
 
 
-<br />
+<br />  
+
 ## Usage
 
 HTML markup configuration example:
@@ -62,13 +66,13 @@ HTML markup configuration example:
 </body>
 ```
 
-<br />
+<br />  
 
 ## Package managers
 
 [npmjs](https://www.npmjs.com/package/nanogallery2): `npm install nanogallery2`
 
-<br />
+<br />  
 
 ## License
 Dual licenced:
