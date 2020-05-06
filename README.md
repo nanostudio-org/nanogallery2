@@ -25,10 +25,10 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 
 ## Features
 ### Markup or Javascript set up
-### Media titles and descriptions
+### Images and videos (Youtube, Vimeo, Dailymotion)
+### Media titles and descriptions, tags
 ### Gallery
 - multiple layouts: grid, cascading, justified, mosaic
-- images and videos (Youtube, Vimeo, Dailymotion)
 - responsive
 - tag/keyword filtering
 - display transition on gallery and thumbnails
@@ -37,12 +37,19 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 - pagination
 - albums
 - blurred images for thumbnail preview
+- breadcrumb navigation
+- slider on last thumbnail
+- thumbnails stacks
+- themes
 ### Lightbox
 - swipe / pinch to zoom
 - mouse and keyboard
 - image rotation / zoom
 - fully customizable toolbars
 - previous/next media transitions
+- slideshow
+- themes
+### Custom icons
 ### API / Events / Callbacks
 ### Builder for quick online testing
 ### Detailled documentations with samples
@@ -116,4 +123,4 @@ Dual licenced:
 &nbsp;  
 &nbsp;  
 **Many thanks to [BrowserStack](https://www.browserstack.com/) for their testing services!**   
-<img src="http://nanogallery.brisbois.fr/img/browserstack2.png"/>
+<img src="http://nanogallery.brisbois.fr/img/browserstack2.png" width="140%"/>
