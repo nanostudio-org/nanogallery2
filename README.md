@@ -54,6 +54,7 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 - themes
 ### Custom icons
 ### API / Events / Callbacks
+### Fast animation engine
 ### Builder for quick online testing
 ### Detailled documentations with samples
 ### Super customizable
