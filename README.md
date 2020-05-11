@@ -31,7 +31,7 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 ### Smart lazy loading and displaying
 ### Deeplinking
 ### Gallery
-- multiple base layouts: grid, cascading, justified, mosaic
+- multiple base layouts: grid, cascading/mansonry, justified, mosaic
 - responsive
 - tag/keyword filtering
 - display transition on gallery and thumbnails: reveal items on-scroll in an animated way
