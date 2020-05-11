@@ -34,7 +34,7 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 - multiple base layouts: grid, cascading, justified, mosaic
 - responsive
 - tag/keyword filtering
-- display transition on gallery and thumbnails
+- display transition on gallery and thumbnails: reveal items on-scroll in an animated way
 - hover/touch effects
 - tools on thumbnails: social sharing, selection, download, shopping cart
 - pagination, "display more" button
