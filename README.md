@@ -31,7 +31,7 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 ### Lazy loading
 ### Deeplinking
 ### Gallery
-- multiple layouts: grid, cascading, justified, mosaic
+- multiple base layouts: grid, cascading, justified, mosaic
 - responsive
 - tag/keyword filtering
 - display transition on gallery and thumbnails
@@ -58,7 +58,8 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 ### Builder for quick online testing
 ### Detailled documentations with samples
 ### Super customizable
-
+### Optional add-on for automatic publishing of self hosted images: [nanoPhotosProvider2](https://github.com/nanostudio-org/nano_photos_provider2)
+  
 <br />  
 
 ## Screenshots
@@ -106,7 +107,7 @@ Dual licenced:
 <br />
 
 ## Thanks
-**Many thanks to these contributors for their work on [nanoGALLERY](http://nanogallery.brisbois.fr/), [nanogallery2](https://nanogallery2.nanostudio.org/), [nanoPhotosProvider](https://github.com/Kris-B/nanoPhotosProvider), [nanoPhotosProvider2](https://github.com/nanostudio-org/nano_photos_provider2) or [nanogp](https://github.com/nanostudio-org/nanogp):**
+**Many thanks to these contributors for their work on [nanoGALLERY](http://nanogallery.brisbois.fr/), [nanogallery2](https://nanogallery2.nanostudio.org/), [nanoPhotosProvider](https://github.com/Kris-B/nanoPhotosProvider), [nanoPhotosProvider2](https://github.com/nanostudio-org/nano_photos_provider2), or [nanogp](https://github.com/nanostudio-org/nanogp) or [nanogp2](https://github.com/nanostudio-org/nanogp2):**
 
 [Victor A. Banuelos](https://github.com/vbanuelos), [Raphaël Renaudon](https://github.com/sevarg), [antonio r.](https://github.com/grief-of-these-days), [Daniel Eck](https://github.com/Ecksters), [Dio Vayne](https://github.com/DioVayne), [Sean Kenny](https://github.com/seankenny), [eae710](https://github.com/eae710), [Jeff Mills](https://github.com/jefftmills), [Andrea Grassi](https://github.com/andrea-sdl), [AlexRed Alessandro Rossi](https://github.com/AlexRed), Giovanni Chiodi, [Ruplahlava](https://github.com/Ruplahlava), [EelcoA](https://github.com/EelcoA), [eae710](https://github.com/eae710)
   
