@@ -28,7 +28,7 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 ### Images and videos (Youtube, Vimeo, Dailymotion)
 ### Media titles and descriptions, tags
 ### Touch and mobile friendly
-### Lazy loading
+### Smart lazy loading and displaying
 ### Deeplinking
 ### Gallery
 - multiple base layouts: grid, cascading, justified, mosaic
@@ -37,7 +37,7 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 - display transition on gallery and thumbnails
 - hover/touch effects
 - tools on thumbnails: social sharing, selection, download, shopping cart
-- pagination
+- pagination, "display more" button
 - albums
 - blurred images for thumbnail preview
 - breadcrumb navigation
