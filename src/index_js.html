@@ -56,6 +56,114 @@
       }
       // RotatorNext(0);
 
+
+
+
+      var data_url = 'https://spreadsheets.google.com/feeds/list/1pKGg3MA1YLSWFuFEqLwJLYzuVPeNAOEMzpw6-XC8_e8/od6/public/values?alt=json';
+
+
+      function fetchJSONFile(path, callback) {
+          var httpRequest = new XMLHttpRequest();
+          httpRequest.onreadystatechange = function() {
+              if (httpRequest.readyState === 4) {
+                  if (httpRequest.status === 200) {
+                      var data = JSON.parse(httpRequest.responseText);
+                      if (callback) callback(data);
+                  }
+              }
+          };
+          httpRequest.open('GET', path);
+          httpRequest.send(); 
+      }
+
+      // this requests the file and executes a callback with the parsed result once
+      //   it is available
+      fetchJSONFile(data_url, function(data){
+          // do something with your data
+          var nano_map_areas = data.feed.entry;
+
+          var translation = [];
+          var blackList  = '';
+          nano_map_areas.forEach( function(item) {
+            var titre = item.gsx$affichagegallerie.$t;
+            var id = item.gsx$identifiant.$t;   // .replace(/_/gi, ' ');
+            if( titre != '' && id != '' ) {
+              translation.push( { title: id.replace(/_/gi, ' '), replace: titre } );
+            }
+            else {
+              if( id != '' ) {
+                if( blackList != '' ) {
+                  blackList += '|';
+                }
+                blackList += id;
+              }
+            }
+          });
+          console.dir(translation);
+          console.log(blackList);
+          
+          jQuery("#nanogallery_debug_on").nanogallery2({
+            kind: 'nano_photos_provider2',
+            dataProvider: 'https://urbanicc.fr/zac_ic/nano_photos_provider2/nano_photos_provider2.php',
+
+thumbnailAlignment: 'center',
+
+            galleryRenderDelay: 1200,
+            galleryDisplayTransition: 'rotateX',
+            galleryDisplayTransitionDuration: 1500,
+            galleryL1DisplayTransition: 'slideUp',
+            thumbnailHeight: 200, thumbnailWidth: 'auto',
+            thumbnailL1Height: 200, thumbnailL1Width: 200,
+            
+            thumbnailDisplayTransition: 'slideLeft',
+            thumbnailDisplayTransitionDuration: 600,
+            thumbnailDisplayInterval: 90,
+            thumbnailL1DisplayInterval: 30,
+            galleryMaxRows: 10000,
+            galleryDisplayMode: 'rows',
+
+            thumbnailL1GutterWidth: 10,
+            thumbnailL1GutterHeight: 10,
+            thumbnailBorderHorizontal: 0,
+            thumbnailBorderVertical: 0,
+            thumbnailGutterWidth: 2,
+            thumbnailGutterHeight: 2,
+
+
+            thumbnailLabel:       { display: false, position: 'overImage', valign: 'bottom', hideIcons: true, titleMultiLine: true },
+            thumbnailL1Label:     { display: true, position: 'right', valign: 'middle', align: 'center', hideIcons: true, titleMultiLine: true },      
+        
+
+            thumbnailL1HoverEffect2: 'image_scale_1.10_1.00',
+            thumbnailHoverEffect2: null,
+
+            thumbnailToolbarImage : { topLeft: '', topRight : '' },
+            thumbnailToolbarAlbum : { topLeft: '', topRight : 'counter' },
+            galleryTheme : { 
+              thumbnail: { titleShadow : 'none', descriptionShadow : 'none', titleColor: '#000', labelBackground:'#ffe000' },
+              navigationBreadcrumb: { background : '#3C4B5B' },
+              navigationFilter: { background : '#2E7C7F', backgroundSelected: '#19676B', color: '#eee' }
+            },
+
+            gallerySorting : 'titleAsc',
+            viewerToolbar : { display: false },
+            viewerTools: { topRight:  'infoButton, zoomButton, fullscreenButton, closeButton' } ,  
+            locationHash: false,
+            title_translation_map: translation,
+            blackList: blackList
+          });
+          
+          //alert('ok');
+      });
+
+
+
+
+
+
+
+
+
       
       // DEBUG GALLERY
       function mylistener(cart, item) {
@@ -65,7 +173,7 @@
         // var ngy2data=$("#nanogallery_debug_on").nanogallery2('data');
         // console.dir(ngy2data);
       }      
-      jQuery("#nanogallery_debug_on").nanogallery2({
+      jQuery("#nanogallery_debug_onXX").nanogallery2({
         fnShoppingCartUpdated: mylistener,
         // imageTransition : 'slideAppear',
         // debugMode: true,
@@ -90,8 +198,8 @@
 
         kind: 'nano_photos_provider2',
 //        dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
-        dataProvider: 'http://kk-hydrobud.eu/_portfolio/nano_photos_provider2.php',
         dataProvider: 'https://nano.gallery/nano_photos_provider2_kris/nano_photos_provider2.php',
+        dataProvider: 'https://urbanicc.fr/zac_ic/nano_photos_provider2/nano_photos_provider2.php',
         // kind: 'flickr',
         // userID: '149035168@N08',    // nano studio
         //album: 'none',
@@ -101,31 +209,11 @@
         // albumList2: ['into the wild', 'fun'],
         //dataProvider: 'http://localhost:12345/nano_photos_provider2/dist/nano_photos_provider2.php',
                
-        galleryRenderDelay: 1200,
-        galleryDisplayTransition: 'rotateX',
+        galleryRenderDelay: 120,
+        //galleryDisplayTransition: 'rotateX',
         galleryDisplayTransitionDuration: 1500,
-        galleryL1DisplayTransition: 'slideUp',
+        //galleryL1DisplayTransition: 'slideUp',
       
-
-        // kind : 'google2', 
-        // userID : '111186676244625461692', 
-        // google2URL : 'http://lvh.me:12345/nanogp/nanogp.php',
-        google2URL : 'https://nano.gallery/nanogp/nanogp.php',
-        //album: '6325352440922789105',
-        //albumList2:['6137218671601042145','5851968929721015169','5851895073106049313'],
-        
-        //userID: '143414466@N06',
-        
-        //        userID: '68188170@N06',   //--> huge albums+photos collection
-        //        photoset: '72157656850365463',
-
-        blackList: 'forhomepage|scrapbook|profil',
-
-    // breakpointSizeME :            992,
-    // breakpointSizeLA :            1200,
-    // 992 >= WIDTH < 1200
-       
-       
         galleryMosaicXXX : [
           { w: 2, h: 2, c: 1, r: 1 },
           { w: 2, h: 1, c: 3, r: 1 },
@@ -162,16 +250,14 @@
         
         thumbnailAlignment: 'scaled',
 
-        thumbnailL1Height: '200', thumbnailL1Width: '200',
-        thumbnailHeight: '250', thumbnailWidth: 'auto',
-        // thumbnailHeight: '250', thumbnailWidth: 250,
-        thumbnailBaseGridHeight: 80,
+        thumbnailHeight: 200, thumbnailWidth: 'auto',
+        thumbnailL1Height: 200, thumbnailL1Width: 200,
         
         thumbnailDisplayTransition: 'slideLeft',
         thumbnailDisplayTransitionDuration: 600,
         thumbnailDisplayInterval: 90,
         thumbnailL1DisplayInterval: 30,
-        galleryMaxRows: 30,
+        galleryMaxRows: 10000,
         galleryDisplayMode: 'rows',
 
         thumbnailL1GutterWidth: 10,
@@ -183,46 +269,51 @@
 
 
         galleryPaginationMode: 'rectangles',
-      
+thumbnailLabel:       { display: false, position: 'overImage', valign: 'bottom', hideIcons: true, titleMultiLine: true },
+thumbnailL1Label:     { display: true, position: 'right', valign: 'middle', align: 'center', hideIcons: true, titleMultiLine: true },      
         
         //galleryBuildInit2 : 'transform-origin_top right',
         //thumbnailL1BuildInit2: 'thumbnail_transform-origin_50% 150%',
 
 
-        thumbnailL1BuildInit2: '.nGY2GThumbnailAlbumTitle_border-left_5px solid #23CB99|.nGY2GThumbnailAlbumTitle_margin_20px|\
+        thumbnailL1BuildInit2XXX: '.nGY2GThumbnailAlbumTitle_border-left_5px solid #23CB99|.nGY2GThumbnailAlbumTitle_margin_20px|\
               title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
 
-         thumbnailL1HoverEffect2: 'label_left_-100%_0%|thumbnail_scale_1.00_0.95',
+         thumbnailL1HoverEffect2xx: 'label_left_-100%_0%|image_scale_1.00_1.95',
         
         
-        thumbnailL2HoverEffect2: 'image_scale_1.00_1.20|labelAppear|customlayer_backgroundColor_rgba(35,203,153,0.0)_rgba(35,203,153,0.8)|\
+        thumbnailL2HoverEffect2XXX: 'image_scale_1.00_1.20|labelAppear|customlayer_backgroundColor_rgba(35,203,153,0.0)_rgba(35,203,153,0.8)|\
                 thumbnail_translateZ_0px_150px_easeOutQuad_400| \
                 thumbnail_rotateX_0deg_-10deg_easeOutBack_200| \
                 thumbnail_rotateX_-10deg_0deg_delay250_keyframe_hoverin_easeOutBack_400',
 
-        thumbnailL2BuildInit2: 'customlayer_scale_1.3|customlayer_translateY_-15px|customlayer_translateX_-60%|customlayer_rotateZ_10deg',
-        galleryBuildInit2 : 'perspective_900px|perspective-origin_50% 150%',
+        thumbnailL2BuildInit2XXX: 'customlayer_scale_1.3|customlayer_translateY_-15px|customlayer_translateX_-60%|customlayer_rotateZ_10deg',
+        galleryBuildInit2XXX : 'perspective_900px|perspective-origin_50% 150%',
 
-        thumbnailHoverEffect2: 'label_font-size_1em_1.5em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((35,203,153,0.8)|title_color_#000_#fff|image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
+        thumbnailHoverEffect2xx: 'label_font-size_1em_1.5em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((35,203,153,0.8)|title_color_#000_#fff|image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
+        
+        thumbnailL1HoverEffect2: 'image_scale_1.10_1.00|title_scale_1.00_1.20',
+        thumbnailHoverEffect2: null,
 
 thumbnailSelectable : true,
-thumbnailToolbarImage : { topLeft: 'select', topRight : 'share,featured,download,cart' },
-thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download,counter' },
+thumbnailToolbarImage : { topLeft: '', topRight : 'display' },
+thumbnailToolbarAlbum : { topLeft: '', topRight : 'counter' },
+gallerySorting : 'titleAsc',
 //        thumbnailToolbarImage : null,
 //        thumbnailToolbarAlbum: null,
 
         // thumbnailL1Label: { display: true, position:'overImageOnMiddle', hideIcons: true, titleFontSize: '1.5em', align: 'center'},
-        thumbnailL1Label: { display: true, position:'overImageOnTop', hideIcons: true, titleFontSize: '1.5em', align: 'left'},
-        thumbnailLabel: { display: true, position:'onBottomOverImage', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true, displayDescription: false},
+//        thumbnailL1Label: { display: true, position:'overImageOnTop', hideIcons: true, titleFontSize: '1.5em', align: 'left'},
+//        thumbnailLabel: { display: true, position:'onBottomOverImage', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true, displayDescription: false},
         
 //        thumbnailSelectable: false,
         breadcrumbHideIcons: true,
         navigationFontSize: '1.2em',
-        gallerySorting: 'random',
+//        gallerySorting: 'random',
 //        thumbnailDisplayInterval: 30,
 
         galleryTheme : { 
-          thumbnail: { titleShadow : 'none', descriptionShadow : 'none', titleColor: '#fff' },
+          thumbnail: { titleShadow : 'none', descriptionShadow : 'none', titleColor: '#000', labelBackground:'#ffe000' },
           navigationBreadcrumb: { background : '#3C4B5B' },
           navigationFilter: { background : '#2E7C7F', backgroundSelected: '#19676B', color: '#eee' }
         },
@@ -233,22 +324,96 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
         // fnImgToolbarCustInit: fnImgToolbarCustClick,
         // fnImgToolbarCustDisplay: myImgToolbarCustDisplay,
         // fnImgToolbarCustClick: myImgToolbarCustClick,
-        fnGalleryRenderStart : myfnGalleryRenderStart,
-        viewerToolbar : { display: true },
-        locationHash: true
+        // fnGalleryRenderStart : myfnGalleryRenderStart,
+        viewerToolbar : { display: false },
+        viewerTools: { topRight:  'infoButton, zoomButton, fullscreenButton, closeButton' } ,  
+        locationHash: false,
+        title_translation_map: [
+          { title: '1b', replace:'Bureaux EMERIGE gare [1B]' },
+          { title: '1e2a coopimmo', replace:'22 rue de la Gare - Coopimmo [1E2A]' },
+          { title: '2d1 studio kremlin1', replace:'Studio Kremlin - phase 1 [2d1]' },
+          { title: '2d1 studio kremlin2', replace:'Studio Kremlin - phase 2 [2d1]' },
+          { title: '2e1', replace:'Projet logements Paul-Vaillant Couturier [2E1]' },
+          { title: '2g1 2h2', replace:'Projet logements Paul-Vaillant Couturier [2G1, 2H2]' },
+          { title: '2g2', replace:'Residence Influence [2G2]' },
+          { title: '2h1 le96 pvc', replace:'Le 96 [2H1]' },
+          { title: '2I quai aux grains', replace:'Quai aux Grains [2I]' },
+          { title: '2j1 minoterie', replace:'Minoterie [2J1]' },
+          { title: '2j2 le val', replace:'Le Val [2J2]' },
+          { title: '2k1', replace: 'Bureaux Les Nouveaux Constructeurs [2K1]' },
+          { title: '2l1 madeleine delbrel', replace: 'Résidence Madeleine Delbrel [2L1]' },
+          { title: '2l2 silver innov', replace: 'Silver Innov [2L2]' },
+          { title: '2l3 villa moliere', replace: 'Résidence Villa Molière [2L3]' },
+          { title: '2l4', replace: 'Bureaux Sirius [2L4]' },
+          { title: '3b curl', replace: 'Bureaux Curl [3B]' },
+          { title: '3c', replace: 'Bureaux site BHV [3C, 3D]' },
+          { title: '3f bhv groupe scolaire', replace: 'Groupe Scolaire [3H]' },
+          { title: '3f1 bhv petite halle', replace: 'La petite hall BHV [3F1]' },
+          { title: '3g', replace: 'Projet Logements [3G]' },
+          { title: '3h start', replace: 'Résidence START [3H]' },
+          { title: '3h4 station geothermie', replace: 'Station de géothermie [3H4]' },
+          { title: '3j1', replace: 'Projet logements [3J1]' },
+          { title: '3l 3n', replace: 'Projet logements [3L, 3N]' },
+          { title: '3l tours montrouge', replace: 'Tours de l\'Atelier Montrouge [3L]' },
+          { title: '', replace: '' },
+          { title: '', replace: '' },
+          { title: '', replace: '' },
+          { title: '', replace: '' },
+          { title: '', replace: '' },
+          { title: '', replace: '' },
+          { title: '', replace: '' },
+          { title: '', replace: '' },
+          { title: '', replace: '' },
+          { title: 'hzac le monde', replace:'Les Lettres - Le Monde [hors ZAC]' }
+        ]
+
       });
 
             
       
       function goToByScroll(id){
-            // Remove "link" from the ID
+          // Remove "link" from the ID
           id = id.replace("link", "");
-            // Scroll
+          // Scroll
           $('html,body').animate({ scrollTop: $("#"+id).offset().top}, 200);
       }
 
 
 
+      // ##### EXAMPLE DISPLAY SOURCE CODE
+      jQuery('#btn_view_source').on( "click", function(e) {
+        var code = '';
+        switch( jQuery('#btn_view_source').data("demo") ) {
+          case 'btn_layout1a':
+            code = Demo_Mosaic_1.toString();
+            break;
+          case 'btn_layout1b':
+            code = Demo_Mosaic_2.toString();
+            break;
+          case 'btn_layout2':
+            code = Demo_Grid_1.toString();
+            break;
+          case 'btn_layout2b':
+            code = Demo_Grid_2.toString();
+            break;
+          case 'btn_layout3':
+            code = Demo_Justified.toString();
+            break;
+          case 'btn_layout4':
+            code = Demo_Cascading.toString();
+            break;
+          case 'btn_layout5':
+            code = Demo_Grid_Justified.toString();
+            break;
+          case 'btn_layout6':
+            code = Demo_Images_Videos.toString();
+            break;
+        }
+        jQuery('#ngy2_template').html(Prism.highlight(code, Prism.languages.javascript, 'javascript'));
+        $('#ngy2_modal_source').modal();
+      });
+      
+      
       
       // ##### LAYOUT DEMO SELECTION
       var ngy2_layout_cnt=0;
@@ -261,410 +426,553 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
           goToByScroll('ngy2_layout_demo');
         }
         ngy2_layout_cnt++;
-        
+      
         switch( jQuery(e.currentTarget)[0].id ) {
-          
-          
-          
+
           // MOSAIC LAYOUT - sample 1
           case 'btn_layout1a':
-            jQuery("#nanogallery_container").css({backgroundColor:'#111' });		
-            jQuery("#nanogallery").nanogallery2({
-            
-            
-              kind: 'nano_photos_provider2',
-              dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
-              album: 'oceans',
-// kind : 'google2', 
-// userID : '111186676244625461692', 
-// google2URL : 'https://nano.gallery/nanogp2/nanogp2.php',
-// album: '',
-// album: 'AMKf1IcU0dc97dhgkCID_2oiCMrYA5-SYB_O9KDq2dWf2d6HVW9AFVoyDgUOTZuY7OHDMqdywDmL',
-              // galleryDisplayTransition: 'rotateX',
-              galleryDisplayTransitionDuration: 1500,
-             
-              ZgalleryMosaic : [
-                { w: 4, h: 3, c: 1, r: 1 },
-                { w: 2, h: 2, c: 5, r: 1 },
-                { w: 2, h: 2, c: 7, r: 1 },
-                { w: 4, h: 3, c: 5, r: 3 },
-                { w: 2, h: 2, c: 1, r: 4 },
-                { w: 2, h: 2, c: 3, r: 4 }
-              ],
-              galleryMosaic : [
-                { w: 2, h: 2, c: 1, r: 1 },
-                { w: 1, h: 1, c: 3, r: 1 },
-                { w: 1, h: 1, c: 3, r: 2 },
-                { w: 1, h: 2, c: 4, r: 1 },
-                { w: 2, h: 1, c: 5, r: 1 },
-                { w: 2, h: 2, c: 5, r: 2 },
-                { w: 1, h: 1, c: 4, r: 3 },
-                { w: 2, h: 1, c: 2, r: 3 },
-                { w: 1, h: 2, c: 1, r: 3 },
-                { w: 1, h: 1, c: 2, r: 4 },
-                { w: 2, h: 1, c: 3, r: 4 },
-                { w: 1, h: 1, c: 5, r: 4 },
-                { w: 1, h: 1, c: 6, r: 4 }
-              ],
-
-              thumbnailAlignment: 'scaled',
-
-              thumbnailHeight: '180', thumbnailWidth: '220',
-              thumbnailBaseGridHeight: 80,
-              
-              thumbnailDisplayTransition: 'slideLeft',
-              thumbnailDisplayTransitionDuration: 600,
-              thumbnailDisplayInterval: 30,
-              galleryMaxRows: 1,
-              galleryDisplayMode: 'rows',
-
-              thumbnailL1GutterWidth: 0,
-              thumbnailL1GutterHeight: 0,
-              thumbnailBorderHorizontal: 0,
-              thumbnailBorderVertical: 0,
-
-              
-              thumbnailL1BuildInit2: 'image_scale_1.20',
-
-              thumbnailL1HoverEffect2: 'thumbnail_scale_1.00_1.05_300|image_translateX_-20px_20px',
-
-
-              thumbnailToolbarImage : null,
-              thumbnailToolbarAlbum: null,
-
-              thumbnailLabel: { display: false, position:'onBottomOverImage', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true, displayDescription: false},
-              
-              gallerySorting: 'random',
-
-              galleryTheme : { 
-                thumbnail: { titleShadow : 'none', descriptionShadow : 'none', titleColor: '#fff' },
-                navigationBreadcrumb: { background : '#3C4B5B' },
-                navigationFilter: { background : '#2E7C7F', backgroundSelected: '#19676B', color: '#eee' }
-              },
-
-              XviewerTheme : { barBackground : 'rgba(35, 203, 153, 0.7)' },
-              
-              viewerToolbar: { display: false },
-              viewerTools:    {
-                topLeft:   'label',
-                topRight:  'shareButton, rotateLeft, rotateRight, fullscreenButton, closeButton'
-              },
-          
-              touchAnimation: false,
-              locationHash: true
-            });
+            jQuery("#nanogallery_container").css({backgroundColor:'#111' });
+            jQuery("#example_description").html("Mosaic layout enables full control of the layout. This layout is not computed but is based on a self-defined pattern.");
+            jQuery('#btn_view_source').data("demo","btn_layout1a");
+            Demo_Mosaic_1();
             if( ngy2_layout_cnt > 1) {
-              ga('send', 'event', 'click', 'index', 'layout_moisaic');
+              ga('send', 'event', 'click', 'index', 'layout_moisaic1');
             }
-            break
-          
+            break          
 					
           case 'btn_layout1b':
             jQuery("#nanogallery_container").css({backgroundColor:'#fff' });		
-					
-            jQuery("#nanogallery").nanogallery2({
-            
-            
-              kind: 'nano_photos_provider2',
-              dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
-              album: 'oceans',
-              // galleryDisplayTransition: 'rotateX',
-              galleryDisplayTransitionDuration: 1500,
-             
-              galleryMosaic : [
-                { w: 1, h: 1, c: 1, r: 1 },
-                { w: 1, h: 1, c: 2, r: 1 },
-                { w: 1, h: 1, c: 3, r: 1 },
-                { w: 1, h: 1, c: 4, r: 1 },
-                { w: 1, h: 1, c: 5, r: 1 },
-                { w: 1, h: 1, c: 6, r: 1 },
-                { w: 1, h: 2, c: 1, r: 2 },
-                { w: 2, h: 2, c: 2, r: 2 },
-                { w: 2, h: 2, c: 4, r: 2 },
-                { w: 1, h: 2, c: 6, r: 2 },
-                { w: 1, h: 1, c: 1, r: 4 },
-                { w: 1, h: 1, c: 2, r: 4 },
-                { w: 1, h: 1, c: 3, r: 4 },
-                { w: 1, h: 1, c: 4, r: 4 },
-                { w: 1, h: 1, c: 5, r: 4 },
-                { w: 1, h: 1, c: 6, r: 4 }
-              ],
-
-              thumbnailAlignment: 'scaled',
-
-              thumbnailHeight: '180', thumbnailWidth: '220',
-              thumbnailBaseGridHeight: 80,
-              
-              thumbnailDisplayTransition: 'flipDown',
-              thumbnailDisplayTransitionDuration: 600,
-              thumbnailDisplayInterval: 30,
-              galleryMaxRows: 1,
-              galleryDisplayMode: 'rows',
-
-              thumbnailL1GutterWidth: 0,
-              thumbnailL1GutterHeight: 0,
-              thumbnailBorderHorizontal: 0,
-              thumbnailBorderVertical: 0,
-
-              
-              thumbnailL1BuildInit2: '.nGY2GThumbnailAlbumTitle_border-left_5px solid #23CB99|.nGY2GThumbnailAlbumTitle_margin_20px|\
-                    title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
-
-              thumbnailL1HoverEffect2: 'image_scale_1.00_1.15_500_bounce|image_rotateZ_0deg_05deg',
-
-              galleryBuildInit2 : 'perspective_900px|perspective-origin_50% 150%',
-
-              thumbnailHoverEffect2: 'label_font-size_1em_1.5em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((35,203,153,0.8)|title_color_#000_#fff|image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
-
-              thumbnailToolbarImage : null,
-              thumbnailToolbarAlbum: null,
-
-              thumbnailLabel: { display: false, position:'onBottomOverImage', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true, displayDescription: false},
-              
-              gallerySorting: 'random',
-
-              galleryTheme : { 
-                thumbnail: { titleShadow : 'none', descriptionShadow : 'none', titleColor: '#fff' },
-                navigationBreadcrumb: { background : '#3C4B5B' },
-                navigationFilter: { background : '#2E7C7F', backgroundSelected: '#19676B', color: '#eee' }
-              },
-
-              XviewerTheme : { barBackground : 'rgba(35, 203, 153, 0.7)' },
-              
-              viewerToolbar: { display: false },
-              viewerTools:    {
-                topLeft:   'label',
-                topRight:  'shareButton, rotateLeft, rotateRight, fullscreenButton, closeButton'
-              },
-          
-              touchAnimation: false,
-              locationHash: true
-            });
-            if( ngy2_layout_cnt > 1) {
-              ga('send', 'event', 'click', 'index', 'layout_moisaic');
-            }
+            jQuery("#example_description").html("Mosaic layout with custom hover effect. Lightbox with a bottom toolbar to display the image's title.");
+            jQuery('#btn_view_source').data("demo","btn_layout1b");
+            Demo_Mosaic_2();
+            ga('send', 'event', 'click', 'index', 'layout_moisaic2');
             break
-            
 						
-          // GRID LAYOUT
-          case 'btn_layout2b':
-            jQuery("#nanogallery_container").css({backgroundColor:'#111' });
-						
-            jQuery("#nanogallery").nanogallery2({
-
-              kind: 'nano_photos_provider2',
-              dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
-              album: 'motors',
-              galleryDisplayTransition: 'slideUp',
-              galleryDisplayTransitionDuration: 1000,
-             
-              thumbnailAlignment: 'fillWidth',
-
-              thumbnailHeight: '250', thumbnailWidth: '250',
-              thumbnailBaseGridHeight: 80,
-              
-              thumbnailDisplayTransition: 'scaleDown',
-              thumbnailDisplayTransitionDuration: 600,
-              thumbnailDisplayInterval: 30,
-              galleryMaxRows: 3,
-              galleryDisplayMode: 'moreButton',
-
-              thumbnailL1GutterWidth: 10,
-              thumbnailL1GutterHeight: 10,
-              thumbnailBorderHorizontal: 2,
-              thumbnailBorderVertical: 2,
-
-              xthumbnailL1BuildInit2: '.nGY2GThumbnailAlbumTitle_border-left_5px solid #23CB99|.nGY2GThumbnailAlbumTitle_margin_20px|\
-                    title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
-
-              xthumbnailL1HoverEffect2: 'label_left_-100%_0%|thumbnail_scale_1.00_0.95',
-
-              galleryBuildInit2 : 'perspective_900px|perspective-origin_50% 150%',
-
-              thumbnailHoverEffect2: 'label_font-size_1em_1.5em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((35,203,153,0.8)|title_color_#000_#fff|image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
-
-              thumbnailToolbarImage : null,
-              thumbnailToolbarAlbum: null,
-
-              thumbnailL1Label: { display: true, position:'overImageOnTop', hideIcons: true, titleFontSize: '1.5em', align: 'left'},
-              thumbnailLabel: { display: true, position:'onBottomOverImage', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true, displayDescription: false},
-              
-              gallerySorting: 'random',
-
-              galleryTheme : { 
-                thumbnail: { titleShadow : 'none', descriptionShadow : 'none', titleColor: '#fff', borderColor: '#fff' },
-                navigationBreadcrumb: { background : '#3C4B5B' },
-                navigationFilter: { background : '#2E7C7F', backgroundSelected: '#19676B', color: '#eee' }
-              },
-              
-              locationHash: true
-            });
-            ga('send', 'event', 'click', 'index', 'layout_grid');
-            break
-
-          // GRID LAYOUT 2
+          // GRID LAYOUT 1
           case 'btn_layout2':
             jQuery("#nanogallery_container").css({backgroundColor:'#fff' });		
-						
-            jQuery("#nanogallery").nanogallery2({
-
-              kind: 'nano_photos_provider2',
-              dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
-              album: 'motors',
-
-              galleryDisplayTransition: 'slideUp',
-              galleryDisplayTransitionDuration: 1000,
-             
-              thumbnailAlignment: 'center',
-
-              thumbnailHeight: '300', thumbnailWidth: '300',
-              
-              thumbnailDisplayTransition: 'scaleDown',
-              thumbnailDisplayTransitionDuration: 300,
-              thumbnailDisplayInterval: 10,
-              galleryMaxRows: 3,
-              galleryDisplayMode: 'fullContent',
-
-              thumbnailBorderHorizontal: 0,
-              thumbnailBorderVertical: 0,
-							
-							thumbnailGutterWidth : 100,
-							thumbnailGutterHeight : 100,
-
-              thumbnailToolbarImage : null,
-              thumbnailToolbarAlbum: null,
-							
-							thumbnailHoverEffect2 : 'image_scale_1.00_1.20_1000',
-
-              thumbnailLabel: { display: true, position:'onBottom', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true, displayDescription: false},
-              
-              gallerySorting: 'random',
-
-              galleryTheme : { 
-                thumbnail: { titleShadow : 'none', descriptionShadow : 'none', titleColor: '#fff', borderColor: '#fff', labelBackground: '#fff', titleColor: '#000' },
-                navigationBreadcrumb: { background : '#3C4B5B' },
-                navigationFilter: { background : '#2E7C7F', backgroundSelected: '#19676B', color: '#eee' }
-              },
-              
-              locationHash: true
-            });
-            ga('send', 'event', 'click', 'index', 'layout_grid');
+            jQuery("#example_description").html("All thumbnails have the same size in grid layout. In this example, the image title is displayed at the bottom of the thumbnail. An interesting hover effect is defined, using a customized tool.");
+            jQuery('#btn_view_source').data("demo", "btn_layout2");
+            Demo_Grid_1();
+            ga('send', 'event', 'click', 'index', 'layout_grid1');
             break
-
 						
+          // GRID LAYOUT 2
+          case 'btn_layout2b':
+            jQuery("#nanogallery_container").css({backgroundColor:'#111' });
+            jQuery("#example_description").html("This example shows how keyword filtering works. 3 keywords are defined in the images metadata: ocean, architecture, cars.");
+            jQuery('#btn_view_source').data("demo", "btn_layout2b");
+            Demo_Grid_2();
+            ga('send', 'event', 'click', 'index', 'layout_grid2');
+            break
 						
           // JUSTIFIED LAYOUT
           case 'btn_layout3':
             jQuery("#nanogallery_container").css({backgroundColor:'#111' });		
-            jQuery("#nanogallery").nanogallery2({
-
-              kind: 'nano_photos_provider2',
-              dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
-              album: 'people',
-              galleryDisplayTransition: 'rotateX',
-              galleryDisplayTransitionDuration: 1500,
-             
-              thumbnailAlignment: 'fillWidth',
-
-              thumbnailHeight: '250', thumbnailWidth: 'auto',
-              thumbnailBaseGridHeight: 80,
-              
-              thumbnailDisplayTransition: 'flipUp',
-              thumbnailDisplayTransitionDuration: 400,
-              thumbnailDisplayInterval: 60,
-              galleryMaxRows: 3,
-              galleryDisplayMode: 'pagination',
-
-              thumbnailL1GutterWidth: 20,
-              thumbnailL1GutterHeight: 20,
-              thumbnailBorderHorizontal: 1,
-              thumbnailBorderVertical: 1,
-
-              xthumbnailL1BuildInit2: '.nGY2GThumbnailAlbumTitle_border-left_5px solid #23CB99|.nGY2GThumbnailAlbumTitle_margin_20px|\
-                    title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
-
-              xthumbnailL1HoverEffect2: 'label_left_-100%_0%|thumbnail_scale_1.00_0.95',
-
-              galleryBuildInit2 : 'perspective_900px|perspective-origin_50% 150%',
-
-              xthumbnailHoverEffect2: 'label_font-size_1em_1.5em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((35,203,153,0.8)|title_color_#000_#fff|image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
-              thumbnailHoverEffect2: 'toolsSlideUp|labelSlideDown',
-
-              thumbnailToolbarImage :  { topLeft: 'select', bottomRight : 'featured,download,info,share' },
-              xthumbnailToolbarAlbum: null,
-
-              thumbnailL1Label: { display: true, position:'overImageOnTop', hideIcons: true, titleFontSize: '1.5em', align: 'left'},
-              thumbnailLabel: { display: true, position:'onBottomOverImage', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true, displayDescription: false},
-              
-              gallerySorting: 'random',
-
-              galleryTheme : { 
-                thumbnail: { titleShadow : 'none', descriptionShadow : 'none', titleColor: '#fff', borderColor: '#fff' },
-                navigationBreadcrumb: { background : '#3C4B5B' },
-                navigationFilter: { background : '#2E7C7F', backgroundSelected: '#19676B', color: '#eee' }
-              },
-              
-              locationHash: true
-            });
+            jQuery("#example_description").html("Justified layout: the width of the thumbnail is calculated to respect the image ratio. This example shows a subtle display effect, using a combined gallery and thumbnail display animation. Gesture: the first touch on a thumbnail will display the title and the tools. The second touch will open the media.");
+            jQuery('#btn_view_source').data("demo","btn_layout3");
+            Demo_Justified();
             ga('send', 'event', 'click', 'index', 'layout_justified');
             break
-
-						
 						
           // CASCADING LAYOUT
           case 'btn_layout4':
-          default:
             jQuery("#nanogallery_container").css({backgroundColor:'#111' });
-            jQuery("#nanogallery").nanogallery2({
-
-              kind: 'nano_photos_provider2',
-              dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
-              album: 'nature',
-              // galleryDisplayTransition: 'rotateX',
-              galleryDisplayTransitionDuration: 1500,
-             
-              thumbnailAlignment: 'fillWidth',
-
-              thumbnailHeight: 'auto', thumbnailWidth: '200',
-              thumbnailBaseGridHeight: 100,
-              
-              thumbnailDisplayTransition: 'slideDown',
-              thumbnailDisplayTransitionDuration: 500,
-              thumbnailDisplayInterval: 30,
-              galleryMaxRows: 3,
-              galleryDisplayMode: 'rows',
-
-              thumbnailL1GutterWidth: 1,
-              thumbnailL1GutterHeight: 1,
-              thumbnailBorderHorizontal: 10,
-              thumbnailBorderVertical: 10,
-
-              galleryBuildInit2 : 'perspective_900px|perspective-origin_50% 150%',
-
-              thumbnailHoverEffect2: 'thumbnail_scale_1.00_1.15|imageBlurOn',
-
-              thumbnailToolbarImage : null,
-              thumbnailToolbarAlbum: null,
-
-              // thumbnailL1Label: { display: true, position:'overImageOnTop', hideIcons: true, titleFontSize: '1.5em', align: 'left'},
-              thumbnailLabel: { display: true, position:'onBottom', hideIcons: true, titleFontSize: '1em', align: 'center', titleMultiLine:true, displayDescription: false},
-              
-              gallerySorting: 'random',
-
-              galleryTheme : { 
-                thumbnail: { titleShadow : 'none', descriptionShadow : 'none', titleColor: '#fff', borderColor: '#fff' },
-                navigationBreadcrumb: { background : '#3C4B5B' },
-                navigationFilter: { background : '#2E7C7F', backgroundSelected: '#19676B', color: '#eee' }
-              },
-              
-              locationHash: true
-            });
+            jQuery("#example_description").html("The cascading layout (sometimes also called mansonry layout) is column based. Image aspect ratio is conserved, with no cropping.");
+            jQuery('#btn_view_source').data("demo","btn_layout4");
+            Demo_Cascading();
             ga('send', 'event', 'click', 'index', 'layout_cascading');
             break
+						
+          case 'btn_layout5':
+            jQuery("#nanogallery_container").css({backgroundColor:'#111' });
+            jQuery("#example_description").html("2 levels gallery. The first one displays the list of albums, with grid layout. The second one displays the images, with justified layout.");
+            jQuery('#btn_view_source').data("demo","btn_layout5");
+            Demo_Grid_Justified();
+            ga('send', 'event', 'click', 'index', 'layout_grid_justified');
+            break
+          case 'btn_layout6':
+            jQuery("#nanogallery_container").css({backgroundColor:'#111' });
+            jQuery("#example_description").html("Gallery with images and videos.");
+            jQuery('#btn_view_source').data("demo","btn_layout6");
+            Demo_Images_Videos();
+            ga('send', 'event', 'click', 'index', 'layout_images_videos');
+            break
+          case 'btn_layout7':
+            window.open('https://codepen.io/Kris-B/pen/RyaLaG', '_blank');;
+            break;
         }
       });
       $( "#btn_layout1a" ).trigger( "click" );
       
+      
+      
+      function Demo_Mosaic_1() {
+
+        jQuery("#nanogallery").nanogallery2({
+        
+          // CONTENT SOURCE
+          // The optional add-on nanoPhotosProvider is used for this example - this is not mandatory and can easily be replaced by a list of medias
+          kind: 'nano_photos_provider2',
+          dataProvider: 'https://nano.gallery/ngy2/demo1/nano_photos_provider2/nano_photos_provider2.php',
+          album: 'people',
+         
+          // GALLERY AND THUMBNAIL LAYOUT
+          galleryMosaic : [
+            { w: 2, h: 2, c: 1, r: 1 },
+            { w: 1, h: 1, c: 3, r: 1 },
+            { w: 1, h: 1, c: 3, r: 2 },
+            { w: 1, h: 2, c: 4, r: 1 },
+            { w: 2, h: 1, c: 5, r: 1 },
+            { w: 2, h: 2, c: 5, r: 2 },
+            { w: 1, h: 1, c: 4, r: 3 },
+            { w: 2, h: 1, c: 2, r: 3 },
+            { w: 1, h: 2, c: 1, r: 3 },
+            { w: 1, h: 1, c: 2, r: 4 },
+            { w: 2, h: 1, c: 3, r: 4 },
+            { w: 1, h: 1, c: 5, r: 4 },
+            { w: 1, h: 1, c: 6, r: 4 }
+          ],
+          galleryMaxRows: 1,
+          galleryDisplayMode: 'rows',
+          gallerySorting: 'random',
+
+          thumbnailHeight: '180', thumbnailWidth: '220',
+          thumbnailAlignment: 'scaled',
+          thumbnailGutterWidth: 0, thumbnailGutterHeight: 0,
+          thumbnailBorderHorizontal: 0, thumbnailBorderVertical: 0,
+
+          thumbnailToolbarImage: null,
+          thumbnailToolbarAlbum: null,
+          thumbnailLabel: { display: false },
+
+          // DISPLAY ANIMATION
+          galleryDisplayTransitionDuration: 1500,
+          thumbnailDisplayTransition: 'slideLeft',
+          thumbnailDisplayTransitionDuration: 600,
+          thumbnailDisplayInterval: 30,
+
+          // THUMBNAIL HOVER ANIMATION
+          thumbnailBuildInit2: 'image_scale_1.15',
+          thumbnailHoverEffect2: 'thumbnail_scale_1.00_1.05_300|image_scale_1.15_1.00',
+          touchAnimation: true,
+          touchAutoOpenDelay: 500,
+
+          // LIGHTBOX
+          viewerToolbar: { display: false },
+          viewerTools:    {
+            topLeft:   'label',
+            topRight:  'shareButton, rotateLeft, rotateRight, fullscreenButton, closeButton,infoButton'
+          },
+     
+          // DEEP LINKING
+          locationHash: true
+        });
+      }
+      
+      
+      function Demo_Mosaic_2() {
+        jQuery("#nanogallery").nanogallery2({
+        
+          // CONTENT SOURCE
+          // The optional add-on nanoPhotosProvider is used for this example - this is not mandatory and can easily be replaced by a list of medias
+          kind: 'nano_photos_provider2',
+          dataProvider: 'https://nano.gallery/ngy2/demo2/nano_photos_provider2/nano_photos_provider2.php',
+          album: 'fun',
+          galleryDisplayTransitionDuration: 1500,
+         
+          // GALLERY AND THUMBNAIL LAYOUT
+          galleryMosaic : [
+            { w: 1, h: 1, c: 1, r: 1 },
+            { w: 1, h: 1, c: 2, r: 1 },
+            { w: 1, h: 1, c: 3, r: 1 },
+            { w: 1, h: 1, c: 4, r: 1 },
+            { w: 1, h: 1, c: 5, r: 1 },
+            { w: 1, h: 1, c: 6, r: 1 },
+            { w: 1, h: 2, c: 1, r: 2 },
+            { w: 2, h: 2, c: 2, r: 2 },
+            { w: 2, h: 2, c: 4, r: 2 },
+            { w: 1, h: 2, c: 6, r: 2 },
+            { w: 1, h: 1, c: 1, r: 4 },
+            { w: 1, h: 1, c: 2, r: 4 },
+            { w: 1, h: 1, c: 3, r: 4 },
+            { w: 1, h: 1, c: 4, r: 4 },
+            { w: 1, h: 1, c: 5, r: 4 },
+            { w: 1, h: 1, c: 6, r: 4 }
+          ],
+          galleryMaxRows: 1,
+          galleryDisplayMode: 'rows',
+          gallerySorting: 'random',
+
+          thumbnailAlignment: 'scaled',
+          thumbnailHeight: '180', thumbnailWidth: '220',
+          thumbnailGutterWidth: 0, thumbnailGutterHeight: 0,
+          thumbnailBorderHorizontal: 0, thumbnailBorderVertical: 0,
+
+          thumbnailToolbarImage : null,
+          thumbnailToolbarAlbum: null,
+
+          thumbnailLabel: { display: false },
+          
+          // DISPLAY ANIMATION
+          thumbnailDisplayTransition: 'flipDown',
+          thumbnailDisplayTransitionDuration: 600,
+          thumbnailDisplayInterval: 30,
+
+
+          // HOVER ANIMATION
+          thumbnailBuildInit2: '.nGY2GThumbnailAlbumTitle_border-left_5px solid #23CB99|.nGY2GThumbnailAlbumTitle_margin_20px|\
+                title_backgroundColor_rgba(200,200,200,0.8)|title_color_#000',
+          thumbnailHoverEffect2: 'image_scale_1.00_1.15_500_bounce|image_rotateZ_0deg_05deg',
+          touchAnimation: true,
+          touchAutoOpenDelay: 500,
+
+          // LIGHTBOX
+          viewerToolbar:    {   // bottom toolbar
+            standard:  'label',
+            minimized: 'label' },
+          viewerTools:    {
+            topLeft:   '',
+            topRight:  'shareButton, rotateLeft, rotateRight, fullscreenButton, closeButton'
+          },
+      
+          // DEEP LINKING
+          locationHash: false
+        });
+      }
+      
+
+
+      function Demo_Grid_1() {
+        jQuery("#nanogallery").nanogallery2({
+
+          // CONTENT SOURCE
+          // The optional add-on nanoPhotosProvider is used for this example - this is not mandatory and can easily be replaced by a list of medias
+          kind: 'nano_photos_provider2',
+          dataProvider: 'https://nano.gallery/ngy2/demo3/nano_photos_provider2/nano_photos_provider2.php',
+          album: 'motors',
+
+          // GALLERY AND THUMBNAIL LAYOUT
+          galleryDisplayMode: 'moreButton',
+          galleryMaxRows: 3,
+          galleryMaxItems: 15,
+          gallerySorting: 'random',
+         
+          thumbnailHeight: '300', thumbnailWidth: '300',
+          thumbnailAlignment: 'center',
+          thumbnailBorderHorizontal: 0, thumbnailBorderVertical: 0,
+          thumbnailGutterWidth : 100, thumbnailGutterHeight : 100,
+          
+          // THUMBNAIL TOOLS & LABEL
+          thumbnailLabel: { display: true, position:'onBottom', align: 'left'},
+          thumbnailToolbarImage :  { bottomLeft : 'display' },
+          // replace the default DISPLAY tool icon
+          icons: {thumbnailDisplay: '<i class="fa fa-long-arrow-right" aria-hidden="true"></i> display'},
+          
+          // DISPLAY ANIMATION
+          galleryDisplayTransition: 'slideUp',
+          galleryDisplayTransitionDuration: 1000,
+          thumbnailDisplayTransition: 'scaleDown',
+          thumbnailDisplayTransitionDuration: 300,
+          thumbnailDisplayInterval: 10,
+
+
+          // THUMBNAIL'S HOVER ANIMATION
+          thumbnailBuildInit2 : 'tools_font-size_1.5em|title_font-size_1.5em',
+          thumbnailHoverEffect2 : 'image_scale_1.00_1.20_1000|tools_opacity_0_1|tools_translateX_-30px_0px|title_opacity_1_0|title_translateX_0px_-30px',
+          touchAnimation: true,
+          touchAutoOpenDelay: 800,
+
+          // GALLERY THEME
+          galleryTheme : { 
+            thumbnail: { borderRadius: '10px', background: '#fff', titleShadow : 'none', titleColor: '#000', labelBackground: '#ff0' },
+            thumbnailIcon: { color: '#000', shadow: 'none' },
+          },
+          
+          // LIGHTBOX
+          // Hide the bottom toolbar and media title
+          viewerToolbar: { display: false },
+
+          // DEEP LINKING
+          locationHash: false
+        });
+      }
+      
+      
+      function Demo_Grid_2() {
+        jQuery("#nanogallery").nanogallery2({
+
+          // CONTENT SOURCE
+          // The optional add-on nanoPhotosProvider is used for this example - this is not mandatory and can easily be replaced by a list of medias
+          kind: 'nano_photos_provider2',
+          dataProvider: 'https://nano.gallery/ngy2/demo4/nano_photos_provider2/nano_photos_provider2.php',
+
+          // KEYWORD FILTERING
+          galleryFilterTags: true,
+          galleryFilterTagsMode: 'multiple',
+
+          // GALLERY AND THUMBNAIL LAYOUT
+          thumbnailHeight: '250', thumbnailWidth: '250',
+          thumbnailAlignment: 'fillWidth',
+          galleryDisplayMode: 'fullContent',
+          gallerySorting: 'random',
+
+          thumbnailGutterWidth: 10, thumbnailGutterHeight: 10,
+          thumbnailBorderHorizontal: 2, thumbnailBorderVertical: 2,
+
+          // DISPLAY ANIMATION
+          galleryDisplayTransitionDuration: 1000,
+          thumbnailDisplayTransition: 'scaleUp',
+          thumbnailDisplayTransitionDuration: 300,
+          thumbnailDisplayInterval: 15,
+
+          // THUMBNAIL TOOLS & LABEL
+          thumbnailLabel: { display: true, position:'onBottomOverImage', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true, displayDescription: false},
+          thumbnailToolbarImage: null,
+          thumbnailToolbarAlbum: null,
+
+          // THUMBNAIL HOVER ANIMATION
+          thumbnailHoverEffect2: 'label_font-size_1em_1.5em|title_backgroundColor_rgba(255,255,255,0.34)_rgba(((35,203,153,0.8)|title_color_#000_#fff|image_scale_1.00_1.10_5000|image_rotateZ_0deg_4deg_5000',
+          touchAnimation: true,
+          touchAutoOpenDelay: 800,
+          
+          // GALLERY THEME
+          galleryTheme : { 
+            thumbnail: { titleShadow : 'none', titleColor: '#fff', borderColor: '#fff' },
+            navigationBreadcrumb: { background : '#3C4B5B' },
+            navigationFilter: { background : '#003C3F', backgroundSelected: '#2E7C7F', color: '#fff' }
+          },
+          
+          // DEEP LINKING
+          locationHash: false
+        });
+      }
+
+
+      function Demo_Justified() {
+        jQuery("#nanogallery").nanogallery2({
+
+          // CONTENT SOURCE
+          // The optional add-on nanoPhotosProvider is used for this example - this is not mandatory and can easily be replaced by a list of medias
+          kind: 'nano_photos_provider2',
+          dataProvider: 'https://nano.gallery/ngy2/demo5/nano_photos_provider2/nano_photos_provider2.php',
+          album: 'people',
+          
+          // GALLERY AND THUMBNAIL LAYOUT
+          thumbnailHeight: '250', thumbnailWidth: 'auto',
+          galleryMaxRows: 3,
+          galleryDisplayMode: 'pagination',
+          gallerySorting: 'random',
+          thumbnailAlignment: 'fillWidth',
+          thumbnailL1GutterWidth: 20,
+          thumbnailL1GutterHeight: 20,
+          thumbnailBorderHorizontal: 1,
+          thumbnailBorderVertical: 1,
+
+          // THUMBNAIL TOOLS & LABEL
+          thumbnailL1Label: { display: true, position:'overImageOnTop', hideIcons: true, titleFontSize: '1.5em', align: 'left'},
+          thumbnailToolbarImage :  { topLeft: 'select', bottomRight : 'featured,display,download,info' },
+
+          // DISPLAY ANIMATION
+          galleryDisplayTransition: 'rotateX',        // gallery display animation
+          galleryDisplayTransitionDuration: 1500,
+          thumbnailDisplayTransition: 'flipUp',       // thumbnail display animation
+          thumbnailDisplayTransitionDuration: 400,
+          thumbnailDisplayInterval: 60,
+
+          // THUMBNAIL'S HOVER ANIMATION
+          thumbnailHoverEffect2: 'toolsSlideUp|labelSlideDown',
+          touchAnimation: true,
+          touchAutoOpenDelay: -1,
+
+          // GALLERY THEME
+          galleryTheme : { 
+            thumbnail: { titleShadow : 'none', descriptionShadow : 'none', titleColor: '#fff', borderColor: '#fff' },
+          },
+          
+          // DEEP LINKING
+          locationHash: false
+        });
+      }
+
+
+      function Demo_Cascading() {
+        jQuery("#nanogallery").nanogallery2({
+
+          // CONTENT SOURCE
+          // The optional add-on nanoPhotosProvider is used for this example - this is not mandatory and can easily be replaced by a list of medias
+          kind: 'nano_photos_provider2',
+          dataProvider: 'https://nano.gallery/ngy2/demo6/nano_photos_provider2/nano_photos_provider2.php',
+          album: 'nature',
+
+          // GALLERY AND THUMBNAIL LAYOUT
+          galleryDisplayMode: 'fullContent',
+          gallerySorting: 'random',
+          thumbnailHeight: 'auto', thumbnailWidth: '300',
+          thumbnailBaseGridHeight: 50,
+          thumbnailAlignment: 'fillWidth',
+          thumbnailL1GutterWidth: 4,
+          thumbnailL1GutterHeight: 4,
+          thumbnailBorderHorizontal: 5,
+          thumbnailBorderVertical: 5,
+
+          // THUMBNAIL TOOLS & LABEL
+          thumbnailLabel: { display: true, position:'onBottom', hideIcons: true, titleFontSize: '1em', align: 'right', titleMultiLine:true, displayDescription: false},
+          thumbnailToolbarAlbum: null,
+          thumbnailToolbarImage :  { bottomRight : 'display' },
+          // replace the default DISPLAY tool icon
+          icons: {thumbnailDisplay: '<i class="fa fa-long-arrow-right" aria-hidden="true"></i> display'},
+
+          // DISPLAY ANIMATION
+          thumbnailDisplayTransition: 'slideDown',
+          thumbnailDisplayTransitionDuration: 500,
+          thumbnailDisplayInterval: 30,
+
+          // THUMBNAIL'S HOVER ANIMATION
+          thumbnailHoverEffect2: 'label_translateY_0px_-20px|image_scale_1.00_1.10|image_rotateZ_0deg_3deg|image_translateY_0px_-20px|tools_opacity_0_1|tools_translateY_30px_0px',
+          touchAnimation: true,
+          touchAutoOpenDelay: 800,
+
+          // GALLERY THEME
+          galleryTheme : { 
+            thumbnail: { background: '#444', backgroundImage: 'linear-gradient(315deg, #111 0%, #557 90%)', borderColor: '#000', labelOpacity : 1, labelBackground: '#444', titleColor: '#eee', titleBgColor: '#444', titleShadow: '' },
+          },
+          
+          // DEEP LINKING
+          locationHash: false
+        });
+      }
+
+
+      function Demo_Grid_Justified() {
+        jQuery("#nanogallery").nanogallery2({
+
+          // CONTENT SOURCE
+          // The optional add-on nanoPhotosProvider is used for this example - this is not mandatory and can easily be replaced by a list of medias
+          kind: 'nano_photos_provider2',
+          dataProvider: 'https://nano.gallery/ngy2/demo7/nano_photos_provider2/nano_photos_provider2.php',
+
+          // GALLERY AND THUMBNAIL LAYOUT
+          galleryL1DisplayMode: 'fullContent',                // first level display mode -> fullContent
+          galleryDisplayMode: 'rows',                         // other levels display mode -> 4 rows
+          galleryMaxRows: 4,
+          gallerySorting: 'random',
+
+          // thumbnail on first gallery level
+          thumbnailL1Height: 120, thumbnailL1Width: 600,      // first level -> grid kayout
+          thumbnailL1GutterWidth: 20,
+          thumbnailL1GutterHeight: 20,
+          thumbnailL1BorderHorizontal: 10,
+          thumbnailL1BorderVertical: 10,
+
+          // thumbnail on other gallery level
+          thumbnailHeight: 400, thumbnailWidth: 'auto',       // other levels -> justified layout
+          thumbnailGutterWidth: 2,
+          thumbnailGutterHeight: 2,
+          thumbnailBorderHorizontal: 0,
+          thumbnailBorderVertical: 0,
+
+          thumbnailAlignment: 'fillWidth',
+
+          // THUMBNAIL TOOLS & LABEL
+          thumbnailToolbarImage : null,
+          thumbnailToolbarAlbum: null,
+          // first level label
+          <!-- thumbnailL1Label: { display: true, position:'overImageOnBottom', hideIcons: true, titleFontSize: '1em', align: 'center', titleMultiLine:true, displayDescription: false}, -->
+          thumbnailL1Label: { display: true, valign:'bottom', hideIcons: true, titleFontSize: '3em', align: 'center', titleMultiLine:true, displayDescription: false},
+          // other level label
+          thumbnailLabel: { display: true, position:'overImageOnBottom', hideIcons: true, titleFontSize: '1em', align: 'center', titleMultiLine:true, displayDescription: false},
+
+					thumbnailToolbarAlbum: { topRight: 'counter' },
+
+          // DISPLAY ANIMATION
+          thumbnailL1DisplayTransition: 'flipUp',         // first level display animation
+          thumbnailDisplayTransition: 'slideDown',        // other levels display animation
+          thumbnailDisplayTransitionDuration: 500,
+          thumbnailDisplayInterval: 30,
+
+          // THUMBNAIL'S HOVER ANIMATION
+          // first level
+          thumbnailL1BuildInit2: 'title_font-weight_bold',
+          thumbnailL1HoverEffect2: 'imageGrayOff|title_color_#fff_#aaa|labelOpacity50',
+          // other levels -> no hover effect
+          // touch handling
+          touchAnimation: false,
+          touchAutoOpenDelay: 800,
+
+          // GALLERY THEME
+          galleryTheme : { 
+            thumbnail: { titleShadow : '', descriptionShadow : 'none', titleColor: '#fff', borderColor: '#000' },
+            navigationBreadcrumb: { background : '#3C4B5B' },
+          },
+          
+          // DEEP LINKING
+          locationHash: false
+        });
+      }
+
+
+      function Demo_Images_Videos() {
+        jQuery("#nanogallery").nanogallery2({
+
+          // CONTENT SOURCE
+					items:[
+						{
+							src:          'https://vimeo.com/32875422',                           // media url
+							srct:         'https://i.vimeocdn.com/video/222726041_1280x720.jpg',  // media thumbnail url
+							title:        'Vimeo video',                                          // media title
+						},
+						{ src: 'https://www.youtube.com/watch?v=i5qOzqD9Rms', title: 'Youtube video' },
+						{ src: 'https://www.dailymotion.com/video/x4wtyl6',   title: 'Dailymotion video' },
+						{ src: 'berlin1.jpg',      srct: 'berlin1t.jpg',   title: 'Self hosted image' }
+					],
+					itemsBaseURL:    'https://nanogallery2.nanostudio.org/samples/',
+		
+          // GALLERY AND THUMBNAIL LAYOUT
+          galleryDisplayMode: 'fullContent',
+          gallerySorting: 'random',
+
+
+          // thumbnail
+          thumbnailHeight: 300, thumbnailWidth: 'auto',
+          thumbnailGutterWidth: 2,
+          thumbnailGutterHeight: 2,
+          thumbnailBorderHorizontal: 0,
+          thumbnailBorderVertical: 0,
+
+          thumbnailAlignment: 'fillWidth',
+
+          // THUMBNAIL TOOLS & LABEL
+          thumbnailToolbarImage : null,
+          thumbnailToolbarAlbum: null,
+          thumbnailLabel: { display: true, position:'overImageOnBottom', hideIcons: true, titleFontSize: '2em', align: 'center', titleMultiLine:true, displayDescription: false},
+
+          // DISPLAY ANIMATION
+          thumbnailL1DisplayTransition: 'flipUp',         // first level display animation
+          thumbnailDisplayTransition: 'slideDown',        // other levels display animation
+          thumbnailDisplayTransitionDuration: 500,
+          thumbnailDisplayInterval: 30,
+
+          // THUMBNAIL'S HOVER ANIMATION
+          // first level
+          thumbnailBuildInit2: 'title_font-weight_bold',
+          thumbnailHoverEffect2: 'imageBlurOff',
+          // other levels -> no hover effect
+          // touch handling
+          touchAnimation: false,
+          touchAutoOpenDelay: 800,
+
+          // GALLERY THEME
+          galleryTheme : { 
+            thumbnail: { titleShadow : '', descriptionShadow : 'none', titleColor: '#fff', borderColor: '#000' },
+            navigationBreadcrumb: { background : '#3C4B5B' },
+          },
+          
+          // DEEP LINKING
+          locationHash: false
+        });
+      }
+
       
       // ##### TEMPLATE TAB
       var ngy2_template_cnt = 0;
@@ -1268,4 +1576,3 @@ thumbnailToolbarAlbum : { topLeft: 'select', topRight : 'share,featured,download
       
     });
   </script>
-
