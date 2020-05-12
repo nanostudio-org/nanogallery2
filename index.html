@@ -1234,25 +1234,38 @@
   <!-- ########################### -->
 
   <div class="jumbotron ngy2_bgdark_gallery2" style="overflow:hidden;">
-    <br><br><br><br><br><br>
+
     <div class="row text-center" >
       <div class="col-md-12" >
-        <h2 style="color:#fff;letter-spacing: 0.5rem;font-size:4em;margin:30px;">The tool of choice for beautiful galleries with stunning effects</h2>
+        <h2 style="color:#fff;letter-spacing: 0.5rem;font-size:3rem;margin:30px;">The tool of choice for beautiful galleries with stunning effects.</h2>
+        
       </div>
     </div>
     <br><br><br><br><br><br>
-    <div class=""  style="width:95%;margin:0px auto;"  id="ngy2_layout_demo">
+    <div class=""  style="width:95%;margin:0px auto;"  >
       <div class="row text-center ">
-        <div class="col-md-2 text-center ngy2_shadow" style="margin:0px auto;padding:30px 30px; background-color:#4f5974;">
-          <h3 class="ngy2_color2">Take full control over gallery layouts and animations</h3><br>
-          <div class=" btn-block button-glow ngy2_layout_selection" id="btn_layout1a" style="border-radius: 6px;border: 1px solid #fff;padding:10px;color:#fff;cursor:pointer;"> MOSAIC example 1</div>
-          <div class=" btn-block ngy2_layout_selection" id="btn_layout1b" style="border-radius: 6px;border: 1px solid #fff;padding:10px;color:#fff;cursor:pointer;"> MOSAIC example 2</div>
-          <div class=" btn-block ngy2_layout_selection" id="btn_layout2" style="border-radius: 6px;border: 1px solid #fff;padding:10px;color:#fff;cursor:pointer;"> GRID example 1</div>
-          <div class=" btn-block ngy2_layout_selection" id="btn_layout2b" style="border-radius: 6px;border: 1px solid #fff;padding:10px;color:#fff;cursor:pointer;"> GRID example 2</div>
-          <div class=" btn-block ngy2_layout_selection" id="btn_layout3" style="border-radius: 6px;border: 1px solid #fff;padding:10px;color:#fff;cursor:pointer;"> JUSTIFIED example</div>
-          <div class=" btn-block ngy2_layout_selection" id="btn_layout4" style="border-radius: 6px;border: 1px solid #fff;padding:10px;color:#fff;cursor:pointer;"> CASCADING example</div>
+        <div class="col-md-2 text-center ngy2_shadow" style="margin:0px auto;padding:0px 30px 10px 30px; background-color:#4f5974;">
+          <h4 class="ngy2_color2">Take full control over gallery layouts and animations.</h4><br>
+          <p style="color:#fff;font-size:1.5rem;">some examples:</p>
+          <div class=" btn-block button-glow ngy2_layout_selection" id="btn_layout1a" style="border-radius: 6px;border: 1px solid #fff;padding:5px 10px;color:#fff;cursor:pointer;"> MOSAIC</div>
+          <div class=" btn-block ngy2_layout_selection" id="btn_layout1b" style="border-radius: 6px;border: 1px solid #fff;padding:5px 10px;color:#fff;cursor:pointer;"> MOSAIC</div>
+          <div class=" btn-block ngy2_layout_selection" id="btn_layout2" style="border-radius: 6px;border: 1px solid #fff;padding:5px 10px;color:#fff;cursor:pointer;"> GRID</div>
+          <div class=" btn-block ngy2_layout_selection" id="btn_layout2b" style="border-radius: 6px;border: 1px solid #fff;padding:5px 10px;color:#fff;cursor:pointer;"> GRID and FILTERING</div>
+          <div class=" btn-block ngy2_layout_selection" id="btn_layout3" style="border-radius: 6px;border: 1px solid #fff;padding:5px 10px;color:#fff;cursor:pointer;"> JUSTIFIED</div>
+          <div class=" btn-block ngy2_layout_selection" id="btn_layout4" style="border-radius: 6px;border: 1px solid #fff;padding:5px 10px;color:#fff;cursor:pointer;"> CASCADING</div>
+          <div class=" btn-block ngy2_layout_selection" id="btn_layout5" style="border-radius: 6px;border: 1px solid #fff;padding:5px 10px;color:#fff;cursor:pointer;"> ALBUMS: GRID and JUSTIFIED</div>
+          <div class=" btn-block ngy2_layout_selection" id="btn_layout6" style="border-radius: 6px;border: 1px solid #fff;padding:5px 10px;color:#fff;cursor:pointer;"> IMAGES and VIDEOS</div>
+          <div class=" btn-block ngy2_layout_selection" id="btn_layout7" style="border-radius: 6px;border: 1px solid #fff;padding:5px 10px;color:#fff;cursor:pointer;"> CHECKBOXES &nbsp; <i class="fa fa-codepen" aria-hidden="true"></i></div>
         </div>
         <div id="nanogallery_container" class="col-md-10 text-center ngy2_shadow" style="margin:0px auto;padding:30px 30px; background-color:#111;">
+          <div id="ngy2_layout_demo" class="row" style="color:#fff;background:#000;padding:10px 10px 0px 10px;margin-top:-10px;">
+            <div class="col-md-10 text-left lead" id="example_description">
+            </div>
+            <div class="col-md-2 text-right">
+              <div class="btn btn-default text-right" id="btn_view_source" ><i class="fa fa-long-arrow-right" aria-hidden="true"></i> view source code</div>
+            </div>
+          </div>
+          <br>
           <div id="nanogallery" class="text-left" >gallery_made_with_nanogallery2</div>
         </div>
       </div>
@@ -1260,7 +1273,29 @@
     <br><br><br><br>
   </div>
   
-  
+  <!-- ##### MODAL FOR DISPLAYING DEMO SOURCE CODE ##### -->
+  <div class="modal " tabindex="-1" role="dialog" id="ngy2_modal_source">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="border-bottom:0px;">
+          <h5 class="modal-title lead">nanogallery2 - demonstration source code</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="padding:0px 12px 0px 12px;">
+          <div class="row language-markup" >
+            <pre style=""><code id="ngy2_template" style="white-space: pre;background:transparent;font-size:1.3rem;line-height: 1.4rem;">
+            </code></pre>
+          </div>
+        </div>
+        <div class="modal-footer" style="border-top:0px;">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   
   
   <!-- 
@@ -1362,16 +1397,16 @@
         <div class="col-md-6 text-left">
           <img src="img/screenshot_lightbox.jpg" class="img-responsive" style="">
           <br>
-          <h3 style="font-size:4rem;">Lightbox</h3>
+          <h3 style="font-size:3rem;">Lightbox</h3>
           <p>
-            Medias are displayed in a fast and smooth lightbox.
+            Medias are displayed in a fast and smooth lightbox. Swipe and pinch zoom supported.
             Fully customisable, it offers an exhaustive range of possibilities, from toolbars to transitions between two images.
           </p>
         </div>
         <div class="col-md-6 text-left">
           <img src="img/screenshot_builder.jpg" class="img-responsive" style="">
           <br>
-          <h3 style="font-size:4rem;">Builder</h3>
+          <h3 style="font-size:3rem;">Builder</h3>
           <p>
             Visual designer for generating your galleries without coding. Set the properties and see directly the preview on screen.
             <br>
@@ -1468,51 +1503,71 @@
       <br><br><br><br><br><br>
       <div class="row text-center" >
         <div class="col-md-12" >
-          <h2 style="color:#fff;letter-spacing: 0.5rem;font-size:4em;">Everything you would expect</h2>
+          <h2 style="color:#fff;letter-spacing: 0.5rem;font-size:3rem;">Everything you would expect</h2>
           <h2><span id="rotator"></span></h2>
         </div>
       </div>
       <br><br><br><br><br>
       <div class="row ngy2_features equal">
-        <div class="col-md-3 text-left">
-          Touch and hover effects
-        </div>
-        <div class="col-md-3 text-left">
-          Display animations
-        </div>
+      
+      
         <div class="col-md-3 text-left">
           Photos
         </div>
         <div class="col-md-3 text-left">
           Videos
         </div>
-
+        <div class="col-md-3 text-left">
+          Gallery
+        </div>
         <div class="col-md-3 text-left">
           Lightbox
+        </div>
+        <div class="col-md-3 text-left">
+          Hover effects
+        </div>
+        <div class="col-md-3 text-left">
+          Touch effects
+        </div>
+        <div class="col-md-3 text-left">
+          Display transitions
         </div>
         <div class="col-md-3 text-left">
           Responsive
         </div>
         <div class="col-md-3 text-left">
-          Albums
+          Support albums
         </div>
         <div class="col-md-3 text-left">
-          Blurred preview
+          Blurred image preview
         </div>
-
         <div class="col-md-3 text-left">
-          filter by keywords
+          Keywords filters
+        </div>
+        <div class="col-md-3 text-left">
+          Swipe / pinch
+        </div>
+        <div class="col-md-3 text-left">
+          Image zoom
+        </div>
+        <div class="col-md-3 text-left">
+          Image rotation
+        </div>
+        <div class="col-md-3 text-left">
+          Tools on thumbnails
+        </div>
+        <div class="col-md-3 text-left">
+          Mouse gesture
+        </div>
+        <div class="col-md-3 text-left">
+          Keyboard navigation
         </div>
         <div class="col-md-3 text-left">
           Javascript API
         </div>
         <div class="col-md-3 text-left">
-          Gesture
-        </div>
-        <div class="col-md-3 text-left">
           Deep Linking
         </div>
-
         <div class="col-md-3 text-left">
           Gallery pagination
         </div>
@@ -1573,7 +1628,7 @@
       
       <div class="row text-center">
         <div class="col-md-12">
-          <h2 style="color:#fff;letter-spacing: 0.5rem;font-size:4em;">and it doesn’t end there…</h2>
+          <h2 style="color:#fff;letter-spacing: 0.5rem;font-size:3rem;">and it doesn’t end there…</h2>
         </div>
       </div>
       <br><br>
@@ -1581,7 +1636,7 @@
         <div class="col-md-1">&nbsp;</div>
         <div class="col-md-10 text-left">
        
-          <h3 style="line-height:2em;color:#fff;">
+          <p style="line-height:5rem;color:#fff;">
             <!--
             <i class="fa fa-asterisk" aria-hidden="true"></i> <span style="background-color:#23CB99;color:#fff;padding:0px 4px;">multiple gallery layouts</span> - justified, grid, cascading and mosaic
             <br>
@@ -1590,7 +1645,7 @@
             <i class="fa fa-asterisk" aria-hidden="true"></i> <span style="background-color:#23CB99;color:#fff;padding:0px 4px;">Video support</span> - Youtube, Vimeo, Dailymotion
             <br>
             -->
-            <i class="fa fa-chevron-right" aria-hidden="true"></i> PHP add-on for automatic generation of responsive thumbnails: <a href="https://nanophotosprovider2.nanostudio.org/" style="background-color:#23CB99;color:#fff;padding:0px 4px;"><u>nanoPhotosProvider2</u></a>
+            <i class="fa fa-long-arrow-right"" aria-hidden="true"></i> &nbsp; PHP add-on for automatic generation of responsive thumbnails: <a href="https://nanophotosprovider2.nanostudio.org/" style="background-color:#23CB99;color:#fff;padding:0px 4px;"><u>nanoPhotosProvider2</u></a>
             <br>
             <!--
             <i class="fa fa-asterisk" aria-hidden="true"></i> Full featured <a href="documentation.html" style="background-color:#23CB99;color:#fff;padding:0px 4px;"><u>documentation</u></a> with samples and ready to use <span style="background-color:#23CB99;color:#fff;padding:0px 4px;">HTML templates</span>
@@ -1598,13 +1653,13 @@
             <i class="fa fa-asterisk" aria-hidden="true"></i> Build a gallery in minutes with the <a href="builder.html" style="background-color:#23CB99;color:#fff;padding:0px 4px;"><u>Visual Builder</u></a>
             <br>
             -->
-            <i class="fa fa-chevron-right" aria-hidden="true"></i> Tons of new possibilities since the <a href="http://nanogallery.brisbois.fr" style="background-color:#23CB99;color:#fff;padding:0px 4px;" target="_blank"><u>popular nanoGALLERY</u></a>
+            <i class="fa fa-long-arrow-right"" aria-hidden="true"></i> &nbsp; Tons of new possibilities since the <a href="http://nanogallery.brisbois.fr" style="background-color:#23CB99;color:#fff;padding:0px 4px;" target="_blank"><u>popular nanoGALLERY</u></a>
             <br>
-            <i class="fa fa-chevron-right" aria-hidden="true"></i> Also available without any installation: <a href="https://nano.gallery" style="color:#fff;background-color:#23CB99;padding:0px 4px;" target="_blank" ><u>nanogallery2 portable</u></a>
+            <i class="fa fa-long-arrow-right"" aria-hidden="true"></i> &nbsp; Also available without any installation: <a href="https://nano.gallery" style="color:#fff;background-color:#23CB99;padding:0px 4px;" target="_blank" ><u>nanogallery2 portable</u></a>
             <br>
-            <i class="fa fa-chevron-right" aria-hidden="true"></i> <span style="background-color:#23CB99;color:#fff;padding:0px 4px;">Optional modules</span> to display content from Flickr or Google Photos
+            <i class="fa fa-long-arrow-right"" aria-hidden="true"></i> &nbsp; <span style="background-color:#23CB99;color:#fff;padding:0px 4px;">Optional modules</span> to display content from Flickr or Google Photos
             <br>
-            <i class="fa fa-chevron-right" aria-hidden="true"></i> <span style="background-color:#23CB99;color:#fff;padding:0px 4px;">Open source</span> - fork on <a style="color:#fff;background-color:#23CB99;padding:0px 4px;" href="https://github.com/nanostudio-org/nanogallery2"  target="_blank"><u>Github</u></a> to help improving your favorite gallery
+            <i class="fa fa-long-arrow-right"" aria-hidden="true"></i> &nbsp; <span style="background-color:#23CB99;color:#fff;padding:0px 4px;">Open source</span> - fork on <a style="color:#fff;background-color:#23CB99;padding:0px 4px;" href="https://github.com/nanostudio-org/nanogallery2"  target="_blank"><u>Github</u></a> to help improving your favorite gallery
             <br>
             <br>
             <br>
@@ -1616,7 +1671,7 @@
               <br>
             </div>
             -->
-          </h3>
+          </p>
         </div>
         <div class="col-md-1">&nbsp;</div>
       </div>
@@ -1754,7 +1809,7 @@
       <div class="col-md-1">
       </div>
       <div class="col-md-10">
-        <h2 style="letter-spacing: 0.5rem;font-size:4em;">Get started</h2>
+        <h2 style="letter-spacing: 0.5rem;font-size:3rem;">Get started</h2>
         <p>
           Use one of these HTML templates for quickly building a photo gallery from scratch.
         </p>
@@ -1767,7 +1822,9 @@
             <br>
             &nbsp; &nbsp; &nbsp; - or use npmjs: <code>npm install nanogallery2</code>
             <br>
-            &nbsp; &nbsp; &nbsp; - or use the <b>CDN</b> version: <a href="https://unpkg.com/nanogallery2/dist/"><code>https://unpkg.com/nanogallery2/dist/</code></a>
+            &nbsp; &nbsp; &nbsp; - or use the <b>Cloudflare CDNJS</b> version: <a href="https://cdnjs.com/libraries/nanogallery2"><code>https://cdnjs.com/libraries/nanogallery2</code></a>
+            <br>
+            &nbsp; &nbsp; &nbsp; - or use the <b>UNPKG CDN</b> version: <a href="https://unpkg.com/nanogallery2/dist/"><code>https://unpkg.com/nanogallery2/dist/</code></a>
           </div>
         </p>
         
@@ -1797,8 +1854,8 @@
             &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript"&gt;&lt;/script&gt;
           
             <span style="background-color:#f3f310;">&lt;!-- nanogallery2 --&gt;</span>
-            &lt;link  href="https://unpkg.com/nanogallery2@2.4.2/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css"&gt;
-            &lt;script  type="text/javascript" src="https://unpkg.com/nanogallery2@2.4.2/dist/jquery.nanogallery2.min.js"&gt;&lt;/script&gt;
+            &lt;link  href="https://cdnjs.cloudflare.com/ajax/libs/nanogallery2/2.4.2/css/nanogallery2.min.css" rel="stylesheet" type="text/css"&gt;
+            &lt;script  type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/nanogallery2/2.4.2/jquery.nanogallery2.min.js"&gt;&lt;/script&gt;
         &lt;/head&gt;
         &lt;body&gt;
         
@@ -1807,7 +1864,7 @@
               <span style="background-color:#f3f310;">&lt;!-- ### start of the gallery definition ### --></span>
               &lt;div id="nanogallery2"
               
-                  <span style="background-color:#f3f310;">/* gallery settings */</span>
+                  <span style="background-color:#f3f310;">&lt;!-- gallery settings --></span>
                   data-nanogallery2 = '{
                         "thumbnailHeight":  150,
                         "thumbnailWidth":   150,
@@ -1817,7 +1874,7 @@
                   <span style="background-color:#f3f310;">&lt;!-- gallery content --></span>
                   &lt;a href = "berlin1.jpg"   data-ngThumb = "berlin1_t.jpg" > Berlin 1 &lt;/a&gt;
                   &lt;a href = "berlin2.jpg"   data-ngThumb = "berlin2_t.jpg" > Berlin 2 &lt;/a&gt;
-                  &lt;a href = "berlin3.jpg"   data-ngThumb = "berlin3_t.jpg" > Berlin 3 &lt;/a&gt;
+                  &lt;a href = "berlin3.jpg"   data-ngThumb = "berlin2_t.jpg" > Berlin 3 &lt;/a&gt;
               &lt;/div&gt;
               <span style="background-color:#f3f310;">&lt;!-- ### end of the gallery definition ### --></span>
             
@@ -1836,8 +1893,8 @@
             &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript"&gt;&lt;/script&gt;
           
             <span style="background-color:#f3f310;">&lt;!-- nanogallery2 --&gt;</span>
-            &lt;link  href="https://unpkg.com/nanogallery2@2.4.2/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css"&gt;
-            &lt;script  type="text/javascript" src="https://unpkg.com/nanogallery2@2.4.2/dist/jquery.nanogallery2.min.js"&gt;&lt;/script&gt;
+            &lt;link  href="https://cdnjs.cloudflare.com/ajax/libs/nanogallery2/2.4.2/css/nanogallery2.min.css" rel="stylesheet" type="text/css"&gt;
+            &lt;script  type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/nanogallery2/2.4.2/jquery.nanogallery2.min.js"&gt;&lt;/script&gt;
         &lt;/head&gt;
         &lt;body&gt;
         
@@ -1884,26 +1941,6 @@
         <h2 style="letter-spacing: 0.5rem;font-size:4em;">nanogallery2</h2>
         <br><br><br><br>
         <div class="col-md-3 text-center">
-          <h3>
-            User reviews
-          </h3>
-          <p class="lead text-center">
-            <span itemprop="aggregateRating" >
-              <span style="font-size:1.5rem;">
-                <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
-                <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
-                <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
-                <i class="ngy2_stars_on fa fa-star fa-2x" aria-hidden="true"></i>
-                <i class="ngy2_stars_on fa fa-star-half-o fa-2x" aria-hidden="true"></i>
-              </span>
-              <br><br>
-              <a href="reviews.html" class="btn btn-default btn-lg"> &nbsp; Read more &nbsp; </a>
-              <!--
-              <br>
-              <i class="fa fa-user fa-1x" aria-hidden="true"></i> <span >18</span> total
-              -->
-            </span>
-          </p>
         </div>
         <div class="col-md-3 text-center">
           <h3>
@@ -1926,21 +1963,12 @@
           </p>
         </div>
         <div class="col-md-3 text-center">
-          <h3>
-            Let's be friends
-          </h3>
-          <p class="lead text-center">
-            and get information on new releases!
-            <br><br>
-            <a href="https://twitter.com/nanostudio_org" class="btn btn-default btn-lg" target="_blank" > &nbsp; <i class="fa fa-twitter" aria-hidden="true"></i> &nbsp; </a>
-            <a href="https://nanostudio.typeform.com/to/P8SFe8" class="btn btn-default btn-lg" target="_blank"> &nbsp; <i class="fa fa-envelope-o" aria-hidden="true"></i> &nbsp; </a>
-
-          </p>
         </div>
       </div>
     
     
   </div>
+    
 
   <!-- ######################## -->
   <!-- #####  INCLUDE JS  ##### -->
