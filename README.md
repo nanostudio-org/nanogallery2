@@ -53,6 +53,7 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 - smart slideshow
 - themes
 ### Custom icons
+### show media location on google maps
 ### API / Events / Callbacks
 ### Fast animation engine
 ### Builder for quick online testing
