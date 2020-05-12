@@ -10,7 +10,7 @@
 	-moz-box-sizing: content-box;
 	-o-box-sizing: content-box;
 }
-
+ 
 .nGY2 .ngy2_container {
   width: 100%;
   min-width: 100px; /* to display something even if parent has display:inline-block */
@@ -25,6 +25,9 @@
   -webkit-touch-callout: none;
 }
 
+.nGY2_body_scrollbar {
+  overflow: hidden;
+}
 
 /*******************************************/
 /* NGY2 ICON FONT                          */
@@ -36,84 +39,89 @@
 
 @font-face {
   font-family: 'ngy2_icon_font';
-  src: url('font/ngy2_icon_font.woff2?62863819') format('woff2'),
-       url('font/ngy2_icon_font.woff?62863819') format('woff');
+  src: url('font/ngy2_icon_font.woff2?64889571') format('woff2'),
+       url('font/ngy2_icon_font.woff?64889571') format('woff');
   font-weight: normal;
   font-style: normal;
 }
   
-.icon-star:before { content: '\e801'; } /* '?' */
-.icon-search:before { content: '\e800'; } /* '?' */
-.icon-star-empty:before { content: '\e802'; } /* '?' */
-.icon-video:before { content: '\e803'; } /* '?' */
-.icon-videocam:before { content: '\e804'; } /* '?' */
-.icon-picture:before { content: '\e805'; } /* '?' */
-.icon-camera:before { content: '\e806'; } /* '?' */
-.icon-camera-alt:before { content: '\e807'; } /* '?' */
-.icon-ok:before { content: '\e808'; } /* '?' */
-.icon-help:before { content: '\e80a'; } /* '?' */
-.icon-help-circled:before { content: '\e80b'; } /* '?' */
-.icon-home:before { content: '\e80e'; } /* '?' */
-.icon-link:before { content: '\e80f'; } /* '?' */
-.icon-link-ext:before { content: '\e810'; } /* '?' */
-.icon-heart:before { content: '\e811'; } /* '?' */
-.icon-ngy2_chevron-right:before { content: '\e812'; } /* '?' */
-.icon-upload:before { content: '\e814'; } /* '?' */
-.icon-reply-all:before { content: '\e815'; } /* '?' */
-.icon-export:before { content: '\e816'; } /* '?' */
-.icon-chat:before { content: '\e818'; } /* '?' */
-.icon-attention:before { content: '\e819'; } /* '?' */
-.icon-location:before { content: '\e81a'; } /* '?' */
-.icon-trash:before { content: '\e81b'; } /* '?' */
-.icon-folder-empty:before { content: '\e81c'; } /* '?' */
-.icon-folder-open-empty:before { content: '\e81d'; } /* '?' */
-.icon-menu:before { content: '\e81e'; } /* '?' */
-.icon-cog:before { content: '\e81f'; } /* '?' */
-.icon-cog-alt:before { content: '\e820'; } /* '?' */
-.icon-wrench:before { content: '\e821'; } /* '?' */
-.icon-lightbulb:before { content: '\e822'; } /* '?' */
-.icon-resize-full:before { content: '\e823'; } /* '?' */
-.icon-resize-small:before { content: '\e824'; } /* '?' */
-.icon-left-open:before { content: '\e827'; } /* '?' */
-.icon-right-open:before { content: '\e828'; } /* '?' */
-.icon-arrows-cw:before { content: '\e829'; } /* '?' */
-.icon-level-up:before { content: '\e82a'; } /* '?' */
-.icon-play:before { content: '\e82b'; } /* '?' */
-.icon-pause:before { content: '\e82c'; } /* '?' */
-.icon-ngy2_chevron-left:before { content: '\e82d'; } /* '?' */
-.icon-ellipsis-vert:before { content: '\e82e'; } /* '?' */
-.icon-toggle-off:before { content: '\e82f'; } /* '?' */
-.icon-toggle-on:before { content: '\e830'; } /* '?' */
-.icon-check:before { content: '\e831'; } /* '?' */
-.icon-check-empty:before { content: '\e832'; } /* '?' */
-.icon-rocket:before { content: '\e833'; } /* '?' */
-.icon-filter:before { content: '\e834'; } /* '?' */
-.icon-magic:before { content: '\e835'; } /* '?' */
-.icon-pinterest-squared:before { content: '\e836'; } /* '?' */
-.icon-gplus-squared:before { content: '\e837'; } /* '?' */
-.icon-facebook-squared:before { content: '\e838'; } /* '?' */
-.icon-basket:before { content: '\e839'; } /* '?' */
-.icon-ok-circled:before { content: '\e83a'; } /* '?' */
-.icon-user:before { content: '\e83b'; } /* '?' */
-.icon-ngy2_chevron_left3:before { content: '\e83c'; } /* '?' */
-.icon-ngy2_chevron_right3:before { content: '\e83d'; } /* '?' */
-.icon-zoom-out-1:before { content: '\e83e'; } /* '?' */
-.icon-ngy2_zoom_out2:before { content: '\e83f'; } /* '?' */
-.icon-ngy2_zoom_in2:before { content: '\e840'; } /* '?' */
-.icon-ngy2_share2:before { content: '\e841'; } /* '?' */
-.icon-ngy2_external2:before { content: '\e842'; } /* '?' */
-.icon-ngy2_close2:before { content: '\e843'; } /* '?' */
-.icon-ngy2_info2:before { content: '\e844'; } /* '?' */
-.icon-ngy2_chevron_up2:before { content: '\e845'; } /* '?' */
-.icon-ngy2_download2:before { content: '\e846'; } /* '?' */
-.icon-mail-alt:before { content: '\f0e0'; } /* '?' */
-.icon-circle-empty:before { content: '\f10c'; } /* '?' */
-.icon-tumblr-squared:before { content: '\f174'; } /* '?' */
-.icon-twitter-squared:before { content: '\f304'; } /* '?' */
-.icon-youtube-play:before { content: '\f16a'; } /* '?' */
-.icon-vkontakte:before { content: '\f189'; } /* '?' */
+.nGY2Icon-star:before { content: '\e801'; } /* '?' */
+.nGY2Icon-search:before { content: '\e800'; } /* '?' */
+.nGY2Icon-star-empty:before { content: '\e802'; } /* '?' */
+.nGY2Icon-video:before { content: '\e803'; } /* '?' */
+.nGY2Icon-videocam:before { content: '\e804'; } /* '?' */
+.nGY2Icon-picture:before { content: '\e805'; } /* '?' */
+.nGY2Icon-camera:before { content: '\e806'; } /* '?' */
+.nGY2Icon-camera-alt:before { content: '\e807'; } /* '?' */
+.nGY2Icon-ok:before { content: '\e808'; } /* '?' */
+.nGY2Icon-help:before { content: '\e80a'; } /* '?' */
+.nGY2Icon-help-circled:before { content: '\e80b'; } /* '?' */
+.nGY2Icon-home:before { content: '\e80e'; } /* '?' */
+.nGY2Icon-link:before { content: '\e80f'; } /* '?' */
+.nGY2Icon-link-ext:before { content: '\e810'; } /* '?' */
+.nGY2Icon-heart:before { content: '\e811'; } /* '?' */
+.nGY2Icon-ngy2_chevron-right:before { content: '\e812'; } /* '?' */
+.nGY2Icon-upload:before { content: '\e814'; } /* '?' */
+.nGY2Icon-reply-all:before { content: '\e815'; } /* '?' */
+.nGY2Icon-export:before { content: '\e816'; } /* '?' */
+.nGY2Icon-chat:before { content: '\e818'; } /* '?' */
+.nGY2Icon-attention:before { content: '\e819'; } /* '?' */
+.nGY2Icon-location:before { content: '\e81a'; } /* '?' */
+.nGY2Icon-trash:before { content: '\e81b'; } /* '?' */
+.nGY2Icon-folder-empty:before { content: '\e81c'; } /* '?' */
+.nGY2Icon-folder-open-empty:before { content: '\e81d'; } /* '?' */
+.nGY2Icon-menu:before { content: '\e81e'; } /* '?' */
+.nGY2Icon-cog:before { content: '\e81f'; } /* '?' */
+.nGY2Icon-cog-alt:before { content: '\e820'; } /* '?' */
+.nGY2Icon-wrench:before { content: '\e821'; } /* '?' */
+.nGY2Icon-lightbulb:before { content: '\e822'; } /* '?' */
+.nGY2Icon-resize-full:before { content: '\e823'; } /* '?' */
+.nGY2Icon-resize-small:before { content: '\e824'; } /* '?' */
+.nGY2Icon-left-open:before { content: '\e827'; } /* '?' */
+.nGY2Icon-right-open:before { content: '\e828'; } /* '?' */
+.nGY2Icon-arrows-cw:before { content: '\e829'; } /* '?' */
+.nGY2Icon-level-up:before { content: '\e82a'; } /* '?' */
+.nGY2Icon-play:before { content: '\e82b'; } /* '?' */
+.nGY2Icon-pause:before { content: '\e82c'; } /* '?' */
+.nGY2Icon-ngy2_chevron-left:before { content: '\e82d'; } /* '?' */
+.nGY2Icon-ellipsis-vert:before { content: '\e82e'; } /* '?' */
+.nGY2Icon-toggle-off:before { content: '\e82f'; } /* '?' */
+.nGY2Icon-toggle-on:before { content: '\e830'; } /* '?' */
+.nGY2Icon-check:before { content: '\e831'; } /* '?' */
+.nGY2Icon-check-empty:before { content: '\e832'; } /* '?' */
+.nGY2Icon-rocket:before { content: '\e833'; } /* '?' */
+.nGY2Icon-filter:before { content: '\e834'; } /* '?' */
+.nGY2Icon-magic:before { content: '\e835'; } /* '?' */
+.nGY2Icon-pinterest-squared:before { content: '\e836'; } /* '?' */
+.nGY2Icon-gplus-squared:before { content: '\e837'; } /* '?' */
+.nGY2Icon-facebook-squared:before { content: '\e838'; } /* '?' */
+.nGY2Icon-basket:before { content: '\e839'; } /* '?' */
+.nGY2Icon-ok-circled:before { content: '\e83a'; } /* '?' */
+.nGY2Icon-user:before { content: '\e83b'; } /* '?' */
+.nGY2Icon-ngy2_chevron_left3:before { content: '\e83c'; } /* '?' */
+.nGY2Icon-ngy2_chevron_right3:before { content: '\e83d'; } /* '?' */
+.nGY2Icon-zoom-out-1:before { content: '\e83e'; } /* '?' */
+.nGY2Icon-ngy2_zoom_out2:before { content: '\e83f'; } /* '?' */
+.nGY2Icon-ngy2_zoom_in2:before { content: '\e840'; } /* '?' */
+.nGY2Icon-ngy2_share2:before { content: '\e841'; } /* '?' */
+.nGY2Icon-ngy2_external2:before { content: '\e842'; } /* '?' */
+.nGY2Icon-ngy2_close2:before { content: '\e843'; } /* '?' */
+.nGY2Icon-ngy2_info2:before { content: '\e844'; } /* '?' */
+.nGY2Icon-ngy2_chevron_up2:before { content: '\e845'; } /* '?' */
+.nGY2Icon-ngy2_download2:before { content: '\e846'; } /* '?' */
+.nGY2Icon-mail-alt:before { content: '\f0e0'; } /* '?' */
+.nGY2Icon-circle-empty:before { content: '\f10c'; } /* '?' */
+.nGY2Icon-tumblr-squared:before { content: '\f174'; } /* '?' */
+.nGY2Icon-twitter-squared:before { content: '\f304'; } /* '?' */
+.nGY2Icon-youtube-play:before { content: '\f16a'; } /* '?' */
+.nGY2Icon-vkontakte:before { content: '\f189'; } /* '?' */
+.nGY2Icon-cw:before { content: '\e809'; } /* '?' */
+.nGY2Icon-ccw:before { content: '\e80c'; } /* '?' */
 
-.nGY2Icon {
+
+
+
+[class^="nGY2Icon-"] {
   margin-left: .2em;
 	margin-right: .3em;
 	font-family: "ngy2_icon_font";
@@ -149,7 +157,7 @@
 
 .nGY2Navigationbar .nGY2NavigationbarItem {
 	margin: 5px 2px;
-  padding: 5px 8px;
+  padding: 8px 10px;
 	white-space: nowrap;
 	cursor: pointer;
 	display: inline-block;
@@ -245,6 +253,8 @@
 }
 .nGY2 .nGY2GThumbnailSub {
 	/* no border or padding allowed here */
+  width: 100%;
+  height: 100%;
   display: block;
   box-sizing: border-box;
 	-webkit-box-sizing: border-box;
@@ -462,6 +472,79 @@
 	-o-box-sizing: border-box;
 }
 
+
+
+/* spinner by https://codepen.io/fox_hover/pen/YZxGed */
+.nGY2 .nGY2GThumbnailLoaderDisplayed {
+  visibility: visible;
+  opacity: 0.8;
+  position: absolute;
+  top:    0;
+  bottom: 0;
+  left:   0;
+  right:  0;
+  margin: auto;    /* never change this value */
+  zoom:   1;
+  user-drag:            none;
+  user-select:          none;
+  -moz-user-select:     none;
+  -webkit-user-drag:    none;
+  -webkit-user-select:  none;
+  -ms-user-select:      none;
+  width:  40px;
+  height: 40px;
+}
+  
+.nGY2 .nGY2GThumbnailLoaderDisplayed:before {      /* bigger circle */
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  content: "";
+  display: block;
+  position: absolute;
+  border-width: 7px;
+  border-style: solid;
+  border-radius: 50%;
+  width:  24px;
+  height: 24px;
+  border-bottom-color:  #000;
+  border-right-color:   #000;
+  border-top-color:     #888;
+  border-left-color:    #888;
+  animation: nGY2-thumbnail-spinner-rotate-animation 1s linear 0s infinite;
+}
+  
+ .nGY2 .nGY2GThumbnailLoaderDisplayed:after {     /* smaller circle */
+  content: "";
+  display: block;
+  position: absolute;
+  border-width: 4px;
+  border-style: solid;
+  border-radius: 50%;
+  width:  16px;
+  height: 16px;
+  border-bottom-color:  #111;
+  border-right-color:   #111;
+  border-top-color:     #666;
+  border-left-color:    #666;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  animation: nGY2-thumbnail-spinner-anti-rotate-animation 0.80s linear 0s infinite;
+}
+@keyframes nGY2-thumbnail-spinner-rotate-animation {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+@keyframes nGY2-thumbnail-spinner-anti-rotate-animation {
+  0%    { transform: rotate(0deg);     }
+  100%   { transform: rotate(-360deg);  }
+}
+
 /**************************************/
 /* GALLERY BOTTOM                     */
 /**************************************/
@@ -599,13 +682,8 @@
   left: 50%;
   width: 50%;
   padding: 15px 30px;
-  /*max-width: 630px;
-  min-width: 320px;*/
   height: auto;
   background: #fff;
-  -webkit-backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
-  backface-visibility: hidden;
   -webkit-transform: translateX(-50%) translateY(-50%);
   -moz-transform: translateX(-50%) translateY(-50%);
   -ms-transform: translateX(-50%) translateY(-50%);
@@ -651,13 +729,13 @@
 /* INFO                               */
 /**************************************/
 .nGY2PortInfo {
-  padding: 3px !important;
-  font-size: 11px !important;
-  color: #888 !important;
-  text-align: center !important;
-  z-index:0 !important;
-  text-transform: uppercase !important;
-  cursor:pointer !important;
+  padding:        3px !important;
+  font-size:      14px !important;
+  color:          #FF0075 !important;
+  text-align:     center !important;
+  z-index:0       !important;
+  text-transform: lowercase !important;
+  cursor:         pointer !important;
 }
 
 .nGY2PortInfo a, 
@@ -665,8 +743,8 @@
 .nGY2PortInfo > a:visited,
 .nGY2PortInfo a:hover,
 .nGY2PortInfo a:active {
-  color: #888 !important;
-  text-decoration: none !important;
+  color:            #FF0075 !important;
+  text-decoration:  none !important;
 }
 
 
@@ -694,12 +772,12 @@
 	background-color: rgba(1, 1, 1, 0.85);
 	text-align: center;
   clear: both;
-  user-drag: none; 
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-drag: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
+  user-drag:            none;
+  user-select:          none;
+  -moz-user-select:     none;
+  -webkit-user-drag:    none;
+  -webkit-user-select:  none;
+  -ms-user-select:      none;
 }
 .nGY2 .nGY2ViewerLogo {
   text-align: center;
@@ -732,20 +810,21 @@
 	cursor: -moz-zoom-out;
 	cursor: zoom-out;
   */
-  user-drag: none; 
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-drag: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
+  user-drag:            none;
+  user-select:          none;
+  -moz-user-select:     none;
+  -webkit-user-drag:    none;
+  -webkit-user-select:  none;
+  -ms-user-select:      none;
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-o-box-sizing: border-box;
 }
 .nGY2 .nGY2ViewerMediaPan{
+  transform-origin: 50% 50% 0;
   visibility: visible;
-  opacity: 0;
+  opacity: 1;
   position: absolute;
   display: inline-block;
 	padding:0px;
@@ -755,18 +834,19 @@
   right: 0;
   margin: auto;   /* never change this value */
   zoom: 1;
-  user-drag: none; 
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-drag: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;  
+  user-drag:            none;
+  user-select:          none;
+  -moz-user-select:     none;
+  -webkit-user-drag:    none;
+  -webkit-user-select:  none;
+  -ms-user-select:      none;
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-o-box-sizing: border-box;
 }
 .nGY2 .nGY2ViewerMedia {
+  max-width: none;
   visibility: visible;
   opacity: 1;
   will-change: transform;
@@ -778,18 +858,108 @@
   right: 0;
   margin: auto;    /* never change this value */
   zoom: 1;
-  user-drag: none; 
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-drag: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-	background-image:     url('data:image/gif;base64,R0lGODlhEAALAPQAAP///wAAANra2tDQ0Orq6gYGBgAAAC4uLoKCgmBgYLq6uiIiIkpKSoqKimRkZL6+viYmJgQEBE5OTubm5tjY2PT09Dg4ONzc3PLy8ra2tqCgoMrKyu7u7gAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCwAAACwAAAAAEAALAAAFLSAgjmRpnqSgCuLKAq5AEIM4zDVw03ve27ifDgfkEYe04kDIDC5zrtYKRa2WQgAh+QQJCwAAACwAAAAAEAALAAAFJGBhGAVgnqhpHIeRvsDawqns0qeN5+y967tYLyicBYE7EYkYAgAh+QQJCwAAACwAAAAAEAALAAAFNiAgjothLOOIJAkiGgxjpGKiKMkbz7SN6zIawJcDwIK9W/HISxGBzdHTuBNOmcJVCyoUlk7CEAAh+QQJCwAAACwAAAAAEAALAAAFNSAgjqQIRRFUAo3jNGIkSdHqPI8Tz3V55zuaDacDyIQ+YrBH+hWPzJFzOQQaeavWi7oqnVIhACH5BAkLAAAALAAAAAAQAAsAAAUyICCOZGme1rJY5kRRk7hI0mJSVUXJtF3iOl7tltsBZsNfUegjAY3I5sgFY55KqdX1GgIAIfkECQsAAAAsAAAAABAACwAABTcgII5kaZ4kcV2EqLJipmnZhWGXaOOitm2aXQ4g7P2Ct2ER4AMul00kj5g0Al8tADY2y6C+4FIIACH5BAkLAAAALAAAAAAQAAsAAAUvICCOZGme5ERRk6iy7qpyHCVStA3gNa/7txxwlwv2isSacYUc+l4tADQGQ1mvpBAAIfkECQsAAAAsAAAAABAACwAABS8gII5kaZ7kRFGTqLLuqnIcJVK0DeA1r/u3HHCXC/aKxJpxhRz6Xi0ANAZDWa+kEAA7AAAAAAAAAAAA');
-  background-repeat:    no-repeat;
-  background-position:  center;
-  background-color:     #000;
-	/*display:block;*/
+  user-drag:            none;
+  user-select:          none;
+  -moz-user-select:     none;
+  -webkit-user-drag:    none;
+  -webkit-user-select:  none;
+  -ms-user-select:      none;
 	padding: 0px;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+}
+
+/* spinner by https://codepen.io/fox_hover/pen/YZxGed */
+.nGY2 .nGY2ViewerMediaLoaderDisplayed {
+  visibility: visible;
+  opacity: 1;
+  position: absolute;
+  top:    0;
+  bottom: 0;
+  left:   0;
+  right:  0;
+  margin: auto;    /* never change this value */
+  zoom:   1;
+  user-drag:            none;
+  user-select:          none;
+  -moz-user-select:     none;
+  -webkit-user-drag:    none;
+  -webkit-user-select:  none;
+  -ms-user-select:      none;
+  width:  50px;
+  height: 50px;
+}
+  
+.nGY2 .nGY2ViewerMediaLoaderDisplayed:before {      /* bigger circle */
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    content: "";
+    display: block;
+    position: absolute;
+    border-width: 7px;
+    border-style: solid;
+    border-radius: 50%;
+    width:  38px;
+    height: 38px;
+    border-bottom-color:  #23CB99;
+    border-right-color:   #23CB99;
+    border-top-color:     #444;
+    border-left-color:    #444;
+    animation: nGY2-spinner-rotate-animation 1s linear 0s infinite;
+  }
+  
+ .nGY2 .nGY2ViewerMediaLoaderDisplayed:after {     /* smaller circle */
+    content: "";
+    display: block;
+    position: absolute;
+    border-width: 4px;
+    border-style: solid;
+    border-radius: 50%;
+    width:  24px;
+    height: 24px;
+    border-bottom-color:  #23CB99;
+    border-right-color:   #23CB99;
+    border-top-color:     #333;
+    border-left-color:    #333;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    animation: nGY2-spinner-anti-rotate-animation 0.85s linear 0s infinite;
+}
+@keyframes nGY2-spinner-rotate-animation {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+@keyframes nGY2-spinner-anti-rotate-animation {
+  0%    { transform: rotate(0deg);     }
+  100%   { transform: rotate(-360deg);  }
+}
+
+.nGY2 .nGY2ViewerMediaLoaderHidden {
+  visibility: visible;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;    /* never change this value */
+  zoom: 1;
+  user-drag:            none;
+  user-select:          none;
+  -moz-user-select:     none;
+  -webkit-user-drag:    none;
+  -webkit-user-select:  none;
+  -ms-user-select:      none;
+	background-image:     none;
+	/*display:block;*/
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -801,28 +971,25 @@
 }
 
 .nGY2 .nGY2ViewerAreaPrevious {
-  transform: scaleY(1.5); 
 	color: #fff; 
 	display: block;
 	position: absolute;
-	Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px; 
 	/*background: rgba(0,0,0,0.2);*/
-	font-size: 2em;
 	top: 50%;
 	/*height:20px;*/
 	/*width:20px;*/
-	padding: 10px 0px 10px 1px;
+	padding: 10px 0px 10px 5px;
 	margin-top: -25px;
 	left: 0px;
 	text-align: left;
 	cursor: pointer;
 	opacity: 1;
-  user-drag: none; 
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-drag: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
+  user-drag:            none;
+  user-select:          none;
+  -moz-user-select:     none;
+  -webkit-user-drag:    none;
+  -webkit-user-select:  none;
+  -ms-user-select:      none;
 	transition: all 0.2s ease;
 	-webkit-transition: all 0.2s ease;
 	-moz-transition: all 0.2s ease;
@@ -830,31 +997,33 @@
 }
 .nGY2 .nGY2ViewerAreaPrevious > i {
   margin-left: 0px;
+	font-weight: bold !important;
+	font-size: 2em;
+	Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px;
+	background: rgba(0,0,0,0.2);
+	margin:0px !important;
 }
 
 .nGY2 .nGY2ViewerAreaNext {
-  transform: scaleY(1.5);
+  /*transform: scaleY(1);*/
 	color: #fff; 
 	display: block;
 	position: absolute;
-	Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px;
-	/*background: rgba(0,0,0,0.2);*/
-	font-size: 2em;
 	top: 50%;
 	/*height:20px;*/
 	/*width:20px;*/
-	padding: 10px 1px 10px 0px;
+	padding: 10px 5px 10px 0px;
 	margin-top: -25px;
 	right: 0px;
 	text-align: right;
 	cursor: pointer;
 	opacity: 1;
-  user-drag: none; 
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-drag: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
+  user-drag:            none;
+  user-select:          none;
+  -moz-user-select:     none;
+  -webkit-user-drag:    none;
+  -webkit-user-select:  none;
+  -ms-user-select:      none;
 	transition: all 0.2s ease;
 	-webkit-transition: all 0.2s ease;
 	-moz-transition: all 0.2s ease;
@@ -862,6 +1031,11 @@
 }
 .nGY2 .nGY2ViewerAreaNext > i {
   margin-right: 0px;
+	font-weight: bold !important;
+	font-size: 2em;
+	Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px;
+	background: rgba(0,0,0,0.2);
+	margin:0px !important;
 }
 
 .nGY2 .toolbarContainer {
@@ -888,10 +1062,11 @@
 .nGY2 .nGY2ViewerToolsTopLeft {
 	cursor:pointer;
 	color: #ddd; 
-	background: rgba(0,0,0,0.2);
+	/* background: rgba(0,0,0,0.2); */
 	left: 5px;
 	top: 5px;
 	position:absolute;
+	text-shadow: -1px -1px 0 #444, 1px -1px 0 #444, -1px 1px 0 #444, 1px 1px 0 #444;
 	/*Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px;*/
 	opacity:1;
 	transition: all 0.2s ease;
@@ -902,10 +1077,11 @@
 .nGY2 .nGY2ViewerToolsTopRight {
 	cursor: pointer;
 	color: #ddd; 
-	background: rgba(0,0,0,0.2);
+	/* background: rgba(0,0,0,0.2); */
 	right: 5px;
 	top: 5px;
 	position:absolute;
+	text-shadow: -1px -1px 0 #444, 1px -1px 0 #444, -1px 1px 0 #444, 1px 1px 0 #444;
 	/* Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px;*/
 	opacity:1;
 	transition: all 0.2s ease;
@@ -915,11 +1091,12 @@
 }
 
 .nGY2 .toolbar .ngbt {
-  font-size:1.5em;
+  font-size:1.2em;
 	display: table-cell;
 	cursor:pointer;
-	padding: 2px 5px;
+	padding: 2px 8px;
 	vertical-align:middle;
+  
 }
 
 .nGY2 .ngy2viewerToolAction {
@@ -931,7 +1108,7 @@
 
 .nGY2 .toolbar .pageCounter{
 	display: table-cell;
-	font-size:1em;
+	font-size:1.2em;
 	margin:auto;
 	vertical-align:middle;
 	overflow: hidden;
@@ -949,13 +1126,13 @@
 }
 
 .nGY2 .toolbar .label .title{
-	font-size:1em;
+	font-size:1.2em;
 	margin:auto;
 	vertical-align:middle;
 	overflow: hidden;
 }
 .nGY2 .toolbar .label .description{
-	font-size:.8em;
+	font-size:0.9em;
 	display:table-row;
 	vertical-align:middle;
 	overflow: hidden;
