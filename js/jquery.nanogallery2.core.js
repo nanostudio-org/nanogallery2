@@ -9186,7 +9186,7 @@ TODO:
                 attachment:   { dT: displayType, $e: $new, itemNew: itemNew, itemOld: itemOld, dir: dir },
                 delay:        30,
                 duration:     dur,
-                easing:       (G.O.imageTransition == 'swipe' ? 'easeInOutSine' : 'easeInOutCubic'),
+                easing:       (G.O.imageTransition == 'swipe' ? 'easeInOutSine' : 'easeInQuart'),
                 step:         function (state, att) {
                   // current media
                   ViewerSetMediaVisibility(G.VOM.NGY2Item(0), G.VOM.$mediaCurrent, 1);
