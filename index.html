@@ -2378,31 +2378,45 @@ gallerySorting : 'titleAsc',
         switch( jQuery('#btn_view_source').data("demo") ) {
           case 'btn_layout1a':
             code = Demo_Mosaic_1.toString();
+            jQuery('#ngy2_template').html(Prism.highlight(code, Prism.languages.javascript, 'javascript'));
+            $('#ngy2_modal_source').modal();
             break;
           case 'btn_layout1b':
             code = Demo_Mosaic_2.toString();
+            jQuery('#ngy2_template').html(Prism.highlight(code, Prism.languages.javascript, 'javascript'));
+            $('#ngy2_modal_source').modal();
             break;
           case 'btn_layout2':
             code = Demo_Grid_1.toString();
+            jQuery('#ngy2_template').html(Prism.highlight(code, Prism.languages.javascript, 'javascript'));
+            $('#ngy2_modal_source').modal();
             break;
           case 'btn_layout2b':
             code = Demo_Grid_2.toString();
+            jQuery('#ngy2_template').html(Prism.highlight(code, Prism.languages.javascript, 'javascript'));
+            $('#ngy2_modal_source').modal();
             break;
           case 'btn_layout3':
             code = Demo_Justified.toString();
+            jQuery('#ngy2_template').html(Prism.highlight(code, Prism.languages.javascript, 'javascript'));
+            $('#ngy2_modal_source').modal();
             break;
           case 'btn_layout4':
             code = Demo_Cascading.toString();
+            jQuery('#ngy2_template').html(Prism.highlight(code, Prism.languages.javascript, 'javascript'));
+            $('#ngy2_modal_source').modal();
             break;
           case 'btn_layout5':
             code = Demo_Grid_Justified.toString();
+            jQuery('#ngy2_template').html(Prism.highlight(code, Prism.languages.javascript, 'javascript'));
+            $('#ngy2_modal_source').modal();
             break;
           case 'btn_layout6':
             code = Demo_Images_Videos.toString();
+            jQuery('#ngy2_template').html(Prism.highlight(code, Prism.languages.javascript, 'javascript'));
+            $('#ngy2_modal_source').modal();
             break;
         }
-        jQuery('#ngy2_template').html(Prism.highlight(code, Prism.languages.javascript, 'javascript'));
-        $('#ngy2_modal_source').modal();
       });
       
       
@@ -2419,31 +2433,32 @@ gallerySorting : 'titleAsc',
         }
         ngy2_layout_cnt++;
       
+        jQuery('#btn_view_source').css({opacity: 1});
         switch( jQuery(e.currentTarget)[0].id ) {
 
           // MOSAIC LAYOUT - sample 1
           case 'btn_layout1a':
             jQuery("#nanogallery_container").css({backgroundColor:'#111' });
-            jQuery("#example_description").html("Mosaic layout enables full control of the layout. This layout is not computed but is based on a self-defined pattern.");
+            jQuery("#example_description").html("The mosaic layout enables full control of the gallery layout. This layout is not computed but is based on a self-defined pattern.");
             jQuery('#btn_view_source').data("demo","btn_layout1a");
             Demo_Mosaic_1();
             if( ngy2_layout_cnt > 1) {
-              ga('send', 'event', 'click', 'index', 'layout_moisaic1');
+              ga('send', 'event', 'click', 'index', 'layout_mosaic1');
             }
             break          
 					
           case 'btn_layout1b':
             jQuery("#nanogallery_container").css({backgroundColor:'#fff' });		
-            jQuery("#example_description").html("Mosaic layout with custom hover effect. Lightbox with a bottom toolbar to display the image's title.");
+            jQuery("#example_description").html("Another mosaic layout. This one with a custom hover effect. The lightbox has a bottom toolbar to display the image's title.");
             jQuery('#btn_view_source').data("demo","btn_layout1b");
             Demo_Mosaic_2();
-            ga('send', 'event', 'click', 'index', 'layout_moisaic2');
+            ga('send', 'event', 'click', 'index', 'layout_mosaic2');
             break
 						
           // GRID LAYOUT 1
           case 'btn_layout2':
             jQuery("#nanogallery_container").css({backgroundColor:'#fff' });		
-            jQuery("#example_description").html("All thumbnails have the same size in grid layout. In this example, the image title is displayed at the bottom of the thumbnail. An interesting hover effect is defined, using a customized tool.");
+            jQuery("#example_description").html("Here all thumbnails have the same size in this grid layout. In this example, the image title is displayed at the bottom of the thumbnail. An interesting hover effect is defined, using a customized thumbnail tool.");
             jQuery('#btn_view_source').data("demo", "btn_layout2");
             Demo_Grid_1();
             ga('send', 'event', 'click', 'index', 'layout_grid1');
@@ -2461,7 +2476,7 @@ gallerySorting : 'titleAsc',
           // JUSTIFIED LAYOUT
           case 'btn_layout3':
             jQuery("#nanogallery_container").css({backgroundColor:'#111' });		
-            jQuery("#example_description").html("Justified layout: the width of the thumbnail is calculated to respect the image ratio. This example shows a subtle display effect, using a combined gallery and thumbnail display animation. Gesture: the first touch on a thumbnail will display the title and the tools. The second touch will open the media.");
+            jQuery("#example_description").html("Justified layout: the width of the thumbnail is calculated to respect the image ratio.<br>This example shows a subtle display effect, using a combined gallery and thumbnail display animation. Gesture: the first touch on a thumbnail will display the title and the tools. The second touch will open the media.");
             jQuery('#btn_view_source').data("demo","btn_layout3");
             Demo_Justified();
             ga('send', 'event', 'click', 'index', 'layout_justified');
@@ -2470,7 +2485,7 @@ gallerySorting : 'titleAsc',
           // CASCADING LAYOUT
           case 'btn_layout4':
             jQuery("#nanogallery_container").css({backgroundColor:'#111' });
-            jQuery("#example_description").html("The cascading layout (sometimes also called mansonry layout) is column based. Image aspect ratio is conserved, with no cropping.");
+            jQuery("#example_description").html("The cascading layout (sometimes also called mansonry layout) is column based. Each column has the same width. Image aspect ratio is conserved, with no cropping.");
             jQuery('#btn_view_source').data("demo","btn_layout4");
             Demo_Cascading();
             ga('send', 'event', 'click', 'index', 'layout_cascading');
@@ -2478,20 +2493,23 @@ gallerySorting : 'titleAsc',
 						
           case 'btn_layout5':
             jQuery("#nanogallery_container").css({backgroundColor:'#111' });
-            jQuery("#example_description").html("2 levels gallery. The first one displays the list of albums, with grid layout. The second one displays the images, with justified layout.");
+            jQuery("#example_description").html("Here we have a gallery with 2 levels. The first one displays the list of albums, with a grid layout. The second one displays the images, with a justified layout.");
             jQuery('#btn_view_source').data("demo","btn_layout5");
             Demo_Grid_Justified();
             ga('send', 'event', 'click', 'index', 'layout_grid_justified');
             break
           case 'btn_layout6':
             jQuery("#nanogallery_container").css({backgroundColor:'#111' });
-            jQuery("#example_description").html("Gallery with images and videos.");
+            jQuery("#example_description").html("Here the gallery combines videos (hosted on Youtube, Dailymotion and Vimeo) and self hosted images.");
             jQuery('#btn_view_source').data("demo","btn_layout6");
             Demo_Images_Videos();
             ga('send', 'event', 'click', 'index', 'layout_images_videos');
             break
           case 'btn_layout7':
-            window.open('https://codepen.io/Kris-B/pen/RyaLaG', '_blank');;
+            jQuery("#example_description").html("This demo on Codepen shows how selection of thumbnails can be managed.");
+            jQuery("#nanogallery").html('<a class="btn btn-default" href="https://codepen.io/Kris-B/pen/RyaLaG" target="_blank"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> display on Codepen</a>')
+            jQuery('#btn_view_source').css({opacity: 0.4});
+            ga('send', 'event', 'click', 'index', 'layout_checkboxes');
             break;
         }
       });
@@ -2554,7 +2572,7 @@ gallerySorting : 'titleAsc',
           viewerToolbar: { display: false },
           viewerTools:    {
             topLeft:   'label',
-            topRight:  'shareButton, rotateLeft, rotateRight, fullscreenButton, closeButton,infoButton'
+            topRight:  'shareButton, rotateLeft, rotateRight, fullscreenButton, closeButton'
           },
      
           // DEEP LINKING
@@ -2916,7 +2934,8 @@ gallerySorting : 'titleAsc',
 						},
 						{ src: 'https://www.youtube.com/watch?v=i5qOzqD9Rms', title: 'Youtube video' },
 						{ src: 'https://www.dailymotion.com/video/x4wtyl6',   title: 'Dailymotion video' },
-						{ src: 'berlin1.jpg',      srct: 'berlin1t.jpg',   title: 'Self hosted image' }
+						{ src: 'berlin1.jpg',      srct: 'berlin1t.jpg',   title: 'Self hosted image' },
+						{ src: 'berlin2.jpg',      srct: 'berlin2t.jpg',   title: 'Self hosted image' }
 					],
 					itemsBaseURL:    'https://nanogallery2.nanostudio.org/samples/',
 		
@@ -3568,6 +3587,7 @@ gallerySorting : 'titleAsc',
       
     });
   </script>
+
 
   <!-- ######################## -->
   <!-- ##### START FOOTER ##### -->
