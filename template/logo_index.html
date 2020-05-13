@@ -1,4 +1,4 @@
-  <!-- ### LOGO ###  -->
+  <!-- ### LOGO ### -->
   <div class="jumbotron ngy2_bgdark" style="overflow:hidden;">
     <div class="container ">
       <div class="row" >
@@ -7,14 +7,16 @@
           <h1 id="ngy2logo" class="ngy2_logo ngy2logo_transition" ><img src="img/nanogallery2b.png" alt="nanogallery2" style="max-width:70%;"></h1>
         </div>
         <div class="col-md-6 text-center ngy2logo2_transition" id="ngy2logo2" >
-          <!-- <h2 style="color:#fff;">nanogallery2</h2> -->
           <br><br>
           <!-- <h3 style="color:#fff;margin-top:0px;">nanogallery2 is a javascript library for creating beautiful, modern and high quality image galleries.</h3><br> -->
           <!-- <h3 style="color:#fff;margin-top:0px;font-weight:normal;">Everything you need to add beautiful, modern and high quality <span class="ngy2_color2">photo galleries</span> to your website.</h3><br>-->
-          <!-- <h3 style="margin-top:0px;font-weight:normal;letter-spacing: 1.5vw;font-size:3vw;"><span class="ngy2_color2">nanogallery2</span></h3> -->
-          <h3 style="margin-top:0px;font-weight:normal;letter-spacing: 1.5vw;font-size:3vw;">
+          <h3 class="ngy2logo3_transition" style="margin-top:0px;font-weight:bold;letter-spacing: 1.5vw;font-size:6rem;"><span class="ngy2_color2">nanogallery2</span></h3>
+
+
+          <!-- ANIMATED NANOGALLERY
+          <h3 style="margin-top:0px;font-weight:normal;letter-spacing: 1.3vw;font-size:3vw;">
             <span class="ngy2_color2 ngy2_logo">
-              <svg viewBox="0 0 550 100">
+              <svg width="100%" height="150" viewBox="0 0 500 100">
                 <symbol id="s-text">
                   <text text-anchor="middle" x="50%" y="80%">nanogallery2</text>
                 </symbol>
@@ -28,14 +30,19 @@
               </svg>
             </span>
           </h3>
-          <br><br>
-          <h3 style="color:#fff;margin-top:0px;font-weight:normal;letter-spacing: 0.5rem;font-size:2rem;"><b>javascript library</b></h3>
-          <br>
-          <h3 style="color:#fff;margin-top:0px;font-weight:normal;letter-spacing: 0.5rem;font-size:2rem;"><span itemprop="softwareVersion">v2.4.2</span> - <span itemprop="datePublished" content="2019-03-22">March 22, 2019</span></h3>
+          -->
+          
+          <!-- <h2 style="font-size:1.6rem;letter-spacing: 0.5rem;border-left:0px;padding-left:0px;color:#fff;">modern <span class="ngy2_color2">photo / video gallery</span> and <span class="ngy2_color2">lightbox</span></h2> -->
+          <h2 style="font-weight: normal;font-size:1.6rem;letter-spacing: 0.5rem;border-left:0px;padding-left:0px;color:#fff;">modern photo / video gallery and lightbox</h2>
+          <br><br><br>
+ 
+          <h3 style="color:#fff;margin-top:0px;font-weight:normal;letter-spacing: 0.5rem;font-size:1.4rem;"><b>javascript library</b></h3>
+          
+          <h3 style="color:#fff;margin-top:0px;font-weight:normal;letter-spacing: 0.5rem;font-size:1.4rem;"><span itemprop="softwareVersion">v2.4.1</span> - <span itemprop="datePublished" content="2019-03-13">March 13, 2019</span></h3>
           <h3 class="ngy2_dark" style="color:#fff;margin-top:0px;font-weight:normal;letter-spacing: 0.2rem;font-size:1.4rem;">
-            <a href="academy.html#releases" classa="btn btn-default btn-lg " ><i class="fa fa-book" aria-hidden="true"></i> release notes</a>
+            <a href="academy.html#releases" classa=" btn btn-default btn-lg " ><i class="fa fa-long-arrow-right" aria-hidden="true"></i> new features and improvements</a>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <a itemprop="downloadUrl" href="https://github.com/nanostudio-org/nanogallery2/archive/v2.4.2.zip" classa="btn btn-default btn-lg " ><i class="fa fa-download" aria-hidden="true"></i> download</a>
+            <a itemprop="downloadUrl" href="https://github.com/nanostudio-org/nanogallery2/archive/v2.4.1.zip" classa="btn btn-default btn-lg " ><i class="fa fa-download" aria-hidden="true"></i> download</a>
           </h3>
           <!--
           <a href="quickstart.html" type="button" class="btn btn-primary" ><i class="fa fa-rocket ngy2_color2" aria-hidden="true"></i> &nbsp; get started</a>
@@ -56,17 +63,27 @@
           -->
         </div>
       </div>
-      <br>
-      <br>
-      <br>
-      <div class="row">
-        <div class="col-md-12 text-center ngy2logo3_transition" id="ngy2logo3" >
-          <h1 style="font-size:4rem;letter-spacing: 0.5rem;border-left:0px;padding-left:0px;color:#fff;">a modern <span class="ngy2_color2">photo / video gallery</span> and <span class="ngy2_color2">lightbox</span></h1>
-        </div>
-      </div>
+      
+			
+
       <div id="nanogallery_debug_off"></div>
-      <br><br><br><br><br><br>
-      <br><br>
+
+
+      <!--
+			<div id="nanogallery_debug_on" data-nanogallery2='{
+        "thumbnailHeight":         210, "thumbnailWidth": 210,
+        "thumbnailL1GutterWidth":  90,
+        "itemsBaseURL":            "http://nanogallery2.nanostudio.org/samples/"
+      }'>
+      <a href="berlin1.jpg" data-ngthumb="berlin1_t.jpg">Berlin 1</a>
+      <a href="berlin2.jpg" data-ngthumb="berlin2_t.jpg">Berlin 2</a>
+      <a href="berlin3.jpg" data-ngthumb="berlin3_t.jpg">Berlin 3</a>
+      <a href="blocks.mp4" data-ngthumb="blocks_mp4_t.jpg">Blocks video MP4</a>
+      <a href="blocks.ogv" data-ngthumb="blocks_mp4_t.jpg">Blocks video OGV</a>
+      <a href="blocks.webm" data-ngthumb="blocks_mp4_t.jpg">Blocks video WEBM</a>
+      </div>
+      -->
+      
     </div>
   </div>
   <!-- ### LOGO ### -->
