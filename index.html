@@ -2507,7 +2507,9 @@ gallerySorting : 'titleAsc',
             break
           case 'btn_layout7':
             jQuery("#example_description").html("This demo on Codepen shows how selection of thumbnails can be managed.");
-            jQuery("#nanogallery").html('<a class="btn btn-default" href="https://codepen.io/Kris-B/pen/RyaLaG" target="_blank"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> display on Codepen</a>')
+            <!-- jQuery("#nanogallery").html('<a class="btn btn-default" href="https://codepen.io/Kris-B/pen/RyaLaG" target="_blank"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> display on Codepen</a>') -->
+            var cp = '<iframe height="500" style="width: 100%;" scrolling="no" src="https://codepen.io/Kris-B/embed/RyaLaG?height=265&theme-id=dark&default-tab=js,result" frameborder="no" allowtransparency="true" allowfullscreen="true">  See the Pen <a href="https://codepen.io/Kris-B/pen/RyaLaG">nanogallery2 - retrieve selected images</a> by Christophe Brisbois  (<a href="https://codepen.io/Kris-B">@Kris-B</a>) on <a href="https://codepen.io">CodePen</a>.</iframe>';
+            jQuery("#nanogallery").html(cp)
             jQuery('#btn_view_source').css({opacity: 0.4});
             ga('send', 'event', 'click', 'index', 'layout_checkboxes');
             break;
@@ -3587,7 +3589,6 @@ gallerySorting : 'titleAsc',
       
     });
   </script>
-
 
   <!-- ######################## -->
   <!-- ##### START FOOTER ##### -->
