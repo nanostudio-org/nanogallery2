@@ -38,7 +38,8 @@
 - CDNJS
 - new: loading over thumbnail during album content download
 - enhancement: page scrollbar better removed on lightbox display to avoid page reflow
-- fixed: modal popup not sharp (media info and share)
+- fixed: modal popup not sharp (media info and share), and wrong size on mobile devices
+- new: mosaic layout is now fully responsive
 - minor fixes
 
 TODO: 
@@ -55,7 +56,14 @@ TODO:
 - remove: viewerDisplayLogo option
 - centrage vertical titre sans description
 - screenful update
+- modal size on mobile
 - L1 dans la doc
+- callback popup info
+- utiliser lightbox sans gallerie
+- delete button -> thumbnail/lightbox + callback(with cancel)
+- re-display one thumbnail -> new image, title, etc...
+- gallery on lightbox -> in toolbar ?
+- double touch in zoom mode -> should not go to next/previous media
 */
  
  
@@ -777,7 +785,7 @@ TODO:
             this.height = h;
           };
           
-          //--- set one thumbnail (url and size) - screenSize and level are optionnal
+          //--- set one thumbnail (url and size) - screenSize and level are optional
           NGY2Item.prototype.thumbSet = function( src, w, h, screenSize, level ) {
             var lst=['xs','sm','me','la','xl'];
             if( typeof screenSize === 'undefined' || screenSize == '' || screenSize == null ) {
@@ -2305,7 +2313,7 @@ TODO:
         getWidth: function() {
           return G.tn.defaultSize.width[G.GOM.curNavLevel][G.GOM.curWidth];
         },
-        getOuterWidth: function() {     // width border included
+        getOuterWidth: function() {     // width including border
       G.tn.borderWidth = G.tn.opt.Get('borderHorizontal');
       G.tn.borderHeight = G.tn.opt.Get('borderVertical');
           var w = G.tn.defaultSize.width[G.GOM.curNavLevel][G.GOM.curWidth] + G.tn.opt.Get('borderHorizontal') * 2;
@@ -2352,7 +2360,7 @@ TODO:
                   l1Factor : { h :{ xs: 1, sm: 1, me: 1, la: 1, xl: 1 }, w :{ xs: 1, sm: 1, me: 1, la: 1, xl: 1 }},
                   lNFactor : { h :{ xs: 1, sm: 1, me: 1, la: 1, xl: 1 }, w :{ xs: 1, sm: 1, me: 1, la: 1, xl: 1 }}
                   },
-        getMosaic: function() {
+				getMosaic: function() {
           return G.tn.settings.mosaic[G.GOM.curNavLevel][G.GOM.curWidth];
         },
         mosaicCalcFactor: function(l, w) {
@@ -6768,18 +6776,47 @@ TODO:
         G.tn.settings.mosaicCalcFactor('l1', 'la');
         G.tn.settings.mosaicCalcFactor('l1', 'xl');
       }
-      for( var w = 0; w < G.tn.settings.mosaic.l1; w++ ) {
-        if( G.O['galleryMosaic' + G.tn.settings.mosaic.l1[w].toUpperCase()] != undefined ) {
-          G.tn.settings.mosaic.lN[tn.settings.mosaic.l1[w]] = JSON.parse(JSON.stringify( G.O['galleryMosaic' + G.tn.settings.mosaic.l1[w].toUpperCase()] ));
-          G.tn.settings.mosaic.l1[tn.settings.mosaic.l1[w]] = JSON.parse(JSON.stringify( G.O['galleryMosaic' + G.tn.settings.mosaic.l1[w].toUpperCase()] ));
-          G.tn.settings.mosaicCalcFactor('l1', G.tn.settings.mosaic.l1[w]);
-          G.tn.settings.mosaicCalcFactor('lN', G.tn.settings.mosaic.l1[w]);
+      // for( var w = 0; w < G.tn.settings.mosaic.l1; w++ ) {
+				// if( G.O['galleryMosaic' + G.tn.settings.mosaic.l1[w].toUpperCase()] != undefined ) {
+          // G.tn.settings.mosaic.lN[tn.settings.mosaic.l1[w]] = JSON.parse(JSON.stringify( G.O['galleryMosaic' + G.tn.settings.mosaic.l1[w].toUpperCase()] ));
+          // G.tn.settings.mosaic.l1[tn.settings.mosaic.l1[w]] = JSON.parse(JSON.stringify( G.O['galleryMosaic' + G.tn.settings.mosaic.l1[w].toUpperCase()] ));
+          // G.tn.settings.mosaicCalcFactor('l1', G.tn.settings.mosaic.l1[w]);
+          // G.tn.settings.mosaicCalcFactor('lN', G.tn.settings.mosaic.l1[w]);
+        // }
+      // }
+			var lst=['xs','sm','me','la','xl'];
+
+			// retrieve responsive mosaic definition for levels l1 & lN
+      for( var w = 0; w < lst.length; w++ ) {
+				if( G.O['galleryMosaic' + lst[w].toUpperCase()] != undefined ) {
+          G.tn.settings.mosaic.lN[lst[w]] = JSON.parse(JSON.stringify( G.O['galleryMosaic' + lst[w].toUpperCase()] ));
+          G.tn.settings.mosaic.l1[lst[w]] = JSON.parse(JSON.stringify( G.O['galleryMosaic' + lst[w].toUpperCase()] ));
+          G.tn.settings.mosaicCalcFactor('lN',lst[w]);
+          G.tn.settings.mosaicCalcFactor('l1', lst[w]);
         }
       }
-      for( var w = 0; w < G.tn.settings.mosaic.l1; w++ ) {
-        if( G.O['galleryL1Mosaic'+G.tn.settings.mosaic.l1[w].toUpperCase()] != undefined ) {
-          G.tn.settings.mosaic.l1[tn.settings.mosaic.l1[w]] = JSON.parse(JSON.stringify( G.O['galleryL1Mosaic'+G.tn.settings.mosaic.l1[w].toUpperCase()] ));
-          G.tn.settings.mosaicCalcFactor('l1', G.tn.settings.mosaic.l1[w]);
+			// Object.keys(G.tn.settings.mosaic.l1).map(function(objectKey, index) {
+				// var one = G.tn.settings.mosaic.l1[objectKey];
+				// if( G.O['galleryMosaic' + G.tn.settings.mosaic.l1[w].toUpperCase()] != undefined ) {
+          // G.tn.settings.mosaic.lN[tn.settings.mosaic.l1[w]] = JSON.parse(JSON.stringify( G.O['galleryMosaic' + G.tn.settings.mosaic.l1[w].toUpperCase()] ));
+          // G.tn.settings.mosaic.l1[tn.settings.mosaic.l1[w]] = JSON.parse(JSON.stringify( G.O['galleryMosaic' + G.tn.settings.mosaic.l1[w].toUpperCase()] ));
+          // G.tn.settings.mosaicCalcFactor('l1', G.tn.settings.mosaic.l1[w]);
+          // G.tn.settings.mosaicCalcFactor('lN', G.tn.settings.mosaic.l1[w]);
+        // }
+			// });
+			
+			
+      // for( var w = 0; w < G.tn.settings.mosaic.l1; w++ ) {
+        // if( G.O['galleryL1Mosaic'+G.tn.settings.mosaic.l1[w].toUpperCase()] != undefined ) {
+          // G.tn.settings.mosaic.l1[tn.settings.mosaic.l1[w]] = JSON.parse(JSON.stringify( G.O['galleryL1Mosaic'+G.tn.settings.mosaic.l1[w].toUpperCase()] ));
+          // G.tn.settings.mosaicCalcFactor('l1', G.tn.settings.mosaic.l1[w]);
+        // }
+      // }
+			// retrieve responsive mosaic definition for level l1
+      for( var w = 0; w < lst.length; w++ ) {
+				if( G.O['galleryL1Mosaic' + lst[w].toUpperCase()] != undefined ) {
+          G.tn.settings.mosaic.l1[lst[w]] = JSON.parse(JSON.stringify( G.O['galleryL1Mosaic' + lst[w].toUpperCase()] ));
+          G.tn.settings.mosaicCalcFactor('l1', lst[w]);
         }
       }
       
@@ -8400,7 +8437,7 @@ TODO:
     
     
 
-    // viewer gesture handling
+    // Lightbox gesture handling
     function ViewerSetEvents() {
 
       if( G.VOM.hammertime == null ) {
@@ -9911,6 +9948,7 @@ TODO:
 
     }
     
+		
     //----- Manage browser location hash (deep linking and browser back/forward)
     function ProcessLocationHash() {
 
@@ -10008,24 +10046,45 @@ TODO:
     }
     
     
+		// WINDOW RESIZE EVENT
     function ResizeWindowEvent() {
       CacheViewport();
 
+			var l = G.GOM.curNavLevel;
+			var w = G.GOM.curWidth;
+			
       if( G.VOM.viewerDisplayed ) {
+				// lightbox
         ResizeInternalViewer();
       }
       else {
+				// gallery
         if( G.galleryResizeEventEnabled ) {
           var nw = RetrieveCurWidth();
-          if( G.GOM.albumIdx != -1 && 
-                ( G.tn.settings.height[G.GOM.curNavLevel][G.GOM.curWidth] != G.tn.settings.height[G.GOM.curNavLevel][nw] || 
-                G.tn.settings.width[G.GOM.curNavLevel][G.GOM.curWidth] != G.tn.settings.width[G.GOM.curNavLevel][nw] ) ) {
-                  // do not use settings.getH() / settings.getW()
-            // thumbnail size changed --> render the gallery with the new sizes
-            G.GOM.curWidth = nw;
-            //G.layout.SetEngine();
-            G.GOM.pagination.currentPage = 0;
-            GalleryRender( G.GOM.albumIdx );
+					if( G.GOM.albumIdx != -1 ) {
+
+						// check if the gallery needs to be rendered because the width changed
+						
+						if( G.layout.engine == "MOSAIC") {
+							// Mosaic layout
+							if( JSON.stringify(G.tn.settings.mosaic[l][w]) !== JSON.stringify(G.tn.settings.mosaic[l][nw]) ) {
+								// mosaic definition changed
+								G.GOM.curWidth = nw;
+								G.GOM.pagination.currentPage = 0;
+								GalleryRender( G.GOM.albumIdx );
+							}
+						}
+						else {
+							// other layouts
+							if( G.tn.settings.height[l][w] != G.tn.settings.height[l][nw] || G.tn.settings.width[l][w] != G.tn.settings.width[l][nw]  ) {
+								// thumbnail size changed --> render the gallery with the new sizes
+								G.GOM.curWidth = nw;
+								//G.layout.SetEngine();
+								G.GOM.pagination.currentPage = 0;
+								GalleryRender( G.GOM.albumIdx );
+							}
+						}
+						return;
           }
           else {
             GalleryResize();
@@ -10035,23 +10094,14 @@ TODO:
     }
     
      
-    // Depreciated - if gallery currently refreshed (G.galleryResizeEventEnabled=false), page may be scrolled but it will not be refreshed again
-    function OnScrollEvent_OLD() {
-      if( !G.VOM.viewerDisplayed ) {
-        if( G.galleryResizeEventEnabled ) {
-          GalleryResize();
-        }
-        return;
-      }
-    }
 
-
+		// SCROLL EVENT -> on WINDOW or SCROLLABLE PARENT CONTAINER
     function OnScrollEvent() {
-
 			if( !G.VOM.viewerDisplayed ) {
         GalleryResizeOnScrollEvent();
       }
     }
+		
     // the gallery may currently be refreshed, so ensure that at the end of the refresh, the gallery is refreshed again because the page may have been scrolled in the meantime
     function GalleryResizeOnScrollEvent() {
       if( G.galleryResizeEventEnabled == false) {
