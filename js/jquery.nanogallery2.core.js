@@ -40,6 +40,8 @@
 - enhancement: page scrollbar better removed on lightbox display to avoid page reflow
 - fixed: modal popup not sharp (media info and share), and wrong size on mobile devices
 - new: mosaic layout is now fully responsive
+- removed: viewerDisplayLogo option
+- modal size on mobile
 - minor fixes
 
 TODO: 
@@ -53,10 +55,8 @@ TODO:
 - améliorer fond dégradé par défaut des imagettes 
 - animation séparées pour les tools imagette
 - si hash n'existe pas -> eviter erreur et effacer hash
-- remove: viewerDisplayLogo option
 - centrage vertical titre sans description
 - screenful update
-- modal size on mobile
 - L1 dans la doc
 - callback popup info
 - utiliser lightbox sans gallerie
@@ -64,6 +64,8 @@ TODO:
 - re-display one thumbnail -> new image, title, etc...
 - gallery on lightbox -> in toolbar ?
 - double touch in zoom mode -> should not go to next/previous media
+- pagination -> rajouter <> dans breadcrumb sur 1 côté
+- demo info -> red brown 
 */
  
  
@@ -333,8 +335,7 @@ TODO:
               this.$E.conLoadingB.removeClass('nanoGalleryLBarOff').addClass('nanoGalleryLBar');
               // spinner over album thumbnail
               if( this.GOM.albumIdxLoading != undefined && this.GOM.albumIdxLoading != -1 ) {
-                var curTn = this.GOM.items[this.GOM.albumIdxLoading];
-                var item = this.I[curTn.thumbnailIdx];
+                var item = this.I[this.GOM.albumIdxLoading];
                 item.$Elts['.nGY2TnImg'].addClass('nGY2GThumbnailLoaderDisplayed');
               }
             }
@@ -343,8 +344,7 @@ TODO:
               this.$E.conLoadingB.removeClass('nanoGalleryLBar').addClass('nanoGalleryLBarOff');
               // spinner over album thumbnail
               if( this.GOM.albumIdxLoading != undefined && this.GOM.albumIdxLoading != -1 ) {
-                var curTn = this.GOM.items[this.GOM.albumIdxLoading];
-                var item = this.I[curTn.thumbnailIdx];
+                var item = this.I[this.GOM.albumIdxLoading];
                 item.$Elts['.nGY2TnImg'].removeClass('nGY2GThumbnailLoaderDisplayed');
               }
             }
@@ -1541,8 +1541,10 @@ TODO:
       breadcrumbHome:               '<i class="nGY2Icon-home"></i>',
       breadcrumbSeparator:          '<i class="nGY2Icon-left-open"></i>',
       breadcrumbSeparatorRtl:       '<i class="nGY2Icon-right-open"></i>',
-      navigationFilterSelected:     '<i style="color:#fff;" class="nGY2Icon-toggle-on"></i>',
-      navigationFilterUnselected:   '<i style="color:#ddd;" class="nGY2Icon-toggle-off"></i>',
+      // navigationFilterSelected:     '<i style="color:#fff;" class="nGY2Icon-toggle-on"></i>',
+      // navigationFilterUnselected:   '<i style="color:#ddd;" class="nGY2Icon-toggle-off"></i>',
+      navigationFilterSelected:     '<i style="color:#fff;" class="nGY2Icon-ok"></i>',
+      navigationFilterUnselected:   '<i style="color:#ddd;opacity:0.3;" class="nGY2Icon-ok"></i>',
       // navigationFilterSelectedAll:  '<i class="nGY2Icon-toggle-on"></i><i class="nGY2Icon-ok"></i>',
       navigationFilterSelectedAll:  '<i class="nGY2Icon-ccw"></i>',
       thumbnailSelected:            '<i style="color:#bff;" class="nGY2Icon-ok-circled"></i>',
@@ -7601,7 +7603,7 @@ TODO:
     }
     
     
-    // Gallery clicked/touched -> retrieve & execute action
+    // Gallery clicked or toolbar touched -> retrieve & execute action
     function GalleryClicked(e) {
     
       var r = GalleryEventRetrieveElementl(e, false);
@@ -7610,18 +7612,15 @@ TODO:
       
       var idx = G.GOM.items[r.GOMidx].thumbnailIdx;
       if( G.GOM.slider.hostIdx == r.GOMidx ) {
-        // slider on thumbnail -> open the displayed image
         idx = G.GOM.items[G.GOM.slider.currentIdx].thumbnailIdx;
       }
       switch( r.action ) {
         case 'OPEN':
-          G.GOM.albumIdxLoading=r.GOMidx;
           ThumbnailOpen(idx, false);
           return 'exit';
           break;
         case 'DISPLAY':
           // used the display icon (ignore if selection mode)
-          G.GOM.albumIdxLoading=r.GOMidx;
           ThumbnailOpen(idx, true);
           return 'exit';
           break;
@@ -7948,6 +7947,8 @@ TODO:
     // OPEN ONE THUMBNAIL
     function ThumbnailOpen( idx, ignoreSelected ) {
       var item = G.I[idx];
+      
+      G.GOM.albumIdxLoading = idx;      // store idx -> may be used to display loader on album thumbnail
 
       var fu = G.O.fnThumbnailClicked;
       if( fu !== null ) {
@@ -9130,15 +9131,19 @@ TODO:
       
       // animation duration is proportional of the remaining distance
       var vP = G.GOM.cache.viewport;
-      var dur = 400 * (vP.w - Math.abs(G.VOM.swipePosX)) / vP.w;
+      var t_easing = '';
+      var t_dur = 400 * (vP.w - Math.abs(G.VOM.swipePosX)) / vP.w;
       if( velocity > 0 ) {
         // velocity = pixels/millisecond
-         dur = Math.min( (vP.w - Math.abs(G.VOM.swipePosX)) / velocity, dur);
+         t_dur = Math.min( (vP.w - Math.abs(G.VOM.swipePosX)) / velocity, t_dur);
+         t_easing = 'linear';     // use linear to avoid a slow-down in the transition after user swipe
       }
       
-      
+
       if( displayType == '' ) {
-        // first image --> just appear / no slide animation
+        
+        // first image --> just appear / no transition animation with an already displayed media
+        
         ViewerSetMediaVisibility(G.VOM.NGY2Item(0), G.VOM.$mediaCurrent, 1);
         if( G.CSStransformName == null ) {
           // no CSS transform support -> no animation
@@ -9166,7 +9171,9 @@ TODO:
         }
       }
       else {
-        // animate the image transition between 2 images
+        
+        // animate the image transition between 2 medias
+        
         if( G.CSStransformName == null  ) {
           // no CSS transform support -> no animation
           ViewerSetMediaVisibility(itemNew, $new, 1);
@@ -9178,27 +9185,29 @@ TODO:
             case 'SWIPE':
             case 'SWIPE2':
               var dir = ( displayType == 'nextImage' ? - vP.w : vP.w );
-              $new[0].style[G.CSStransformName] = 'translate('+(-dir)+'px, 0px) '
+              $new[0].style[G.CSStransformName] = 'translate(' + (-dir) + 'px, 0px) '
+  
+              if( velocity == 0 ) {
+                t_easing = G.O.imageTransition == 'swipe' ? 'easeInOutSine' : 'easeInQuart';
+              }
 
               new NGTweenable().tween({
                 from:         { t: G.VOM.swipePosX  },
                 to:           { t: (displayType == 'nextImage' ? - vP.w : vP.w) },
-                attachment:   { dT: displayType, $e: $new, itemNew: itemNew, itemOld: itemOld, dir: dir },
+                attachment:   { dT: displayType, $e: $new, itemNew: itemNew, dir: dir },
                 delay:        30,
-                duration:     dur,
-                easing:       (G.O.imageTransition == 'swipe' ? 'easeInOutSine' : 'easeInQuart'),
+                duration:     t_dur,
+                easing:       ( t_easing ),
                 step:         function (state, att) {
                   // current media
                   ViewerSetMediaVisibility(G.VOM.NGY2Item(0), G.VOM.$mediaCurrent, 1);
-                  // G.VOM.$mediaCurrent[0].style[G.CSStransformName] = 'translate(' + state.t + 'px, 0px) rotate(' + att.itemOld.rotationAngle + 'deg)';
                   G.VOM.$mediaCurrent[0].style[G.CSStransformName] = 'translate(' + state.t + 'px, 0px)';
+
                   // new media
                   if( att.itemNew.mediaTransition() ) {
                     ViewerSetMediaVisibility(att.itemNew, att.$e, 1);
-
                     var sc = Math.min( Math.max( (Math.abs(state.t)) / G.VOM.window.lastWidth, .8), 1);
                     if( G.O.imageTransition == 'SWIPE' ) { sc = 1; }
-                    // att.$e[0].style[G.CSStransformName] = 'translate(' + (-att.dir+state.t) + 'px, 0px) scale(' + sc + ') rotate(' + att.itemNew.rotationAngle + 'deg)';
                     att.$e[0].style[G.CSStransformName] = 'translate(' + (-att.dir+state.t) + 'px, 0px) scale(' + sc + ')';
                   }
                 },
@@ -9215,17 +9224,20 @@ TODO:
               var dir=(displayType == 'nextImage' ? - vP.w : vP.w);
               var op = (Math.abs(G.VOM.swipePosX)) / G.VOM.window.lastWidth;
               $new[0].style[G.CSStransformName] = '';
+              if( velocity == 0 ) {
+                t_easing ='easeInOutSine';
+              }
               new NGTweenable().tween({
                 from:         { o: op, t: G.VOM.swipePosX },
-                to:           { o: 1, t: (displayType == 'nextImage' ? - vP.w : vP.w) },
-                attachment:   { dT:displayType, $e:$new, itemNew: itemNew, itemOld: itemOld, dir: dir },
+                to:           { o: 1,  t: (displayType == 'nextImage' ? - vP.w : vP.w) },
+                attachment:   { dT:displayType, $e:$new, itemNew: itemNew },
                 delay:        30,
-                duration:     dur,
-                easing:       'easeInOutSine',
+                duration:     t_dur,
+                easing:       t_easing,
                 step:         function (state, att) {
                   // current media - translate
-                  // G.VOM.$mediaCurrent[0].style[G.CSStransformName]= 'translate('+state.t+'px, 0px) rotate(' + att.itemOld.rotationAngle + 'deg)';
                   G.VOM.$mediaCurrent[0].style[G.CSStransformName]= 'translate('+state.t+'px, 0px)';
+
                   // new media - opacity
                   if( att.itemNew.mediaTransition() ) {
                     ViewerSetMediaVisibility(att.itemNew, att.$e, state.o);
