@@ -70,6 +70,7 @@ TODO:
 - thumbnailGutterWidth and thumbnailGutterHeight responsive
 - shopping cart -> compteur
 - shopping cart in lightbox
+ko
 */
  
  
