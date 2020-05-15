@@ -31,6 +31,18 @@
       -->
     </blockquote>
     <div class="row">
+    
+      <p>Example:</p>
+      <pre>
+// Attach an event handler function for some events to the gallery
+$("#nanogallery2").on( 'pageChanged.nanogallery2 galleryRenderStart.nanogallery2 galleryRenderEnd.nanogallery2 galleryObjectModelBuilt.nanogallery2 galleryLayoutApplied.nanogallery2 galleryDisplayed.nanogallery2 lightboxNextImage.nanogallery2 lightboxPreviousImage.nanogallery2 lightboxImageDisplayed.nanogallery2 shoppingCartUpdated.nanogallery2 itemSelected.nanogallery2 itemUnSelected.nanogallery2', my_listener );
+
+// Event handler function
+function my_listener(e) {
+  console.log(e.type);
+}
+      </pre>
+      <br><br>
 		
       <div class="table-responsive">
         <table class="table table-borderless table-stripedX table-hoverX">
@@ -168,6 +180,34 @@
       Since v1.3, callbacks are supported in HTML markup mode.
     </blockquote>
     <div class="row">
+      <p>Example:</p>
+      <pre>
+<b>// Build the gallery</b>
+jQuery("#nanogallery2").nanogallery2({
+
+  fnShoppingCartUpdated: mylistener,            // <b>set the callback function</b>
+
+  thumbnailToolbarImage : { topLeft: 'cart'},
+  thumbnailHoverEffect2: null, 
+
+  kind: 'flickr',
+  userID: '149035168@N08',
+  photoset:        '72157675219521270',
+  thumbnailHeight: 100, thumbnailWidth: 100,
+  thumbnailLabel: { display: false }
+});
+
+<b>// Callback function</b>
+function mylistener( cart, item ) {
+  alert("Shopping cart updated. More details in your browser's console.");
+  console.log("### item:");
+  console.dir(item);
+  console.log("### shopping cart:");
+  console.dir(cart);
+}
+
+      </pre>
+<br><br>
       <div class="table-responsive">
         <table class="table table-borderless table-stripedX table-hoverX">
           <thead>
@@ -386,6 +426,17 @@
       Usage: <code>$('#your_nanogallery2').nanogallery2('method', options);</code>
     </blockquote>
     <div class="row">
+      <p>Example:</p>
+      <pre>
+// Enable selection mode
+$('#my_nanogallery2').nanogallery2('option', 'thumbnailSelectable', true);
+
+// Disable selection mode
+$('#my_nanogallery2').nanogallery2('option', 'thumbnailSelectable', false);
+
+      </pre>
+      <br><br>
+      
       <div class="table-responsive">
         <table class="table table-borderless table-stripedX table-hoverX">
           <thead>
