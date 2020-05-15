@@ -21,7 +21,7 @@ module.exports = function(grunt) {
       terser: {
         options: {
           /* banner: banner, */
-          preserveComments: 'some'
+          /* preserveComments: 'some' */
         },
         standardTarget: {
           files: {
