@@ -71,7 +71,7 @@ TODO:
 - thumbnailGutterWidth and thumbnailGutterHeight responsive
 - shopping cart -> compteur
 - shopping cart in lightbox
-ko
+- rajouter custom meta-data dans nanophotosprovider (par ex. prix d'un article)
 */
  
  
@@ -540,13 +540,13 @@ ko
           NGY2Item.New = function( instance, title, description, ID, albumID, kind, tags ) {
             var album = NGY2Item.Get( instance, albumID );
             
-            // title translation [TODO]
-            // if( instance.O.title_translation_map !== null ) {
-              // let obj = instance.O.title_translation_map.find(o => o.title === title);
-              // if( obj !== undefined ) {
-                // title = obj.replace;
-              // }
-            // }
+            // title translation
+            if( instance.O.title_translation_map !== null ) {
+              let obj = instance.O.title_translation_map.find(o => o.title === title);
+              if( obj !== undefined ) {
+                title = obj.replace;
+              }
+            }
             
             
             if( albumID != -1 && albumID != 0 && title !='image gallery by nanogallery2 [build]'  ) {
@@ -1720,7 +1720,7 @@ ko
           for( var i = 0; i < nG2.shoppingCart.length; i++) {
             if( nG2.shoppingCart[i].ID = ID ) {
               nG2.shoppingCart[i].cnt = cnt;
-              ThumbnailBuildToolbarOneCartUpdate( ID );
+              nG2.ThumbnailToolbarOneCartUpdate( ID );
             }
           }
           var fu = G.O.fnShoppingCartUpdated;
@@ -1895,6 +1895,10 @@ ko
         DisplayAlbum( '-1', IDs.albumID );
       }
     };
+    
+    this.ThumbnailToolbarOneCartUpdate = function (ID) {
+      ThumbnailBuildToolbarOneCartUpdate( ID );
+    }
     
       
       
