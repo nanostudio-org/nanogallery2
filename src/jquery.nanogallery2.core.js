@@ -538,10 +538,9 @@ TODO:
           NGY2Item.New = function( instance, title, description, ID, albumID, kind, tags ) {
             var album = NGY2Item.Get( instance, albumID );
             
-            
             // title translation
             if( instance.O.title_translation_map !== null ) {
-              let obj = instance.O.title_translation_map.find(o => o.title === title);
+              var obj = instance.O.title_translation_map.find(o => o.title === title);
               if( obj !== undefined ) {
                 title = obj.replace;
               }
