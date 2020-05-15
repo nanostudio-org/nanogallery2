@@ -1,4 +1,4 @@
-/**!
+/*!
  * @preserve nanogallery2 - javascript photo / video gallery and lightbox
  * Homepage: http://nanogallery2.nanostudio.org
  * Sources:  https://github.com/nanostudio-org/nanogallery2
@@ -18,30 +18,59 @@
  *  - ICO online converter: https://iconverticons.com/online/
  */
 
-
+ 
+// nanogallery v2.5.0beta
 /*
-  V2.4.0beta
+- nano_photos_provider2 : on gallery initialization, if an album is defined, gallery will not display sub-albums
+- [replaced] label position -> valign - top, bottom, middle / default: bottom
+- tableau de remplacement de nom d'albums (text found -> text to use)
+- new option galleryFilterTagsMode/galleryL1FilterTagsMode - possible value 'single', 'multiple'
+- new: no tag selected then display all thumbnails
+- changed: icon for tags and for tag's filter reset
+- changed: lightbox tool icons layout and background
+- bugfix: gallery may not be displayed depending on the display animation
+- changed: touchAnimation default value to false - hover animation on thumbnails are now disabled by default
+- bugfix: touch to display tools when they are hidden
+- improved: swipe and touch gesture, velocity
+- new: rounded border on thumbnails -> galleryTheme : { thumbnail: { borderRadius
+- new:   thumbnailIcon :         { shadow:'' },
+- new: thumbnailL1BorderHorizontal, thumbnailL1BorderVertical
+- CDNJS
+- new: loading over thumbnail during album content download
+- enhancement: page scrollbar better removed on lightbox display to avoid page reflow
+- fixed: modal popup not sharp (media info and share), and wrong size on mobile devices
+- new: mosaic layout is now fully responsive
+- removed: viewerDisplayLogo option
+- fixed modal size on mobile
+- fixed: some artefacts around thumbnails in some use cases
+- new: pagination buttons on top of gallery
+    icons: navigationPaginationPrevious / navigationPaginationNext
+    theme: navigationPagination
+    option galleryPaginationTopButtons : true,
+- new: callback fnPopupMediaInfo(item, title, content) -> {title: my_title, content: my_content}
+- minor fixes
 
-- new: support for self hosted videos (mp4)
-- new: lightbox - button to rotate images
-- new: lightbox - fluid transition from zoomed to unzoomed image when displaying a new image
-- new: API shopping cart update event now returns also the concerned item
-- fixed: new data provider for the new Google Photos API (nanogp2 - https://github.com/nanostudio-org/nanogp2)
-- note: Google Photos - videos cannot be played in the lightbox (only download is possible)
-- fixed #160: IE11: css can not be accessed
-- fixed #161: IE11: startsWith not defined
-- fixed #157: pagination - scroll to top of the gallery pagination
-- fixed #155: image transition effect SWIPE
-- enhancement #175: gallery display shaking when pagination activated on mobile device
-- enhancement: lightbox vertical pan handling
-- removed: option 'albumListHidden' depreciated
-
-TODO:
-- loading spin on album thumbnail
-  
- 
+TODO: 
+- tags :
+  - centre tags
+  - grouper tags (sous-tags)
+- hash : only once -> read but not set
+- enlever bottom bar par defaut
+- améliorer fond dégradé par défaut des imagettes 
+- animation séparées pour les tools imagette
+- si hash n'existe pas -> eviter erreur et effacer hash
+- centrage vertical titre sans description
+- screenful update
+- L1 dans la doc
+- utiliser lightbox sans gallerie
+- delete button -> thumbnail/lightbox + callback(with cancel)
+- re-display one thumbnail -> new image, title, etc...
+- gallery on lightbox -> in toolbar ?
+- double touch in zoom mode -> should not go to next/previous media
+- thumbnailGutterWidth and thumbnailGutterHeight responsive
+- shopping cart -> compteur
+- shopping cart in lightbox
 */
- 
  
  
 // ###########################################
@@ -152,6 +181,7 @@ TODO:
   }
 
 
+  // Check if element is in viewport
   // avoid if possible (performance issue)
   function inViewport( $elt, threshold ) {
     var wp = getViewport(),
@@ -168,6 +198,7 @@ TODO:
       return false;
     }
   }
+
 
   // avoid if possible (performance issue)
   function inViewportVert( $elt, threshold ) {
@@ -306,10 +337,22 @@ TODO:
           /* Display/hide preloader */
           NGY2Tools.PreloaderDisplay = function(display) {
             if( display === true ) {
+              // loading bar at the top of the gallery
               this.$E.conLoadingB.removeClass('nanoGalleryLBarOff').addClass('nanoGalleryLBar');
+              // spinner over album thumbnail
+              if( this.GOM.albumIdxLoading != undefined && this.GOM.albumIdxLoading != -1 ) {
+                var item = this.I[this.GOM.albumIdxLoading];
+                item.$Elts['.nGY2TnImg'].addClass('nGY2GThumbnailLoaderDisplayed');
+              }
             }
             else {
+              // loading bar at the top of the gallery
               this.$E.conLoadingB.removeClass('nanoGalleryLBar').addClass('nanoGalleryLBarOff');
+              // spinner over album thumbnail
+              if( this.GOM.albumIdxLoading != undefined && this.GOM.albumIdxLoading != -1 ) {
+                var item = this.I[this.GOM.albumIdxLoading];
+                item.$Elts['.nGY2TnImg'].removeClass('nGY2GThumbnailLoaderDisplayed');
+              }
             }
           };
 
@@ -344,7 +387,7 @@ TODO:
           
             var sortOrder = this.gallerySorting[this.GOM.curNavLevel];
             var maxItems = this.galleryMaxItems[this.GOM.curNavLevel];
-          
+
             if( sortOrder != '' || maxItems > 0 ) {
             
               // copy album's items to a new array
@@ -494,6 +537,15 @@ TODO:
           // create new item (image, album or albumUp)
           NGY2Item.New = function( instance, title, description, ID, albumID, kind, tags ) {
             var album = NGY2Item.Get( instance, albumID );
+            
+            // title translation
+            if( instance.O.title_translation_map !== null ) {
+              let obj = instance.O.title_translation_map.find(o => o.title === title);
+              if( obj !== undefined ) {
+                title = obj.replace;
+              }
+            }
+            
             
             if( albumID != -1 && albumID != 0 && title !='image gallery by nanogallery2 [build]'  ) {
               if( instance.O.thumbnailLevelUp && album.getContentLength(false) == 0 && instance.O.album == '' ) {
@@ -739,7 +791,7 @@ TODO:
             this.height = h;
           };
           
-          //--- set one thumbnail (url and size) - screenSize and level are optionnal
+          //--- set one thumbnail (url and size) - screenSize and level are optional
           NGY2Item.prototype.thumbSet = function( src, w, h, screenSize, level ) {
             var lst=['xs','sm','me','la','xl'];
             if( typeof screenSize === 'undefined' || screenSize == '' || screenSize == null ) {
@@ -845,7 +897,7 @@ TODO:
                 }
                 if( tfound == false) {
                   this.album().albumTagList.push(tags[i])
-                  this.album().albumTagListSel.push(tags[i])
+                  // this.album().albumTagListSel.push(tags[i])
                 }
               }
             }
@@ -854,11 +906,15 @@ TODO:
           //--- check if 1 of current item's tags is selected (tag filter)
           NGY2Item.prototype.checkTagFilter = function() {
             if( this.G.galleryFilterTags.Get() != false && this.album().albumTagList.length > 0 ) {
-              if( this.G.O.thumbnailLevelUp && this.kind=='albumUp' ) {
+              if( this.G.O.thumbnailLevelUp && this.kind == 'albumUp' ) {
                 return true;
               }
               var found = false;
               var lstTags = this.album().albumTagListSel;
+              if( lstTags.length == 0 ) {       
+                // no tag is selected -> display all items
+                return true;
+              }
               for( var i = 0; i < this.tags.length; i++ ) {
                 for( var j = 0; j < lstTags.length; j++ ) {
                   if( this.tags[i].toUpperCase() == lstTags[j].toUpperCase() ) {
@@ -1309,7 +1365,6 @@ TODO:
     albumList :                   '',
     albumList2 :                  null,
     RTL :                         false,
-    poogleplusUseUrlCrossDomain : true,
     flickrSkipOriginal :          true,
     breadcrumbAutoHideTopLevel :  true,
     displayBreadcrumb :           true,
@@ -1322,7 +1377,6 @@ TODO:
     itemsBaseURL :                '',
     thumbnailSelectable :         false,
     dataProvider:                 '',
-    dataCharset:                  'Latin',
     allowHTMLinData:              false,
     locationHash :                true,
     slideshowDelay :              3000,
@@ -1330,22 +1384,24 @@ TODO:
 
     debugMode:                    false,
 
+    title_translation_map:        null,
     galleryDisplayMoreStep :      2,
     galleryDisplayMode :          'fullContent',
     galleryL1DisplayMode :        null,
     galleryPaginationMode :       'rectangles',   // 'dots', 'rectangles', 'numbers'
-    // galleryThumbnailsDisplayDelay : 2000,
+    galleryPaginationTopButtons : true,
     galleryMaxRows :              2,
     galleryL1MaxRows :            null,
     galleryLastRowFull:           false,
     galleryLayoutEngine :         'default',
     paginationSwipe:              true,
     paginationVisiblePages :      10,
-    // paginationSwipeSensibilityVert : 10,
     galleryFilterTags :           false,    // possible values: false, true, 'title', 'description'
     galleryL1FilterTags :         null,     // possible values: false, true, 'title', 'description'
-    galleryMaxItems :             0,        // maximum number of items per album  --> only flickr, google+, nano_photos_provider2
-    galleryL1MaxItems :           null,     // maximum number of items per gallery page --> only flickr, google+, nano_photos_provider2
+    galleryFilterTagsMode :       'single',
+    galleryL1FilterTagsMode :     null,
+    galleryMaxItems :             0,        // maximum number of items per album  --> only flickr, google2, nano_photos_provider2
+    galleryL1MaxItems :           null,     // maximum number of items per gallery page --> only flickr, google2, nano_photos_provider2
     gallerySorting :              '',
     galleryL1Sorting :            null,
     galleryDisplayTransition :    'none',
@@ -1371,7 +1427,9 @@ TODO:
     thumbnailGutterHeight :       2,
     thumbnailL1GutterHeight :     null,
     thumbnailBorderVertical :     2,
+    thumbnailL1BorderVertical :   null,
     thumbnailBorderHorizontal :   2,
+    thumbnailL1BorderHorizontal : null,
     thumbnailFeaturedKeyword :    '*featured',
     thumbnailAlbumDisplayImage :  false,
     thumbnailHoverEffect2 :       'toolsAppear',
@@ -1399,13 +1457,14 @@ TODO:
     portable :                    false,
     eventsDebounceDelay:          30,
     
-    touchAnimation :              true,
+    touchAnimation :              false,
     touchAnimationL1 :            undefined,
     touchAutoOpenDelay :          0,
 
     thumbnailLabel : {
       position :                  'overImageOnBottom',
       align:                      'center',
+      valign:                     'bottom',
       display :                   true,
       displayDescription :        false,
       titleMaxLength :            0,
@@ -1426,12 +1485,9 @@ TODO:
     thumbnailL1DisplayTransitionDuration: null,
     thumbnailOpenImage :          true,
     thumbnailOpenOriginal :       false,
-    thumbnailGlobalImageTitle :   '',
-    thumbnailGlobalAlbumTitle :   '',
     
     viewer :                      'internal',
     viewerFullscreen:             false,
-    viewerDisplayLogo :           false,
     imageTransition :             'swipe2',
     viewerTransitionMediaKind :   'img',
     viewerZoom :                  true,
@@ -1449,7 +1505,7 @@ TODO:
     },
     viewerTools : {
       topLeft :                   'pageCounter,playPauseButton',
-      topRight :                  'zoomButton,rotateLeft,rotateRight,closeButton' 
+      topRight :                  'rotateLeft,rotateRight,fullscreenButton,closeButton' 
     },
     
     breakpointSizeSM :            480,
@@ -1477,6 +1533,7 @@ TODO:
     fnThumbnailToolCustAction :   null,
     fnThumbnailOpen :             null,
     fnImgDisplayed :              null,
+    fnPopupMediaInfo :            null,
 
     i18n : {
       'breadcrumbHome' : 'Galleries', 'breadcrumbHome_FR' : 'Galeries',
@@ -1485,16 +1542,18 @@ TODO:
       'infoBoxPhoto' : 'Photo', 'infoBoxDate' : 'Date', 'infoBoxAlbum' : 'Album', 'infoBoxDimensions' : 'Dimensions', 'infoBoxFilename' : 'Filename', 'infoBoxFileSize' : 'File size', 'infoBoxCamera' : 'Camera', 'infoBoxFocalLength' : 'Focal length', 'infoBoxExposure' : 'Exposure', 'infoBoxFNumber' : 'F Number', 'infoBoxISO' : 'ISO', 'infoBoxMake' : 'Make', 'infoBoxFlash' : 'Flash', 'infoBoxViews' : 'Views', 'infoBoxComments' : 'Comments'
     },
     icons : {
-      // sample for font awesome: <i style="color:#eee;" class="fa fa-search-plus"></i>
+      // example for font awesome: <i style="color:#eee;" class="fa fa-search-plus"></i>
       thumbnailAlbum:               '<i class="nGY2Icon-folder-empty"></i>',
       thumbnailImage:               '<i class="nGY2Icon-picture"></i>',
       breadcrumbAlbum:              '<i class="nGY2Icon-folder-empty"></i>',
       breadcrumbHome:               '<i class="nGY2Icon-home"></i>',
       breadcrumbSeparator:          '<i class="nGY2Icon-left-open"></i>',
       breadcrumbSeparatorRtl:       '<i class="nGY2Icon-right-open"></i>',
-      navigationFilterSelected:     '<i style="color:#fff;" class="nGY2Icon-toggle-on"></i>',
-      navigationFilterUnselected:   '<i style="color:#ddd;" class="nGY2Icon-toggle-off"></i>',
-      navigationFilterSelectedAll:  '<i class="nGY2Icon-toggle-on"></i><i class="nGY2Icon-ok"></i>',
+      navigationFilterSelected:     '<i style="color:#fff;" class="nGY2Icon-ok"></i>',
+      navigationFilterUnselected:   '<i style="color:#ddd;opacity:0.3;" class="nGY2Icon-ok"></i>',
+      navigationFilterSelectedAll:  '<i class="nGY2Icon-ccw"></i>',
+      navigationPaginationPrevious: '<i class="nGY2Icon-ngy2_chevron-left"></i>',
+      navigationPaginationNext:     '<i class="nGY2Icon-ngy2_chevron-right"></i>',
       thumbnailSelected:            '<i style="color:#bff;" class="nGY2Icon-ok-circled"></i>',
       thumbnailUnselected:          '<i style="color:#bff;" class="nGY2Icon-circle-empty"></i>',
       thumbnailFeatured:            '<i style="color:#dd5;" class="nGY2Icon-star"></i>',
@@ -1503,7 +1562,7 @@ TODO:
       thumbnailDownload:            '<i class="nGY2Icon-ngy2_download2"></i>',
       thumbnailInfo:                '<i class="nGY2Icon-ngy2_info2"></i>',
       thumbnailCart:                '<i class="nGY2Icon-basket"></i>',
-      thumbnailDisplay:             '<i class="nGY2Icon-ngy2_zoom_in2"></i>',
+      thumbnailDisplay:             '<i class="nGY2Icon-resize-full"></i>',
       thumbnailCustomTool1:         'T1',
       thumbnailCustomTool2:         'T2',
       thumbnailCustomTool3:         'T3',
@@ -1539,10 +1598,11 @@ TODO:
       viewerRotateRight:            '<i class="nGY2Icon-cw"></i>',
       user:                         '<i class="nGY2Icon-user"></i>',
       location:                     '<i class="nGY2Icon-location"></i>',
+      picture:                     '<i class="nGY2Icon-picture"></i>',
       config:                       '<i class="nGY2Icon-wrench"></i>',
       shareFacebook:                '<i style="color:#3b5998;" class="nGY2Icon-facebook-squared"></i>',
       shareTwitter:                 '<i style="color:#00aced;" class="nGY2Icon-twitter-squared"></i>',
-      shareGooglePlus:              '<i style="color:#dd4b39;" class="nGY2Icon-gplus-squared"></i>',
+      // shareGooglePlus:              '<i style="color:#dd4b39;" class="nGY2Icon-gplus-squared"></i>',
       shareTumblr:                  '<i style="color:#32506d;" class="nGY2Icon-tumblr-squared"></i>',
       sharePinterest:               '<i style="color:#cb2027;" class="nGY2Icon-pinterest-squared"></i>',
       shareVK:                      '<i style="color:#3b5998;" class="nGY2Icon-vkontakte"></i>',
@@ -1658,6 +1718,7 @@ TODO:
           for( var i = 0; i < nG2.shoppingCart.length; i++) {
             if( nG2.shoppingCart[i].ID = ID ) {
               nG2.shoppingCart[i].cnt = cnt;
+              ThumbnailBuildToolbarOneCartUpdate( ID );
             }
           }
           var fu = G.O.fnShoppingCartUpdated;
@@ -1671,10 +1732,11 @@ TODO:
           if( typeof option === 'undefined' ){
             return false;
           }
-          var ID=option;
-          for( var i=0; i<nG2.shoppingCart.length; i++) {
-            if( nG2.shoppingCart[i].ID=ID ) {
+          var ID = option;
+          for( var i=0; i < nG2.shoppingCart.length; i++) {
+            if( nG2.shoppingCart[i].ID = ID ) {
               nG2.shoppingCart.splice(i,1);
+              ThumbnailBuildToolbarOneCartUpdate( ID );
               break;
             }
           }
@@ -1862,14 +1924,14 @@ TODO:
      */
     this.Search2 = function( searchTitle, searchTags ) {
       if( searchTitle != null && searchTitle != undefined ) {
-        G.GOM.albumSearch = searchTitle.toUpperCase();
+        G.GOM.albumSearch = searchTitle.toUpperCase().trim();
       }
       else {
         G.GOM.albumSearch = '';
       }
       
       if( searchTags != null && searchTags != undefined ) {
-        G.GOM.albumSearchTags = searchTags.toUpperCase();
+        G.GOM.albumSearchTags = searchTags.toUpperCase().trim();
       }
       else {
         G.GOM.albumSearchTags = '';
@@ -1891,21 +1953,16 @@ TODO:
      * Destroy the current gallery
      */
     this.Destroy = function(){
-      // alert('destroy');
-      // var event = new Event('build');
+
       if( G.GOM.hammertime != null ) {
         G.GOM.hammertime.destroy();
         G.GOM.hammertime = null;
       }
-      // G.GOM.userEvents.RemoveEvtListener();
-      // G.GOM.userEvents=null;
-      // G.VOM.userEvents.RemoveEvtListener();
-      // G.VOM.userEvents=null;
+
       if( G.VOM.hammertime != null ) {
         G.VOM.hammertime.destroy();
         G.VOM.hammertime = null;
       }
-      //ThumbnailHoverReInitAll();  
       
       // color scheme
       $('#ngycs_' + G.baseEltID).remove()
@@ -1918,9 +1975,13 @@ TODO:
       if( G.O.locationHash ) {
         jQuery(window).off('hashchange.nanogallery2.' + G.baseEltID);
       }
+
       jQuery(window).off('resize.nanogallery2.' + G.baseEltID);
       jQuery(window).off('orientationChange.nanogallery2.' + G.baseEltID);
       jQuery(window).off('scroll.nanogallery2.' + G.baseEltID);
+			if( G.$E.scrollableParent !== null ) {
+				G.$E.scrollableParent.off('scroll.nanogallery2.' + G.baseEltID);
+			}
       G.GOM.firstDisplay = false;
     };
     
@@ -2057,6 +2118,7 @@ TODO:
           // timeout = requestTimeout(delayed, threshold || 100); 
       };
     }
+    
 
     // Double requestAnimationFrame
     window.ng_draf = function (cb) {
@@ -2141,7 +2203,8 @@ TODO:
       conLoadingB:              null,         // loading bar - nanoGalleryLBarOff
       conConsole:               null,         // console for error messages
       conNavigationBar:         null,         // gallery navigation bar
-      conTnBottom:              null         // container on the bottom of the gallery
+      conTnBottom:              null,         // container on the bottom of the gallery
+			scrollableParent:					null					// first scrollable parent container
     };
     G.shoppingCart =            [];
     G.layout = {                              // Layout informations
@@ -2173,8 +2236,8 @@ TODO:
             G.layout.prerequisite.imageSize = false;
             return;
           }
-          
-          G.layout.engine='GRID';
+
+          G.layout.engine = 'GRID';
           G.layout.support.rows=true;
           // if( G.tn.opt.Get('crop') === true ) {
             // G.layout.prerequisite.imageSize = true;
@@ -2199,6 +2262,11 @@ TODO:
     G.galleryFilterTags = { l1: 0, lN: 0,
       Get: function() {
         return G.galleryFilterTags[G.GOM.curNavLevel];
+      }
+    };
+    G.galleryFilterTagsMode = { l1: 0, lN: 0,
+      Get: function() {
+        return G.galleryFilterTagsMode[G.GOM.curNavLevel];
       }
     };
     G.galleryDisplayMode = { l1: 'FULLCONTENT', lN: 'FULLCONTENT',
@@ -2232,15 +2300,13 @@ TODO:
     G.tn = {
       // levell specific options
       opt:  {
-        l1: { crop: true, stacks: 0, stacksTranslateX: 0, stacksTranslateY: 0, stacksTranslateZ: 0, stacksRotateX: 0, stacksRotateY: 0, stacksRotateZ: 0, stacksScale: 0, gutterHeight: 0, gutterWidth: 0, baseGridHeight: 0, displayTransition: 'FADEIN', displayTransitionStartVal: 0, displayTransitionEasing: 'easeOutQuart', displayTransitionDuration: 240, displayInterval: 15 },
-        lN: { crop: true, stacks: 0, stacksTranslateX: 0, stacksTranslateY: 0, stacksTranslateZ: 0, stacksRotateX: 0, stacksRotateY: 0, stacksRotateZ: 0, stacksScale: 0, gutterHeight: 0, gutterWidth: 0, baseGridHeight: 0, displayTransition: 'FADEIN', displayTransitionStartVal: 0, displayTransitionEasing: 'easeOutQuart', displayTransitionDuration: 240, displayInterval: 15 },
+        l1: { crop: true, stacks: 0, stacksTranslateX: 0, stacksTranslateY: 0, stacksTranslateZ: 0, stacksRotateX: 0, stacksRotateY: 0, stacksRotateZ: 0, stacksScale: 0, gutterHeight: 0, gutterWidth: 0, borderHorizontal: 0, borderVertical: 0, baseGridHeight: 0, displayTransition: 'FADEIN', displayTransitionStartVal: 0, displayTransitionEasing: 'easeOutQuart', displayTransitionDuration: 240, displayInterval: 15 },
+        lN: { crop: true, stacks: 0, stacksTranslateX: 0, stacksTranslateY: 0, stacksTranslateZ: 0, stacksRotateX: 0, stacksRotateY: 0, stacksRotateZ: 0, stacksScale: 0, gutterHeight: 0, gutterWidth: 0, borderHorizontal: 0, borderVertical: 0, baseGridHeight: 0, displayTransition: 'FADEIN', displayTransitionStartVal: 0, displayTransitionEasing: 'easeOutQuart', displayTransitionDuration: 240, displayInterval: 15 },
         Get: function(opt) {
           return G.tn.opt[G.GOM.curNavLevel][opt];
         }
       },
       scale:                          1,         // image scale depending of the hover effect
-      borderWidth:                    0,         // thumbnail container border width
-      borderHeight:                   0,         // thumbnail container border height
       labelHeight: {                  // in case label on bottom, otherwise always=0
         l1: 0, lN: 0,
         get: function() {
@@ -2254,14 +2320,20 @@ TODO:
         getWidth: function() {
           return G.tn.defaultSize.width[G.GOM.curNavLevel][G.GOM.curWidth];
         },
-        getOuterWidth: function() {     // width border included
-          return G.tn.defaultSize.width[G.GOM.curNavLevel][G.GOM.curWidth]+G.tn.borderWidth*2;
+        getOuterWidth: function() {     // width including border
+      G.tn.borderWidth = G.tn.opt.Get('borderHorizontal');
+      G.tn.borderHeight = G.tn.opt.Get('borderVertical');
+          var w = G.tn.defaultSize.width[G.GOM.curNavLevel][G.GOM.curWidth] + G.tn.opt.Get('borderHorizontal') * 2;
+          if( G.O.thumbnailLabel.get('position') == 'right' || G.O.thumbnailLabel.get('position') == 'left' ) {
+            w += G.tn.defaultSize.width[G.GOM.curNavLevel][G.GOM.curWidth];
+          }
+          return w;
         },
         getHeight: function() {
           return G.tn.defaultSize.height[G.GOM.curNavLevel][G.GOM.curWidth];
         },
         getOuterHeight: function() {     // height, border included
-          return G.tn.defaultSize.height[G.GOM.curNavLevel][G.GOM.curWidth]+G.tn.borderHeight*2;
+          return G.tn.defaultSize.height[G.GOM.curNavLevel][G.GOM.curWidth]+G.tn.opt.Get('borderVertical')*2;
         }
       },
       settings: {                     // user defined width/height of the image to display depending on the screen size
@@ -2295,7 +2367,7 @@ TODO:
                   l1Factor : { h :{ xs: 1, sm: 1, me: 1, la: 1, xl: 1 }, w :{ xs: 1, sm: 1, me: 1, la: 1, xl: 1 }},
                   lNFactor : { h :{ xs: 1, sm: 1, me: 1, la: 1, xl: 1 }, w :{ xs: 1, sm: 1, me: 1, la: 1, xl: 1 }}
                   },
-        getMosaic: function() {
+				getMosaic: function() {
           return G.tn.settings.mosaic[G.GOM.curNavLevel][G.GOM.curWidth];
         },
         mosaicCalcFactor: function(l, w) {
@@ -2400,7 +2472,7 @@ TODO:
       itemsDisplayed :            0, // number of currently displayed thumbnails
       firstDisplay :              true,
       firstDisplayTime :          0,      // in conjunction with galleryRenderDelay
-      navigationBar : {           // content of the navigation bar (for breadcrumb and filter tags)
+      navigationBar : {           // content of the navigation bar (for breadcrumb, filter tags and next/previous pagination)
         displayed:                false,
         $newContent:              ''
       },
@@ -2466,8 +2538,6 @@ TODO:
       infoDisplayed:              false,  // is the info box displayed
       toolbarsDisplayed:          true,   // the toolbars are displayed
       toolsHide:                  null,
-      saveOverflowX:              'visible',    // store the value to restore it back after viewer is closed
-      saveOverflowY:              'visible',
       zoom : {
         posX:                     0,      // position to center zoom in/out
         posY:                     0,
@@ -2481,6 +2551,7 @@ TODO:
       $toolbar:                   null,   // viewerToolbar
       $toolbarTL:                 null,   // viewer toolbar on top left
       $toolbarTR:                 null,   // viewer toolbar on top right
+      $gallery:                   null,   // viver gallery
       $content:                   null,   // viewer content
       
       $mediaPrevious:             null,   // previous image
@@ -2512,7 +2583,7 @@ TODO:
       },
       IdxNext: function() {
         var n = 0;
-        if( G.VOM.currItemIdx != (G.VOM.items.length-1) ) {
+        if( G.VOM.currItemIdx <= (G.VOM.items.length-1) ) {
           n = G.VOM.currItemIdx + 1;
         }
         return n;
@@ -2531,7 +2602,8 @@ TODO:
       panPosY:            0,
       panThreshold:       60,     // threshold value (in pixels) to block vertical pan
       panXOnly:           false,  // threshold value reach -> definitively block vertical pan until end of pan
-      viewerTheme:        '',
+      singletapTime:			0,
+			viewerTheme:        '',
       timeImgChanged:     0,
       ImageLoader: {
         // fires a callback when image size is know (during download)
@@ -2632,13 +2704,14 @@ TODO:
     
     
     // Color schemes - Gallery
-    // gadrient generator: https://www.grabient.com/
+    // Gradient generator: https://www.grabient.com/
     G.galleryTheme_dark = {
       navigationBar :         { background: 'none', borderTop: '', borderBottom: '', borderRight: '', borderLeft: '' },
       navigationBreadcrumb :  { background: '#111', color: '#fff', colorHover: '#ccc', borderRadius: '4px' },
       navigationFilter :      { color: '#ddd', background: '#111', colorSelected: '#fff', backgroundSelected: '#111', borderRadius: '4px' },
-      thumbnail :             { background: '#444', backgroundImage: 'linear-gradient(315deg, #111 0%, #445 90%)', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#aaa' },
-      thumbnailIcon :         { padding: '5px', color: '#fff' },
+      navigationPagination :  { background: '#111', color: '#fff', colorHover: '#ccc', borderRadius: '4px' },
+      thumbnail :             { background: '#444', backgroundImage: 'linear-gradient(315deg, #111 0%, #445 90%)', borderColor: '#000', borderRadius: '0px', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#aaa' },
+      thumbnailIcon :         { padding: '5px', color: '#fff', shadow:'' },
       pagination :            { background: '#181818', backgroundSelected: '#666', color: '#fff', borderRadius: '2px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
     };
 
@@ -2646,6 +2719,7 @@ TODO:
       navigationBar :         { background: 'none', borderTop: '', borderBottom: '', borderRight: '', borderLeft: '' },
       navigationBreadcrumb :  { background: '#eee', color: '#000', colorHover: '#333', borderRadius: '4px' },
       navigationFilter :      { background: '#eee', color: '#222', colorSelected: '#000', backgroundSelected: '#eee', borderRadius: '4px' },
+      navigationPagination :  { background: '#eee', color: '#000', colorHover: '#333', borderRadius: '4px' },
       thumbnail :             { background: '#444', backgroundImage: 'linear-gradient(315deg, #111 0%, #445 90%)', borderColor: '#000', labelOpacity : 1, labelBackground: 'rgba(34, 34, 34, 0)', titleColor: '#fff', titleBgColor: 'transparent', titleShadow: '', descriptionColor: '#ccc', descriptionBgColor: 'transparent', descriptionShadow: '', stackBackground: '#888' },
       thumbnailIcon :         { padding: '5px', color: '#fff' },
       pagination :            { background: '#eee', backgroundSelected: '#aaa', color: '#000', borderRadius: '2px', shapeBorder: '3px solid #666', shapeColor: '#444', shapeSelectedColor: '#aaa'}
@@ -2656,19 +2730,19 @@ TODO:
       background:             '#000',
       imageBorder:            'none',
       imageBoxShadow:         'none',
-      barBackground:          'rgba(4, 4, 4, 0.7)',
+      barBackground:          'rgba(4, 4, 4, 0.2)',
       barBorder:              '0px solid #111',
-      barColor:               '#eee',
-      barDescriptionColor:    '#aaa'
+      barColor:               '#fff',
+      barDescriptionColor:    '#ccc'
     };
     G.viewerTheme_border = {
       background:             'rgba(1, 1, 1, 0.75)',
       imageBorder:            '4px solid #f8f8f8',
       imageBoxShadow:         '#888 0px 0px 20px',
-      barBackground:          'rgba(4, 4, 4, 0.7)',
+      barBackground:          'rgba(4, 4, 4, 0.2)',
       barBorder:              '0px solid #111',
-      barColor:               '#eee',
-      barDescriptionColor:    '#aaa'
+      barColor:               '#fff',
+      barDescriptionColor:    '#ccc'
     };
     G.viewerTheme_light = {
       background:             '#f8f8f8',
@@ -2676,8 +2750,8 @@ TODO:
       imageBoxShadow:         'none',
       barBackground:          'rgba(4, 4, 4, 0.7)',
       barBorder:              '0px solid #111',
-      barColor:               '#eee',
-      barDescriptionColor:    '#aaa'
+      barColor:               '#fff',
+      barDescriptionColor:    '#ccc'
     };
 
       
@@ -2719,38 +2793,18 @@ TODO:
       if( albumToDisplay != '' ) {
         G.O.displayBreadcrumb = false;    // no breadcrumb since only 1 album
         if( albumToDisplay.toUpperCase() != 'NONE' ) {
-          // open specific album
-        
-          var p=albumToDisplay.indexOf('&authkey=');
-          if( p == -1 ) {
-            p=albumToDisplay.indexOf('?authkey=');
-          }
-          if( p > 0 ) {
-            // privat album with authkey
-            G.O.locationHash=false;   // disable hash location for hidden/privat albums --> impossible to handle
-            var albumID=albumToDisplay.substring(0,p);
-            var opt=albumToDisplay.substring(p);
-            if( opt.indexOf('Gv1sRg') == -1 ) {
-              opt = '&authkey=Gv1sRg'+opt.substring(9);
-            }
-            var newItem = NGY2Item.New( G, '', '', albumID, '-1', 'album' );
-            newItem.authkey = opt;
-            DisplayAlbum('-1', albumID);
-          }
-          else {
-            // open a public album
-            if( G.O.kind == "nano_photos_provider2") {
-              if( albumToDisplay == decodeURIComponent(albumToDisplay)) {
-                // album ID must be encoded
-                albumToDisplay = encodeURIComponent(albumToDisplay);
-                G.O.album = albumToDisplay;
-              }
-            }
-            NGY2Item.New( G, '', '', albumToDisplay, '-1', 'album' );
-            if( !ProcessLocationHash() ) {
-              DisplayAlbum('-1', albumToDisplay);
-            }
-          }
+					// open a public album
+					if( G.O.kind == "nano_photos_provider2") {
+						if( albumToDisplay == decodeURIComponent(albumToDisplay)) {
+							// album ID must be encoded
+							albumToDisplay = encodeURIComponent(albumToDisplay);
+							G.O.album = albumToDisplay;
+						}
+					}
+					NGY2Item.New( G, '', '', albumToDisplay, '-1', 'album' );
+					if( !ProcessLocationHash() ) {
+						DisplayAlbum('-1', albumToDisplay);
+					}
           return;
         }
       }
@@ -2910,7 +2964,7 @@ TODO:
         jQuery($newDiv).data('albumID',G.I[albumIdx].GetID());
       }
       $newDiv.click(function() {
-        var cAlbumID=jQuery(this).data('albumID');
+        var cAlbumID = jQuery(this).data('albumID');
         DisplayAlbum('-1', cAlbumID);
         return;
       });
@@ -2985,54 +3039,84 @@ TODO:
       
       //-- manage and build tag filters
       if( G.galleryFilterTags.Get() != false ) {
-        var nTags=G.I[albumIdx].albumTagList.length;
+        var nTags = G.I[albumIdx].albumTagList.length;
         if( nTags > 0 ) {
-          for(var i=0; i < nTags; i++ ) {
-            var s=G.I[albumIdx].albumTagList[i];
-            var ic=G.O.icons.navigationFilterUnselected;
-            var tagClass='Unselected';
+          for(var i = 0; i < nTags; i++ ) {
+            var s = G.I[albumIdx].albumTagList[i];
+            var ic = G.O.icons.navigationFilterUnselected;
+            var tagClass = 'Unselected';
             if( jQuery.inArray(s, G.I[albumIdx].albumTagListSel) >= 0 ) {
-              tagClass='Selected';
-              ic=G.O.icons.navigationFilterSelected;
+              tagClass = 'Selected';
+              ic = G.O.icons.navigationFilterSelected;
             }
-            var $newTag=jQuery('<div class="nGY2NavigationbarItem nGY2NavFilter'+tagClass+'">'+ic+' '+s+'</div>').appendTo(G.GOM.navigationBar.$newContent);
+            
+            var $newTag = jQuery('<div class="nGY2NavigationbarItem nGY2NavFilter' + tagClass + '">'+ ic +' '+ s +'</div>').appendTo(G.GOM.navigationBar.$newContent);
+
             $newTag.click(function() {
-              var $this=jQuery(this);
-              var tag=$this.text().replace(/^\s*|\s*$/, '');  //trim trailing/leading whitespace
-              // if( $this.hasClass('oneTagUnselected') ){
-              if( $this.hasClass('nGY2NavFilterUnselected') ){
+  
+              var $this = jQuery(this);
+              var tag = $this.text().replace(/^\s*|\s*$/, '');  //trim trailing/leading whitespace
+  
+              if( G.galleryFilterTagsMode.Get() == 'single' ) {
+                // single TAG selection
+                G.I[albumIdx].albumTagListSel = [];
                 G.I[albumIdx].albumTagListSel.push(tag);
               }
               else {
-                var tidx=jQuery.inArray(tag,G.I[albumIdx].albumTagListSel);
-                if( tidx != -1 ) {
-                  G.I[albumIdx].albumTagListSel.splice(tidx,1);
+                // multiple selection of TAGS
+                // if( $this.hasClass('oneTagUnselected') ){
+                if( $this.hasClass('nGY2NavFilterUnselected') ){
+                  G.I[albumIdx].albumTagListSel.push(tag);
                 }
+                else {
+                  var tidx=jQuery.inArray(tag,G.I[albumIdx].albumTagListSel);
+                  if( tidx != -1 ) {
+                    G.I[albumIdx].albumTagListSel.splice(tidx,1);
+                  }
+                }
+                $this.toggleClass('nGY2NavFilters-oneTagUnselected nGY2NavFilters-oneTagSelected');
               }
-              $this.toggleClass('nGY2NavFilters-oneTagUnselected nGY2NavFilters-oneTagSelected');
+              
               DisplayAlbum('-1', G.I[albumIdx].GetID());
             });
           }
-          var $newClearFilter=jQuery('<div class="nGY2NavigationbarItem nGY2NavFilterSelectAll">'+G.O.icons.navigationFilterSelectedAll+'</div>').appendTo(G.GOM.navigationBar.$newContent);
+          
+          // clear/reset TAGS selection
+          var $newClearFilter=jQuery('<div class="nGY2NavigationbarItem nGY2NavFilterSelectAll">'+ G.O.icons.navigationFilterSelectedAll +'</div>').appendTo(G.GOM.navigationBar.$newContent);
           $newClearFilter.click(function() {
-            var nTags=G.I[albumIdx].albumTagList.length;
-            G.I[albumIdx].albumTagListSel=[];
-            for(var i=0; i <nTags; i++ ) {
-              var s=G.I[albumIdx].albumTagList[i];
-              G.I[albumIdx].albumTagListSel.push(s);
-            }
+            // var nTags = G.I[albumIdx].albumTagList.length;
+            G.I[albumIdx].albumTagListSel = [];
+            // for(var i = 0; i < nTags; i++ ) {
+            //  var s = G.I[albumIdx].albumTagList[i];
+            //  G.I[albumIdx].albumTagListSel.push(s);
+            // }
             DisplayAlbum('-1', G.I[albumIdx].GetID());
           });
         }
+      }
+      
+      // --- Gallery pagination next/previous
+      if( G.galleryDisplayMode.Get() == "PAGINATION" && G.O.galleryPaginationTopButtons ) {
+          if( G.layout.support.rows && G.galleryMaxRows.Get() > 0 ) {
+            // ManagePagination( G.GOM.albumIdx );
+            var $newTag = jQuery('<div class="nGY2NavigationbarItem nGY2NavPagination">'+G.O.icons.navigationPaginationPrevious+'</div>').appendTo(G.GOM.navigationBar.$newContent);
+            $newTag.click(function() {
+              paginationPreviousPage();
+            });
+            var $newTag = jQuery('<div class="nGY2NavigationbarItem nGY2NavPagination">'+G.O.icons.navigationPaginationNext+'</div>').appendTo(G.GOM.navigationBar.$newContent);
+            $newTag.click(function() {
+              paginationNextPage();
+            });
+          }
       }
 
     }
     
     function BreadcrumbBuild(lstItems) {
 
-    // console.log(G.GOM.navigationBar.$newContent);
-    jQuery('<div class="nGY2NavigationbarItem nGY2Breadcrumb"></div>').appendTo(G.GOM.navigationBar.$newContent);
-    // console.log(G.GOM.navigationBar.$newContent);
+      // console.log(G.GOM.navigationBar.$newContent);
+      jQuery('<div class="nGY2NavigationbarItem nGY2Breadcrumb"></div>').appendTo(G.GOM.navigationBar.$newContent);
+      // console.log(G.GOM.navigationBar.$newContent);
       
       if( G.O.breadcrumbOnlyCurrentLevel ) {
         // display only 1 separator and the current folder level
@@ -3339,7 +3423,6 @@ TODO:
     // RENDER THE GALLERY
     function GalleryRender( albumIdx ) {
       TriggerCustomEvent('galleryRenderStart');
-      
       clearTimeout(G.GOM.slider.timerID);
       G.GOM.slider.hostIdx = -1;      // disabled slider on thumbnail
       
@@ -3363,9 +3446,11 @@ TODO:
       GalleryNavigationBar(albumIdx);
       
       if( G.GOM.firstDisplay ) {
+				// first gallery display
         G.GOM.firstDisplay = false;
         var d = Date.now()-G.GOM.firstDisplayTime;
         if( d < G.O.galleryRenderDelay ) {
+					// display after defined delay
           // setTimeout( function() { GalleryRenderPart1( albumIdx )}, G.O.galleryRenderDelay-d );
           requestTimeout( function() { GalleryRenderPart1( albumIdx )}, G.O.galleryRenderDelay-d );
         }
@@ -3390,30 +3475,25 @@ TODO:
           easing:       'easeInQuart',
           attachment:   { h: hideNavigationBar },
           step:         function (state, att) {
-            // window.ng_draf( function() {
-              G.$E.conTnParent.css({'opacity': state.opacity });
-              if( att.h ) {
-                G.$E.conNavigationBar.css({ 'opacity': state.opacity });
-              }
-            // });
+            G.$E.conTnParent.css({'opacity': state.opacity });
+            if( att.h ) {
+              G.$E.conNavigationBar.css({ 'opacity': state.opacity });
+            }
           },
           finish:       function (state, att) {
-            // window.ng_draf( function() {
-              if( att.h ) {
-                G.$E.conNavigationBar.css({ 'opacity': 0, 'display': 'none' });
-              }
-              // scroll to top of the gallery if needed
-              var galleryOTop = G.$E.base.offset().top;
-              if( galleryOTop < G.GOM.cache.viewport.t ) {
-                // jQuery('html, body').animate({scrollTop: galleryOTop}, 200);
+            if( att.h ) {
+              G.$E.conNavigationBar.css({ 'opacity': 0, 'display': 'none' });
+            }
+            // scroll to top of the gallery if needed
+            var galleryOTop = G.$E.base.offset().top;
+            if( galleryOTop < G.GOM.cache.viewport.t ) {
                 jQuery('html, body').animate({scrollTop: galleryOTop}, 500, "linear", function() {
-                  GalleryRenderPart1( albumIdx );
-                });
-              }
-              else {
                 GalleryRenderPart1( albumIdx );
-              }
-            // });
+              });
+            }
+            else {
+              GalleryRenderPart1( albumIdx );
+            }
           }
         });
       }
@@ -3459,9 +3539,10 @@ TODO:
 
     }
     
-    // Gallery render part 2 -> remove all thumbnails
+    // Gallery render part 2 -> remove all existing thumbnails
     function GalleryRenderPart2(albumIdx) {
-      G.GOM.lastZIndex = parseInt(G.$E.base.css('z-index'));
+
+			G.GOM.lastZIndex = parseInt(G.$E.base.css('z-index'));
       if( isNaN(G.GOM.lastZIndex) ) {
         G.GOM.lastZIndex=0;
       }
@@ -3499,7 +3580,7 @@ TODO:
 
     }
     
-    // Gallery render part 2 -> start building the new gallery
+    // Gallery render part 3 -> start building the new gallery
     function GalleryRenderPart3(albumIdx) {
       var d = new Date();      
       
@@ -3510,10 +3591,10 @@ TODO:
       // retrieve label height      
       if( G.O.thumbnailLabel.get('position') == 'onBottom' ) {
         // retrieve height each time because size can change depending on thumbnail's settings
-        G.tn.labelHeight[G.GOM.curNavLevel]=ThumbnailGetLabelHeight();
+        G.tn.labelHeight[G.GOM.curNavLevel] = ThumbnailGetLabelHeight();
       }
       else {
-        G.tn.labelHeight[G.GOM.curNavLevel]=0;
+        G.tn.labelHeight[G.GOM.curNavLevel] = 0;
       }
       G.GOM.albumIdx=albumIdx;
 
@@ -3525,15 +3606,14 @@ TODO:
 
       // Step 1: populate GOM
       if( GalleryPopulateGOM() ) {
-
         // step 2: calculate layout
         GallerySetLayout();
 
-        // step 3: display gallery
+        // step 3: display whole gallery 
         GalleryAppear();
-        // GalleryDisplay( false );
+        
+        // step 4: display thumbnails
         GalleryDisplayPart1( false );
-        // setTimeout(function(){ GalleryDisplayPart2( false ) }, 120);
         requestTimeout(function(){ GalleryDisplayPart2( false ) }, 120);
       }
       else {
@@ -3566,6 +3646,8 @@ TODO:
     
     
     // copy items (album content) to GOM
+		// returns:
+		//		true: thumbnail image size is needed for the layout, but not set -> retrieve the sizes and display gallery
     function GalleryPopulateGOM() {
       
       var preloadImages = '';
@@ -3663,7 +3745,7 @@ TODO:
       
     }
     
-    //----- Calculate the layout of the thumbnails
+    //----- Calculate the layout of the thumbnails for the full gallery
     function GallerySetLayout() {
       var r = true;
       // width of the available area
@@ -3720,8 +3802,8 @@ TODO:
       }
 
 
-      var borderWidth = G.tn.borderWidth * 2;
-      var borderHeight = G.tn.borderHeight * 2;
+      var borderWidth = G.tn.opt.Get('borderHorizontal') * 2;
+      var borderHeight = G.tn.opt.Get('borderVertical') * 2;
 
       G.GOM.lastFullRow=-1;   // feature disabled
 
@@ -3738,11 +3820,11 @@ TODO:
       }
 
       
-      tnWidth = tnWidth * scaleFactor;
+      tnWidth = Math.round( tnWidth * scaleFactor);
       var contentWidth = tnWidth - borderWidth;
 
       // loop to position the thumbnails, and set their size
-      var baseHeight = G.tn.opt.Get('baseGridHeight') * scaleFactor;
+      var baseHeight = Math.round( G.tn.opt.Get('baseGridHeight') * scaleFactor );
       for( var i = 0; i < nbTn ; i++ ) {
         var curTn = G.GOM.items[i];
         if( curTn.deleted == true ) { break; }    // item is logically deleted
@@ -3755,7 +3837,7 @@ TODO:
           curTn.resizedContentHeight = curTn.resizedContentWidth * imageRatio;
           if( baseHeight > 0 ) {
             // grid based vertical position
-            var t= Math.max( Math.trunc(curTn.resizedContentHeight/baseHeight), 1) ;
+            var t = Math.max( Math.trunc(curTn.resizedContentHeight/baseHeight), 1) ;
             curTn.resizedContentHeight = baseHeight * t + ((t-1)*(borderHeight+gutterHeight));
           }
           
@@ -3824,8 +3906,8 @@ TODO:
       var rowHasHorizontal =       false; // current row has horizontal thumbs
 
       var tnHeight = G.tn.defaultSize.getOuterHeight();
-      var borderWidth = G.tn.borderWidth * 2;
-      var borderHeight = G.tn.borderHeight * 2;
+      var borderWidth = G.tn.opt.Get('borderHorizontal') * 2;
+      var borderHeight = G.tn.opt.Get('borderVertical') * 2;
       var nbTnInCurrRow = 1;
       var nbTn = G.GOM.items.length;
 
@@ -4010,8 +4092,8 @@ TODO:
       var areaWidth =     G.GOM.cache.areaWidth;
       var gutterHeight =  G.tn.opt.Get('gutterHeight');
       var gutterWidth =   G.tn.opt.Get('gutterWidth');
-      var borderWidth =   G.tn.borderWidth * 2;
-      var borderHeight =  G.tn.borderHeight * 2;
+      var borderWidth =   G.tn.opt.Get('borderHorizontal') * 2;
+      var borderHeight =  G.tn.opt.Get('borderVertical') * 2;
 
       var nbTn = G.GOM.items.length;
       var row = 0;
@@ -4029,9 +4111,9 @@ TODO:
         var cLeft = (curPatternElt.c - 1) * G.tn.defaultSize.getOuterWidth() + (curPatternElt.c - 1) * gutterWidth;
         var cWidth = curPatternElt.w * G.tn.defaultSize.getOuterWidth() + (curPatternElt.w - 1) * gutterWidth;
         
-        maxW=Math.max(maxW, cLeft + cWidth );
+        maxW = Math.max(maxW, cLeft + cWidth );
         
-        nbCols=Math.max(nbCols, (curPatternElt.c - 1) + curPatternElt.w );
+        nbCols = Math.max(nbCols, (curPatternElt.c - 1) + curPatternElt.w );
 
         n++;
         if( n >= mosaicPattern.length ) {
@@ -4050,17 +4132,17 @@ TODO:
         var curTn = G.GOM.items[i];
         var curPatternElt = mosaicPattern[n];
         
-        curTn.top = (curPatternElt.r - 1) * G.tn.defaultSize.getOuterHeight()*scaleFactor + (curPatternElt.r - 1) * gutterHeight + row * h + (G.tn.labelHeight.get()*(curPatternElt.r-1)) ;
+        curTn.top = Math.round((curPatternElt.r - 1) * G.tn.defaultSize.getOuterHeight()*scaleFactor) + (curPatternElt.r - 1) * gutterHeight + row * h + (G.tn.labelHeight.get()*(curPatternElt.r-1)) ;
         if( row > 0 ) {
           curTn.top += gutterHeight;
         }
 
-        curTn.left = (curPatternElt.c - 1) * G.tn.defaultSize.getOuterWidth()*scaleFactor + (curPatternElt.c - 1) * gutterWidth;
+        curTn.left = (curPatternElt.c - 1) * Math.round(G.tn.defaultSize.getOuterWidth()*scaleFactor) + (curPatternElt.c - 1) * gutterWidth;
 
-        curTn.height = curPatternElt.h * G.tn.defaultSize.getOuterHeight() * scaleFactor + (curPatternElt.h - 1) * gutterHeight + (G.tn.labelHeight.get() * curPatternElt.h);
+        curTn.height = Math.round(curPatternElt.h * G.tn.defaultSize.getOuterHeight() * scaleFactor) + (curPatternElt.h - 1) * gutterHeight + (G.tn.labelHeight.get() * curPatternElt.h);
         curTn.resizedContentHeight = curTn.height - G.tn.labelHeight.get() - borderHeight;
 
-        curTn.width = curPatternElt.w * G.tn.defaultSize.getOuterWidth()*scaleFactor + (curPatternElt.w - 1) * gutterWidth;
+        curTn.width = Math.round(curPatternElt.w * G.tn.defaultSize.getOuterWidth()*scaleFactor) + (curPatternElt.w - 1) * gutterWidth;
         curTn.resizedContentWidth = curTn.width - borderWidth ;
 
         curTn.row = row;
@@ -4097,8 +4179,8 @@ TODO:
       tnWidth=          G.tn.defaultSize.getOuterWidth();
       var scaleFactor = 1;
       var nbTn=         G.GOM.items.length;
-      var borderWidth = G.tn.borderWidth * 2;
-      var borderHeight =G.tn.borderHeight * 2;
+      var borderWidth   = G.tn.opt.Get('borderHorizontal') * 2;
+      var borderHeight  = G.tn.opt.Get('borderVertical') * 2;
       
       // retrieve gutter width
       if( G.O.thumbnailAlignment == 'justified' ) {
@@ -4128,10 +4210,10 @@ TODO:
       var lastPosY = 0;
       var row = 0;
       
-      tnWidth = tnWidth * scaleFactor;
+      tnWidth = Math.round(tnWidth * scaleFactor);
       var contentWidth = tnWidth - borderWidth;
-      var tnHeight = G.tn.defaultSize.getOuterHeight() * scaleFactor + G.tn.labelHeight.get();
-      var contentHeight = G.tn.defaultSize.getOuterHeight() * scaleFactor - borderHeight;
+      var tnHeight = Math.round(G.tn.defaultSize.getOuterHeight() * scaleFactor) + G.tn.labelHeight.get();
+      var contentHeight = Math.round( G.tn.defaultSize.getOuterHeight() * scaleFactor) - borderHeight;
       
       // loop to position and to set size of all thumbnails
       for( var i = 0; i < nbTn ; i++ ) {
@@ -4177,6 +4259,8 @@ TODO:
     }
 
 
+
+
     //----- Display the thumbnails according to the calculated layout
     function GalleryDisplayPart1( forceTransition ) {
       if( G.CSStransformName == null ) {
@@ -4185,18 +4269,25 @@ TODO:
       else {
         G.$E.conTn.css( G.CSStransformName , 'none');
       }
-      CacheViewport();
+      // CacheViewport();
     }
     
     function CacheViewport() {
       G.GOM.cache.viewport = getViewport();
       G.GOM.cache.areaWidth = G.$E.conTnParent.width();
-      G.GOM.cache.containerOffset = G.$E.conTnParent.offset();
+			
+			// position of the gallery container
+			// we use the position of the loadingbar because :
+			//    - the gallery may be wrong positioned due to one display animation currently running
+			//    - the loadingbar is never animated and positioned just before the gallery container
+      //G.GOM.cache.containerOffset = G.$E.conTnParent.offset();
+      G.GOM.cache.containerOffset = G.$E.conLoadingB.offset();
     }
 
 
     
     function GalleryDisplayPart2( forceTransition ) {
+      CacheViewport();
 
       var nbTn = G.GOM.items.length;
       G.GOM.itemsDisplayed = 0;
@@ -4227,6 +4318,7 @@ TODO:
       var tnToDisplay = [];
       var tnToReDisplay = [];
       
+      CacheViewport();
       G.GOM.clipArea.top = -1;
       cnt = 0 ;
       var lastTnIdx = -1;
@@ -4246,7 +4338,7 @@ TODO:
           G.GOM.clipArea.height = Math.max( G.GOM.clipArea.height, curTn.top-G.GOM.clipArea.top + curTn.height);
         
           if( curTn.neverDisplayed ) {
-            // thumbnail is not displayed -> check if in viewport to display or not
+						// thumbnail is not displayed -> check if in viewport to display or not
             var top = G.GOM.cache.containerOffset.top + (curTn.top - G.GOM.clipArea.top);
             // var left=containerOffset.left+curTn.left;
             if( (top + curTn.height) >= (G.GOM.cache.viewport.t - threshold) && top <= (G.GOM.cache.viewport.t + G.GOM.cache.viewport.h + threshold) ) {
@@ -4491,17 +4583,19 @@ TODO:
 
             // if( G.layout.engine == 'GRID' && G.GOM.slider.hostItem != G.GOM.NGY2Item(GOMidx) ) {
             // image slider on last displayed thumbnail
-            if( G.GOM.slider.hostItem != G.GOM.NGY2Item(GOMidx) ) {
+            if( G.O.thumbnailLabel.get('position') != 'right' && G.O.thumbnailLabel.get('position') != 'left' ) {
+              if( G.GOM.slider.hostItem != G.GOM.NGY2Item(GOMidx) ) {
 
-              // set current slider back to initial content
-              GalleryThumbnailSliderSetContent( G.GOM.slider.hostItem );
-              // new slider
-              G.GOM.slider.hostIdx = GOMidx;
-              G.GOM.slider.hostItem = G.GOM.NGY2Item(GOMidx);
-              G.GOM.slider.nextIdx = GOMidx;
-              G.GOM.slider.currentIdx = GOMidx;
-              GalleryThumbnailSliderBuildAndStart();  // image slider on last displayed thumbnail
-              // GalleryThumbnailSliderSetNextContent();
+                // set current slider back to initial content
+                GalleryThumbnailSliderSetContent( G.GOM.slider.hostItem );
+                // new slider
+                G.GOM.slider.hostIdx = GOMidx;
+                G.GOM.slider.hostItem = G.GOM.NGY2Item(GOMidx);
+                G.GOM.slider.nextIdx = GOMidx;
+                G.GOM.slider.currentIdx = GOMidx;
+                GalleryThumbnailSliderBuildAndStart();  // image slider on last displayed thumbnail
+                // GalleryThumbnailSliderSetNextContent();
+              }
             }
           }
           else {
@@ -4802,7 +4896,7 @@ TODO:
       }
 
       // ##### thumbnail containers  (with stacks)
-      newElt[newEltIdx++] = ThumbnailBuildStacks(bg) + '<div class="nGY2GThumbnail" style="display:none;opacity:0;' + mp + '"><div class="nGY2GThumbnailSub ' + ( G.O.thumbnailSelectable && item.selected ? "nGY2GThumbnailSubSelected" : "" ) + '">';
+      newElt[newEltIdx++] = ThumbnailBuildStacks(bg) + '<div class="nGY2GThumbnail nGY2GThumbnail_'+G.GOM.curNavLevel+'" style="display:none;opacity:0;' + mp + '"><div class="nGY2GThumbnailSub ' + ( G.O.thumbnailSelectable && item.selected ? "nGY2GThumbnailSubSelected" : "" ) + '">';
 
       
       // image size
@@ -4964,7 +5058,9 @@ TODO:
                 break;
               case 'CART':
                 toolbar += '    <li class="nGY2GThumbnailIcon" data-ngy2action="' + tIcon + '">';
-                toolbar += '      <div>' + G.O.icons.thumbnailCart + '</div>';
+                // toolbar += '      <div>' + G.O.icons.thumbnailCart + '</div>';
+                toolbar += ThumbnailBuildToolbarOneCart( item );
+                
                 toolbar += '    </li>';
                 cnt++;
                 break;
@@ -5022,6 +5118,28 @@ TODO:
       }
       else {
         return '';
+      }
+    }
+    
+    // CART ICON AND COUNTER
+    function ThumbnailBuildToolbarOneCart( item ) {
+      var c = '';
+      
+      var id = item.GetID()
+      for( var i=0; i<G.shoppingCart.length; i++ ) {
+        if( G.I[G.shoppingCart[i].idx].GetID() == id ) {
+          c = G.shoppingCart[i].cnt;
+        }
+      }
+      return '      <div>' + G.O.icons.thumbnailCart + c + '</div>';
+    }
+    function ThumbnailBuildToolbarOneCartUpdate( idx ) {
+      var $e = G.I[idx].$elt;
+      if( $e != null ) {
+        var $c = $e.find('*[data-ngy2action="CART"]');
+        if( $c !== undefined ) {
+          $c.html( ThumbnailBuildToolbarOneCart(G.I[idx]) );
+        }
       }
     }
     
@@ -5785,15 +5903,15 @@ TODO:
         kind: 'iframe'
       },
       selfhosted : {
-				// selhosted videos
+				// SELF-HOSTED VIDEOS
         getID: function( url ) {
-          // In order to leave things as is, i used id to identify the extension
+          // In order to leave things as is, I used ID to identify the extension
           // https://stackoverflow.com/questions/6997262/how-to-pull-url-file-extension-out-of-url-string-using-javascript
           // Make sure the method used for verifying the extension matches the kind of url your selfhosted video has
           var extension = url.split('.').pop();
 
-          // Add more extensions as required
-          var s = ( extension === 'mp4' || extension === '3gp' ) ? extension : null ;
+          // supported extensions
+          var s = ( extension === 'mp4' || extension === 'webm' || extension === 'ogv' || extension === '3gp' ) ? extension : null ;
           return s;
         },
         markup: function( url ) {
@@ -6154,22 +6272,12 @@ TODO:
         jQuery.each(mediaList, function ( n, media ) {
           var id = media.getID(src);
           if( id != null ) {
-            src = ( media.selfhosted ) ? media.url( src ) : media.url(id);
+            if( typeof media.url == 'function' ) { src = media.url(id);  }
             if( typeof media.thumbUrl == 'function' ) { thumbsrc = media.thumbUrl(id);  }
             newItem.mediaKind = media.kind;
-            newItem.mediaMarkup = ( media.selfhosted ) ? media.markup( { 'src' : src, 'type' : id } ) : media.markup(id);
+            newItem.mediaMarkup = ( media.selfhosted ) ? media.markup( src ) : media.markup(id);
             return false;
           }
-// selhosted videos          
-/*
-          var id = media.getID(src);
-          if( id != null ) {
-            src = media.url(id);
-            if( typeof media.thumbUrl == 'function' ) { thumbsrc = media.thumbUrl(id);  }
-            newItem.mediaKind = media.kind;
-            newItem.mediaMarkup = media.markup(id);
-            return false;
-*/
         });
         
         
@@ -6297,6 +6405,34 @@ TODO:
         }
       }
 
+      // convert label settings
+      if( G.O.thumbnailLabel.position == 'overImageOnBottom' ) {
+        G.O.thumbnailLabel.valign = 'bottom';
+        G.O.thumbnailLabel.position == 'overImage';
+      }
+      if( G.O.thumbnailLabel.position == 'overImageOnMiddle' ) {
+        G.O.thumbnailLabel.valign = 'middle';
+        G.O.thumbnailLabel.position == 'overImage';
+      }
+      if( G.O.thumbnailLabel.position == 'overImageOnTop' ) {
+        G.O.thumbnailLabel.valign = 'top';
+        G.O.thumbnailLabel.position == 'overImage';
+      }
+      if( G.O.thumbnailL1Label !== undefined && G.O.thumbnailL1Label.position !== undefined ) {
+        if( G.O.thumbnailL1Label.position == 'overImageOnBottom' ) {
+          G.O.thumbnailL1Label.valign = 'bottom';
+          G.O.thumbnailL1Label.position == 'overImage';
+        }
+        if( G.O.thumbnailL1Label.position == 'overImageOnMiddle' ) {
+          G.O.thumbnailL1Label.valign = 'middle';
+          G.O.thumbnailL1Label.position == 'overImage';
+        }
+        if( G.O.thumbnailL1Label.position == 'overImageOnTop' ) {
+          G.O.thumbnailL1Label.valign = 'top';
+          G.O.thumbnailL1Label.position == 'overImage';
+        }
+      }
+
       // thumbnails label - level dependant settings
       G.O.thumbnailLabel.get = function( opt ) {
         if( G.GOM.curNavLevel == 'l1' && G.O.thumbnailL1Label !== undefined && G.O.thumbnailL1Label[opt] !== undefined ) {
@@ -6315,8 +6451,8 @@ TODO:
         }
       };
 
-      if( G.O.blackList != '' ) { G.blackList=G.O.blackList.toUpperCase().split('|'); }
-      if( G.O.whiteList != '' ) { G.whiteList=G.O.whiteList.toUpperCase().split('|'); }
+      if( G.O.blackList != '' ) { G.blackList = G.O.blackList.toUpperCase().split('|'); }
+      if( G.O.whiteList != '' ) { G.whiteList = G.O.whiteList.toUpperCase().split('|'); }
 
       if( G.O.albumList2 !== undefined && G.O.albumList2 !== null && G.O.albumList2.constructor === Array  ) {
         var l=G.O.albumList2.length;
@@ -6362,6 +6498,10 @@ TODO:
       ThumbnailOpt('thumbnailGutterWidth', 'thumbnailL1GutterWidth', 'gutterWidth');
       // thumbnail gutter height
       ThumbnailOpt('thumbnailGutterHeight', 'thumbnailL1GutterHeight', 'gutterHeight');
+      // thumbnail border horizontal
+      ThumbnailOpt('thumbnailBorderHorizontal', 'thumbnailL1BorderHorizontal', 'borderHorizontal');
+      // thumbnail border vertical
+      ThumbnailOpt('thumbnailBorderVertical', 'thumbnailL1BorderVertical', 'borderVertical');
       // thumbnail grid base height (for cascading layout)
       ThumbnailOpt('thumbnailBaseGridHeight', 'thumbnailL1BaseGridHeight', 'baseGridHeight');
       
@@ -6396,6 +6536,10 @@ TODO:
       // gallery filter tags
       G.galleryFilterTags.lN = G.O.galleryFilterTags;
       G.galleryFilterTags.l1 = G.O.galleryL1FilterTags != null ? G.O.galleryL1FilterTags : G.O.galleryFilterTags;
+
+      // gallery filter tags mode
+      G.galleryFilterTagsMode.lN = G.O.galleryFilterTagsMode;
+      G.galleryFilterTagsMode.l1 = G.O.galleryL1FilterTagsMode != null ? G.O.galleryL1FilterTagsMode : G.O.galleryFilterTagsMode;
       
       // gallery pagination
       G.O.galleryPaginationMode = G.O.galleryPaginationMode.toUpperCase();
@@ -6638,8 +6782,8 @@ TODO:
       ThumbnailSizes( 'thumbnailL1Height', true, 'height');
 
       
-      G.O.thumbnailBorderHorizontal = parseInt(G.O.thumbnailBorderHorizontal);
-      G.O.thumbnailBorderVertical = parseInt(G.O.thumbnailBorderVertical);
+      // G.O.thumbnailBorderHorizontal = parseInt(G.O.thumbnailBorderHorizontal);
+      // G.O.thumbnailBorderVertical = parseInt(G.O.thumbnailBorderVertical);
       G.O.thumbnailLabelHeight = parseInt(G.O.thumbnailLabelHeight);
 
       
@@ -6681,18 +6825,22 @@ TODO:
         G.tn.settings.mosaicCalcFactor('l1', 'la');
         G.tn.settings.mosaicCalcFactor('l1', 'xl');
       }
-      for( var w = 0; w < G.tn.settings.mosaic.l1; w++ ) {
-        if( G.O['galleryMosaic' + G.tn.settings.mosaic.l1[w].toUpperCase()] != undefined ) {
-          G.tn.settings.mosaic.lN[tn.settings.mosaic.l1[w]] = JSON.parse(JSON.stringify( G.O['galleryMosaic' + G.tn.settings.mosaic.l1[w].toUpperCase()] ));
-          G.tn.settings.mosaic.l1[tn.settings.mosaic.l1[w]] = JSON.parse(JSON.stringify( G.O['galleryMosaic' + G.tn.settings.mosaic.l1[w].toUpperCase()] ));
-          G.tn.settings.mosaicCalcFactor('l1', G.tn.settings.mosaic.l1[w]);
-          G.tn.settings.mosaicCalcFactor('lN', G.tn.settings.mosaic.l1[w]);
+
+			var lst=['xs','sm','me','la','xl'];
+			// retrieve responsive mosaic definition for levels l1 & lN
+      for( var w = 0; w < lst.length; w++ ) {
+				if( G.O['galleryMosaic' + lst[w].toUpperCase()] != undefined ) {
+          G.tn.settings.mosaic.lN[lst[w]] = JSON.parse(JSON.stringify( G.O['galleryMosaic' + lst[w].toUpperCase()] ));
+          G.tn.settings.mosaic.l1[lst[w]] = JSON.parse(JSON.stringify( G.O['galleryMosaic' + lst[w].toUpperCase()] ));
+          G.tn.settings.mosaicCalcFactor('lN',lst[w]);
+          G.tn.settings.mosaicCalcFactor('l1', lst[w]);
         }
       }
-      for( var w = 0; w < G.tn.settings.mosaic.l1; w++ ) {
-        if( G.O['galleryL1Mosaic'+G.tn.settings.mosaic.l1[w].toUpperCase()] != undefined ) {
-          G.tn.settings.mosaic.l1[tn.settings.mosaic.l1[w]] = JSON.parse(JSON.stringify( G.O['galleryL1Mosaic'+G.tn.settings.mosaic.l1[w].toUpperCase()] ));
-          G.tn.settings.mosaicCalcFactor('l1', G.tn.settings.mosaic.l1[w]);
+			// retrieve responsive mosaic definition for level l1
+      for( var w = 0; w < lst.length; w++ ) {
+				if( G.O['galleryL1Mosaic' + lst[w].toUpperCase()] != undefined ) {
+          G.tn.settings.mosaic.l1[lst[w]] = JSON.parse(JSON.stringify( G.O['galleryL1Mosaic' + lst[w].toUpperCase()] ));
+          G.tn.settings.mosaicCalcFactor('l1', lst[w]);
         }
       }
       
@@ -7016,39 +7164,78 @@ TODO:
 
     
     function ThumbnailStyle( cfg, level) {
-    
+
       switch( cfg.position ){
         case 'onBottom' :
           G.tn.style[level]['label'] = 'bottom:0; ';
           break;
-        case 'overImageOnTop' :
-          G.tn.style[level]['label'] = 'top:0; position:absolute;';
+        case 'right' :
+          switch( cfg.valign ) {
+              case 'top':
+                G.tn.style[level]['label'] = 'top:0; position:absolute; left: 50%;';
+                break;
+              case 'middle':
+                G.tn.style[level]['label'] = 'top:0; bottom:0; left: 50%;';
+                G.tn.style[level]['title'] = 'position:absolute; bottom:50%;';
+                G.tn.style[level]['desc'] = 'position:absolute; top:50%;';
+                break;
+              case 'bottom':
+              default:
+                G.tn.style[level].label = 'bottom:0; position:absolute; left: 50%;';
+                G.tn.style[level].title = 'position:absolute;bottom:0;';
+                break;
+          }
           break;
-        case 'overImageOnMiddle' :
-          G.tn.style[level]['label'] = 'top:0; bottom:0;';
-          G.tn.style[level]['title'] = 'position:absolute; bottom:50%;';
-          G.tn.style[level]['desc'] = 'position:absolute; top:50%;';
+        case 'custom':
           break;
-        case 'custom' :
-          break;
-        case 'overImageOnBottom' :
-        default :
-          G.O.thumbnailLabel.position = 'overImageOnBottom';
-          G.tn.style[level].label = 'bottom:0; position:absolute;';
-          break;
+        default:
+        case 'overImage' :
+          switch( cfg.valign ) {
+              case 'top':
+                G.tn.style[level]['label'] = 'top:0; position:absolute;';
+                break;
+              case 'middle':
+                G.tn.style[level]['label'] = 'top:0; bottom:0;';
+                G.tn.style[level]['title'] = 'position:absolute; bottom:50%;';
+                G.tn.style[level]['desc'] = 'position:absolute; top:50%;';
+                break;
+              case 'bottom':
+              default:
+                // G.O.thumbnailLabel.position = 'overImageOnBottom';
+                G.tn.style[level].label = 'bottom:0; position:absolute;';
+                break;
+          }
+        
+        // case 'overImageOnTop' :
+          // G.tn.style[level]['label'] = 'top:0; position:absolute;';
+          // break;
+        // case 'overImageOnMiddle' :
+          // G.tn.style[level]['label'] = 'top:0; bottom:0;';
+          // G.tn.style[level]['title'] = 'position:absolute; bottom:50%;';
+          // G.tn.style[level]['desc'] = 'position:absolute; top:50%;';
+          // break;
+        // case 'right' :
+        // case 'custom' :
+          // break;
+        // case 'overImageOnBottom' :
+        // default :
+          // G.O.thumbnailLabel.position = 'overImageOnBottom';
+          // G.tn.style[level].label = 'bottom:0; position:absolute;';
+          // break;
       }
+      
       // if( G.layout.engine != 'CASCADING' ) {
       if( cfg.position != 'onBottom' ) {
         // multi-line
         if( cfg.titleMultiLine ) {
-          G.tn.style[level]['title'] = 'white-space:normal;';
+          G.tn.style[level]['title'] += 'white-space:normal;';
         }
         if( cfg.descriptionMultiLine ) {
-          G.tn.style[level]['desc'] = 'white-space:normal;';
+          G.tn.style[level]['desc'] += 'white-space:normal;';
         }
       }
       
-      
+      // horizontal alignement
       switch( cfg.align ) {
         case 'right':
             G.tn.style[level].label += 'text-align:right;';
@@ -7060,6 +7247,8 @@ TODO:
             G.tn.style[level].label += 'text-align:center;';
           break;
       }
+      
+      
       if( cfg.titleFontSize != undefined && cfg.titleFontSize != '' ) {
         G.tn.style[level].title += 'font-size:' + cfg.titleFontSize + ';';
       }
@@ -7079,15 +7268,17 @@ TODO:
 
       // settings for level L1 and LN
       ThumbnailStyle( G.O.thumbnailLabel, 'lN');
-      ThumbnailStyle( G.O.thumbnailLabel, 'l1');
+      if( G.O.thumbnailL1Label !== undefined ) {
+        ThumbnailStyle( G.O.thumbnailL1Label, 'l1');
+      }
+      else {
+        ThumbnailStyle( G.O.thumbnailLabel, 'l1');
+      }
 
       if( G.O.thumbnailL1Label && G.O.thumbnailL1Label.display ) {
         // settings for level L1
         ThumbnailStyle( G.O.thumbnailL1Label, 'l1');
       }
-      
-      G.tn.borderWidth = G.O.thumbnailBorderHorizontal;
-      G.tn.borderHeight = G.O.thumbnailBorderVertical;
       
 
       // default thumbnail sizes levels l1 and lN
@@ -7224,57 +7415,73 @@ TODO:
       var s1='.' + galleryTheme + ' ';
     
       // navigation bar
-      var s=s1+'.nGY2Navigationbar { background:'+cs.navigationBar.background+'; }'+'\n';
-      if( cs.navigationBar.border !== undefined && cs.navigationBar.border !== '' ) { s+=s1+'.nGY2Navigationbar { border:'+cs.navigationBar.border+'; }'+'\n'; }
-      if( cs.navigationBar.borderTop !== undefined && cs.navigationBar.borderTop !== '' ) { s+=s1+'.nGY2Navigationbar { border-top:'+cs.navigationBar.borderTop+'; }'+'\n'; }
-      if( cs.navigationBar.borderBottom !== undefined && cs.navigationBar.borderBottom !== '' ) { s+=s1+'.nGY2Navigationbar { border-bottom:'+cs.navigationBar.borderBottom+'; }'+'\n'; }
-      if( cs.navigationBar.borderRight !== undefined && cs.navigationBar.borderRight !== '' ) { s+=s1+'.nGY2Navigationbar { border-right:'+cs.navigationBar.borderRight+'; }'+'\n'; }
-      if( cs.navigationBar.borderLeft !== undefined && cs.navigationBar.borderLeft !== '' ) { s+=s1+'.nGY2Navigationbar { border-left:'+cs.navigationBar.borderLeft+'; }'+'\n'; }
+      var c = cs.navigationBar;
+      var s=s1+'.nGY2Navigationbar { background:'+c.background+'; }'+'\n';
+      if( c.border !== undefined && c.border !== '' ) { s+=s1+'.nGY2Navigationbar { border:'+c.border+'; }'+'\n'; }
+      if( c.borderTop !== undefined && c.borderTop !== '' ) { s+=s1+'.nGY2Navigationbar { border-top:'+c.borderTop+'; }'+'\n'; }
+      if( c.borderBottom !== undefined && c.borderBottom !== '' ) { s+=s1+'.nGY2Navigationbar { border-bottom:'+c.borderBottom+'; }'+'\n'; }
+      if( c.borderRight !== undefined && c.borderRight !== '' ) { s+=s1+'.nGY2Navigationbar { border-right:'+c.borderRight+'; }'+'\n'; }
+      if( c.borderLeft !== undefined && c.borderLeft !== '' ) { s+=s1+'.nGY2Navigationbar { border-left:'+c.borderLeft+'; }'+'\n'; }
       
       // navigation bar - breadcrumb
-      s+=s1+'.nGY2Breadcrumb { background:'+cs.navigationBreadcrumb.background+'; border-radius:'+cs.navigationBreadcrumb.borderRadius+'; }'+'\n';
-      s+=s1+'.nGY2Breadcrumb .oneItem  { color:'+cs.navigationBreadcrumb.color+'; }'+'\n';
-      s+=s1+'.nGY2Breadcrumb .oneItem:hover { color:'+cs.navigationBreadcrumb.colorHover+'; }'+'\n';
+      var c = cs.navigationBreadcrumb;
+      s+=s1+'.nGY2Breadcrumb { background:'+c.background+'; border-radius:'+c.borderRadius+'; }'+'\n';
+      s+=s1+'.nGY2Breadcrumb .oneItem  { color:'+c.color+'; }'+'\n';
+      s+=s1+'.nGY2Breadcrumb .oneItem:hover { color:'+c.colorHover+'; }'+'\n';
 
       // navigation bar - tag filter
-      s+=s1+'.nGY2NavFilterUnselected { color:'+cs.navigationFilter.color+'; background:'+cs.navigationFilter.background+'; border-radius:'+cs.navigationFilter.borderRadius+'; }'+'\n';
-      s+=s1+'.nGY2NavFilterSelected { color:'+cs.navigationFilter.colorSelected+'; background:'+cs.navigationFilter.backgroundSelected+'; border-radius:'+cs.navigationFilter.borderRadius+'; }'+'\n';
-      s+=s1+'.nGY2NavFilterSelectAll { color:'+cs.navigationFilter.colorSelected+'; background:'+cs.navigationFilter.background+'; border-radius:'+cs.navigationFilter.borderRadius+'; }'+'\n';
+      var c = cs.navigationFilter;
+      s+=s1+'.nGY2NavFilterUnselected { color:'+c.color+'; background:'+c.background+'; border-radius:'+c.borderRadius+'; }'+'\n';
+      s+=s1+'.nGY2NavFilterSelected { color:'+c.colorSelected+'; background:'+c.backgroundSelected+'; border-radius:'+c.borderRadius+'; }'+'\n';
+      s+=s1+'.nGY2NavFilterSelectAll { color:'+c.colorSelected+'; background:'+c.background+'; border-radius:'+c.borderRadius+'; }'+'\n';
+
+      // navigation bar - pagination next/previous
+      var c = cs.navigationPagination;
+      s+=s1+'.nGY2NavPagination { color:'+c.color+'; background:'+c.background+'; border-radius:'+c.borderRadius+'; }'+'\n';
+      s+=s1+'.nGY2NavPagination:hover { color:'+c.colorHover+'; }'+'\n';
       
       // thumbnails
-      s+=s1+'.nGY2GThumbnail { background:'+cs.thumbnail.background+'; border-color:'+cs.thumbnail.borderColor+'; border-top-width:'+G.O.thumbnailBorderVertical+'px; border-right-width:'+G.O.thumbnailBorderHorizontal+'px; border-bottom-width:'+G.O.thumbnailBorderVertical+'px; border-left-width:'+G.O.thumbnailBorderHorizontal+'px;}'+'\n';
-      s+=s1+'.nGY2GThumbnailStack { background:'+cs.thumbnail.stackBackground+'; }'+'\n';
+      var c = cs.thumbnail;
+      // s+=s1+'.nGY2GThumbnail { border-radius: '+c.borderRadius+'; background:'+c.background+'; border-color:'+c.borderColor+'; border-top-width:'+G.tn.opt.Get('borderVertical')+'px; border-right-width:'+G.tn.opt.Get('borderHorizontal')+'px; border-bottom-width:'+G.tn.opt.Get('borderVertical')+'px; border-left-width:'+G.tn.opt.Get('borderHorizontal')+'px;}'+'\n';
+      s+=s1+'.nGY2GThumbnail { border-radius: '+c.borderRadius+'; background:'+c.background+'; border-color:'+c.borderColor+'; }'+'\n';
+      s+=s1+'.nGY2GThumbnail_l1 { border-top-width:'+G.tn.opt.l1.borderVertical+'px; border-right-width:'+G.tn.opt.l1.borderHorizontal+'px; border-bottom-width:'+G.tn.opt.l1.borderVertical+'px; border-left-width:'+G.tn.opt.l1.borderHorizontal+'px;}'+'\n';
+      s+=s1+'.nGY2GThumbnail_lN { border-top-width:'+G.tn.opt.lN.borderVertical+'px; border-right-width:'+G.tn.opt.lN.borderHorizontal+'px; border-bottom-width:'+G.tn.opt.lN.borderVertical+'px; border-left-width:'+G.tn.opt.lN.borderHorizontal+'px;}'+'\n';
+      s+=s1+'.nGY2GThumbnailStack { background:'+c.stackBackground+'; }'+'\n';
       // s+=s1+'.nGY2GThumbnailImage { background:'+cs.thumbnail.background+'; background-image:'+cs.thumbnail.backgroundImage+'; }'+'\n';
-      s+=s1+'.nGY2TnImgBack { background:'+cs.thumbnail.background+'; background-image:'+cs.thumbnail.backgroundImage+'; }'+'\n';
-      s+=s1+'.nGY2GThumbnailAlbumUp { background:'+cs.thumbnail.background+'; background-image:'+cs.thumbnail.backgroundImage+'; color:'+cs.thumbnail.titleColor+'; }'+'\n';
-      s+=s1+'.nGY2GThumbnailIconsFullThumbnail { color:'+cs.thumbnail.titleColor+'; }\n';
-      s+=s1+'.nGY2GThumbnailLabel { background:'+cs.thumbnail.labelBackground+'; opacity:'+cs.thumbnail.labelOpacity+'; }'+'\n';
-      s+=s1+'.nGY2GThumbnailImageTitle  { color:'+cs.thumbnail.titleColor+'; background-color:'+cs.thumbnail.titleBgColor+'; '+(cs.thumbnail.titleShadow =='' ? '': 'Text-Shadow:'+cs.thumbnail.titleShadow+';')+' }'+'\n';
-      s+=s1+'.nGY2GThumbnailAlbumTitle { color:'+cs.thumbnail.titleColor+'; background-color:'+cs.thumbnail.titleBgColor+'; '+(cs.thumbnail.titleShadow =='' ? '': 'Text-Shadow:'+cs.thumbnail.titleShadow+';')+' }'+'\n';
-      s+=s1+'.nGY2GThumbnailDescription { color:'+cs.thumbnail.descriptionColor+'; background-color:'+cs.thumbnail.descriptionBgColor+'; '+(cs.thumbnail.descriptionShadow =='' ? '': 'Text-Shadow:'+cs.thumbnail.descriptionShadow+';')+' }'+'\n';
+      s+=s1+'.nGY2TnImgBack { background:'+c.background+'; background-image:'+c.backgroundImage+'; }'+'\n';
+      s+=s1+'.nGY2GThumbnailAlbumUp { background:'+c.background+'; background-image:'+c.backgroundImage+'; color:'+cs.thumbnail.titleColor+'; }'+'\n';
+      s+=s1+'.nGY2GThumbnailIconsFullThumbnail { color:'+c.titleColor+'; }\n';
+      s+=s1+'.nGY2GThumbnailLabel { background:'+c.labelBackground+'; opacity:'+c.labelOpacity+'; }'+'\n';
+      s+=s1+'.nGY2GThumbnailImageTitle  { color:'+c.titleColor+'; background-color:'+c.titleBgColor+'; '+(c.titleShadow =='' ? '': 'Text-Shadow:'+c.titleShadow+';')+' }'+'\n';
+      s+=s1+'.nGY2GThumbnailAlbumTitle { color:'+c.titleColor+'; background-color:'+c.titleBgColor+'; '+(c.titleShadow =='' ? '': 'Text-Shadow:'+c.titleShadow+';')+' }'+'\n';
+      s+=s1+'.nGY2GThumbnailDescription { color:'+c.descriptionColor+'; background-color:'+c.descriptionBgColor+'; '+(c.descriptionShadow =='' ? '': 'Text-Shadow:'+c.descriptionShadow+';')+' }'+'\n';
 
       // thumbnails - icons
-      s+=s1+'.nGY2GThumbnailIcons { padding:'+cs.thumbnailIcon.padding+'; }\n';
-      s+=s1+'.nGY2GThumbnailIcon { color:'+cs.thumbnailIcon.color+'; }\n';
-      s+=s1+'.nGY2GThumbnailIconTextBadge { background-color:'+cs.thumbnailIcon.color+'; }\n';
+      var c = cs.thumbnailIcon;
+      s+=s1+'.nGY2GThumbnailIcons { padding:'+c.padding+'; }\n';
+      s+=s1+'.nGY2GThumbnailIcon { color:'+c.color+'; '+(c.shadow =='' ? '': 'Text-Shadow:'+c.shadow+';')+' }\n';
+      s+=s1+'.nGY2GThumbnailIconTextBadge { background-color:'+c.color+'; }\n';
       
       // gallery pagination -> dot/rectangle based
+      var c = cs.pagination;
       if( G.O.galleryPaginationMode != 'NUMBERS' ) {
-        s+=s1+'.nGY2paginationDot { border:'+cs.pagination.shapeBorder+'; background:'+cs.pagination.shapeColor+';}\n';
-        s+=s1+'.nGY2paginationDotCurrentPage { border:'+cs.pagination.shapeBorder+'; background:'+cs.pagination.shapeSelectedColor+';}\n';
-        s+=s1+'.nGY2paginationRectangle { border:'+cs.pagination.shapeBorder+'; background:'+cs.pagination.shapeColor+';}\n';
-        s+=s1+'.nGY2paginationRectangleCurrentPage { border:'+cs.pagination.shapeBorder+'; background:'+cs.pagination.shapeSelectedColor+';}\n';
+        s+=s1+'.nGY2paginationDot { border:'+c.shapeBorder+'; background:'+c.shapeColor+';}\n';
+        s+=s1+'.nGY2paginationDotCurrentPage { border:'+c.shapeBorder+'; background:'+c.shapeSelectedColor+';}\n';
+        s+=s1+'.nGY2paginationRectangle { border:'+c.shapeBorder+'; background:'+c.shapeColor+';}\n';
+        s+=s1+'.nGY2paginationRectangleCurrentPage { border:'+c.shapeBorder+'; background:'+c.shapeSelectedColor+';}\n';
       } else {
-        s+=s1+'.nGY2paginationItem { background:'+cs.pagination.background+'; color:'+cs.pagination.color+'; border-radius:'+cs.pagination.borderRadius+'; }\n';
-        s+=s1+'.nGY2paginationItemCurrentPage { background:'+cs.pagination.background+'; color:'+cs.pagination.color+'; border-radius:'+cs.pagination.borderRadius+'; }\n';
-        s+=s1+'.nGY2PaginationPrev { background:'+cs.pagination.background+'; color:'+cs.pagination.color+'; border-radius:'+cs.pagination.borderRadius+'; }\n';
-        s+=s1+'.nGY2PaginationNext { background:'+cs.pagination.background+'; color:'+cs.pagination.color+'; border-radius:'+cs.pagination.borderRadius+'; }\n';
-        s+=s1+'.nGY2paginationItemCurrentPage { background:'+cs.pagination.backgroundSelected+'; }\n';
+        s+=s1+'.nGY2paginationItem { background:'+c.background+'; color:'+c.color+'; border-radius:'+c.borderRadius+'; }\n';
+        s+=s1+'.nGY2paginationItemCurrentPage { background:'+c.background+'; color:'+c.color+'; border-radius:'+c.borderRadius+'; }\n';
+        s+=s1+'.nGY2PaginationPrev { background:'+c.background+'; color:'+c.color+'; border-radius:'+c.borderRadius+'; }\n';
+        s+=s1+'.nGY2PaginationNext { background:'+c.background+'; color:'+c.color+'; border-radius:'+c.borderRadius+'; }\n';
+        s+=s1+'.nGY2paginationItemCurrentPage { background:'+c.backgroundSelected+'; }\n';
       }
       
       // gallery more button
-      s+=s1+'.nGY2GalleryMoreButtonAnnotation { background:'+cs.thumbnail.background+'; border-color:'+cs.thumbnail.borderColor+'; border-top-width:'+G.O.thumbnailBorderVertical+'px; border-right-width:'+G.O.thumbnailBorderHorizontal+'px; border-bottom-width:'+G.O.thumbnailBorderVertical+'px; border-left-width:'+G.O.thumbnailBorderHorizontal+'px;}\n';
-      s+=s1+'.nGY2GalleryMoreButtonAnnotation  { color:'+cs.thumbnail.titleColor+'; '+(cs.thumbnail.titleShadow =='' ? '': 'Text-Shadow:'+cs.thumbnail.titleShadow)+'; }\n';
+      var c = cs.thumbnail;
+      // s+=s1+'.nGY2GalleryMoreButtonAnnotation { background:'+c.background+'; border-color:'+c.borderColor+'; border-top-width:'+G.O.thumbnailBorderVertical+'px; border-right-width:'+G.O.thumbnailBorderHorizontal+'px; border-bottom-width:'+G.O.thumbnailBorderVertical+'px; border-left-width:'+G.O.thumbnailBorderHorizontal+'px;}\n';
+      s+=s1+'.nGY2GalleryMoreButtonAnnotation { background:'+c.background+'; border-color:'+c.borderColor+'; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px;}\n';
+      s+=s1+'.nGY2GalleryMoreButtonAnnotation  { color:'+c.titleColor+'; '+(c.titleShadow =='' ? '': 'Text-Shadow:'+c.titleShadow)+'; }\n';
       
       jQuery('head').append('<style id="ngycs_'+G.baseEltID+'">'+s+'</style>');
       G.$E.base.addClass(galleryTheme);
@@ -7297,8 +7504,8 @@ TODO:
       switch(toType(G.O.viewerTheme)) {
         case 'object':    // user custom color scheme object 
           cs = G.viewerTheme_dark;
-          jQuery.extend(true,cs,G.O.viewerTheme);
-          G.VOM.viewerTheme = 'nanogallery_viewertheme_custom_'+G.baseEltID;
+          jQuery.extend(true, cs, G.O.viewerTheme);
+          G.VOM.viewerTheme = 'nanogallery_viewertheme_custom_' + G.baseEltID;
           break;
         case 'string':    // name of an internal defined color scheme
           switch( G.O.viewerTheme ) {
@@ -7326,15 +7533,19 @@ TODO:
       }
 
       var s1 = '.' + G.VOM.viewerTheme + ' ';
-      var s = s1 + '.nGY2Viewer { background:'+cs.background+'; }'+'\n';
-      s += s1 + '.nGY2ViewerMedia { border:'+cs.imageBorder+'; box-shadow:'+cs.imageBoxShadow+'; }'+'\n';
-      s += s1 + '.nGY2Viewer .toolbarBackground { background:'+cs.barBackground+'; }'+'\n';
-      s += s1 + '.nGY2Viewer .toolbar { border:'+cs.barBorder+'; color:'+cs.barColor+'; }'+'\n';
-      s += s1 + '.nGY2Viewer .toolbar .previousButton:after { color:'+cs.barColor+'; }'+'\n';
-      s += s1 + '.nGY2Viewer .toolbar .nextButton:after { color:'+cs.barColor+'; }'+'\n';
-      s += s1 + '.nGY2Viewer .toolbar .closeButton:after { color:'+cs.barColor+'; }'+'\n';
-      s += s1 + '.nGY2Viewer .toolbar .label .title { color:'+cs.barColor+'; }'+'\n';
-      s += s1 + '.nGY2Viewer .toolbar .label .description { color:'+cs.barDescriptionColor+'; }'+'\n';
+      var s = s1 + '.nGY2Viewer { background:' + cs.background + '; }'+'\n';
+      s += s1 + '.nGY2ViewerMedia { border:' + cs.imageBorder + '; box-shadow:' + cs.imageBoxShadow + '; }'+'\n';
+      s += s1 + '.nGY2Viewer .toolbarBackground { background:' + cs.barBackground + '; }'+'\n';
+      // s += s1 + '.nGY2Viewer .nGY2ViewerToolsTopLeft { background:' + cs.barBackground + '; }'+'\n';
+      // s += s1 + '.nGY2Viewer .nGY2ViewerToolsTopRight { background:' + cs.barBackground + '; }'+'\n';
+      // s += s1 + '.nGY2Viewer .nGY2ViewerAreaNext { background:' + cs.barBackground + '; }'+'\n';
+      // s += s1 + '.nGY2Viewer .nGY2ViewerAreaPrevious { background:' + cs.barBackground + '; }'+'\n';
+      s += s1 + '.nGY2Viewer .toolbar { border:' + cs.barBorder + '; color:' + cs.barColor + '; }'+'\n';
+      s += s1 + '.nGY2Viewer .toolbar .previousButton:after { color:' + cs.barColor + '; }'+'\n';
+      s += s1 + '.nGY2Viewer .toolbar .nextButton:after { color:' + cs.barColor + '; }'+'\n';
+      s += s1 + '.nGY2Viewer .toolbar .closeButton:after { color:' + cs.barColor + '; }'+'\n';
+      s += s1 + '.nGY2Viewer .toolbar .label .title { color:' + cs.barColor + '; }'+'\n';
+      s += s1 + '.nGY2Viewer .toolbar .label .description { color:' + cs.barDescriptionColor + '; }'+'\n';
       jQuery('head').append('<style>' + s + '</style>');
       G.VOM.$cont.addClass(G.VOM.viewerTheme);
     };
@@ -7419,7 +7630,7 @@ TODO:
     }
     
     
-    // Gallery clicked/touched -> retrieve & execute action
+    // Gallery clicked or toolbar touched -> retrieve & execute action
     function GalleryClicked(e) {
     
       var r = GalleryEventRetrieveElementl(e, false);
@@ -7428,7 +7639,6 @@ TODO:
       
       var idx = G.GOM.items[r.GOMidx].thumbnailIdx;
       if( G.GOM.slider.hostIdx == r.GOMidx ) {
-        // slider on thumbnail -> open the displayed image
         idx = G.GOM.items[G.GOM.slider.currentIdx].thumbnailIdx;
       }
       switch( r.action ) {
@@ -7501,6 +7711,8 @@ TODO:
       for( var i=0; i<G.shoppingCart.length; i++ ) {
         if( G.shoppingCart[i].idx == idx ) {
           G.shoppingCart[i].cnt++;
+          ThumbnailBuildToolbarOneCartUpdate(idx);
+          
           var fu = G.O.fnShoppingCartUpdated;
           if( fu !== null ) {
             typeof fu == 'function' ? fu(G.shoppingCart, G.I[idx]) : window[fu](G.shoppingCart, G.I[idx]);
@@ -7513,6 +7725,8 @@ TODO:
       // add to shopping cart
       if( !found) {
         G.shoppingCart.push( { idx:idx, ID:G.I[idx].GetID(), cnt:1} );
+        ThumbnailBuildToolbarOneCartUpdate(idx);
+
         var fu=G.O.fnShoppingCartUpdated;
         if( fu !== null ) {
           typeof fu == 'function' ? fu(G.shoppingCart, G.I[idx]) : window[fu](G.shoppingCart, G.I[idx]);
@@ -7608,12 +7822,12 @@ TODO:
         newLocationHash += item.GetID();
       }
     
-      var content = '';
+      var content = '<br><br>';
       content += '<div class="nGY2PopupOneItem" style="text-align:center;" data-share="facebook">'   + G.O.icons.shareFacebook +   '</div>';
       content += '<div class="nGY2PopupOneItem" style="text-align:center;" data-share="pinterest">'  + G.O.icons.sharePinterest +  '</div>';
       content += '<div class="nGY2PopupOneItem" style="text-align:center;" data-share="tumblr">'     + G.O.icons.shareTumblr +     '</div>';
       content += '<div class="nGY2PopupOneItem" style="text-align:center;" data-share="twitter">'    + G.O.icons.shareTwitter +    '</div>';
-      content += '<div class="nGY2PopupOneItem" style="text-align:center;" data-share="googleplus">' + G.O.icons.shareGooglePlus + '</div>';
+      // content += '<div class="nGY2PopupOneItem" style="text-align:center;" data-share="googleplus">' + G.O.icons.shareGooglePlus + '</div>';
       content += '<div class="nGY2PopupOneItem" style="text-align:center;" data-share="vk">'         + G.O.icons.shareVK +         '</div>';
       content += '<div class="nGY2PopupOneItem" style="text-align:center;" data-share="mail">'       + G.O.icons.shareMail +       '</div>';
       content += '<div class="nGY2PopupOneItem" style="text-align:center;"></div>';
@@ -7626,7 +7840,7 @@ TODO:
       var currentTn = item.thumbImg().src;
       
       
-      Popup('Share to:', content, 'Center');
+      Popup('nanogallery2 - share to:', content, 'Center');
       
       G.popup.$elt.find('.nGY2PopupOneItem').on('click', function(e) {
         e.stopPropagation();
@@ -7677,7 +7891,7 @@ TODO:
     // build a modal popup
     function Popup(title, content, align) {
       var pp =  '<div class="nGY2Popup" style="opacity:0;"><div class="nGY2PopupContent' + align + '">';
-      pp    +=  '<div class="nGY2PopupCloseButton">' + G.O.icons.buttonClose + '</div>';
+      pp    +=  '<div class="nGY2PopupCloseButton" style="font-size:0.9em;">' + G.O.icons.buttonClose + '</div>';
       pp    +=  '<div class="nGY2PopupTitle">' + title + '</div>';
       pp    +=  content;
       pp    +=  '</div></div>';
@@ -7689,12 +7903,13 @@ TODO:
       
       var tweenable = new NGTweenable();
       tweenable.tween({
-        from:       { opacity: 0 },
-        to:         { opacity: 1 },
+        from:       { o: 0, y: 100 },
+        to:         { o: 1, y: 0 },
         easing:     'easeInOutSine',
         duration:   250,
         step:       function (state, att) {
-          G.popup.$elt.css( state );
+          G.popup.$elt[0].style.opacity = state.o;
+          G.popup.$elt[0].style[G.CSStransformName] = 'translateY(' + (state.y) + 'px)';
         }
       });
       
@@ -7760,9 +7975,11 @@ TODO:
     }
     
 
-    // Open one thumbnail
+    // OPEN ONE THUMBNAIL
     function ThumbnailOpen( idx, ignoreSelected ) {
       var item = G.I[idx];
+      
+      G.GOM.albumIdxLoading = idx;      // store idx -> may be used to display loader on album thumbnail
 
       var fu = G.O.fnThumbnailClicked;
       if( fu !== null ) {
@@ -7782,7 +7999,7 @@ TODO:
           }
           else {
             // display image
-            DisplayPhotoIdx(idx);
+            DisplayPhotoIdx( idx );
           }
           break;
         case 'album':
@@ -7851,7 +8068,8 @@ TODO:
       }
     }
     
-    // Display one photo (with internal or external viewer)
+    // DISPLAY ONE MEDIA
+    // with internal or external viewer
     function DisplayPhotoIdx( ngy2ItemIdx ) {
 
       if( !G.O.thumbnailOpenImage ) { return; }
@@ -7945,7 +8163,6 @@ TODO:
     }
           
     function ViewerZoomIn( zoomIn ) {
-//console.log(zoomIn);
     if( zoomIn ) {
         // zoom in
         G.VOM.zoom.userFactor+=0.1;
@@ -7965,9 +8182,6 @@ TODO:
       }
     }
     function ViewerZoomMin() {
-//console.dir(G.VOM.NGY2Item(0));      
-      // var imageCurrentHeight = (item.imageHeight / dpr) * zoomUserFactor * zoomBaseFactor;
-      // var imageCurrentWidth  = (item.imageWidth / dpr)  * zoomUserFactor * zoomBaseFactor;
     
       if( G.VOM.zoom.userFactor < 0.2 ) {
         G.VOM.zoom.userFactor = 0.2;
@@ -8090,9 +8304,10 @@ TODO:
       G.VOM.viewerDisplayed = true;
       G.GOM.firstDisplay = false;
       
-      G.VOM.saveOverflowX = window.getComputedStyle(document.body)['overflow-x'];
-      G.VOM.saveOverflowY = window.getComputedStyle(document.body)['overflow-y'];
-      jQuery('body').css({ overflow: 'hidden' });  //avoid scrollbars
+      // remove scrollbar and add right margin with same width as the scrollbar to avoid page reflow
+      jQuery('head').append('<style id="nGY2_body_scrollbar_style" type="text/css">.nGY2_body_scrollbar{margin-right: ' + (window.innerWidth - document.documentElement.clientWidth) + 'px;}</style>');
+      jQuery("body").addClass("nGY2_body_scrollbar");
+        
 
       G.VOM.$cont = jQuery('<div  class="nGY2 nGY2ViewerContainer" style="opacity:1"></div>').appendTo('body');
       
@@ -8117,6 +8332,9 @@ TODO:
       }
 
       G.VOM.$content = jQuery('<div class="nGY2ViewerContent">' + sMedia + sNav + '</div>').appendTo( G.VOM.$viewer );
+
+      G.VOM.$buttonLeft = G.VOM.$content.find('.nGY2ViewerAreaPrevious');
+      G.VOM.$buttonRight = G.VOM.$content.find('.nGY2ViewerAreaNext');
 
       var $mediaPan = G.VOM.$content.find('.nGY2ViewerMediaPan');
       G.VOM.$mediaPrevious = $mediaPan.eq(0);    // pointer to previous media container
@@ -8157,50 +8375,74 @@ TODO:
       }
       
       // top-left toolbar
-      if( G.O.viewerTools.topLeft != '' ) {
-        var sTopLeft = '<div class="nGY2ViewerToolsTopLeft nGEvent"><div class="toolbar nGEvent">';
-        var sTL = G.O.viewerTools.topLeft.split(',');
-        for( var i = 0, sTLL = sTL.length; i < sTLL; i++) {
-          sTopLeft += ToolbarAddElt( sTL[i] );
-        }
-        sTopLeft += '</div></div>';
-        G.VOM.$toolbarTL = jQuery(sTopLeft).appendTo(G.VOM.$viewer);
+      var sTopLeft = '<div class="nGY2ViewerToolsTopLeft nGEvent"><div class="toolbar nGEvent">';
+      var sTL = G.O.viewerTools.topLeft.split(',');
+      for( var i = 0, sTLL = sTL.length; i < sTLL; i++) {
+        sTopLeft += ToolbarAddElt( sTL[i] );
       }
+      sTopLeft += '</div></div>';
+      G.VOM.$toolbarTL = jQuery(sTopLeft).appendTo(G.VOM.$viewer);
+
       // top-right toolbar
-      if( G.O.viewerTools.topRight != '' ) {
-        var sTopRight = '<div class="nGY2ViewerToolsTopRight nGEvent"><div class="toolbar nGEvent">';
-        var sTR = G.O.viewerTools.topRight.split(',');
-        for( var i = 0, sTRL = sTR.length; i < sTRL; i++) {
-          sTopRight += ToolbarAddElt( sTR[i] );
-        }
-        sTopRight += '</div></div>';
-        G.VOM.$toolbarTR = jQuery(sTopRight).appendTo(G.VOM.$viewer);
+      var sTopRight = '<div class="nGY2ViewerToolsTopRight nGEvent"><div class="toolbar nGEvent">';
+      var sTR = G.O.viewerTools.topRight.split(',');
+      for( var i = 0, sTRL = sTR.length; i < sTRL; i++) {
+        sTopRight += ToolbarAddElt( sTR[i] );
       }
+      sTopRight += '</div></div>';
+      G.VOM.$toolbarTR = jQuery(sTopRight).appendTo(G.VOM.$viewer);
 
-      // set the events handler for toolbars
+      // set the events handler on the toolbars
       ViewerToolsOn();
-
-      // display logo
-      if( G.O.viewerDisplayLogo ) { G.$E.vwLogo=jQuery('<div class="nGY2 nGY2ViewerLogo"></div>').appendTo(G.VOM.$viewer); }
 
       // Go to fullscreen mode
       if( ngscreenfull.enabled && G.O.viewerFullscreen ) { ngscreenfull.request(); }
+
+      // Gallery
+      ViewerGalleryBuild();
 
       setElementOnTop('', G.VOM.$viewer);
       ResizeInternalViewer(true);
       G.VOM.timeImgChanged = new Date().getTime();
       
       // viewer display transition
+      G.VOM.$toolbarTL.css('opacity', 0);
+      G.VOM.$toolbarTR.css('opacity', 0);
+      G.VOM.$buttonLeft.css('opacity', 0);
+      G.VOM.$buttonRight.css('opacity', 0);
+      G.VOM.$toolbarTR[0].style[G.CSStransformName] = 'translateY(-40px) ';
+      G.VOM.$toolbarTL[0].style[G.CSStransformName] = 'translateY(-40px) ';
+      G.VOM.$buttonLeft[0].style[G.CSStransformName] = 'translateX(-40px) ';
+      G.VOM.$buttonRight[0].style[G.CSStransformName] = 'translateX(40px) ';
+      // STEP 1: display main container, including media
       var tweenable = new NGTweenable();
       tweenable.tween({
         from:         { opacity: 0, posY: G.VOM.window.lastHeight*.5 },
         to:           { opacity: 1, posY: 0 },
         delay:        30,
         duration:     500,
-        easing:       'easeOutQuart',
+        easing:       'easeInOutQuint',
         step:         function (state) {
           G.VOM.$viewer.css('opacity', state.opacity);
           G.VOM.$viewer[0].style[G.CSStransformName] = 'translateY(' + (state.posY) + 'px) ';
+        },
+        finish:       function (state) {
+
+          // STEP 2: display top toolbar, and left/right navigation buttons
+          var tweenable = new NGTweenable();
+          tweenable.tween({
+            from:         { posY: -40 },
+            to:           { posY: 0 },
+            delay:        0,
+            duration:     200,
+            easing:       'easeInOutQuint',
+            step:         function (state) {
+              G.VOM.$toolbarTR[0].style[G.CSStransformName] = 'translateY(' + (state.posY) + 'px) ';
+              G.VOM.$toolbarTL[0].style[G.CSStransformName] = 'translateY(' + (state.posY) + 'px) ';
+              G.VOM.$buttonLeft[0].style[G.CSStransformName] = 'translateX(' + (state.posY) + 'px) ';
+              G.VOM.$buttonRight[0].style[G.CSStransformName] = 'translateX(' + (-state.posY) + 'px) ';
+            }
+          });
         }
       });
 
@@ -8228,13 +8470,36 @@ TODO:
       return true;
     }
     
+    // VIEWER - GALLERY
+    function ViewerGalleryBuild() {
+      
+      var tw = '200px';
+      var ty = '200px';
+      
+      var t = '';
+      for( var i=0; i< G.VOM.items.length; i++) {
+   console.dir(G.VOM.items[i]);
+       var idx=G.VOM.items[i].mediaNumber;
+        var o = G.I[G.VOM.items[i].ngy2ItemIdx];
+              var src = (o.thumbImg().src).replace(/'/g, "%27");   // replace single quote with %27
+
+        console.dir(src);
+        t += '<div style="margin:5px;border:1px solid #888;width:100px;height:100px;top:0px;left:'+i*100+'px;display:block;overflow:hidden;position:fixed;"><img class=" " src="' + src + '" style="opacity:1;" data-ngy2_gallery_thumbnail="true" data-ngy2_idx="' + idx + '" data-ngy2_vidx="' + i + '" ></div>';
+      }
+      G.VOM.$gallery = jQuery('<div class="nGY2ViewerGallery" style="height:200px;display: inline-block;width:100%;position:fixed;left:0;right:0;">'+t+'</div>').appendTo(G.VOM.$viewer);
+
+			
+			
+    }
     
-    // viewer gesture handling
+
+    // Lightbox gesture handling
     function ViewerSetEvents() {
 
       if( G.VOM.hammertime == null ) {
       
-        G.VOM.hammertime =  new NGHammer.Manager(G.VOM.$cont[0], {
+        G.VOM.hammertime =  new NGHammer.Manager(G.VOM.$cont[0],  {
+          // domEvents: true,
           recognizers: [
             [NGHammer.Pinch, { enable: true }],
             [NGHammer.Pan, { direction: NGHammer.DIRECTION_ALL }]
@@ -8244,6 +8509,13 @@ TODO:
         // PAN
         G.VOM.hammertime.on('pan', function(ev) {
           if( !ViewerEvents() ) { return; }
+
+					// Gallery on viewer
+					if( ev.target.dataset.ngy2_gallery_thumbnail != undefined ){
+						console.dir('tmb pan start');
+						return;
+					}
+
 
           if( G.VOM.zoom.isZooming ) {
             // pan zoomed image
@@ -8275,6 +8547,14 @@ TODO:
         // PAN END
         G.VOM.hammertime.on('panend', function(ev) {
           if( !ViewerEvents() ) { return; }
+
+					// Gallery on viewer
+					if( ev.target.dataset.ngy2_gallery_thumbnail != undefined ){
+						console.dir('tmb pan end');
+						return;
+					}
+
+
           if( G.VOM.zoom.isZooming ) {
             G.VOM.timeImgChanged = new Date().getTime();
             ViewerImagePanSetPosition(G.VOM.panPosX+ev.deltaX, G.VOM.panPosY+ev.deltaY, G.VOM.$mediaCurrent, true);
@@ -8293,30 +8573,75 @@ TODO:
                 ViewerMediaPanX(0);
               }
               else {
-                ev.deltaX > 50 ? DisplayPreviousMedia() : DisplayNextMedia();
+                ev.deltaX > 50 ? DisplayPreviousMedia( Math.abs(ev.velocityX) ) : DisplayNextMedia( Math.abs(ev.velocityX) );
               }
             }
           }
           G.VOM.panXOnly = false;
         });
         
+				
+				// ZOOM FEATURE ENABLED
         if( G.O.viewerZoom ) {
-        
-          G.VOM.hammertime.add( new NGHammer.Tap({ event: 'doubletap', taps: 2 }) );
+
+					G.VOM.hammertime.add( new NGHammer.Tap({ event: 'doubletap', taps: 2 }) );
           G.VOM.hammertime.add( new NGHammer.Tap({ event: 'singletap' }) );
           G.VOM.hammertime.get('doubletap').recognizeWith('singletap');
           G.VOM.hammertime.get('singletap').requireFailure('doubletap');
 
           // single tap -> next/previous media
           G.VOM.hammertime.on('singletap', function(ev) {
-            if( !ViewerEvents() ) { return; }
+
+						if( !ViewerEvents() ) { return; }
+						
+						// Gallery on viewer -> click/touch on one thumbnail -> display corresponding image
+						if( ev.target.dataset.ngy2_gallery_thumbnail != undefined ){
+							var idx = parseInt(ev.target.dataset.ngy2_idx);
+							var vidx = parseInt(ev.target.dataset.ngy2_vidx);
+							if( idx != undefined ) {
+								console.dir('tap:' + idx);
+      TriggerCustomEvent('lightboxNextImage');
+			
+			// replace the next media with selected media
+      G.VOM.$mediaNext.empty();
+      var nextItem = G.I[idx];
+      var spreloader = '<div class="nGY2ViewerMediaLoaderDisplayed"></div>';
+      if( nextItem.mediaKind == 'img' && nextItem.imageWidth != 0 && nextItem.imageHeight != 0 ) {
+        spreloader = '<div class="nGY2ViewerMediaLoaderHidden"></div>';
+      }
+      G.VOM.$mediaNext.append( spreloader + nextItem.mediaMarkup );
+      ViewerSetMediaVisibility(nextItem, G.VOM.$mediaNext, 0);
+      if( nextItem.mediaKind == 'img' ) {
+        G.VOM.ImageLoader.loadImage(VieweImgSizeRetrieved, nextItem);
+      }
+      else {
+        ViewerMediaCenterNotImg( G.VOM.$mediaNext );
+      }
+
+			
+      DisplayInternalViewer(vidx, 'nextImage');			//pipo
+							return;
+							}
+						}
+						
+						
             StopPropagationPreventDefault(ev.srcEvent);
             if( G.VOM.toolbarsDisplayed == false ) {
               debounce( ViewerToolsUnHide, 100, false)();
+							G.VOM.singletapTime = new Date().getTime();
             }
             else {
+							// toolbars are displayed -> display next/previous media
+							if( (new Date().getTime()) - G.VOM.singletapTime < 400 ) { return; }		// to avoid conflict with MOUSEMOVE event
               if( ev.target.className.indexOf('nGY2ViewerMedia') !== -1 ) {
-                if( ev.srcEvent.pageX < (G.GOM.cache.viewport.w/2) ) {
+								var x =0;
+								if( ev.srcEvent instanceof MouseEvent ) {
+									x = ev.srcEvent.pageX;
+								}
+								else {
+									x = ev.srcEvent.changedTouches[0].pageX;
+								}
+								if( x < (G.GOM.cache.viewport.w/2) ) {
                   DisplayPreviousMedia();
                 }
                 else {
@@ -8365,19 +8690,35 @@ TODO:
             }
           });
         }
+				
+				
         else {
-          // no zoom -> click/tap on image to go to next/previous one
-          G.VOM.hammertime.on('tap', function(ev) {
+					// ZOOM FEATURE DISABLED
+
+					G.VOM.hammertime.add( new NGHammer.Tap({ event: 'singletap' }) );
+
+          // click/tap on image to go to next/previous one
+          // G.VOM.hammertime.on('tap', function(ev) {
+          G.VOM.hammertime.on('singletap', function(ev) {
             if( !ViewerEvents() ) { return; }
             StopPropagationPreventDefault(ev.srcEvent);
             if( G.VOM.toolbarsDisplayed == false  ){
               // display tools on tap if hidden
               debounce( ViewerToolsUnHide, 100, false)();
+							G.VOM.singletapTime = new Date().getTime();
             }
             else {
-              // display next/previous image if tools not hidden
+							// toolbars are displayed -> display next/previous media
+							if( (new Date().getTime()) - G.VOM.singletapTime < 400 ) { return; }		// to avoid conflict with MOUSEMOVE event
               if( ev.target.className.indexOf('nGY2ViewerMedia') !== -1 ) {
-                if( ev.srcEvent.pageX < (G.GOM.cache.viewport.w/2) ) {
+								var x = 0;
+								if( ev.srcEvent instanceof MouseEvent ) {
+									x = ev.srcEvent.pageX;
+								}
+								else {
+									x = ev.srcEvent.changedTouches[0].pageX;
+								}
+                if( x < (G.GOM.cache.viewport.w/2) ) {
                   DisplayPreviousMedia();
                 }
                 else {
@@ -8390,7 +8731,8 @@ TODO:
         }
       }
     }
-    
+
+
     function StopPropagationPreventDefault(e) {
       e.stopPropagation();
       e.preventDefault();
@@ -8405,7 +8747,7 @@ TODO:
     }
     
     function ViewerToolsUnHide() {
-    if( G.VOM.viewerDisplayed ) {
+			if( G.VOM.viewerDisplayed ) {
         G.VOM.toolbarsDisplayed = true;
         ViewerToolsOpacity(1);
         G.VOM.toolsHide();
@@ -8437,7 +8779,7 @@ TODO:
     }
 
     
-    // Actions of the buttton/elements
+    // Actions of the button/elements
     function ViewerToolsAction(e) {
       // delay to avoid twice handling on smartphone/tablet (both touchstart click events are fired)
       if( (new Date().getTime()) - G.timeLastTouchStart < 300 ) { return; }
@@ -8537,10 +8879,10 @@ TODO:
     }
      
 
-    // Display photo infos
+    // Display photo infos in popup/modal
     function ItemDisplayInfo( item ) {
 
-      var content = '<div class="nGY2PopupOneItemText">' + item.title + '</div>';
+      var content = '<div class="nGY2PopupOneItem">' + item.title + '</div>';
       content    += '<div class="nGY2PopupOneItemText">' + item.description + '</div>';
       if( item.author != '' ) {
         content  += '<div class="nGY2PopupOneItemText">' + G.O.icons.user + ' ' + item.author + '</div>';
@@ -8548,7 +8890,9 @@ TODO:
       if( item.exif.model != '' ) {
         content  += '<div class="nGY2PopupOneItemText">' + G.O.icons.config + ' ' + item.exif.model + '</div>';
       }
-      var sexif = '';
+      var sexif = G.O.icons.picture + ':';
+      if( item.exif.flash != '' || item.exif.focallength != '' || item.exif.fstop != '' || item.exif.exposure != '' || item.exif.iso != '' || item.exif.time != '' ) {
+      sexif += '<br>';
       sexif += item.exif.flash == '' ? '' : ' &nbsp; ' + item.exif.flash;
       sexif += item.exif.focallength == '' ? '' : ' &nbsp; ' + item.exif.focallength+'mm';
       sexif += item.exif.fstop == '' ? '' : ' &nbsp; f' + item.exif.fstop;
@@ -8559,6 +8903,10 @@ TODO:
         // sexif += ' &nbsp; '+date.toLocaleDateString();
         sexif += ' &nbsp; ' + item.exif.time;
       }
+      }
+      else {
+        sexif += ' n/a';
+      }
       content += '<div class="nGY2PopupOneItemText">' + sexif + '</div>';
 
       if( item.exif.location != '' ) {
@@ -8566,8 +8914,20 @@ TODO:
         // embed google map in iframe (no api key required)
         content += '<iframe width="300" height="150" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?&amp;t=m&amp;q='+encodeURIComponent( item.exif.location ) +'&amp;output=embed"></iframe>';  
       }
+      else {
+        content += '<div class="nGY2PopupOneItemText">' + G.O.icons.location + ': n/a</div>';
+      }
 
-      Popup(G.O.icons.viewerInfo, content, 'Left');
+      var r = { title: G.O.icons.viewerInfo, content: content };
+
+      // callback
+      var fu = G.O.fnPopupMediaInfo;
+      if( fu !== null ) {
+        typeof fu == 'function' ? r=fu(item, r.title, r.content) : r=window[fu](item, r.title, r.content);
+      }
+
+
+      Popup( r.title, r.content, 'Left');
    
     }
     
@@ -8831,26 +9191,32 @@ TODO:
     }
     
     // Display next image
-    function DisplayNextMedia() {
+    function DisplayNextMedia( velocity ) {
+      velocity = velocity || 0;
+      
       if( G.VOM.viewerMediaIsChanged || ((new Date().getTime()) - G.VOM.timeImgChanged < 300) ) { return; }
       
       TriggerCustomEvent('lightboxNextImage');
-      DisplayInternalViewer(G.VOM.IdxNext(), 'nextImage');
+      DisplayInternalViewer(G.VOM.IdxNext(), 'nextImage', velocity);
     };
     
     // Display previous image
-    function DisplayPreviousMedia() {
+    function DisplayPreviousMedia( velocity ) {
+      velocity = velocity || 0;
+
       if( G.VOM.viewerMediaIsChanged || ((new Date().getTime()) - G.VOM.timeImgChanged < 300) ) { return; }
       if( G.VOM.playSlideshow ) {
         SlideshowToggle();
       }
       
       TriggerCustomEvent('lightboxPreviousImage');
-      DisplayInternalViewer(G.VOM.IdxPrevious(), 'previousImage');
+      DisplayInternalViewer(G.VOM.IdxPrevious(), 'previousImage', velocity);
     };
     
     // Display image (and run animation)
-    function DisplayInternalViewer( newVomIdx, displayType ) {
+    function DisplayInternalViewer( newVomIdx, displayType, velocity ) {
+
+      velocity = velocity || 0;
 
       if( G.VOM.playSlideshow ) { window.clearTimeout(G.VOM.playSlideshowTimerID); }
       
@@ -8875,10 +9241,21 @@ TODO:
       
       // animation duration is proportional of the remaining distance
       var vP = G.GOM.cache.viewport;
-      var dur = 400 * (vP.w - Math.abs(G.VOM.swipePosX)) / vP.w;
+      var t_easing = '';
+      var t_dur = 400 * (vP.w - Math.abs(G.VOM.swipePosX)) / vP.w;
+      if( velocity > 0 ) {
+        // velocity = pixels/millisecond
+         t_dur = Math.min( (vP.w - Math.abs(G.VOM.swipePosX)) / velocity, t_dur);
+         t_easing = 'linear';     // use linear to avoid a slow-down in the transition after user swipe
+      }
       
+
+			var currItem=G.VOM.NGY2Item(0);
+			
       if( displayType == '' ) {
-        // first image --> just appear / no slide animation
+        
+        // first image --> just appear / no transition animation with an already displayed media
+        
         ViewerSetMediaVisibility(G.VOM.NGY2Item(0), G.VOM.$mediaCurrent, 1);
         if( G.CSStransformName == null ) {
           // no CSS transform support -> no animation
@@ -8906,7 +9283,9 @@ TODO:
         }
       }
       else {
-        // animate the image transition between 2 images
+        
+        // animate the image transition between 2 medias
+        
         if( G.CSStransformName == null  ) {
           // no CSS transform support -> no animation
           ViewerSetMediaVisibility(itemNew, $new, 1);
@@ -8918,27 +9297,30 @@ TODO:
             case 'SWIPE':
             case 'SWIPE2':
               var dir = ( displayType == 'nextImage' ? - vP.w : vP.w );
-              $new[0].style[G.CSStransformName] = 'translate('+(-dir)+'px, 0px) '
+              $new[0].style[G.CSStransformName] = 'translate(' + (-dir) + 'px, 0px) '
+  
+              if( velocity == 0 ) {
+                t_easing = G.O.imageTransition == 'swipe' ? 'easeInOutSine' : 'easeInQuart';
+              }
 
               new NGTweenable().tween({
                 from:         { t: G.VOM.swipePosX  },
                 to:           { t: (displayType == 'nextImage' ? - vP.w : vP.w) },
-                attachment:   { dT: displayType, $e: $new, itemNew: itemNew, itemOld: itemOld, dir: dir },
+                attachment:   { dT: displayType, $e: $new, itemNew: itemNew, dir: dir, currItem: currItem },
                 delay:        30,
-                duration:     dur,
-                easing:       (G.O.imageTransition == 'swipe' ? 'easeInOutSine' : 'easeInOutCubic'),
+                duration:     t_dur,
+                easing:       ( t_easing ),
                 step:         function (state, att) {
                   // current media
-                  ViewerSetMediaVisibility(G.VOM.NGY2Item(0), G.VOM.$mediaCurrent, 1);
-                  // G.VOM.$mediaCurrent[0].style[G.CSStransformName] = 'translate(' + state.t + 'px, 0px) rotate(' + att.itemOld.rotationAngle + 'deg)';
+                  // ViewerSetMediaVisibility(G.VOM.NGY2Item(0), G.VOM.$mediaCurrent, 1);
+                  ViewerSetMediaVisibility(att.currItem, G.VOM.$mediaCurrent, 1);
                   G.VOM.$mediaCurrent[0].style[G.CSStransformName] = 'translate(' + state.t + 'px, 0px)';
+
                   // new media
                   if( att.itemNew.mediaTransition() ) {
                     ViewerSetMediaVisibility(att.itemNew, att.$e, 1);
-
                     var sc = Math.min( Math.max( (Math.abs(state.t)) / G.VOM.window.lastWidth, .8), 1);
                     if( G.O.imageTransition == 'SWIPE' ) { sc = 1; }
-                    // att.$e[0].style[G.CSStransformName] = 'translate(' + (-att.dir+state.t) + 'px, 0px) scale(' + sc + ') rotate(' + att.itemNew.rotationAngle + 'deg)';
                     att.$e[0].style[G.CSStransformName] = 'translate(' + (-att.dir+state.t) + 'px, 0px) scale(' + sc + ')';
                   }
                 },
@@ -8955,17 +9337,20 @@ TODO:
               var dir=(displayType == 'nextImage' ? - vP.w : vP.w);
               var op = (Math.abs(G.VOM.swipePosX)) / G.VOM.window.lastWidth;
               $new[0].style[G.CSStransformName] = '';
+              if( velocity == 0 ) {
+                t_easing ='easeInOutSine';
+              }
               new NGTweenable().tween({
                 from:         { o: op, t: G.VOM.swipePosX },
-                to:           { o: 1, t: (displayType == 'nextImage' ? - vP.w : vP.w) },
-                attachment:   { dT:displayType, $e:$new, itemNew: itemNew, itemOld: itemOld, dir: dir },
+                to:           { o: 1,  t: (displayType == 'nextImage' ? - vP.w : vP.w) },
+                attachment:   { dT:displayType, $e:$new, itemNew: itemNew },
                 delay:        30,
-                duration:     dur,
-                easing:       'easeInOutSine',
+                duration:     t_dur,
+                easing:       t_easing,
                 step:         function (state, att) {
                   // current media - translate
-                  // G.VOM.$mediaCurrent[0].style[G.CSStransformName]= 'translate('+state.t+'px, 0px) rotate(' + att.itemOld.rotationAngle + 'deg)';
                   G.VOM.$mediaCurrent[0].style[G.CSStransformName]= 'translate('+state.t+'px, 0px)';
+
                   // new media - opacity
                   if( att.itemNew.mediaTransition() ) {
                     ViewerSetMediaVisibility(att.itemNew, att.$e, state.o);
@@ -8997,7 +9382,6 @@ TODO:
       }
       
       G.VOM.swipePosX = 0;
-      
       if( displayType != '' ) {
         // not on first media display
         // G.VOM.$mediaCurrent.off("click");
@@ -9014,20 +9398,22 @@ TODO:
             G.VOM.$mediaPrevious = $tmp;
             break;
         }
-        G.VOM.$mediaCurrent.addClass('imgCurrent');
-        
-        // re-sort the media containers --> current on top
-        var $pans = G.VOM.$content.find('.nGY2ViewerMediaPan');
-        G.VOM.$mediaCurrent.insertAfter($pans.last());
-        
-        if( ngy2item.mediaKind == 'img' && ngy2item.imageWidth == 0 ) {
-          ViewerSetMediaVisibility(G.VOM.NGY2Item(0), G.VOM.$mediaCurrent, 0);
-        }
-        else {
-          G.VOM.$mediaCurrent.children().eq(0).attr('class', 'nGY2ViewerMediaLoaderHidden');    // hide preloader
-          ViewerSetMediaVisibility(G.VOM.NGY2Item(0), G.VOM.$mediaCurrent, 1);
-        }
       }
+      
+      G.VOM.$mediaCurrent.addClass('imgCurrent');
+      
+      // re-sort the media containers --> current on top
+      var $pans = G.VOM.$content.find('.nGY2ViewerMediaPan');
+      G.VOM.$mediaCurrent.insertAfter($pans.last());
+      
+      if( ngy2item.mediaKind == 'img' && ngy2item.imageWidth == 0 ) {
+        ViewerSetMediaVisibility(G.VOM.NGY2Item(0), G.VOM.$mediaCurrent, 0);
+      }
+      else {
+        G.VOM.$mediaCurrent.children().eq(0).attr('class', 'nGY2ViewerMediaLoaderHidden');    // hide preloader
+        ViewerSetMediaVisibility(G.VOM.NGY2Item(0), G.VOM.$mediaCurrent, 1);
+      }
+
       
       // set the new NEXT media
       G.VOM.$mediaNext.empty();
@@ -9146,9 +9532,8 @@ TODO:
       if( G.VOM.viewerDisplayed ) {
 
         // set scrollbar visible again
-      jQuery('body').css({ overflowX: G.VOM.saveOverflowX, overflowY: G.VOM.saveOverflowY});
-      // jQuery('body').css({overflow: 'visible'});
-        
+        jQuery("body").removeClass("nGY2_body_scrollbar");
+        jQuery("#nGY2_body_scrollbar_style").remove();
         
         if( G.VOM.playSlideshow ) {
           window.clearTimeout(G.VOM.playSlideshowTimerID);
@@ -9294,12 +9679,49 @@ TODO:
       }
     }
 
+		// Retrieve the first parent element which is scrollable
+		// source: ncubica - https://stackoverflow.com/questions/35939886/find-first-scrollable-parent
+		// returns null if nothing found
+		function getScrollableParent (node) {
+			const regex = /(auto|scroll)/;
+			const parents = (_node, ps) => {
+				if (_node.parentNode === null) { return ps; }
+				return parents(_node.parentNode, ps.concat([_node]));
+			};
+
+			const style = (_node, prop) => getComputedStyle(_node, null).getPropertyValue(prop);
+			const overflow = _node => style(_node, 'overflow') + style(_node, 'overflow-y') + style(_node, 'overflow-x');
+			const scroll = _node => regex.test(overflow(_node));
+
+			const scrollParent = (_node) => {
+				if (!(_node instanceof HTMLElement || _node instanceof SVGElement)) {
+					return undefined;
+				}
+
+				const ps = parents(_node.parentNode, []);
+
+				for (let i = 0; i < ps.length; i += 1) {
+					if( ps[i] === document.body ) {
+						return null;
+					}
+					if (scroll(ps[i])) {
+						return ps[i];
+					}
+				}
+
+				return document.scrollingElement || document.documentElement;
+			};
+
+			return scrollParent(node);
+		};
+
 
 
     /** @function BuildSkeleton */
     /** Build the gallery structure **/
     function BuildSkeleton() {
-    
+
+		
       // store markup if defined
       var $elements = G.$E.base.children('a');
       if( $elements.length > 0 ) {
@@ -9555,7 +9977,16 @@ TODO:
       
       // Event page scrolled
       jQuery(window).on('scroll.nanogallery2.' + G.baseEltID, debounce( OnScrollEvent, G.O.eventsDebounceDelay, false) );
-      
+
+			// Scroll event on first scrollable parent element
+			G.$E.scrollableParent = getScrollableParent(G.$E.base[0]);
+			if( G.$E.scrollableParent !== null ) {
+				G.$E.scrollableParent= jQuery( G.$E.scrollableParent );
+				G.$E.scrollableParent.on('scroll.nanogallery2.' + G.baseEltID, debounce( OnScrollEvent, G.O.eventsDebounceDelay, false) );
+			}
+			
+			
+			
       // Debounced function to hide the toolbars on the viewer
       G.VOM.toolsHide = debounce( ViewerToolsHide, G.O.viewerHideToolsDelay, false );
       
@@ -9613,10 +10044,13 @@ TODO:
         }
       });
       
-      // mouse mouse -> unhide lightbox toolbars
+      // mouse move -> unhide lightbox toolbars
       jQuery(window).bind('mousemove', function(e){
         if( G.VOM.viewerDisplayed ) {
-          debounce( ViewerToolsUnHide, 100, false )();
+					if( G.VOM.toolbarsDisplayed == false ) {
+						G.VOM.singletapTime = new Date().getTime();		// to avoid conflict with SINGLETAP event
+						debounce( ViewerToolsUnHide, 100, false )();
+					}
         }
       });
       
@@ -9639,6 +10073,7 @@ TODO:
 
     }
     
+		
     //----- Manage browser location hash (deep linking and browser back/forward)
     function ProcessLocationHash() {
 
@@ -9736,24 +10171,45 @@ TODO:
     }
     
     
+		// WINDOW RESIZE EVENT
     function ResizeWindowEvent() {
       CacheViewport();
 
+			var l = G.GOM.curNavLevel;
+			var w = G.GOM.curWidth;
+			
       if( G.VOM.viewerDisplayed ) {
+				// lightbox
         ResizeInternalViewer();
       }
       else {
+				// gallery
         if( G.galleryResizeEventEnabled ) {
           var nw = RetrieveCurWidth();
-          if( G.GOM.albumIdx != -1 && 
-                ( G.tn.settings.height[G.GOM.curNavLevel][G.GOM.curWidth] != G.tn.settings.height[G.GOM.curNavLevel][nw] || 
-                G.tn.settings.width[G.GOM.curNavLevel][G.GOM.curWidth] != G.tn.settings.width[G.GOM.curNavLevel][nw] ) ) {
-                  // do not use settings.getH() / settings.getW()
-            // thumbnail size changed --> render the gallery with the new sizes
-            G.GOM.curWidth = nw;
-            //G.layout.SetEngine();
-            G.GOM.pagination.currentPage = 0;
-            GalleryRender( G.GOM.albumIdx );
+					if( G.GOM.albumIdx != -1 ) {
+
+						// check if the gallery needs to be rendered because the width changed
+						
+						if( G.layout.engine == "MOSAIC") {
+							// Mosaic layout
+							if( JSON.stringify(G.tn.settings.mosaic[l][w]) !== JSON.stringify(G.tn.settings.mosaic[l][nw]) ) {
+								// mosaic definition changed
+								G.GOM.curWidth = nw;
+								G.GOM.pagination.currentPage = 0;
+								GalleryRender( G.GOM.albumIdx );
+							}
+						}
+						else {
+							// other layouts
+							if( G.tn.settings.height[l][w] != G.tn.settings.height[l][nw] || G.tn.settings.width[l][w] != G.tn.settings.width[l][nw]  ) {
+								// thumbnail size changed --> render the gallery with the new sizes
+								G.GOM.curWidth = nw;
+								//G.layout.SetEngine();
+								G.GOM.pagination.currentPage = 0;
+								GalleryRender( G.GOM.albumIdx );
+							}
+						}
+						return;
           }
           else {
             GalleryResize();
@@ -9763,20 +10219,23 @@ TODO:
     }
     
      
+
+		// SCROLL EVENT -> on WINDOW or SCROLLABLE PARENT CONTAINER
     function OnScrollEvent() {
-      // if( G.scrollTimeOut ) {
-        // clearTimeout(G.scrollTimeOut);
-      // }
-      
-      // G.scrollTimeOut = setTimeout(function () {
-        if( !G.VOM.viewerDisplayed ) {
-          if( G.galleryResizeEventEnabled ) {
-            GalleryResize();
-          }
-          return;
-        }
-      // }, 100);
+			if( !G.VOM.viewerDisplayed ) {
+        GalleryResizeOnScrollEvent();
+      }
     }
+		
+    // the gallery may currently be refreshed, so ensure that at the end of the refresh, the gallery is refreshed again because the page may have been scrolled in the meantime
+    function GalleryResizeOnScrollEvent() {
+      if( G.galleryResizeEventEnabled == false) {
+        window.setTimeout(GalleryResizeOnScrollEvent, 10);  // check again in 10ms
+      } else {
+        GalleryResize();
+      }
+    }
+
 
     
     // I18N : define text translations
@@ -10365,7 +10824,7 @@ return ngImagesLoaded;
 //##########################################################################################################################
 
 // screenfull.js
-// v3.2.0
+// v4.0.1
 // by sindresorhus - https://github.com/sindresorhus
 // from: https://github.com/sindresorhus/screenfull.js
 
@@ -10377,7 +10836,7 @@ return ngImagesLoaded;
 (function () {
 	'use strict';
 
-	var document = typeof window === 'undefined' ? {} : window.document;
+	var document = typeof window !== 'undefined' && typeof window.document !== 'undefined' ? window.document : {};
 	var isCommonjs = typeof module !== 'undefined' && module.exports;
 	var keyboardAllowed = typeof Element !== 'undefined' && 'ALLOW_KEYBOARD_INPUT' in Element;
 
@@ -10448,37 +10907,73 @@ return ngImagesLoaded;
 		return false;
 	})();
 
+	var eventNameMap = {
+		change: fn.fullscreenchange,
+		error: fn.fullscreenerror
+	};
+
 	var ngscreenfull = {
 		request: function (elem) {
-			var request = fn.requestFullscreen;
+			return new Promise(function (resolve) {
+				var request = fn.requestFullscreen;
 
-			elem = elem || document.documentElement;
+				var onFullScreenEntered = function () {
+					this.off('change', onFullScreenEntered);
+					resolve();
+				}.bind(this);
 
-			// Work around Safari 5.1 bug: reports support for
-			// keyboard in fullscreen even though it doesn't.
-			// Browser sniffing, since the alternative with
-			// setTimeout is even worse.
-			if (/5\.1[.\d]* Safari/.test(navigator.userAgent)) {
-				elem[request]();
-			} else {
-				elem[request](keyboardAllowed && Element.ALLOW_KEYBOARD_INPUT);
-			}
+				elem = elem || document.documentElement;
+
+				// Work around Safari 5.1 bug: reports support for
+				// keyboard in fullscreen even though it doesn't.
+				// Browser sniffing, since the alternative with
+				// setTimeout is even worse.
+				if (/ Version\/5\.1(?:\.\d+)? Safari\//.test(navigator.userAgent)) {
+					elem[request]();
+				} else {
+					elem[request](keyboardAllowed ? Element.ALLOW_KEYBOARD_INPUT : {});
+				}
+
+				this.on('change', onFullScreenEntered);
+			}.bind(this));
 		},
 		exit: function () {
-			document[fn.exitFullscreen]();
+			return new Promise(function (resolve) {
+				if (!this.isFullscreen) {
+					resolve();
+					return;
+				}
+
+				var onFullScreenExit = function () {
+					this.off('change', onFullScreenExit);
+					resolve();
+				}.bind(this);
+
+				document[fn.exitFullscreen]();
+
+				this.on('change', onFullScreenExit);
+			}.bind(this));
 		},
 		toggle: function (elem) {
-			if (this.isFullscreen) {
-				this.exit();
-			} else {
-				this.request(elem);
-			}
+			return this.isFullscreen ? this.exit() : this.request(elem);
 		},
 		onchange: function (callback) {
-			document.addEventListener(fn.fullscreenchange, callback, false);
+			this.on('change', callback);
 		},
 		onerror: function (callback) {
-			document.addEventListener(fn.fullscreenerror, callback, false);
+			this.on('error', callback);
+		},
+		on: function (event, callback) {
+			var eventName = eventNameMap[event];
+			if (eventName) {
+				document.addEventListener(eventName, callback, false);
+			}
+		},
+		off: function (event, callback) {
+			var eventName = eventNameMap[event];
+			if (eventName) {
+				document.removeEventListener(eventName, callback, false);
+			}
 		},
 		raw: fn
 	};
