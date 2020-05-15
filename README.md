@@ -25,7 +25,8 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 
 ## Features
 ### Markup or Javascript set up
-### Images and videos (Youtube, Vimeo, Dailymotion)
+### Images
+### Videos (Youtube, Vimeo, Dailymotion)
 ### Media titles and descriptions, tags
 ### Touch and mobile friendly
 ### Smart lazy loading and displaying
@@ -57,7 +58,7 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 ### API / Events / Callbacks
 ### Fast animation engine
 ### Builder for quick online testing
-### Detailled documentations with samples
+### Detailled documentation with samples
 ### Super customizable
 ### Optional add-on for automatic publishing of self hosted images: [nanoPhotosProvider2](https://github.com/nanostudio-org/nano_photos_provider2)
   
