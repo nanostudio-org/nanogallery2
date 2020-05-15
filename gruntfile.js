@@ -20,7 +20,7 @@ module.exports = function(grunt) {
       pkg: grunt.file.readJSON('package.json'),
       terser: {
         options: {
-          banner: banner,
+          /* banner: banner, */
           preserveComments: 'some'
         },
         standardTarget: {
