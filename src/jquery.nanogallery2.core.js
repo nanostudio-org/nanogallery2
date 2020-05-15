@@ -539,12 +539,12 @@ TODO:
             var album = NGY2Item.Get( instance, albumID );
             
             // title translation
-            if( instance.O.title_translation_map !== null ) {
-              var obj = instance.O.title_translation_map.find(o => o.title === title);
-              if( obj !== undefined ) {
-                title = obj.replace;
-              }
-            }
+            // if( instance.O.title_translation_map !== null ) {
+              // var obj = instance.O.title_translation_map.find(o => o.title === title);
+              // if( obj !== undefined ) {
+                // title = obj.replace;
+              // }
+            // }
             
             
             if( albumID != -1 && albumID != 0 && title !='image gallery by nanogallery2 [build]'  ) {
