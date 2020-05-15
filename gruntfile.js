@@ -18,7 +18,7 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
       pkg: grunt.file.readJSON('package.json'),
-      uglify: {
+      Terser.minify: {
         options: {
           banner: banner,
           preserveComments: 'some'
