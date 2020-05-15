@@ -3,7 +3,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-terser ');
   grunt.loadNpmTasks('grunt-bump');
   grunt.loadNpmTasks('grunt-codepainter');
   // grunt.loadNpmTasks('grunt-contrib-yuidoc');
@@ -105,11 +105,11 @@ module.exports = function(grunt) {
       
     grunt.registerTask('build-nanogallery2', [
       'concat:package',
-      'uglify:standardTarget',
-      'uglify:standardTargetCore',
-      'uglify:standardTargetGoogle3',
-      'uglify:standardTargetFlickr',
-      'uglify:standardTargetNanoPhotosProvider2',
+      'terser:standardTarget',
+      'terser:standardTargetCore',
+      'terser:standardTargetGoogle3',
+      'terser:standardTargetFlickr',
+      'terser:standardTargetNanoPhotosProvider2',
       'cssmin',
       'gh-pages'
       /* 'uglify:standardTarget',
