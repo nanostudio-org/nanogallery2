@@ -3,7 +3,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-terser ');
+  grunt.loadNpmTasks('grunt-terser');
   grunt.loadNpmTasks('grunt-bump');
   grunt.loadNpmTasks('grunt-codepainter');
   // grunt.loadNpmTasks('grunt-contrib-yuidoc');
