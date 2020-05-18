@@ -1709,33 +1709,34 @@ TODO:
           break;
           
         case 'shoppingCartGet':
+          // returns the content of the shoppingcart
           return nG2.shoppingCart;
           break;
           
         case 'shoppingCartUpdate':
           // parameters :
           //  - option = item's ID
-          //  - cnt = new counter
+          //  - value = new quantity
 			
           if( typeof value === 'undefined' || typeof option === 'undefined' ){
             return false;
           }
           
           var item_ID = option;
-          var new_cnt = value;
+          var new_qty = value;
 
           for( var i=0; i < nG2.shoppingCart.length; i++) {
             if( nG2.shoppingCart[i].ID == item_ID ) {
               
               // updates counter
-              nG2.shoppingCart[i].cnt = new_cnt;
+              nG2.shoppingCart[i].qty = new_qty;
               
               var item = nG2.I[nG2.shoppingCart[i].idx];
 
               // updates thumbnail
               nG2.ThumbnailToolbarOneCartUpdate( item );
               
-              if( new_cnt == 0 ) {
+              if( new_qty == 0 ) {
                 // removes item from shoppingcart
                 nG2.shoppingCart.splice(i, 1);
               }
@@ -1765,7 +1766,7 @@ TODO:
               var item = nG2.I[nG2.shoppingCart[i].idx];
 
               // updates thumbnail
-              nG2.shoppingCart[i].cnt = 0;
+              nG2.shoppingCart[i].qty = 0;
               nG2.ThumbnailToolbarOneCartUpdate( item );
               
               // removes item from shoppingcart
@@ -5164,27 +5165,27 @@ TODO:
     
     // CART ICON AND COUNTER
     function ThumbnailBuildToolbarOneCart( item ) {
-      var c = '';
+      var q = 0;
       
       var id = item.GetID()
       for( var i=0; i<G.shoppingCart.length; i++ ) {
         if( G.I[G.shoppingCart[i].idx].GetID() == id ) {
-          c = G.shoppingCart[i].cnt;
+          q = G.shoppingCart[i].qty;
         }
       }
-      if( c == 0 ) {
-        c = '';
+      if( q == 0 ) {
+        q = '';
       }
 
-      return '      <div>' + G.O.icons.thumbnailCart + c + '</div>';
+      return '      <div>' + G.O.icons.thumbnailCart + q + '</div>';
     }
     function ThumbnailBuildToolbarOneCartUpdate( item ) {
       var $e = item.$elt;
 
       if( $e != null ) {
-        var $c = $e.find('*[data-ngy2action="CART"]');
-        if( $c !== undefined ) {
-          $c.html( ThumbnailBuildToolbarOneCart( item ) );
+        var $q = $e.find('*[data-ngy2action="CART"]');
+        if( $q !== undefined ) {
+          $q.html( ThumbnailBuildToolbarOneCart( item ) );
         }
       }
     }
@@ -7752,12 +7753,12 @@ TODO:
     
     // add one image to the shopping cart
     function AddToCart( idx ) {
-      // increment counter if already in shopping cart
+      // increment quantity if already in shopping cart
       var found=false;
       for( var i=0; i<G.shoppingCart.length; i++ ) {
         if( G.shoppingCart[i].idx == idx ) {
-          G.shoppingCart[i].cnt++;
-          ThumbnailBuildToolbarOneCartUpdate(G.I[idx]);
+          G.shoppingCart[i].qty++;
+          ThumbnailBuildToolbarOneCartUpdate( G.I[idx] );
           
           var fu = G.O.fnShoppingCartUpdated;
           if( fu !== null ) {
@@ -7770,7 +7771,7 @@ TODO:
       
       // add to shopping cart
       if( !found) {
-        G.shoppingCart.push( { idx:idx, ID:G.I[idx].GetID(), cnt:1} );
+        G.shoppingCart.push( { idx:idx, ID:G.I[idx].GetID(), qty:1} );
         ThumbnailBuildToolbarOneCartUpdate(G.I[idx]);
 
         var fu=G.O.fnShoppingCartUpdated;
