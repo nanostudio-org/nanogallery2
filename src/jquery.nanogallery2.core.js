@@ -1671,7 +1671,8 @@ TODO:
           nG2.data= {
             items: nG2.I,
             gallery: nG2.GOM,
-            lightbox: nG2.VOM
+            lightbox: nG2.VOM,
+						shoppingcart: nG2.shoppingCart
           };
           return nG2.data;
           break;
@@ -1711,40 +1712,74 @@ TODO:
           break;
           
         case 'shoppingCartUpdate':
+          // parameters :
+          //  - option = item's ID
+          //  - cnt = new counter
+			
           if( typeof value === 'undefined' || typeof option === 'undefined' ){
             return false;
           }
-          var ID = option;
-          var cnt = value;
-          for( var i = 0; i < nG2.shoppingCart.length; i++) {
-            if( nG2.shoppingCart[i].ID = ID ) {
-              nG2.shoppingCart[i].cnt = cnt;
-              nG2.ThumbnailToolbarOneCartUpdate( ID );
+          
+          var item_ID = option;
+          var new_cnt = value;
+
+          for( var i=0; i < nG2.shoppingCart.length; i++) {
+            if( nG2.shoppingCart[i].ID == item_ID ) {
+              
+              // updates counter
+              nG2.shoppingCart[i].cnt = new_cnt;
+              
+              var item = nG2.I[nG2.shoppingCart[i].idx];
+
+              // updates thumbnail
+              nG2.ThumbnailToolbarOneCartUpdate( item );
+              
+              if( new_cnt == 0 ) {
+                // removes item from shoppingcart
+                nG2.shoppingCart.splice(i, 1);
+              }
+              
+              var fu = nG2.O.fnShoppingCartUpdated;
+              if( fu !== null ) {
+                typeof fu == 'function' ? fu(nG2.shoppingCart, item) : window[fu](nG2.shoppingCart, item);
+              }
+
+              break;
             }
           }
-          var fu = G.O.fnShoppingCartUpdated;
-          if( fu !== null ) {
-            typeof  fu == 'function' ? fu(nG2.shoppingCart, NGY2Item.Get(G, ID)) : window[fu](nG2.shoppingCart, NGY2Item.Get(G, ID));
-          }
+         
           return nG2.shoppingCart;
           break;
           
         case 'shoppingCartRemove':
+          // parameters :
+          //  - option = item's ID
           if( typeof option === 'undefined' ){
             return false;
           }
           var ID = option;
           for( var i=0; i < nG2.shoppingCart.length; i++) {
-            if( nG2.shoppingCart[i].ID = ID ) {
-              nG2.shoppingCart.splice(i,1);
-              ThumbnailBuildToolbarOneCartUpdate( ID );
+            if( nG2.shoppingCart[i].ID == ID ) {
+              
+              var item = nG2.I[nG2.shoppingCart[i].idx];
+
+              // updates thumbnail
+              nG2.shoppingCart[i].cnt = 0;
+              nG2.ThumbnailToolbarOneCartUpdate( item );
+              
+              // removes item from shoppingcart
+              nG2.shoppingCart.splice(i, 1);
+              
+              
+              var fu = nG2.O.fnShoppingCartUpdated;
+              if( fu !== null ) {
+                typeof fu == 'function' ? fu(nG2.shoppingCart, item) : window[fu](nG2.shoppingCart, item);
+              }
+
               break;
             }
           }
-          var fu = G.O.fnShoppingCartUpdated;
-          if( fu !== null ) {
-            typeof fu == 'function' ? fu(nG2.shoppingCart, NGY2Item.Get(G, ID)) : window[fu](nG2.shoppingCart, NGY2Item.Get(G, ID));
-          }
+          
           return nG2.shoppingCart;
           break;
          
@@ -1895,8 +1930,8 @@ TODO:
       }
     };
     
-    this.ThumbnailToolbarOneCartUpdate = function (ID) {
-      ThumbnailBuildToolbarOneCartUpdate( ID );
+    this.ThumbnailToolbarOneCartUpdate = function ( item ) {
+      ThumbnailBuildToolbarOneCartUpdate( item );
     }
     
       
@@ -5136,14 +5171,19 @@ TODO:
           c = G.shoppingCart[i].cnt;
         }
       }
+      if( c == 0 ) {
+        c = '';
+      }
+
       return '      <div>' + G.O.icons.thumbnailCart + c + '</div>';
     }
-    function ThumbnailBuildToolbarOneCartUpdate( idx ) {
-      var $e = G.I[idx].$elt;
+    function ThumbnailBuildToolbarOneCartUpdate( item ) {
+      var $e = item.$elt;
+
       if( $e != null ) {
         var $c = $e.find('*[data-ngy2action="CART"]');
         if( $c !== undefined ) {
-          $c.html( ThumbnailBuildToolbarOneCart(G.I[idx]) );
+          $c.html( ThumbnailBuildToolbarOneCart( item ) );
         }
       }
     }
@@ -7716,7 +7756,7 @@ TODO:
       for( var i=0; i<G.shoppingCart.length; i++ ) {
         if( G.shoppingCart[i].idx == idx ) {
           G.shoppingCart[i].cnt++;
-          ThumbnailBuildToolbarOneCartUpdate(idx);
+          ThumbnailBuildToolbarOneCartUpdate(G.I[idx]);
           
           var fu = G.O.fnShoppingCartUpdated;
           if( fu !== null ) {
@@ -7730,7 +7770,7 @@ TODO:
       // add to shopping cart
       if( !found) {
         G.shoppingCart.push( { idx:idx, ID:G.I[idx].GetID(), cnt:1} );
-        ThumbnailBuildToolbarOneCartUpdate(idx);
+        ThumbnailBuildToolbarOneCartUpdate(G.I[idx]);
 
         var fu=G.O.fnShoppingCartUpdated;
         if( fu !== null ) {
