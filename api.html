@@ -83,7 +83,7 @@
 
   <style>
   
-    body { font-size:1.4em; color:#000; line-height:1.5; }
+     body { font-size:1.4em; color:#000; line-height:1.9; }
     p { font-size:1.2em; }
     td { font-size:1.2em; }
    
@@ -100,6 +100,20 @@
     }
     .h2, h2 {
       font-size: 40px;
+    }
+
+
+    .h3, h3 {
+      font-size: 30px;
+    }
+    .h4, h4 {
+      font-size: 25px;
+    }
+    .h5, h5 {
+      font-size: 20px;
+    }
+    .h6, h6 {
+      font-size: 20px;
     }
 
     blockquote {
@@ -154,15 +168,49 @@
       padding: 70px 20px 10px 10px;
       background-color:#000;
       border-left: 8px solid #FF6D00;
-    }
+  }
+
+
     
-    .ngy2documentation p { font-size: 1.7rem; }
-    /* .ngy2documentation h2 { font-size: 2rem; } */ 
+    /*.ngy2documentation p { font-size: 1.7rem; }
+    .ngy2documentation h2 { font-size: 2rem; } 
     .ngy2documentation h3 { font-size: 1.9rem; }
     .ngy2documentation h4 { font-size: 1.8rem; }
     .ngy2documentation h5 { font-size: 1.7rem; }
-    .ngy2documentation h6 { font-size: 1.6rem; }
+    .ngy2documentation h6 { font-size: 1.6rem; } */
+	
+    .ngy2documentation h3 { color: #23CB99; }
     
+    .ngy2documentation pre { 
+      background-color: #F8F8F8;
+      border-color: #888;
+    }
+    
+    .ngy2documentation .ngy2_background_rounded_back { 
+      background-color:#f4fce3;
+      padding: 0px;
+      border-radius:6px;
+      margin: 0px;
+    }
+    .ngy2documentation .ngy2_background_rounded_back:hover { 
+      background-color:#51cf66;
+      background-color:#23CB99;
+    }
+    .ngy2documentation .ngy2_background_rounded_top { 
+      background-color: rgba(0,0,0,0.1);
+      font-weight: bold;
+      padding: 10px;
+      margin: 0;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+    }
+    .ngy2documentation .ngy2_background_rounded_bottom { 
+      padding: 20px;
+      margin: 0;
+    }
+    
+    
+	
     .ngy2documentation table:not(.ngy2_comparison2) td { 
       font-size: 1.4rem;
       font-family: "Source Sans Pro",sans-serif;
@@ -204,27 +252,31 @@
       margin: 1px;
     }
     .ngy2documentation .badge.ngy2_ver {
-      background-color: #888;
-      background-color: #3949AB;
+      background-color: #AAA;
+      /* background-color: #3949AB; */
       padding: 4px 10px;
       margin: 1px;
+      font-size: 11px;
     }
     .ngy2documentation .badge.ngy2_type {
       background-color: #1E88E5;
       padding: 4px 10px;
       margin: 1px;
+      font-size: 11px;
     }
     .ngy2documentation .badge.ngy2_code_markup {
       background-color: #AD1457;
       font-size: 1.6rem;
-      padding: 10px 20px;
+      padding: 5px 5px;
       border-radius: 0px;
+      border-style: none;
     }
     .ngy2documentation .badge.ngy2_code_js {
       background-color: #7B1FA2 !important;
       font-size: 1.6rem;
-      padding: 10px 20px;
+      padding: 5px 5px;
       border-radius: 0px;
+      border-style: none;
     }
 
     .ngy2documentation p.ngy2_doc_p {
@@ -651,9 +703,9 @@
     /*******************************************/
     /* VERTICAL NAVIGATION BAR (documentation) */
     /*******************************************/
-    #ngy2_vert_nav {
+    #ngy2_vert_nav  {
       border-left: 4px solid #0097A7;
-      font-size:1.5rem;
+      line-height: 1.7rem
     }
     
     #ngy2_vert_nav_style .nav > li > a {
