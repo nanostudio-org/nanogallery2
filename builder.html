@@ -112,7 +112,72 @@
 
   <style>
   
-     body { font-size:1.4em; color:#000; line-height:1.9; }
+    
+  /* COLORS BY PALETTON
+  
+    https://paletton.com/#uid=7380u0kquHMfQQHluLOynEiC1rl
+  
+    BASE: #46D6AB
+  
+    Main Primary color
+    .color-primary-0 { color: #23CB98 }
+    .color-primary-1 { color: #73E3C1 }
+    .color-primary-2 { color: #46D6AB } 
+    .color-primary-3 { color: #00C287 }
+    .color-primary-4 { color: #009064 }
+
+    Main Secondary color (1) - BLUE
+    .color-secondary-1-0 { color: #3079CA }
+    .color-secondary-1-1 { color: #7BACE2 }
+    .color-secondary-1-2 { color: #5190D5 }
+    .color-secondary-1-3 { color: #0E62C0 }
+    .color-secondary-1-4 { color: #09488E }
+
+    Main Secondary color (2) - ORANGE
+    .color-secondary-2-0 { color: #FFAC2C }
+    .color-secondary-2-1 { color: #FFCD81 }
+    .color-secondary-2-2 { color: #FFBB54 }
+    .color-secondary-2-3 { color: #FF9A00 }
+    .color-secondary-2-4 { color: #DA8400 }
+
+    Main Secondary color (3) - ORANGE-RED
+    .color-complement-0 { color: #FF762C }
+    .color-complement-1 { color: #FFAD81 }
+    .color-complement-2 { color: #FF9054 }
+    .color-complement-3 { color: #FF5900 }
+    .color-complement-4 { color: #DA4C00 }  
+
+
+
+    > as RGBa codes :
+
+    .rgba-primary-0 { color: rgba( 35,203,152,1) }
+    .rgba-primary-1 { color: rgba(115,227,193,1) }
+    .rgba-primary-2 { color: rgba( 70,214,171,1) }
+    .rgba-primary-3 { color: rgba(  0,194,135,1) }
+    .rgba-primary-4 { color: rgba(  0,144,100,1) }
+
+    .rgba-secondary-1-0 { color: rgba( 48,121,202,1) }
+    .rgba-secondary-1-1 { color: rgba(123,172,226,1) }
+    .rgba-secondary-1-2 { color: rgba( 81,144,213,1) }
+    .rgba-secondary-1-3 { color: rgba( 14, 98,192,1) }
+    .rgba-secondary-1-4 { color: rgba(  9, 72,142,1) }
+
+    .rgba-secondary-2-0 { color: rgba(255,172, 44,1) }
+    .rgba-secondary-2-1 { color: rgba(255,205,129,1) }
+    .rgba-secondary-2-2 { color: rgba(255,187, 84,1) }
+    .rgba-secondary-2-3 { color: rgba(255,154,  0,1) }
+    .rgba-secondary-2-4 { color: rgba(218,132,  0,1) }
+
+    .rgba-complement-0 { color: rgba(255,118, 44,1) }
+    .rgba-complement-1 { color: rgba(255,173,129,1) }
+    .rgba-complement-2 { color: rgba(255,144, 84,1) }
+    .rgba-complement-3 { color: rgba(255, 89,  0,1) }
+    .rgba-complement-4 { color: rgba(218, 76,  0,1) }  
+  */
+  
+  
+    body { font-size:1.4em; color:#000; line-height:1.9; }
     p { font-size:1.2em; }
     td { font-size:1.2em; }
    
@@ -147,14 +212,13 @@
 
     blockquote {
       color: #fff;
-      background-color: #AEDADC;
-      background-color: #009688;
-      background-color: #0097A7;
-      border-color: #499195;
-      border-color: #00796B;
-      border-color: #00838F;
+      background-color: #7BACE2;
+      border-color: #09488E;
       padding-top: 25px;
       padding-bottom: 25px;
+      border-bottom-right-radius: 60px;
+      border-top-right-radius: 60px;
+      border-left: 10px solid #09488E;
     }
 
     /**********/
@@ -223,7 +287,7 @@
     }
     .ngy2documentation .ngy2_background_rounded_back:hover { 
       background-color:#51cf66;
-      background-color:#23CB99;
+      background-color:#73E3C1;
     }
     .ngy2documentation .ngy2_background_rounded_top { 
       background-color: rgba(0,0,0,0.1);
@@ -238,17 +302,23 @@
       margin: 0;
     }
     
-    
-	
+    .ngy2documentation table:not(.ngy2_comparison2) :not(pre) > code { 
+      font-size: 1.3rem;
+      background: #ddd;
+      font-weight: bold;
+      color: #000;
+      text-shadow: 0 0px #fff;    
+    } 
+
     .ngy2documentation table:not(.ngy2_comparison2) td { 
-      font-size: 1.4rem;
-      font-family: "Source Sans Pro",sans-serif;
+      font-size: 1.5rem;
     }
     .ngy2documentation table:not(.ngy2_comparison2) td *{ 
-      font-size: 1.4rem;
+      font-size: 1.5rem;
     }
     .ngy2documentation table:not(.ngy2_comparison2) td:nth-child(1) { 
       font-weight: bold;
+      font-size: 1.4rem;
     }
     .ngy2documentation td.ngy2_object { 
       padding-left: 40px;
@@ -281,27 +351,28 @@
       margin: 1px;
     }
     .ngy2documentation .badge.ngy2_ver {
-      background-color: #AAA;
-      /* background-color: #3949AB; */
+      background-color: #FFBB54;
       padding: 4px 10px;
       margin: 1px;
       font-size: 11px;
+      font-weight: normal;
     }
     .ngy2documentation .badge.ngy2_type {
-      background-color: #1E88E5;
+      background-color: #FF9054;
       padding: 4px 10px;
       margin: 1px;
       font-size: 11px;
+      font-weight: normal;
     }
     .ngy2documentation .badge.ngy2_code_markup {
-      background-color: #AD1457;
+      background-color: #DA4C00;
       font-size: 1.6rem;
       padding: 5px 5px;
       border-radius: 0px;
       border-style: none;
     }
     .ngy2documentation .badge.ngy2_code_js {
-      background-color: #7B1FA2 !important;
+      background-color: #09488E !important;
       font-size: 1.6rem;
       padding: 5px 5px;
       border-radius: 0px;
@@ -1115,6 +1186,8 @@
       }
     }
 
+
+ 
 
   
 
