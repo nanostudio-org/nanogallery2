@@ -1,4 +1,4 @@
-/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2020-05-18 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2020-05-26 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /*!
  * @preserve nanogallery2 - javascript photo / video gallery and lightbox
  * Homepage: http://nanogallery2.nanostudio.org
@@ -22,33 +22,37 @@
  
 // nanogallery v2.5.0beta
 /*
-- nano_photos_provider2 : on gallery initialization, if an album is defined, gallery will not display sub-albums
+- fixed nano_photos_provider2: on gallery initialization, if an album is defined, gallery will not display sub-albums
 - [replaced] label position -> valign - top, bottom, middle / default: bottom
 - tableau de remplacement de nom d'albums (text found -> text to use)
-- new option galleryFilterTagsMode/galleryL1FilterTagsMode - possible value 'single', 'multiple'
-- new: no tag selected then display all thumbnails
-- changed: icon for tags and for tag's filter reset
-- changed: lightbox tool icons layout and background
-- bugfix: gallery may not be displayed depending on the display animation
-- changed: touchAnimation default value to false - hover animation on thumbnails are now disabled by default
-- bugfix: touch to display tools when they are hidden
-- improved: swipe and touch gesture, velocity
-- new: rounded border on thumbnails -> galleryTheme : { thumbnail: { borderRadius
-- new:   thumbnailIcon :         { shadow:'' },
-- new: thumbnailL1BorderHorizontal, thumbnailL1BorderVertical
-- CDNJS
-- new: loading over thumbnail during album content download
-- enhancement: page scrollbar better removed on lightbox display to avoid page reflow
-- fixed: modal popup not sharp (media info and share), and wrong size on mobile devices
 - new: mosaic layout is now fully responsive
-- removed: viewerDisplayLogo option
-- fixed modal size on mobile
-- fixed: some artefacts around thumbnails in some use cases
-- new: pagination buttons on top of gallery
+- new: filtering, option galleryFilterTagsMode/galleryL1FilterTagsMode - possible value 'single', 'multiple'
+- new: filtering, if no tag is selected then no filter is applied
+- new: loading spinner over thumbnail during album content download
+- new: first album level, new options thumbnailL1BorderHorizontal and thumbnailL1BorderVertical
+- new: left / right pagination buttons on top of gallery, new option galleryPaginationTopButtons
     icons: navigationPaginationPrevious / navigationPaginationNext
     theme: navigationPagination
     option galleryPaginationTopButtons : true,
 - new: callback fnPopupMediaInfo(item, title, content) -> {title: my_title, content: my_content}
+- changed: icon for tags and for tag's filter reset
+- changed: lightbox tool icons layout and background
+- fixed: gallery may not be displayed depending on the display animation
+- changed: touchAnimation default value to false - hover animation on thumbnails are now disabled by default
+- fixed: lightbox, a touch will display toolbars and lable when they are hidden
+- improved: swipe and touch gesture, velocity
+- new: rounded border on thumbnails -> galleryTheme : { thumbnail: { borderRadius
+- new:   thumbnailIcon :         { shadow:'' },
+- CDNJS
+- enhancement: page scrollbar better removed on lightbox display, to avoid page reflow
+- fixed: modal popup not sharp (media info and share), and wrong size on mobile devices
+- removed: viewerDisplayLogo option
+- fixed modal size on mobile
+- fixed: some artefacts around thumbnails in some use cases
+- changed: thumbnailOpenImage renamed in thumbnailOpenInLightox
+- new option thumbnailDisplayOrder/L1: randomized thumbnail display order ('', 'random');
+- new imageslideup
+- new option thumbnailDisplayTransitionEasing/L1, default: easeOutQuart
 - minor fixes
 
 TODO: 
@@ -69,9 +73,14 @@ TODO:
 - gallery on lightbox -> in toolbar ?
 - double touch in zoom mode -> should not go to next/previous media
 - thumbnailGutterWidth and thumbnailGutterHeight responsive
-- shopping cart -> compteur
-- shopping cart in lightbox
+- shopping cart
+   -> compteur
+   -> toolbar name cart -> shoppingcart
+   -> lightbox -> shoppingcart
 - rajouter custom meta-data dans nanophotosprovider (par ex. prix d'un article)
+- doc: enlever "button" au nom des outils du viewer
+- regex title/desc
+- �viter scroll to top of gallery if not needed (page refresh)
 */
  
  
@@ -358,7 +367,8 @@ TODO:
             }
           };
 
-          //+ Jonas Raoni Soares Silva
+          // Scrambles the elements of an array
+					//+ Jonas Raoni Soares Silva
           //@ http://jsfromhell.com/array/shuffle [v1.0]
           NGY2Tools.AreaShuffle = function (o) {
             for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
@@ -669,8 +679,8 @@ TODO:
               if( item.GetID() == ID ) {
                 // FOUND
                 if( !curTn.neverDisplayed ) {
-                  foundIdx= curTn.thumbnailIdx;
-                  foundGOMidx= i;
+                  foundIdx = curTn.thumbnailIdx;
+                  foundGOMidx = i;
                 }
               }
               else {
@@ -695,7 +705,7 @@ TODO:
               }
               G.GOM.items.splice(foundGOMidx, 1);   // delete in GOM
               if( G.GOM.lastDisplayedIdx != -1 ) {
-                G.GOM.lastDisplayedIdx-=1;
+                G.GOM.lastDisplayedIdx -= 1;
               }
             }
           }
@@ -1411,7 +1421,7 @@ TODO:
     galleryDisplayTransitionDuration :    1000,
     galleryL1DisplayTransitionDuration :  null,
     galleryResizeAnimation :      true,
-    galleryRenderDelay :          60,
+    galleryRenderDelay :          30,
 
     thumbnailCrop :               true,
     thumbnailL1Crop :             null,
@@ -1479,13 +1489,17 @@ TODO:
 
     thumbnailToolbarImage :       { topLeft: 'select', topRight : 'featured' },
     thumbnailToolbarAlbum :       { topLeft: 'select', topRight : 'counter'  },
+    thumbnailDisplayOrder :       'random',
+    thumbnailL1DisplayOrder :     null,
     thumbnailDisplayInterval :    15,
     thumbnailL1DisplayInterval :  null,
     thumbnailDisplayTransition :  'fadeIn',
     thumbnailL1DisplayTransition : null,
+    thumbnailDisplayTransitionEasing :  'easeOutQuart',
+    thumbnailL1DisplayTransitionEasing : null,
     thumbnailDisplayTransitionDuration:   240,
     thumbnailL1DisplayTransitionDuration: null,
-    thumbnailOpenImage :          true,
+    thumbnailOpenInLightox :      true,
     thumbnailOpenOriginal :       false,
     
     viewer :                      'internal',
@@ -1563,7 +1577,7 @@ TODO:
       thumbnailShare:               '<i class="nGY2Icon-ngy2_share2"></i>',
       thumbnailDownload:            '<i class="nGY2Icon-ngy2_download2"></i>',
       thumbnailInfo:                '<i class="nGY2Icon-ngy2_info2"></i>',
-      thumbnailCart:                '<i class="nGY2Icon-basket"></i>',
+      thumbnailShoppingcart:        '<i class="nGY2Icon-basket"></i>',
       thumbnailDisplay:             '<i class="nGY2Icon-resize-full"></i>',
       thumbnailCustomTool1:         'T1',
       thumbnailCustomTool2:         'T2',
@@ -1598,6 +1612,7 @@ TODO:
       viewerShare:                  '<i class="nGY2Icon-ngy2_share2"></i>',
       viewerRotateLeft:             '<i class="nGY2Icon-ccw"></i>',
       viewerRotateRight:            '<i class="nGY2Icon-cw"></i>',
+      viewerShoppingcart:           '<i class="nGY2Icon-basket"></i>',
       user:                         '<i class="nGY2Icon-user"></i>',
       location:                     '<i class="nGY2Icon-location"></i>',
       picture:                     '<i class="nGY2Icon-picture"></i>',
@@ -1743,7 +1758,7 @@ TODO:
               
               var fu = nG2.O.fnShoppingCartUpdated;
               if( fu !== null ) {
-                typeof fu == 'function' ? fu(nG2.shoppingCart, item) : window[fu](nG2.shoppingCart, item);
+                typeof fu == 'function' ? fu(nG2.shoppingCart, item, 'api') : window[fu](nG2.shoppingCart, item, 'api');
               }
 
               break;
@@ -1775,7 +1790,7 @@ TODO:
               
               var fu = nG2.O.fnShoppingCartUpdated;
               if( fu !== null ) {
-                typeof fu == 'function' ? fu(nG2.shoppingCart, item) : window[fu](nG2.shoppingCart, item);
+                typeof fu == 'function' ? fu(nG2.shoppingCart, item, 'api') : window[fu](nG2.shoppingCart, item, 'api');
               }
 
               break;
@@ -4449,6 +4464,9 @@ TODO:
       
       // batch set position (and display animation) to all thumbnails
       // first display newly built thumbnails
+			if( G.tn.opt.Get('displayOrder') == 'random' ) {
+				NGY2Tools.AreaShuffle( tnToDisplay );
+			}
       var nbBuild = tnToDisplay.length;
       G.GOM.thumbnails2Display=[];
       for( var i = 0; i < nbBuild ; i++ ) {
@@ -4457,6 +4475,9 @@ TODO:
       }
       
       // then re-position already displayed thumbnails
+			if( G.tn.opt.Get('displayOrder') == 'random' ) {
+				NGY2Tools.AreaShuffle( tnToReDisplay );
+			}
       var n = tnToReDisplay.length;
       for( var i = 0; i < n ; i++ ) {
         // ThumbnailSetPosition(tnToReDisplay[i].idx, nbBuild+1);
@@ -4619,7 +4640,7 @@ TODO:
 
           if( nb > 0 ) {
             // display counter
-            if( G.O.thumbnailOpenImage || G.O.thumbnailSliderDelay > 0  ) {
+            if( G.O.thumbnailOpenInLightox || G.O.thumbnailSliderDelay > 0  ) {
               item.$getElt('.nGY2GThumbnailIconsFullThumbnail').html( '+' + nb);
             }
 
@@ -4865,7 +4886,7 @@ TODO:
       newEltIdx = 0;
       
       var mp = '';
-      if( G.O.thumbnailOpenImage === false ) {
+      if( G.O.thumbnailOpenInLightox === false ) {
         mp = 'cursor:default;'
       }
       
@@ -4907,7 +4928,7 @@ TODO:
       newEltIdx = 0;
 
       var mp = '';
-      if( G.O.thumbnailOpenImage === false ) {
+      if( G.O.thumbnailOpenInLightox === false ) {
         mp = 'cursor:default;'
       }
 
@@ -5098,9 +5119,9 @@ TODO:
                 toolbar += '    </li>';
                 cnt++;
                 break;
-              case 'CART':
+              case 'SHOPPINGCART':
                 toolbar += '    <li class="nGY2GThumbnailIcon" data-ngy2action="' + tIcon + '">';
-                // toolbar += '      <div>' + G.O.icons.thumbnailCart + '</div>';
+                // toolbar += '      <div>' + G.O.icons.thumbnailShoppingcart + '</div>';
                 toolbar += ThumbnailBuildToolbarOneCart( item );
                 
                 toolbar += '    </li>';
@@ -5177,13 +5198,13 @@ TODO:
         q = '';
       }
 
-      return '      <div>' + G.O.icons.thumbnailCart + q + '</div>';
+      return '      <div>' + G.O.icons.thumbnailShoppingcart + q + '</div>';
     }
     function ThumbnailBuildToolbarOneCartUpdate( item ) {
       var $e = item.$elt;
 
       if( $e != null ) {
-        var $q = $e.find('*[data-ngy2action="CART"]');
+        var $q = $e.find('*[data-ngy2action="SHOPPINGCART"]');
         if( $q !== undefined ) {
           $q.html( ThumbnailBuildToolbarOneCart( item ) );
         }
@@ -5384,10 +5405,16 @@ TODO:
           oTo =   { opacity: 1, translateY: 0, rotateX: 0 };
           break;
         case 'SLIDEUP2':
-          var f=G.tn.opt.Get('displayTransitionStartVal');
+          var f = G.tn.opt.Get('displayTransitionStartVal');
           if( f == 0 ) { f=100; }   // default value
           oFrom = { opacity: 0, translateY: f, rotateY: 40 };
           oTo =   { opacity: 1, translateY: 0, rotateY: 0  };
+          break;
+        case 'IMAGESLIDEUP':
+          var f = G.tn.opt.Get('displayTransitionStartVal');
+          if( f == 0 ) { f=100; }   // default value
+          oFrom = { opacity: 0, top: '100%' };
+          oTo =   { opacity: 1, top: '0%'  };
           break;
         case 'SLIDEDOWN2':
           var f=G.tn.opt.Get('displayTransitionStartVal');
@@ -5471,6 +5498,10 @@ TODO:
                 att.item.CSSTransformSet('.nGY2GThumbnail', 'rotateY', state.rotateY + 'deg');
                 att.item.CSSTransformApply('.nGY2GThumbnail');
                 break;
+              case 'IMAGESLIDEUP':
+                att.item.$elt.css('opacity', state.opacity);
+								att.item.$Elts['.nGY2GThumbnailImage'].css('top', state.top);
+                break;
               case 'SLIDEDOWN2':
                 att.item.$elt.css('opacity', state.opacity);
                 att.item.CSSTransformSet('.nGY2GThumbnail', 'translate', '0px, ' + state.translateY + 'px');
@@ -5510,34 +5541,24 @@ TODO:
                 att.item.CSSTransformSet('.nGY2GThumbnail', 'scale', state.scale);
                 att.item.CSSTransformApply('.nGY2GThumbnail');
                 break;
-              case 'SLIDEUP':
+              case 'IMAGESLIDEUP':
                 att.item.$elt.css('opacity', '');
-                break;
-              case 'SLIDEDOWN':
-                att.item.$elt.css('opacity', '');
-                break;
-              case 'FLIPUP':
-                att.item.$elt.css('opacity', '');
-                break;
-              case 'FLIPDOWN':
-                att.item.$elt.css('opacity', '');
-                break;
-              case 'SLIDEUP2':
-                att.item.$elt.css('opacity', '');
+								att.item.$Elts['.nGY2GThumbnailImage'].css('top', 0);
                 break;
               case 'SLIDEDOWN2':
                 att.item.$elt.css('opacity', '');
                 att.item.CSSTransformApply('.nGY2GThumbnail');
                 break;
-              case 'SLIDERIGHT':
+							default :
+								// case 'SLIDEUP':
+								// case 'SLIDEDOWN':
+								// case 'FLIPUP':
+								// case 'FLIPDOWN':
+								// case 'SLIDEUP2':
+								// case 'SLIDERIGHT':
+								// case 'SLIDELEFT':
+								// case 'FADEIN':
                 att.item.$elt.css('opacity', '');
-                break;
-              case 'SLIDELEFT':
-                att.item.$elt.css('opacity', '');
-                break;
-              case 'FADEIN':
-                att.$e.css('opacity', '');
-                break;
             }
             ThumbnailAppearFinish(att.item);
           });
@@ -6618,6 +6639,10 @@ TODO:
         G.tn.opt.l1.displayTransition = 'CUSTOM';
       }
       
+
+      // thumbnail display transition easing
+			// set default easing
+      ThumbnailOpt('thumbnailDisplayTransitionEasing', 'thumbnailL1DisplayTransitionEasing', 'displayTransitionEasing');
       // parse thumbnail display transition
       function thumbnailDisplayTransitionParse( cfg, level ) {
         if( typeof cfg == 'string' ) {
@@ -6645,6 +6670,8 @@ TODO:
       ThumbnailOpt('thumbnailDisplayTransitionDuration', 'thumbnailL1DisplayTransitionDuration', 'displayTransitionDuration');
       // thumbnail display transition interval duration
       ThumbnailOpt('thumbnailDisplayInterval', 'thumbnailL1DisplayInterval', 'displayInterval');
+      // thumbnail display order
+      ThumbnailOpt('thumbnailDisplayOrder', 'thumbnailL1DisplayOrder', 'displayOrder');
 
       
       // resolution breakpoints --> convert old syntax to new one
@@ -7714,8 +7741,8 @@ TODO:
           ItemDisplayInfo(G.I[idx]);
           return 'exit';
           break;
-        case 'CART':
-          AddToCart(idx);
+        case 'SHOPPINGCART':
+          AddToCart(idx, 'gallery');
           return 'exit';
           break;
         default:
@@ -7752,7 +7779,7 @@ TODO:
     }
     
     // add one image to the shopping cart
-    function AddToCart( idx ) {
+    function AddToCart( idx, source ) {
       // increment quantity if already in shopping cart
       var found=false;
       for( var i=0; i<G.shoppingCart.length; i++ ) {
@@ -7762,7 +7789,7 @@ TODO:
           
           var fu = G.O.fnShoppingCartUpdated;
           if( fu !== null ) {
-            typeof fu == 'function' ? fu(G.shoppingCart, G.I[idx]) : window[fu](G.shoppingCart, G.I[idx]);
+            typeof fu == 'function' ? fu(G.shoppingCart, G.I[idx], source) : window[fu](G.shoppingCart, G.I[idx], source);
           }
           TriggerCustomEvent('shoppingCartUpdated');
           return;
@@ -7776,7 +7803,7 @@ TODO:
 
         var fu=G.O.fnShoppingCartUpdated;
         if( fu !== null ) {
-          typeof fu == 'function' ? fu(G.shoppingCart, G.I[idx]) : window[fu](G.shoppingCart, G.I[idx]);
+          typeof fu == 'function' ? fu(G.shoppingCart, G.I[idx], source) : window[fu](G.shoppingCart, G.I[idx], source);
         }
         TriggerCustomEvent('shoppingCartUpdated');
       }
@@ -8119,7 +8146,7 @@ TODO:
     // with internal or external viewer
     function DisplayPhotoIdx( ngy2ItemIdx ) {
 
-      if( !G.O.thumbnailOpenImage ) { return; }
+      if( !G.O.thumbnailOpenInLightox ) { return; }
 
       if( G.O.thumbnailOpenOriginal ) {
         // Open link to original image
@@ -8446,7 +8473,7 @@ TODO:
       if( ngscreenfull.enabled && G.O.viewerFullscreen ) { ngscreenfull.request(); }
 
       // Gallery
-      ViewerGalleryBuild();
+      // ViewerGalleryBuild();
 
       setElementOnTop('', G.VOM.$viewer);
       ResizeInternalViewer(true);
@@ -8902,6 +8929,10 @@ TODO:
           StopPropagationPreventDefault(e);
           ViewerImageRotate(90);
           break;
+        case 'shoppingcart':
+          StopPropagationPreventDefault(e);
+          AddToCart( G.VOM.items[G.VOM.currItemIdx].ngy2ItemIdx, 'lightbox');
+          break;
       }
       
       // custom button
@@ -8985,6 +9016,7 @@ TODO:
       e=elt.replace(/^\s+|\s+$/g, '');    // remove trailing/leading whitespace
       switch( e ) {
         case 'minimizeButton':
+        case 'minimize':
           var ic = G.O.icons.viewerToolbarMin;
           if( G.VOM.toolbarMode == 'min' ) {
             ic = G.O.icons.viewerToolbarStd;
@@ -8992,15 +9024,18 @@ TODO:
           r += 'minimizeButton nGEvent" data-ngy2action="minimize">'+ic+'</div>';
           break;
         case 'previousButton':
+        case 'previous':
           r += 'previousButton nGEvent" data-ngy2action="previous">'+G.O.icons.viewerPrevious+'</div>';
           break;
         case 'pageCounter':
           r += 'pageCounter nGEvent"></div>';
           break;
         case 'nextButton':
+        case 'next':
           r += 'nextButton nGEvent" data-ngy2action="next">'+G.O.icons.viewerNext+'</div>';
           break;
         case 'playPauseButton':
+        case 'playPause':
           r += 'playButton playPauseButton nGEvent" data-ngy2action="playPause">'+G.O.icons.viewerPlay+'</div>';
           break;
         case 'rotateLeft':
@@ -9010,12 +9045,15 @@ TODO:
           r += 'rotateRightButton nGEvent" data-ngy2action="rotateRight">'+G.O.icons.viewerRotateRight+'</div>';
           break;
         case 'downloadButton':
+        case 'download':
           r += 'downloadButton nGEvent" data-ngy2action="download">'+G.O.icons.viewerDownload+'</div>';
           break;
         case 'zoomButton':
+        case 'zoom':
           r += 'nGEvent" data-ngy2action="zoomIn">'+G.O.icons.viewerZoomIn+'</div><div class="ngbt ngy2viewerToolAction nGEvent" data-ngy2action="zoomOut">'+G.O.icons.viewerZoomOut+'</div>';
           break;
         case 'fullscreenButton':
+        case 'fullscreen':
           var s = G.O.icons.viewerFullscreenOn;
           if( ngscreenfull.enabled && G.VOM.viewerIsFullscreen ) {
             s = G.O.icons.viewerFullscreenOff;
@@ -9023,19 +9061,26 @@ TODO:
           r += 'setFullscreenButton fullscreenButton nGEvent" data-ngy2action="fullScreen">'+s+'</div>';
           break;
         case 'infoButton':
+        case 'info':
           r += 'infoButton nGEvent" data-ngy2action="info">'+G.O.icons.viewerInfo+'</div>';
           break;
         case 'linkOriginalButton':
-          r += 'linkOriginalButton nGEvent" data-ngy2action="linkOriginal">' + G.O.icons.viewerLinkOriginal + '</div>';
+        case 'linkOriginal':
+          r += 'linkOriginalButton nGEvent" data-ngy2action="linkOriginal">' + G.O.icons.viewerLiviewerLinkOriginal + '</div>';
           break;
         case 'closeButton':
+        case 'close':
           r += 'closeButton nGEvent" data-ngy2action="close">'+G.O.icons.buttonClose+'</div>';
           break;
         case 'shareButton':
+        case 'share':
           r += 'nGEvent" data-ngy2action="share">'+G.O.icons.viewerShare+'</div>';
           break;
         case 'label':
           r += '"><div class="title nGEvent" itemprop="name"></div><div class="description nGEvent" itemprop="description"></div></div>';
+          break;
+        case 'shoppingcart':
+          r += 'closeButton nGEvent" data-ngy2action="shoppingcart">'+G.O.icons.viewerShoppingcart+'</div>';
           break;
         default:
           // custom button
