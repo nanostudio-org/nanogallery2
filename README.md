@@ -78,13 +78,33 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 
 ## Usage
 
-HTML markup configuration example:
+HTML markup setup examples:
 ```
 <body>
   <div id="my_nanogallery2" 
     data-nanogallery2='{ "userID": "34858669@N00", "kind": "flickr", "thumbnailHeight": 150, "thumbnailWidth": 150 }'>
   </div>
 </body>
+```
+```
+  <div id="my_nanogallery2" data-nanogallery2 = '{ "itemsBaseURL": "https://mywebserver/gallery/myimages/"}' >
+    <a href="img_01.jpg" data-ngthumb="img_01t.jpg"  data-ngdesc="Description1"        >Title Image1</a>
+    <a href="img_02.jpg" data-ngthumb="img_02ts.jpg" data-ngdesc="Image 2 description" >Title Image2</a>
+    <a href="img_03.jpg" data-ngthumb="img_03t.jpg"                                    >Title Image3</a>
+  </div>
+```
+```
+  <div id="my_nanogallery2" data-nanogallery2  >
+    <a href="img/img_01.jpg">Title Image 2
+      <img src="img/img_01_thumbnail.jpg"/>
+    </a>
+    <a href="img/img_02.jpg">Title Image 2
+      <img src="img/img_02_thumbnail.jpg"/>
+    </a>
+    <a href="img/img_03.jpg">Title Image 3
+      <img src="img/img_03_thumbnail.jpg"/>
+    </a>
+  </div>
 ```
 
 <br />  
