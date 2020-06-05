@@ -8747,19 +8747,19 @@ TODO:
 	
 				var tw = G.O.viewerGalleryTWidth;
 				var th = G.O.viewerGalleryTHeight;
-				var border = 1;
+				var gutter = 2;
 				
 				var t = '';
 				for( var i=0; i< G.VOM.items.length; i++) {
 					var idx=G.VOM.items[i].mediaNumber;
 					var o = G.I[G.VOM.items[i].ngy2ItemIdx];
 					var src = (o.thumbImg().src).replace(/'/g, "%27");   // replace single quote with %27
-					t += '<div class="nGY2Thumbnail" style="width:'+tw+'px;height:'+th+'px;left:'+i*(tw+border*2)+'px;background-image: url(&apos;'+src+'&apos;);" data-ngy2_lightbox_thumbnail="true" data-ngy2_idx="' + idx + '" data-ngy2_vidx="' + i + '" ></div>';
+					t += '<div class="nGY2Thumbnail" style="width:'+tw+'px;height:'+th+'px;left:'+i*(tw+gutter*2)+'px;background-image: url(&apos;'+src+'&apos;);" data-ngy2_lightbox_thumbnail="true" data-ngy2_idx="' + idx + '" data-ngy2_vidx="' + i + '" ></div>';
 				}
-				G.VOM.gallery.gwidth = (tw+2*border) * G.VOM.items.length;
-				G.VOM.gallery.oneTmbWidth = tw+2*border;
-				var tc = "<div class='nGY2ThumbnailContainer' style='height:"+th+"px;left:0;width:"+G.VOM.gallery.gwidth+"px;' data-ngy2_lightbox_gallery='true'>" + t + "</div>";
-				G.VOM.gallery.$elt = jQuery('<div class="nGY2viewerGallery" style="display: inline-block;opacity:0;top:100px;height:'+th+'px;left:0;right:0;">'+ tc +'</div>').appendTo(G.VOM.$viewer);
+				G.VOM.gallery.gwidth = (tw+2*gutter) * G.VOM.items.length;
+				G.VOM.gallery.oneTmbWidth = tw+2*gutter;
+				var tc = "<div class='nGY2ThumbnailContainer' style='height:"+(th+gutter*2)+"px;left:0;width:"+G.VOM.gallery.gwidth+"px;' data-ngy2_lightbox_gallery='true'>" + t + "</div>";
+				G.VOM.gallery.$elt = jQuery('<div class="nGY2viewerGallery" style="display: inline-block;opacity:0;top:100px;height:'+(th+gutter*2)+'px;left:0;right:0;">'+ tc +'</div>').appendTo(G.VOM.$viewer);
 				G.VOM.gallery.$tmbCont = G.VOM.gallery.$elt.find('.nGY2ThumbnailContainer')
 				
 				G.VOM.gallery.Resize();
