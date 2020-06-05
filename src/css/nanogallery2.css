@@ -1141,9 +1141,35 @@
 	display:table-row;
 	vertical-align:middle;
 	overflow: hidden;
-	color:#aaa;
+	color:#eee;
 }
 
+.nGY2 .nGY2viewerGallery {
+	overflow: hidden;
+	position: fixed;
+	/* display: inline-block; */
+	display: none;
+}
+.nGY2 .nGY2viewerGallery .nGY2ThumbnailContainer{
+	overflow: hidden;
+	display: inline-block;
+	position: absolute;
+  top: 1px;
+}
+.nGY2 .nGY2viewerGallery .nGY2Thumbnail {
+	top: 1px;
+	padding: 0px;
+	border:1px solid #888;
+	position: absolute;
+	opacity: 1;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	overflow: hidden;
+}
+.nGY2 .nGY2viewerGallery .activeThumbnail {
+	border:2px solid #fff;
+}
 
 
 
