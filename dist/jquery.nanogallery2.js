@@ -1492,7 +1492,7 @@ TODO:
 
     thumbnailToolbarImage :       { topLeft: 'select', topRight : 'featured' },
     thumbnailToolbarAlbum :       { topLeft: 'select', topRight : 'counter'  },
-    thumbnailDisplayOrder :       'random',
+    thumbnailDisplayOrder :       '',
     thumbnailL1DisplayOrder :     null,
     thumbnailDisplayInterval :    15,
     thumbnailL1DisplayInterval :  null,
@@ -8738,7 +8738,7 @@ TODO:
       return true;
     }
     
-    // VIEWER - BUILD GALLERY
+    // VIEWER - BUILD THE THUMBNAILS GALLERY
     function ViewerGalleryBuild() {
 
 			G.VOM.gallery.firstDisplay = true;
@@ -8747,7 +8747,7 @@ TODO:
 	
 				var tw = G.O.viewerGalleryTWidth;
 				var th = G.O.viewerGalleryTHeight;
-				var border = 5;
+				var border = 1;
 				
 				var t = '';
 				for( var i=0; i< G.VOM.items.length; i++) {
@@ -8759,7 +8759,7 @@ TODO:
 				G.VOM.gallery.gwidth = (tw+2*border) * G.VOM.items.length;
 				G.VOM.gallery.oneTmbWidth = tw+2*border;
 				var tc = "<div class='nGY2ThumbnailContainer' style='height:"+th+"px;left:0;width:"+G.VOM.gallery.gwidth+"px;' data-ngy2_lightbox_gallery='true'>" + t + "</div>";
-				G.VOM.gallery.$elt = jQuery('<div class="nGY2viewerGallery" style="opacity:0;top:100px;height:'+th+'px;left:0;right:0;">'+ tc +'</div>').appendTo(G.VOM.$viewer);
+				G.VOM.gallery.$elt = jQuery('<div class="nGY2viewerGallery" style="display: inline-block;opacity:0;top:100px;height:'+th+'px;left:0;right:0;">'+ tc +'</div>').appendTo(G.VOM.$viewer);
 				G.VOM.gallery.$tmbCont = G.VOM.gallery.$elt.find('.nGY2ThumbnailContainer')
 				
 				G.VOM.gallery.Resize();
@@ -10026,7 +10026,7 @@ TODO:
           break;
       }
 			
-			// vertical position of the thumbnail gallery
+			// vertical position of the thumbnails gallery
 			if( G.O.viewerGallery ) {
 				var galleryTop = windowsH - G.O.viewerGalleryTHeight - 10;
 				if( G.O.viewerToolbar.display ) {
