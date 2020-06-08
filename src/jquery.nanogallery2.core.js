@@ -83,6 +83,7 @@ TODO:
 - éviter scroll to top of gallery if not needed (page refresh)
 - enlever mode lightbox avec cadre
 - viewer gallery avec video
+- scroll to top, si conteneur avec scrollbar
 */
  
  
@@ -2687,8 +2688,8 @@ TODO:
 				posX: 0,
 				SetThumbnailActive() {
 					if( !G.O.viewerGallery ) { return; }
-					this.$tmbCont.children().removeClass('activeThumbnail');
-					this.$tmbCont.children().eq( G.VOM.content.current.vIdx ).addClass('activeThumbnail');
+					this.$tmbCont.children().removeClass('activeVThumbnail');
+					this.$tmbCont.children().eq( G.VOM.content.current.vIdx ).addClass('activeVThumbnail');
 					this.firstDisplay = false;
 				},
 				Resize: function() {
@@ -8750,16 +8751,16 @@ TODO:
 				
 				var t = '';
 				for( var i=0; i< G.VOM.items.length; i++) {
-					var idx=G.VOM.items[i].mediaNumber;
-					var o = G.I[G.VOM.items[i].ngy2ItemIdx];
+					var idx = G.VOM.items[i].ngy2ItemIdx;
+					var o = G.I[idx];
 					var src = (o.thumbImg().src).replace(/'/g, "%27");   // replace single quote with %27
-					t += '<div class="nGY2Thumbnail" style="width:'+tw+'px;height:'+th+'px;left:'+i*(tw+gutter*2)+'px;background-image: url(&apos;'+src+'&apos;);" data-ngy2_lightbox_thumbnail="true" data-ngy2_idx="' + idx + '" data-ngy2_vidx="' + i + '" ></div>';
+					t += '<div class="nGY2VThumbnail" style="width:'+tw+'px;height:'+th+'px;left:'+i*(tw+gutter*2)+'px;background-image: url(&apos;'+src+'&apos;);" data-ngy2_lightbox_thumbnail="true" data-ngy2_idx="' + idx + '" data-ngy2_vidx="' + i + '" ></div>';
 				}
 				G.VOM.gallery.gwidth = (tw+2*gutter) * G.VOM.items.length;
 				G.VOM.gallery.oneTmbWidth = tw+2*gutter;
-				var tc = "<div class='nGY2ThumbnailContainer' style='height:"+(th+gutter*2)+"px;left:0;width:"+G.VOM.gallery.gwidth+"px;' data-ngy2_lightbox_gallery='true'>" + t + "</div>";
+				var tc = "<div class='nGY2VThumbnailContainer' style='height:"+(th+gutter*2)+"px;left:0;width:"+G.VOM.gallery.gwidth+"px;' data-ngy2_lightbox_gallery='true'>" + t + "</div>";
 				G.VOM.gallery.$elt = jQuery('<div class="nGY2viewerGallery" style="display: inline-block;opacity:0;top:100px;height:'+(th+gutter*2)+'px;left:0;right:0;">'+ tc +'</div>').appendTo(G.VOM.$viewer);
-				G.VOM.gallery.$tmbCont = G.VOM.gallery.$elt.find('.nGY2ThumbnailContainer')
+				G.VOM.gallery.$tmbCont = G.VOM.gallery.$elt.find('.nGY2VThumbnailContainer')
 				
 				G.VOM.gallery.Resize();
 				G.VOM.gallery.SetThumbnailActive();
@@ -9094,6 +9095,9 @@ TODO:
       }
       G.VOM.$content.find('.nGY2ViewerAreaNext').css('opacity', op);
       G.VOM.$content.find('.nGY2ViewerAreaPrevious').css('opacity', op);
+      
+      // gallery
+      G.VOM.gallery.$elt.css('opacity', op);
     }
     
     
