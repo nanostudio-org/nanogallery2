@@ -1154,10 +1154,10 @@
 	overflow: hidden;
 	display: inline-block;
 	position: absolute;
-  top: 1px;
+  top: 0px;
 }
 .nGY2 .nGY2viewerGallery .nGY2Thumbnail {
-	top: 1px;
+	top: 0px;
 	padding: 0px;
 	border:1px solid #888;
 	position: absolute;
