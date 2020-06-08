@@ -1150,13 +1150,13 @@
 	/* display: inline-block; */
 	display: none;
 }
-.nGY2 .nGY2viewerGallery .nGY2ThumbnailContainer{
+.nGY2 .nGY2viewerGallery .nGY2VThumbnailContainer{
 	overflow: hidden;
 	display: inline-block;
 	position: absolute;
   top: 0px;
 }
-.nGY2 .nGY2viewerGallery .nGY2Thumbnail {
+.nGY2 .nGY2viewerGallery .nGY2VThumbnail {
 	top: 0px;
 	padding: 0px;
 	border:1px solid #888;
@@ -1167,7 +1167,7 @@
 	background-size: cover;
 	overflow: hidden;
 }
-.nGY2 .nGY2viewerGallery .activeThumbnail {
+.nGY2 .nGY2viewerGallery .activeVThumbnail {
 	border:2px solid #fff;
 }
 
