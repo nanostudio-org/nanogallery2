@@ -124,7 +124,7 @@ Dual licenced:
 
 ## Requirements
 * Javascript must be enabled
-* jQuery 1.12.4+
+* jQuery 1.12.4+ (not compatible with v3.0 and v3.1, because of a jQuery regression described [here](https://github.com/jquery/jquery/issues/3193) )
   
 <br />
 
