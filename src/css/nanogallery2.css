@@ -1147,8 +1147,9 @@
 .nGY2 .nGY2viewerGallery {
 	overflow: hidden;
 	position: fixed;
-	/* display: inline-block; */
-	display: none;
+	display: none;      /* by default, no gallery on lightbox */
+  opacity: 0;
+  bottom: 5px;
 }
 .nGY2 .nGY2viewerGallery .nGY2VThumbnailContainer{
 	overflow: hidden;
