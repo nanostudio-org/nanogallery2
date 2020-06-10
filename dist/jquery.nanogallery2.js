@@ -1,4 +1,4 @@
-/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2020-06-08 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2020-06-10 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /*!
  * @preserve nanogallery2 - javascript photo / video gallery and lightbox
  * Homepage: http://nanogallery2.nanostudio.org
@@ -55,6 +55,13 @@
 - new option thumbnailDisplayOrder/L1: randomized thumbnail display order ('', 'random');
 - new imageslideup
 - new option thumbnailDisplayTransitionEasing/L1, default: easeOutQuart
+- rewrite - shopping cart
+   -> compteur
+   -> toolbar name cart -> shoppingcart
+   -> lightbox -> shoppingcart
+- depreciated: options 'topOverImage', 'bottomOverImage' for lighbox vertical toolbar position
+- depreciated: theme border for lightbox
+- compatibility issue: Jquery 3.0 and 3.1 - issue on width calculation - https://github.com/jquery/jquery/issues/3193
 - minor fixes
 
 TODO: 
@@ -71,20 +78,14 @@ TODO:
 - utiliser lightbox sans gallerie
 - delete button -> thumbnail/lightbox + callback(with cancel)
 - re-display one thumbnail -> new image, title, etc...
-- gallery on lightbox -> in toolbar ?
 - double touch in zoom mode -> should not go to next/previous media
 - thumbnailGutterWidth and thumbnailGutterHeight responsive
-- shopping cart
-   -> compteur
-   -> toolbar name cart -> shoppingcart
-   -> lightbox -> shoppingcart
 - rajouter custom meta-data dans nanophotosprovider (par ex. prix d'un article)
 - doc: enlever "button" au nom des outils du viewer
 - regex title/desc
 - �viter scroll to top of gallery if not needed (page refresh)
-- enlever mode lightbox avec cadre
 - viewer gallery avec video
-- scroll to top, si conteneur avec scrollbar
+- scroll to top, si conteneur avec scrollbar - https://stackoverflow.com/questions/16308037/detect-when-elements-within-a-scrollable-div-are-out-of-view
 */
  
  
@@ -484,10 +485,10 @@ TODO:
             this.destinationURL =       '';       // thumbnail destination URL --> open URL instead of displaying image
             this.downloadURL =          '';       // thumbnail download URL --> specify the image for download button
             this.author =               '';       // image/album author
-            this.left=                  0;        // store position to animate from old to new
-            this.top=                   0;
-            this.width=                 0;        // store size to avoid setting width/height if not required
-            this.height=                0;
+            this.left =                 0;        // store position to animate from old to new
+            this.top =                  0;
+            this.width =                0;        // store size to avoid setting width/height if not required
+            this.height =               0;
             this.resizedContentWidth=   0;        // store size of content (image) to avoid setting width/height if not required
             this.resizedContentHeight=  0;
             this.thumbs = {                       // URLs and sizes for user defined
@@ -507,11 +508,10 @@ TODO:
             this.contentLength =        0;        // album: number of items (real number of items in memory)
             this.numberItems =          0;        // album: number of items (value returned by data source)
             this.mediaNumber =          0;        // media number in the album
-            this.imageCounter =         0;        // number of images in an album
+            this.mediaCounter =         0;        // number of medias in an album
             this.eltTransform =         [];       // store the CSS transformations
             this.eltFilter =            [];       // store the CSS filters
             this.eltEffect =            [];       // store data about hover effects animations
-            this.authkey =              '';       // for Google Photos private (hidden) albums
             this.paginationLastPage =   0;        // for albums
             this.paginationLastWidth =  0;        // for albums
             this.customData =           {};
@@ -593,8 +593,8 @@ TODO:
             item.albumID = albumID;
             item.kind = kind;
             if( kind == 'image' ) {
-              album.imageCounter += 1;
-              item.mediaNumber = album.imageCounter;
+              album.mediaCounter += 1;
+              item.mediaNumber = album.mediaCounter;
             }
 
             // check keyword to find features images/albums
@@ -672,7 +672,7 @@ TODO:
             this.G.I[NGY2Item.GetIdx(this.G, this.albumID)].contentLength--;
             this.G.I[NGY2Item.GetIdx(this.G, this.albumID)].numberItems--;
             
-            // check if in DOM and removes it
+            // check if in GOM and removes it
             var nbTn = this.G.GOM.items.length;
             var ID = this.GetID();
             var foundIdx = -1;
@@ -712,6 +712,8 @@ TODO:
                 G.GOM.lastDisplayedIdx -= 1;
               }
             }
+            
+            // TODO: update medianumber of the other item in the same album
           }
 
           NGY2Item.prototype.addToGOM = function( ) {
@@ -1513,10 +1515,10 @@ TODO:
     viewerZoom :                  true,
     viewerImageDisplay :          '',
     openOnStart :                 '',
-    viewerHideToolsDelay :        3000,
+    viewerHideToolsDelay :        4000,
     viewerToolbar : {
       display :                   true,
-      position :                  'bottomOverImage',
+      position :                  'bottom',
       fullWidth :                 true,
       align :                     'center',
       autoMinimize :              0,
@@ -2100,9 +2102,10 @@ TODO:
       G.GOM.pagination.currentPage = page;
 
       // scroll to top of gallery if not displayed
-      if( !inViewportVert(G.$E.base, 0) ) {
-        $('html, body').animate({scrollTop: G.$E.base.offset().top}, 200);
-      }
+      // if( G.$E.scrollableParent === null && !inViewportVert(G.$E.base, 0) ) {
+        // $('html, body').animate({scrollTop: G.$E.base.offset().top}, 200);
+      // }
+      G.GOM.ScrollToTop();
       GalleryDisplayPart1( true );
       GalleryDisplayPart2( true );
       return false;
@@ -2589,6 +2592,12 @@ TODO:
         this.displayed =            false;
         this.neverDisplayed =       true;
         this.inDisplayArea =        false;
+      },
+      ScrollToTop: function() {
+        console.log('scrolltop');
+        if( G.$E.scrollableParent === null && !inViewportVert(G.$E.base, 0) ) {
+          $('html, body').animate({scrollTop: G.$E.base.offset().top}, 200);
+        }
       }
     };
     
@@ -2730,10 +2739,10 @@ TODO:
               easing:       'easeInOutSine',
               duration:     1000,
               step:         function (state) {
-                G.VOM.gallery.$elt.css( state );
+                // G.VOM.gallery.$elt.css( state );
               },
               finish:       function (state) {
-                G.VOM.gallery.$elt.css({ opacity: 1});
+                // G.VOM.gallery.$elt.css({ opacity: 1});
               }
             });
 
@@ -2775,7 +2784,6 @@ TODO:
         }
 				
 			},
-      
       userEvents:         null,   // user events management
       hammertime:         null,   // hammer.js manager
       swipePosX:          0,      // current horizontal swip position
@@ -2909,17 +2917,6 @@ TODO:
     // Color schemes - lightbox
     G.viewerTheme_dark = {
       background:             '#000',
-      imageBorder:            'none',
-      imageBoxShadow:         'none',
-      barBackground:          'rgba(4, 4, 4, 0.2)',
-      barBorder:              '0px solid #111',
-      barColor:               '#fff',
-      barDescriptionColor:    '#ccc'
-    };
-    G.viewerTheme_border = {
-      background:             'rgba(1, 1, 1, 0.75)',
-      imageBorder:            '4px solid #f8f8f8',
-      imageBoxShadow:         '#888 0px 0px 20px',
       barBackground:          'rgba(4, 4, 4, 0.2)',
       barBorder:              '0px solid #111',
       barColor:               '#fff',
@@ -2927,8 +2924,6 @@ TODO:
     };
     G.viewerTheme_light = {
       background:             '#f8f8f8',
-      imageBorder:            'none',
-      imageBoxShadow:         'none',
       barBackground:          'rgba(4, 4, 4, 0.7)',
       barBorder:              '0px solid #111',
       barColor:               '#fff',
@@ -3165,7 +3160,7 @@ TODO:
 
     
     
-    // Manage the gallery toolbar (breadcrumb + tag filter)
+    // Manage the gallery toolbar (breadcrumb + tag filter + pagination next/previous)
     function GalleryNavigationBar( albumIdx ) {
 
       // Title + background image
@@ -3440,9 +3435,13 @@ TODO:
           TriggerCustomEvent('pageChanged');
 
           // scroll to top of gallery if not displayed
-          if( !inViewportVert(G.$E.base, 0) ) {
-            $('html, body').animate({scrollTop: G.$E.base.offset().top}, 200);
-          }
+          // if( G.$E.scrollableParent === null ) {
+            // if( !inViewportVert(G.$E.base, 0) ) {
+              // $('html, body').animate({scrollTop: G.$E.base.offset().top}, 200);
+            // }
+          // }
+          G.GOM.ScrollToTop();
+ 
           GalleryDisplayPart1( true );
           GalleryDisplayPart2( true );
         });
@@ -3486,9 +3485,12 @@ TODO:
       TriggerCustomEvent('pageChanged');
 
       // scroll to top of gallery if not displayed
-      if( !inViewportVert(G.$E.base, 0) ) {
-        $('html, body').animate({scrollTop: G.$E.base.offset().top}, 200);
-      }
+			// if( G.$E.scrollableParent === null ) {
+        // if( !inViewportVert(G.$E.base, 0) ) {
+          // $('html, body').animate({scrollTop: G.$E.base.offset().top}, 200);
+        // }
+      // }
+      G.GOM.ScrollToTop();
       GalleryDisplayPart1( true );
       GalleryDisplayPart2( true );
     }
@@ -3521,9 +3523,12 @@ TODO:
       TriggerCustomEvent('pageChanged');
 
       // scroll to top of gallery if not displayed
-      if( !inViewportVert(G.$E.base, 0) ) {
-        $('html, body').animate({scrollTop: G.$E.base.offset().top}, 200);
-      }
+			// if( G.$E.scrollableParent === null ) {
+        // if( !inViewportVert(G.$E.base, 0) ) {
+          // $('html, body').animate({scrollTop: G.$E.base.offset().top}, 200);
+        // }
+      // }
+      G.GOM.ScrollToTop();
       GalleryDisplayPart1( true );
       GalleryDisplayPart2( true );
     }
@@ -3624,7 +3629,7 @@ TODO:
         G.$E.conTnBottom.empty();
       }
 
-      // navigation toolbar (breadcrumb + tag filters)
+      // navigation toolbar (breadcrumb + tag filters + pagination next/previous)
       GalleryNavigationBar(albumIdx);
       
       if( G.GOM.firstDisplay ) {
@@ -3667,9 +3672,42 @@ TODO:
               G.$E.conNavigationBar.css({ 'opacity': 0, 'display': 'none' });
             }
             // scroll to top of the gallery if needed
-            var galleryOTop = G.$E.base.offset().top;
-            if( galleryOTop < G.GOM.cache.viewport.t ) {
-                jQuery('html, body').animate({scrollTop: galleryOTop}, 500, "linear", function() {
+            var scroll = false;
+            
+            if( G.$E.scrollableParent === null ) {
+              var galleryOTop = G.$E.base.offset().top;
+              if( galleryOTop < G.GOM.cache.viewport.t ) {
+                scroll = true;
+              }
+            }
+            else {
+              var elem = G.$E.base;
+              // console.dir(G.$E.base);
+              // var container = G.$E.scrollableParent;
+              // var contHeight = container.height();
+              var scrollTop = G.$E.scrollableParent.scrollTop();
+              console.log('scrollTop:'+scrollTop);
+              var dist = Math.abs(G.$E.scrollableParent.offset().top - G.$E.base.offset().top - scrollTop);
+              console.log('dist:'+dist);
+              // if( (dist + scrollTop) > 0 ) {
+              if( (dist + scrollTop) > 0 ) {
+                var st = scrollTop-dist;
+                console.log('do:'+st);
+                // container.scrollTop(st);
+                G.$E.scrollableParent.scrollTop(0);
+                console.log('new:'+G.$E.scrollableParent.scrollTop());
+              }
+                GalleryRenderPart1( albumIdx );
+            }
+            
+    
+            
+            
+            // var galleryOTop = G.$E.base.offset().top;
+            // if( G.$E.scrollableParent === null && galleryOTop < G.GOM.cache.viewport.t ) {
+            if( scroll ) {
+              console.log('scrolltop2');
+              jQuery('html, body').animate({scrollTop: galleryOTop}, 500, "linear", function() {
                 GalleryRenderPart1( albumIdx );
               });
             }
@@ -3713,10 +3751,7 @@ TODO:
         });
       }
       else {
-        // display gallery
-        // GalleryRenderPart2( albumIdx );
-            // setTimeout(function(){ GalleryRenderPart2(albumIdx) }, 60);
-            requestTimeout(function(){ GalleryRenderPart2(albumIdx) }, 60);
+        requestTimeout(function(){ GalleryRenderPart2(albumIdx) }, 60);
       }
 
     }
@@ -7772,10 +7807,6 @@ TODO:
               cs = G.viewerTheme_light;
               G.VOM.viewerTheme = 'nanogallery_viewertheme_light_' + G.baseEltID;
               break;
-            case 'border':
-              cs = G.viewerTheme_border;
-              G.VOM.viewerTheme = 'nanogallery_viewertheme_border_' + G.baseEltID;
-              break;
             case 'dark':
             case 'default':
               cs = G.viewerTheme_dark;
@@ -7790,12 +7821,7 @@ TODO:
 
       var s1 = '.' + G.VOM.viewerTheme + ' ';
       var s = s1 + '.nGY2Viewer { background:' + cs.background + '; }'+'\n';
-      s += s1 + '.nGY2ViewerMedia { border:' + cs.imageBorder + '; box-shadow:' + cs.imageBoxShadow + '; }'+'\n';
       s += s1 + '.nGY2Viewer .toolbarBackground { background:' + cs.barBackground + '; }'+'\n';
-      // s += s1 + '.nGY2Viewer .nGY2ViewerToolsTopLeft { background:' + cs.barBackground + '; }'+'\n';
-      // s += s1 + '.nGY2Viewer .nGY2ViewerToolsTopRight { background:' + cs.barBackground + '; }'+'\n';
-      // s += s1 + '.nGY2Viewer .nGY2ViewerAreaNext { background:' + cs.barBackground + '; }'+'\n';
-      // s += s1 + '.nGY2Viewer .nGY2ViewerAreaPrevious { background:' + cs.barBackground + '; }'+'\n';
       s += s1 + '.nGY2Viewer .toolbar { border:' + cs.barBorder + '; color:' + cs.barColor + '; }'+'\n';
       s += s1 + '.nGY2Viewer .toolbar .previousButton:after { color:' + cs.barColor + '; }'+'\n';
       s += s1 + '.nGY2Viewer .toolbar .nextButton:after { color:' + cs.barColor + '; }'+'\n';
@@ -8670,7 +8696,7 @@ TODO:
       ViewerGalleryBuild();
 
       setElementOnTop('', G.VOM.$viewer);
-      ResizeInternalViewer(true);
+      ResizeLightbox(true);
       G.VOM.gallery.Resize();
       G.VOM.timeImgChanged = new Date().getTime();
       
@@ -8679,56 +8705,85 @@ TODO:
       G.VOM.$toolbarTR.css('opacity', 0);
       G.VOM.$buttonLeft.css('opacity', 0);
       G.VOM.$buttonRight.css('opacity', 0);
+      G.VOM.gallery.$elt.css('opacity', 0);
+      G.VOM.$content.css('opacity', 0);
       G.VOM.$toolbarTR[0].style[G.CSStransformName] = 'translateY(-40px) ';
       G.VOM.$toolbarTL[0].style[G.CSStransformName] = 'translateY(-40px) ';
       G.VOM.$buttonLeft[0].style[G.CSStransformName] = 'translateX(-40px) ';
       G.VOM.$buttonRight[0].style[G.CSStransformName] = 'translateX(40px) ';
+
       // STEP 1: display main container, including media
       var tweenable = new NGTweenable();
       tweenable.tween({
         from:         { opacity: 0, posY: G.VOM.window.lastHeight*.5 },
         to:           { opacity: 1, posY: 0 },
-        delay:        30,
-        duration:     500,
+        delay:        10,
+        duration:     450,
         easing:       'easeInOutQuint',
         step:         function (state) {
+          // lightbox
           G.VOM.$viewer.css('opacity', state.opacity);
           G.VOM.$viewer[0].style[G.CSStransformName] = 'translateY(' + (state.posY) + 'px) ';
-        },
-        finish:       function (state) {
-
-          // STEP 2: display top toolbar, and left/right navigation buttons
-          var tweenable = new NGTweenable();
-          tweenable.tween({
-            from:         { posY: -40 },
-            to:           { posY: 0 },
-            delay:        0,
-            duration:     200,
-            easing:       'easeInOutQuint',
-            step:         function (state) {
-              G.VOM.$toolbarTR[0].style[G.CSStransformName] = 'translateY(' + (state.posY) + 'px) ';
-              G.VOM.$toolbarTL[0].style[G.CSStransformName] = 'translateY(' + (state.posY) + 'px) ';
-              G.VOM.$buttonLeft[0].style[G.CSStransformName] = 'translateX(' + (state.posY) + 'px) ';
-              G.VOM.$buttonRight[0].style[G.CSStransformName] = 'translateX(' + (-state.posY) + 'px) ';
-            }
-          });
+          
+          // media in lightbox
+          G.VOM.$content.css('opacity', state.opacity);
         }
       });
+      
+      
+      // STEP 2: display tools, left/right navigation buttons, gallery
+      var tweenable = new NGTweenable();
+      tweenable.tween({
+        from:         { posY: -40, opacity: 0, scale: 3 },
+        to:           { posY: 0, opacity: 1, scale: 1 },
+        delay:        300,
+        duration:     400,
+        easing:       'easeInOutQuint',
+        step:         function (state) {
+          
+          // tools
+          G.VOM.$toolbarTR[0].style[G.CSStransformName] = 'translateY(' + (state.posY) + 'px) ';
+          G.VOM.$toolbarTL[0].style[G.CSStransformName] = 'translateY(' + (state.posY) + 'px) ';
+          G.VOM.$buttonLeft[0].style[G.CSStransformName] = 'translateX(' + (state.posY) + 'px) ';
+          G.VOM.$buttonRight[0].style[G.CSStransformName] = 'translateX(' + (-state.posY) + 'px) ';
+          
+          // gallery
+          G.VOM.gallery.$elt.css({ opacity: state.opacity });
+          G.VOM.gallery.$elt[0].style[G.CSStransformName] = 'scale('+state.scale+')';
+        },
+        finish: function() {
+          ViewerMediaPanX(0);
+          ViewerSetEvents();
+
+          DisplayInternalViewer('');
+          
+          if( G.O.slideshowAutoStart ) {
+            G.VOM.playSlideshow = false;
+            SlideshowToggle();
+          }
+          
+          ViewerToolsUnHide();
+          DisplayInternalViewerComplete('');
+        }
+      });
+
+
+      
 
       // stop click propagation on media ==> if the user clicks outside of an media, the viewer is closed
       // --> no more supported since v2.0.0
       // G.VOM.$viewer.find('img').on('click', function (e) { e.stopPropagation(); });
       
       
-      ViewerMediaPanX(0);
-      ViewerSetEvents();
+      // ViewerMediaPanX(0);
+      // ViewerSetEvents();
 
-      DisplayInternalViewer('');
+      // DisplayInternalViewer('');
       
-      if( G.O.slideshowAutoStart ) {
-        G.VOM.playSlideshow = false;
-        SlideshowToggle();
-      }
+      // if( G.O.slideshowAutoStart ) {
+        // G.VOM.playSlideshow = false;
+        // SlideshowToggle();
+      // }
     }
     
     function ViewerEvents() {
@@ -8760,7 +8815,7 @@ TODO:
 				G.VOM.gallery.gwidth = (tw+2*gutter) * G.VOM.items.length;
 				G.VOM.gallery.oneTmbWidth = tw+2*gutter;
 				var tc = "<div class='nGY2VThumbnailContainer' style='height:"+(th+gutter*2)+"px;left:0;width:"+G.VOM.gallery.gwidth+"px;' data-ngy2_lightbox_gallery='true'>" + t + "</div>";
-				G.VOM.gallery.$elt = jQuery('<div class="nGY2viewerGallery" style="display: inline-block;opacity:0;top:100px;height:'+(th+gutter*2)+'px;left:0;right:0;">'+ tc +'</div>').appendTo(G.VOM.$viewer);
+				G.VOM.gallery.$elt = jQuery('<div class="nGY2viewerGallery" style="display: inline-block;height:'+(th+gutter*2)+'px;left:0;right:0;">'+ tc +'</div>').appendTo(G.VOM.$viewer);
 				G.VOM.gallery.$tmbCont = G.VOM.gallery.$elt.find('.nGY2VThumbnailContainer')
 				
 				G.VOM.gallery.Resize();
@@ -8808,9 +8863,7 @@ TODO:
             case 'zoom':
               // pan zoomed image
               ViewerImagePanSetPosition(G.VOM.panPosX + ev.deltaX, G.VOM.panPosY + ev.deltaY, G.VOM.content.current.$media, false);
-              if( G.VOM.toolbarsDisplayed == true ) {
-                G.VOM.toolsHide();
-              }
+              G.VOM.toolsHide();
               break;
               
             case 'media':
@@ -8991,7 +9044,7 @@ TODO:
               if( G.VOM.zoom.isZooming ) {
                 G.VOM.zoom.isZooming = false;
                 // G.VOM.zoom.userFactor = 1;
-                ResizeInternalViewer(true);
+                ResizeLightbox(true);
               }
               else {
                 if( ViewerZoomStart() ) {
@@ -9080,7 +9133,7 @@ TODO:
 			if( G.VOM.viewerDisplayed ) {
         G.VOM.toolbarsDisplayed = true;
         ViewerToolsOpacity(1);
-        G.VOM.toolsHide();
+        G.VOM.toolsHide();        // re-init delay before hide tools+gallery 
       }
     }
     
@@ -9094,11 +9147,13 @@ TODO:
       if( G.VOM.$toolbarTR != null ) { 
         G.VOM.$toolbarTR.css('opacity', op);
       }
+      
+      // next/previous
       G.VOM.$content.find('.nGY2ViewerAreaNext').css('opacity', op);
       G.VOM.$content.find('.nGY2ViewerAreaPrevious').css('opacity', op);
       
       // gallery
-      G.VOM.gallery.$elt.css('opacity', op);
+      // G.VOM.gallery.$elt.css('opacity', op);
     }
     
     
@@ -9571,10 +9626,17 @@ TODO:
 
       velocity = velocity || 0;
 
+      if( G.O.debugMode && console.timeline ) { console.timeline('nanogallery2_viewer'); }
+
       if( G.VOM.playSlideshow ) { window.clearTimeout( G.VOM.playSlideshowTimerID ); }
       
       var current_content_item = null;
       var new_content_item  = null;
+
+      G.VOM.timeImgChanged = new Date().getTime();
+      G.VOM.viewerMediaIsChanged = true;
+      G.VOM.zoom.isZooming = false;
+      ResizeLightbox(true);
 
       switch( displayType ) {
         case '':
@@ -9590,15 +9652,13 @@ TODO:
             new_content_item = G.VOM.content.next;
       }
 
-      G.VOM.timeImgChanged = new Date().getTime();
-      G.VOM.viewerMediaIsChanged = true;
-      G.VOM.zoom.isZooming = false;
-      ResizeInternalViewer(true);
- 
-      if( G.O.debugMode && console.timeline ) { console.timeline('nanogallery2_viewer'); }
-
       // SetLocationHash( next_ng2item.albumID, next_ng2item.GetID() );
       SetLocationHash( new_content_item.NGY2Item().albumID, new_content_item.NGY2Item().GetID() );
+
+      if( displayType == '' ) {
+        // first media -> no transition -> exit
+        return;
+      }
       
       // animation duration is proportional of the remaining distance
       var vP = G.GOM.cache.viewport;
@@ -9610,127 +9670,95 @@ TODO:
          t_easing = 'linear';     // use linear to avoid a slow-down in the transition after user swipe
       }
       
-      if( displayType == '' ) {
         
-        // first image --> just appear / no transition animation with an already displayed media
+      // animate the image transition between 2 medias
         
+      if( G.CSStransformName == null  ) {
+        // no CSS transform support -> no animation
+        ViewerSetMediaVisibility(new_content_item, 1);
         ViewerSetMediaVisibility(current_content_item, 1);
-        if( G.CSStransformName == null ) {
-          // no CSS transform support -> no animation
-          ViewerSetMediaVisibility(new_content_item, 1);
-          DisplayInternalViewerComplete(displayType);
-        }
-        else {
-          // ViewerSetMediaVisibility(new_content_item, 0);
-          new NGTweenable().tween({
-            from:         { opacity: 0 },
-            to:           { opacity: 1 },
-            attachment:   { dT: displayType},
-            easing:       'easeInOutSine',
-            delay:        30,
-            duration:     400,
-            step:         function (state, att) {
-              // using scale is not a good idea on Chrome -> image will be blurred -> so, only opacity
-              G.VOM.$content.css('opacity', state.opacity);
-            },
-            finish:       function (state, att) {
-              ViewerToolsUnHide();
-              DisplayInternalViewerComplete(att.dT);
-            }
-          });
-        }
+        DisplayInternalViewerComplete(displayType);
       }
       else {
-        
-        // animate the image transition between 2 medias
-        
-        if( G.CSStransformName == null  ) {
-          // no CSS transform support -> no animation
-          ViewerSetMediaVisibility(new_content_item, 1);
-          ViewerSetMediaVisibility(current_content_item, 1);
-          DisplayInternalViewerComplete(displayType);
-        }
-        else {
-          switch( G.O.imageTransition ) {
-            case 'SWIPE':
-            case 'SWIPE2':
-              var dir = ( displayType == 'nextImage' ? - vP.w : vP.w );
-              new_content_item.$media[0].style[G.CSStransformName] = 'translate(' + (-dir) + 'px, 0px) '
-  
-              if( velocity == 0 ) {
-                t_easing = G.O.imageTransition == 'swipe' ? 'easeInOutSine' : 'easeInQuart';
-              }
-              
-              ViewerSetMediaVisibility(G.VOM.content.current, 1);
-              G.VOM.content.current.$media[0].style[G.CSStransformName] = 'translate(0px, 0px)';
-              ViewerSetMediaVisibility(new_content_item, 1);
+        switch( G.O.imageTransition ) {
+          case 'SWIPE':
+          case 'SWIPE2':
+            var dir = ( displayType == 'nextImage' ? - vP.w : vP.w );
+            new_content_item.$media[0].style[G.CSStransformName] = 'translate(' + (-dir) + 'px, 0px) '
 
-              new NGTweenable().tween({
-                from:         { t: G.VOM.swipePosX  },
-                to:           { t: (displayType == 'nextImage' ? - vP.w : vP.w) },
-                attachment:   { dT: displayType, new_content_item: new_content_item, dir: dir, media_transition: new_content_item.NGY2Item().mediaTransition()},
-                // delay:        30,
-                duration:     t_dur,
-                easing:       ( t_easing ),
-                step:         function (state, att) {
-                  // current displayed media
-                  G.VOM.content.current.$media[0].style[G.CSStransformName] = 'translate(' + state.t + 'px, 0px)';
+            if( velocity == 0 ) {
+              t_easing = G.O.imageTransition == 'swipe' ? 'easeInOutSine' : 'easeInQuart';
+            }
+            
+            ViewerSetMediaVisibility(G.VOM.content.current, 1);
+            G.VOM.content.current.$media[0].style[G.CSStransformName] = 'translate(0px, 0px)';
+            ViewerSetMediaVisibility(new_content_item, 1);
 
-                  // new media
-                  if( att.media_transition ) {
-                    // new media supports transition
-                    var sc = Math.min( Math.max( (Math.abs(state.t)) / G.VOM.window.lastWidth, .8), 1);
-                    if( G.O.imageTransition == 'SWIPE' ) { sc = 1; }
-                    att.new_content_item.$media[0].style[G.CSStransformName] = 'translate(' + (-att.dir+state.t) + 'px, 0px) scale(' + sc + ')';
-                  }
-                },
-                finish:       function (state, att) {
-                  G.VOM.content.current.$media[0].style[G.CSStransformName] = '';
-                  ViewerSetMediaVisibility(G.VOM.content.current, 0);
-                  att.new_content_item.$media[0].style[G.CSStransformName] = '';
-                  DisplayInternalViewerComplete(att.dT);
+            new NGTweenable().tween({
+              from:         { t: G.VOM.swipePosX  },
+              to:           { t: (displayType == 'nextImage' ? - vP.w : vP.w) },
+              attachment:   { dT: displayType, new_content_item: new_content_item, dir: dir, media_transition: new_content_item.NGY2Item().mediaTransition()},
+              // delay:        30,
+              duration:     t_dur,
+              easing:       ( t_easing ),
+              step:         function (state, att) {
+                // current displayed media
+                G.VOM.content.current.$media[0].style[G.CSStransformName] = 'translate(' + state.t + 'px, 0px)';
+
+                // new media
+                if( att.media_transition ) {
+                  // new media supports transition
+                  var sc = Math.min( Math.max( (Math.abs(state.t)) / G.VOM.window.lastWidth, .8), 1);
+                  if( G.O.imageTransition == 'SWIPE' ) { sc = 1; }
+                  att.new_content_item.$media[0].style[G.CSStransformName] = 'translate(' + (-att.dir+state.t) + 'px, 0px) scale(' + sc + ')';
                 }
-              });
-              break;
-              
-            case 'SLIDEAPPEAR':
-            default:
-              var dir=(displayType == 'nextImage' ? - vP.w : vP.w);
-              var op = (Math.abs(G.VOM.swipePosX)) / G.VOM.window.lastWidth;
-              new_content_item.$media[0].style[G.CSStransformName] = '';
-              if( velocity == 0 ) {
-                t_easing ='easeInOutSine';
+              },
+              finish:       function (state, att) {
+                G.VOM.content.current.$media[0].style[G.CSStransformName] = '';
+                ViewerSetMediaVisibility(G.VOM.content.current, 0);
+                att.new_content_item.$media[0].style[G.CSStransformName] = '';
+                DisplayInternalViewerComplete(att.dT);
               }
-              new NGTweenable().tween({
-                from:         { o: op, t: G.VOM.swipePosX },
-                to:           { o: 1,  t: (displayType == 'nextImage' ? - vP.w : vP.w) },
-                attachment:   { dT: displayType, new_content_item:new_content_item, media_transition: new_content_item.NGY2Item().mediaTransition()  },
-                delay:        30,
-                duration:     t_dur,
-                easing:       t_easing,
-                step:         function (state, att) {
-                  // current media - translate
-                  G.VOM.content.current.$media[0].style[G.CSStransformName]= 'translate('+state.t+'px, 0px)';
+            });
+            break;
+            
+          case 'SLIDEAPPEAR':
+          default:
+            var dir=(displayType == 'nextImage' ? - vP.w : vP.w);
+            var op = (Math.abs(G.VOM.swipePosX)) / G.VOM.window.lastWidth;
+            new_content_item.$media[0].style[G.CSStransformName] = '';
+            if( velocity == 0 ) {
+              t_easing ='easeInOutSine';
+            }
+            new NGTweenable().tween({
+              from:         { o: op, t: G.VOM.swipePosX },
+              to:           { o: 1,  t: (displayType == 'nextImage' ? - vP.w : vP.w) },
+              attachment:   { dT: displayType, new_content_item:new_content_item, media_transition: new_content_item.NGY2Item().mediaTransition()  },
+              delay:        30,
+              duration:     t_dur,
+              easing:       t_easing,
+              step:         function (state, att) {
+                // current media - translate
+                G.VOM.content.current.$media[0].style[G.CSStransformName]= 'translate('+state.t+'px, 0px)';
 
-                  // new media - opacity
-                  if( att.media_transition ) {
-                    // new media supports transition
-                    ViewerSetMediaVisibility(att.new_content_item, state.o);
-                  }
-                },
-                finish:       function (state, att) {
-                  G.VOM.content.current.$media[0].style[G.CSStransformName]= '';
-                  DisplayInternalViewerComplete(att.dT);
+                // new media - opacity
+                if( att.media_transition ) {
+                  // new media supports transition
+                  ViewerSetMediaVisibility(att.new_content_item, state.o);
                 }
-              });
-              break;
-          }
+              },
+              finish:       function (state, att) {
+                G.VOM.content.current.$media[0].style[G.CSStransformName]= '';
+                DisplayInternalViewerComplete(att.dT);
+              }
+            });
+            break;
         }
       }
+    
     }
   
 
-    // function DisplayInternalViewerComplete( displayType, newVomIdx ) {
     function DisplayInternalViewerComplete( displayType ) {
 
       var newVomIdx = 0;
@@ -9853,7 +9881,7 @@ TODO:
       //  return false;
       // });
 
-      ResizeInternalViewer();
+      ResizeLightbox();
 
       G.VOM.viewerMediaIsChanged = false;
       TriggerCustomEvent('lightboxImageDisplayed');
@@ -9986,8 +10014,8 @@ TODO:
     }
 
     
-    // Internal viewer resized -> reposition elements
-    function ResizeInternalViewer( forceUpdate ) {
+    // Lightbox resized -> reposition elements
+    function ResizeLightbox( forceUpdate ) {
       forceUpdate = typeof forceUpdate !== 'undefined' ? forceUpdate : false;
       
       if( G.VOM.$toolbar === null ) { return; }   // viewer build not finished
@@ -10005,41 +10033,41 @@ TODO:
       G.VOM.window.lastHeight = windowsH;
 
       var $tb = G.VOM.$toolbar.find('.toolbar');
-      var tb_OHt = $tb.outerHeight(true);
+      // var tb_OHt = $tb.outerHeight(true);
+
+
+      var galleryHeight = 0;
+			// Height of the thumbnails gallery
+			if( G.O.viewerGallery ) {
+        galleryHeight = G.O.viewerGalleryTHeight + 10;
+			}
 
 			
       switch( G.O.viewerToolbar.position ) {
+        case 'top':
         case 'topOverImage':
           G.VOM.$content.css({height: windowsH, width: windowsW, top: 0  });
           G.VOM.$toolbar.css({top: 0, bottom: ''});
           break;
-        case 'top':
-          windowsH -= tb_OHt;
-          G.VOM.$content.css({height: windowsH, width: windowsW, top: tb_OHt  });
-          G.VOM.$toolbar.css({top: 0});
-          break;
-        case 'bottomOverImage':
-          G.VOM.$content.css({height:windowsH, width: windowsW, bottom: 0, top: 0  });
-          G.VOM.$toolbar.css({bottom: 0});
-          break;
+        // case 'top':
+          // windowsH -= tb_OHt;
+          // G.VOM.$content.css({height: windowsH, width: windowsW, top: tb_OHt  });
+          // G.VOM.$toolbar.css({top: 0});
+          // break;
         case 'bottom':
+        case 'bottomOverImage':
         default:
-          windowsH -= tb_OHt;
-          G.VOM.$content.css({ width: windowsW, top: 0, bottom: tb_OHt });
-          G.VOM.$toolbar.css({bottom: 0});
+          G.VOM.$content.css({height:windowsH, width: windowsW, bottom: 0, top: 0  });
+          G.VOM.$toolbar.css({bottom: galleryHeight});
           break;
+        // case 'bottom':
+        // default:
+          // windowsH -= tb_OHt;
+          // G.VOM.$content.css({ width: windowsW, top: 0, bottom: tb_OHt });
+          // G.VOM.$toolbar.css({bottom: galleryHeight});
+          // break;
       }
 			
-			// vertical position of the thumbnails gallery
-			if( G.O.viewerGallery ) {
-				var galleryTop = windowsH - G.O.viewerGalleryTHeight - 10;
-				if( G.O.viewerToolbar.display ) {
-					if( G.O.viewerToolbar.position == 'bottom' || G.O.viewerToolbar.position == 'bottomOverImage' ) {
-						galleryTop -= tb_OHt;
-					}
-				}
-				G.VOM.gallery.$elt.css({top: galleryTop});
-			}
 			
       if( !G.VOM.viewerMediaIsChanged && G.VOM.zoom.isZooming ) {
         ViewerMediaSetPosAndZoom();
@@ -10381,15 +10409,13 @@ TODO:
       jQuery(window).on('scroll.nanogallery2.' + G.baseEltID, debounce( OnScrollEvent, G.O.eventsDebounceDelay, false) );
 
 			// Scroll event on first scrollable parent element
-			G.$E.scrollableParent = getScrollableParent(G.$E.base[0]);
+			G.$E.scrollableParent = getScrollableParent( G.$E.base[0] );
 			if( G.$E.scrollableParent !== null ) {
-				G.$E.scrollableParent= jQuery( G.$E.scrollableParent );
+				G.$E.scrollableParent = jQuery( G.$E.scrollableParent );
 				G.$E.scrollableParent.on('scroll.nanogallery2.' + G.baseEltID, debounce( OnScrollEvent, G.O.eventsDebounceDelay, false) );
 			}
 			
-			
-			
-      // Debounced function to hide the toolbars on the viewer
+      // lightbox: hide tools/gallery after defined delay
       G.VOM.toolsHide = debounce( ViewerToolsHide, G.O.viewerHideToolsDelay, false );
       
       // Keyboard management
@@ -10582,7 +10608,7 @@ TODO:
 			
       if( G.VOM.viewerDisplayed ) {
 				// lightbox
-        ResizeInternalViewer();
+        ResizeLightbox();
         G.VOM.gallery.Resize();
       }
       else {
