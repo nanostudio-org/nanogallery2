@@ -10,8 +10,7 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 
 [![Build Status](https://travis-ci.org/nanostudio-org/nanogallery2.svg?branch=dev-gh-pages)](https://travis-ci.org/nanostudio-org/nanogallery2)
 [![Twitter](https://img.shields.io/twitter/url/https/github.com/nanostudio-org/nanogallery2.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=%5Bobject%20Object%5D)
-[![](https://data.jsdelivr.com/v1/package/npm/nanogallery2/badge)](https://www.jsdelivr.com/package/npm/nanogallery2)
-<br /><br />  
+
 
 ## Documentation, Demonstrations and Tutorials
 -> [Check the homepage of the project](http://nanogallery2.nanostudio.org/academy.html)   
