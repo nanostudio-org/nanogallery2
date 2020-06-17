@@ -1,5 +1,5 @@
 /*!
- * @preserve nanogallery2 - javascript photo / video gallery and lightbox
+ * @preserve nanogallery2 v3.0.0beta - javascript photo / video gallery and lightbox
  * Homepage: http://nanogallery2.nanostudio.org
  * Sources:  https://github.com/nanostudio-org/nanogallery2
  *
@@ -19,7 +19,7 @@
  */
 
  
-// nanogallery v2.5.0beta
+// nanogallery v3.0.0beta
 /*
 - fixed nano_photos_provider2: on gallery initialization, if an album is defined, gallery will not display sub-albums
 - [replaced] label position -> valign - top, bottom, middle / default: bottom
@@ -1429,6 +1429,7 @@ TODO:
     galleryMaxRows :              2,
     galleryL1MaxRows :            null,
     galleryLastRowFull:           false,
+    galleryL1LastRowFull:         null,
     galleryLayoutEngine :         'default',
     paginationSwipe:              true,
     paginationVisiblePages :      10,
@@ -1960,14 +1961,14 @@ TODO:
     };
     
     /**
-     * refresh the current gallery
+     * Refresh the current gallery
      */
     this.Refresh = function() {
-      // refresh the displayed gallery
+      // Refresh the displayed gallery
       GalleryRender( G.GOM.albumIdx );
     };
     /**
-     * resize the current gallery
+     * Resize the current gallery
      */
     this.Resize = function() {
       // resize the displayed gallery
@@ -6909,7 +6910,7 @@ TODO:
 
       // gallery last row full
       G.galleryLastRowFull.lN = G.O.galleryLastRowFull;
-      G.galleryLastRowFull.l1 = G.O.galleryL1LastRowFull || G.O.galleryLastRowFull;
+      G.galleryLastRowFull.l1 = G.O.galleryL1LastRowFull != null ? G.O.galleryL1LastRowFull : G.O.galleryLastRowFull;
       
       // gallery sorting
       G.gallerySorting.lN = G.O.gallerySorting.toUpperCase();
@@ -6921,7 +6922,7 @@ TODO:
 
       // gallery display transition duration
       G.galleryDisplayTransitionDuration.lN = G.O.galleryDisplayTransitionDuration;
-      G.galleryDisplayTransitionDuration.l1 = G.O.galleryL1DisplayTransitionDuration || G.galleryDisplayTransitionDuration.lN;
+      G.galleryDisplayTransitionDuration.l1 = G.O.galleryL1DisplayTransitionDuration != null ? G.O.galleryL1DisplayTransitionDuration : G.galleryDisplayTransitionDuration.lN;
       
       // gallery max items per album (not for inline/api defined items)
       G.galleryMaxItems.lN = G.O.galleryMaxItems;
@@ -6929,11 +6930,11 @@ TODO:
 
       // gallery filter tags
       G.galleryFilterTags.lN = G.O.galleryFilterTags;
-      G.galleryFilterTags.l1 = G.O.galleryL1FilterTags || G.O.galleryFilterTags;
+      G.galleryFilterTags.l1 = G.O.galleryL1FilterTags != null ? G.O.galleryL1FilterTags : G.O.galleryFilterTags;
 
       // gallery filter tags mode
       G.galleryFilterTagsMode.lN = G.O.galleryFilterTagsMode;
-      G.galleryFilterTagsMode.l1 = G.O.galleryL1FilterTagsMode || G.O.galleryFilterTagsMode;
+      G.galleryFilterTagsMode.l1 = G.O.galleryL1FilterTagsMode != null ? G.O.galleryL1FilterTagsMode : G.O.galleryFilterTagsMode;
       
       // gallery pagination
       G.O.galleryPaginationMode = G.O.galleryPaginationMode.toUpperCase();
