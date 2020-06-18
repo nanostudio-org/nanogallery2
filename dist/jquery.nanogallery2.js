@@ -1,4 +1,4 @@
-/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2020-06-17 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2020-06-18 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /*!
  * @preserve nanogallery2 v3.0.0beta - javascript photo / video gallery and lightbox
  * Homepage: http://nanogallery2.nanostudio.org
