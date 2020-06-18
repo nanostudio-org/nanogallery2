@@ -35,7 +35,7 @@
     theme: navigationPagination
     option galleryPaginationTopButtons : true,
 - new: swipe lightbox up to close it (additional to the existing pan down gesture)
-- new: thumbnails on lightbox (options: viewerGallery, viewerGalleryTHeight, viewerGalleryTWidth)
+- new: thumbnails on lightbox (options: viewerGallery ('none', 'bottomOverMedia', 'bottom'), viewerGalleryTHeight, viewerGalleryTWidth)
 - new: callback fnPopupMediaInfo(item, title, content) -> {title: my_title, content: my_content}
 - changed: icon for tags and for tag's filter reset
 - changed: lightbox tool icons layout and background
@@ -1550,7 +1550,7 @@ TODO:
       topLeft :                   'pageCounter,playPauseButton',
       topRight :                  'rotateLeft,rotateRight,fullscreenButton,closeButton' 
     },
-		viewerGallery:								true,
+		viewerGallery:								'bottomOverMedia',
 		viewerGalleryTWidth:					40,
 		viewerGalleryTHeight:  				40,
     
@@ -2745,13 +2745,13 @@ TODO:
 				firstDisplay: true,
 				posX: 0,
 				SetThumbnailActive() {
-					if( !G.O.viewerGallery ) { return; }
+					if( G.O.viewerGallery == 'none' ) { return; }
 					this.$tmbCont.children().removeClass('activeVThumbnail');
 					this.$tmbCont.children().eq( G.VOM.content.current.vIdx ).addClass('activeVThumbnail');
 					this.firstDisplay = false;
 				},
 				Resize: function() {
-					if( !G.O.viewerGallery ) { return; }
+					if( G.O.viewerGallery == 'none' ) { return; }
 
 					if( !this.firstDisplay ) {
 						var viewerW = G.VOM.$viewer.width();
@@ -8847,7 +8847,7 @@ TODO:
 
 			G.VOM.gallery.firstDisplay = true;
 	
-			if( G.O.viewerGallery ) {
+			if( G.O.viewerGallery != 'none' ) {
 	
 				var tw = G.O.viewerGalleryTWidth;
 				var th = G.O.viewerGalleryTHeight;
@@ -10088,9 +10088,13 @@ TODO:
 
 
       var galleryHeight = 0;
+      var cBottom = 0;
 			// Height of the thumbnails gallery
-			if( G.O.viewerGallery ) {
+			if( G.O.viewerGallery != 'none' ) {
         galleryHeight = G.O.viewerGalleryTHeight + 10;
+			}
+			if( G.O.viewerGallery == 'bottom' ) {
+       cBottom = galleryHeight;
 			}
 
 			
@@ -10108,7 +10112,8 @@ TODO:
         case 'bottom':
         case 'bottomOverImage':
         default:
-          G.VOM.$content.css({height:windowsH, width: windowsW, bottom: 0, top: 0  });
+          windowsH -= cBottom;
+          G.VOM.$content.css({height: windowsH, width: windowsW, bottom: -cBottom, top: 0  });
           G.VOM.$toolbar.css({bottom: galleryHeight});
           break;
         // case 'bottom':
