@@ -82,7 +82,6 @@
         jQuery.getJSON(url, function(data, status, xhr) {
           clearTimeout( tId );
           PreloaderDisplay( false );
-
           JsonParseData(albumIdx, data);
           
           if( data.nano_status == 'ok' ) {
