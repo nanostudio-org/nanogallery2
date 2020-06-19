@@ -359,7 +359,7 @@
     }
     
     var FilterByTags = function(data, tagBlockList) {
-      if (data != undefined) {
+      if( tagBlockList!= '' && data != undefined) {
         data = data.filter(function (item) {
           var regex = new RegExp( tagBlockList, "i");
           if ( Array.isArray(item.tags) ) {
