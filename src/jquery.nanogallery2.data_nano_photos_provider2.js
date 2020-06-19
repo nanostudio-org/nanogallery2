@@ -42,6 +42,7 @@
 
       // Build the URL
       var url = G.O.dataProvider + '?albumID='+albumID;             // which album
+
       // all thumbnails sizes (for responsive display)
       url += '&hxs=' + G.tn.settings.getH(G.GOM.curNavLevel, 'xs');
       url += '&wxs=' + G.tn.settings.getW(G.GOM.curNavLevel, 'xs');
@@ -65,6 +66,7 @@
       // url += '&hxl=' + G.tn.settings.height[G.GOM.curNavLevel].xl;
       
       PreloaderDisplay( true );
+
       jQuery.ajaxSetup({ cache: false });
       jQuery.support.cors = true;
       try {
@@ -80,7 +82,6 @@
         jQuery.getJSON(url, function(data, status, xhr) {
           clearTimeout( tId );
           PreloaderDisplay( false );
-
           JsonParseData(albumIdx, data);
           
           if( data.nano_status == 'ok' ) {
@@ -137,6 +138,7 @@
         console.dir(data);    
       }
 
+
       var foundAlbumID = false;
       var nb = 0;
 
@@ -166,11 +168,15 @@
 
         var filterAlbum = false;
         if( kind == 'album' ) {
-          // check if 
+          // check if album name is filtered 
           if( !FilterAlbumName(title, ID) ) { filterAlbum = true; }
+          // on gallery initialization : if an album is defined, do not display sub-albums (not supported) 
+          if( G.O.album != '' || G.O.photoset != '' ) { filterAlbum = true; }
         }
 
-        if( kind == 'image' || (kind == 'album' && FilterAlbumName(title, ID)) ) {
+        // if( kind == 'image' || (kind == 'album' && FilterAlbumName(title, ID)) ) {
+        if( kind == 'image' || !filterAlbum ) {
+
           var albumID = 0;
           if( item.albumID !== undefined  ) {
             albumID = item.albumID;
@@ -178,17 +184,16 @@
           }
 
           var tags = (item.tags === undefined) ? '' : item.tags;
-          
           var newItem = NGY2Item.New( G, title.split('_').join(' ') , description, ID, albumID, kind, tags );
           newItem.setMediaURL( src, 'img');
           
           // dominant colorS as a gif
           if( item.dcGIF !== undefined ) {
-            newItem.imageDominantColors='data:image/gif;base64,'+item.dcGIF;
+            newItem.imageDominantColors = 'data:image/gif;base64,' + item.dcGIF;
           }
           // dominant color as hex rgb value
           if( item.dc !== undefined && item.dc !== '' ) {
-            newItem.imageDominantColor=item.dc;
+            newItem.imageDominantColor = item.dc;
           }
           
           if( kind == 'album' ) {

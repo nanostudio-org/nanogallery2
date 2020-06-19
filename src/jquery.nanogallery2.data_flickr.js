@@ -88,6 +88,9 @@
         clearTimeout(tId);
         PreloaderDisplay(false);
         
+        // go through sourceData, and exclude blacklisted tags
+        sourceData = FilterByTags(sourceData, G.O.tagBlockList);
+
         if( kind == 'album' ) {
           FlickrParsePhotoSets(albumIdx, albumID, sourceData);
         }
@@ -95,7 +98,8 @@
           FlickrParsePhotos(albumIdx, albumID, sourceData);
         }
         
-        AlbumPostProcess(albumID);
+        AlbumPostProcess( albumID );
+        
         if( fnToCall !== null &&  fnToCall !== undefined) {
           fnToCall( fnParam1, fnParam2, null );
         }
@@ -218,8 +222,8 @@
           width:  { l1 : { xs:0, sm:0, me:0, la:0, xl:0 }, lN : { xs:0, sm:0, me:0, la:0, xl:0 } },
           height: { l1 : { xs:0, sm:0, me:0, la:0, xl:0 }, lN : { xs:0, sm:0, me:0, la:0, xl:0 } }
         };
-        tn=FlickrRetrieveImages(tn, item, 'l1' );
-        tn=FlickrRetrieveImages(tn, item, 'lN' );
+        tn = FlickrRetrieveImages(tn, item, 'l1' );
+        tn = FlickrRetrieveImages(tn, item, 'lN' );
         newItem.thumbs=tn;
         
         // post-process callback
@@ -352,8 +356,22 @@
       one.width = parseInt(item['width_'+fSize]);
       one.height = parseInt(item['height_'+fSize]);
       return one;
-    }    
-
+    }
+    
+    var FilterByTags = function(data, tagBlockList) {
+      if( tagBlockList!= '' && data != undefined) {
+        data = data.filter(function (item) {
+          var regex = new RegExp( tagBlockList, "i");
+          if ( Array.isArray(item.tags) ) {
+            var tagsToTest = item.tags;
+          } else {
+            var tagsToTest = [item.tags];
+          }
+          return ! tagsToTest.some( function (x) { return regex.test(x); } );
+        });
+      }
+      return data;
+    };
     
     /** @function GetHiddenAlbums */
     var GetHiddenAlbums = function( hiddenAlbums, callback ){
