@@ -1,11 +1,11 @@
 {
   "name": "nanogallery2",
-  "version": "2.4.2",
+  "version": "3.0.0",
   "homepage": "https://nanogallery2.nanostudio.org",
   "authors": [
     "Christophe Brisbois"
   ],
-  "description": "a modern photo / video gallery and lightbox.",
+  "description": "modern photo / video gallery and lightbox.",
   "main": "dist/jquery.nanogallery2.min.js",
   "keywords": [
     "nanogallery",
@@ -13,11 +13,11 @@
     "image",
     "gallery",
     "photo",
+    "video"
     "photoset",
     "slideshow",
     "flickr",
     "google photos",
-    "picasa",
     "swipe",
     "responsive",
     "jquery-plugin"
