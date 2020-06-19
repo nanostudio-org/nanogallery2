@@ -9,7 +9,7 @@
  
 // ###################################################
 // ##### nanogallery2 - module for GOOGLE PHOTOS #####
-// ##### requires nanogp                         #####
+// ##### requires nanogp2                        #####
 // ###################################################
 
 
@@ -145,12 +145,12 @@
         var itemDescription = '';
 				var itemTitle = '';
         if( kind == 'image') {
-            if (data.description !== undefined ){
+          if (data.description !== undefined ){
               itemDescription = data.description
-            }
-            if( G.O.thumbnailLabel.get('title') != '' ) {
-              itemTitle=GetImageTitleFromURL(data.filename);
-            }
+          }
+          if( G.O.thumbnailLabel.get('title') != '' ) {
+            itemTitle = GetImageTitleFromURL( data.filename );
+          }
         }
 				else {
 					itemTitle = data.title;

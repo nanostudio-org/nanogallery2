@@ -21,52 +21,63 @@
  
 // nanogallery v3.0.0beta
 /*
-- fixed nano_photos_provider2: on gallery initialization, if an album is defined, gallery will not display sub-albums
-- [replaced] label position -> valign - top, bottom, middle / default: bottom
-- tableau de remplacement de nom d'albums (text found -> text to use)
-- new: mosaic layout is now fully responsive
-- new: filtering, option galleryFilterTagsMode/galleryL1FilterTagsMode - possible value 'single', 'multiple'
-- new: filtering, if no tag is selected then no filter is applied
-- new: loading spinner over thumbnail during album content download
-- new: first album level, new options thumbnailL1BorderHorizontal and thumbnailL1BorderVertical
-- new: left / right pagination buttons on top of gallery, new option galleryPaginationTopButtons
+- new features:
+	- thumbnails on lightbox (options: viewerGallery ('none', 'bottomOverMedia', 'bottom'), viewerGalleryTHeight, viewerGalleryTWidth)
+  - lightbox standalone mode to use it without gallery
+	- mosaic layout is now fully responsive
+  - options 'thumbnailGutterWidth' and 'thumbnailGutterHeight' are now responsive
+	- filtering, option galleryFilterTagsMode/galleryL1FilterTagsMode - possible value 'single', 'multiple'
+	- filtering, if no tag is selected then no filter is applied
+	- loading spinner over thumbnail during album content download
+	- first album level: new options thumbnailL1BorderHorizontal and thumbnailL1BorderVertical
+	- gallery pagination: left/right buttons on top of the gallery (option 'galleryPaginationTopButtons')
     icons: navigationPaginationPrevious / navigationPaginationNext
     theme: navigationPagination
     option galleryPaginationTopButtons : true,
-- new: swipe lightbox up to close it (additional to the existing pan down gesture)
-- new: thumbnails on lightbox (options: viewerGallery ('none', 'bottomOverMedia', 'bottom'), viewerGalleryTHeight, viewerGalleryTWidth)
-- new: callback fnPopupMediaInfo(item, title, content) -> {title: my_title, content: my_content}
-- changed: icon for tags and for tag's filter reset
-- changed: lightbox tool icons layout and background
-- fixed: gallery may not be displayed depending on the display animation
-- changed: touchAnimation default value to false - hover animation on thumbnails are now disabled by default
-- fixed: lightbox, a touch will display toolbars and lable when they are hidden
-- improved: swipe and touch gesture, velocity
-- new: rounded border on thumbnails -> galleryTheme : { thumbnail: { borderRadius
+	- lightbox: swipe up to close (additional to the existing swipe down gesture)
+	- callback fnPopupMediaInfo(item, title, content) -> {title: my_title, content: my_content}
+	- improved: swipe and touch gesture using velocity
+	- rounded border on thumbnails (defined in 'galleryTheme')
+	- improved: page scrollbar better removed on lightbox display, to avoid page reflow
+  - randomized thumbnail display order: option 'thumbnailDisplayOrder' ('', 'random')
+  - easing for thumbnail display animation: option 'thumbnailDisplayTransitionEasing' (default: easeOutQuart)
+  - Google Photos: enable the use of filename as the title (#226 - thanks to Kevin Robert Keegan https://github.com/krkeegan)
+  - Flickr: option tagBlockList to filter out images based on tags (#233 - thanks to Jonathan Keane https://github.com/jonkeane)
 - new:   thumbnailIcon :         { shadow:'' },
-- CDNJS
-- enhancement: page scrollbar better removed on lightbox display, to avoid page reflow
-- fixed: modal popup not sharp (media info and share), and wrong size on mobile devices
-- removed: viewerDisplayLogo option
-- fixed modal size on mobile
-- fixed: some artefacts around thumbnails in some use cases
-- fixed: #219 dragging in Firefox - many thanks to Largo (https://github.com/Largo)
-- changed: thumbnailOpenImage renamed in thumbnailOpenInLightox
-- new option thumbnailDisplayOrder/L1: randomized thumbnail display order ('', 'random');
-- new imageslideup
-- new option thumbnailDisplayTransitionEasing/L1, default: easeOutQuart
-- new: thumbnailGutterWidth and thumbnailGutterHeight responsive
+- tableau de remplacement de nom d'albums (text found -> text to use)
+  
+	
+- changed:
+  - option 'blackList' renamed to 'blockList'
+  - option 'whiteList' renamed to 'allowList'
+	- thumbnail label: new option 'valign' in addition to the 'positio' option
+	- gallery filtering: icon for tags and for tag's filter reset
+	- lightbox tool: icons layout and background
+	- hover animation on thumbnails are now disabled by default ('touchAnimation' default value changed to false)
+  - option 'thumbnailOpenImage' renamed in 'thumbnailOpenInLightox'
+  - callbacks fnGalleryRenderStart/fnGalleryRenderEnd: now return the album object instead of it's index
+
+- fixed:
+	- nano_photos_provider2: on gallery initialization, if an album is defined, gallery does not display sub-albums
+	- gallery may not be displayed depending on the display animation
+	- lightbox: one touch will display toolbars and label when they are hidden
+	- modal popup (media info, share): display not sharp, and wrong size on mobile devices
+  - some artefacts around thumbnails in some use cases
+  - #219 dragging in Firefox - many thanks to Largo (https://github.com/Largo)
+  - #226 Google Photos issue on description value (#226 - thanks to Kevin Robert Keegan https://github.com/krkeegan)
+  - many mirror fixes
+
+Depreciated:
+  - removed: viewerDisplayLogo option
+  - removed options 'topOverImage', 'bottomOverImage' for lighbox vertical toolbar position
+  - removed lightbox theme 'border'
+
+	- CDNJS
 - rewrite - shopping cart
    -> compteur
    -> toolbar name cart -> shoppingcart
    -> lightbox -> shoppingcart
-- depreciated: options 'topOverImage', 'bottomOverImage' for lighbox vertical toolbar position
-- depreciated: theme border for lightbox
 - compatibility issue: Jquery 3.0 and 3.1 - issue on width calculation - https://github.com/jquery/jquery/issues/3193
-- changed: option blackList renamed to blockList
-- changed: option whiteList renamed tost
-- minor fixes
-- new: lightbox standalone, without gallery
 
 TODO: 
 - tags :
@@ -74,8 +85,8 @@ TODO:
   - grouper tags (sous-tags)
 - hash : only once -> read but not set
 - enlever bottom bar par defaut
-- amÃ©liorer fond dÃ©gradÃ© par dÃ©faut des imagettes 
-- animation sÃ©parÃ©es pour les tools imagette
+- améliorer fond dégradé par défaut des imagettes 
+- animation séparées pour les tools imagette
 - si hash n'existe pas -> eviter erreur et effacer hash
 - centrage vertical titre sans description
 - screenful update
@@ -85,7 +96,6 @@ TODO:
 - rajouter custom meta-data dans nanophotosprovider (par ex. prix d'un article)
 - doc: enlever "button" au nom des outils du viewer
 - lightbox pan event on IFRAME
-- scrolltop on ResizeWindowEvent -> ne faire que suite Ã  action utilisateur (ouverture album, pagination, navigation, filtre?)
 
 */
  
@@ -465,23 +475,6 @@ TODO:
             }
           };
           
-          /** @function FilterByTags() */
-          /* filter out images that have black listed tags (flickr only) */
-          NGY2Tools.FilterByTags = function(data, tagBlackList) {
-            if (data != undefined) {
-              data = data.filter(function (item) {
-                var regex = new RegExp( tagBlackList, "i");
-                if ( Array.isArray(item.tags) ) {
-                  var tagsToTest = item.tags;
-                } else {
-                  var tagsToTest = [item.tags];
-                }
-                return ! tagsToTest.some( function (x) { return regex.test(x); } );
-              });
-            }
-            return data;
-          };
-
           return NGY2Tools;
         })(); 
 
@@ -1403,7 +1396,8 @@ TODO:
       //privateTest();
     }
 
-    / Run initializer
+    
+    // Run initializer
     _this.init();
   };
  
@@ -1412,11 +1406,9 @@ TODO:
     userID :                      '',
     photoset :                    '',
     album:                        '',
-
-    blackList :                   'scrapbook|profil|auto backup',
-    whiteList :                   '',
-    tagBlackList :                '',
-
+    blockList :                   'scrapbook|profil|auto backup',
+    tagBlockList:                 '',
+    allowList :                   '',
     albumList :                   '',
     albumList2 :                  null,
     RTL :                         false,
@@ -1518,7 +1510,7 @@ TODO:
     touchAutoOpenDelay :          0,
 
     thumbnailLabel : {
-      position :                  'overImageOnBottom',
+      position :                  'overImage',
       align:                      'center',
       valign:                     'bottom',
       display :                   true,
@@ -2183,7 +2175,7 @@ TODO:
     // author: underscore.js - http://underscorejs.org/docs/underscore.html
     // Returns a function, that, when invoked, will only be triggered at most once during a given window of time.
     // Normally, the throttled function will run as much as it can, without ever going more than once per wait duration;
-    // but if youÂ’d like to disable the execution on the leading edge, pass {leading: false}.
+    // but if you’d like to disable the execution on the leading edge, pass {leading: false}.
     // To disable execution on the trailing edge, ditto.
     var throttle = function(func, wait, options) {
       var context, args, result;
@@ -2577,11 +2569,8 @@ TODO:
     G.CSSanimationName =          FirstSupportedPropertyName(["animation", "msAnimation", "MozAnimation", "WebkitAnimation", "OAnimation"]);
     G.GalleryResizeThrottled =    throttle(GalleryResize, 30, {leading: false});
     
-
-    G.blackList =                 null;     // album black list
-    G.whiteList =                 null;     // album white list
-    G.tagBlackList =              null;     // tag black list
-
+    G.blockList =                 null;     // album names - block list
+    G.allowList =                 null;     // album names - allow list
     G.albumList =                 [];       // album list
     G.locationHashLastUsed =      '';
     G.custGlobals =               {};
@@ -2661,7 +2650,12 @@ TODO:
       },
       // Position the top of the gallery to make it visible, if not displayed
       ScrollToTop: function() {
-    
+
+        if( !G.galleryResizeEventEnabled ) {      
+          // no scroll to top after a resize event
+          return;
+        }
+        
         if( G.$E.scrollableParent === null && !topInViewportVert(G.$E.base, 20) ) {
           // $('html, body').animate({scrollTop: G.$E.base.offset().top}, 200);
           G.$E.base.get(0).scrollIntoView();
@@ -3749,7 +3743,8 @@ TODO:
       
       var fu=G.O.fnGalleryRenderStart;
       if( fu !== null ) {
-        typeof fu == 'function' ? fu(albumIdx) : window[fu](albumIdx);
+        // typeof fu == 'function' ? fu(albumIdx) : window[fu](albumIdx);
+        typeof fu == 'function' ? fu( G.I[G.GOM.albumIdx] ) : window[fu]( G.I[G.GOM.albumIdx] );
       }
 
       G.layout.SetEngine();
@@ -3913,7 +3908,8 @@ TODO:
       TriggerCustomEvent('galleryRenderEnd');
       var fu=G.O.fnGalleryRenderEnd;
       if( fu !== null ) {
-        typeof fu == 'function' ? fu(albumIdx) : window[fu](albumIdx);
+        // typeof fu == 'function' ? fu(albumIdx) : window[fu](albumIdx);
+        typeof fu == 'function' ? fu(G.I[G.GOM.albumIdx] ) : window[fu](G.I[G.GOM.albumIdx] );
       }
 
       // Step 1: populate GOM
@@ -6816,11 +6812,8 @@ TODO:
         }
       };
 
-
-      if( G.O.blackList != '' ) { G.blackList=G.O.blackList.toUpperCase().split('|'); }
-      if( G.O.whiteList != '' ) { G.whiteList=G.O.whiteList.toUpperCase().split('|'); }
-      if( G.O.tagBlackList != '' ) { G.tagBlackList=G.O.tagBlackList; }
-
+      if( G.O.blockList != '' ) { G.blockList = G.O.blockList.toUpperCase().split('|'); }
+      if( G.O.allowList != '' ) { G.allowList = G.O.allowList.toUpperCase().split('|'); }
 
       if( G.O.albumList2 !== undefined && G.O.albumList2 !== null && G.O.albumList2.constructor === Array  ) {
         var l=G.O.albumList2.length;
@@ -7929,7 +7922,7 @@ TODO:
         };
       }
 
-      // requestAnimationFrame polyfill by Erik MÃ¶ller. fixes from Paul Irish and Tino Zijdel
+      // requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
       // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
       // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
       // MIT license
@@ -8437,7 +8430,7 @@ TODO:
       var vimg = new VImg(ngy2ItemIdx);
       G.VOM.items.push(vimg);
       items.push(G.I[ngy2ItemIdx]);
-      //TODO -> danger? -> pourquoi reconstruire la liste si dÃ©jÃ  ouvert (back/forward)     
+      //TODO -> danger? -> pourquoi reconstruire la liste si déjà ouvert (back/forward)     
       var l = G.I.length;
       for( var idx = ngy2ItemIdx+1; idx < l ; idx++) {
         var item = G.I[idx];
@@ -8558,7 +8551,10 @@ TODO:
     // Media which is not IMG -> center and set size
     function ViewerMediaCenterNotImg( $mediaContainer ) {
       var $media = $mediaContainer.children().eq(1);
-      $media.css( {'height': '80%' });
+			var h = 90;
+			if( G.O.viewerGallery != 'none' ) { h -= 10; }
+			if( G.O.viewerToolbar.display != 'none' ) { h -= 10; }
+      $media.css( {'height': h+'%' });
       $media.css( {'width':  '90%' });
       $media[0].style[G.CSStransformName] = 'translate(0px, "50%") ';
     }
@@ -9735,7 +9731,7 @@ TODO:
       // animation duration is proportional of the remaining distance
       var vP = G.GOM.cache.viewport;
       var t_easing = '';
-      var t_dur = 400 * (vP.w - Math.abs(G.VOM.swipePosX)) / vP.w;
+      var t_dur = 500 * (vP.w - Math.abs(G.VOM.swipePosX)) / vP.w;
       if( velocity > 0 ) {
         // velocity = pixels/millisecond
          t_dur = Math.min( (vP.w - Math.abs(G.VOM.swipePosX)) / velocity, t_dur);
