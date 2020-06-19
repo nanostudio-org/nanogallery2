@@ -1,18 +1,56 @@
-  <div class="container ngy2documentation">
-    <br><br>
-    <h1>nanogallery2 API - reference guide</h1>
-    <br><br><br>
-    <blockquote>
-      Need more customzing possibilities? Here's the section for the experts. Javascript knowledge required.
-    </blockquote>
-    <br><br>
+<div class="jumbotron ngy2_bgdark">
+<div class="container ">
+<div class="row">
+<div class="col-md-12 text-right">
+<img itemprop="image" src="img/nanogallery2.png" alt="nanogallery2" style="max-width:40%;">
+
+</div>
+</div>
+<br>
+</div>
+</div>
 
 
-    <br><br><br>
-    <h2><b><i class="fa fa-certificate ngy2color1" aria-hidden="true"></i> Events</b></h2>
-    <hr>
-    <blockquote>
-      <div id="nanogallery2" data-nanogallery2X='{
+
+
+<div class="container ngy2documentation">
+<br><br>
+<h1>nanogallery2 API - reference guide</h1>
+<br><br><br>
+<blockquote>
+Need more customzing possibilities? Here's the section for the experts. Javascript knowledge required.
+</blockquote>
+<br><br>
+<br><br><br>
+
+
+
+
+<h2><b><i class="fa fa-certificate ngy2color1" aria-hidden="true"></i> Examples of API / callbacks / events usage</b></h2>
+<hr>
+<p>
+- Add items dynamically to an existing gallery: <a href="https://codepen.io/Kris-B/pen/wJKowg" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+<br>
+- Shopping cart: <a href="https://codepen.io/Kris-B/pen/NbEWbe?editors=0010" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+<br>
+- Thumbnail selection handling: <a href="https://codepen.io/Kris-B/pen/RyaLaG" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+<br>
+- Thumbnails: add custom tool and custom button: <a href="https://codepen.io/Kris-B/pen/RpWKMJ" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+<br>
+- Integrate Youtube videos with fancyBox3: <a href="https://codepen.io/Kris-B/pen/zZNMJj" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+</p>
+
+<br><br>
+<br><br><br>
+
+
+
+
+
+<h2><b><i class="fa fa-certificate ngy2color1" aria-hidden="true"></i> Events</b></h2>
+<hr>
+<blockquote>
+<div id="nanogallery2" data-nanogallery2X='{
         "kind": "flickr",
         "userID": "149035168@N08",
         "thumbnailHeight": 150, "thumbnailWidth": 150,
@@ -22,19 +60,15 @@
         "locationHash": false,
         "thumbnailToolbarImage": { "topLeft": "select", "topRight" : "featured,cart" }
       }'>
-      </div>
-      Events (also available in your browser debug console):
-      <div id="eventsDisplay" style="height:150px;background-color:#ddd;padding:0px 5px;overflow-y:scroll;">
-      </div>
-      <!-- 
-        <button type="button" class="btn btn-primary btn-xs" id="btn_add"><i class="fa fa-refresh fa-spin" aria-hidden="true"></i> &nbsp; add</button>
-      -->
-    </blockquote>
-    <div class="row">
-    
-      <p>Example:</p>
-      <pre>
-// Attach an event handler function for some events to the gallery
+</div>
+Events (also available in your browser debug console):
+<div id="eventsDisplay" style="height:150px;background-color:#ddd;padding:0px 5px;overflow-y:scroll;">
+</div>
+
+</blockquote>
+<div class="row">
+<p>Example:</p>
+<pre>// Attach an event handler function for some events to the gallery
 $("#nanogallery2").on( 'pageChanged.nanogallery2 galleryRenderStart.nanogallery2 galleryRenderEnd.nanogallery2 galleryObjectModelBuilt.nanogallery2 galleryLayoutApplied.nanogallery2 galleryDisplayed.nanogallery2 lightboxNextImage.nanogallery2 lightboxPreviousImage.nanogallery2 lightboxImageDisplayed.nanogallery2 shoppingCartUpdated.nanogallery2 itemSelected.nanogallery2 itemUnSelected.nanogallery2', my_listener );
 
 // Event handler function
@@ -42,147 +76,141 @@ function my_listener(e) {
   console.log(e.type);
 }
       </pre>
-      <br><br>
-		
-      <div class="table-responsive">
-        <table class="table table-borderless table-stripedX table-hoverX">
-          <thead>
-            <tr>
-              <th>event</th>
-              <th>description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                pageChanged.nanogallery2
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>
-                Fired on gallery pagination.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                galleryRenderStart.nanogallery2
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>
-                The rendering of the gallery is started.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                galleryRenderEnd.nanogallery2
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>
-                The galery has been rendered.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                galleryObjectModelBuilt.nanogallery2
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>
-                The <b>G</b>allery <b>O</b>bject <b>M</b>odel(<b>GOM</b>) has been populated with all the items.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                galleryLayoutApplied.nanogallery2
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>
-                The layout has been applied to the gallery/thumbnails.
-                <br>
-                This can be called several times, for example when thumbnails image sizes are not defined.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                galleryDisplayed.nanogallery2
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>
-                The thumbnails have been displayed.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                lightboxNextImage.nanogallery2
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>
-                Lightbox - display next image.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                lightboxPreviousImage.nanogallery2
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>
-                Lightbox - display previous image.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                lightboxImageDisplayed.nanogallery2
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>
-                Lightbox - image displayed.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                shoppingCartUpdated.nanogallery2
-                <br><span class="badge ngy2_ver">v1.0</span> <span class="badge ngy2_ver">v2.4.0</span>
-              </td>
-              <td>
-                Called when the shopping cart is updated (new item or item updated).
-              </td>
-            </tr>
-            <tr>
-              <td>
-                itemSelected.nanogallery2
-                <br><span class="badge ngy2_ver">v1.1</span>
-              </td>
-              <td>
-                One thumbnail has been selected.  Not fired when <code>itemsSetSelectedValue</code> is called.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                itemUnSelected.nanogallery2
-                <br><span class="badge ngy2_ver">v1.1</span>
-              </td>
-              <td>
-                One thumbnail has been un-selecetd. Not fired when <code>itemsSetSelectedValue</code> is called.
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-                
-    
-    
-
-    <br><br><br>
-    <h2><b><i class="fa fa-certificate ngy2color1" aria-hidden="true"></i> Callbacks</b></h2>
-    <hr>
-    <blockquote>
-      Callbacks provide a simple mechanism to extend the capabilities of nanogallery2 with your own javascript functions.
-      <br>
-      Since v1.3, callbacks are supported in HTML markup mode.
-    </blockquote>
-    <div class="row">
-      <p>Example:</p>
-      <pre>
-<b>// Build the gallery</b>
+<br><br>
+<div class="table-responsive">
+<table class="table table-borderless table-stripedX table-hoverX">
+<thead>
+<tr>
+<th>event</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+pageChanged.nanogallery2
+<br><span class="badge ngy2_ver">v1.0</span>
+</td>
+<td>
+Fired on gallery pagination.
+</td>
+</tr>
+<tr>
+<td>
+galleryRenderStart.nanogallery2
+<br><span class="badge ngy2_ver">v1.0</span>
+</td>
+<td>
+The rendering of the gallery is started.
+</td>
+</tr>
+<tr>
+<td>
+galleryRenderEnd.nanogallery2
+<br><span class="badge ngy2_ver">v1.0</span>
+</td>
+<td>
+The galery has been rendered.
+</td>
+</tr>
+<tr>
+<td>
+galleryObjectModelBuilt.nanogallery2
+<br><span class="badge ngy2_ver">v1.0</span>
+</td>
+<td>
+The <b>G</b>allery <b>O</b>bject <b>M</b>odel(<b>GOM</b>) has been populated with all the items.
+</td>
+</tr>
+<tr>
+<td>
+galleryLayoutApplied.nanogallery2
+<br><span class="badge ngy2_ver">v1.0</span>
+</td>
+<td>
+The layout has been applied to the gallery/thumbnails.
+<br>
+This can be called several times, for example when thumbnails image sizes are not defined.
+</td>
+</tr>
+<tr>
+<td>
+galleryDisplayed.nanogallery2
+<br><span class="badge ngy2_ver">v1.0</span>
+</td>
+<td>
+The thumbnails have been displayed.
+</td>
+</tr>
+ <tr>
+<td>
+lightboxNextImage.nanogallery2
+<br><span class="badge ngy2_ver">v1.0</span>
+</td>
+<td>
+Lightbox - display next image.
+</td>
+</tr>
+<tr>
+<td>
+lightboxPreviousImage.nanogallery2
+<br><span class="badge ngy2_ver">v1.0</span>
+</td>
+<td>
+Lightbox - display previous image.
+</td>
+</tr>
+<tr>
+<td>
+lightboxImageDisplayed.nanogallery2
+<br><span class="badge ngy2_ver">v1.0</span>
+</td>
+<td>
+Lightbox - image displayed.
+</td>
+</tr>
+<tr>
+<td>
+shoppingCartUpdated.nanogallery2
+<br><span class="badge ngy2_ver">v1.0</span> <span class="badge ngy2_ver">v2.4.0</span>
+</td>
+<td>
+Called when the shopping cart is updated (new item or item updated).
+</td>
+</tr>
+<tr>
+<td>
+itemSelected.nanogallery2
+<br><span class="badge ngy2_ver">v1.1</span>
+</td>
+<td>
+One thumbnail has been selected. Not fired when <code>itemsSetSelectedValue</code> is called.
+</td>
+</tr>
+<tr>
+<td>
+itemUnSelected.nanogallery2
+<br><span class="badge ngy2_ver">v1.1</span>
+</td>
+<td>
+One thumbnail has been un-selecetd. Not fired when <code>itemsSetSelectedValue</code> is called.
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<br><br><br>
+<h2><b><i class="fa fa-certificate ngy2color1" aria-hidden="true"></i> Callbacks</b></h2>
+<hr>
+<blockquote>
+Callbacks provide a simple mechanism to extend the capabilities of nanogallery2 with your own javascript functions.
+<br>
+Since v1.3, callbacks are supported in HTML markup mode.
+</blockquote>
+<div class="row">
+<p>Example:</p>
+<pre><b>// Build the gallery</b>
 jQuery("#nanogallery2").nanogallery2({
 
   fnShoppingCartUpdated: mylistener,            // <b>set the callback function</b>
@@ -191,7 +219,7 @@ jQuery("#nanogallery2").nanogallery2({
   thumbnailHoverEffect2: null, 
 
   kind: 'flickr',
-  userID: '149035168@N08',
+  userID: '<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1524212c25262024232d555b252d">[email&#160;protected]</a>',
   photoset:        '72157675219521270',
   thumbnailHeight: 100, thumbnailWidth: 100,
   thumbnailLabel: { display: false }
@@ -208,538 +236,501 @@ function mylistener( cart, item ) {
 
       </pre>
 <br><br>
-      <div class="table-responsive">
-        <table class="table table-borderless table-stripedX table-hoverX">
-          <thead>
-            <tr>
-              <th>callback</th>
-              <th>description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                fnShoppingCartUpdated
-                <br><span class="badge ngy2_ver">v1.0</span><span class="badge ngy2_ver">v2.4.1</span>
-              </td>
-              <td>
-                Called when the shopping cart is updated (new item or item updated).
-                <a href="http://codepen.io/Kris-B/pen/NbEWbe" type="button" class="btn btn-primary btns-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo</a><br>
-                Parameters: <code>shoopingCart, item</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                fnGalleryRenderStart
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>
-                Called before rendering the gallery.
-                <br>
-                Parameter: <code>albumIndex</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                fnGalleryRenderEnd
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>
-                Called after the gallery has been rendered.
-                <br>
-                Parameter: <code>albumIndex</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                fnGalleryObjectModelBuilt
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>
-                Called after the GOM has been built.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                fnGalleryLayoutApplied
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>
-                Called after the layout has been applied to the gallery/thumbnails.
-                <br>
-                This can be called several times, for example when thumbnails image sizes are not defined.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                fnThumbnailInit
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>
-                Called once after one thumbnail's build. Called for each thumbnail.
-                <br>
-                Parameters: <code>$thumbnail, item, GOMidx</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                fnThumbnailHoverInit
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>
-                Called once to initialize the thumbnail hover effect. Called for each thumbnail.
-                <br>
-                Parameters: <code>$thumbnail, item, GOMidx</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                fnThumbnailHover
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>
-                Called on thumbnail hover.
-                <br>
-                Parameters: <code>$thumbnail, item, GOMidx</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                fnThumbnailHoverOut
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>
-                Called on thumbnail hover out.
-                <br>
-                Parameters: <code>$thumbnail, item, GOMidx</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                fnThumbnailDisplayEffect
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>
-                Called to display one thumbnail, after it was built.
-                <br>
-                Parameters: <code>$thumbnail, item, GOMidx, delay</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                fnThumbnailL1DisplayEffect
-                <br><span class="badge ngy2_ver">v1.3</span>
-              </td>
-              <td>
-                Called to display one thumbnail, after it was built. <b>Only on first album level</b>
-                <br>
-                Parameters: <code>$thumbnail, item, GOMidx, delay</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                fnThumbnailOpen
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>
-                Called when a thumbnail is clicked/touched to display the image.<br>
-                Can be used to replace the standard viewer/lightbox with an external lightbox.
-                <br>
-                Parameter: <code>items</code>, array containing the list of items to display, the first one is the first to display.
-              </td>
-            </tr>
-            <tr>
-              <td>
-                fnImgDisplayed
-                <br><span class="badge ngy2_ver">v1.1</span>
-              </td>
-              <td>
-                Called when an image has been displayed in the lightbox/viewer.
-                <br>
-                Parameter: <code>item</code>
-              </td>
-            </tr> 
-            <tr>
-              <td>
-                fnImgToolbarCustInit
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>
-                Lightbox toolbar custom element.<br>
-                To customize the toolbar (custom icons and elements) on image display.<br>
-                Called once when the toolbar is build to define the specified custom elements.<br>
-                The called function should return the HTML content to display.
-                <br>
-                Parameter: <code>customElemntName</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                fnImgToolbarCustDisplay
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>
-                Lightbox toolbar custom element.<br>
-                Called each time after an image has been displayed.<br>
-                Called once for all toolbar custom icons and elements.
-                <br>
-                Parameters: <code>$customToolbarElements, item</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                fnImgToolbarCustClick
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>
-                Lightbox toolbar custom element.<br>
-                Fired on click event on image toolbar custom element.
-                <br>
-                Parameters: <code>customElementName, $customIcon, item</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                fnProcessData
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>
-                Used to extend data associated to thumbnails/images.<br>
-                Called each time a new element (image or album) is added.
-                <br>
-                Parameters: <code>item, kind, sourceData</code>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-
-
-    
-    <br><br><br>
-    <h2><b><i class="fa fa-certificate ngy2color1" aria-hidden="true"></i> API methods</b></h2>
-    <hr>
-    <blockquote>
-      Call nanogallery2 function directly in your javascript functions.<br>
-      Usage: <code>$('#your_nanogallery2').nanogallery2('method', options);</code>
-    </blockquote>
-    <div class="row">
-      <p>Example:</p>
-      <pre>
-// Enable selection mode
+<div class="table-responsive">
+<table class="table table-borderless table-stripedX table-hoverX">
+<thead>
+<tr>
+<th>callback</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+fnShoppingCartUpdated
+<br><span class="badge ngy2_ver">v1.0</span><span class="badge ngy2_ver">v2.4.1</span><span class="badge ngy2_ver">v3.0.0</span>
+</td>
+<td>
+Called when the shopping cart is updated (new item or item updated).
+<a href="https://codepen.io/Kris-B/pen/NbEWbe" type="button" class="btn btn-primary btns-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo</a><br>
+Parameters: <code>shoopingCart, item, source</code>
+</td>
+</tr>
+<tr>
+<td>
+fnGalleryRenderStart
+<br><span class="badge ngy2_ver">v1.0</span><span class="badge ngy2_ver">v3.0</span>
+</td>
+<td>
+Called before rendering the gallery.
+<br>
+Parameter: <code><strike>albumIndex</strike></code> <code>album object</code>
+</td>
+</tr>
+<tr>
+<td>
+fnGalleryRenderEnd
+<br><span class="badge ngy2_ver">v1.0</span><span class="badge ngy2_ver">v3.0</span>
+</td>
+<td>
+Called after the gallery has been rendered.
+<br>
+Parameter: <code><strike>albumIndex</strike></code> <code>album object</code>
+</td>
+</tr>
+<tr>
+<td>
+fnGalleryObjectModelBuilt
+<br><span class="badge ngy2_ver">v1.0</span>
+</td>
+<td>
+Called after the GOM has been built.
+</td>
+</tr>
+<tr>
+<td>
+fnGalleryLayoutApplied
+<br><span class="badge ngy2_ver">v1.0</span>
+</td>
+<td>
+Called after the layout has been applied to the gallery/thumbnails.
+<br>
+This can be called several times, for example when thumbnails image sizes are not defined.
+</td>
+</tr>
+<tr>
+<td>
+fnThumbnailInit
+<br><span class="badge ngy2_ver">v1.0</span>
+</td>
+<td>
+Called once after one thumbnail's build. Called for each thumbnail.
+<br>
+Parameters: <code>$thumbnail, item, GOMidx</code>
+</td>
+</tr>
+<tr>
+<td>
+fnThumbnailHoverInit
+<br><span class="badge ngy2_ver">v1.0</span>
+</td>
+<td>
+Called once to initialize the thumbnail hover effect. Called for each thumbnail.
+<br>
+Parameters: <code>$thumbnail, item, GOMidx</code>
+</td>
+</tr>
+<tr>
+<td>
+fnThumbnailHover
+<br><span class="badge ngy2_ver">v1.0</span>
+</td>
+<td>
+Called on thumbnail hover.
+<br>
+Parameters: <code>$thumbnail, item, GOMidx</code>
+</td>
+</tr>
+<tr>
+<td>
+fnThumbnailHoverOut
+<br><span class="badge ngy2_ver">v1.0</span>
+</td>
+<td>
+Called on thumbnail hover out.
+<br>
+Parameters: <code>$thumbnail, item, GOMidx</code>
+</td>
+</tr>
+<tr>
+<td>
+fnThumbnailDisplayEffect
+<br><span class="badge ngy2_ver">v1.0</span>
+</td>
+<td>
+Called to display one thumbnail, after it was built.
+<br>
+Parameters: <code>$thumbnail, item, GOMidx, delay</code>
+</td>
+</tr>
+<tr>
+<td>
+fnThumbnailL1DisplayEffect
+<br><span class="badge ngy2_ver">v1.3</span>
+</td>
+<td>
+Called to display one thumbnail, after it was built. <b>Only on first album level</b>
+<br>
+Parameters: <code>$thumbnail, item, GOMidx, delay</code>
+</td>
+</tr>
+<tr>
+<td>
+fnThumbnailOpen
+<br><span class="badge ngy2_ver">v1.0</span>
+</td>
+<td>
+Called when a thumbnail is clicked/touched to display the image.<br>
+Can be used to replace the standard viewer/lightbox with an external lightbox.
+<br>
+Parameter: <code>items</code>, array containing the list of items to display, the first one is the first to display.
+</td>
+</tr>
+<tr>
+<td>
+fnImgDisplayed
+<br><span class="badge ngy2_ver">v1.1</span>
+</td>
+<td>
+Called when an image has been displayed in the lightbox/viewer.
+<br>
+Parameter: <code>item</code>
+</td>
+</tr>
+<tr>
+<td>
+fnImgToolbarCustInit
+<br><span class="badge ngy2_ver">v1.0</span>
+</td>
+<td>
+Lightbox toolbar custom element.<br>
+To customize the toolbar (custom icons and elements) on image display.<br>
+Called once when the toolbar is build to define the specified custom elements.<br>
+The called function should return the HTML content to display.
+<br>
+Parameter: <code>customElemntName</code>
+</td>
+</tr>
+<tr>
+<td>
+fnImgToolbarCustDisplay
+<br><span class="badge ngy2_ver">v1.0</span>
+</td>
+<td>
+Lightbox toolbar custom element.<br>
+Called each time after an image has been displayed.<br>
+Called once for all toolbar custom icons and elements.
+<br>
+Parameters: <code>$customToolbarElements, item</code>
+</td>
+</tr>
+<tr>
+<td>
+fnImgToolbarCustClick
+<br><span class="badge ngy2_ver">v1.0</span>
+</td>
+<td>
+Lightbox toolbar custom element.<br>
+Fired on click event on image toolbar custom element.
+<br>
+Parameters: <code>customElementName, $customIcon, item</code>
+</td>
+</tr>
+<tr>
+<td>
+fnProcessData
+<br><span class="badge ngy2_ver">v1.0</span>
+</td>
+<td>
+Used to extend data associated to thumbnails/images.<br>
+Called each time a new element (image or album) is added.
+<br>
+Parameters: <code>item, kind, sourceData</code>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<br><br><br>
+<h2><b><i class="fa fa-certificate ngy2color1" aria-hidden="true"></i> API methods</b></h2>
+<hr>
+<blockquote>
+Call nanogallery2 function directly in your javascript functions.<br>
+Usage: <code>$('#your_nanogallery2').nanogallery2('method', options);</code>
+</blockquote>
+<div class="row">
+<p>Example:</p>
+<pre>// Enable selection mode
 $('#my_nanogallery2').nanogallery2('option', 'thumbnailSelectable', true);
 
 // Disable selection mode
 $('#my_nanogallery2').nanogallery2('option', 'thumbnailSelectable', false);
 
       </pre>
-      <br><br>
-      
-      <div class="table-responsive">
-        <table class="table table-borderless table-stripedX table-hoverX">
-          <thead>
-            <tr>
-              <th>method</th>
-              <th>option(s)</th>
-              <th>description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                refresh
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td></td>
-              <td>
-                Re-desplay the current gallery.<br>
-                Usage: <code>$('#your_nanogallery2').nanogallery2('refresh');</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                search
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>search_string</td>
-              <td>
-                Filter the displayed thumbnails based on a search string. Search is done in titles.<br>
-                Usage: <code>var cnt = $('#your_nanogallery2').nanogallery2('search', search_string);</code>
-                <br>
-                Returns the number of found items.
-                <br>
-                <a href="http://codepen.io/Kris-B/pen/ryOMov" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                search2
-                <br><span class="badge ngy2_ver">v1.4</span>
-              </td>
-              <td>search_title, search_tags</td>
-              <td>
-                Set the filter values to search in titles and tags.
-                <br>
-                Returns the number of found items.
-                <br>
-                Usage: <code>var cnt = $('#your_nanogallery2').nanogallery2('search2', search_string_title, search_string_tags);</code>
-                <br>
-                <a href="http://codepen.io/Kris-B/pen/ryOMov" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                search2Execute
-                <br><span class="badge ngy2_ver">v1.4</span>
-              </td>
-              <td></td>
-              <td>
-                Execute the search on title and tags and filters the displayed thumbnails.<br>
-                Set the filter value to search in tags.<br>
-                Returns the number of items to display.<br>
-                Usage: <code>var cnt = $('#your_nanogallery2').nanogallery2('search2Execute');</code>
-                <br>
-                <a href="http://codepen.io/Kris-B/pen/ryOMov" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                instance
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td></td>
-              <td>
-                Returns a pointer to the data of the gallery instance.<br>
-                Usage: <code>$('#your_nanogallery2').nanogallery2('instance');</code>
-                <br>
-                <a href="http://codepen.io/Kris-B/pen/wJKowg" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                data
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td></td>
-              <td>
-                Returns an object pointing to:<br>
-                &nbsp;&nbsp;- <b>items</b> (array): with all the gallery items (albums and images)<br>
-                &nbsp;&nbsp;- <b>gallery</b> (object): the <b>GOM</b> - <b>G</b>allery <b>O</b>bject <b>M</b>odel of the current gallery<br>
-                &nbsp;&nbsp;- <b>viewer</b> (object): the <b>VOM</b> - <b>V</b>iewer <b>O</b>bject <b>M</b>odel of the current lightbox<br>
-                <br>
-                Usage: <code>$('#your_nanogallery2').nanogallery2('data');</code>
-                <br><br>
-                Example: get all the items (images and albums)
-                <br>
-                <code>items=$('#your_nanogallery2').nanogallery2('data').items</code>
-                <br><br>
-                Example: retrieve the selected thumbnails
-                <br>
-<pre>                
-var items=$('#your_nanogallery2').nanogallery2('data').gallery.items;
-items.forEach( function(curr) {
-  if( curr.selected === true ) {
-    console.dir(curr);
-  }
-});
-</pre>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                destroy
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td></td>
-              <td>
-                Removes the gallery.<br>
-                Usage: <code>$('#your_nanogallery2').nanogallery2('destroy');</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                displayItem
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>itemID</td>
-              <td>
-                Displays an item (album or image).<br>
-                Usage: <code>$('#your_nanogallery2').nanogallery2('displayItem', 'itemID');</code><br>
-                - to display an album: <code>$('#your_nanogallery2').nanogallery2('displayItem', 'albumID');</code><br>
-                - to display an image: <code>$('#your_nanogallery2').nanogallery2('displayItem', 'albumID/imageID');</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                reload
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td></td>
-              <td>
-                Reloads the current album.<br>
-                Usage: <code>$('#your_nanogallery2').nanogallery2('reload');</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                option
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>option_name</td>
-              <td>
-                <b>Returns</b> the value of an option.<br>
-                Usage: <code>var optionValue=$('#your_nanogallery2').nanogallery2('option', option_name);</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                option
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>option_name,<br> new_value</td>
-              <td>
-                <b>Sets</b> the value of an option (note: only some options are supported).<br>
-                Usage: <code>$('#your_nanogallery2').nanogallery2('option', option_name, new_value);</code>
-              </td>
-            </tr>
-            <!--
-            <tr>
-              <td>getItem</td>
-              <td>item_index</td>
-              <td>
-                Returns one item (object) - can be one image or one album.</br>
-                Usage: <code>var oneItem=$('#your_nanogallery2').nanogallery2('getItem', item_index);</code>
-              </td>
-              <td>1.0</td>
-            </tr>
-            <tr>
-              <td>getItems</td>
-              <td></td>
-              <td>
-                Returns an array with all the items (array of objects).<br>
-                Usage: <code>var lstItems=$('#your_nanogallery2').nanogallery2('getItems');</code>
-              </td>
-              <td>1.0</td>
-            </tr>
-            <tr>
-              <td>getItemsIndex</td>
-              <td>[item1, item2, ...]</td>
-              <td>
-                Returns an array containing the indexes of the items.<br>
-                Usage: <code>var lstIdx=$('#your_nanogallery2').nanogallery2('getItemsIndex', [item1, item2, item3, ...]);</code>
-              </td>
-              <td>1.0</td>
-            </tr>
-            -->
-            <tr>
-              <td>
-                itemsSelectedGet
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td></td>
-              <td>
-                Returns an array with all the selected items (array of objects).<br>
-                Usage: <code>var lstItems=$('#your_nanogallery2').nanogallery2('itemsSelectedGet');</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                itemsSetSelectedValue
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>[item1, item2, ...]</td>
-              <td>
-                Sets/unsets selection value (true/false) of an array of items.<br>
-                Usage: <code>$('#your_nanogallery2').nanogallery2('itemsSetSelectedValue', [item1, item2, item3, ...], new_value);</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                closeViewer
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td></td>
-              <td>
-                Close the image viewer.<br>
-                Usage: <code>$('#your_nanogallery2').nanogallery2('closeViewer');</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                minimizeToolbar
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td></td>
-              <td>
-                Minimize image viewer toolbar.<br>
-                Usage: <code>$('#your_nanogallery2').nanogallery2('minimizeToolbar');</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                maximizeToolbar
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td></td>
-              <td>
-                Maximize image viewer toolbar.<br>
-                Usage: <code>$('#your_nanogallery2').nanogallery2('maximizeToolbar');</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                shoppingCartGet
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td></td>
-              <td>
-                Returns an array containing all the items in the shopping cart.<br>
-                One item content: idx=internal index, ID=your image ID, cnt=counter<br>
-                Usage: <code>var basket=$('#your_nanogallery2').nanogallery2('shoppingCartGet');</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                shoppingCartUpdate
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>image ID, counter</td>
-              <td>
-                Update the counter of one image in the shopping cart. Returns the shopping cart.<br>
-                Usage: <code>$('#your_nanogallery2').nanogallery2('shoppingCartUpdate', imageID, newCounter);</code>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                shoppingCartRemove
-                <br><span class="badge ngy2_ver">v1.0</span>
-              </td>
-              <td>image ID</td>
-              <td>
-                Removes one image from the shopping cart. Returns the shopping cart.<br>
-                Usage: <code>$('#your_nanogallery2').nanogallery2('shoppingCartRemove', imageID);</code>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        
-      </div>
-    </div>
+<br><br>
+<div class="table-responsive">
+<table class="table table-borderless table-stripedX table-hoverX">
+<thead>
+<tr>
+  <th>method</th>
+  <th>option(s)</th>
+  <th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>
+  refresh
+  <br><span class="badge ngy2_ver">v1.0</span>
+  </td>
+  <td></td>
+  <td>
+  Force a re-desplay the thumbnails of the displayed gallery.<br>
+  Usage: <code>$('#your_nanogallery2').nanogallery2('refresh');</code>
+  </td>
+</tr>
+<tr>
+  <td>
+  resize
+  <br><span class="badge ngy2_ver">v3.0</span>
+  </td>
+  <td></td>
+  <td>
+  Force a resize of the displayed gallery.<br>
+  Usage: <code>$('#your_nanogallery2').nanogallery2('resize');</code>
+  </td>
+</tr>
+<tr>
+  <td>
+  search
+  <br><span class="badge ngy2_ver">v1.0</span>
+  </td>
+  <td>search_string</td>
+  <td>
+  Filter the displayed thumbnails based on a search string. Search is done in titles.<br>
+  Usage: <code>var cnt = $('#your_nanogallery2').nanogallery2('search', search_string);</code>
+  <br>
+  Returns the number of found items.
+  <br>
+  <a href="https://codepen.io/Kris-B/pen/ryOMov" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+  </td>
+</tr>
+<tr>
+  <td>
+  search2
+  <br><span class="badge ngy2_ver">v1.4</span>
+  </td>
+  <td>search_title, search_tags</td>
+  <td>
+  Set the filter values to search in titles and tags.
+  <br>
+  Returns the number of found items.
+  <br>
+  Usage: <code>var cnt = $('#your_nanogallery2').nanogallery2('search2', search_string_title, search_string_tags);</code>
+  <br>
+  <a href="https://codepen.io/Kris-B/pen/ryOMov" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+  </td>
+</tr>
+<tr>
+  <td>
+  search2Execute
+  <br><span class="badge ngy2_ver">v1.4</span>
+  </td>
+  <td></td>
+  <td>
+  Execute the search on title and tags and filters the displayed thumbnails.<br>
+  Set the filter value to search in tags.<br>
+  Returns the number of items to display.<br>
+  Usage: <code>var cnt = $('#your_nanogallery2').nanogallery2('search2Execute');</code>
+  <br>
+  <a href="https://codepen.io/Kris-B/pen/ryOMov" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+  </td>
+</tr>
+<tr>
+  <td>
+  instance
+  <br><span class="badge ngy2_ver">v1.0</span>
+  </td>
+  <td></td>
+  <td>
+  Returns a pointer to the data of the gallery instance.<br>
+  Usage: <code>$('#your_nanogallery2').nanogallery2('instance');</code>
+  <br>
+  <a href="https://codepen.io/Kris-B/pen/wJKowg" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+  </td>
+</tr>
+<tr>
+  <td>
+  data
+  <br><span class="badge ngy2_ver">v1.0</span>
+  </td>
+  <td></td>
+  <td>
+  Returns an object pointing to:<br>
+  &nbsp;&nbsp;- <b>items</b> (array): with all the gallery items (albums and medias)<br>
+  &nbsp;&nbsp;- <b>gallery</b> (object): the <b>GOM</b> - <b>G</b>allery <b>O</b>bject <b>M</b>odel of the current gallery<br>
+  &nbsp;&nbsp;- <b>viewer</b> (object): the <b>VOM</b> - <b>V</b>iewer <b>O</b>bject <b>M</b>odel of the current lightbox<br>
+  <br>
+  Usage: <code>$('#your_nanogallery2').nanogallery2('data');</code>
+  <br><br>
+  Example: get all the items (images and albums)
+  <br>
+  <code>items=$('#your_nanogallery2').nanogallery2('data').items</code>
+  <br><br>
+  Example: retrieve the selected thumbnails
+  <br>
+  <pre>                
+  var items=$('#your_nanogallery2').nanogallery2('data').gallery.items;
+  items.forEach( function(curr) {
+    if( curr.selected === true ) {
+      console.dir(curr);
+    }
+  });
+  </pre>
+  </td>
+</tr>
+<tr>
+  <td>
+  destroy
+  <br><span class="badge ngy2_ver">v1.0</span>
+  </td>
+  <td></td>
+  <td>
+  Removes the gallery.<br>
+  Usage: <code>$('#your_nanogallery2').nanogallery2('destroy');</code>
+  </td>
+</tr>
+<tr>
+  <td>
+  displayItem
+  <br><span class="badge ngy2_ver">v1.0</span>
+  </td>
+  <td>itemID</td>
+  <td>
+  Displays an item (album or image).<br>
+  Usage: <code>$('#your_nanogallery2').nanogallery2('displayItem', 'itemID');</code><br>
+  - to display an album: <code>$('#your_nanogallery2').nanogallery2('displayItem', 'albumID');</code><br>
+  - to display an image: <code>$('#your_nanogallery2').nanogallery2('displayItem', 'albumID/imageID');</code>
+  </td>
+</tr>
+<tr>
+  <td>
+  reload
+  <br><span class="badge ngy2_ver">v1.0</span>
+  </td>
+  <td></td>
+  <td>
+  Reloads the current album (not for self hosted data).<br>
+  Usage: <code>$('#your_nanogallery2').nanogallery2('reload');</code>
+  </td>
+</tr>
+<tr>
+  <td>
+  option
+  <br><span class="badge ngy2_ver">v1.0</span>
+  </td>
+  <td>option_name</td>
+  <td>
+  <b>Returns</b> the value of an option.<br>
+  Usage: <code>var optionValue=$('#your_nanogallery2').nanogallery2('option', option_name);</code>
+  </td>
+</tr>
+<tr>
+  <td>
+  option
+  <br><span class="badge ngy2_ver">v1.0</span>
+  </td>
+  <td>option_name,<br> new_value</td>
+  <td>
+  <b>Sets</b> the value of an option (note: only some options may be changed after gallery initialization).<br>
+  Usage: <code>$('#your_nanogallery2').nanogallery2('option', option_name, new_value);</code>
+  </td>
+</tr>
 
-    
-    <br><br><br>
-    <h2><b><i class="fa fa-certificate ngy2color1" aria-hidden="true"></i> Some API examples</b></h2>
-    <hr>
-    <blockquote style="font-size:1.5em;">
-      - integrate Youtube videos with fancyBox3: <a href="https://codepen.io/Kris-B/pen/zZNMJj" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
-      <br>
-      - add items dynamically to an existing gallery: <a href="http://codepen.io/Kris-B/pen/wJKowg" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
-      <br>
-      - thumbnails: add custom tool and custom button: <a href="http://codepen.io/Kris-B/pen/RpWKMJ" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
-    </blockquote>
-    
-    
-    
-  </div>    
+<tr>
+  <td>
+  itemsSelectedGet
+  <br><span class="badge ngy2_ver">v1.0</span>
+  </td>
+  <td></td>
+  <td>
+  Returns an array with all the selected items (array of objects).<br>
+  Usage: <code>var lstItems=$('#your_nanogallery2').nanogallery2('itemsSelectedGet');</code>
+  </td>
+</tr>
+<tr>
+  <td>
+  itemsSetSelectedValue
+  <br><span class="badge ngy2_ver">v1.0</span>
+  </td>
+  <td>[item1, item2, ...]</td>
+  <td>
+  Sets/unsets selection value (true/false) of an array of items.<br>
+  Usage: <code>$('#your_nanogallery2').nanogallery2('itemsSetSelectedValue', [item1, item2, item3, ...], new_value);</code>
+  </td>
+</tr>
+<tr>
+  <td>
+  closeViewer
+  <br><span class="badge ngy2_ver">v1.0</span>
+  </td>
+  <td></td>
+  <td>
+  Close the image viewer.<br>
+  Usage: <code>$('#your_nanogallery2').nanogallery2('closeViewer');</code>
+  </td>
+</tr>
+<tr>
+  <td>
+  minimizeToolbar
+  <br><span class="badge ngy2_ver">v1.0</span>
+   </td>
+  <td></td>
+  <td>
+  Minimize image viewer toolbar.<br>
+  Usage: <code>$('#your_nanogallery2').nanogallery2('minimizeToolbar');</code>
+  </td>
+</tr>
+<tr>
+  <td>
+  maximizeToolbar
+  <br><span class="badge ngy2_ver">v1.0</span>
+  </td>
+  <td></td>
+  <td>
+  Maximize image viewer toolbar.<br>
+  Usage: <code>$('#your_nanogallery2').nanogallery2('maximizeToolbar');</code>
+  </td>
+</tr>
+<tr>
+  <td>
+  shoppingCartGet
+  <br><span class="badge ngy2_ver">v1.0</span>
+  </td>
+  <td></td>
+  <td>
+  Returns an array containing all the items in the shopping cart.<br>
+  One item content: idx=internal index, ID=your image ID, cnt=quantity<br>
+  Usage: <code>var basket=$('#your_nanogallery2').nanogallery2('shoppingCartGet');</code>
+  </td>
+</tr>
+<tr>
+  <td>
+  shoppingCartUpdate
+  <br><span class="badge ngy2_ver">v1.0</span>
+  </td>
+  <td>image ID, quantity</td>
+  <td>
+  Update the quantity of one image in the shopping cart. Returns the shopping cart.<br>
+  Usage: <code>$('#your_nanogallery2').nanogallery2('shoppingCartUpdate', mediaID, newQuantity);</code>
+  </td>
+</tr>
+<tr>
+  <td>
+  shoppingCartRemove
+  <br><span class="badge ngy2_ver">v1.0</span>
+  </td>
+  <td>image ID</td>
+  <td>
+  Removes one image from the shopping cart. Returns the shopping cart.<br>
+  Usage: <code>$('#your_nanogallery2').nanogallery2('shoppingCartRemove', mediaID);</code>
+  </td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+
