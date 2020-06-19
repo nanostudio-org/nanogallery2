@@ -1,4 +1,4 @@
-/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2020-06-18 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2020-06-19 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /*!
  * @preserve nanogallery2 v3.0.0beta - javascript photo / video gallery and lightbox
  * Homepage: http://nanogallery2.nanostudio.org
@@ -16380,7 +16380,12 @@ if (typeof define === 'function' && define.amdDISABLED) {
         var itemDescription = '';
 				var itemTitle = '';
         if( kind == 'image') {
-						itemTitle = data.description;
+            if (data.description !== undefined ){
+              itemDescription = data.description
+            }
+            if( G.O.thumbnailLabel.get('title') != '' ) {
+              itemTitle=GetImageTitleFromURL(data.filename);
+            }
         }
 				else {
 					itemTitle = data.title;
