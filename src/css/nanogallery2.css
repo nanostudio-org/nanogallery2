@@ -25,6 +25,9 @@
   -webkit-touch-callout: none;
 }
 
+.nGY2_body_scrollbar {
+  overflow: hidden;
+}
 
 /*******************************************/
 /* NGY2 ICON FONT                          */
@@ -154,7 +157,7 @@
 
 .nGY2Navigationbar .nGY2NavigationbarItem {
 	margin: 5px 2px;
-  padding: 5px 8px;
+  padding: 8px 10px;
 	white-space: nowrap;
 	cursor: pointer;
 	display: inline-block;
@@ -469,6 +472,79 @@
 	-o-box-sizing: border-box;
 }
 
+
+
+/* spinner by https://codepen.io/fox_hover/pen/YZxGed */
+.nGY2 .nGY2GThumbnailLoaderDisplayed {
+  visibility: visible;
+  opacity: 0.8;
+  position: absolute;
+  top:    0;
+  bottom: 0;
+  left:   0;
+  right:  0;
+  margin: auto;    /* never change this value */
+  zoom:   1;
+  user-drag:            none;
+  user-select:          none;
+  -moz-user-select:     none;
+  -webkit-user-drag:    none;
+  -webkit-user-select:  none;
+  -ms-user-select:      none;
+  width:  40px;
+  height: 40px;
+}
+  
+.nGY2 .nGY2GThumbnailLoaderDisplayed:before {      /* bigger circle */
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  content: "";
+  display: block;
+  position: absolute;
+  border-width: 7px;
+  border-style: solid;
+  border-radius: 50%;
+  width:  24px;
+  height: 24px;
+  border-bottom-color:  #000;
+  border-right-color:   #000;
+  border-top-color:     #888;
+  border-left-color:    #888;
+  animation: nGY2-thumbnail-spinner-rotate-animation 1s linear 0s infinite;
+}
+  
+ .nGY2 .nGY2GThumbnailLoaderDisplayed:after {     /* smaller circle */
+  content: "";
+  display: block;
+  position: absolute;
+  border-width: 4px;
+  border-style: solid;
+  border-radius: 50%;
+  width:  16px;
+  height: 16px;
+  border-bottom-color:  #111;
+  border-right-color:   #111;
+  border-top-color:     #666;
+  border-left-color:    #666;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  animation: nGY2-thumbnail-spinner-anti-rotate-animation 0.80s linear 0s infinite;
+}
+@keyframes nGY2-thumbnail-spinner-rotate-animation {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+@keyframes nGY2-thumbnail-spinner-anti-rotate-animation {
+  0%    { transform: rotate(0deg);     }
+  100%   { transform: rotate(-360deg);  }
+}
+
 /**************************************/
 /* GALLERY BOTTOM                     */
 /**************************************/
@@ -604,19 +680,24 @@
   text-align: left;
   top: 50%;
   left: 50%;
-  width: 50%;
   padding: 15px 30px;
-  /*max-width: 630px;
-  min-width: 320px;*/
   height: auto;
+  width: 50%;
   background: #fff;
-  -webkit-backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
-  backface-visibility: hidden;
   -webkit-transform: translateX(-50%) translateY(-50%);
   -moz-transform: translateX(-50%) translateY(-50%);
   -ms-transform: translateX(-50%) translateY(-50%);
   transform: translateX(-50%) translateY(-50%);
+}
+
+@media screen and (max-width: 992px) {
+  .nGY2PopupContent,
+  .nGY2PopupContentCenter,
+  .nGY2PopupContentLeft,
+  .nGY2PopupContentRight {
+    width: 95%;
+    padding: 5px 10px;
+  }
 }
 
 .nGY2PopupContentCenter {
@@ -647,12 +728,7 @@
 	cursor: pointer;
   display:block;
 }
-@media only screen and (max-device-width : 480px) {
-  .nGY2PopupContent {
-    width: 85% !important;
-    padding: 5px 10px !important;
-  }
-}
+
 
 /**************************************/
 /* INFO                               */
@@ -725,15 +801,8 @@
 	/* background:url('loading.gif') no-repeat center; */
   min-width:40px;
   min-height:40px;
-	/*display:block;*/
-	/*position:relative;*/
   position:absolute;
-	/*height:100%;*/
   clear:both;
-	/* padding-top:5px;
-	padding-left:5px;
-	padding-right:5px;
-	padding-bottom:5px; */
   /*
 	cursor: -webkit-zoom-out;
 	cursor: -moz-zoom-out;
@@ -749,6 +818,7 @@
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-o-box-sizing: border-box;
+  overflow: hidden;
 }
 .nGY2 .nGY2ViewerMediaPan{
   transform-origin: 50% 50% 0;
@@ -793,6 +863,7 @@
   -webkit-user-drag:    none;
   -webkit-user-select:  none;
   -ms-user-select:      none;
+	pointer-events: 			none;
 	padding: 0px;
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
@@ -900,17 +971,14 @@
 }
 
 .nGY2 .nGY2ViewerAreaPrevious {
-  transform: scaleY(1.5); 
 	color: #fff; 
 	display: block;
 	position: absolute;
-	Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px; 
 	/*background: rgba(0,0,0,0.2);*/
-	font-size: 2em;
 	top: 50%;
 	/*height:20px;*/
 	/*width:20px;*/
-	padding: 10px 0px 10px 1px;
+	padding: 10px 0px 10px 5px;
 	margin-top: -25px;
 	left: 0px;
 	text-align: left;
@@ -929,20 +997,22 @@
 }
 .nGY2 .nGY2ViewerAreaPrevious > i {
   margin-left: 0px;
+	font-weight: bold !important;
+	font-size: 2em;
+	Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px;
+	background: rgba(0,0,0,0.2);
+	margin:0px !important;
 }
 
 .nGY2 .nGY2ViewerAreaNext {
-  transform: scaleY(1.5);
+  /*transform: scaleY(1);*/
 	color: #fff; 
 	display: block;
 	position: absolute;
-	Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px;
-	/*background: rgba(0,0,0,0.2);*/
-	font-size: 2em;
 	top: 50%;
 	/*height:20px;*/
 	/*width:20px;*/
-	padding: 10px 1px 10px 0px;
+	padding: 10px 5px 10px 0px;
 	margin-top: -25px;
 	right: 0px;
 	text-align: right;
@@ -961,6 +1031,11 @@
 }
 .nGY2 .nGY2ViewerAreaNext > i {
   margin-right: 0px;
+	font-weight: bold !important;
+	font-size: 2em;
+	Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px;
+	background: rgba(0,0,0,0.2);
+	margin:0px !important;
 }
 
 .nGY2 .toolbarContainer {
@@ -987,10 +1062,11 @@
 .nGY2 .nGY2ViewerToolsTopLeft {
 	cursor:pointer;
 	color: #ddd; 
-	background: rgba(0,0,0,0.2);
+	/* background: rgba(0,0,0,0.2); */
 	left: 5px;
 	top: 5px;
 	position:absolute;
+	text-shadow: -1px -1px 0 #444, 1px -1px 0 #444, -1px 1px 0 #444, 1px 1px 0 #444;
 	/*Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px;*/
 	opacity:1;
 	transition: all 0.2s ease;
@@ -1001,10 +1077,11 @@
 .nGY2 .nGY2ViewerToolsTopRight {
 	cursor: pointer;
 	color: #ddd; 
-	background: rgba(0,0,0,0.2);
+	/* background: rgba(0,0,0,0.2); */
 	right: 5px;
 	top: 5px;
 	position:absolute;
+	text-shadow: -1px -1px 0 #444, 1px -1px 0 #444, -1px 1px 0 #444, 1px 1px 0 #444;
 	/* Text-Shadow: #000000 1px 0px 0px, #000000 1px 1px 0px, #000000 1px -1px 0px, #000000 -1px 1px 0px, #000000 -1px 0px 0px, #000000 -1px -1px 0px, #000000 0px 1px 0px, #000000 0px -1px 0px;*/
 	opacity:1;
 	transition: all 0.2s ease;
@@ -1014,11 +1091,12 @@
 }
 
 .nGY2 .toolbar .ngbt {
-  font-size:1.5em;
+  font-size:1.2em;
 	display: table-cell;
 	cursor:pointer;
-	padding: 2px 5px;
+	padding: 2px 8px;
 	vertical-align:middle;
+  
 }
 
 .nGY2 .ngy2viewerToolAction {
@@ -1030,7 +1108,7 @@
 
 .nGY2 .toolbar .pageCounter{
 	display: table-cell;
-	font-size:1em;
+	font-size:1.2em;
 	margin:auto;
 	vertical-align:middle;
 	overflow: hidden;
@@ -1048,19 +1126,46 @@
 }
 
 .nGY2 .toolbar .label .title{
-	font-size:1em;
+	font-size:1.2em;
 	margin:auto;
 	vertical-align:middle;
 	overflow: hidden;
 }
 .nGY2 .toolbar .label .description{
-	font-size:.8em;
+	font-size:0.9em;
 	display:table-row;
 	vertical-align:middle;
 	overflow: hidden;
-	color:#aaa;
+	color:#eee;
 }
 
+.nGY2 .nGY2viewerGallery {
+	overflow: hidden;
+	position: fixed;
+	display: none;      /* by default, no gallery on lightbox */
+  opacity: 0;
+  bottom: 5px;
+}
+.nGY2 .nGY2viewerGallery .nGY2VThumbnailContainer{
+	overflow: hidden;
+	display: inline-block;
+	position: absolute;
+  top: 0px;
+}
+.nGY2 .nGY2viewerGallery .nGY2VThumbnail {
+	top: 0px;
+	padding: 0px;
+	border:1px solid #888;
+	position: absolute;
+	opacity: 1;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	overflow: hidden;
+}
+.nGY2 .nGY2viewerGallery .activeVThumbnail {
+	border:2px solid #fff;
+}
 
 
 
@@ -1177,4 +1282,9 @@
 @keyframes nanoGalleryLBarAnim {
 	0%	{ left:10%;	}
 	100%{ left:90%;	}
+}
+
+
+.NGY2ThumbnailLightbox {
+  cursor: pointer;
 }

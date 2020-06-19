@@ -12,7 +12,7 @@
     "grunt-contrib-copy": "^0.7.0",
     "grunt-contrib-jshint": "latest",
     "grunt-contrib-qunit": "latest",
-    "grunt-contrib-uglify": "^0.9.2",
+    "grunt-terser": "latest",
     "grunt-contrib-cssmin": "^1.0.2",
     "grunt-gh-pages": "latest"
   },
