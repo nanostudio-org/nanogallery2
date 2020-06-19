@@ -88,6 +88,9 @@
         clearTimeout(tId);
         PreloaderDisplay(false);
         
+        // go through sourceData, and exclude blacklisted tags
+        sourceData = NGY2Tools.FilterByTags(sourceData, G.tagBlackList);
+
         if( kind == 'album' ) {
           FlickrParsePhotoSets(albumIdx, albumID, sourceData);
         }

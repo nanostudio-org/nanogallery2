@@ -64,7 +64,7 @@
 - depreciated: theme border for lightbox
 - compatibility issue: Jquery 3.0 and 3.1 - issue on width calculation - https://github.com/jquery/jquery/issues/3193
 - changed: option blackList renamed to blockList
-- changed: option whiteList renamed to allowList
+- changed: option whiteList renamed tost
 - minor fixes
 - new: lightbox standalone, without gallery
 
@@ -74,8 +74,8 @@ TODO:
   - grouper tags (sous-tags)
 - hash : only once -> read but not set
 - enlever bottom bar par defaut
-- amÈliorer fond dÈgradÈ par dÈfaut des imagettes 
-- animation sÈparÈes pour les tools imagette
+- am√©liorer fond d√©grad√© par d√©faut des imagettes 
+- animation s√©par√©es pour les tools imagette
 - si hash n'existe pas -> eviter erreur et effacer hash
 - centrage vertical titre sans description
 - screenful update
@@ -85,7 +85,7 @@ TODO:
 - rajouter custom meta-data dans nanophotosprovider (par ex. prix d'un article)
 - doc: enlever "button" au nom des outils du viewer
 - lightbox pan event on IFRAME
-- scrolltop on ResizeWindowEvent -> ne faire que suite ‡ action utilisateur (ouverture album, pagination, navigation, filtre?)
+- scrolltop on ResizeWindowEvent -> ne faire que suite √† action utilisateur (ouverture album, pagination, navigation, filtre?)
 
 */
  
@@ -465,6 +465,23 @@ TODO:
             }
           };
           
+          /** @function FilterByTags() */
+          /* filter out images that have black listed tags (flickr only) */
+          NGY2Tools.FilterByTags = function(data, tagBlackList) {
+            if (data != undefined) {
+              data = data.filter(function (item) {
+                var regex = new RegExp( tagBlackList, "i");
+                if ( Array.isArray(item.tags) ) {
+                  var tagsToTest = item.tags;
+                } else {
+                  var tagsToTest = [item.tags];
+                }
+                return ! tagsToTest.some( function (x) { return regex.test(x); } );
+              });
+            }
+            return data;
+          };
+
           return NGY2Tools;
         })(); 
 
@@ -1386,8 +1403,7 @@ TODO:
       //privateTest();
     }
 
-    
-    // Run initializer
+    / Run initializer
     _this.init();
   };
  
@@ -1396,8 +1412,11 @@ TODO:
     userID :                      '',
     photoset :                    '',
     album:                        '',
-    blockList :                   'scrapbook|profil|auto backup',
-    allowList :                   '',
+
+    blackList :                   'scrapbook|profil|auto backup',
+    whiteList :                   '',
+    tagBlackList :                '',
+
     albumList :                   '',
     albumList2 :                  null,
     RTL :                         false,
@@ -2164,7 +2183,7 @@ TODO:
     // author: underscore.js - http://underscorejs.org/docs/underscore.html
     // Returns a function, that, when invoked, will only be triggered at most once during a given window of time.
     // Normally, the throttled function will run as much as it can, without ever going more than once per wait duration;
-    // but if youíd like to disable the execution on the leading edge, pass {leading: false}.
+    // but if you¬íd like to disable the execution on the leading edge, pass {leading: false}.
     // To disable execution on the trailing edge, ditto.
     var throttle = function(func, wait, options) {
       var context, args, result;
@@ -2558,8 +2577,11 @@ TODO:
     G.CSSanimationName =          FirstSupportedPropertyName(["animation", "msAnimation", "MozAnimation", "WebkitAnimation", "OAnimation"]);
     G.GalleryResizeThrottled =    throttle(GalleryResize, 30, {leading: false});
     
-    G.blockList =                 null;     // album white list
-    G.allowList =                 null;     // album black list
+
+    G.blackList =                 null;     // album black list
+    G.whiteList =                 null;     // album white list
+    G.tagBlackList =              null;     // tag black list
+
     G.albumList =                 [];       // album list
     G.locationHashLastUsed =      '';
     G.custGlobals =               {};
@@ -6794,8 +6816,11 @@ TODO:
         }
       };
 
-      if( G.O.blockList != '' ) { G.blockList = G.O.blockList.toUpperCase().split('|'); }
-      if( G.O.allowList != '' ) { G.allowList = G.O.allowList.toUpperCase().split('|'); }
+
+      if( G.O.blackList != '' ) { G.blackList=G.O.blackList.toUpperCase().split('|'); }
+      if( G.O.whiteList != '' ) { G.whiteList=G.O.whiteList.toUpperCase().split('|'); }
+      if( G.O.tagBlackList != '' ) { G.tagBlackList=G.O.tagBlackList; }
+
 
       if( G.O.albumList2 !== undefined && G.O.albumList2 !== null && G.O.albumList2.constructor === Array  ) {
         var l=G.O.albumList2.length;
@@ -7904,7 +7929,7 @@ TODO:
         };
       }
 
-      // requestAnimationFrame polyfill by Erik Mˆller. fixes from Paul Irish and Tino Zijdel
+      // requestAnimationFrame polyfill by Erik M√∂ller. fixes from Paul Irish and Tino Zijdel
       // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
       // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
       // MIT license
@@ -8412,7 +8437,7 @@ TODO:
       var vimg = new VImg(ngy2ItemIdx);
       G.VOM.items.push(vimg);
       items.push(G.I[ngy2ItemIdx]);
-      //TODO -> danger? -> pourquoi reconstruire la liste si dÈj‡ ouvert (back/forward)     
+      //TODO -> danger? -> pourquoi reconstruire la liste si d√©j√† ouvert (back/forward)     
       var l = G.I.length;
       for( var idx = ngy2ItemIdx+1; idx < l ; idx++) {
         var item = G.I[idx];
