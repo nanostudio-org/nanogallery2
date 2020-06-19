@@ -1,4 +1,4 @@
-/* nanogallery2 - v2.4.2 - 2020-06-19 - https://nanogallery2.nanostudio.org */
+/* nanogallery2 - v3.0.0 - 2020-06-19 - https://nanogallery2.nanostudio.org */
 /**!
  * @preserve nanogallery2 - javascript photo / video gallery and lightbox
  * Homepage: http://nanogallery2.nanostudio.org
