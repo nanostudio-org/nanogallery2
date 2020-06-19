@@ -16,8 +16,8 @@
       html_part1+='  <head>\n';
       html_part1+='    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">\n\n';
       html_part1+='    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"><\/script>\n\n';
-      html_part1+='    <link href="https://unpkg.com/nanogallery2@2.4.1/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css">\n';
-      html_part1+='    <script type="text/javascript" src="https://unpkg.com/nanogallery2@2.4.1/dist/jquery.nanogallery2.min.js"><\/script>\n';
+      html_part1+='    <link href="https://unpkg.com/nanogallery2@2.4.2/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css">\n';
+      html_part1+='    <script type="text/javascript" src="https://unpkg.com/nanogallery2@2.4.2/dist/jquery.nanogallery2.min.js"><\/script>\n';
       html_part1+='\n';
       html_part1+='  </head>\n';
       html_part1+='  <body>\n\n';
@@ -111,7 +111,7 @@
             kind: 'google2',
             userID: '111186676244625461692',
             google2URL: 'https://nano.gallery/nanogp2/nanogp2.php',
-            whiteList: 'nature|life|traditions|people',
+            allowList: 'nature|life|traditions|people',
             thumbnailHeight: 150, thumbnailWidth:150,
             locationHash: false
           });
@@ -790,7 +790,7 @@
           jQuery("#nanogallery2").nanogallery2({
             kind: 'flickr',
             userID: '149035168@N08',
-            blackList: 'forhomepage|scrapbook|profil',
+            blockList: 'forhomepage|scrapbook|profil',
             breadcrumbAutoHideTopLevel: false,
             locationHash: false
           });
@@ -812,7 +812,7 @@
             kind: 'flickr',
             userID: '149035168@N08',
             thumbnailHeight: 150, thumbnailWidth:150,
-            blackList: 'forhomepage|scrapbook|profil',
+            blockList: 'forhomepage|scrapbook|profil',
             thumbnailLevelUp: true,
             displayBreadcrumb: false,
             locationHash: false
@@ -842,7 +842,7 @@
             album:  'AMKf1Ieg7h2GRPRBt_FkbAlqbrLpZyTMHOmMxXe7-qDWuW8UzbcvowTPGRlY8OJxW6B_AyEAfKxJ',      //  
             google2URL: 'https://nano.gallery/nanogp2/nanogp2.php',
             thumbnailHeight: 150, thumbnailWidth:150,
-            blackList: 'forhomepage|scrapbook|profil',
+            blockList: 'forhomepage|scrapbook|profil',
             galleryFilterTags: 'title',
             displayBreadcrumb: false,
             locationHash: false
