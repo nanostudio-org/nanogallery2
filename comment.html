@@ -81,9 +81,10 @@
 
   <!-- #################################################################################################################### -->
 
-  <style>
   
-    
+  <style>
+
+  
   /* COLORS BY PALETTON
   
     https://paletton.com/#uid=7380u0kquHMfQQHluLOynEiC1rl
@@ -166,8 +167,6 @@
     .h2, h2 {
       font-size: 40px;
     }
-
-
     .h3, h3 {
       font-size: 30px;
     }
@@ -181,15 +180,18 @@
       font-size: 20px;
     }
 
+    .ngy2_color-primary-2 { color: #46D6AB } 
+
+
     blockquote {
       color: #fff;
-      background-color: #7BACE2;
+      background-color: #46D6AB;
       border-color: #09488E;
       padding-top: 25px;
       padding-bottom: 25px;
       border-bottom-right-radius: 60px;
       border-top-right-radius: 60px;
-      border-left: 10px solid #09488E;
+      border-left: 10px solid #FF762C;
     }
 
     /**********/
@@ -238,7 +240,7 @@
     
     /*.ngy2documentation p { font-size: 1.7rem; }
     .ngy2documentation h2 { font-size: 2rem; } 
-    .ngy2documentation h3 { font-size: 1.9rem; }
+    .ngy2documentation h3 { font-size: 1.9rem  }
     .ngy2documentation h4 { font-size: 1.8rem; }
     .ngy2documentation h5 { font-size: 1.7rem; }
     .ngy2documentation h6 { font-size: 1.6rem; } */
@@ -247,7 +249,8 @@
     
     .ngy2documentation pre { 
       background-color: #F8F8F8;
-      border-color: #888;
+      border: 0px solid #888;
+      margin: 0px;
     }
     
     .ngy2documentation .ngy2_background_rounded_back { 
@@ -296,6 +299,9 @@
     }
     .ngy2documentation table:not(.ngy2_comparison2)>tbody>tr>td { padding-bottom: 10px; }
 
+		.ngy2documentation table tr td h3 { font-size: 2.5rem  !important}
+
+		
     .ngy2documentation .table-borderless > tbody > tr > td,
     .ngy2documentation .table-borderless > tbody > tr > th,
     .ngy2documentation .table-borderless > tfoot > tr > td,
@@ -337,17 +343,19 @@
     }
     .ngy2documentation .badge.ngy2_code_markup {
       background-color: #DA4C00;
-      font-size: 1.6rem;
+      font-size: 1.2rem;
       padding: 5px 5px;
       border-radius: 0px;
       border-style: none;
+      margin: 0px;
     }
     .ngy2documentation .badge.ngy2_code_js {
       background-color: #09488E !important;
-      font-size: 1.6rem;
+      font-size: 1.2rem;
       padding: 5px 5px;
       border-radius: 0px;
       border-style: none;
+      margin: 0px;
     }
 
     .ngy2documentation p.ngy2_doc_p {
@@ -436,21 +444,6 @@
     /* NANOGALLERY2 COLORS */
     /***********************/
 
-    /* palette (bleuté)- fond clair
-    logo + menu + icon button : 23CB99 (plus clair: 46D6AB)
-    base: 499295
-    AEDADC
-    76B6B9
-    2E7C7F
-    19676B
-
-    0F4548
-    0E4144
-
-    background: #0F1934
-    buttons: #3C4B5B
-    */
-    
     .ngy2_bgdark {
       background-color: #0F1934;
       margin: 0;
@@ -485,19 +478,18 @@
     }
 
     a {
-      color: #499295;
-      color: #B71C1C;
+      color: #23CB98;
       text-decoration: none;
     }    
 		a:focus, a:hover {
-      color: #B71C1C;
+      color: #23CB98;
 		}
     .ngy2_dark a,.ngy2_dark a:link {
-      color: #0097A7;
+      color: #23CB98;
       text-decoration: none;
     }    
 		.ngy2_dark a:focus, .ngy2_dark a:hover {
-      color: #18FFFF;
+      color: #73E3C1;
 		}
 		
     h3 a:link,
@@ -528,17 +520,44 @@
     
     .ngy2_bgdark .btn-primary {
       color: #fff;
-      background-color: #3C4B5B;
-      border-color: #3C4B5B;
+      background-color: #23CB98;
+      border-color: #23CB98;
+    }
+    
+    .ngy2_bgdark .btn-rounded {
+      color: #fff;
+      background-color: #23CB98;
+      border-radius: 16px;
+      text-transform: uppercase;
+      
+    }
+    .btn-rounded {
+      color: #fff;
+      background-color: #23CB98;
+      border-radius: 16px;
+      text-transform: uppercase;
+    }
+    .btn-rounded2 {
+      color: #fff;
+      background-color: #23CB98;
+      border-radius: 16px;
+      padding-left:10px;
+      padding-right:10px;
+    }
+    .btn-outline-rounded {
+      border: 2px solid #fff;
+      padding:4px 10px;
+      color:#fff;
+      border-radius: 16px;
     }
 
 
     /* GLOWING BUTTON */
     @keyframes glowing {
-      0% { box-shadow: 0 0 -10px #23CB99; }
-      40% { box-shadow: 0 0 20px #23CB99; }
-      60% { box-shadow: 0 0 20px #23CB99; }
-      100% { box-shadow: 0 0 -10px #23CB99; }
+      0% { box-shadow: 0 0 -10px #23CB98; }
+      40% { box-shadow: 0 0 20px #23CB98; }
+      60% { box-shadow: 0 0 20px #23CB98; }
+      100% { box-shadow: 0 0 -10px #23CB98; }
     }
 
     .button-glow {
@@ -599,21 +618,22 @@
     /* FEATURES */
     /************/
     
-    .ngy2_features div {
+    .ngy2_features span {
       /* background-color: #23CB99; */
-      font-size: 1.5em;
+      */ font-size: 1.5em; */
       color: #fff;
-      padding: 5px;
-      text-transform: uppercase;
+      /* padding: 5px; */
+      white-space:nowrap;
+      /* text-transform: uppercase; */
       /* border: 5px solid #0F1934; */
     }
-    .ngy2_features div::before {
+    .ngy2_features span::before {
       background-color: #23CB99;
       display: inline-block;
       content: "";
-      width: 16px;
-      height: 16px;
-      margin: 6px 2px 2px 0;
+      width: 12px;
+      height: 12px;
+      margin: 6px 6px 2px 0px;
     }
     
     /***********/
@@ -1160,9 +1180,8 @@
 
  
 
-  
-
   </style>
+
    
 
   <!-- Asynchronous Google Analytics snippet -->
