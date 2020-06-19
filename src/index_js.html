@@ -1,6 +1,3 @@
-  <!-- ######################## -->
-  <!-- ##### JS FOR PAGE  ##### -->
-  <!-- ######################## -->
 	<script type="text/javascript">
 
 
@@ -58,6 +55,32 @@
 
 
 
+  jQuery("#nanogallery_debug_on").nanogallery2({
+        kind: 'flickr',
+        userID: '149035168@N08',
+        photoset:        '72157675219521270',
+        thumbnailHeight: 100, thumbnailWidth: 100,
+        thumbnailLabel: { display: false },
+        thumbnailHoverEffect2: null, 
+        thumbnailToolbarImage : { topLeft: 'shoppingcart'},
+        viewerToolbar: { display: false },
+        viewerTools:    { topRight:  'shoppingcart, zoom, close' },
+        galleryMaxRows: 1,
+        galleryDisplayMode: 'pagination',
+        galleryMaxItems: 50,
+        thumbnailGutterWidth: '20 XS0 sm0 xl50',
+        <!-- thumbnailL1GutterWidth: 30, -->
+        locationHash: false
+  });
+  var ngy2data=$("#nanogallery_debug_on").nanogallery2('data');
+
+
+			
+			
+			
+			
+			
+			/* 
 
       var data_url = 'https://spreadsheets.google.com/feeds/list/1pKGg3MA1YLSWFuFEqLwJLYzuVPeNAOEMzpw6-XC8_e8/od6/public/values?alt=json';
 
@@ -75,6 +98,9 @@
           httpRequest.open('GET', path);
           httpRequest.send(); 
       }
+
+
+
 
       // this requests the file and executes a callback with the parsed result once
       //   it is available
@@ -106,7 +132,7 @@
             kind: 'nano_photos_provider2',
             dataProvider: 'https://urbanicc.fr/zac_ic/nano_photos_provider2/nano_photos_provider2.php',
 
-thumbnailAlignment: 'center',
+						thumbnailAlignment: 'center',
 
             galleryRenderDelay: 1200,
             galleryDisplayTransition: 'rotateX',
@@ -153,9 +179,8 @@ thumbnailAlignment: 'center',
             blackList: blackList
           });
           
-          //alert('ok');
       });
-
+			*/
 
 
 
@@ -166,15 +191,7 @@ thumbnailAlignment: 'center',
 
       
       // DEBUG GALLERY
-      function mylistener(cart, item) {
-        // console.log(e.type);
-        console.dir(cart);
-        console.dir(item);
-        // var ngy2data=$("#nanogallery_debug_on").nanogallery2('data');
-        // console.dir(ngy2data);
-      }      
       jQuery("#nanogallery_debug_onXX").nanogallery2({
-        fnShoppingCartUpdated: mylistener,
         // imageTransition : 'slideAppear',
         // debugMode: true,
         
@@ -378,9 +395,16 @@ gallerySorting : 'titleAsc',
           $('html,body').animate({ scrollTop: $("#"+id).offset().top}, 200);
       }
 
+ 
+      // ##### EXAMPLE DISPLAY SOURCE CODE - LIGHTBOX
+      jQuery('#btn_view_lightbox_standalone').on( "click", function(e) {
+        $('#collapse_lightbox_standalone').toggle();
+      });
+      jQuery('#btn_view_source2').on( "click", function(e) {
+        $('#ngy2_modal_source2').modal();
+      });
 
-
-      // ##### EXAMPLE DISPLAY SOURCE CODE
+      // ##### EXAMPLE DISPLAY SOURCE CODE - GALLERY
       jQuery('#btn_view_source').on( "click", function(e) {
         var code = '';
         switch( jQuery('#btn_view_source').data("demo") ) {
@@ -447,7 +471,7 @@ gallerySorting : 'titleAsc',
           // MOSAIC LAYOUT - sample 1
           case 'btn_layout1a':
             jQuery("#nanogallery_container").css({backgroundColor:'#111' });
-            jQuery("#example_description").html("The mosaic layout enables full control of the gallery layout. This layout is not computed but is based on a self-defined pattern.");
+            jQuery("#example_description").html("The mosaic layout enables full control of the gallery design. This layout is not computed but is based on a self-defined pattern.");
             jQuery('#btn_view_source').data("demo","btn_layout1a");
             Demo_Mosaic_1();
             if( ngy2_layout_cnt > 1) {
@@ -457,7 +481,7 @@ gallerySorting : 'titleAsc',
 					
           case 'btn_layout1b':
             jQuery("#nanogallery_container").css({backgroundColor:'#fff' });		
-            jQuery("#example_description").html("Another mosaic layout. This one with a custom hover effect. The lightbox has a bottom toolbar to display the image's title.");
+            jQuery("#example_description").html("Another mosaic layout. This one with a custom hover effect. The lightbox has a bottom toolbar to display the image's title.<br>This example shows a subtle display effect, using a combined gallery and thumbnail display animation.");
             jQuery('#btn_view_source').data("demo","btn_layout1b");
             Demo_Mosaic_2();
             ga('send', 'event', 'click', 'index', 'layout_mosaic2');
@@ -484,7 +508,7 @@ gallerySorting : 'titleAsc',
           // JUSTIFIED LAYOUT
           case 'btn_layout3':
             jQuery("#nanogallery_container").css({backgroundColor:'#111' });		
-            jQuery("#example_description").html("Justified layout: the width of the thumbnail is calculated to respect the image ratio.<br>This example shows a subtle display effect, using a combined gallery and thumbnail display animation. Gesture: the first touch on a thumbnail will display the title and the tools. The second touch will open the media.");
+            jQuery("#example_description").html("Here the gallery is limited to 3 rows, and pagination is enabled for navigation. The thumbnails are justified: image aspect ratio is maintained.<br>Gesture: the first touch on a thumbnail displays title and tools. The second touch opens the media.<br>The media info popup is also customized.");
             jQuery('#btn_view_source').data("demo","btn_layout3");
             Demo_Justified();
             ga('send', 'event', 'click', 'index', 'layout_justified');
@@ -538,7 +562,7 @@ gallerySorting : 'titleAsc',
           album: 'people',
          
           // GALLERY AND THUMBNAIL LAYOUT
-          galleryMosaic : [
+          galleryMosaic : [                       // default layout
             { w: 2, h: 2, c: 1, r: 1 },
             { w: 1, h: 1, c: 3, r: 1 },
             { w: 1, h: 1, c: 3, r: 2 },
@@ -553,7 +577,7 @@ gallerySorting : 'titleAsc',
             { w: 1, h: 1, c: 5, r: 4 },
             { w: 1, h: 1, c: 6, r: 4 }
           ],
-          galleryMosaicXS : [
+          galleryMosaicXS : [                     // layout for XS width
             { w: 2, h: 2, c: 1, r: 1 },
             { w: 1, h: 1, c: 3, r: 1 },
             { w: 1, h: 1, c: 3, r: 2 },
@@ -562,7 +586,7 @@ gallerySorting : 'titleAsc',
             { w: 1, h: 1, c: 2, r: 4 },
             { w: 1, h: 1, c: 3, r: 4 }
           ],
-          galleryMosaicSM : [
+          galleryMosaicSM : [                     // layout for SM width
             { w: 2, h: 2, c: 1, r: 1 },
             { w: 1, h: 1, c: 3, r: 1 },
             { w: 1, h: 1, c: 3, r: 2 },
@@ -574,6 +598,7 @@ gallerySorting : 'titleAsc',
           galleryMaxRows: 1,
           galleryDisplayMode: 'rows',
           gallerySorting: 'random',
+					thumbnailDisplayOrder: 'random',
 
           thumbnailHeight: '180', thumbnailWidth: '220',
           thumbnailAlignment: 'scaled',
@@ -585,10 +610,13 @@ gallerySorting : 'titleAsc',
           thumbnailLabel: { display: false },
 
           // DISPLAY ANIMATION
+					// for gallery
           galleryDisplayTransitionDuration: 1500,
-          thumbnailDisplayTransition: 'slideLeft',
-          thumbnailDisplayTransitionDuration: 600,
-          thumbnailDisplayInterval: 30,
+					// for thumbnails
+          thumbnailDisplayTransition: 'imageslideup',
+          thumbnailDisplayTransitionDuration: 1200,
+					thumbnailDisplayTransitionEasing: 'easeInOutQuint',
+          thumbnailDisplayInterval: 60,
 
           // THUMBNAIL HOVER ANIMATION
           thumbnailBuildInit2: 'image_scale_1.15',
@@ -602,7 +630,12 @@ gallerySorting : 'titleAsc',
             topLeft:   'label',
             topRight:  'shareButton, rotateLeft, rotateRight, fullscreenButton, closeButton'
           },
-     
+
+          // GALLERY THEME
+          galleryTheme : { 
+            thumbnail: { background: '#111' },
+          },
+					
           // DEEP LINKING
           locationHash: true
         });
@@ -620,7 +653,7 @@ gallerySorting : 'titleAsc',
           galleryDisplayTransitionDuration: 1500,
          
           // GALLERY AND THUMBNAIL LAYOUT
-          galleryMosaic : [
+          galleryMosaic : [                       // default layout
             { w: 1, h: 1, c: 1, r: 1 },
             { w: 1, h: 1, c: 2, r: 1 },
             { w: 1, h: 1, c: 3, r: 1 },
@@ -638,7 +671,7 @@ gallerySorting : 'titleAsc',
             { w: 1, h: 1, c: 5, r: 4 },
             { w: 1, h: 1, c: 6, r: 4 }
           ],
-          galleryMosaicXS : [
+          galleryMosaicXS : [                     // layout for XS width
             { w: 1, h: 1, c: 1, r: 1 },
             { w: 1, h: 1, c: 2, r: 1 },
             { w: 1, h: 1, c: 3, r: 1 },
@@ -648,7 +681,7 @@ gallerySorting : 'titleAsc',
             { w: 1, h: 1, c: 2, r: 4 },
             { w: 1, h: 1, c: 3, r: 4 },
           ],
-          galleryMosaicSM : [
+          galleryMosaicSM : [                     // layout for SM width
             { w: 1, h: 1, c: 1, r: 1 },
             { w: 1, h: 1, c: 2, r: 1 },
             { w: 1, h: 1, c: 3, r: 1 },
@@ -661,6 +694,7 @@ gallerySorting : 'titleAsc',
           galleryMaxRows: 1,
           galleryDisplayMode: 'rows',
           gallerySorting: 'random',
+					thumbnailDisplayOrder: 'random',
 
           thumbnailAlignment: 'scaled',
           thumbnailHeight: '180', thumbnailWidth: '220',
@@ -673,7 +707,10 @@ gallerySorting : 'titleAsc',
           thumbnailLabel: { display: false },
           
           // DISPLAY ANIMATION
-          thumbnailDisplayTransition: 'flipDown',
+          // DISPLAY ANIMATION
+          galleryDisplayTransition: 'rotateX',        // gallery display animation
+          galleryDisplayTransitionDuration: 1500,
+          thumbnailDisplayTransition: 'flipDown',     // thumbnail display animation
           thumbnailDisplayTransitionDuration: 600,
           thumbnailDisplayInterval: 30,
 
@@ -716,13 +753,15 @@ gallerySorting : 'titleAsc',
           galleryMaxItems: 15,
           gallerySorting: 'random',
          
-          thumbnailHeight: '300', thumbnailWidth: '300',
+          thumbnailHeight: '300 XS200 SM200',       // RESPONSIVE THUMBNAIL HEIGHT: default=300px, XS resolution=200px, SM resolution=200px
+          thumbnailWidth: '300 XS180 SM200',        // RESPONSIVE THUMBNAIL WIDTH:  default=300px, XS resolution=180px, SM resolution=200px
+
           thumbnailAlignment: 'center',
           thumbnailBorderHorizontal: 0, thumbnailBorderVertical: 0,
-          thumbnailGutterWidth : 100, thumbnailGutterHeight : 100,
+          thumbnailGutterWidth : 80, thumbnailGutterHeight : 80,
           
           // THUMBNAIL TOOLS & LABEL
-          thumbnailLabel: { display: true, position:'onBottom', align: 'left'},
+          thumbnailLabel: { display: true, position: 'onBottom', align: 'left'},
           thumbnailToolbarImage :  { bottomLeft : 'display' },
           // replace the default DISPLAY tool icon
           icons: {thumbnailDisplay: '<i class="fa fa-long-arrow-right" aria-hidden="true"></i> display'},
@@ -818,8 +857,8 @@ gallerySorting : 'titleAsc',
           
           // GALLERY AND THUMBNAIL LAYOUT
           thumbnailHeight: '250', thumbnailWidth: 'auto',
-          galleryMaxRows: 3,
-          galleryDisplayMode: 'pagination',
+          galleryDisplayMode: 'pagination',                 // gallery pagination mode
+          galleryMaxRows: 3,                                // gallery with max 3 rows
           gallerySorting: 'random',
           thumbnailAlignment: 'fillWidth',
           thumbnailL1GutterWidth: 20,
@@ -829,11 +868,9 @@ gallerySorting : 'titleAsc',
 
           // THUMBNAIL TOOLS & LABEL
           thumbnailL1Label: { display: true, position:'overImageOnTop', hideIcons: true, titleFontSize: '1.5em', align: 'left'},
-          thumbnailToolbarImage :  { topLeft: 'select', bottomRight : 'featured,display,download,info' },
+          thumbnailToolbarImage :  { topLeft: 'select', bottomRight : 'featured,display,download,info,cart' },
 
           // DISPLAY ANIMATION
-          galleryDisplayTransition: 'rotateX',        // gallery display animation
-          galleryDisplayTransitionDuration: 1500,
           thumbnailDisplayTransition: 'flipUp',       // thumbnail display animation
           thumbnailDisplayTransitionDuration: 400,
           thumbnailDisplayInterval: 60,
@@ -846,11 +883,23 @@ gallerySorting : 'titleAsc',
           // GALLERY THEME
           galleryTheme : { 
             thumbnail: { titleShadow : 'none', descriptionShadow : 'none', titleColor: '#fff', borderColor: '#fff' },
+            navigationPagination :  { background: '#3C4B5B', color: '#fff', colorHover: '#aaa', borderRadius: '4px' },
           },
+          
+          // callback to customize the content of the media info popup
+          fnPopupMediaInfo: my_popup_info,
           
           // DEEP LINKING
           locationHash: false
         });
+        
+        // Function called before the popup for media info is displayed
+        // Content and title can be changed
+        function my_popup_info(item, title, content){
+          var my_title = title + ' <b>nanogallery2</b>';
+          var my_content = content + '<br><br>[The content of this popup can be customized with some javascript.]';
+          return {title: my_title, content: my_content};
+        }
       }
 
 
@@ -917,11 +966,11 @@ gallerySorting : 'titleAsc',
           gallerySorting: 'random',
 
           // thumbnail on first gallery level
-          thumbnailL1Height: 120, thumbnailL1Width: 600,      // first level -> grid kayout
+          thumbnailL1Height: 400, thumbnailL1Width: 600,      // first level -> grid kayout
           thumbnailL1GutterWidth: 20,
           thumbnailL1GutterHeight: 20,
-          thumbnailL1BorderHorizontal: 10,
-          thumbnailL1BorderVertical: 10,
+          thumbnailL1BorderHorizontal: 0,
+          thumbnailL1BorderVertical: 0,
 
           // thumbnail on other gallery level
           thumbnailHeight: 400, thumbnailWidth: 'auto',       // other levels -> justified layout
@@ -937,11 +986,11 @@ gallerySorting : 'titleAsc',
           thumbnailToolbarAlbum: null,
           // first level label
           <!-- thumbnailL1Label: { display: true, position:'overImageOnBottom', hideIcons: true, titleFontSize: '1em', align: 'center', titleMultiLine:true, displayDescription: false}, -->
-          thumbnailL1Label: { display: true, valign:'bottom', hideIcons: true, titleFontSize: '3em', align: 'center', titleMultiLine:true, displayDescription: false},
+          thumbnailL1Label: { display: true, valign:'bottom', hideIcons: true, titleFontSize: '3em', align: 'left', titleMultiLine:true, displayDescription: false},
           // other level label
           thumbnailLabel: { display: true, position:'overImageOnBottom', hideIcons: true, titleFontSize: '1em', align: 'center', titleMultiLine:true, displayDescription: false},
 
-					thumbnailToolbarAlbum: { topRight: 'counter' },
+					// thumbnailToolbarAlbum: { topRight: 'counter' },
 
           // DISPLAY ANIMATION
           thumbnailL1DisplayTransition: 'flipUp',         // first level display animation
@@ -951,16 +1000,18 @@ gallerySorting : 'titleAsc',
 
           // THUMBNAIL'S HOVER ANIMATION
           // first level
-          thumbnailL1BuildInit2: 'title_font-weight_bold',
-          thumbnailL1HoverEffect2: 'imageGrayOff|title_color_#fff_#aaa|labelOpacity50',
+          <!-- thumbnailL1BuildInit2: 'title_font-weight_bold|image_scale_0.8|label_left_-5px|label_text-transform_uppercase|label_top_95%|label_rotateZ_-90deg|label_transform-origin_top left', -->
+          thumbnailL1BuildInit2: 'title_font-weight_bold|image_scale_0.8|label_left_-25px|label_top_95%|label_rotateZ_-90deg|label_transform-origin_top left',
+          thumbnailL1HoverEffect2: 'imageGrayOff|title_color_#46D6AB_#aaaaaa|labelOpacity50',
           // other levels -> no hover effect
+
           // touch handling
           touchAnimation: false,
           touchAutoOpenDelay: 800,
 
           // GALLERY THEME
           galleryTheme : { 
-            thumbnail: { titleShadow : '', descriptionShadow : 'none', titleColor: '#fff', borderColor: '#000' },
+            thumbnail: { background: '#111', titleShadow : '', descriptionShadow : 'none', titleColor: '#fff', borderColor: '#000' },
             navigationBreadcrumb: { background : '#3C4B5B' },
           },
           
@@ -981,9 +1032,10 @@ gallerySorting : 'titleAsc',
 							title:        'Vimeo video',                                          // media title
 						},
 						{ src: 'https://www.youtube.com/watch?v=i5qOzqD9Rms', title: 'Youtube video' },
-						{ src: 'https://www.dailymotion.com/video/x4wtyl6',   title: 'Dailymotion video' },
+						{ src: 'https://www.dailymotion.com/video/x7shbov',   title: 'Dailymotion video' },
 						{ src: 'berlin1.jpg',      srct: 'berlin1t.jpg',   title: 'Self hosted image' },
-						{ src: 'berlin2.jpg',      srct: 'berlin2t.jpg',   title: 'Self hosted image' }
+						{ src: 'berlin2.jpg',      srct: 'berlin2t.jpg',   title: 'Self hosted image' },
+						{ src: 'berlin3.jpg',      srct: 'berlin3t.jpg',   title: 'Self hosted image' }
 					],
 					itemsBaseURL:    'https://nanogallery2.nanostudio.org/samples/',
 		
@@ -1039,7 +1091,7 @@ gallerySorting : 'titleAsc',
         jQuery('#init_markup').css({ 'display': 'block' });
         jQuery('#init_js').css({ 'display': 'none' });
 
-        jQuery('#ngy2_init1').css({ 'background-color': '#23CB99', 'color': '#000' });
+        jQuery('#ngy2_init1').css({ 'background-color': '#23CB99', 'color': '#fff' });
         jQuery('#ngy2_init2').css({ 'text-decoration': 'none', 'background-color':'#fff', 'color': '#000' });
         
         jQuery('#ngy2_init2').find('i').removeClass('fa-check-circle-o').addClass('fa-circle-o');
@@ -1635,4 +1687,3 @@ gallerySorting : 'titleAsc',
       
     });
   </script>
-
