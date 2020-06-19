@@ -1,12 +1,12 @@
 {
   "name": "nanogallery2",
-  "description": "a modern photo / video gallery and lightbox",
+  "description": "modern photo / video gallery and lightbox",
   "author": {
     "name" : "Christophe Brisbois",
     "email" : "chr@brisbois.fr",
     "url" : "https://brisbois.fr"
   },
-  "version": "2.4.2",
+  "version": "3.0.0",
   "homepage": "https://nanogallery2.nanostudio.org",
   "keywords": "gallery galleries photo lightbox image album",
   "repository": {
@@ -24,7 +24,7 @@
     "grunt-contrib-copy": "^0.7.0",
     "grunt-contrib-jshint": "latest",
     "grunt-contrib-qunit": "latest",
-    "grunt-contrib-uglify": "^0.9.2",
+    "grunt-terser": "latest",
     "grunt-contrib-cssmin": "^1.0.2",
     "grunt-gh-pages": "latest"
   },
