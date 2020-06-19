@@ -8,7 +8,7 @@
   },
   "version": "3.0.0",
   "homepage": "https://nanogallery2.nanostudio.org",
-  "keywords": "gallery galleries photo lightbox image album",
+  "keywords": "image photo video gallery galleries lightbox album",
   "repository": {
     "type": "git",
     "url": "git://github.com/nanostudio-org/nanogallery2.git"
