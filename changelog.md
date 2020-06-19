@@ -1,6 +1,56 @@
 nanogallery2 - ChangeLog
 ===========
 
+v3.0.0
+------
+- new features:
+  - thumbnails on lightbox
+  - mosaic layout is now fully responsive
+  - options 'thumbnailGutterWidth' and 'thumbnailGutterHeight' are now responsive
+  - filtering, option galleryFilterTagsMode/galleryL1FilterTagsMode - possible value 'single', 'multiple'
+  - filtering, if no tag is selected then no filter is applied
+  - loading spinner over thumbnail during album content download
+  - first album level: new options thumbnailL1BorderHorizontal and thumbnailL1BorderVertical
+  - gallery pagination: left/right buttons on top of the gallery (option 'galleryPaginationTopButtons')
+  - lightbox: swipe up to close (additional to the existing swipe down gesture)
+  - lightbox: button to add media to shopping cart
+  - callback fnPopupMediaInfo(item, title, content) -> {title: my_title, content: my_content}
+  - improved: swipe and touch gesture using velocity
+  - rounded border on thumbnails (defined in 'galleryTheme')
+  - improved: page scrollbar better removed on lightbox display, to avoid page reflow
+  - randomized thumbnail display order: option 'thumbnailDisplayOrder' ('', 'random')
+  - easing for thumbnail display animation: option 'thumbnailDisplayTransitionEasing' (default: easeOutQuart)
+  - Google Photos: enable the use of filename as the title (#226 - thanks to Kevin Robert Keegan https://github.com/krkeegan)
+  - Flickr: option tagBlockList to filter out images based on tags (#233 - thanks to Jonathan Keane https://github.com/jonkeane)
+  - media title renaming with option 'titleTranslationMap'
+  	
+- changed:
+  - option 'blackList' renamed to 'blockList'
+  - option 'whiteList' renamed to 'allowList'
+  - lightbox toolbar: option viewerToolbar.display now set to false by default
+  - shopping cart handling refactored
+  - thumbnail label: new option 'valign' in addition to the 'position' option
+  - gallery filtering: icon for tags and for tag's filter reset
+  - lightbox tool: icons layout and background
+  - hover animation on thumbnails are now disabled by default ('touchAnimation' default value changed to false)
+  - option 'thumbnailOpenImage' renamed in 'thumbnailOpenInLightox'
+  - callbacks fnGalleryRenderStart/fnGalleryRenderEnd: now return the album object instead of it's index
+  
+- fixed:
+  - nano_photos_provider2: on gallery initialization, if an album is defined, gallery does not display sub-albums
+  - gallery may not be displayed depending on the display animation
+  - lightbox: one touch will display toolbars and label when they are hidden
+  - modal popup (media info, share): display not sharp, and wrong size on mobile devices
+  - some artefacts around thumbnails in some use cases
+  - #219 dragging in Firefox - many thanks to Largo (https://github.com/Largo)
+  - #226 Google Photos issue on description value (#226 - thanks to Kevin Robert Keegan https://github.com/krkeegan)
+  - many mirror fixes
+  
+- depreciated:
+  - removed: viewerDisplayLogo option
+  - removed options 'topOverImage', 'bottomOverImage' for lighbox vertical toolbar position
+  - removed lightbox theme 'border'
+
 v2.4.2
 ------
 - new: self hosted videos - support for WEBM and OGV formats (dependant on browser support)
