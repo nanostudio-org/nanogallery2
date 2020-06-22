@@ -580,24 +580,26 @@
                 // extract tags starting with # (in title)
               if( typeof instance.galleryFilterTags.Get() == 'string' ) {
                 switch( instance.galleryFilterTags.Get().toUpperCase() ) {
-                  case 'TITLE':
-                    var re = /(?:^|\W)#(\w+)(?!\w)/g, match, matches = [];
-                    var tags = "";
-                    while (match = re.exec(title)) {
-                      matches.push(match[1].replace(/^\s*|\s*$/, ''));   //trim trailing/leading whitespace
+                  case 'TITLE': {
+                      let re = /(?:^|\W)#(\w+)(?!\w)/g, match, matches = [];
+                      // let tags = "";
+                      while (match = re.exec(title)) {
+                        matches.push(match[1].replace(/^\s*|\s*$/, ''));   //trim trailing/leading whitespace
+                      }
+                      item.setTags(matches);  //tags;
+                      title = title.split('#').join('');   //replaceall
+                      break;
                     }
-                    item.setTags(matches);  //tags;
-                    title = title.split('#').join('');   //replaceall
-                    break;
-                  case 'DESCRIPTION':
-                    var re = /(?:^|\W)#(\w+)(?!\w)/g, match2, matches2 = [];
-                    var tags = "";
-                    while (match2 = re.exec(description)) {
-                      matches2.push(match2[1].replace(/^\s*|\s*$/, ''));   //trim trailing/leading whitespace
+                  case 'DESCRIPTION': {
+                      let re = /(?:^|\W)#(\w+)(?!\w)/g, match2, matches2 = [];
+                      // let tags = "";
+                      while (match2 = re.exec(description)) {
+                        matches2.push(match2[1].replace(/^\s*|\s*$/, ''));   //trim trailing/leading whitespace
+                      }
+                      item.setTags(matches2);  //tags;
+                      description = description.split('#').join('');   //replaceall
+                      break;
                     }
-                    item.setTags(matches2);  //tags;
-                    description = description.split('#').join('');   //replaceall
-                    break;
                 }
               }
                 else {
@@ -6997,34 +6999,37 @@
       var tL1HE = G.O.thumbnailL1HoverEffect2;
       if( tL1HE !== undefined ) {
         switch( toType(tL1HE) ) {
-          case 'string':
-            var tmp = tL1HE.split('|');
-            for(var i = 0; i < tmp.length; i++) {
-              var oDef = NewTHoverEffect();
-              oDef = ThumbnailHoverEffectExtract( tmp[i].trim(), oDef );
-              if(  oDef != null ) {
-                G.tn.hoverEffects.level1.push(oDef);
+          case 'string': {
+              var tmp = tL1HE.split('|');
+              for(var i = 0; i < tmp.length; i++) {
+                let oDef = NewTHoverEffect();
+                oDef = ThumbnailHoverEffectExtract( tmp[i].trim(), oDef );
+                if(  oDef != null ) {
+                  G.tn.hoverEffects.level1.push(oDef);
+                }
               }
+              break;
             }
-            break;
-          case 'object':
-            var oDef = NewTHoverEffect();
-            oDef = jQuery.extend(oDef,tL1HE);
-            oDef = ThumbnailHoverEffectExtract( oDef.name, oDef );
-            if(  oDef != null ) {
-              G.tn.hoverEffects.level1.push(oDef);
-            }
-            break;
-          case 'array':
-            for(var i = 0; i < tL1HE.length; i++) {
-              var oDef = NewTHoverEffect();
-              oDef = jQuery.extend(oDef,tL1HE[i]);
+          case 'object': {
+              let oDef = NewTHoverEffect();
+              oDef = jQuery.extend(oDef,tL1HE);
               oDef = ThumbnailHoverEffectExtract( oDef.name, oDef );
               if(  oDef != null ) {
                 G.tn.hoverEffects.level1.push(oDef);
               }
+              break;
             }
-            break;
+          case 'array': {
+              for(var i = 0; i < tL1HE.length; i++) {
+                let oDef = NewTHoverEffect();
+                oDef = jQuery.extend(oDef,tL1HE[i]);
+                oDef = ThumbnailHoverEffectExtract( oDef.name, oDef );
+                if(  oDef != null ) {
+                  G.tn.hoverEffects.level1.push(oDef);
+                }
+              }
+              break;
+            }
           case 'null':
             break;
           default:
@@ -7036,34 +7041,37 @@
       // thumbnails hover effects - other levels
       var tHE = G.O.thumbnailHoverEffect2;
       switch( toType(tHE) ) {
-        case 'string':
-          var tmp = tHE.split('|');
-          for(var i = 0; i < tmp.length; i++) {
-            var oDef = NewTHoverEffect();
-            oDef = ThumbnailHoverEffectExtract( tmp[i].trim(), oDef );
+        case 'string': {
+            var tmp = tHE.split('|');
+            for(var i = 0; i < tmp.length; i++) {
+              let oDef = NewTHoverEffect();
+              oDef = ThumbnailHoverEffectExtract( tmp[i].trim(), oDef );
+              if(  oDef != null ) {
+                G.tn.hoverEffects.std.push(oDef);
+              }
+            }
+            break;
+          }
+        case 'object': {
+            let oDef = NewTHoverEffect();
+            oDef = jQuery.extend(oDef, tHE);
+            oDef = ThumbnailHoverEffectExtract( oDef.name, oDef );
             if(  oDef != null ) {
               G.tn.hoverEffects.std.push(oDef);
             }
+            break;
           }
-          break;
-        case 'object':
-          var oDef = NewTHoverEffect();
-          oDef = jQuery.extend(oDef, tHE);
-          oDef = ThumbnailHoverEffectExtract( oDef.name, oDef );
-          if(  oDef != null ) {
-            G.tn.hoverEffects.std.push(oDef);
-          }
-          break;
-        case 'array':
-          for(var i = 0; i < tHE.length; i++) {
-            var oDef = NewTHoverEffect();
-            oDef = jQuery.extend(oDef,tHE[i]);
-            oDef = ThumbnailHoverEffectExtract( oDef.name, oDef );
-            if(  oDef!= null ) {
-              G.tn.hoverEffects.std.push(oDef);
+        case 'array': {
+            for(var i = 0; i < tHE.length; i++) {
+              let oDef = NewTHoverEffect();
+              oDef = jQuery.extend(oDef,tHE[i]);
+              oDef = ThumbnailHoverEffectExtract( oDef.name, oDef );
+              if(  oDef!= null ) {
+                G.tn.hoverEffects.std.push(oDef);
+              }
             }
+            break;
           }
-          break;
         case 'null':
           break;
         default:
