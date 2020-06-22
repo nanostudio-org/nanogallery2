@@ -139,6 +139,7 @@
 
   // Check if element is in viewport
   // avoid if possible (performance issue)
+  /*
   function inViewport( $elt, threshold ) {
     var wp = getViewport(),
     eltOS = $elt.offset(),
@@ -154,6 +155,7 @@
       return false;
     }
   }
+  */
 
 
   // Check if whole element is in ViewPort
@@ -3947,7 +3949,7 @@
               
               // set the retrieved size to all levels with same configuration  
               var object = item.thumbs.width.l1;
-              for (var property in object) {
+              for (let property in object) {
                 if (object.hasOwnProperty(property)) {
                   if( property != G.GOM.curWidth ) {
                     if( G.tn.settings.width.l1[property] == G.tn.settings.getW() && G.tn.settings.height.l1[property] == G.tn.settings.getH() ) {
@@ -3958,7 +3960,7 @@
                 }
               }
               object = item.thumbs.width.lN;
-              for (var property in object) {
+              for (let property in object) {
                 if (object.hasOwnProperty(property)) {
                   if( property != G.GOM.curWidth ) {
                     if( G.tn.settings.width.lN[property] == G.tn.settings.getW() && G.tn.settings.height.lN[property] == G.tn.settings.getH() ) {
@@ -4341,7 +4343,7 @@
       var maxW = 0;
       let mosaicPattern = G.tn.settings.getMosaic();
       for( var i = 0; i < nbTn ; i++ ) {
-        var curPatternElt = mosaicPattern[n];
+        let curPatternElt = mosaicPattern[n];
 
         var cLeft = (curPatternElt.c - 1) * G.tn.defaultSize.getOuterWidth() + (curPatternElt.c - 1) * gutterWidth;
         var cWidth = curPatternElt.w * G.tn.defaultSize.getOuterWidth() + (curPatternElt.w - 1) * gutterWidth;
@@ -4364,8 +4366,8 @@
       n = 0;
       // let mosaicPattern = G.tn.settings.getMosaic();
       for( var i = 0; i < nbTn ; i++ ) {
-        var curTn = G.GOM.items[i];
-        var curPatternElt = mosaicPattern[n];
+        let curTn = G.GOM.items[i];
+        let curPatternElt = mosaicPattern[n];
         
         curTn.top = Math.round((curPatternElt.r - 1) * G.tn.defaultSize.getOuterHeight()*scaleFactor) + (curPatternElt.r - 1) * gutterHeight + row * h + (G.tn.labelHeight.get()*(curPatternElt.r-1)) ;
         if( row > 0 ) {
@@ -4442,7 +4444,7 @@
 
       
       G.GOM.lastFullRow = 0 ;    // display at leat 1 row (even if not full)
-      var lastPosY = 0;
+      // var lastPosY = 0;
       var row = 0;
       
       tnWidth = Math.round(tnWidth * scaleFactor);
@@ -4478,7 +4480,7 @@
           curTn.resizedContentHeight = contentHeight;
         }
         curTn.row = row;
-        lastPosY = curPosY;
+        // lastPosY = curPosY;
 
         curCol++;
         if( curCol >= maxCol ){
@@ -4582,7 +4584,7 @@
             // var left=containerOffset.left+curTn.left;
             if( (top + curTn.height) >= (G.GOM.cache.viewport.t - threshold) && top <= (G.GOM.cache.viewport.t + G.GOM.cache.viewport.h + threshold) ) {
               // build thumbnail
-              var item = G.I[curTn.thumbnailIdx];
+              let item = G.I[curTn.thumbnailIdx];
               if( item.$elt == null ) {
                 // ThumbnailBuild( item, curTn.thumbnailIdx, i, (i+1) == nbTn );
                 ThumbnailBuild( item, curTn.thumbnailIdx, i );
@@ -4599,7 +4601,7 @@
         }
         else {
           curTn.displayed = false;
-          var item = G.I[curTn.thumbnailIdx];
+          let item = G.I[curTn.thumbnailIdx];
           if( item.$elt != null ){
             item.$elt.css({ opacity: 0, display: 'none' });
           }
