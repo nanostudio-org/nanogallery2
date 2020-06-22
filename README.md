@@ -115,7 +115,7 @@ HTML markup setup examples:
 <br />  
 
 ## License
-Dual licenced:
+Dual licensed:
 - GPLv3 for personal or open source projects with GPLv3 license
 - Commercial license for use in a revenue-generating product
 
@@ -127,11 +127,7 @@ Dual licenced:
   
 <br />
 
-## Thanks
-**Many thanks to these contributors for their work on [nanoGALLERY](http://nanogallery.brisbois.fr/), [nanogallery2](https://nanogallery2.nanostudio.org/), [nanoPhotosProvider](https://github.com/Kris-B/nanoPhotosProvider), [nanoPhotosProvider2](https://github.com/nanostudio-org/nano_photos_provider2), or [nanogp](https://github.com/nanostudio-org/nanogp) or [nanogp2](https://github.com/nanostudio-org/nanogp2):**
-
-[Victor A. Banuelos](https://github.com/vbanuelos), [Raphaël Renaudon](https://github.com/sevarg), [antonio r.](https://github.com/grief-of-these-days), [Daniel Eck](https://github.com/Ecksters), [Dio Vayne](https://github.com/DioVayne), [Sean Kenny](https://github.com/seankenny), [eae710](https://github.com/eae710), [Jeff Mills](https://github.com/jefftmills), [Andrea Grassi](https://github.com/andrea-sdl), [AlexRed Alessandro Rossi](https://github.com/AlexRed), Giovanni Chiodi, [Ruplahlava](https://github.com/Ruplahlava), [EelcoA](https://github.com/EelcoA), [eae710](https://github.com/eae710)
-  
+ 
 **Many thanks to these technology contributors:** 
 - for [shifty](https://github.com/jeremyckahn/shifty):
 **[Jeremy Kahn](https://github.com/jeremyckahn) - special thanks for all your help!**
