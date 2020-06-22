@@ -2077,7 +2077,7 @@
       // scroll to top of gallery if not displayed
       G.GOM.ScrollToTop();
 
-      GalleryDisplayPart1( true );
+      GalleryDisplayPart1();
       GalleryDisplayPart2( true );
       return false;
     };
@@ -3505,7 +3505,7 @@
           // scroll to top of gallery if not displayed
           G.GOM.ScrollToTop();
  
-          GalleryDisplayPart1( true );
+          GalleryDisplayPart1();
           GalleryDisplayPart2( true );
         });
 
@@ -3550,7 +3550,7 @@
       // scroll to top of gallery if not displayed
       G.GOM.ScrollToTop();
 
-      GalleryDisplayPart1( true );
+      GalleryDisplayPart1();
       GalleryDisplayPart2( true );
     }
     
@@ -3584,7 +3584,7 @@
       // scroll to top of gallery if not displayed
       G.GOM.ScrollToTop();
 
-      GalleryDisplayPart1( true );
+      GalleryDisplayPart1();
       GalleryDisplayPart2( true );
     }
 
@@ -3848,7 +3848,7 @@
         GalleryAppear();
         
         // step 4: display thumbnails
-        GalleryDisplayPart1( false );
+        GalleryDisplayPart1();
         requestTimeout(function(){ GalleryDisplayPart2( false ) }, 120);
       }
       else {
@@ -3872,7 +3872,7 @@
       }
       if( G.O.debugMode ) { console.log('GalleryResizeSetLayout: '+ (new Date()-d)); }
 
-      GalleryDisplayPart1( false );
+      GalleryDisplayPart1();
       GalleryDisplayPart2( false );
 
       if( G.O.debugMode ) { console.log('GalleryResizeFull: '+ (new Date()-d)); }
@@ -4498,7 +4498,7 @@
 
 
     //----- Display the thumbnails according to the calculated layout
-    function GalleryDisplayPart1( forceTransition ) {
+    function GalleryDisplayPart1() {
       if( G.CSStransformName == null ) {
         G.$E.conTn.css( 'left' , '0px');
       }
@@ -4537,7 +4537,7 @@
       GalleryRenderGetInterval();
       
       for( var i = 0; i < nbTn ; i++ ) {
-        var curTn = G.GOM.items[i];
+        let curTn = G.GOM.items[i];
         if( i >= G.GOM.displayInterval.from && cnt < G.GOM.displayInterval.len ) {
           curTn.inDisplayArea = true;
           if( forceTransition ) {
@@ -4564,7 +4564,7 @@
       G.GOM.clipArea.height = 0;
       // NOTE: loop always the whole GOM.items --> in case an already displayed thumbnail needs to be removed
       for( var i = 0; i < nbTn ; i++ ) {
-        var curTn = G.GOM.items[i];
+        let curTn = G.GOM.items[i];
         if( curTn.inDisplayArea ) {
           if( G.GOM.clipArea.top == -1 ) {
             G.GOM.clipArea.top = curTn.top;
@@ -4621,7 +4621,7 @@
         // so we need re-calculate the layout before displaying the thumbnails
         G.GOM.cache.areaWidth = G.$E.conTnParent.width();
         GallerySetLayout();
-        GalleryDisplayPart1( forceTransition );
+        GalleryDisplayPart1();
         GalleryDisplayPart2( forceTransition );
         return;
       }
@@ -5778,8 +5778,7 @@
       switch( G.galleryDisplayTransition.Get() ){
         case 'ROTATEX':
           G.$E.base.css({ perspective: '1000px', 'perspective-origin': '50% 0%' });
-          var tweenable = new NGTweenable();
-          tweenable.tween({
+          new NGTweenable().tween({
             from:         { r: 50 },
             to:           { r: 0  },
             attachment:   { orgIdx: G.GOM.albumIdx },
@@ -5796,8 +5795,7 @@
           break;
         case 'SLIDEUP':
           G.$E.conTnParent.css({ opacity: 0 });
-          var tweenable = new NGTweenable();
-          tweenable.tween({
+          new NGTweenable().tween({
             from:         { y: 200, o: 0 },
             to:           { y: 0,   o: 1 },
             attachment:   { orgIdx: G.GOM.albumIdx },
@@ -8374,9 +8372,9 @@
       //TODO -> danger? -> pourquoi reconstruire la liste si d�j� ouvert (back/forward)     
       var l = G.I.length;
       for( var idx = ngy2ItemIdx+1; idx < l ; idx++) {
-        var item = G.I[idx];
+        let item = G.I[idx];
         if( item.kind == 'image' && item.isToDisplay(G.VOM.albumID) && item.destinationURL == '' ) {
-          var vimg = new VImg(idx);
+          let vimg = new VImg(idx);
           G.VOM.items.push(vimg);
           items.push(item);
         }
@@ -8384,9 +8382,9 @@
       var last = G.VOM.items.length;
       var cnt = 1;
       for( var idx = 0; idx < ngy2ItemIdx ; idx++) {
-        var item = G.I[idx];
+        let item = G.I[idx];
         if( item.kind == 'image' && item.isToDisplay(G.VOM.albumID) && item.destinationURL == '' ) {
-          var vimg = new VImg(idx);
+          let vimg = new VImg(idx);
           vimg.mediaNumber = cnt;
           G.VOM.items.push(vimg);
           items.push(item);
@@ -8413,7 +8411,7 @@
       else {
         // viewer already displayed -> display new media in current viewer
         G.VOM.content.current.$media.empty();
-        var item = G.VOM.content.current.NGY2Item();
+        let item = G.VOM.content.current.NGY2Item();
         var spreloader = '<div class="nGY2ViewerMediaLoaderDisplayed"></div>';
         if( item.mediaKind == 'img' && item.imageWidth != 0 && item.imageHeight != 0 ) {
           spreloader = '<div class="nGY2ViewerMediaLoaderHidden"></div>';
@@ -8978,7 +8976,7 @@
                   G.VOM.content.next.$media.empty();
                   var nextItem = G.I[idx];
                   G.VOM.content.next.vIdx = vidx;
-                  var spreloader = '<div class="nGY2ViewerMediaLoaderDisplayed"></div>';
+                  let spreloader = '<div class="nGY2ViewerMediaLoaderDisplayed"></div>';
                   if( nextItem.mediaKind == 'img' && nextItem.imageWidth != 0 && nextItem.imageHeight != 0 ) {
                     spreloader = '<div class="nGY2ViewerMediaLoaderHidden"></div>';
                   }
@@ -8999,7 +8997,7 @@
                   G.VOM.content.previous.$media.empty();
                   var previousItem = G.I[idx];
                   G.VOM.content.previous.vIdx = vidx;
-                  var spreloader = '<div class="nGY2ViewerMediaLoaderDisplayed"></div>';
+                  let spreloader = '<div class="nGY2ViewerMediaLoaderDisplayed"></div>';
                   if( previousItem.mediaKind == 'img' && previousItem.imageWidth != 0 && previousItem.imageHeight != 0 ) {
                     spreloader = '<div class="nGY2ViewerMediaLoaderHidden"></div>';
                   }
