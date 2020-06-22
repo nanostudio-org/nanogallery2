@@ -6998,7 +6998,7 @@
       if( tL1HE !== undefined ) {
         switch( toType(tL1HE) ) {
           case 'string': {
-              var tmp = tL1HE.split('|');
+              let tmp = tL1HE.split('|');
               for(var i = 0; i < tmp.length; i++) {
                 let oDef = NewTHoverEffect();
                 oDef = ThumbnailHoverEffectExtract( tmp[i].trim(), oDef );
@@ -7040,7 +7040,7 @@
       var tHE = G.O.thumbnailHoverEffect2;
       switch( toType(tHE) ) {
         case 'string': {
-            var tmp = tHE.split('|');
+            let tmp = tHE.split('|');
             for(var i = 0; i < tmp.length; i++) {
               let oDef = NewTHoverEffect();
               oDef = ThumbnailHoverEffectExtract( tmp[i].trim(), oDef );
@@ -7307,18 +7307,18 @@
       var newEffects=[];
       for( var i=0; i< effects.length; i++ ) {
         switch( effects[i].name.toUpperCase() ) {
-          case 'BORDERLIGHTER':
-            var rgb = ColorHelperToRGB(GalleryThemeGetCurrent().thumbnail.borderColor);
-            var name = 'thumbnail_borderColor_'+rgb+'_'+ShadeBlendConvert(0.5, rgb );
-            newEffects.push(ThumbnailHoverEffectExtract(name, effects[i]));
-            break;
-
-          case 'BORDERDARKER':
-            var rgb = ColorHelperToRGB(GalleryThemeGetCurrent().thumbnail.borderColor);
-            var name = 'thumbnail_borderColor_'+rgb+'_'+ShadeBlendConvert(-0.5, rgb );
-            newEffects.push(ThumbnailHoverEffectExtract(name, effects[i]));
-            break;
-
+          case 'BORDERLIGHTER': {
+              let rgb = ColorHelperToRGB(GalleryThemeGetCurrent().thumbnail.borderColor);
+              let name = 'thumbnail_borderColor_'+rgb+'_'+ShadeBlendConvert(0.5, rgb );
+              newEffects.push(ThumbnailHoverEffectExtract(name, effects[i]));
+              break;
+            }
+          case 'BORDERDARKER': {
+              let rgb = ColorHelperToRGB(GalleryThemeGetCurrent().thumbnail.borderColor);
+              let name = 'thumbnail_borderColor_'+rgb+'_'+ShadeBlendConvert(-0.5, rgb );
+              newEffects.push(ThumbnailHoverEffectExtract(name, effects[i]));
+              break;
+            }
           case 'SCALE120':
             newEffects.push(ThumbnailHoverEffectExtract('thumbnail_scale_1.00_1.20', effects[i]));
             break;
