@@ -1,4 +1,5 @@
 
+
 <div class="container ngy2documentation">
 <br><br>
 <h1>nanogallery2 API - reference guide</h1>
@@ -201,14 +202,8 @@ jQuery("#nanogallery2").nanogallery2({
 
   fnShoppingCartUpdated: mylistener,            // <b>set the callback function</b>
 
-  thumbnailToolbarImage : { topLeft: 'cart'},
-  thumbnailHoverEffect2: null, 
-
-  kind: 'flickr',
-  userID: '<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1524212c25262024232d555b252d">[email&#160;protected]</a>',
-  photoset:        '72157675219521270',
   thumbnailHeight: 100, thumbnailWidth: 100,
-  thumbnailLabel: { display: false }
+  ...
 });
 
 <b>// Callback function</b>
@@ -413,22 +408,42 @@ Parameters: <code>customElementName, $customIcon, item</code>
 </td>
 </tr>
 <tr>
-<td>
-fnProcessData
-<br><span class="badge ngy2_ver">v1.0</span>
-</td>
-<td>
-Used to extend data associated to thumbnails/images.<br>
-Called each time a new element (image or album) is added.
-<br>
-Parameters: <code>item, kind, sourceData</code>
-</td>
+  <td>
+  fnProcessData
+  <br><span class="badge ngy2_ver">v1.0</span>
+  </td>
+  <td>
+  Used to extend data associated to thumbnails/images.<br>
+  Called each time a new element (image/video or album) is added.
+  <br>
+  Parameters: <code>item, kind, sourceData</code>
+  </td>
+</tr>
+<tr>
+  <td>
+  fnPopupMediaInfo
+  <br><span class="badge ngy2_ver">v3.0</span>
+  </td>
+  <td>
+    Customize the info popup.<br>
+    Called before the popup for media info is displayed.
+    <br>
+    Parameters: <code>item, title, content</code>
+    <br><b>title</b>: is the default title
+    <br><b>content</b>: is the default content of the popup
+    <br>
+    To change the popup, return an object with the new title and the new content: </code>return {title: my_title, content: my_content};</code>
+  </td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 <br><br><br>
+
+
+
+
 <h2><b><i class="fa fa-certificate ngy2color1" aria-hidden="true"></i> API methods</b></h2>
 <hr>
 <blockquote>
@@ -582,9 +597,9 @@ $('#my_nanogallery2').nanogallery2('option', 'thumbnailSelectable', false);
   displayItem
   <br><span class="badge ngy2_ver">v1.0</span>
   </td>
-  <td>itemID</td>
+  <td>item ID</td>
   <td>
-  Displays an item (album or image).<br>
+  Displays an item (album or media).<br>
   Usage: <code>$('#your_nanogallery2').nanogallery2('displayItem', 'itemID');</code><br>
   - to display an album: <code>$('#your_nanogallery2').nanogallery2('displayItem', 'albumID');</code><br>
   - to display an image: <code>$('#your_nanogallery2').nanogallery2('displayItem', 'albumID/imageID');</code>
@@ -694,22 +709,22 @@ $('#my_nanogallery2').nanogallery2('option', 'thumbnailSelectable', false);
 <tr>
   <td>
   shoppingCartUpdate
-  <br><span class="badge ngy2_ver">v1.0</span>
+  <br><span class="badge ngy2_ver">v1.0</span><span class="badge ngy2_ver">v3.0</span>
   </td>
-  <td>image ID, quantity</td>
+  <td>media ID, quantity</td>
   <td>
-  Update the quantity of one image in the shopping cart. Returns the shopping cart.<br>
+  Update the quantity of one media in the shopping cart. Returns the updated shopping cart.<br>
   Usage: <code>$('#your_nanogallery2').nanogallery2('shoppingCartUpdate', mediaID, newQuantity);</code>
   </td>
 </tr>
 <tr>
   <td>
   shoppingCartRemove
-  <br><span class="badge ngy2_ver">v1.0</span>
+  <br><span class="badge ngy2_ver">v1.0</span><span class="badge ngy2_ver">v3.0</span>
   </td>
-  <td>image ID</td>
+  <td>media ID</td>
   <td>
-  Removes one image from the shopping cart. Returns the shopping cart.<br>
+  Removes one media from the shopping cart. Returns the updated shopping cart.<br>
   Usage: <code>$('#your_nanogallery2').nanogallery2('shoppingCartRemove', mediaID);</code>
   </td>
 </tr>
