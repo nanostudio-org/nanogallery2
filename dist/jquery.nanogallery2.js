@@ -1,6 +1,6 @@
-/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2020-06-19 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2020-06-22 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /*!
- * @preserve nanogallery2 v3.0.0beta - javascript photo / video gallery and lightbox
+ * @preserve nanogallery2 v3.0.1beta - javascript photo / video gallery and lightbox
  * Homepage: http://nanogallery2.nanostudio.org
  * Sources:  https://github.com/nanostudio-org/nanogallery2
  *
@@ -20,83 +20,11 @@
  */
 
  
-// nanogallery v3.0.0beta
+// nanogallery v3.0.1beta
 /*
-- new features:
-	- thumbnails on lightbox (options: viewerGallery ('none', 'bottomOverMedia', 'bottom'), viewerGalleryTHeight, viewerGalleryTWidth)
-  - lightbox standalone mode to use it without gallery
-	- mosaic layout is now fully responsive
-  - options 'thumbnailGutterWidth' and 'thumbnailGutterHeight' are now responsive
-	- filtering, option galleryFilterTagsMode/galleryL1FilterTagsMode - possible value 'single', 'multiple'
-	- filtering, if no tag is selected then no filter is applied
-	- loading spinner over thumbnail during album content download
-	- first album level: new options thumbnailL1BorderHorizontal and thumbnailL1BorderVertical
-	- gallery pagination: left/right buttons on top of the gallery (option 'galleryPaginationTopButtons')
-    icons: navigationPaginationPrevious / navigationPaginationNext
-    theme: navigationPagination
-    option galleryPaginationTopButtons : true,
-	- lightbox: swipe up to close (additional to the existing swipe down gesture)
-	- callback fnPopupMediaInfo(item, title, content) -> {title: my_title, content: my_content}
-	- improved: swipe and touch gesture using velocity
-	- rounded border on thumbnails (defined in 'galleryTheme')
-	- improved: page scrollbar better removed on lightbox display, to avoid page reflow
-  - randomized thumbnail display order: option 'thumbnailDisplayOrder' ('', 'random')
-  - easing for thumbnail display animation: option 'thumbnailDisplayTransitionEasing' (default: easeOutQuart)
-  - Google Photos: enable the use of filename as the title (#226 - thanks to Kevin Robert Keegan https://github.com/krkeegan)
-  - Flickr: option tagBlockList to filter out images based on tags (#233 - thanks to Jonathan Keane https://github.com/jonkeane)
-- new:   thumbnailIcon :         { shadow:'' },
-- tableau de remplacement de nom d'albums (text found -> text to use)
-  
-	
-- changed:
-  - option 'blackList' renamed to 'blockList'
-  - option 'whiteList' renamed to 'allowList'
-	- thumbnail label: new option 'valign' in addition to the 'positio' option
-	- gallery filtering: icon for tags and for tag's filter reset
-	- lightbox tool: icons layout and background
-	- hover animation on thumbnails are now disabled by default ('touchAnimation' default value changed to false)
-  - option 'thumbnailOpenImage' renamed in 'thumbnailOpenInLightox'
-  - callbacks fnGalleryRenderStart/fnGalleryRenderEnd: now return the album object instead of it's index
 
-- fixed:
-	- nano_photos_provider2: on gallery initialization, if an album is defined, gallery does not display sub-albums
-	- gallery may not be displayed depending on the display animation
-	- lightbox: one touch will display toolbars and label when they are hidden
-	- modal popup (media info, share): display not sharp, and wrong size on mobile devices
-  - some artefacts around thumbnails in some use cases
-  - #219 dragging in Firefox - many thanks to Largo (https://github.com/Largo)
-  - #226 Google Photos issue on description value (#226 - thanks to Kevin Robert Keegan https://github.com/krkeegan)
-  - many mirror fixes
 
-Depreciated:
-  - removed: viewerDisplayLogo option
-  - removed options 'topOverImage', 'bottomOverImage' for lighbox vertical toolbar position
-  - removed lightbox theme 'border'
-
-	- CDNJS
-- rewrite - shopping cart
-   -> compteur
-   -> toolbar name cart -> shoppingcart
-   -> lightbox -> shoppingcart
-- compatibility issue: Jquery 3.0 and 3.1 - issue on width calculation - https://github.com/jquery/jquery/issues/3193
-
-TODO: 
-- tags :
-  - centre tags
-  - grouper tags (sous-tags)
-- hash : only once -> read but not set
-- enlever bottom bar par defaut
-- am�liorer fond d�grad� par d�faut des imagettes 
-- animation s�par�es pour les tools imagette
-- si hash n'existe pas -> eviter erreur et effacer hash
-- centrage vertical titre sans description
-- screenful update
-- delete button -> thumbnail/lightbox + callback(with cancel)
-- re-display one thumbnail -> new image, title, etc...
-- double touch in zoom mode -> should not go to next/previous media
-- rajouter custom meta-data dans nanophotosprovider (par ex. prix d'un article)
-- doc: enlever "button" au nom des outils du viewer
-- lightbox pan event on IFRAME
+- 
 
 */
  
@@ -583,8 +511,8 @@ TODO:
             var album = NGY2Item.Get( instance, albumID );
             
             // title translation
-            if( instance.O.title_translation_map !== null ) {
-              let obj = instance.O.title_translation_map.find(o => o.title === title);
+            if( instance.O.titleTranslationMap !== null ) {
+              let obj = instance.O.titleTranslationMap.find(o => o.title === title);
               if( obj !== undefined ) {
                 title = obj.replace;
               }
@@ -1229,18 +1157,18 @@ TODO:
             }
             else {
               // HOVER OUT
-              if( effect.firstKeyframe ) {
+              // if( effect.firstKeyframe ) {
                 context.animeFrom = this.eltEffect[effect.element][effect.type].lastValue;
                 context.animeTo = this.eltEffect[effect.element][effect.type].initialValue;
                 // context.animeTo=effect.from;
-              }
-              else {
-                // context.animeFrom=effect.from;
-                context.animeFrom = this.eltEffect[effect.element][effect.type].lastValue;
-                context.animeTo = this.eltEffect[effect.element][effect.type].initialValue;
-                // context.animeTo=effect.to;
+              // }
+              // else {
+                // // context.animeFrom=effect.from;
+                // context.animeFrom = this.eltEffect[effect.element][effect.type].lastValue;
+                // context.animeTo = this.eltEffect[effect.element][effect.type].initialValue;
+                // //context.animeTo=effect.to;
                 
-              }
+              // }
               
               context.animeDuration = parseInt(effect.durationBack);
               context.animeDelay = 30 + parseInt(effect.delayBack + delay);   // 30ms is a default delay to avoid conflict with other initializations
@@ -1432,7 +1360,7 @@ TODO:
 
     debugMode:                    false,
 
-    title_translation_map:        null,
+    titleTranslationMap:          null,
     galleryDisplayMoreStep :      2,
     galleryDisplayMode :          'fullContent',
     galleryL1DisplayMode :        null,
@@ -1555,7 +1483,7 @@ TODO:
       align :                     'center',
       autoMinimize :              0,
       standard :                  'minimizeButton,label',
-      minimized :                 'minimizeButton,label,infoButton,shareButton,downloadButton,fullscreenButton'
+      minimized :                 'minimizeButton,label,infoButton,shareButton,fullscreenButton'
     },
     viewerTools : {
       topLeft :                   'pageCounter,playPauseButton',
@@ -2250,11 +2178,11 @@ TODO:
      */
 
     window.requestTimeout = function(fn, delay) {
-      // if( !window.requestAnimationFrame      	&& 
-        // !window.webkitRequestAnimationFrame && 
-        // !(window.mozRequestAnimationFrame && window.mozCancelRequestAnimationFrame) && // Firefox 5 ships without cancel support
-        // !window.oRequestAnimationFrame      && 
-        // !window.msRequestAnimationFrame)
+      if( !window.requestAnimationFrame      	&& 
+        !window.webkitRequestAnimationFrame && 
+        !(window.mozRequestAnimationFrame && window.mozCancelRequestAnimationFrame) && // Firefox 5 ships without cancel support
+        !window.oRequestAnimationFrame      && 
+        !window.msRequestAnimationFrame)
           return window.setTimeout(fn, delay);
           
       var start = new Date().getTime(),
@@ -2263,7 +2191,7 @@ TODO:
       function loop(){
         var current = new Date().getTime(),
           delta = current - start;
-  delta = delay;
+          // delta = delay;
   
         delta >= delay ? fn.call() : handle.value = requestAnimFrame(loop);
       };
@@ -6190,7 +6118,8 @@ TODO:
       vimeo : {
         getID: function( url ) {
           // https://stackoverflow.com/questions/2916544/parsing-a-vimeo-id-using-javascript
-          var s = url.match( /^.*(vimeo\.com\/)((channels\/[A-z]+\/)|(groups\/[A-z]+\/videos\/))?([0-9]+)/ );
+          // var s = url.match( /^.*(vimeo\.com\/)((channels\/[A-z]+\/)|(groups\/[A-z]+\/videos\/))?([0-9]+)/ );
+          var s = url.match( /(http|https)?:\/\/(www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|)(\d+)(?:|\/\?)/ );
           return s != null ? s[5] : null;
         },
         url: function( id ) {
@@ -6279,7 +6208,8 @@ TODO:
     }
     
     function StartsWithProtocol ( path ) {
-      if( path == null || path == undefined ) { return false; }
+      if( path == undefined ) { return false; }
+      if( path == null ) { return false; }
       
       var pattern = /^((http|https|ftp|ftps|file):\/\/)/;
       if( !pattern.test(path) ) {
@@ -6770,28 +6700,28 @@ TODO:
       // convert label settings
       if( G.O.thumbnailLabel.position == 'overImageOnBottom' ) {
         G.O.thumbnailLabel.valign = 'bottom';
-        G.O.thumbnailLabel.position == 'overImage';
+        G.O.thumbnailLabel.position = 'overImage';
       }
       if( G.O.thumbnailLabel.position == 'overImageOnMiddle' ) {
         G.O.thumbnailLabel.valign = 'middle';
-        G.O.thumbnailLabel.position == 'overImage';
+        G.O.thumbnailLabel.position = 'overImage';
       }
       if( G.O.thumbnailLabel.position == 'overImageOnTop' ) {
         G.O.thumbnailLabel.valign = 'top';
-        G.O.thumbnailLabel.position == 'overImage';
+        G.O.thumbnailLabel.position = 'overImage';
       }
       if( G.O.thumbnailL1Label !== undefined && G.O.thumbnailL1Label.position !== undefined ) {
         if( G.O.thumbnailL1Label.position == 'overImageOnBottom' ) {
           G.O.thumbnailL1Label.valign = 'bottom';
-          G.O.thumbnailL1Label.position == 'overImage';
+          G.O.thumbnailL1Label.position = 'overImage';
         }
         if( G.O.thumbnailL1Label.position == 'overImageOnMiddle' ) {
           G.O.thumbnailL1Label.valign = 'middle';
-          G.O.thumbnailL1Label.position == 'overImage';
+          G.O.thumbnailL1Label.position = 'overImage';
         }
         if( G.O.thumbnailL1Label.position == 'overImageOnTop' ) {
           G.O.thumbnailL1Label.valign = 'top';
-          G.O.thumbnailL1Label.position == 'overImage';
+          G.O.thumbnailL1Label.position = 'overImage';
         }
       }
 
@@ -7369,13 +7299,13 @@ TODO:
         switch( effects[i].name.toUpperCase() ) {
           case 'BORDERLIGHTER':
             var rgb = ColorHelperToRGB(GalleryThemeGetCurrent().thumbnail.borderColor);
-            name = 'thumbnail_borderColor_'+rgb+'_'+ShadeBlendConvert(0.5, rgb );
+            var name = 'thumbnail_borderColor_'+rgb+'_'+ShadeBlendConvert(0.5, rgb );
             newEffects.push(ThumbnailHoverEffectExtract(name, effects[i]));
             break;
 
           case 'BORDERDARKER':
             var rgb = ColorHelperToRGB(GalleryThemeGetCurrent().thumbnail.borderColor);
-            name = 'thumbnail_borderColor_'+rgb+'_'+ShadeBlendConvert(-0.5, rgb );
+            var name = 'thumbnail_borderColor_'+rgb+'_'+ShadeBlendConvert(-0.5, rgb );
             newEffects.push(ThumbnailHoverEffectExtract(name, effects[i]));
             break;
 
@@ -7401,6 +7331,7 @@ TODO:
           case 'LABELSLIDEUPTOP':
           case 'LABELSLIDEUP':
             newEffects.push(ThumbnailHoverEffectExtract('label_translateY_100%_0%', effects[i]));
+            newEffects.push(ThumbnailHoverEffectExtract('label_translateY_100%_0%', effects[i]));
             break;
           case 'LABELSLIDEDOWN':
             newEffects.push(ThumbnailHoverEffectExtract('label_translateY_-100%_0%', effects[i]));
@@ -7412,7 +7343,7 @@ TODO:
             break;
           case 'OVERSCALE':
           case 'OVERSCALEOUTSIDE':
-            name = 'label_scale_0_100';
+            //var name = 'label_scale_0_100';
             newEffects.push(ThumbnailHoverEffectExtract('label_scale_2.00_1.00', effects[i]));
             var n = cloneJSObject(effects[i]);
             newEffects.push(ThumbnailHoverEffectExtract('label_opacity_0.00_1.00', n));
@@ -7458,10 +7389,6 @@ TODO:
             break;
           case 'IMAGESLIDEDOWN':
             newEffects.push(ThumbnailHoverEffectExtract('image_translateY_0%_100%', effects[i]));
-            break;
-          case 'LABELSLIDEUP':
-          case 'LABELSLIDEUPTOP':
-            newEffects.push(ThumbnailHoverEffectExtract('label_translateY_100%_0%', effects[i]));
             break;
           case 'LABELSLIDEUPDOWN':
             newEffects.push(ThumbnailHoverEffectExtract('label_translateY_0%_100%', effects[i]));
@@ -9029,7 +8956,7 @@ TODO:
 							var idx = parseInt(ev.target.dataset.ngy2_idx);
 							var vidx = parseInt(ev.target.dataset.ngy2_vidx);
 
-							if( idx != undefined && vidx != G.VOM.content.current.vIdx ) {
+							if( !isNaN(idx) && vidx != G.VOM.content.current.vIdx ) {
                 
                 if( vidx > G.VOM.content.current.vIdx ) {
                   TriggerCustomEvent('lightboxNextImage');
