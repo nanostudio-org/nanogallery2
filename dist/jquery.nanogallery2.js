@@ -310,7 +310,7 @@
               this.$E.conLoadingB.removeClass('nanoGalleryLBarOff').addClass('nanoGalleryLBar');
               // spinner over album thumbnail
               if( this.GOM.albumIdxLoading != undefined && this.GOM.albumIdxLoading != -1 ) {
-                var item = this.I[this.GOM.albumIdxLoading];
+                let item = this.I[this.GOM.albumIdxLoading];
                 item.$Elts['.nGY2TnImg'].addClass('nGY2GThumbnailLoaderDisplayed');
               }
             }
@@ -319,7 +319,7 @@
               this.$E.conLoadingB.removeClass('nanoGalleryLBar').addClass('nanoGalleryLBarOff');
               // spinner over album thumbnail
               if( this.GOM.albumIdxLoading != undefined && this.GOM.albumIdxLoading != -1 ) {
-                var item = this.I[this.GOM.albumIdxLoading];
+                let item = this.I[this.GOM.albumIdxLoading];
                 item.$Elts['.nGY2TnImg'].removeClass('nGY2GThumbnailLoaderDisplayed');
               }
             }
@@ -591,12 +591,12 @@
                     title = title.split('#').join('');   //replaceall
                     break;
                   case 'DESCRIPTION':
-                    var re = /(?:^|\W)#(\w+)(?!\w)/g, match, matches = [];
+                    var re = /(?:^|\W)#(\w+)(?!\w)/g, match2, matches2 = [];
                     var tags = "";
-                    while (match = re.exec(description)) {
-                      matches.push(match[1].replace(/^\s*|\s*$/, ''));   //trim trailing/leading whitespace
+                    while (match2 = re.exec(description)) {
+                      matches2.push(match2[1].replace(/^\s*|\s*$/, ''));   //trim trailing/leading whitespace
                     }
-                    item.setTags(matches);  //tags;
+                    item.setTags(matches2);  //tags;
                     description = description.split('#').join('');   //replaceall
                     break;
                 }
@@ -798,7 +798,6 @@
               }
             }
           
-            var lst=['xs','sm','me','la','xl'];
             for( var i=0; i< lst.length; i++ ) {
               this.thumbs.height.l1[lst[i]]=h;
             }
@@ -3368,7 +3367,7 @@
           breadcrumbAdd(0);
         }
         else {
-          var last=lstItems.length-1;
+          // var last=lstItems.length-1;
           if( lstItems.length == 1 ) {
             breadcrumbAddSeparator(0);    // root level
           }
@@ -3434,7 +3433,7 @@
       }
       else {
         // display pagination numbers and previous/next
-        var vp = G.O.paginationVisiblePages;
+        // var vp = G.O.paginationVisiblePages;
         var numberOfPagesToDisplay = G.O.paginationVisiblePages;
         if( numberOfPagesToDisplay >= nbPages ) {
           firstPage = 0;
@@ -3525,8 +3524,8 @@
     
     // pagination - next page
     function paginationNextPage() {
-      // var aIdx = G.GOM.albumIdx,
-      n1 = 0;
+      // var aIdx = G.GOM.albumIdx;
+      var n1 = 0;
       ThumbnailHoverOutAll();
       
       // pagination - max lines per page mode
@@ -3556,8 +3555,8 @@
     // pagination - previous page
     function paginationPreviousPage() {
       // var aIdx=G.$E.conTnBottom.data('galleryIdx'),
-      // var aIdx = G.GOM.albumIdx,
-      n1 = 0;
+      // var aIdx = G.GOM.albumIdx;
+      var n1 = 0;
 
       ThumbnailHoverOutAll();
       
@@ -3601,7 +3600,7 @@
             var firstTn = -1;
             G.GOM.displayInterval.len = 0;
             for( var i = 0; i < nbTn ; i++ ) {
-              var curTn = G.GOM.items[i];
+              let curTn = G.GOM.items[i];
               if( curTn.row >= firstRow && curTn.row < lastRow ) {
                 if( firstTn == -1 ) {
                   G.GOM.displayInterval.from = i;
@@ -3615,10 +3614,10 @@
         case 'MOREBUTTON':
           if( G.layout.support.rows ) {
             let nbTn = G.GOM.items.length;
-            var lastRow = G.O.galleryDisplayMoreStep * (G.GOM.displayedMoreSteps+1);
+            let lastRow = G.O.galleryDisplayMoreStep * (G.GOM.displayedMoreSteps+1);
             G.GOM.displayInterval.len = 0;
             for( var i = 0; i < nbTn ; i++ ) {
-              var curTn = G.GOM.items[i];
+              let curTn = G.GOM.items[i];
               if( curTn.row < lastRow ) {
                 G.GOM.displayInterval.len++;
               }
@@ -3628,7 +3627,7 @@
         case 'ROWS':
           if( G.layout.support.rows ) {
             let nbTn = G.GOM.items.length;
-            var lastRow = G.galleryMaxRows.Get();
+            let lastRow = G.galleryMaxRows.Get();
             if( G.galleryLastRowFull.Get() && G.GOM.lastFullRow != -1 ) {
               if( lastRow > (G.GOM.lastFullRow + 1) ) {
                 lastRow = G.GOM.lastFullRow + 1;
@@ -3636,7 +3635,7 @@
             }
             G.GOM.displayInterval.len = 0;
             for( var i = 0; i < nbTn ; i++ ) {
-              var curTn = G.GOM.items[i];
+              let curTn = G.GOM.items[i];
               if( curTn.row < lastRow ) {
                 G.GOM.displayInterval.len++;
               }
@@ -3647,10 +3646,10 @@
         case 'FULLCONTENT':
         if( G.layout.support.rows && G.galleryLastRowFull.Get() && G.GOM.lastFullRow != -1 ) {
             let nbTn = G.GOM.items.length;
-            var lastRow = G.GOM.lastFullRow + 1;
+            let lastRow = G.GOM.lastFullRow + 1;
             G.GOM.displayInterval.len = 0;
             for( var i = 0; i < nbTn ; i++ ) {
-              var curTn = G.GOM.items[i];
+              let curTn = G.GOM.items[i];
               if( curTn.row < lastRow ) {
                 G.GOM.displayInterval.len++;
               }
@@ -4147,7 +4146,7 @@
 
       // first loop --> retrieve each row image height
       for( var i = 0; i < nbTn ; i++ ) {
-        var curTn = G.GOM.items[i];
+        let curTn = G.GOM.items[i];
         if( curTn.deleted == true ) { break; }    // item is logically deleted
         if( curTn.imageWidth > 0 ) {
           var imageRatio = curTn.imageWidth / curTn.imageHeight;
@@ -4216,7 +4215,7 @@
       
       // second loop --> calculate each thumbnail size
       for( var i = 0; i < nbTn ; i++ ) {
-        var curTn = G.GOM.items[i];
+        let curTn = G.GOM.items[i];
         if( curTn.imageWidth > 0 ) {
           var imageRatio = curTn.imageWidth / curTn.imageHeight;
           var imageWidth = Math.floor( imageRatio * rowHeight[rowNum] ); // border is already NOT included
@@ -5530,93 +5529,102 @@
       var oTo = {};
     
       switch (G.tn.opt.Get('displayTransition')) {
-        case 'RANDOMSCALE':
-          var scales = [0.95, 1, 1.05, 1.1];
-          var zi = [1, 2, 3, 4];
-          
-          var r = randomIntFromInterval(0,3);
-          while( r == G.GOM.lastRandomValue ) {
-            r = randomIntFromInterval(0,3);
+        case 'RANDOMSCALE': {
+            var scales = [0.95, 1, 1.05, 1.1];
+            var zi = [1, 2, 3, 4];
+            
+            var r = randomIntFromInterval(0,3);
+            while( r == G.GOM.lastRandomValue ) {
+              r = randomIntFromInterval(0,3);
+            }
+            G.GOM.lastRandomValue = r;
+            let f = scales[r];
+            // item.$elt.css({ 'z-index': G.GOM.lastZIndex+zi[r], 'box-shadow': '-1px 2px 5px 1px rgba(0, 0, 0, 0.7)' });
+            item.$elt.css({ 'z-index': G.GOM.lastZIndex+zi[r], 'box-shadow': '0px 0px 5px 3px rgba(0,0,0,0.74)' });
+            
+            oFrom = { scale: 0.5, opacity:0 };
+            oTo =   { scale: f,   opacity:1 };
+            break;
           }
-          G.GOM.lastRandomValue = r;
-          var f = scales[r];
-          // item.$elt.css({ 'z-index': G.GOM.lastZIndex+zi[r], 'box-shadow': '-1px 2px 5px 1px rgba(0, 0, 0, 0.7)' });
-          item.$elt.css({ 'z-index': G.GOM.lastZIndex+zi[r], 'box-shadow': '0px 0px 5px 3px rgba(0,0,0,0.74)' });
-          
-          oFrom = { scale: 0.5, opacity:0 };
-          oTo =   { scale: f,   opacity:1 };
-          break;
 
-        case 'SCALEUP':
-          var f = G.tn.opt.Get('displayTransitionStartVal');
-          if( f == 0 ) { f = 0.6; }   // default value
-          oFrom = { scale: f, opacity: 0 };
-          oTo =   { scale: 1, opacity: 1 };
-          break;
+        case 'SCALEUP': {
+            let f = G.tn.opt.Get('displayTransitionStartVal');
+            if( f == 0 ) { f = 0.6; }   // default value
+            oFrom = { scale: f, opacity: 0 };
+            oTo =   { scale: 1, opacity: 1 };
+            break;
+          }
 
-        case 'SCALEDOWN':
-          var f = G.tn.opt.Get('displayTransitionStartVal');
-          if( f == 0 ) { f=1.3; }   // default value
-          oFrom = { scale: f, opacity: 0 };
-          oTo =   { scale: 1, opacity: 1 };
-          break;
-        case 'SLIDEUP':
-          var f = G.tn.opt.Get('displayTransitionStartVal');
-          if( f == 0 ) { f=50; }   // default value
-          oFrom = { opacity: 0, translateY: f };
-          oTo =   { opacity: 1, translateY: 0 };
-          break;
-        case 'SLIDEDOWN':
-          var f=G.tn.opt.Get('displayTransitionStartVal');
-          if( f == 0 ) { f=-50; }   // default value
-          oFrom = { opacity: 0, translateY: f };
-          oTo =   { opacity: 1, translateY: 0 };
-          break;
-        case 'FLIPUP':
-          var f=G.tn.opt.Get('displayTransitionStartVal');
-          if( f == 0 ) { f=100; }   // default value
-          oFrom = { opacity: 0, translateY: f, rotateX: 45 };
-          oTo =   { opacity: 1, translateY: 0, rotateX: 0  };
-          break;
-          
-        case 'FLIPDOWN':
-          var f=G.tn.opt.Get('displayTransitionStartVal');
-          if( f == 0 ) { f=-100; }   // default value
-          oFrom = { opacity: 0, translateY: f, rotateX: -45 };
-          oTo =   { opacity: 1, translateY: 0, rotateX: 0 };
-          break;
-        case 'SLIDEUP2':
-          var f = G.tn.opt.Get('displayTransitionStartVal');
-          if( f == 0 ) { f=100; }   // default value
-          oFrom = { opacity: 0, translateY: f, rotateY: 40 };
-          oTo =   { opacity: 1, translateY: 0, rotateY: 0  };
-          break;
-        case 'IMAGESLIDEUP':
-          var f = G.tn.opt.Get('displayTransitionStartVal');
-          if( f == 0 ) { f=100; }   // default value
-          oFrom = { opacity: 0, top: '100%' };
-          oTo =   { opacity: 1, top: '0%'  };
-          break;
-        case 'SLIDEDOWN2':
-          var f=G.tn.opt.Get('displayTransitionStartVal');
-          if( f == 0 ) { f=-100; }   // default value
-          oFrom = { opacity: 0, translateY: f, rotateY: 40 };
-          oTo =   { opacity: 1, translateY: 0, rotateY: 0  };
-          break;
-        case 'SLIDERIGHT':
-          var f=G.tn.opt.Get('displayTransitionStartVal');
-          if( f == 0 ) { f=-150; }   // default value
-          oFrom = { opacity: 0, translateX: f };
-          oTo =   { opacity: 1, translateX: 0 };
-          break;
-
-        case 'SLIDELEFT':
-          var f=G.tn.opt.Get('displayTransitionStartVal');
-          if( f == 0 ) { f=150; }   // default value
-          oFrom = { opacity: 0, translateX: f };
-          oTo =   { opacity: 1, translateX: 0 };
-          break;
-          
+        case 'SCALEDOWN': {
+            let f = G.tn.opt.Get('displayTransitionStartVal');
+            if( f == 0 ) { f=1.3; }   // default value
+            oFrom = { scale: f, opacity: 0 };
+            oTo =   { scale: 1, opacity: 1 };
+            break;
+          }
+        case 'SLIDEUP': {
+            let f = G.tn.opt.Get('displayTransitionStartVal');
+            if( f == 0 ) { f=50; }   // default value
+            oFrom = { opacity: 0, translateY: f };
+            oTo =   { opacity: 1, translateY: 0 };
+            break;
+          }
+        case 'SLIDEDOWN': {
+            let f=G.tn.opt.Get('displayTransitionStartVal');
+            if( f == 0 ) { f=-50; }   // default value
+            oFrom = { opacity: 0, translateY: f };
+            oTo =   { opacity: 1, translateY: 0 };
+            break;
+          }
+        case 'FLIPUP': {
+            let f=G.tn.opt.Get('displayTransitionStartVal');
+            if( f == 0 ) { f=100; }   // default value
+            oFrom = { opacity: 0, translateY: f, rotateX: 45 };
+            oTo =   { opacity: 1, translateY: 0, rotateX: 0  };
+            break;
+          }
+        case 'FLIPDOWN': {
+            let f=G.tn.opt.Get('displayTransitionStartVal');
+            if( f == 0 ) { f=-100; }   // default value
+            oFrom = { opacity: 0, translateY: f, rotateX: -45 };
+            oTo =   { opacity: 1, translateY: 0, rotateX: 0 };
+            break;
+          }
+        case 'SLIDEUP2': {
+            let f = G.tn.opt.Get('displayTransitionStartVal');
+            if( f == 0 ) { f=100; }   // default value
+            oFrom = { opacity: 0, translateY: f, rotateY: 40 };
+            oTo =   { opacity: 1, translateY: 0, rotateY: 0  };
+            break;
+          }
+        case 'IMAGESLIDEUP': {
+            let f = G.tn.opt.Get('displayTransitionStartVal');
+            if( f == 0 ) { f=100; }   // default value
+            oFrom = { opacity: 0, top: '100%' };
+            oTo =   { opacity: 1, top: '0%'  };
+            break;
+          }
+        case 'SLIDEDOWN2': {
+            let f=G.tn.opt.Get('displayTransitionStartVal');
+            if( f == 0 ) { f=-100; }   // default value
+            oFrom = { opacity: 0, translateY: f, rotateY: 40 };
+            oTo =   { opacity: 1, translateY: 0, rotateY: 0  };
+            break;
+          }
+        case 'SLIDERIGHT': {
+            let f=G.tn.opt.Get('displayTransitionStartVal');
+            if( f == 0 ) { f=-150; }   // default value
+            oFrom = { opacity: 0, translateX: f };
+            oTo =   { opacity: 1, translateX: 0 };
+            break;
+          }
+        case 'SLIDELEFT': {
+            let f=G.tn.opt.Get('displayTransitionStartVal');
+            if( f == 0 ) { f=150; }   // default value
+            oFrom = { opacity: 0, translateX: f };
+            oTo =   { opacity: 1, translateX: 0 };
+            break;
+          }
         case 'FADEIN':
           oFrom = { opacity: 0 };
           oTo =   { opacity: 1 };
