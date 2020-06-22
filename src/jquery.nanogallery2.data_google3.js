@@ -274,14 +274,14 @@
         // media
 				if( kind == 'image' ) {
           if( G.tn.settings.width[level][sizes[i]] == 'auto' ) {
-						var ratio1 = width / height;
+						let ratio1 = width / height;
 						tn.height[level][sizes[i]] = G.tn.settings.getH(level, sizes[i]);
 						tn.width[level][sizes[i]] = G.tn.settings.getH(level, sizes[i]) * ratio1;
 						tn.url[level][sizes[i]] = data.baseUrl + '=h' + G.tn.settings.getH(level, sizes[i]);
 						continue;
 					}
           if( G.tn.settings.height[level][sizes[i]] == 'auto' ) {
-						var ratio1 = height / width;
+						let ratio1 = height / width;
 						tn.width[level][sizes[i]] = G.tn.settings.getW(level, sizes[i]);
 						tn.height[level][sizes[i]] = G.tn.settings.getW(level, sizes[i]) * ratio1;
 						tn.url[level][sizes[i]] = data.baseUrl + '=w' + G.tn.settings.getW(level, sizes[i]);

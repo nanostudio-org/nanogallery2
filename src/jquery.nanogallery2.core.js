@@ -175,10 +175,7 @@
   // Check if top of the element is in ViewPort
   function topInViewportVert( $elt, threshold ) {
     var wp = getViewport(),
-    eltOS = $elt.offset(),
-    // th = $elt.outerHeight(true);
-
-    // if( wp.t == 0 && (eltOS.top) <= (wp.t + wp.h ) ) { return true; }
+    eltOS = $elt.offset();
 
     if( eltOS.top >= wp.t && eltOS.top <= (wp.t + wp.h - threshold) ) {
         return true;
@@ -4363,7 +4360,7 @@
       // second loop: position all the thumbnails based on the layout pattern
       row = 0;
       n = 0;
-      let mosaicPattern = G.tn.settings.getMosaic();
+      // let mosaicPattern = G.tn.settings.getMosaic();
       for( var i = 0; i < nbTn ; i++ ) {
         var curTn = G.GOM.items[i];
         var curPatternElt = mosaicPattern[n];

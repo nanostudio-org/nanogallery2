@@ -244,7 +244,7 @@
     var PreloaderDisplay = NGY2Tools.PreloaderDisplay.bind(G);
     // var NanoAlert = NGY2Tools.NanoAlert.bind(G);
     var NanoAlert = NGY2Tools.NanoAlert;
-    var GetImageTitleFromURL = NGY2Tools.GetImageTitleFromURL.bind(G);
+    // var GetImageTitleFromURL = NGY2Tools.GetImageTitleFromURL.bind(G);
     var FilterAlbumName = NGY2Tools.FilterAlbumName.bind(G);
     var AlbumPostProcess = NGY2Tools.AlbumPostProcess.bind(G);
  
