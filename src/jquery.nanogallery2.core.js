@@ -518,7 +518,7 @@
             if( albumID != -1 && albumID != 0 && title !='image gallery by nanogallery2 [build]'  ) {
               if( instance.O.thumbnailLevelUp && album.getContentLength(false) == 0 && instance.O.album == '' ) {
                 // add navigation thumbnail (album up)
-                var item = new NGY2Item('0');
+                let item = new NGY2Item('0');
                 instance.I.push( item );
                 album.contentLength += 1;
                 item.title = 'UP';
@@ -1961,7 +1961,7 @@
      * Search2 in title and tags - set search values
      */
     this.Search2 = function( searchTitle, searchTags ) {
-      if( searchTitle != null && searchTitle != undefined ) {
+      if( searchTitle != undefined && searchTitle != null  ) {
         G.GOM.albumSearch = searchTitle.toUpperCase().trim();
       }
       else {
@@ -4637,7 +4637,7 @@
           }
           // remove last displayed counter
           if( G.GOM.lastDisplayedIdx != -1 ) {
-            var item = G.I[G.GOM.items[G.GOM.lastDisplayedIdx].thumbnailIdx];
+            let item = G.I[G.GOM.items[G.GOM.lastDisplayedIdx].thumbnailIdx];
             item.$getElt('.nGY2GThumbnailIconsFullThumbnail').html('');
           }
         }
@@ -4897,10 +4897,10 @@
       
       // new image
       var newItem = G.GOM.NGY2Item(G.GOM.slider.nextIdx);
-      var imgBlurred = G.emptyGif;
+      // var imgBlurred = G.emptyGif;
       var bgImg = "url('" + G.emptyGif + "')";
       if( newItem.imageDominantColors != null ) {
-        imgBlurred = newItem.imageDominantColors;
+        // imgBlurred = newItem.imageDominantColors;
         bgImg = "url('" + newItem.imageDominantColors + "')";
       }
       G.GOM.slider.hostItem.$getElt('.nGY2TnImgBackNext', true).css({'background-image': bgImg, opacity: 1 });
@@ -5602,8 +5602,8 @@
             break;
           }
         case 'IMAGESLIDEUP': {
-            let f = G.tn.opt.Get('displayTransitionStartVal');
-            if( f == 0 ) { f=100; }   // default value
+            // let f = G.tn.opt.Get('displayTransitionStartVal');
+            // if( f == 0 ) { f=100; }   // default value
             oFrom = { opacity: 0, top: '100%' };
             oTo =   { opacity: 1, top: '0%'  };
             break;
@@ -8501,10 +8501,10 @@
         posX = -(imageCurrentWidth - G.VOM.window.lastWidth)/2;
       }
       var posY = 0;
-      if( imageCurrentHeight > G.VOM.window.lastHeight ) {
-        posY = ( imageCurrentHeight - G.VOM.window.lastHeight ) / 2;
-      }
-      posY = 0;   // actually, it seems that the image is always centered vertically -> so no need to to anything
+      // if( imageCurrentHeight > G.VOM.window.lastHeight ) {
+      //   posY = ( imageCurrentHeight - G.VOM.window.lastHeight ) / 2;
+      // }
+      // posY = 0;   // actually, it seems that the image is always centered vertically -> so no need to to anything
       
       // Part 2: set the X/Y position (for zoom/pan)
       if( isCurrent ) {
@@ -8675,8 +8675,7 @@
       G.VOM.$buttonRight[0].style[G.CSStransformName] = 'translateX(40px) ';
 
       // STEP 1: display main container, including media
-      var tweenable = new NGTweenable();
-      tweenable.tween({
+      new NGTweenable().tween({
         from:         { opacity: 0, posY: G.VOM.window.lastHeight*.5 },
         to:           { opacity: 1, posY: 0 },
         delay:        10,
@@ -8694,8 +8693,7 @@
       
       
       // STEP 2: display tools, left/right navigation buttons, gallery
-      var tweenable = new NGTweenable();
-      tweenable.tween({
+      new NGTweenable().tween({
         from:         { posY: -40, opacity: 0, scale: 3 },
         to:           { posY: 0, opacity: 1, scale: 1 },
         delay:        300,
@@ -9507,7 +9505,7 @@
           if( G.O.imageTransition == 'SWIPE' ) { sc = 1; }
 
           if( posX > 0 ) {
-            var dir = G.VOM.window.lastWidth;
+            let dir = G.VOM.window.lastWidth;
             if( itemPrevious.mediaTransition() ) {
               // window.ng_draf( function() {
                 G.VOM.content.previous.$media[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px) scale(' + sc + ')';
@@ -9520,7 +9518,7 @@
             }
           }
           else {
-            var dir = -G.VOM.window.lastWidth;
+            let dir = -G.VOM.window.lastWidth;
             if( itemNext.mediaTransition() ) {
               // window.ng_draf( function() {
                 G.VOM.content.next.$media[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px) scale(' + sc + ')';
@@ -9539,7 +9537,7 @@
           G.VOM.content.previous.$media[0].style[G.CSStransformName] = '';
           G.VOM.content.next.$media[0].style[G.CSStransformName] = '';
           if( posX < 0 ) {
-            var o = (-posX) / G.VOM.window.lastWidth;
+            let o = (-posX) / G.VOM.window.lastWidth;
             if( itemNext.mediaTransition() ) {
               ViewerSetMediaVisibility(G.VOM.content.next, o);
             }
@@ -9548,7 +9546,7 @@
             }
           }
           else {
-            var o = posX / G.VOM.window.lastWidth;
+            let o = posX / G.VOM.window.lastWidth;
             if( itemPrevious.mediaTransition() ) {
               ViewerSetMediaVisibility(G.VOM.content.previous, o);
             }
