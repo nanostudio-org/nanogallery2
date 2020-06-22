@@ -176,10 +176,7 @@
   // Check if top of the element is in ViewPort
   function topInViewportVert( $elt, threshold ) {
     var wp = getViewport(),
-    eltOS = $elt.offset(),
-    // th = $elt.outerHeight(true);
-
-    // if( wp.t == 0 && (eltOS.top) <= (wp.t + wp.h ) ) { return true; }
+    eltOS = $elt.offset();
 
     if( eltOS.top >= wp.t && eltOS.top <= (wp.t + wp.h - threshold) ) {
         return true;
@@ -4364,7 +4361,7 @@
       // second loop: position all the thumbnails based on the layout pattern
       row = 0;
       n = 0;
-      let mosaicPattern = G.tn.settings.getMosaic();
+      // let mosaicPattern = G.tn.settings.getMosaic();
       for( var i = 0; i < nbTn ; i++ ) {
         var curTn = G.GOM.items[i];
         var curPatternElt = mosaicPattern[n];
@@ -16151,7 +16148,7 @@ if (typeof define === 'function' && define.amdDISABLED) {
     var PreloaderDisplay = NGY2Tools.PreloaderDisplay.bind(G);
     // var NanoAlert = NGY2Tools.NanoAlert.bind(G);
     var NanoAlert = NGY2Tools.NanoAlert;
-    var GetImageTitleFromURL = NGY2Tools.GetImageTitleFromURL.bind(G);
+    // var GetImageTitleFromURL = NGY2Tools.GetImageTitleFromURL.bind(G);
     var FilterAlbumName = NGY2Tools.FilterAlbumName.bind(G);
     var AlbumPostProcess = NGY2Tools.AlbumPostProcess.bind(G);
  
@@ -16457,14 +16454,14 @@ if (typeof define === 'function' && define.amdDISABLED) {
         // media
 				if( kind == 'image' ) {
           if( G.tn.settings.width[level][sizes[i]] == 'auto' ) {
-						var ratio1 = width / height;
+						let ratio1 = width / height;
 						tn.height[level][sizes[i]] = G.tn.settings.getH(level, sizes[i]);
 						tn.width[level][sizes[i]] = G.tn.settings.getH(level, sizes[i]) * ratio1;
 						tn.url[level][sizes[i]] = data.baseUrl + '=h' + G.tn.settings.getH(level, sizes[i]);
 						continue;
 					}
           if( G.tn.settings.height[level][sizes[i]] == 'auto' ) {
-						var ratio1 = height / width;
+						let ratio1 = height / width;
 						tn.width[level][sizes[i]] = G.tn.settings.getW(level, sizes[i]);
 						tn.height[level][sizes[i]] = G.tn.settings.getW(level, sizes[i]) * ratio1;
 						tn.url[level][sizes[i]] = data.baseUrl + '=w' + G.tn.settings.getW(level, sizes[i]);
@@ -16846,8 +16843,8 @@ if (typeof define === 'function' && define.amdDISABLED) {
       for( var i=0; i<sizes.length; i++ ) {
         if( G.tn.settings.width[level][sizes[i]] == 'auto' || G.tn.settings.width[level][sizes[i]] == '' ) {
           let sdir='height_';
-          var tsize=Math.ceil( G.tn.settings.height[level][sizes[i]] * G.tn.scale * sf * G.tn.settings.mosaic[level+'Factor']['h'][sizes[i]] );
-          var one=FlickrRetrieveOneImage(sdir, tsize, item );
+          let tsize=Math.ceil( G.tn.settings.height[level][sizes[i]] * G.tn.scale * sf * G.tn.settings.mosaic[level+'Factor']['h'][sizes[i]] );
+          let one=FlickrRetrieveOneImage(sdir, tsize, item );
           tn.url[level][sizes[i]]=one.url;
           tn.width[level][sizes[i]]=one.width;
           tn.height[level][sizes[i]]=one.height;
@@ -16855,20 +16852,20 @@ if (typeof define === 'function' && define.amdDISABLED) {
         else 
           if( G.tn.settings.height[level][sizes[i]] == 'auto' || G.tn.settings.height[level][sizes[i]] == '' ) {
             let sdir='width_';
-            var tsize=Math.ceil( G.tn.settings.width[level][sizes[i]] * G.tn.scale * sf * G.tn.settings.mosaic[level+'Factor']['w'][sizes[i]] );
-            var one=FlickrRetrieveOneImage(sdir, tsize, item );
+            let tsize=Math.ceil( G.tn.settings.width[level][sizes[i]] * G.tn.scale * sf * G.tn.settings.mosaic[level+'Factor']['w'][sizes[i]] );
+            let one=FlickrRetrieveOneImage(sdir, tsize, item );
             tn.url[level][sizes[i]]=one.url;
             tn.width[level][sizes[i]]=one.width;
             tn.height[level][sizes[i]]=one.height;
           }
           else {
             let sdir='height_';
-            var tsize=Math.ceil( G.tn.settings.height[level][sizes[i]] * G.tn.scale * sf * G.tn.settings.mosaic[level+'Factor']['h'][sizes[i]] );
+            let tsize=Math.ceil( G.tn.settings.height[level][sizes[i]] * G.tn.scale * sf * G.tn.settings.mosaic[level+'Factor']['h'][sizes[i]] );
             if( G.tn.settings.width[level][sizes[i]] > G.tn.settings.height[level][sizes[i]] ) {
               sdir='width_';
               tsize=Math.ceil( G.tn.settings.width[level][sizes[i]] * G.tn.scale * sf * G.tn.settings.mosaic[level+'Factor']['w'][sizes[i]] );
             }
-            var one=FlickrRetrieveOneImage(sdir, tsize, item );
+            let one=FlickrRetrieveOneImage(sdir, tsize, item );
             tn.url[level][sizes[i]]=one.url;
             tn.width[level][sizes[i]]=one.width;
             tn.height[level][sizes[i]]=one.height;
@@ -16900,10 +16897,9 @@ if (typeof define === 'function' && define.amdDISABLED) {
       if( tagBlockList!= '' && data != undefined) {
         data = data.filter(function (item) {
           var regex = new RegExp( tagBlockList, "i");
+          var tagsToTest = [item.tags];
           if ( Array.isArray(item.tags) ) {
-            var tagsToTest = item.tags;
-          } else {
-            var tagsToTest = [item.tags];
+            tagsToTest = item.tags;
           }
           return ! tagsToTest.some( function (x) { return regex.test(x); } );
         });
