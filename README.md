@@ -144,5 +144,5 @@ Dual licensed:
   
 &nbsp;  
 &nbsp;  
-**Many thanks to [BrowserStack](https://www.browserstack.com/) for their testing services!**   
+**Many thanks to [BrowserStack](https://www.browserstack.com/) for their great testing services!**   
 <img src="http://nanogallery.brisbois.fr/img/browserstack2.png" width="230px"/>
