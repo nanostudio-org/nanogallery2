@@ -177,7 +177,7 @@
   function topInViewportVert( $elt, threshold ) {
     var wp = getViewport(),
     eltOS = $elt.offset(),
-    th = $elt.outerHeight(true);
+    // th = $elt.outerHeight(true);
 
     // if( wp.t == 0 && (eltOS.top) <= (wp.t + wp.h ) ) { return true; }
 
@@ -2072,7 +2072,7 @@
      * PaginationGotoPage - gallery paginate to specific page
      */
     this.PaginationGotoPage = function( page ) {
-      var aIdx = G.$E.conPagin.data('galleryIdx');
+      // var aIdx = G.$E.conPagin.data('galleryIdx');
       if( page > 1 ) { page--; }
       G.GOM.pagination.currentPage = page;
 
@@ -3598,7 +3598,7 @@
       switch( G.galleryDisplayMode.Get() ) {
         case 'PAGINATION':
           if( G.layout.support.rows ) {
-            var nbTn = G.GOM.items.length;
+            let nbTn = G.GOM.items.length;
             var firstRow = G.GOM.pagination.currentPage * G.galleryMaxRows.Get();
             var lastRow = firstRow + G.galleryMaxRows.Get();
             var firstTn = -1;
@@ -3617,7 +3617,7 @@
           break;
         case 'MOREBUTTON':
           if( G.layout.support.rows ) {
-            var nbTn = G.GOM.items.length;
+            let nbTn = G.GOM.items.length;
             var lastRow = G.O.galleryDisplayMoreStep * (G.GOM.displayedMoreSteps+1);
             G.GOM.displayInterval.len = 0;
             for( var i = 0; i < nbTn ; i++ ) {
@@ -3630,7 +3630,7 @@
           break;
         case 'ROWS':
           if( G.layout.support.rows ) {
-            var nbTn = G.GOM.items.length;
+            let nbTn = G.GOM.items.length;
             var lastRow = G.galleryMaxRows.Get();
             if( G.galleryLastRowFull.Get() && G.GOM.lastFullRow != -1 ) {
               if( lastRow > (G.GOM.lastFullRow + 1) ) {
@@ -3649,7 +3649,7 @@
         default:
         case 'FULLCONTENT':
         if( G.layout.support.rows && G.galleryLastRowFull.Get() && G.GOM.lastFullRow != -1 ) {
-            var nbTn = G.GOM.items.length;
+            let nbTn = G.GOM.items.length;
             var lastRow = G.GOM.lastFullRow + 1;
             G.GOM.displayInterval.len = 0;
             for( var i = 0; i < nbTn ; i++ ) {
@@ -4341,7 +4341,7 @@
       // first loop: evaluate the gallery width based on the first row
       var nbCols = 0;
       var maxW = 0;
-      var mosaicPattern = G.tn.settings.getMosaic();
+      let mosaicPattern = G.tn.settings.getMosaic();
       for( var i = 0; i < nbTn ; i++ ) {
         var curPatternElt = mosaicPattern[n];
 
@@ -4364,7 +4364,7 @@
       // second loop: position all the thumbnails based on the layout pattern
       row = 0;
       n = 0;
-      var mosaicPattern = G.tn.settings.getMosaic();
+      let mosaicPattern = G.tn.settings.getMosaic();
       for( var i = 0; i < nbTn ; i++ ) {
         var curTn = G.GOM.items[i];
         var curPatternElt = mosaicPattern[n];
