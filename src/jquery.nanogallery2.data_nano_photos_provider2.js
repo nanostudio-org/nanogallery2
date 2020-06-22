@@ -121,15 +121,15 @@
 
       // Pb %C3%A9 --> %E9
       // in UTF-8: \u00e9=\xe9 (e9 = hex value)
-      switch( G.O.dataCharset.toUpperCase() ) {
-        case 'UTF-8':     // Apache Windows
-          return decodeURI(str);      // do not use decodeURIComponent (would convert slash also)
-          break;
-        case 'Latin':     // Apache Linux
-        default :
-          return escape(str);
-          break;
-      }
+      // switch( G.O.dataCharset.toUpperCase() ) {
+        // case 'UTF-8':     // Apache Windows
+          // return decodeURI(str);      // do not use decodeURIComponent (would convert slash also)
+          // break;
+        // case 'Latin':     // Apache Linux
+        // default :
+          // return escape(str);
+          // break;
+      // }
     }
 
     function JsonParseData(albumIdx, data) {

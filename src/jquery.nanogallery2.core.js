@@ -1722,7 +1722,7 @@
               // updates counter
               nG2.shoppingCart[i].qty = new_qty;
               
-              var item = nG2.I[nG2.shoppingCart[i].idx];
+              let item = nG2.I[nG2.shoppingCart[i].idx];
 
               // updates thumbnail
               nG2.ThumbnailToolbarOneCartUpdate( item );
@@ -3160,7 +3160,7 @@
       switch( G.galleryDisplayMode.Get() ) {
         case 'PAGINATION':
           if( G.layout.support.rows && G.galleryMaxRows.Get() > 0 ) {
-            ManagePagination( G.GOM.albumIdx );
+            ManagePagination();
           }
           break;
         case 'MOREBUTTON':
@@ -3345,12 +3345,12 @@
       if( G.galleryDisplayMode.Get() == "PAGINATION" && G.O.galleryPaginationTopButtons ) {
           if( G.layout.support.rows && G.galleryMaxRows.Get() > 0 ) {
             // ManagePagination( G.GOM.albumIdx );
-            var $newTag = jQuery('<div class="nGY2NavigationbarItem nGY2NavPagination">'+G.O.icons.navigationPaginationPrevious+'</div>').appendTo(G.GOM.navigationBar.$newContent);
-            $newTag.click(function() {
+            var $newTagPrev = jQuery('<div class="nGY2NavigationbarItem nGY2NavPagination">'+G.O.icons.navigationPaginationPrevious+'</div>').appendTo(G.GOM.navigationBar.$newContent);
+            $newTagPrev.click(function() {
               paginationPreviousPage();
             });
-            var $newTag = jQuery('<div class="nGY2NavigationbarItem nGY2NavPagination">'+G.O.icons.navigationPaginationNext+'</div>').appendTo(G.GOM.navigationBar.$newContent);
-            $newTag.click(function() {
+            var $newTagNext = jQuery('<div class="nGY2NavigationbarItem nGY2NavPagination">'+G.O.icons.navigationPaginationNext+'</div>').appendTo(G.GOM.navigationBar.$newContent);
+            $newTagNext.click(function() {
               paginationNextPage();
             });
           }
@@ -3398,7 +3398,7 @@
     
 
     // Display gallery pagination
-    function ManagePagination( albumIdx ) {
+    function ManagePagination() {
 
       G.$E.conTnBottom.css('opacity', 0);
       G.$E.conTnBottom.children().remove();
@@ -3406,7 +3406,7 @@
       if( G.GOM.items.length == 0 ) { return; }   // no thumbnail to display
 
       // calculate the number of pages
-      var nbPages=Math.ceil((G.GOM.items[G.GOM.items.length - 1].row + 1)/G.galleryMaxRows.Get());
+      var nbPages = Math.ceil((G.GOM.items[G.GOM.items.length - 1].row + 1)/G.galleryMaxRows.Get());
 
       // only one page -> do not display pagination
       if( nbPages == 1 ) { return; }
@@ -3527,7 +3527,7 @@
     
     // pagination - next page
     function paginationNextPage() {
-      var aIdx = G.GOM.albumIdx,
+      // var aIdx = G.GOM.albumIdx,
       n1 = 0;
       ThumbnailHoverOutAll();
       
@@ -3558,7 +3558,7 @@
     // pagination - previous page
     function paginationPreviousPage() {
       // var aIdx=G.$E.conTnBottom.data('galleryIdx'),
-      var aIdx = G.GOM.albumIdx,
+      // var aIdx = G.GOM.albumIdx,
       n1 = 0;
 
       ThumbnailHoverOutAll();
@@ -6208,7 +6208,7 @@
     
     function StartsWithProtocol ( path ) {
       if( path == undefined ) { return false; }
-      if( path == null ) { return false; }
+      // if( path == null ) { return false; }
       
       var pattern = /^((http|https|ftp|ftps|file):\/\/)/;
       if( !pattern.test(path) ) {
@@ -10030,7 +10030,7 @@
       G.VOM.window.lastWidth = windowsW;
       G.VOM.window.lastHeight = windowsH;
 
-      var $tb = G.VOM.$toolbar.find('.toolbar');
+      // var $tb = G.VOM.$toolbar.find('.toolbar');
       // var tb_OHt = $tb.outerHeight(true);
 
 

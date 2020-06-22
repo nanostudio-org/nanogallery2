@@ -304,7 +304,7 @@
 						tn.url[level][sizes[i]]= data.coverPhotoBaseUrl + '=w' + G.tn.settings.getW(level, sizes[i]);
 						continue;
 					}
-					var w=G.tn.settings.mosaic[level + 'Factor']['w'][sizes[i]];
+					// var w = G.tn.settings.mosaic[level + 'Factor']['w'][sizes[i]];
 					tn.url[level][sizes[i]]= data.coverPhotoBaseUrl + '=h' + G.tn.settings.getH(level, sizes[i]) + '-w' + G.tn.settings.getW(level, sizes[i]);
 
         }
