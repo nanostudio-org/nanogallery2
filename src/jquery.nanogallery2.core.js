@@ -187,17 +187,17 @@
 
 
   // set z-index to display 2 elements on top of all others
-  function set2ElementsOnTop( start, elt1, elt2 ) {
-    var highest_index = 0;
-    if( start=='' ) { start= '*'; }
-    jQuery(start).each(function() {
-      var cur = parseInt(jQuery(this).css('z-index'));
-      highest_index = cur > highest_index ? cur : highest_index;
-    });
-    highest_index++;
-    jQuery(elt2).css('z-index',highest_index+1);
-    jQuery(elt1).css('z-index',highest_index);
-  }
+  // function set2ElementsOnTop( start, elt1, elt2 ) {
+    // var highest_index = 0;
+    // if( start=='' ) { start= '*'; }
+    // jQuery(start).each(function() {
+      // var cur = parseInt(jQuery(this).css('z-index'));
+      // highest_index = cur > highest_index ? cur : highest_index;
+    // });
+    // highest_index++;
+    // jQuery(elt2).css('z-index',highest_index+1);
+    // jQuery(elt1).css('z-index',highest_index);
+  // }
 
   // set z-index to display element on top of all others
   function setElementOnTop( start, elt ) {
@@ -4276,7 +4276,7 @@
           // hover effect on gallery (vs on thumbnail) --> experimental / not used
           if( G.GOM.albumIdx != -1 ) {
             var hoveredTn = G.GOM.items[GOMidx];
-            var item = G.I[hoveredTn.thumbnailIdx];
+            // var item = G.I[hoveredTn.thumbnailIdx];
             
             // hovered thumbnail
             hoveredTn.width += 40;
@@ -5063,7 +5063,8 @@
     }
     
     //----- Build one UP thumbnail (=navigation thumbnail)
-    function ThumbnailBuildAlbumpUp( item, idx, GOMidx ) {
+    function ThumbnailBuildAlbumpUp( item, GOMidx ) {
+    // function ThumbnailBuildAlbumpUp( item, idx, GOMidx ) {
       var newElt = [],
       newEltIdx = 0;
       
@@ -5103,7 +5104,7 @@
       item.$Elts =         [];
 
       if( item.kind == 'albumUp' ) {
-        ThumbnailBuildAlbumpUp( item, idx, GOMidx);
+        ThumbnailBuildAlbumpUp( item, GOMidx);
         return;
       }
 
