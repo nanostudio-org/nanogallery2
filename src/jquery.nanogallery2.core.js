@@ -4150,8 +4150,8 @@
         let curTn = G.GOM.items[i];
         if( curTn.deleted == true ) { break; }    // item is logically deleted
         if( curTn.imageWidth > 0 ) {
-          var imageRatio = curTn.imageWidth / curTn.imageHeight;
-          var imageWidth = Math.floor( tnHeight * imageRatio );
+          let imageRatio = curTn.imageWidth / curTn.imageHeight;
+          let imageWidth = Math.floor( tnHeight * imageRatio );
 
           if( bNewRow ) {
             bNewRow = false;
@@ -4186,8 +4186,8 @@
           else {
             // new row after current item --> we need to adujet the row height to have enough space for the current thumbnail
             curWidth += gutterWidth+imageWidth;
-            var ratio = (areaWidth - nbTnInCurrRow * borderWidth) / curWidth;
-            var rH = Math.floor(tnHeight * ratio);
+            let ratio = (areaWidth - nbTnInCurrRow * borderWidth) / curWidth;
+            let rH = Math.floor(tnHeight * ratio);
             rowHeight[rowNum] = rH;
             
             // save the max row height for each thumb orientation.
@@ -4218,8 +4218,8 @@
       for( var i = 0; i < nbTn ; i++ ) {
         let curTn = G.GOM.items[i];
         if( curTn.imageWidth > 0 ) {
-          var imageRatio = curTn.imageWidth / curTn.imageHeight;
-          var imageWidth = Math.floor( imageRatio * rowHeight[rowNum] ); // border is already NOT included
+          let imageRatio = curTn.imageWidth / curTn.imageHeight;
+          let imageWidth = Math.floor( imageRatio * rowHeight[rowNum] ); // border is already NOT included
 
           if( i == rowLastItem[rowNum] ) {
             // row last item --> adjust image width because of rounding problems
@@ -4236,7 +4236,7 @@
             }
           }
           
-          var rh = parseInt( rowHeight[rowNum] );
+          let rh = parseInt( rowHeight[rowNum] );
           imageWidth = parseInt( imageWidth );
 
           // thumbnail image size
@@ -4248,7 +4248,7 @@
           curTn.row = rowNum;
 
           curTn.top = curPosY;
-          var x = lastPosX;
+          let x = lastPosX;
           if( G.O.RTL) {
             x = areaWidth - lastPosX - curTn.width ;
           }
@@ -4583,7 +4583,8 @@
               // build thumbnail
               var item = G.I[curTn.thumbnailIdx];
               if( item.$elt == null ) {
-                ThumbnailBuild( item, curTn.thumbnailIdx, i, (i+1) == nbTn );
+                // ThumbnailBuild( item, curTn.thumbnailIdx, i, (i+1) == nbTn );
+                ThumbnailBuild( item, curTn.thumbnailIdx, i );
               }
               tnToDisplay.push({idx:i, delay:cnt});
               cnt++;
@@ -5024,10 +5025,10 @@
         return 0;
       }
       
-      var desc='';
-      if( G.O.thumbnailLabel.get('displayDescription') == true ) {
-        desc = 'aAzZjJ';
-      }
+      // var desc='';
+      // if( G.O.thumbnailLabel.get('displayDescription') == true ) {
+        // desc = 'aAzZjJ';
+      // }
 
       // visibility set to hidden
       newElt[newEltIdx++] = '<div class="nGY2GThumbnail ' + G.O.theme + '" style="display:block;visibility:hidden;position:absolute;top:-9999px;left:-9999px;" ><div class="nGY2GThumbnailSub">';
@@ -5094,7 +5095,8 @@
 
     
     //----- Build one thumbnail
-    function ThumbnailBuild( item, idx, GOMidx, lastOne ) {
+    function ThumbnailBuild( item, idx, GOMidx ) {
+    // function ThumbnailBuild( item, idx, GOMidx, lastOne ) {
       item.eltTransform =  [];
       item.eltFilter =     [];
       item.hoverInitDone = false;
@@ -5187,7 +5189,8 @@
       }
 
       // ##### layer for tools
-      newElt[newEltIdx++] = ThumbnailBuildTools(item, lastOne);
+      // newElt[newEltIdx++] = ThumbnailBuildTools(item, lastOne);
+      newElt[newEltIdx++] = ThumbnailBuildTools(item);
       
       // close containers
       newElt[newEltIdx++]='</div></div>';
@@ -5213,7 +5216,7 @@
 
     
     // Thumbnail layer for tools (toolbars and counter)
-    function ThumbnailBuildTools( item, lastThumbnail ) {
+    function ThumbnailBuildTools( item ) {
     
       // toolbars
       var tb = ThumbnailBuildToolbarOne(item, 'topLeft') + ThumbnailBuildToolbarOne(item, 'topRight') + ThumbnailBuildToolbarOne(item, 'bottomLeft') + ThumbnailBuildToolbarOne(item, 'bottomRight');
@@ -6019,7 +6022,7 @@
         if( G.O.kind != '' ) {
           // do not add album if Markup or Javascript data
           NGY2Item.New( G, '', '', albumID, '0', 'album' );    // create empty album
-          albumIdx = G.I.length - 1;
+          // albumIdx = G.I.length - 1;
         }
       }
 
@@ -6035,52 +6038,7 @@
       DisplayPhotoIdx(ngy2ItemIdx);
     
     }
-
-
-    // BETA -> NOT finished and not used at this time
-    // Retrieve the title+description of ONE album
-    function albumGetInfo( albumIdx, fnToCall ) {
-      var url =   '';
-      var kind =  'image';
-      
-      switch( G.O.kind ) {
-        case 'json':
-          // TODO
-        case 'flickr':
-          // TODO
-        case 'picasa':
-        case 'google':
-        case 'google2':
-        default:
-          url = G.Google.url() + 'user/'+G.O.userID+'/albumid/'+G.I[albumIdx].GetID()+'?alt=json&&max-results=1&fields=title';
-          break;
-      }
-
-      jQuery.ajaxSetup({ cache: false });
-      jQuery.support.cors = true;
-      
-      var tId = setTimeout( function() {
-        // workaround to handle JSONP (cross-domain) errors
-        //PreloaderHide();
-        NanoAlert(G, 'Could not retrieve AJAX data...');
-      }, 60000 );
-      jQuery.getJSON(url, function(data, status, xhr) {
-        clearTimeout(tId);
-        //PreloaderHide();
-        
-        fnToCall( G.I[albumIdx].GetID() );
-
-      })
-      .fail( function(jqxhr, textStatus, error) {
-        clearTimeout(tId);
-        //PreloaderHide();
-        var err = textStatus + ', ' + error;
-        NanoAlert('Could not retrieve ajax data: ' + err);
-      });      
-    
-    }
-
-    
+   
     // function AlbumGetContent( albumIdx, fnToCall ) {
     function AlbumGetContent( albumID, fnToCall, fnParam1, fnParam2 ) {
       // var url='';
@@ -7258,7 +7216,7 @@
             }
           }
         }        
-        effect.element=ThumbnailOverEffectsGetCSSElement(sp[0], effect.type);
+        effect.element = ThumbnailOverEffectsGetCSSElement(sp[0], effect.type);
         
       }
       else {
@@ -8203,7 +8161,7 @@
         var r = GalleryEventRetrieveElementl(e, true);
         // if( r.action == 'OPEN' && r.GOMidx != -1 ) {
         if( r.GOMidx != -1 ) {
-          var target = e.target || e.srcElement;
+          // var target = e.target || e.srcElement;
           // if( target.getAttribute('class') != 'nGY2GThumbnail' ) { return; }
           ThumbnailHover(r.GOMidx);
         }
@@ -8214,7 +8172,7 @@
       if( !G.VOM.viewerDisplayed && G.GOM.albumIdx != -1 ) {
         var r = GalleryEventRetrieveElementl(e, true);
         if( r.GOMidx != -1 ) {
-          var target = e.target || e.srcElement;
+          // var target = e.target || e.srcElement;
           // if( target.getAttribute('class') != 'nGY2GThumbnail' ) { return; }
           ThumbnailHoverOut(r.GOMidx);
         }
@@ -8370,7 +8328,7 @@
       items.push(G.I[ngy2ItemIdx]);
       //TODO -> danger? -> pourquoi reconstruire la liste si déjà ouvert (back/forward)     
       var l = G.I.length;
-      for( var idx = ngy2ItemIdx+1; idx < l ; idx++) {
+      for( let idx = ngy2ItemIdx+1; idx < l ; idx++) {
         let item = G.I[idx];
         if( item.kind == 'image' && item.isToDisplay(G.VOM.albumID) && item.destinationURL == '' ) {
           let vimg = new VImg(idx);
@@ -8380,7 +8338,7 @@
       }
       var last = G.VOM.items.length;
       var cnt = 1;
-      for( var idx = 0; idx < ngy2ItemIdx ; idx++) {
+      for( let idx = 0; idx < ngy2ItemIdx ; idx++) {
         let item = G.I[idx];
         if( item.kind == 'image' && item.isToDisplay(G.VOM.albumID) && item.destinationURL == '' ) {
           let vimg = new VImg(idx);
@@ -8390,7 +8348,7 @@
           cnt++;
         }
       }
-      for( var i = 0; i < last; i++ ) {
+      for( let i = 0; i < last; i++ ) {
         G.VOM.items[i].mediaNumber = cnt;
         cnt++;
       }
@@ -9730,7 +9688,7 @@
             
           case 'SLIDEAPPEAR':
           default:
-            var dir=(displayType == 'nextImage' ? - vP.w : vP.w);
+            // var dir=(displayType == 'nextImage' ? - vP.w : vP.w);
             var op = (Math.abs(G.VOM.swipePosX)) / G.VOM.window.lastWidth;
             new_content_item.$media[0].style[G.CSStransformName] = '';
             if( velocity == 0 ) {
@@ -10177,10 +10135,10 @@
         G.$E.base.addClass('ngy2_container');
       
         // RTL or LTR
-        var sRTL='';
-        if( G.O.RTL ) {
-          sRTL = 'style="text-align:right;direction:rtl;"';
-        }
+        // var sRTL='';
+        // if( G.O.RTL ) {
+          // sRTL = 'style="text-align:right;direction:rtl;"';
+        // }
       
         // theme
         G.$E.base.addClass(G.O.theme)
