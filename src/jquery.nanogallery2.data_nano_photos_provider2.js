@@ -121,15 +121,15 @@
 
       // Pb %C3%A9 --> %E9
       // in UTF-8: \u00e9=\xe9 (e9 = hex value)
-      switch( G.O.dataCharset.toUpperCase() ) {
-        case 'UTF-8':     // Apache Windows
-          return decodeURI(str);      // do not use decodeURIComponent (would convert slash also)
-          break;
-        case 'Latin':     // Apache Linux
-        default :
-          return escape(str);
-          break;
-      }
+      // switch( G.O.dataCharset.toUpperCase() ) {
+        // case 'UTF-8':     // Apache Windows
+          // return decodeURI(str);      // do not use decodeURIComponent (would convert slash also)
+          // break;
+        // case 'Latin':     // Apache Linux
+        // default :
+          // return escape(str);
+          // break;
+      // }
     }
 
     function JsonParseData(albumIdx, data) {
@@ -244,7 +244,7 @@
     var PreloaderDisplay = NGY2Tools.PreloaderDisplay.bind(G);
     // var NanoAlert = NGY2Tools.NanoAlert.bind(G);
     var NanoAlert = NGY2Tools.NanoAlert;
-    var GetImageTitleFromURL = NGY2Tools.GetImageTitleFromURL.bind(G);
+    // var GetImageTitleFromURL = NGY2Tools.GetImageTitleFromURL.bind(G);
     var FilterAlbumName = NGY2Tools.FilterAlbumName.bind(G);
     var AlbumPostProcess = NGY2Tools.AlbumPostProcess.bind(G);
  

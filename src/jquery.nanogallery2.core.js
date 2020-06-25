@@ -1,5 +1,5 @@
 /*!
- * @preserve nanogallery2 v3.0.0 - javascript photo / video gallery and lightbox
+ * @preserve nanogallery2 v3.0.1 - javascript photo / video gallery and lightbox
  * Homepage: http://nanogallery2.nanostudio.org
  * Sources:  https://github.com/nanostudio-org/nanogallery2
  *
@@ -19,56 +19,15 @@
  */
 
  
-// nanogallery v3.0.0beta
+// nanogallery v3.0.1
 /*
-- new features:
-  - thumbnails on lightbox
-  - lightbox standalone mode to use it without gallery
-  - mosaic layout is now fully responsive
-  - options 'thumbnailGutterWidth' and 'thumbnailGutterHeight' are now responsive
-  - filtering, option galleryFilterTagsMode/galleryL1FilterTagsMode - possible value 'single', 'multiple'
-  - filtering, if no tag is selected then no filter is applied
-  - loading spinner over thumbnail during album content download
-  - first album level: new options thumbnailL1BorderHorizontal and thumbnailL1BorderVertical
-  - gallery pagination: left/right buttons on top of the gallery (option 'galleryPaginationTopButtons')
-  - lightbox: swipe up to close (additional to the existing swipe down gesture)
-  - lightbox: button to add media to shopping cart
-  - callback fnPopupMediaInfo(item, title, content) -> {title: my_title, content: my_content}
-  - improved: swipe and touch gesture using velocity
-  - rounded border on thumbnails (defined in 'galleryTheme')
-  - improved: page scrollbar better removed on lightbox display, to avoid page reflow
-  - randomized thumbnail display order: option 'thumbnailDisplayOrder' ('', 'random')
-  - easing for thumbnail display animation: option 'thumbnailDisplayTransitionEasing' (default: easeOutQuart)
-  - Google Photos: enable the use of filename as the title (#226 - thanks to Kevin Robert Keegan https://github.com/krkeegan)
-  - Flickr: option tagBlockList to filter out images based on tags (#233 - thanks to Jonathan Keane https://github.com/jonkeane)
-  - media title renaming with option 'titleTranslationMap'
-  	
-- changed:
-  - option 'blackList' renamed to 'blockList'
-  - option 'whiteList' renamed to 'allowList'
-  - lightbox toolbar: option viewerToolbar.display now set to false by default
-  - shopping cart handling refactored
-  - thumbnail label: new option 'valign' in addition to the 'position' option
-  - gallery filtering: icon for tags and for tag's filter reset
-  - lightbox tool: icons layout and background
-  - hover animation on thumbnails are now disabled by default ('touchAnimation' default value changed to false)
-  - option 'thumbnailOpenImage' renamed in 'thumbnailOpenInLightox'
-  - callbacks fnGalleryRenderStart/fnGalleryRenderEnd: now return the album object instead of it's index
-  
-- fixed:
-  - nano_photos_provider2: on gallery initialization, if an album is defined, gallery does not display sub-albums
-  - gallery may not be displayed depending on the display animation
-  - lightbox: one touch will display toolbars and label when they are hidden
-  - modal popup (media info, share): display not sharp, and wrong size on mobile devices
-  - some artefacts around thumbnails in some use cases
-  - #219 dragging in Firefox - many thanks to Largo (https://github.com/Largo)
-  - #226 Google Photos issue on description value (#226 - thanks to Kevin Robert Keegan https://github.com/krkeegan)
-  - many mirror fixes
-  
-- depreciated:
-  - removed: viewerDisplayLogo option
-  - removed options 'topOverImage', 'bottomOverImage' for lighbox vertical toolbar position
-  - removed lightbox theme 'border'
+
+- fixed: Flickr connector
+- fixed: lightbox error when thumbnails are disabled
+- fixed: fullscreen mode remains activated when lightbox is closed after having been started in fullscreen mode
+- fixed: requestAnimationFrame not used in some case
+- fixed: does not scroll to top of gallery when an album is opened
+- minor bugfixes
 
 */
  
@@ -183,6 +142,7 @@
 
   // Check if element is in viewport
   // avoid if possible (performance issue)
+  /*
   function inViewport( $elt, threshold ) {
     var wp = getViewport(),
     eltOS = $elt.offset(),
@@ -198,6 +158,7 @@
       return false;
     }
   }
+  */
 
 
   // Check if whole element is in ViewPort
@@ -220,10 +181,7 @@
   // Check if top of the element is in ViewPort
   function topInViewportVert( $elt, threshold ) {
     var wp = getViewport(),
-    eltOS = $elt.offset(),
-    th = $elt.outerHeight(true);
-
-    // if( wp.t == 0 && (eltOS.top) <= (wp.t + wp.h ) ) { return true; }
+    eltOS = $elt.offset();
 
     if( eltOS.top >= wp.t && eltOS.top <= (wp.t + wp.h - threshold) ) {
         return true;
@@ -235,17 +193,17 @@
 
 
   // set z-index to display 2 elements on top of all others
-  function set2ElementsOnTop( start, elt1, elt2 ) {
-    var highest_index = 0;
-    if( start=='' ) { start= '*'; }
-    jQuery(start).each(function() {
-      var cur = parseInt(jQuery(this).css('z-index'));
-      highest_index = cur > highest_index ? cur : highest_index;
-    });
-    highest_index++;
-    jQuery(elt2).css('z-index',highest_index+1);
-    jQuery(elt1).css('z-index',highest_index);
-  }
+  // function set2ElementsOnTop( start, elt1, elt2 ) {
+    // var highest_index = 0;
+    // if( start=='' ) { start= '*'; }
+    // jQuery(start).each(function() {
+      // var cur = parseInt(jQuery(this).css('z-index'));
+      // highest_index = cur > highest_index ? cur : highest_index;
+    // });
+    // highest_index++;
+    // jQuery(elt2).css('z-index',highest_index+1);
+    // jQuery(elt1).css('z-index',highest_index);
+  // }
 
   // set z-index to display element on top of all others
   function setElementOnTop( start, elt ) {
@@ -357,7 +315,7 @@
               this.$E.conLoadingB.removeClass('nanoGalleryLBarOff').addClass('nanoGalleryLBar');
               // spinner over album thumbnail
               if( this.GOM.albumIdxLoading != undefined && this.GOM.albumIdxLoading != -1 ) {
-                var item = this.I[this.GOM.albumIdxLoading];
+                let item = this.I[this.GOM.albumIdxLoading];
                 item.$Elts['.nGY2TnImg'].addClass('nGY2GThumbnailLoaderDisplayed');
               }
             }
@@ -366,7 +324,7 @@
               this.$E.conLoadingB.removeClass('nanoGalleryLBar').addClass('nanoGalleryLBarOff');
               // spinner over album thumbnail
               if( this.GOM.albumIdxLoading != undefined && this.GOM.albumIdxLoading != -1 ) {
-                var item = this.I[this.GOM.albumIdxLoading];
+                let item = this.I[this.GOM.albumIdxLoading];
                 item.$Elts['.nGY2TnImg'].removeClass('nGY2GThumbnailLoaderDisplayed');
               }
             }
@@ -566,7 +524,7 @@
             if( albumID != -1 && albumID != 0 && title !='image gallery by nanogallery2 [build]'  ) {
               if( instance.O.thumbnailLevelUp && album.getContentLength(false) == 0 && instance.O.album == '' ) {
                 // add navigation thumbnail (album up)
-                var item = new NGY2Item('0');
+                let item = new NGY2Item('0');
                 instance.I.push( item );
                 album.contentLength += 1;
                 item.title = 'UP';
@@ -628,24 +586,26 @@
                 // extract tags starting with # (in title)
               if( typeof instance.galleryFilterTags.Get() == 'string' ) {
                 switch( instance.galleryFilterTags.Get().toUpperCase() ) {
-                  case 'TITLE':
-                    var re = /(?:^|\W)#(\w+)(?!\w)/g, match, matches = [];
-                    var tags = "";
-                    while (match = re.exec(title)) {
-                      matches.push(match[1].replace(/^\s*|\s*$/, ''));   //trim trailing/leading whitespace
+                  case 'TITLE': {
+                      let re = /(?:^|\W)#(\w+)(?!\w)/g, match, matches = [];
+                      // let tags = "";
+                      while (match = re.exec(title)) {
+                        matches.push(match[1].replace(/^\s*|\s*$/, ''));   //trim trailing/leading whitespace
+                      }
+                      item.setTags(matches);  //tags;
+                      title = title.split('#').join('');   //replaceall
+                      break;
                     }
-                    item.setTags(matches);  //tags;
-                    title = title.split('#').join('');   //replaceall
-                    break;
-                  case 'DESCRIPTION':
-                    var re = /(?:^|\W)#(\w+)(?!\w)/g, match, matches = [];
-                    var tags = "";
-                    while (match = re.exec(description)) {
-                      matches.push(match[1].replace(/^\s*|\s*$/, ''));   //trim trailing/leading whitespace
+                  case 'DESCRIPTION': {
+                      let re = /(?:^|\W)#(\w+)(?!\w)/g, match2, matches2 = [];
+                      // let tags = "";
+                      while (match2 = re.exec(description)) {
+                        matches2.push(match2[1].replace(/^\s*|\s*$/, ''));   //trim trailing/leading whitespace
+                      }
+                      item.setTags(matches2);  //tags;
+                      description = description.split('#').join('');   //replaceall
+                      break;
                     }
-                    item.setTags(matches);  //tags;
-                    description = description.split('#').join('');   //replaceall
-                    break;
                 }
               }
                 else {
@@ -845,7 +805,6 @@
               }
             }
           
-            var lst=['xs','sm','me','la','xl'];
             for( var i=0; i< lst.length; i++ ) {
               this.thumbs.height.l1[lst[i]]=h;
             }
@@ -1201,18 +1160,18 @@
             }
             else {
               // HOVER OUT
-              if( effect.firstKeyframe ) {
+              // if( effect.firstKeyframe ) {
                 context.animeFrom = this.eltEffect[effect.element][effect.type].lastValue;
                 context.animeTo = this.eltEffect[effect.element][effect.type].initialValue;
                 // context.animeTo=effect.from;
-              }
-              else {
-                // context.animeFrom=effect.from;
-                context.animeFrom = this.eltEffect[effect.element][effect.type].lastValue;
-                context.animeTo = this.eltEffect[effect.element][effect.type].initialValue;
-                // context.animeTo=effect.to;
+              // }
+              // else {
+                // // context.animeFrom=effect.from;
+                // context.animeFrom = this.eltEffect[effect.element][effect.type].lastValue;
+                // context.animeTo = this.eltEffect[effect.element][effect.type].initialValue;
+                // //context.animeTo=effect.to;
                 
-              }
+              // }
               
               context.animeDuration = parseInt(effect.durationBack);
               context.animeDelay = 30 + parseInt(effect.delayBack + delay);   // 30ms is a default delay to avoid conflict with other initializations
@@ -1521,7 +1480,7 @@
     openOnStart :                 '',
     viewerHideToolsDelay :        4000,
     viewerToolbar : {
-      display :                   true,
+      display :                   false,
       position :                  'bottom',
       fullWidth :                 false,
       align :                     'center',
@@ -1767,7 +1726,7 @@
               // updates counter
               nG2.shoppingCart[i].qty = new_qty;
               
-              var item = nG2.I[nG2.shoppingCart[i].idx];
+              let item = nG2.I[nG2.shoppingCart[i].idx];
 
               // updates thumbnail
               nG2.ThumbnailToolbarOneCartUpdate( item );
@@ -2008,7 +1967,7 @@
      * Search2 in title and tags - set search values
      */
     this.Search2 = function( searchTitle, searchTags ) {
-      if( searchTitle != null && searchTitle != undefined ) {
+      if( searchTitle != undefined && searchTitle != null  ) {
         G.GOM.albumSearch = searchTitle.toUpperCase().trim();
       }
       else {
@@ -2116,14 +2075,14 @@
      * PaginationGotoPage - gallery paginate to specific page
      */
     this.PaginationGotoPage = function( page ) {
-      var aIdx = G.$E.conPagin.data('galleryIdx');
+      // var aIdx = G.$E.conPagin.data('galleryIdx');
       if( page > 1 ) { page--; }
       G.GOM.pagination.currentPage = page;
 
       // scroll to top of gallery if not displayed
       G.GOM.ScrollToTop();
 
-      GalleryDisplayPart1( true );
+      GalleryDisplayPart1();
       GalleryDisplayPart2( true );
       return false;
     };
@@ -2222,11 +2181,11 @@
      */
 
     window.requestTimeout = function(fn, delay) {
-      // if( !window.requestAnimationFrame      	&& 
-        // !window.webkitRequestAnimationFrame && 
-        // !(window.mozRequestAnimationFrame && window.mozCancelRequestAnimationFrame) && // Firefox 5 ships without cancel support
-        // !window.oRequestAnimationFrame      && 
-        // !window.msRequestAnimationFrame)
+      if( !window.requestAnimationFrame      	&& 
+        !window.webkitRequestAnimationFrame && 
+        !(window.mozRequestAnimationFrame && window.mozCancelRequestAnimationFrame) && // Firefox 5 ships without cancel support
+        !window.oRequestAnimationFrame      && 
+        !window.msRequestAnimationFrame)
           return window.setTimeout(fn, delay);
           
       var start = new Date().getTime(),
@@ -2235,7 +2194,7 @@
       function loop(){
         var current = new Date().getTime(),
           delta = current - start;
-  delta = delay;
+          // delta = delay;
   
         delta >= delay ? fn.call() : handle.value = requestAnimFrame(loop);
       };
@@ -2624,8 +2583,8 @@
       // Position the top of the gallery to make it visible, if not displayed
       ScrollToTop: function() {
 
-        if( !G.galleryResizeEventEnabled ) {      
-          // no scroll to top after a resize event
+        if( G.GOM.firstDisplay ) {      
+          // do no scroll to top on first display
           return;
         }
         
@@ -3101,15 +3060,20 @@
     function LightboxStandaloneFindContent() {
 
       G.GOM.curNavLevel = 'l1';
-      
-      // retrieve all element having "data-nanogallery2-lightbox" and from the same group if defined
-      var elts = jQuery('[data-nanogallery2-Lightbox');
-      
-      // element group
-      var g = G.$E.base[0].dataset.nanogallery2Lgroup;
 
-      GetContentMarkup( elts, g );
+      if( G.O.items == null ) {
+        // retrieve all element having "data-nanogallery2-lightbox" and from the same group if defined
+        var elts = jQuery('[data-nanogallery2-Lightbox');
+        // element group
+        var g = G.$E.base[0].dataset.nanogallery2Lgroup;
 
+        GetContentMarkup( elts, g );
+      }
+      else {
+        // Content defined in the starting parameters
+        GetContentApiObject();
+      }
+      
       LightboxStandaloneDisplay();
         
     }
@@ -3205,7 +3169,7 @@
       switch( G.galleryDisplayMode.Get() ) {
         case 'PAGINATION':
           if( G.layout.support.rows && G.galleryMaxRows.Get() > 0 ) {
-            ManagePagination( G.GOM.albumIdx );
+            ManagePagination();
           }
           break;
         case 'MOREBUTTON':
@@ -3390,12 +3354,12 @@
       if( G.galleryDisplayMode.Get() == "PAGINATION" && G.O.galleryPaginationTopButtons ) {
           if( G.layout.support.rows && G.galleryMaxRows.Get() > 0 ) {
             // ManagePagination( G.GOM.albumIdx );
-            var $newTag = jQuery('<div class="nGY2NavigationbarItem nGY2NavPagination">'+G.O.icons.navigationPaginationPrevious+'</div>').appendTo(G.GOM.navigationBar.$newContent);
-            $newTag.click(function() {
+            var $newTagPrev = jQuery('<div class="nGY2NavigationbarItem nGY2NavPagination">'+G.O.icons.navigationPaginationPrevious+'</div>').appendTo(G.GOM.navigationBar.$newContent);
+            $newTagPrev.click(function() {
               paginationPreviousPage();
             });
-            var $newTag = jQuery('<div class="nGY2NavigationbarItem nGY2NavPagination">'+G.O.icons.navigationPaginationNext+'</div>').appendTo(G.GOM.navigationBar.$newContent);
-            $newTag.click(function() {
+            var $newTagNext = jQuery('<div class="nGY2NavigationbarItem nGY2NavPagination">'+G.O.icons.navigationPaginationNext+'</div>').appendTo(G.GOM.navigationBar.$newContent);
+            $newTagNext.click(function() {
               paginationNextPage();
             });
           }
@@ -3415,7 +3379,7 @@
           breadcrumbAdd(0);
         }
         else {
-          var last=lstItems.length-1;
+          // var last=lstItems.length-1;
           if( lstItems.length == 1 ) {
             breadcrumbAddSeparator(0);    // root level
           }
@@ -3443,7 +3407,7 @@
     
 
     // Display gallery pagination
-    function ManagePagination( albumIdx ) {
+    function ManagePagination() {
 
       G.$E.conTnBottom.css('opacity', 0);
       G.$E.conTnBottom.children().remove();
@@ -3451,7 +3415,7 @@
       if( G.GOM.items.length == 0 ) { return; }   // no thumbnail to display
 
       // calculate the number of pages
-      var nbPages=Math.ceil((G.GOM.items[G.GOM.items.length - 1].row + 1)/G.galleryMaxRows.Get());
+      var nbPages = Math.ceil((G.GOM.items[G.GOM.items.length - 1].row + 1)/G.galleryMaxRows.Get());
 
       // only one page -> do not display pagination
       if( nbPages == 1 ) { return; }
@@ -3481,7 +3445,7 @@
       }
       else {
         // display pagination numbers and previous/next
-        var vp = G.O.paginationVisiblePages;
+        // var vp = G.O.paginationVisiblePages;
         var numberOfPagesToDisplay = G.O.paginationVisiblePages;
         if( numberOfPagesToDisplay >= nbPages ) {
           firstPage = 0;
@@ -3551,7 +3515,7 @@
           // scroll to top of gallery if not displayed
           G.GOM.ScrollToTop();
  
-          GalleryDisplayPart1( true );
+          GalleryDisplayPart1();
           GalleryDisplayPart2( true );
         });
 
@@ -3572,8 +3536,8 @@
     
     // pagination - next page
     function paginationNextPage() {
-      var aIdx = G.GOM.albumIdx,
-      n1 = 0;
+      // var aIdx = G.GOM.albumIdx;
+      var n1 = 0;
       ThumbnailHoverOutAll();
       
       // pagination - max lines per page mode
@@ -3596,15 +3560,15 @@
       // scroll to top of gallery if not displayed
       G.GOM.ScrollToTop();
 
-      GalleryDisplayPart1( true );
+      GalleryDisplayPart1();
       GalleryDisplayPart2( true );
     }
     
     // pagination - previous page
     function paginationPreviousPage() {
       // var aIdx=G.$E.conTnBottom.data('galleryIdx'),
-      var aIdx = G.GOM.albumIdx,
-      n1 = 0;
+      // var aIdx = G.GOM.albumIdx;
+      var n1 = 0;
 
       ThumbnailHoverOutAll();
       
@@ -3630,7 +3594,7 @@
       // scroll to top of gallery if not displayed
       G.GOM.ScrollToTop();
 
-      GalleryDisplayPart1( true );
+      GalleryDisplayPart1();
       GalleryDisplayPart2( true );
     }
 
@@ -3642,13 +3606,13 @@
       switch( G.galleryDisplayMode.Get() ) {
         case 'PAGINATION':
           if( G.layout.support.rows ) {
-            var nbTn = G.GOM.items.length;
+            let nbTn = G.GOM.items.length;
             var firstRow = G.GOM.pagination.currentPage * G.galleryMaxRows.Get();
             var lastRow = firstRow + G.galleryMaxRows.Get();
             var firstTn = -1;
             G.GOM.displayInterval.len = 0;
             for( var i = 0; i < nbTn ; i++ ) {
-              var curTn = G.GOM.items[i];
+              let curTn = G.GOM.items[i];
               if( curTn.row >= firstRow && curTn.row < lastRow ) {
                 if( firstTn == -1 ) {
                   G.GOM.displayInterval.from = i;
@@ -3661,11 +3625,11 @@
           break;
         case 'MOREBUTTON':
           if( G.layout.support.rows ) {
-            var nbTn = G.GOM.items.length;
-            var lastRow = G.O.galleryDisplayMoreStep * (G.GOM.displayedMoreSteps+1);
+            let nbTn = G.GOM.items.length;
+            let lastRow = G.O.galleryDisplayMoreStep * (G.GOM.displayedMoreSteps+1);
             G.GOM.displayInterval.len = 0;
             for( var i = 0; i < nbTn ; i++ ) {
-              var curTn = G.GOM.items[i];
+              let curTn = G.GOM.items[i];
               if( curTn.row < lastRow ) {
                 G.GOM.displayInterval.len++;
               }
@@ -3674,8 +3638,8 @@
           break;
         case 'ROWS':
           if( G.layout.support.rows ) {
-            var nbTn = G.GOM.items.length;
-            var lastRow = G.galleryMaxRows.Get();
+            let nbTn = G.GOM.items.length;
+            let lastRow = G.galleryMaxRows.Get();
             if( G.galleryLastRowFull.Get() && G.GOM.lastFullRow != -1 ) {
               if( lastRow > (G.GOM.lastFullRow + 1) ) {
                 lastRow = G.GOM.lastFullRow + 1;
@@ -3683,7 +3647,7 @@
             }
             G.GOM.displayInterval.len = 0;
             for( var i = 0; i < nbTn ; i++ ) {
-              var curTn = G.GOM.items[i];
+              let curTn = G.GOM.items[i];
               if( curTn.row < lastRow ) {
                 G.GOM.displayInterval.len++;
               }
@@ -3693,11 +3657,11 @@
         default:
         case 'FULLCONTENT':
         if( G.layout.support.rows && G.galleryLastRowFull.Get() && G.GOM.lastFullRow != -1 ) {
-            var nbTn = G.GOM.items.length;
-            var lastRow = G.GOM.lastFullRow + 1;
+            let nbTn = G.GOM.items.length;
+            let lastRow = G.GOM.lastFullRow + 1;
             G.GOM.displayInterval.len = 0;
             for( var i = 0; i < nbTn ; i++ ) {
-              var curTn = G.GOM.items[i];
+              let curTn = G.GOM.items[i];
               if( curTn.row < lastRow ) {
                 G.GOM.displayInterval.len++;
               }
@@ -3774,6 +3738,7 @@
               G.$E.conNavigationBar.css({ 'opacity': 0, 'display': 'none' });
             }
             // scroll to top of the gallery if needed
+
             G.GOM.ScrollToTop();
 
             GalleryRenderPart1( albumIdx );
@@ -3894,7 +3859,7 @@
         GalleryAppear();
         
         // step 4: display thumbnails
-        GalleryDisplayPart1( false );
+        GalleryDisplayPart1();
         requestTimeout(function(){ GalleryDisplayPart2( false ) }, 120);
       }
       else {
@@ -3918,7 +3883,7 @@
       }
       if( G.O.debugMode ) { console.log('GalleryResizeSetLayout: '+ (new Date()-d)); }
 
-      GalleryDisplayPart1( false );
+      GalleryDisplayPart1();
       GalleryDisplayPart2( false );
 
       if( G.O.debugMode ) { console.log('GalleryResizeFull: '+ (new Date()-d)); }
@@ -3993,7 +3958,7 @@
               
               // set the retrieved size to all levels with same configuration  
               var object = item.thumbs.width.l1;
-              for (var property in object) {
+              for (let property in object) {
                 if (object.hasOwnProperty(property)) {
                   if( property != G.GOM.curWidth ) {
                     if( G.tn.settings.width.l1[property] == G.tn.settings.getW() && G.tn.settings.height.l1[property] == G.tn.settings.getH() ) {
@@ -4004,7 +3969,7 @@
                 }
               }
               object = item.thumbs.width.lN;
-              for (var property in object) {
+              for (let property in object) {
                 if (object.hasOwnProperty(property)) {
                   if( property != G.GOM.curWidth ) {
                     if( G.tn.settings.width.lN[property] == G.tn.settings.getW() && G.tn.settings.height.lN[property] == G.tn.settings.getH() ) {
@@ -4194,11 +4159,11 @@
 
       // first loop --> retrieve each row image height
       for( var i = 0; i < nbTn ; i++ ) {
-        var curTn = G.GOM.items[i];
+        let curTn = G.GOM.items[i];
         if( curTn.deleted == true ) { break; }    // item is logically deleted
         if( curTn.imageWidth > 0 ) {
-          var imageRatio = curTn.imageWidth / curTn.imageHeight;
-          var imageWidth = Math.floor( tnHeight * imageRatio );
+          let imageRatio = curTn.imageWidth / curTn.imageHeight;
+          let imageWidth = Math.floor( tnHeight * imageRatio );
 
           if( bNewRow ) {
             bNewRow = false;
@@ -4233,8 +4198,8 @@
           else {
             // new row after current item --> we need to adujet the row height to have enough space for the current thumbnail
             curWidth += gutterWidth+imageWidth;
-            var ratio = (areaWidth - nbTnInCurrRow * borderWidth) / curWidth;
-            var rH = Math.floor(tnHeight * ratio);
+            let ratio = (areaWidth - nbTnInCurrRow * borderWidth) / curWidth;
+            let rH = Math.floor(tnHeight * ratio);
             rowHeight[rowNum] = rH;
             
             // save the max row height for each thumb orientation.
@@ -4263,10 +4228,10 @@
       
       // second loop --> calculate each thumbnail size
       for( var i = 0; i < nbTn ; i++ ) {
-        var curTn = G.GOM.items[i];
+        let curTn = G.GOM.items[i];
         if( curTn.imageWidth > 0 ) {
-          var imageRatio = curTn.imageWidth / curTn.imageHeight;
-          var imageWidth = Math.floor( imageRatio * rowHeight[rowNum] ); // border is already NOT included
+          let imageRatio = curTn.imageWidth / curTn.imageHeight;
+          let imageWidth = Math.floor( imageRatio * rowHeight[rowNum] ); // border is already NOT included
 
           if( i == rowLastItem[rowNum] ) {
             // row last item --> adjust image width because of rounding problems
@@ -4283,7 +4248,7 @@
             }
           }
           
-          var rh = parseInt( rowHeight[rowNum] );
+          let rh = parseInt( rowHeight[rowNum] );
           imageWidth = parseInt( imageWidth );
 
           // thumbnail image size
@@ -4295,7 +4260,7 @@
           curTn.row = rowNum;
 
           curTn.top = curPosY;
-          var x = lastPosX;
+          let x = lastPosX;
           if( G.O.RTL) {
             x = areaWidth - lastPosX - curTn.width ;
           }
@@ -4323,7 +4288,7 @@
           // hover effect on gallery (vs on thumbnail) --> experimental / not used
           if( G.GOM.albumIdx != -1 ) {
             var hoveredTn = G.GOM.items[GOMidx];
-            var item = G.I[hoveredTn.thumbnailIdx];
+            // var item = G.I[hoveredTn.thumbnailIdx];
             
             // hovered thumbnail
             hoveredTn.width += 40;
@@ -4385,9 +4350,9 @@
       // first loop: evaluate the gallery width based on the first row
       var nbCols = 0;
       var maxW = 0;
-      var mosaicPattern = G.tn.settings.getMosaic();
+      let mosaicPattern = G.tn.settings.getMosaic();
       for( var i = 0; i < nbTn ; i++ ) {
-        var curPatternElt = mosaicPattern[n];
+        let curPatternElt = mosaicPattern[n];
 
         var cLeft = (curPatternElt.c - 1) * G.tn.defaultSize.getOuterWidth() + (curPatternElt.c - 1) * gutterWidth;
         var cWidth = curPatternElt.w * G.tn.defaultSize.getOuterWidth() + (curPatternElt.w - 1) * gutterWidth;
@@ -4408,10 +4373,10 @@
       // second loop: position all the thumbnails based on the layout pattern
       row = 0;
       n = 0;
-      var mosaicPattern = G.tn.settings.getMosaic();
+      // let mosaicPattern = G.tn.settings.getMosaic();
       for( var i = 0; i < nbTn ; i++ ) {
-        var curTn = G.GOM.items[i];
-        var curPatternElt = mosaicPattern[n];
+        let curTn = G.GOM.items[i];
+        let curPatternElt = mosaicPattern[n];
         
         curTn.top = Math.round((curPatternElt.r - 1) * G.tn.defaultSize.getOuterHeight()*scaleFactor) + (curPatternElt.r - 1) * gutterHeight + row * h + (G.tn.labelHeight.get()*(curPatternElt.r-1)) ;
         if( row > 0 ) {
@@ -4488,7 +4453,7 @@
 
       
       G.GOM.lastFullRow = 0 ;    // display at leat 1 row (even if not full)
-      var lastPosY = 0;
+      // var lastPosY = 0;
       var row = 0;
       
       tnWidth = Math.round(tnWidth * scaleFactor);
@@ -4524,7 +4489,7 @@
           curTn.resizedContentHeight = contentHeight;
         }
         curTn.row = row;
-        lastPosY = curPosY;
+        // lastPosY = curPosY;
 
         curCol++;
         if( curCol >= maxCol ){
@@ -4544,7 +4509,7 @@
 
 
     //----- Display the thumbnails according to the calculated layout
-    function GalleryDisplayPart1( forceTransition ) {
+    function GalleryDisplayPart1() {
       if( G.CSStransformName == null ) {
         G.$E.conTn.css( 'left' , '0px');
       }
@@ -4583,7 +4548,7 @@
       GalleryRenderGetInterval();
       
       for( var i = 0; i < nbTn ; i++ ) {
-        var curTn = G.GOM.items[i];
+        let curTn = G.GOM.items[i];
         if( i >= G.GOM.displayInterval.from && cnt < G.GOM.displayInterval.len ) {
           curTn.inDisplayArea = true;
           if( forceTransition ) {
@@ -4610,7 +4575,7 @@
       G.GOM.clipArea.height = 0;
       // NOTE: loop always the whole GOM.items --> in case an already displayed thumbnail needs to be removed
       for( var i = 0; i < nbTn ; i++ ) {
-        var curTn = G.GOM.items[i];
+        let curTn = G.GOM.items[i];
         if( curTn.inDisplayArea ) {
           if( G.GOM.clipArea.top == -1 ) {
             G.GOM.clipArea.top = curTn.top;
@@ -4628,9 +4593,10 @@
             // var left=containerOffset.left+curTn.left;
             if( (top + curTn.height) >= (G.GOM.cache.viewport.t - threshold) && top <= (G.GOM.cache.viewport.t + G.GOM.cache.viewport.h + threshold) ) {
               // build thumbnail
-              var item = G.I[curTn.thumbnailIdx];
+              let item = G.I[curTn.thumbnailIdx];
               if( item.$elt == null ) {
-                ThumbnailBuild( item, curTn.thumbnailIdx, i, (i+1) == nbTn );
+                // ThumbnailBuild( item, curTn.thumbnailIdx, i, (i+1) == nbTn );
+                ThumbnailBuild( item, curTn.thumbnailIdx, i );
               }
               tnToDisplay.push({idx:i, delay:cnt});
               cnt++;
@@ -4644,7 +4610,7 @@
         }
         else {
           curTn.displayed = false;
-          var item = G.I[curTn.thumbnailIdx];
+          let item = G.I[curTn.thumbnailIdx];
           if( item.$elt != null ){
             item.$elt.css({ opacity: 0, display: 'none' });
           }
@@ -4667,7 +4633,7 @@
         // so we need re-calculate the layout before displaying the thumbnails
         G.GOM.cache.areaWidth = G.$E.conTnParent.width();
         GallerySetLayout();
-        GalleryDisplayPart1( forceTransition );
+        GalleryDisplayPart1();
         GalleryDisplayPart2( forceTransition );
         return;
       }
@@ -4683,7 +4649,7 @@
           }
           // remove last displayed counter
           if( G.GOM.lastDisplayedIdx != -1 ) {
-            var item = G.I[G.GOM.items[G.GOM.lastDisplayedIdx].thumbnailIdx];
+            let item = G.I[G.GOM.items[G.GOM.lastDisplayedIdx].thumbnailIdx];
             item.$getElt('.nGY2GThumbnailIconsFullThumbnail').html('');
           }
         }
@@ -4943,10 +4909,10 @@
       
       // new image
       var newItem = G.GOM.NGY2Item(G.GOM.slider.nextIdx);
-      var imgBlurred = G.emptyGif;
+      // var imgBlurred = G.emptyGif;
       var bgImg = "url('" + G.emptyGif + "')";
       if( newItem.imageDominantColors != null ) {
-        imgBlurred = newItem.imageDominantColors;
+        // imgBlurred = newItem.imageDominantColors;
         bgImg = "url('" + newItem.imageDominantColors + "')";
       }
       G.GOM.slider.hostItem.$getElt('.nGY2TnImgBackNext', true).css({'background-image': bgImg, opacity: 1 });
@@ -5071,10 +5037,10 @@
         return 0;
       }
       
-      var desc='';
-      if( G.O.thumbnailLabel.get('displayDescription') == true ) {
-        desc = 'aAzZjJ';
-      }
+      // var desc='';
+      // if( G.O.thumbnailLabel.get('displayDescription') == true ) {
+        // desc = 'aAzZjJ';
+      // }
 
       // visibility set to hidden
       newElt[newEltIdx++] = '<div class="nGY2GThumbnail ' + G.O.theme + '" style="display:block;visibility:hidden;position:absolute;top:-9999px;left:-9999px;" ><div class="nGY2GThumbnailSub">';
@@ -5109,7 +5075,8 @@
     }
     
     //----- Build one UP thumbnail (=navigation thumbnail)
-    function ThumbnailBuildAlbumpUp( item, idx, GOMidx ) {
+    function ThumbnailBuildAlbumpUp( item, GOMidx ) {
+    // function ThumbnailBuildAlbumpUp( item, idx, GOMidx ) {
       var newElt = [],
       newEltIdx = 0;
       
@@ -5141,14 +5108,15 @@
 
     
     //----- Build one thumbnail
-    function ThumbnailBuild( item, idx, GOMidx, lastOne ) {
+    function ThumbnailBuild( item, idx, GOMidx ) {
+    // function ThumbnailBuild( item, idx, GOMidx, lastOne ) {
       item.eltTransform =  [];
       item.eltFilter =     [];
       item.hoverInitDone = false;
       item.$Elts =         [];
 
       if( item.kind == 'albumUp' ) {
-        ThumbnailBuildAlbumpUp( item, idx, GOMidx);
+        ThumbnailBuildAlbumpUp( item, GOMidx);
         return;
       }
 
@@ -5234,7 +5202,8 @@
       }
 
       // ##### layer for tools
-      newElt[newEltIdx++] = ThumbnailBuildTools(item, lastOne);
+      // newElt[newEltIdx++] = ThumbnailBuildTools(item, lastOne);
+      newElt[newEltIdx++] = ThumbnailBuildTools(item);
       
       // close containers
       newElt[newEltIdx++]='</div></div>';
@@ -5260,7 +5229,7 @@
 
     
     // Thumbnail layer for tools (toolbars and counter)
-    function ThumbnailBuildTools( item, lastThumbnail ) {
+    function ThumbnailBuildTools( item ) {
     
       // toolbars
       var tb = ThumbnailBuildToolbarOne(item, 'topLeft') + ThumbnailBuildToolbarOne(item, 'topRight') + ThumbnailBuildToolbarOne(item, 'bottomLeft') + ThumbnailBuildToolbarOne(item, 'bottomRight');
@@ -5577,93 +5546,102 @@
       var oTo = {};
     
       switch (G.tn.opt.Get('displayTransition')) {
-        case 'RANDOMSCALE':
-          var scales = [0.95, 1, 1.05, 1.1];
-          var zi = [1, 2, 3, 4];
-          
-          var r = randomIntFromInterval(0,3);
-          while( r == G.GOM.lastRandomValue ) {
-            r = randomIntFromInterval(0,3);
+        case 'RANDOMSCALE': {
+            var scales = [0.95, 1, 1.05, 1.1];
+            var zi = [1, 2, 3, 4];
+            
+            var r = randomIntFromInterval(0,3);
+            while( r == G.GOM.lastRandomValue ) {
+              r = randomIntFromInterval(0,3);
+            }
+            G.GOM.lastRandomValue = r;
+            let f = scales[r];
+            // item.$elt.css({ 'z-index': G.GOM.lastZIndex+zi[r], 'box-shadow': '-1px 2px 5px 1px rgba(0, 0, 0, 0.7)' });
+            item.$elt.css({ 'z-index': G.GOM.lastZIndex+zi[r], 'box-shadow': '0px 0px 5px 3px rgba(0,0,0,0.74)' });
+            
+            oFrom = { scale: 0.5, opacity:0 };
+            oTo =   { scale: f,   opacity:1 };
+            break;
           }
-          G.GOM.lastRandomValue = r;
-          var f = scales[r];
-          // item.$elt.css({ 'z-index': G.GOM.lastZIndex+zi[r], 'box-shadow': '-1px 2px 5px 1px rgba(0, 0, 0, 0.7)' });
-          item.$elt.css({ 'z-index': G.GOM.lastZIndex+zi[r], 'box-shadow': '0px 0px 5px 3px rgba(0,0,0,0.74)' });
-          
-          oFrom = { scale: 0.5, opacity:0 };
-          oTo =   { scale: f,   opacity:1 };
-          break;
 
-        case 'SCALEUP':
-          var f = G.tn.opt.Get('displayTransitionStartVal');
-          if( f == 0 ) { f = 0.6; }   // default value
-          oFrom = { scale: f, opacity: 0 };
-          oTo =   { scale: 1, opacity: 1 };
-          break;
+        case 'SCALEUP': {
+            let f = G.tn.opt.Get('displayTransitionStartVal');
+            if( f == 0 ) { f = 0.6; }   // default value
+            oFrom = { scale: f, opacity: 0 };
+            oTo =   { scale: 1, opacity: 1 };
+            break;
+          }
 
-        case 'SCALEDOWN':
-          var f = G.tn.opt.Get('displayTransitionStartVal');
-          if( f == 0 ) { f=1.3; }   // default value
-          oFrom = { scale: f, opacity: 0 };
-          oTo =   { scale: 1, opacity: 1 };
-          break;
-        case 'SLIDEUP':
-          var f = G.tn.opt.Get('displayTransitionStartVal');
-          if( f == 0 ) { f=50; }   // default value
-          oFrom = { opacity: 0, translateY: f };
-          oTo =   { opacity: 1, translateY: 0 };
-          break;
-        case 'SLIDEDOWN':
-          var f=G.tn.opt.Get('displayTransitionStartVal');
-          if( f == 0 ) { f=-50; }   // default value
-          oFrom = { opacity: 0, translateY: f };
-          oTo =   { opacity: 1, translateY: 0 };
-          break;
-        case 'FLIPUP':
-          var f=G.tn.opt.Get('displayTransitionStartVal');
-          if( f == 0 ) { f=100; }   // default value
-          oFrom = { opacity: 0, translateY: f, rotateX: 45 };
-          oTo =   { opacity: 1, translateY: 0, rotateX: 0  };
-          break;
-          
-        case 'FLIPDOWN':
-          var f=G.tn.opt.Get('displayTransitionStartVal');
-          if( f == 0 ) { f=-100; }   // default value
-          oFrom = { opacity: 0, translateY: f, rotateX: -45 };
-          oTo =   { opacity: 1, translateY: 0, rotateX: 0 };
-          break;
-        case 'SLIDEUP2':
-          var f = G.tn.opt.Get('displayTransitionStartVal');
-          if( f == 0 ) { f=100; }   // default value
-          oFrom = { opacity: 0, translateY: f, rotateY: 40 };
-          oTo =   { opacity: 1, translateY: 0, rotateY: 0  };
-          break;
-        case 'IMAGESLIDEUP':
-          var f = G.tn.opt.Get('displayTransitionStartVal');
-          if( f == 0 ) { f=100; }   // default value
-          oFrom = { opacity: 0, top: '100%' };
-          oTo =   { opacity: 1, top: '0%'  };
-          break;
-        case 'SLIDEDOWN2':
-          var f=G.tn.opt.Get('displayTransitionStartVal');
-          if( f == 0 ) { f=-100; }   // default value
-          oFrom = { opacity: 0, translateY: f, rotateY: 40 };
-          oTo =   { opacity: 1, translateY: 0, rotateY: 0  };
-          break;
-        case 'SLIDERIGHT':
-          var f=G.tn.opt.Get('displayTransitionStartVal');
-          if( f == 0 ) { f=-150; }   // default value
-          oFrom = { opacity: 0, translateX: f };
-          oTo =   { opacity: 1, translateX: 0 };
-          break;
-
-        case 'SLIDELEFT':
-          var f=G.tn.opt.Get('displayTransitionStartVal');
-          if( f == 0 ) { f=150; }   // default value
-          oFrom = { opacity: 0, translateX: f };
-          oTo =   { opacity: 1, translateX: 0 };
-          break;
-          
+        case 'SCALEDOWN': {
+            let f = G.tn.opt.Get('displayTransitionStartVal');
+            if( f == 0 ) { f=1.3; }   // default value
+            oFrom = { scale: f, opacity: 0 };
+            oTo =   { scale: 1, opacity: 1 };
+            break;
+          }
+        case 'SLIDEUP': {
+            let f = G.tn.opt.Get('displayTransitionStartVal');
+            if( f == 0 ) { f=50; }   // default value
+            oFrom = { opacity: 0, translateY: f };
+            oTo =   { opacity: 1, translateY: 0 };
+            break;
+          }
+        case 'SLIDEDOWN': {
+            let f=G.tn.opt.Get('displayTransitionStartVal');
+            if( f == 0 ) { f=-50; }   // default value
+            oFrom = { opacity: 0, translateY: f };
+            oTo =   { opacity: 1, translateY: 0 };
+            break;
+          }
+        case 'FLIPUP': {
+            let f=G.tn.opt.Get('displayTransitionStartVal');
+            if( f == 0 ) { f=100; }   // default value
+            oFrom = { opacity: 0, translateY: f, rotateX: 45 };
+            oTo =   { opacity: 1, translateY: 0, rotateX: 0  };
+            break;
+          }
+        case 'FLIPDOWN': {
+            let f=G.tn.opt.Get('displayTransitionStartVal');
+            if( f == 0 ) { f=-100; }   // default value
+            oFrom = { opacity: 0, translateY: f, rotateX: -45 };
+            oTo =   { opacity: 1, translateY: 0, rotateX: 0 };
+            break;
+          }
+        case 'SLIDEUP2': {
+            let f = G.tn.opt.Get('displayTransitionStartVal');
+            if( f == 0 ) { f=100; }   // default value
+            oFrom = { opacity: 0, translateY: f, rotateY: 40 };
+            oTo =   { opacity: 1, translateY: 0, rotateY: 0  };
+            break;
+          }
+        case 'IMAGESLIDEUP': {
+            // let f = G.tn.opt.Get('displayTransitionStartVal');
+            // if( f == 0 ) { f=100; }   // default value
+            oFrom = { opacity: 0, top: '100%' };
+            oTo =   { opacity: 1, top: '0%'  };
+            break;
+          }
+        case 'SLIDEDOWN2': {
+            let f=G.tn.opt.Get('displayTransitionStartVal');
+            if( f == 0 ) { f=-100; }   // default value
+            oFrom = { opacity: 0, translateY: f, rotateY: 40 };
+            oTo =   { opacity: 1, translateY: 0, rotateY: 0  };
+            break;
+          }
+        case 'SLIDERIGHT': {
+            let f=G.tn.opt.Get('displayTransitionStartVal');
+            if( f == 0 ) { f=-150; }   // default value
+            oFrom = { opacity: 0, translateX: f };
+            oTo =   { opacity: 1, translateX: 0 };
+            break;
+          }
+        case 'SLIDELEFT': {
+            let f=G.tn.opt.Get('displayTransitionStartVal');
+            if( f == 0 ) { f=150; }   // default value
+            oFrom = { opacity: 0, translateX: f };
+            oTo =   { opacity: 1, translateX: 0 };
+            break;
+          }
         case 'FADEIN':
           oFrom = { opacity: 0 };
           oTo =   { opacity: 1 };
@@ -5815,8 +5793,7 @@
       switch( G.galleryDisplayTransition.Get() ){
         case 'ROTATEX':
           G.$E.base.css({ perspective: '1000px', 'perspective-origin': '50% 0%' });
-          var tweenable = new NGTweenable();
-          tweenable.tween({
+          new NGTweenable().tween({
             from:         { r: 50 },
             to:           { r: 0  },
             attachment:   { orgIdx: G.GOM.albumIdx },
@@ -5833,8 +5810,7 @@
           break;
         case 'SLIDEUP':
           G.$E.conTnParent.css({ opacity: 0 });
-          var tweenable = new NGTweenable();
-          tweenable.tween({
+          new NGTweenable().tween({
             from:         { y: 200, o: 0 },
             to:           { y: 0,   o: 1 },
             attachment:   { orgIdx: G.GOM.albumIdx },
@@ -6059,7 +6035,7 @@
         if( G.O.kind != '' ) {
           // do not add album if Markup or Javascript data
           NGY2Item.New( G, '', '', albumID, '0', 'album' );    // create empty album
-          albumIdx = G.I.length - 1;
+          // albumIdx = G.I.length - 1;
         }
       }
 
@@ -6075,52 +6051,7 @@
       DisplayPhotoIdx(ngy2ItemIdx);
     
     }
-
-
-    // BETA -> NOT finished and not used at this time
-    // Retrieve the title+description of ONE album
-    function albumGetInfo( albumIdx, fnToCall ) {
-      var url =   '';
-      var kind =  'image';
-      
-      switch( G.O.kind ) {
-        case 'json':
-          // TODO
-        case 'flickr':
-          // TODO
-        case 'picasa':
-        case 'google':
-        case 'google2':
-        default:
-          url = G.Google.url() + 'user/'+G.O.userID+'/albumid/'+G.I[albumIdx].GetID()+'?alt=json&&max-results=1&fields=title';
-          break;
-      }
-
-      jQuery.ajaxSetup({ cache: false });
-      jQuery.support.cors = true;
-      
-      var tId = setTimeout( function() {
-        // workaround to handle JSONP (cross-domain) errors
-        //PreloaderHide();
-        NanoAlert(G, 'Could not retrieve AJAX data...');
-      }, 60000 );
-      jQuery.getJSON(url, function(data, status, xhr) {
-        clearTimeout(tId);
-        //PreloaderHide();
-        
-        fnToCall( G.I[albumIdx].GetID() );
-
-      })
-      .fail( function(jqxhr, textStatus, error) {
-        clearTimeout(tId);
-        //PreloaderHide();
-        var err = textStatus + ', ' + error;
-        NanoAlert('Could not retrieve ajax data: ' + err);
-      });      
-    
-    }
-
-    
+   
     // function AlbumGetContent( albumIdx, fnToCall ) {
     function AlbumGetContent( albumID, fnToCall, fnParam1, fnParam2 ) {
       // var url='';
@@ -6162,7 +6093,8 @@
       vimeo : {
         getID: function( url ) {
           // https://stackoverflow.com/questions/2916544/parsing-a-vimeo-id-using-javascript
-          var s = url.match( /^.*(vimeo\.com\/)((channels\/[A-z]+\/)|(groups\/[A-z]+\/videos\/))?([0-9]+)/ );
+          // var s = url.match( /^.*(vimeo\.com\/)((channels\/[A-z]+\/)|(groups\/[A-z]+\/videos\/))?([0-9]+)/ );
+          var s = url.match( /(http|https)?:\/\/(www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|)(\d+)(?:|\/\?)/ );
           return s != null ? s[5] : null;
         },
         url: function( id ) {
@@ -6251,7 +6183,8 @@
     }
     
     function StartsWithProtocol ( path ) {
-      if( path == null || path == undefined ) { return false; }
+      if( path == undefined ) { return false; }
+      // if( path == null ) { return false; }
       
       var pattern = /^((http|https|ftp|ftps|file):\/\/)/;
       if( !pattern.test(path) ) {
@@ -6266,12 +6199,12 @@
       var nbTitles = 0;
       var AlbumPostProcess = NGY2Tools.AlbumPostProcess.bind(G);
 
-      G.I[0].contentIsLoaded=true;
+      G.I[0].contentIsLoaded = true;
 
       jQuery.each(G.O.items, function(i,item){
         
         var title = '';
-        title=GetI18nItem(item, 'title');
+        title = GetI18nItem(item, 'title');
         if( title === undefined ) { title=''; }
         
         var src='';
@@ -6742,28 +6675,28 @@
       // convert label settings
       if( G.O.thumbnailLabel.position == 'overImageOnBottom' ) {
         G.O.thumbnailLabel.valign = 'bottom';
-        G.O.thumbnailLabel.position == 'overImage';
+        G.O.thumbnailLabel.position = 'overImage';
       }
       if( G.O.thumbnailLabel.position == 'overImageOnMiddle' ) {
         G.O.thumbnailLabel.valign = 'middle';
-        G.O.thumbnailLabel.position == 'overImage';
+        G.O.thumbnailLabel.position = 'overImage';
       }
       if( G.O.thumbnailLabel.position == 'overImageOnTop' ) {
         G.O.thumbnailLabel.valign = 'top';
-        G.O.thumbnailLabel.position == 'overImage';
+        G.O.thumbnailLabel.position = 'overImage';
       }
       if( G.O.thumbnailL1Label !== undefined && G.O.thumbnailL1Label.position !== undefined ) {
         if( G.O.thumbnailL1Label.position == 'overImageOnBottom' ) {
           G.O.thumbnailL1Label.valign = 'bottom';
-          G.O.thumbnailL1Label.position == 'overImage';
+          G.O.thumbnailL1Label.position = 'overImage';
         }
         if( G.O.thumbnailL1Label.position == 'overImageOnMiddle' ) {
           G.O.thumbnailL1Label.valign = 'middle';
-          G.O.thumbnailL1Label.position == 'overImage';
+          G.O.thumbnailL1Label.position = 'overImage';
         }
         if( G.O.thumbnailL1Label.position == 'overImageOnTop' ) {
           G.O.thumbnailL1Label.valign = 'top';
-          G.O.thumbnailL1Label.position == 'overImage';
+          G.O.thumbnailL1Label.position = 'overImage';
         }
       }
 
@@ -7035,34 +6968,37 @@
       var tL1HE = G.O.thumbnailL1HoverEffect2;
       if( tL1HE !== undefined ) {
         switch( toType(tL1HE) ) {
-          case 'string':
-            var tmp = tL1HE.split('|');
-            for(var i = 0; i < tmp.length; i++) {
-              var oDef = NewTHoverEffect();
-              oDef = ThumbnailHoverEffectExtract( tmp[i].trim(), oDef );
-              if(  oDef != null ) {
-                G.tn.hoverEffects.level1.push(oDef);
+          case 'string': {
+              let tmp = tL1HE.split('|');
+              for(var i = 0; i < tmp.length; i++) {
+                let oDef = NewTHoverEffect();
+                oDef = ThumbnailHoverEffectExtract( tmp[i].trim(), oDef );
+                if(  oDef != null ) {
+                  G.tn.hoverEffects.level1.push(oDef);
+                }
               }
+              break;
             }
-            break;
-          case 'object':
-            var oDef = NewTHoverEffect();
-            oDef = jQuery.extend(oDef,tL1HE);
-            oDef = ThumbnailHoverEffectExtract( oDef.name, oDef );
-            if(  oDef != null ) {
-              G.tn.hoverEffects.level1.push(oDef);
-            }
-            break;
-          case 'array':
-            for(var i = 0; i < tL1HE.length; i++) {
-              var oDef = NewTHoverEffect();
-              oDef = jQuery.extend(oDef,tL1HE[i]);
+          case 'object': {
+              let oDef = NewTHoverEffect();
+              oDef = jQuery.extend(oDef,tL1HE);
               oDef = ThumbnailHoverEffectExtract( oDef.name, oDef );
               if(  oDef != null ) {
                 G.tn.hoverEffects.level1.push(oDef);
               }
+              break;
             }
-            break;
+          case 'array': {
+              for(var i = 0; i < tL1HE.length; i++) {
+                let oDef = NewTHoverEffect();
+                oDef = jQuery.extend(oDef,tL1HE[i]);
+                oDef = ThumbnailHoverEffectExtract( oDef.name, oDef );
+                if(  oDef != null ) {
+                  G.tn.hoverEffects.level1.push(oDef);
+                }
+              }
+              break;
+            }
           case 'null':
             break;
           default:
@@ -7074,34 +7010,37 @@
       // thumbnails hover effects - other levels
       var tHE = G.O.thumbnailHoverEffect2;
       switch( toType(tHE) ) {
-        case 'string':
-          var tmp = tHE.split('|');
-          for(var i = 0; i < tmp.length; i++) {
-            var oDef = NewTHoverEffect();
-            oDef = ThumbnailHoverEffectExtract( tmp[i].trim(), oDef );
+        case 'string': {
+            let tmp = tHE.split('|');
+            for(var i = 0; i < tmp.length; i++) {
+              let oDef = NewTHoverEffect();
+              oDef = ThumbnailHoverEffectExtract( tmp[i].trim(), oDef );
+              if(  oDef != null ) {
+                G.tn.hoverEffects.std.push(oDef);
+              }
+            }
+            break;
+          }
+        case 'object': {
+            let oDef = NewTHoverEffect();
+            oDef = jQuery.extend(oDef, tHE);
+            oDef = ThumbnailHoverEffectExtract( oDef.name, oDef );
             if(  oDef != null ) {
               G.tn.hoverEffects.std.push(oDef);
             }
+            break;
           }
-          break;
-        case 'object':
-          var oDef = NewTHoverEffect();
-          oDef = jQuery.extend(oDef, tHE);
-          oDef = ThumbnailHoverEffectExtract( oDef.name, oDef );
-          if(  oDef != null ) {
-            G.tn.hoverEffects.std.push(oDef);
-          }
-          break;
-        case 'array':
-          for(var i = 0; i < tHE.length; i++) {
-            var oDef = NewTHoverEffect();
-            oDef = jQuery.extend(oDef,tHE[i]);
-            oDef = ThumbnailHoverEffectExtract( oDef.name, oDef );
-            if(  oDef!= null ) {
-              G.tn.hoverEffects.std.push(oDef);
+        case 'array': {
+            for(var i = 0; i < tHE.length; i++) {
+              let oDef = NewTHoverEffect();
+              oDef = jQuery.extend(oDef,tHE[i]);
+              oDef = ThumbnailHoverEffectExtract( oDef.name, oDef );
+              if(  oDef!= null ) {
+                G.tn.hoverEffects.std.push(oDef);
+              }
             }
+            break;
           }
-          break;
         case 'null':
           break;
         default:
@@ -7290,7 +7229,7 @@
             }
           }
         }        
-        effect.element=ThumbnailOverEffectsGetCSSElement(sp[0], effect.type);
+        effect.element = ThumbnailOverEffectsGetCSSElement(sp[0], effect.type);
         
       }
       else {
@@ -7339,18 +7278,18 @@
       var newEffects=[];
       for( var i=0; i< effects.length; i++ ) {
         switch( effects[i].name.toUpperCase() ) {
-          case 'BORDERLIGHTER':
-            var rgb = ColorHelperToRGB(GalleryThemeGetCurrent().thumbnail.borderColor);
-            name = 'thumbnail_borderColor_'+rgb+'_'+ShadeBlendConvert(0.5, rgb );
-            newEffects.push(ThumbnailHoverEffectExtract(name, effects[i]));
-            break;
-
-          case 'BORDERDARKER':
-            var rgb = ColorHelperToRGB(GalleryThemeGetCurrent().thumbnail.borderColor);
-            name = 'thumbnail_borderColor_'+rgb+'_'+ShadeBlendConvert(-0.5, rgb );
-            newEffects.push(ThumbnailHoverEffectExtract(name, effects[i]));
-            break;
-
+          case 'BORDERLIGHTER': {
+              let rgb = ColorHelperToRGB(GalleryThemeGetCurrent().thumbnail.borderColor);
+              let name = 'thumbnail_borderColor_'+rgb+'_'+ShadeBlendConvert(0.5, rgb );
+              newEffects.push(ThumbnailHoverEffectExtract(name, effects[i]));
+              break;
+            }
+          case 'BORDERDARKER': {
+              let rgb = ColorHelperToRGB(GalleryThemeGetCurrent().thumbnail.borderColor);
+              let name = 'thumbnail_borderColor_'+rgb+'_'+ShadeBlendConvert(-0.5, rgb );
+              newEffects.push(ThumbnailHoverEffectExtract(name, effects[i]));
+              break;
+            }
           case 'SCALE120':
             newEffects.push(ThumbnailHoverEffectExtract('thumbnail_scale_1.00_1.20', effects[i]));
             break;
@@ -7373,6 +7312,7 @@
           case 'LABELSLIDEUPTOP':
           case 'LABELSLIDEUP':
             newEffects.push(ThumbnailHoverEffectExtract('label_translateY_100%_0%', effects[i]));
+            newEffects.push(ThumbnailHoverEffectExtract('label_translateY_100%_0%', effects[i]));
             break;
           case 'LABELSLIDEDOWN':
             newEffects.push(ThumbnailHoverEffectExtract('label_translateY_-100%_0%', effects[i]));
@@ -7384,7 +7324,7 @@
             break;
           case 'OVERSCALE':
           case 'OVERSCALEOUTSIDE':
-            name = 'label_scale_0_100';
+            //var name = 'label_scale_0_100';
             newEffects.push(ThumbnailHoverEffectExtract('label_scale_2.00_1.00', effects[i]));
             var n = cloneJSObject(effects[i]);
             newEffects.push(ThumbnailHoverEffectExtract('label_opacity_0.00_1.00', n));
@@ -7430,10 +7370,6 @@
             break;
           case 'IMAGESLIDEDOWN':
             newEffects.push(ThumbnailHoverEffectExtract('image_translateY_0%_100%', effects[i]));
-            break;
-          case 'LABELSLIDEUP':
-          case 'LABELSLIDEUPTOP':
-            newEffects.push(ThumbnailHoverEffectExtract('label_translateY_100%_0%', effects[i]));
             break;
           case 'LABELSLIDEUPDOWN':
             newEffects.push(ThumbnailHoverEffectExtract('label_translateY_0%_100%', effects[i]));
@@ -8238,7 +8174,7 @@
         var r = GalleryEventRetrieveElementl(e, true);
         // if( r.action == 'OPEN' && r.GOMidx != -1 ) {
         if( r.GOMidx != -1 ) {
-          var target = e.target || e.srcElement;
+          // var target = e.target || e.srcElement;
           // if( target.getAttribute('class') != 'nGY2GThumbnail' ) { return; }
           ThumbnailHover(r.GOMidx);
         }
@@ -8249,7 +8185,7 @@
       if( !G.VOM.viewerDisplayed && G.GOM.albumIdx != -1 ) {
         var r = GalleryEventRetrieveElementl(e, true);
         if( r.GOMidx != -1 ) {
-          var target = e.target || e.srcElement;
+          // var target = e.target || e.srcElement;
           // if( target.getAttribute('class') != 'nGY2GThumbnail' ) { return; }
           ThumbnailHoverOut(r.GOMidx);
         }
@@ -8405,27 +8341,27 @@
       items.push(G.I[ngy2ItemIdx]);
       //TODO -> danger? -> pourquoi reconstruire la liste si déjà ouvert (back/forward)     
       var l = G.I.length;
-      for( var idx = ngy2ItemIdx+1; idx < l ; idx++) {
-        var item = G.I[idx];
+      for( let idx = ngy2ItemIdx+1; idx < l ; idx++) {
+        let item = G.I[idx];
         if( item.kind == 'image' && item.isToDisplay(G.VOM.albumID) && item.destinationURL == '' ) {
-          var vimg = new VImg(idx);
+          let vimg = new VImg(idx);
           G.VOM.items.push(vimg);
           items.push(item);
         }
       }
       var last = G.VOM.items.length;
       var cnt = 1;
-      for( var idx = 0; idx < ngy2ItemIdx ; idx++) {
-        var item = G.I[idx];
+      for( let idx = 0; idx < ngy2ItemIdx ; idx++) {
+        let item = G.I[idx];
         if( item.kind == 'image' && item.isToDisplay(G.VOM.albumID) && item.destinationURL == '' ) {
-          var vimg = new VImg(idx);
+          let vimg = new VImg(idx);
           vimg.mediaNumber = cnt;
           G.VOM.items.push(vimg);
           items.push(item);
           cnt++;
         }
       }
-      for( var i = 0; i < last; i++ ) {
+      for( let i = 0; i < last; i++ ) {
         G.VOM.items[i].mediaNumber = cnt;
         cnt++;
       }
@@ -8445,7 +8381,7 @@
       else {
         // viewer already displayed -> display new media in current viewer
         G.VOM.content.current.$media.empty();
-        var item = G.VOM.content.current.NGY2Item();
+        let item = G.VOM.content.current.NGY2Item();
         var spreloader = '<div class="nGY2ViewerMediaLoaderDisplayed"></div>';
         if( item.mediaKind == 'img' && item.imageWidth != 0 && item.imageHeight != 0 ) {
           spreloader = '<div class="nGY2ViewerMediaLoaderHidden"></div>';
@@ -8578,10 +8514,10 @@
         posX = -(imageCurrentWidth - G.VOM.window.lastWidth)/2;
       }
       var posY = 0;
-      if( imageCurrentHeight > G.VOM.window.lastHeight ) {
-        posY = ( imageCurrentHeight - G.VOM.window.lastHeight ) / 2;
-      }
-      posY = 0;   // actually, it seems that the image is always centered vertically -> so no need to to anything
+      // if( imageCurrentHeight > G.VOM.window.lastHeight ) {
+      //   posY = ( imageCurrentHeight - G.VOM.window.lastHeight ) / 2;
+      // }
+      // posY = 0;   // actually, it seems that the image is always centered vertically -> so no need to to anything
       
       // Part 2: set the X/Y position (for zoom/pan)
       if( isCurrent ) {
@@ -8729,7 +8665,10 @@
       ViewerToolsOn();
 
       // Go to fullscreen mode
-      if( ngscreenfull.enabled && G.O.viewerFullscreen ) { ngscreenfull.request(); }
+      if( ngscreenfull.enabled && G.O.viewerFullscreen ) { 
+        ngscreenfull.request();
+        G.VOM.viewerIsFullscreen=true;
+      }
 
       // Gallery
       LightboxGalleryBuild();
@@ -8738,13 +8677,13 @@
       ResizeLightbox(true);
       G.VOM.gallery.Resize();
       G.VOM.timeImgChanged = new Date().getTime();
-      
+
       // viewer display transition
       G.VOM.$toolbarTL.css('opacity', 0);
       G.VOM.$toolbarTR.css('opacity', 0);
       G.VOM.$buttonLeft.css('opacity', 0);
       G.VOM.$buttonRight.css('opacity', 0);
-      G.VOM.gallery.$elt.css('opacity', 0);
+      if( G.O.viewerGallery != 'none' ) { G.VOM.gallery.$elt.css('opacity', 0); }
       G.VOM.$content.css('opacity', 0);
       G.VOM.$toolbarTR[0].style[G.CSStransformName] = 'translateY(-40px) ';
       G.VOM.$toolbarTL[0].style[G.CSStransformName] = 'translateY(-40px) ';
@@ -8752,8 +8691,7 @@
       G.VOM.$buttonRight[0].style[G.CSStransformName] = 'translateX(40px) ';
 
       // STEP 1: display main container, including media
-      var tweenable = new NGTweenable();
-      tweenable.tween({
+      new NGTweenable().tween({
         from:         { opacity: 0, posY: G.VOM.window.lastHeight*.5 },
         to:           { opacity: 1, posY: 0 },
         delay:        10,
@@ -8771,8 +8709,7 @@
       
       
       // STEP 2: display tools, left/right navigation buttons, gallery
-      var tweenable = new NGTweenable();
-      tweenable.tween({
+      new NGTweenable().tween({
         from:         { posY: -40, opacity: 0, scale: 3 },
         to:           { posY: 0, opacity: 1, scale: 1 },
         delay:        300,
@@ -8787,8 +8724,11 @@
           G.VOM.$buttonRight[0].style[G.CSStransformName] = 'translateX(' + (-state.posY) + 'px) ';
           
           // gallery
-          G.VOM.gallery.$elt.css({ opacity: state.opacity });
-          G.VOM.gallery.$elt[0].style[G.CSStransformName] = 'scale('+state.scale+')';
+          if( G.O.viewerGallery != 'none' ) {
+            G.VOM.gallery.$elt.css({ opacity: state.opacity });
+            G.VOM.gallery.$elt[0].style[G.CSStransformName] = 'scale('+state.scale+')';
+          }
+          
         },
         finish: function() {
           G.VOM.viewerDisplayed = true;
@@ -9001,7 +8941,7 @@
 							var idx = parseInt(ev.target.dataset.ngy2_idx);
 							var vidx = parseInt(ev.target.dataset.ngy2_vidx);
 
-							if( idx != undefined && vidx != G.VOM.content.current.vIdx ) {
+							if( !isNaN(idx) && vidx != G.VOM.content.current.vIdx ) {
                 
                 if( vidx > G.VOM.content.current.vIdx ) {
                   TriggerCustomEvent('lightboxNextImage');
@@ -9010,7 +8950,7 @@
                   G.VOM.content.next.$media.empty();
                   var nextItem = G.I[idx];
                   G.VOM.content.next.vIdx = vidx;
-                  var spreloader = '<div class="nGY2ViewerMediaLoaderDisplayed"></div>';
+                  let spreloader = '<div class="nGY2ViewerMediaLoaderDisplayed"></div>';
                   if( nextItem.mediaKind == 'img' && nextItem.imageWidth != 0 && nextItem.imageHeight != 0 ) {
                     spreloader = '<div class="nGY2ViewerMediaLoaderHidden"></div>';
                   }
@@ -9031,7 +8971,7 @@
                   G.VOM.content.previous.$media.empty();
                   var previousItem = G.I[idx];
                   G.VOM.content.previous.vIdx = vidx;
-                  var spreloader = '<div class="nGY2ViewerMediaLoaderDisplayed"></div>';
+                  let spreloader = '<div class="nGY2ViewerMediaLoaderDisplayed"></div>';
                   if( previousItem.mediaKind == 'img' && previousItem.imageWidth != 0 && previousItem.imageHeight != 0 ) {
                     spreloader = '<div class="nGY2ViewerMediaLoaderHidden"></div>';
                   }
@@ -9584,7 +9524,7 @@
           if( G.O.imageTransition == 'SWIPE' ) { sc = 1; }
 
           if( posX > 0 ) {
-            var dir = G.VOM.window.lastWidth;
+            let dir = G.VOM.window.lastWidth;
             if( itemPrevious.mediaTransition() ) {
               // window.ng_draf( function() {
                 G.VOM.content.previous.$media[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px) scale(' + sc + ')';
@@ -9597,7 +9537,7 @@
             }
           }
           else {
-            var dir = -G.VOM.window.lastWidth;
+            let dir = -G.VOM.window.lastWidth;
             if( itemNext.mediaTransition() ) {
               // window.ng_draf( function() {
                 G.VOM.content.next.$media[0].style[G.CSStransformName] = 'translate(' + (-dir + posX) + 'px, 0px) scale(' + sc + ')';
@@ -9616,7 +9556,7 @@
           G.VOM.content.previous.$media[0].style[G.CSStransformName] = '';
           G.VOM.content.next.$media[0].style[G.CSStransformName] = '';
           if( posX < 0 ) {
-            var o = (-posX) / G.VOM.window.lastWidth;
+            let o = (-posX) / G.VOM.window.lastWidth;
             if( itemNext.mediaTransition() ) {
               ViewerSetMediaVisibility(G.VOM.content.next, o);
             }
@@ -9625,7 +9565,7 @@
             }
           }
           else {
-            var o = posX / G.VOM.window.lastWidth;
+            let o = posX / G.VOM.window.lastWidth;
             if( itemPrevious.mediaTransition() ) {
               ViewerSetMediaVisibility(G.VOM.content.previous, o);
             }
@@ -9765,7 +9705,7 @@
             
           case 'SLIDEAPPEAR':
           default:
-            var dir=(displayType == 'nextImage' ? - vP.w : vP.w);
+            // var dir=(displayType == 'nextImage' ? - vP.w : vP.w);
             var op = (Math.abs(G.VOM.swipePosX)) / G.VOM.window.lastWidth;
             new_content_item.$media[0].style[G.CSStransformName] = '';
             if( velocity == 0 ) {
@@ -10076,7 +10016,7 @@
       G.VOM.window.lastWidth = windowsW;
       G.VOM.window.lastHeight = windowsH;
 
-      var $tb = G.VOM.$toolbar.find('.toolbar');
+      // var $tb = G.VOM.$toolbar.find('.toolbar');
       // var tb_OHt = $tb.outerHeight(true);
 
 
@@ -10212,10 +10152,10 @@
         G.$E.base.addClass('ngy2_container');
       
         // RTL or LTR
-        var sRTL='';
-        if( G.O.RTL ) {
-          sRTL = 'style="text-align:right;direction:rtl;"';
-        }
+        // var sRTL='';
+        // if( G.O.RTL ) {
+          // sRTL = 'style="text-align:right;direction:rtl;"';
+        // }
       
         // theme
         G.$E.base.addClass(G.O.theme)
@@ -15886,7 +15826,7 @@ if (typeof define === 'function' && define.amdDISABLED) {
 
       // add click event
       t[i].addEventListener('click', function(e) {
-        // disable link tag if A element
+        // disable link tag if <A> element
         e.preventDefault();
       
         // default options for standalone lightbox
