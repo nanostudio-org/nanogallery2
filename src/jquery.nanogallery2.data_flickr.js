@@ -373,10 +373,10 @@
     };
     
     /** @function GetHiddenAlbums */
-    var GetHiddenAlbums = function( hiddenAlbums, callback ){
+    // var GetHiddenAlbums = function( hiddenAlbums, callback ){
       // not supported -> doesn't exit in Flickr
-      callback();     
-    }
+      // callback();     
+    // }
 
     // -----------
     // Initialize thumbnail sizes
@@ -393,11 +393,11 @@
     var AlbumPostProcess = NGY2Tools.AlbumPostProcess.bind(G);
 
     switch( fnName ){
-      case 'GetHiddenAlbums':
-        var hiddenAlbums = arguments[2],
-        callback = arguments[3];
-        GetHiddenAlbums(hiddenAlbums, callback);
-        break;
+      // case 'GetHiddenAlbums':
+        // var hiddenAlbums = arguments[2],
+        // callback = arguments[3];
+        // GetHiddenAlbums(hiddenAlbums, callback);
+        // break;
       case 'AlbumGetContent':
         var albumID = arguments[2],
         callback = arguments[3],
