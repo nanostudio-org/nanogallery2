@@ -6,7 +6,7 @@ v3.0.1
 - fixed: Flickr connector
 - fixed: lightbox error when thumbnails are disabled
 - fixed: fullscreen mode remains activated when lightbox is closed after having been started in fullscreen mode
-- fixed: requestAnimationFrame not used in some case
+- fixed: requestAnimationFrame not used in some cases
 - fixed: does not scroll to top of gallery when an album is opened
 - minor bugfixes
 
