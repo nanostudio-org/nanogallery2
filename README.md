@@ -7,7 +7,7 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 <img src="http://nanogallery2.nanostudio.org/img/nanogallery2si.png" alt="nanogallery2"/>  
   
 
-![version](https://img.shields.io/badge/version-3.0.0-orange)
+![version](https://img.shields.io/badge/version-3.0.1-orange)
 [![Build Status](https://travis-ci.org/nanostudio-org/nanogallery2.svg?branch=dev-gh-pages)](https://travis-ci.org/nanostudio-org/nanogallery2)
 [![DeepScan grade](https://deepscan.io/api/teams/89/projects/394/branches/608/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=89&pid=394&bid=608)
 <!-- 
