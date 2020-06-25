@@ -1,4 +1,4 @@
-/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2020-06-22 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2020-06-25 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /*!
  * @preserve nanogallery2 v3.0.1beta - javascript photo / video gallery and lightbox
  * Homepage: http://nanogallery2.nanostudio.org
@@ -23,8 +23,15 @@
 // nanogallery v3.0.1beta
 /*
 
+- fixed: lightbox error when thumbnails disabled
+- fixed: fullscreen mode remains activated when lightbox is closed after having been started in fullscreen mode
+- fixed: requestAnimationFrame not used in some case
+- fixed: does not scroll to top of gallery when an album is opened
+- minor bugfixes
 
-- 
+TODO :
+  IFRAME 
+  lightbox standalone js
 
 */
  
@@ -1477,7 +1484,7 @@
     openOnStart :                 '',
     viewerHideToolsDelay :        4000,
     viewerToolbar : {
-      display :                   true,
+      display :                   false,
       position :                  'bottom',
       fullWidth :                 false,
       align :                     'center',
@@ -2580,8 +2587,8 @@
       // Position the top of the gallery to make it visible, if not displayed
       ScrollToTop: function() {
 
-        if( !G.galleryResizeEventEnabled ) {      
-          // no scroll to top after a resize event
+        if( G.GOM.firstDisplay ) {      
+          // do no scroll to top on first display
           return;
         }
         
@@ -3057,15 +3064,20 @@
     function LightboxStandaloneFindContent() {
 
       G.GOM.curNavLevel = 'l1';
-      
-      // retrieve all element having "data-nanogallery2-lightbox" and from the same group if defined
-      var elts = jQuery('[data-nanogallery2-Lightbox');
-      
-      // element group
-      var g = G.$E.base[0].dataset.nanogallery2Lgroup;
 
-      GetContentMarkup( elts, g );
+      if( G.O.items == null ) {
+        // retrieve all element having "data-nanogallery2-lightbox" and from the same group if defined
+        var elts = jQuery('[data-nanogallery2-Lightbox');
+        // element group
+        var g = G.$E.base[0].dataset.nanogallery2Lgroup;
 
+        GetContentMarkup( elts, g );
+      }
+      else {
+        // Content defined in the starting parameters
+        GetContentApiObject();
+      }
+      
       LightboxStandaloneDisplay();
         
     }
@@ -3730,6 +3742,7 @@
               G.$E.conNavigationBar.css({ 'opacity': 0, 'display': 'none' });
             }
             // scroll to top of the gallery if needed
+
             G.GOM.ScrollToTop();
 
             GalleryRenderPart1( albumIdx );
@@ -6190,12 +6203,12 @@
       var nbTitles = 0;
       var AlbumPostProcess = NGY2Tools.AlbumPostProcess.bind(G);
 
-      G.I[0].contentIsLoaded=true;
+      G.I[0].contentIsLoaded = true;
 
       jQuery.each(G.O.items, function(i,item){
         
         var title = '';
-        title=GetI18nItem(item, 'title');
+        title = GetI18nItem(item, 'title');
         if( title === undefined ) { title=''; }
         
         var src='';
@@ -8656,7 +8669,10 @@
       ViewerToolsOn();
 
       // Go to fullscreen mode
-      if( ngscreenfull.enabled && G.O.viewerFullscreen ) { ngscreenfull.request(); }
+      if( ngscreenfull.enabled && G.O.viewerFullscreen ) { 
+        ngscreenfull.request();
+        G.VOM.viewerIsFullscreen=true;
+      }
 
       // Gallery
       LightboxGalleryBuild();
@@ -8665,13 +8681,13 @@
       ResizeLightbox(true);
       G.VOM.gallery.Resize();
       G.VOM.timeImgChanged = new Date().getTime();
-      
+
       // viewer display transition
       G.VOM.$toolbarTL.css('opacity', 0);
       G.VOM.$toolbarTR.css('opacity', 0);
       G.VOM.$buttonLeft.css('opacity', 0);
       G.VOM.$buttonRight.css('opacity', 0);
-      G.VOM.gallery.$elt.css('opacity', 0);
+      if( G.O.viewerGallery != 'none' ) { G.VOM.gallery.$elt.css('opacity', 0); }
       G.VOM.$content.css('opacity', 0);
       G.VOM.$toolbarTR[0].style[G.CSStransformName] = 'translateY(-40px) ';
       G.VOM.$toolbarTL[0].style[G.CSStransformName] = 'translateY(-40px) ';
@@ -8712,8 +8728,11 @@
           G.VOM.$buttonRight[0].style[G.CSStransformName] = 'translateX(' + (-state.posY) + 'px) ';
           
           // gallery
-          G.VOM.gallery.$elt.css({ opacity: state.opacity });
-          G.VOM.gallery.$elt[0].style[G.CSStransformName] = 'scale('+state.scale+')';
+          if( G.O.viewerGallery != 'none' ) {
+            G.VOM.gallery.$elt.css({ opacity: state.opacity });
+            G.VOM.gallery.$elt[0].style[G.CSStransformName] = 'scale('+state.scale+')';
+          }
+          
         },
         finish: function() {
           G.VOM.viewerDisplayed = true;
@@ -15811,7 +15830,7 @@ if (typeof define === 'function' && define.amdDISABLED) {
 
       // add click event
       t[i].addEventListener('click', function(e) {
-        // disable link tag if A element
+        // disable link tag if <A> element
         e.preventDefault();
       
         // default options for standalone lightbox
@@ -16881,10 +16900,10 @@ if (typeof define === 'function' && define.amdDISABLED) {
     };
     
     /** @function GetHiddenAlbums */
-    var GetHiddenAlbums = function( hiddenAlbums, callback ){
+    // var GetHiddenAlbums = function( hiddenAlbums, callback ){
       // not supported -> doesn't exit in Flickr
-      callback();     
-    }
+      // callback();     
+    // }
 
     // -----------
     // Initialize thumbnail sizes
@@ -16901,11 +16920,11 @@ if (typeof define === 'function' && define.amdDISABLED) {
     var AlbumPostProcess = NGY2Tools.AlbumPostProcess.bind(G);
 
     switch( fnName ){
-      case 'GetHiddenAlbums':
-        var hiddenAlbums = arguments[2],
-        callback = arguments[3];
-        GetHiddenAlbums(hiddenAlbums, callback);
-        break;
+      // case 'GetHiddenAlbums':
+        // var hiddenAlbums = arguments[2],
+        // callback = arguments[3];
+        // GetHiddenAlbums(hiddenAlbums, callback);
+        // break;
       case 'AlbumGetContent':
         var albumID = arguments[2],
         callback = arguments[3],
