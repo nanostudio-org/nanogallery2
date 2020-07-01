@@ -1,6 +1,6 @@
-/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2020-06-25 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2020-07-01 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /*!
- * @preserve nanogallery2 v3.0.1beta - javascript photo / video gallery and lightbox
+ * @preserve nanogallery2 v3.0.2 - javascript photo / video gallery and lightbox
  * Homepage: http://nanogallery2.nanostudio.org
  * Sources:  https://github.com/nanostudio-org/nanogallery2
  *
@@ -20,18 +20,11 @@
  */
 
  
-// nanogallery v3.0.1beta
+// nanogallery v3.0.2
 /*
 
-- fixed: lightbox error when thumbnails disabled
-- fixed: fullscreen mode remains activated when lightbox is closed after having been started in fullscreen mode
-- fixed: requestAnimationFrame not used in some case
-- fixed: does not scroll to top of gallery when an album is opened
+- fixed: lightbox does nor free it's resources on close, in some case
 - minor bugfixes
-
-TODO :
-  IFRAME 
-  lightbox standalone js
 
 */
  
@@ -2546,7 +2539,6 @@ TODO :
       lastFullRow :               -1,       // number of the last row without holes
       lastDisplayedIdx:           -1,       // used to display the counter of not displayed items
       displayInterval :           { from: 0, len: 0 },
-      userEvents:                 null,
       hammertime:                 null,
       curNavLevel:                'l1',   // current navigation level (l1 or LN)
       curWidth:                   'me',
@@ -2783,7 +2775,6 @@ TODO :
         }
 				
 			},
-      userEvents:         null,   // user events management
       hammertime:         null,   // hammer.js manager
       swipePosX:          0,      // current horizontal swip position
       panPosX:            0,      // position for manual pan
@@ -9948,8 +9939,6 @@ TODO :
           G.VOM.playSlideshow = false;
         }
 
-        // G.VOM.userEvents.removeEventListeners();
-        // G.VOM.userEvents=null;
         G.VOM.hammertime.destroy();
         G.VOM.hammertime = null;
 
@@ -9958,7 +9947,10 @@ TODO :
           ngscreenfull.exit();
         }
         
-        G.VOM.$baseCont.hide(0).off().show(0).html('').remove();
+        // G.VOM.$baseCont.hide(0).off().show(0).html('').remove();
+        // G.VOM.$baseCont.remove();         // does not work... (?)
+        jQuery('.nGY2ViewerContainer').remove();
+        G.VOM.$baseCont = null;
         G.VOM.viewerDisplayed = false;
 
         if( G.O.lightboxStandalone ) { return; }
