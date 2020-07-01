@@ -1,5 +1,5 @@
 /*!
- * @preserve nanogallery2 v3.0.2 - javascript photo / video gallery and lightbox
+ * @preserve nanogallery2 v3.0.2beta - javascript photo / video gallery and lightbox
  * Homepage: http://nanogallery2.nanostudio.org
  * Sources:  https://github.com/nanostudio-org/nanogallery2
  *
@@ -19,12 +19,16 @@
  */
 
  
-// nanogallery v3.0.2
+// nanogallery v3.0.2beta
 /*
 
 - fixed: lightbox does nor free it's resources on close, in some case
+- fixed: ignore markup elements which do not contain media data
+- fixed: lightbox previous media displayed over current media on startup
 - minor bugfixes
 
+todo:
+- open image based on ID / filename
 */
  
  
@@ -6404,6 +6408,9 @@
         // compare to group defined on the element that has been clicked (lightbox standalone)
         if( item.dataset.nanogallery2Lgroup != group ) { return; }
 
+        // ignore element <SCRIPT>
+        if( item.nodeName == 'SCRIPT' ) { return; }
+
         // create dictionnary with all data attribute name in lowercase (to be case unsensitive)
         var data = {
           // all possible data attributes with some default values
@@ -6476,7 +6483,7 @@
           // src = data['href'];
         // }
         src = src || data['data-ngsrc'] || data['href'];
-        if( !StartsWithProtocol(src) ) {          // do not add the base URL if src starts with a protocol (http, https...)
+        if( src !== undefined && !StartsWithProtocol(src) ) {          // do not add the base URL if src starts with a protocol (http, https...)
           src = G.O.itemsBaseURL + src;
         }
 
@@ -6494,10 +6501,14 @@
         if( thumbsrc == '' ) {
           thumbsrc = src;       // no thumbnail image URL -> use big image URL
         }
-				if( !StartsWithProtocol(thumbsrc) ) {
+				if( thumbsrc !== undefined && !StartsWithProtocol(thumbsrc) ) {
 					thumbsrc = G.O.itemsBaseURL + thumbsrc;
 				}
 
+        // ignore if no media URL at all
+        if( src === undefined && thumbsrc === undefined ) { return; }
+        
+        
         //newObj.description=jQuery(item).attr('data-ngdesc');
         var description = data['data-ngdesc'];
         var ID = data['id'] || data['data-ngid'];
@@ -6519,7 +6530,9 @@
           title = title_from_url;
         }
 
-
+console.log(thumbsrc);
+        
+        
         var newItem = NGY2Item.New( G, title, description, ID, albumID, kind, tags );
         if( title != '' ) {
           nbTitles++;
@@ -8579,7 +8592,7 @@
       }
       G.VOM.content.previous.vIdx = G.VOM.IdxNext();
       G.VOM.content.next.vIdx = G.VOM.IdxPrevious();   
- 
+
       var sMedia = '<div class="nGY2ViewerMediaPan"><div class="nGY2ViewerMediaLoaderDisplayed"></div>' + G.VOM.content.previous.NGY2Item().mediaMarkup + '</div>';    // previous media
       sMedia    += '<div class="nGY2ViewerMediaPan"><div class="nGY2ViewerMediaLoaderDisplayed"></div>' + G.VOM.content.current.NGY2Item().mediaMarkup  + '</div>';    // current media
       sMedia    += '<div class="nGY2ViewerMediaPan"><div class="nGY2ViewerMediaLoaderDisplayed"></div>' + G.VOM.content.next.NGY2Item().mediaMarkup  + '</div>';    // next media
@@ -8604,6 +8617,12 @@
       G.VOM.content.current.$media = $mediaPan.eq(1);     // pointer to current media container
       G.VOM.content.next.$media = $mediaPan.eq(2);        // pointer to next media container
 
+      // position next/previous media
+      var vP = G.GOM.cache.viewport;
+      G.VOM.content.previous.$media[0].style[G.CSStransformName] = 'translate(-' + vP.w + 'px, 0px)';
+      G.VOM.content.next.$media[0].style[G.CSStransformName] = 'translate(' + vP.w + 'px, 0px)';
+      
+      
       G.VOM.ImageLoader.loadImage( VieweImgSizeRetrieved, G.VOM.content.current.NGY2Item()  );
       G.VOM.ImageLoader.loadImage( VieweImgSizeRetrieved, G.VOM.content.previous.NGY2Item() );
       G.VOM.ImageLoader.loadImage( VieweImgSizeRetrieved, G.VOM.content.next.NGY2Item()  );
