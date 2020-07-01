@@ -1,7 +1,7 @@
 nanogallery2 - ChangeLog
 ===========
 
-v3.0.1
+v3.0.1 - Jun 26, 2020
 ------
 - fixed: Flickr connector
 - fixed: lightbox error when thumbnails are disabled
@@ -11,7 +11,7 @@ v3.0.1
 - minor bugfixes
 
 
-v3.0.0
+v3.0.0 - Jun 19, 2020
 ------
 - new features:
   - thumbnails on lightbox
@@ -61,7 +61,7 @@ v3.0.0
   - removed options 'topOverImage', 'bottomOverImage' for lighbox vertical toolbar position
   - removed lightbox theme 'border'
 
-v2.4.2
+v2.4.2 - Mar 22, 2019
 ------
 - new: self hosted videos - support for WEBM and OGV formats (dependant on browser support)
 - fixed: gallery not displayed under certain conditions
@@ -69,7 +69,7 @@ v2.4.2
 - fixed: self hosted videos - support in html markup method
 - removed: share on google+
 
-v2.4.1
+v2.4.1 - Mar 13, 2019
 ------
 - new: support for self hosted videos (mp4)
 - new: lightbox - button to rotate images
@@ -87,7 +87,7 @@ v2.4.1
 - removed: option 'albumListHidden' depreciated
   
 	 
-v2.3.0
+v2.3.0 - Sep 26, 2018
 ------
 - new loading spinner with support of gif/png files with transparency
 - new default lightbox image transition 'swipe2'
@@ -97,7 +97,7 @@ v2.3.0
 - fixed #144 copy-n-paste error - thanks to citrin for the fix
 
 
-v2.2.0
+v2.2.0 - May 25, 2018
 ------
 - new option 'eventsDebounceDelay' - thumbnail's lazy display fine tuning (response delay after resizing, rotation and scroll events)
 - new API method 'resize' - force a gallery resize. To be used when adding/removing items dynamically, to avoid a full re-display of the thumbnails.
@@ -112,7 +112,7 @@ v2.2.0
 - fixed thumbnail effects with CSS 2D/3D transformations
 
 
-v2.1.0
+v2.1.0 - Mar 5, 2018
 ------
 - new: API methods 'closeViewer', 'minimizeToolbar', 'maximizeToolbar', 'paginationPreviousPage', 'paginationNextPage', 'paginationGotoPage', 'paginationCountPages'
 - fixed: single touch to open thumbnail when no hover effect defined
@@ -124,7 +124,7 @@ v2.1.0
 - fixed: functions NGY2Item.thumbSet(), NGY2Item.imageSet(), NGY2Item.thumbSetImgHeight(), NGY2Item.thumbSetImgWidth()
 
 
-v2.0.0
+v2.0.0 - Nov 30, 2017
 ------
 - new: mosaic layout
 - new: video support (Youtube, Vimeo and Dailymotion)
@@ -150,7 +150,7 @@ v2.0.0
 - fixed: image on selected thumbnail not visible
   
   
-v1.5.0
+v1.5.0 - Sept 7, 2017
 ------
 - new: swipe down to close lightbox
 - new: thumbnail image dominant color in stacks
@@ -172,12 +172,12 @@ v1.5.0
 - misc performance enhancements and bugfixes
   
   
-v1.4.1
+v1.4.1 - June 11, 2017
 ------
 - fixed: incorrect font embedded in nanogallery2.woff.css
   
   
-v1.4.0
+v1.4.0 - June 11, 2017
 ------
 - new: display thumbnail's images smoothly when fully downloaded (option 'thumbnailWaitImageLoaded')
 - new: gallery display animations (options 'galleryDisplayTransition' and 'galleryDisplayTransitionDuration')
@@ -195,7 +195,7 @@ v1.4.0
 - fixed: misc small issues
 
 
-v1.3.0
+v1.3.0 - May 11, 2017
 ------
 - new: display thumbnail's images smoothly when fully downloaded - option 'thumbnailWaitImageLoaded'
 - new: gallery display animations (options 'galleryDisplayTransition' and 'galleryDisplayTransitionDuration')
@@ -210,7 +210,7 @@ v1.3.0
 - fixed: image display quality in Chrome
 
 
-v1.3.0
+v1.3.0 - May 11, 2017
 ------
 - new: #3 Auto hide tools on image view after inactivity. Use the option viewerHideToolsDelay to define the delay in ms.
 - new: compatibility to nanoPhotosProvider2 (https://github.com/nanostudio-org/nanoPhotosProvider2)
@@ -234,7 +234,7 @@ v1.3.0
 - fixed: #38 Fullscreen icon when opening in fullscreen
 
   
-v1.2.1
+v1.2.1 - Mar 23, 2017
 ------
 - fixed: Google Photos albums not displayed (with NANOGP - https://github.com/nanostudio-org/nanogp)
 - fixed: kind 'google' for (old) Picasa data
@@ -243,7 +243,7 @@ v1.2.1
 
   
   
-v1.2.0
+v1.2.0 - Mar 20, 2017
 ------
 - new: thumbnails hover effects can now be chained and syntax has been enhanced with new options
 - new: stack motions effects on thumbnails - options 'thumbnailStacks' and 'thumbnailL1Stacks' to add N stacks behind the thumbnails (thanks to Mary Lou from Codrops for the inspiration - https://tympanus.net/codrops/2017/03/15/stack-motion-hover-effects/)
@@ -264,7 +264,7 @@ v1.2.0
 - fixed: image zoom with mouse wheel on Firefox
 
 
-v1.1.0
+v1.1.0 - Mar 6, 2017
 ------
 - new: custom tools for thumbnails ('custom1..10' and the associated icons (icons.thumbnailCustomTool1..10))
 - new: support for custom buttons on thumbnails
@@ -275,7 +275,7 @@ v1.1.0
 - fixed: small bugs
   
   
-v1.0.0
+v1.0.0 - Feb 27, 2017
 ------
 - new: options to set the size of images and thumbnails
 - new: options to set EXIF properties with javascript
@@ -291,7 +291,7 @@ v1.0.0
 - fixed: zoom image in/out for self hosted content  
   
   
-v0.9.3
+v0.9.3 - Feb 18, 2017
 ------
 - fixed: incorrect image size with Flickr storage
 - fixed: double tap fired on zoom-in/out icons
@@ -302,14 +302,14 @@ v0.9.3
 - improved: image zoom management
   
   
-v0.9.2a
+v0.9.2a - Jan 31, 2017
 ------
 - fixed: infobox not displayed in lightbox
 - fixed: incorrect thumbnail height/widths calc for google (thanks to alexanderhowell - https://github.com/alexanderhowell)
 - fixed: incorrect min-width in CSS
 
   
-v0.9.2
+v0.9.2 - Jan 26, 2017
 ------
 - new option 'thumbnailOpenOriginal' : display the original image (for example in Flickr or Google Photos), without opening the lightbox
 - some icons replaced
