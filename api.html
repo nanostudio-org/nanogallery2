@@ -1329,15 +1329,11 @@
   <!-- ########################### -->
 
 
-
 <div class="container ngy2documentation">
 <br><br>
 <h1>nanogallery2 API - reference guide</h1>
 <br><br><br>
-<blockquote>
-Need more customzing possibilities? Here's the section for the experts. Javascript knowledge required.
-</blockquote>
-<br><br>
+
 <br><br><br>
 
 
@@ -1346,15 +1342,15 @@ Need more customzing possibilities? Here's the section for the experts. Javascri
 <h2><b><i class="fa fa-certificate ngy2color1" aria-hidden="true"></i> Examples of API / callbacks / events usage</b></h2>
 <hr>
 <p>
-- Add items dynamically to an existing gallery: <a href="https://codepen.io/Kris-B/pen/wJKowg" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+Add items dynamically to an existing gallery: <a href="https://codepen.io/Kris-B/pen/wJKowg" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
 <br>
-- Shopping cart: <a href="https://codepen.io/Kris-B/pen/NbEWbe?editors=0010" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+Shopping cart: <a href="https://codepen.io/Kris-B/pen/NbEWbe?editors=0010" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
 <br>
-- Thumbnail selection handling: <a href="https://codepen.io/Kris-B/pen/RyaLaG" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+Thumbnail selection handling: <a href="https://codepen.io/Kris-B/pen/RyaLaG" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
 <br>
-- Thumbnails: add custom tool and custom button: <a href="https://codepen.io/Kris-B/pen/RpWKMJ" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+Thumbnails: add custom tool and custom button: <a href="https://codepen.io/Kris-B/pen/RpWKMJ" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
 <br>
-- Integrate Youtube videos with fancyBox3: <a href="https://codepen.io/Kris-B/pen/zZNMJj" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
+Integrate Youtube videos with fancyBox3: <a href="https://codepen.io/Kris-B/pen/zZNMJj" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
 </p>
 
 <br><br>
@@ -1366,24 +1362,24 @@ Need more customzing possibilities? Here's the section for the experts. Javascri
 
 <h2><b><i class="fa fa-certificate ngy2color1" aria-hidden="true"></i> Events</b></h2>
 <hr>
-<blockquote>
-<div id="nanogallery2" data-nanogallery2X='{
-        "kind": "flickr",
-        "userID": "149035168@N08",
-        "thumbnailHeight": 150, "thumbnailWidth": 150,
-        "thumbnailLabel": { "display": false },
-        "galleryDisplayMode": "pagination",
-        "galleryMaxRows": 1,
-        "locationHash": false,
-        "thumbnailToolbarImage": { "topLeft": "select", "topRight" : "featured,cart" }
-      }'>
-</div>
-Events (also available in your browser debug console):
-<div id="eventsDisplay" style="height:150px;background-color:#ddd;padding:0px 5px;overflow-y:scroll;">
-</div>
+<p>
+  <div id="nanogallery2" data-nanogallery2X='{
+          "kind": "flickr",
+          "userID": "149035168@N08",
+          "thumbnailHeight": 150, "thumbnailWidth": 150,
+          "thumbnailLabel": { "display": false },
+          "galleryDisplayMode": "pagination",
+          "galleryMaxRows": 1,
+          "locationHash": false,
+          "thumbnailToolbarImage": { "topLeft": "select", "topRight" : "featured,cart" }
+        }'>
+  </div>
+  <span class="lead">Events (also available in your browser debug console):</span>
+  <div id="eventsDisplay" style="height:150px;background-color:#ddd;padding:0px 5px;overflow-y:scroll;">
+  </div>
 
-</blockquote>
-<div class="row">
+</p>
+
 <p>Example:</p>
 <pre>// Attach an event handler function for some events to the gallery
 $("#nanogallery2").on( 'pageChanged.nanogallery2 galleryRenderStart.nanogallery2 galleryRenderEnd.nanogallery2 galleryObjectModelBuilt.nanogallery2 galleryLayoutApplied.nanogallery2 galleryDisplayed.nanogallery2 lightboxNextImage.nanogallery2 lightboxPreviousImage.nanogallery2 lightboxImageDisplayed.nanogallery2 shoppingCartUpdated.nanogallery2 itemSelected.nanogallery2 itemUnSelected.nanogallery2', my_listener );
@@ -1516,7 +1512,8 @@ One thumbnail has been un-selecetd. Not fired when <code>itemsSetSelectedValue</
 </tbody>
 </table>
 </div>
-</div>
+
+
 <br><br><br>
 <h2><b><i class="fa fa-certificate ngy2color1" aria-hidden="true"></i> Callbacks</b></h2>
 <hr>
@@ -1767,8 +1764,6 @@ Parameters: <code>customElementName, $customIcon, item</code>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
 <br><br><br>
 
 
@@ -1780,7 +1775,7 @@ Parameters: <code>customElementName, $customIcon, item</code>
 Call nanogallery2 function directly in your javascript functions.<br>
 Usage: <code>$('#your_nanogallery2').nanogallery2('method', options);</code>
 </blockquote>
-<div class="row">
+
 <p>Example:</p>
 <pre>// Enable selection mode
 $('#my_nanogallery2').nanogallery2('option', 'thumbnailSelectable', true);
@@ -1848,7 +1843,8 @@ $('#my_nanogallery2').nanogallery2('option', 'thumbnailSelectable', false);
   <br>
   Returns the number of found items.
   <br>
-  Usage: <code>var cnt = $('#your_nanogallery2').nanogallery2('search2', search_string_title, search_string_tags);</code>
+  Usage:<br>
+  <code>var cnt = $('#your_nanogallery2').nanogallery2('search2', search_in_title, search_in_tags);</code>
   <br>
   <a href="https://codepen.io/Kris-B/pen/ryOMov" type="button" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-codepen" aria-hidden="true"></i> view demo on codepen</a>
   </td>
@@ -1901,13 +1897,13 @@ $('#my_nanogallery2').nanogallery2('option', 'thumbnailSelectable', false);
   <br><br>
   Example: retrieve the selected thumbnails
   <br>
-  <pre>                
-  var items=$('#your_nanogallery2').nanogallery2('data').gallery.items;
-  items.forEach( function(curr) {
-    if( curr.selected === true ) {
-      console.dir(curr);
-    }
-  });
+  <pre>
+var items=$('#your_nanogallery2').nanogallery2('data').gallery.items;
+items.forEach( function(curr) {
+  if( curr.selected === true ) {
+    console.dir(curr);
+  }
+});
   </pre>
   </td>
 </tr>
@@ -1988,7 +1984,8 @@ $('#my_nanogallery2').nanogallery2('option', 'thumbnailSelectable', false);
   <td>[item1, item2, ...]</td>
   <td>
   Sets/unsets selection value (true/false) of an array of items.<br>
-  Usage: <code>$('#your_nanogallery2').nanogallery2('itemsSetSelectedValue', [item1, item2, item3, ...], new_value);</code>
+  Usage: <br>
+  <code>$('#your_nanogallery2').nanogallery2('itemsSetSelectedValue', [item1, item2, ...], new_value);</code>
   </td>
 </tr>
 <tr>
@@ -2061,7 +2058,7 @@ $('#my_nanogallery2').nanogallery2('option', 'thumbnailSelectable', false);
 </tbody>
 </table>
 </div>
-</div>
+
 
 </div>
 
