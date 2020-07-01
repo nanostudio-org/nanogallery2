@@ -83,6 +83,7 @@
   <!-- #################################################################################################################### -->
 
   
+  
   <style>
 
   
@@ -186,7 +187,7 @@
 
     blockquote {
       color: #fff;
-      background-color: #46D6AB;
+      background-color: #FFAC2C;
       border-color: #09488E;
       padding-top: 25px;
       padding-bottom: 25px;
@@ -237,7 +238,14 @@
       border-left: 8px solid #FF6D00;
   }
 
-
+    .ngy2documentation  .important-note {
+        padding: 5px 10px 5px 15px;
+        background: #fde9e5;
+        color: #000;
+        font-weight: bold;
+        border-left: 4px solid #ee350f;
+        position: relative;
+    }
     
     /*.ngy2documentation p { font-size: 1.7rem; }
     .ngy2documentation h2 { font-size: 2rem; } 
@@ -255,14 +263,13 @@
     }
     
     .ngy2documentation .ngy2_background_rounded_back { 
-      background-color:#f4fce3;
+      background-color:#F0F0F0;
       padding: 0px;
       border-radius:6px;
       margin: 0px;
     }
     .ngy2documentation .ngy2_background_rounded_back:hover { 
-      background-color:#51cf66;
-      background-color:#73E3C1;
+      background-color:#D8D8D8;
     }
     .ngy2documentation .ngy2_background_rounded_top { 
       background-color: rgba(0,0,0,0.1);
@@ -277,6 +284,12 @@
       margin: 0;
     }
     
+    .ngy2documentation table:not(.ngy2_comparison2) thead tr th { 
+      font-size: 2rem;
+      text-transform: uppercase;
+      background-color: #FFCD81;
+    }
+
     .ngy2documentation table:not(.ngy2_comparison2) :not(pre) > code { 
       font-size: 1.3rem;
       background: #ddd;
@@ -285,6 +298,10 @@
       text-shadow: 0 0px #fff;    
     } 
 
+    .ngy2documentation table:not(.ngy2_comparison2) td > h3 { 
+      color: #DA8400;
+      font-family: 'News Cycle', sans-serif;
+    }
     .ngy2documentation table:not(.ngy2_comparison2) td { 
       font-size: 1.5rem;
     }
@@ -293,8 +310,10 @@
     }
     .ngy2documentation table:not(.ngy2_comparison2) td:nth-child(1) { 
       font-weight: bold;
-      font-size: 1.4rem;
+      font-size: 1.4rem; 
+      font-family: "Courier New",monospace;
     }
+
     .ngy2documentation td.ngy2_object { 
       padding-left: 40px;
     }
@@ -303,16 +322,6 @@
 		.ngy2documentation table tr td h3 { font-size: 2.5rem  !important}
 
 		
-    .ngy2documentation .table-borderless > tbody > tr > td,
-    .ngy2documentation .table-borderless > tbody > tr > th,
-    .ngy2documentation .table-borderless > tfoot > tr > td,
-    .ngy2documentation .table-borderless > tfoot > tr > th,
-    .ngy2documentation .table-borderless > thead > tr > td,
-    .ngy2documentation .table-borderless > thead > tr > th {
-      border-bottom: 5px solid #f8f8f8;
-    }
-
-
     .ngy2documentation :not(pre) > code {
       background: #eee;
       background: #f4f4f0;
@@ -372,7 +381,7 @@
     .ngy2documentation .table-borderless2 > tfoot > tr > th,
     .ngy2documentation .table-borderless2 > thead > tr > td,
     .ngy2documentation .table-borderless2 > thead > tr > th {
-      border: 0px solid #f8f8f8;
+      border: 0px solid #46D6AB;
       
     }
 
@@ -381,31 +390,31 @@
     .ngy2documentation .ngy2_comparison2 th:nth-child(1) { 
       font-size: 1.5rem;
       font-weight: bold;
-      background-color: #eee;
+      background-color: #46D6AB;
     }
     .ngy2documentation .ngy2_comparison2 td:nth-child(2),
     .ngy2documentation .ngy2_comparison2 th:nth-child(2) { 
       font-size: 1.5rem;
       font-weight: bold;
-      background-color: #ddd;
+      background-color: #E8E8E8;
     }
     .ngy2documentation .ngy2_comparison2 td:nth-child(3), 
     .ngy2documentation .ngy2_comparison2 th:nth-child(3) { 
       font-size: 1.5rem;
       font-weight: bold;
-      background-color: #ccc;
+      background-color: #E4E4E4;
     }
     .ngy2documentation .ngy2_comparison2 td:nth-child(4), 
     .ngy2documentation .ngy2_comparison2 th:nth-child(4) { 
       font-size: 1.5rem;
       font-weight: bold;
-      background-color: #bbb;
+      background-color: #E0E0E0;
     }
     .ngy2documentation .ngy2_comparison2 td:nth-child(5),
     .ngy2documentation .ngy2_comparison2 th:nth-child(5) { 
       font-size: 1.5rem;
       font-weight: bold;
-      background-color: #aaa;
+      background-color: #DADADA;
     }
 
 
@@ -1182,6 +1191,7 @@
  
 
   </style>
+
 
    
 
