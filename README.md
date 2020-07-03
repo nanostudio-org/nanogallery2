@@ -26,7 +26,7 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 -->  
     
       
-<br />   
+<br />   <br />   
 
 ## Features
 ### Markup or Javascript set up
@@ -68,13 +68,15 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 ### Optional add-on for automatic publishing of self hosted images: [nanoPhotosProvider2](https://github.com/nanostudio-org/nano_photos_provider2)
   
 <br />  
-<br />
-## New features and improvements
+<br />  
+
+## New features and improvements  
 -> [Check the ChangeLog](changelog.md)  
 
 
 <br />  
 <br />
+
 ## Some screenshots
 <img src="https://github.com/nanostudio-org/nanogallery2/raw/master/screenshots/ngy2_cascading.jpg?raw=true" width="500px">
 <img src="https://github.com/nanostudio-org/nanogallery2/raw/master/screenshots/ngy2_justified.jpg?raw=true" width="500px">
