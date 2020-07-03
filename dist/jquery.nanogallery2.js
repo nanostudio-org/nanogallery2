@@ -1,6 +1,6 @@
-/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2020-07-01 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
+/* nanogallery2 - v0.0.0 - DEV DO NOT USE -2020-07-03 - http://nanogallery2.nanostudio.org - DEV DO NOT USE - */
 /*!
- * @preserve nanogallery2 v3.0.2beta - javascript photo / video gallery and lightbox
+ * @preserve nanogallery2 v3.0.2beta3 - javascript photo / video gallery and lightbox
  * Homepage: http://nanogallery2.nanostudio.org
  * Sources:  https://github.com/nanostudio-org/nanogallery2
  *
@@ -20,16 +20,21 @@
  */
 
  
-// nanogallery v3.0.2beta
+// nanogallery v3.0.2beta3
 /*
 
 - fixed: lightbox does nor free it's resources on close, in some case
 - fixed: ignore markup elements which do not contain media data
 - fixed: lightbox previous media displayed over current media on startup
+- fixed: #266 Layout is not adjusted immediately anymore when resizing the browser window
+- changed: option 'galleryResizeAnimation' not set to false by default
+- 
 - minor bugfixes
 
 todo:
 - open image based on ID / filename
+- thumbnail background
+- doc lb standalone js
 */
  
  
@@ -1389,8 +1394,8 @@ todo:
     galleryL1DisplayTransition :  null,
     galleryDisplayTransitionDuration :    1000,
     galleryL1DisplayTransitionDuration :  null,
-    galleryResizeAnimation :      true,
-    galleryRenderDelay :          30,
+    galleryResizeAnimation :      false,
+    galleryRenderDelay :          10,
 
     thumbnailCrop :               true,
     thumbnailL1Crop :             null,
@@ -1436,7 +1441,7 @@ todo:
     thumbnailSliderDelay:         2000,
     galleryBuildInit2 :           '',
     portable :                    false,
-    eventsDebounceDelay:          30,
+    eventsDebounceDelay:          10,
     
     touchAnimation :              false,
     touchAnimationL1 :            undefined,
@@ -10644,6 +10649,7 @@ console.log(thumbsrc);
 								G.GOM.curWidth = nw;
 								G.GOM.pagination.currentPage = 0;
 								GalleryRender( G.GOM.albumIdx );
+                return;
 							}
 						}
 						else {
@@ -10654,13 +10660,14 @@ console.log(thumbsrc);
 								//G.layout.SetEngine();
 								G.GOM.pagination.currentPage = 0;
 								GalleryRender( G.GOM.albumIdx );
+                return;
 							}
 						}
-						return;
+						// return;
           }
-          else {
+          // else {
             GalleryResize();
-          }
+          // }
         }
       }
     }
