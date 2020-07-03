@@ -71,7 +71,7 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 <br />  
 
 ## New features and improvements  
--> [Check the ChangeLog](changelog.md)  
+-> [Check ChangeLog](changelog.md)  
 
 
 <br />  
