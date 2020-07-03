@@ -15,10 +15,11 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 ![license](https://img.shields.io/static/v1?label=Commercial%20license&message=for%20use%20in%20a%20revenue-generating%20product&color=green)
 -->
 [![Twitter](https://img.shields.io/twitter/url/https/github.com/nanostudio-org/nanogallery2.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=%5Bobject%20Object%5D)
-
-
+  
+  
+<br />   <br />   
 ## Documentation, Demonstrations and Tutorials
--> [Check the homepage of the project](http://nanogallery2.nanostudio.org/academy.html)   
+-> [Check the homepage of the project](https://nanogallery2.nanostudio.org/academy.html)   
   
 <!--  
 [![nanogallery2 youtube demo](https://github.com/nanostudio-org/nanogallery2/raw/gh-pages/videos/youtube_nanogallery2.png)](https://www.youtube.com/watch?v=Ir098VWCv8Q)
@@ -67,7 +68,13 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 ### Optional add-on for automatic publishing of self hosted images: [nanoPhotosProvider2](https://github.com/nanostudio-org/nano_photos_provider2)
   
 <br />  
+<br />
+## New features and improvements
+-> [Check the ChangeLog](changelog.md)  
 
+
+<br />  
+<br />
 ## Some screenshots
 <img src="https://github.com/nanostudio-org/nanogallery2/raw/master/screenshots/ngy2_cascading.jpg?raw=true" width="500px">
 <img src="https://github.com/nanostudio-org/nanogallery2/raw/master/screenshots/ngy2_justified.jpg?raw=true" width="500px">
@@ -150,4 +157,4 @@ Dual licensed:
 &nbsp;  
 &nbsp;  
 **Many thanks to [BrowserStack](https://www.browserstack.com/) for their great testing services!**   
-<img src="http://nanogallery.brisbois.fr/img/browserstack2.png" width="230px"/>
+<img src="https://nanogallery.brisbois.fr/img/browserstack2.png" width="230px"/>
