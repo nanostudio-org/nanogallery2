@@ -1588,10 +1588,11 @@ thumbnailHoverEffect2:      'scale120'
 		&lt;a href="img_03.jpg" data-ngthumb="img_03t.jpg"&gt;Title Image 3&lt;/a&gt;
 &lt;/div&gt;
 </pre>
-<p>
-  <i class="fa fa-exclamation-triangle" aria-hidden="true" style="color:#b00;"></i> HTML markup: options must respect the <b>JSON format</b> (and <u>not</u> the javascript object syntax).
+<br>
+<div class="important-note">
+  HTML markup: options must respect the <b>JSON format</b> (and <u>not</u> the javascript object syntax).
   Property names and string values must be between double-quotes <code style="background:whitesmoke;">"</code>.
-</p>
+</div>
 
 <br><br>
 <h3><u>Javascript method:</u></h3>
@@ -2041,19 +2042,20 @@ nanogallery2 includes UI interactions and animations to capture the attention of
   <div class="row">
   <div class="col-md-6 text-center">
   <p>Some values for <b>thumbnailDisplayTransition</b>:</p>
-  <button type="button" class="btn btn-primary btn-lg ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo1"> none</button>
-  <button type="button" class="btn btn-primary btn-lg ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo2"> slideUp</button>
-  <button type="button" class="btn btn-primary btn-lg ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo3"> slideDown</button>
-  <button type="button" class="btn btn-primary btn-lg ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo4"> scaleUp</button>
-  <button type="button" class="btn btn-primary btn-lg ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo5"> scaleDown</button>
-  <button type="button" class="btn btn-primary btn-lg ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo6"> fadeIn</button>
-  <button type="button" class="btn btn-primary btn-lg ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo7"> randomScale</button>
-  <button type="button" class="btn btn-primary btn-lg ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo8"> flipDown</button>
-  <button type="button" class="btn btn-primary btn-lg ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo9"> flipUp</button>
-  <button type="button" class="btn btn-primary btn-lg ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo10"> slideDown2</button>
-  <button type="button" class="btn btn-primary btn-lg ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo11"> slideUp2</button>
-  <button type="button" class="btn btn-primary btn-lg ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo12"> slideRight</button>
-  <button type="button" class="btn btn-primary btn-lg ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo13"> slideLeft</button>
+  <button type="button" class="btn btn-primary ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo1"> none</button>
+  <button type="button" class="btn btn-primary ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo2"> slideUp</button>
+  <button type="button" class="btn btn-primary ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo3"> slideDown</button>
+  <button type="button" class="btn btn-primary ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo4"> scaleUp</button>
+  <button type="button" class="btn btn-primary ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo5"> scaleDown</button>
+  <button type="button" class="btn btn-primary ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo6"> fadeIn</button>
+  <button type="button" class="btn btn-primary ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo7"> randomScale</button>
+  <button type="button" class="btn btn-primary ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo8"> flipDown</button>
+  <button type="button" class="btn btn-primary ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo9"> flipUp</button>
+  <button type="button" class="btn btn-primary ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo10"> slideDown2</button>
+  <button type="button" class="btn btn-primary ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo11"> slideUp2</button>
+  <button type="button" class="btn btn-primary ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo12"> slideRight</button>
+  <button type="button" class="btn btn-primary ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo13"> slideLeft</button>
+  <button type="button" class="btn btn-primary ngy2_thumbnailDisplayTransition" id="btn_thumbnailDisplayTransition_demo14"> imageSlideUp</button>
   <br><br>
   <p class=" text-left"><b>For more possibilities of animations, please consult the chapter <a href="#ngy2_gallery_thumbnails"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> "Thumbnails"</a></b></p>
   </div>
@@ -2176,218 +2178,242 @@ See the <a href="#ngy2_gallery_thumbnails_hover_tuning"><b>tuning section</b></a
 </tr>
 </thead>
 <tbody>
-<tr>
+  <tr>
+    <td>
+    galleryDisplayMode<br>galleryL1DisplayMode
+    <br><span class="badge ngy2_ver">v1.0</span><span class="badge ngy2_type">string</span>
+    </td>
+    <td>'fullContent'</td>
+    <td>
+    Define how many thumbnails should be displayed in the gallery.
+    <br><br>
+    Possible values:
+    <ul>
+    <li>
+    <b>fullContent</b>: display all thumbnails
+    </li>
+    <li>
+      <b>moreButton</b>: display N rows and a button to show N more rows
+      <br>where N is defined with the <code>galleryDisplayMoreStep</code> property.
+    </li>
+    <li>
+    <b>pagination</b>: display N rows and <b>numbers/dots</b> at the bottom of the gallery, for pagnination
+    <br>Where N defined is with the <code>galleryMaxRows</code> property.
+    </li>
+    <li>
+    <b>rows</b>: display maximum N rows.
+    <br>Where N is defined with the <code>galleryMaxRows</code> property.
+    <br>The number of remaining thumbnails is displayed over the last thumbnail. One slider can also be enabled on the last thumbnail, with the <code>thumbnailSliderDelay</code> property.
+    </li>
+    </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>
+    galleryDisplayMoreStep
+    <br><span class="badge ngy2_ver">v1.0</span><span class="badge ngy2_type">integer</span>
+    </td>
+    <td>2</td>
+    <td>
+    Set the number of rows to display each time the "more button" is hit.
+    <br>Only for <code>galleryDisplayMode: 'moreButton'</code>
+    </td>
+  </tr>
   <td>
-  galleryDisplayMode<br>galleryL1DisplayMode
-  <br><span class="badge ngy2_ver">v1.0</span><span class="badge ngy2_type">string</span>
-  </td>
-  <td>'fullContent'</td>
-  <td>
-  Define how many thumbnails should be displayed in the gallery.
-  <br><br>
-  Possible values:
-  <ul>
-  <li>
-  <b>fullContent</b>: display all thumbnails
-  </li>
-  <li>
-    <b>moreButton</b>: display N rows and a button to show N more rows
-    <br>where N is defined with the <code>galleryDisplayMoreStep</code> property.
-  </li>
-  <li>
-  <b>pagination</b>: display N rows and <b>numbers/dots</b> at the bottom of the gallery, for pagnination
-  <br>Where N defined is with the <code>galleryMaxRows</code> property.
-  </li>
-  <li>
-  <b>rows</b>: display maximum N rows.
-  <br>Where N is defined with the <code>galleryMaxRows</code> property.
-  <br>The number of remaining thumbnails is displayed over the last thumbnail. One slider can also be enabled on the last thumbnail, with the <code>thumbnailSliderDelay</code> property.
-  </li>
-  </ul>
-  </td>
-</tr>
-<tr>
-  <td>
-  galleryDisplayMoreStep
-  <br><span class="badge ngy2_ver">v1.0</span><span class="badge ngy2_type">integer</span>
-  </td>
-  <td>2</td>
-  <td>
-  Set the number of rows to display each time the "more button" is hit.
-  <br>Only for <code>galleryDisplayMode: 'moreButton'</code>
-  </td>
-</tr>
-<td>
-  galleryMaxRows<br>galleryL1MaxRows
-  <br><span class="badge ngy2_ver">v1.0</span><span class="badge  ngy2_type">integer</span>
-  </td>
-  <td>2</td>
-  <td>
-  Maximum number of rows to display
-  <br>Only for <code>galleryDisplayMode: 'rows'</code> or <code>galleryDisplayMode: 'pagination'</code>.
-  <br>Not supported in cascading layout.
-  </td>
-</tr>
-<tr>
-  <td>
-  galleryPaginationMode
-  <br><span class="badge ngy2_ver">v1.0</span><span class="badge ngy2_type">string</span>
-  </td>
-  <td>'rectangles'</td>
-  <td>
-  Display type in pagination mode (<code>galleryDisplayMode: 'pagination'</code>).
-  <br>
-  Possible values:
-  <ul>
-  <li>
-  <b>'rectangles'</b>
-  </li>
-  <li>
-  <b>'dots'</b>
-  </li>
-  <li>
-  <b>'numbers'</b>
-  </li>
-  </ul>
-  </td>
-</tr>
-<tr>
-  <td>
-  paginationSwipe
-  <br><span class="badge ngy2_ver">v1.0</span><span class="badge  ngy2_type">boolean</span>
-  </td>
-  <td>true</td>
-  <td>
-  Enables swipe gesture to display next/previous gallery page, in gallery pagination mode.
-  </td>
-</tr>
-<tr>
-  <td>
-  paginationVisiblePages
-  <br><span class="badge ngy2_ver">v1.0</span><span class="badge  ngy2_type">integer</span>
-  </td>
-  <td>10</td>
-  <td>
-  Maximum number of pagination elements (numbers) displayed at the bottom of the gallery.
-  <br>
-  Only for <code>galleryDisplayMode: 'pagination'</code> and <code>galleryPaginationMode: 'numbers'</code>
-  </td>
-</tr>
-<tr>
-  <td>
-  galleryLastRowFull
-  <br><span class="badge ngy2_ver">v1.0</span><span class="badge ngy2_type">boolean</span>
-  </td>
-  <td>false</td>
-  <td>
-  When enabled, the last thumbnail's row will not be displayed if it doesn't fill the full width of the gallery.
-  <br>
-  Only for <b>grid</b> and <b>justified</b> layouts.
-  </td>
-</tr>
-<tr>
-  <td>
-  gallerySorting<br>galleryL1Sorting
-  <br><span class="badge ngy2_ver">v1.0</span><span class="badge ngy2_type">string</span>
-  </td>
-  <td>''</td>
-  <td>
-  Sort order. No sorting by default.
-  <br>
-  Possible values: <b>'titleAsc'</b>, <b>'titleDesc'</b>, <b>'reversed'</b>, <b>'random'</b> (=shuffle).
-  </td>
-</tr>
-<tr>
-  <td>
-  galleryMaxItems<br>galleryL1MaxItems
-  <br><span class="badge ngy2_ver">v1.0</span><span class="badge  ngy2_type">integer</span>
-  </td>
-  <td>0</td>
-  <td>Maximum number of items per album. 0 = display all.</td>
-</tr>
-<tr>
-  <td>
-  galleryResizeAnimation
-  <br><span class="badge ngy2_ver">v1.0</span><span class="badge  ngy2_type">boolean</span>
-  </td>
-  <td>true</td>
-  <td>Animates the thumbnails to their new position when the gallery/display is resized.</td>
-</tr>
-<tr>
-  <td>
-  galleryTheme<br>colorScheme
-  <br><span class="badge ngy2_ver">v1.0</span><span class="badge  ngy2_type">string</span><span class="badge  ngy2_type">object</span>
-  </td>
-  <td>'dark'</td>
-  <td>
-  Gallery theme (thumbnails, navigation...).
-  <br>Possible values: <b>'dark'</b>, <b>'light'</b>
-  <br>Custom themes are supported.
-  <br>
-  Since v1.5, properties 'colorScheme' and 'galleryTheme' are synonymous.
-  </td>
-</tr>
-<tr>
-  <td>
-  openOnStart
-  <br><span class="badge ngy2_ver">v1.0</span><span class="badge  ngy2_type">string</span>
-  </td>
-  <td></td>
-  <td>
-  Opens the specified album or display the specified image on library start.
-  <br>Syntax: <b>'albumID'</b> or <b>'albumID/imageID'</b>
-  </td>
-</tr>
-<tr>
-  <td>
-  thumbnailSelectable
-  <br><span class="badge ngy2_ver">v1.0</span><span class="badge  ngy2_type">boolean</span>
-  </td>
-  <td>false</td>
-  <td>Enable/disable the selection mode. A checkbox is displayed over each thumbnail to allow the user to select multiple thumbnails.</td>
-</tr>
-<tr>
-  <td>
-  galleryRenderDelay
-  <br><span class="badge ngy2_ver">v1.3</span><span class="badge  ngy2_type">integer</span>
-  </td>
-  <td>30</td>
-  <td>Delay in ms before starting the gallery rendering.</td>
-</tr>
-<tr>
-  <td>
-  thumbnailDisplayOutsideScreen
-  <br><span class="badge ngy2_ver">v1.2</span><span class="badge  ngy2_type">boolean</span>
-  </td>
-  <td>true</td>
-  <td>
-  Thumbnails are displayed (true) or hidden (false) when they are positioned outside of the screen / viewport.
-  <br>
-  For better performances with large galleries, use false.
-  </td>
-</tr>
-<tr>
-  <td>
-  galleryDisplayTransition<br>galleryL1DisplayTransition
-  <br><span class="badge ngy2_ver">v1.4</span><span class="badge  ngy2_type">string</span>
-  </td>
-  <td>'none'</td>
-  <td>
-  Transition for displaing the gallery. Applied on the whole gallery.
-  <br>
-  Possible values: <b>'none'</b>, <b>'rotateX'</b>, <b>'slideUp'</b>
-  </td>
-</tr>
-<tr>
-  <td>
-  galleryDisplayTransitionDuration<br>galleryL1DisplayTransitionDuration
-  <br><span class="badge ngy2_ver">v1.4</span><span class="badge  ngy2_type">integer</span>
-  </td>
-  <td>1000</td>
-  <td>
-  Duration of the gallery display transition, in milliseconds.
-  </td>
-</tr>
+    galleryMaxRows<br>galleryL1MaxRows
+    <br><span class="badge ngy2_ver">v1.0</span><span class="badge  ngy2_type">integer</span>
+    </td>
+    <td>2</td>
+    <td>
+    Maximum number of rows to display
+    <br>Only for <code>galleryDisplayMode: 'rows'</code> or <code>galleryDisplayMode: 'pagination'</code>.
+    <br>Not supported in cascading layout.
+    </td>
+  </tr>
+  <tr>
+    <td>
+    galleryPaginationMode
+    <br><span class="badge ngy2_ver">v1.0</span><span class="badge ngy2_type">string</span>
+    </td>
+    <td>'rectangles'</td>
+    <td>
+    Display type in pagination mode (<code>galleryDisplayMode: 'pagination'</code>).
+    <br>
+    Possible values:
+    <ul>
+    <li>
+    <b>'rectangles'</b>
+    </li>
+    <li>
+    <b>'dots'</b>
+    </li>
+    <li>
+    <b>'numbers'</b>
+    </li>
+    </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>
+    paginationSwipe
+    <br><span class="badge ngy2_ver">v1.0</span><span class="badge  ngy2_type">boolean</span>
+    </td>
+    <td>true</td>
+    <td>
+    Enables swipe gesture to display next/previous gallery page, in gallery pagination mode.
+    </td>
+  </tr>
+  <tr>
+    <td>
+    paginationVisiblePages
+    <br><span class="badge ngy2_ver">v1.0</span><span class="badge  ngy2_type">integer</span>
+    </td>
+    <td>10</td>
+    <td>
+    Maximum number of pagination elements (numbers) displayed at the bottom of the gallery.
+    <br>
+    Only for <code>galleryDisplayMode: 'pagination'</code> and <code>galleryPaginationMode: 'numbers'</code>
+    </td>
+  </tr>
+  <tr>
+    <td>
+    galleryLastRowFull
+    <br><span class="badge ngy2_ver">v1.0</span><span class="badge ngy2_type">boolean</span>
+    </td>
+    <td>false</td>
+    <td>
+    When enabled, the last thumbnail's row will not be displayed if it doesn't fill the full width of the gallery.
+    <br>
+    Only for <b>grid</b> and <b>justified</b> layouts.
+    </td>
+  </tr>
+  <tr>
+    <td>
+    gallerySorting<br>galleryL1Sorting
+    <br><span class="badge ngy2_ver">v1.0</span><span class="badge ngy2_type">string</span>
+    </td>
+    <td>''</td>
+    <td>
+    Sort order. No sorting by default.
+    <br>
+    Possible values: <b>'titleAsc'</b>, <b>'titleDesc'</b>, <b>'reversed'</b>, <b>'random'</b> (=shuffle).
+    </td>
+  </tr>
+  <tr>
+    <td>
+    galleryMaxItems<br>galleryL1MaxItems
+    <br><span class="badge ngy2_ver">v1.0</span><span class="badge  ngy2_type">integer</span>
+    </td>
+    <td>0</td>
+    <td>Maximum number of items per album. 0 = display all.</td>
+  </tr>
+  <tr>
+    <td>
+    galleryResizeAnimation
+    <br><span class="badge ngy2_ver">v1.0</span><span class="badge  ngy2_type">boolean</span>
+    </td>
+    <td>true</td>
+    <td>Animates the thumbnails to their new position when the gallery/display is resized.</td>
+  </tr>
+  <tr>
+    <td>
+    galleryTheme<br>colorScheme
+    <br><span class="badge ngy2_ver">v1.0</span><span class="badge  ngy2_type">string</span><span class="badge  ngy2_type">object</span>
+    </td>
+    <td>'dark'</td>
+    <td>
+    Gallery theme (thumbnails, navigation...).
+    <br>Possible values: <b>'dark'</b>, <b>'light'</b>
+    <br>Custom themes are supported.
+    <br>
+    Since v1.5, properties 'colorScheme' and 'galleryTheme' are synonymous.
+    </td>
+  </tr>
+  <tr>
+    <td>
+    openOnStart
+    <br><span class="badge ngy2_ver">v1.0</span><span class="badge  ngy2_type">string</span>
+    </td>
+    <td></td>
+    <td>
+    Opens the specified album or display the specified image on library start.
+    <br>Syntax: <b>'albumID'</b> or <b>'albumID/imageID'</b>
+    </td>
+  </tr>
+  <tr>
+    <td>
+    thumbnailSelectable
+    <br><span class="badge ngy2_ver">v1.0</span><span class="badge  ngy2_type">boolean</span>
+    </td>
+    <td>false</td>
+    <td>Enable/disable the selection mode. A checkbox is displayed over each thumbnail to allow the user to select multiple thumbnails.</td>
+  </tr>
+  <tr>
+    <td>
+    galleryRenderDelay
+    <br><span class="badge ngy2_ver">v1.3</span><span class="badge  ngy2_type">integer</span>
+    </td>
+    <td>10</td>
+    <td>Delay in ms before starting the gallery rendering.</td>
+  </tr>
+  <tr>
+    <td>
+    thumbnailDisplayOutsideScreen
+    <br><span class="badge ngy2_ver">v1.2</span><span class="badge  ngy2_type">boolean</span>
+    </td>
+    <td>true</td>
+    <td>
+    Thumbnails are displayed (true) or hidden (false) when they are positioned outside of the screen / viewport.
+    <br>
+    <div class="important-note">For better performances with large galleries, use false.</div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+    galleryDisplayTransition<br>galleryL1DisplayTransition
+    <br><span class="badge ngy2_ver">v1.4</span><span class="badge  ngy2_type">string</span>
+    </td>
+    <td>'none'</td>
+    <td>
+    Transition for displaing the gallery. Applied on the whole gallery.
+    <br>
+    Possible values: <b>'none'</b>, <b>'rotateX'</b>, <b>'slideUp'</b>
+    </td>
+  </tr>
+  <tr>
+    <td>
+    galleryDisplayTransitionDuration<br>galleryL1DisplayTransitionDuration
+    <br><span class="badge ngy2_ver">v1.4</span><span class="badge  ngy2_type">integer</span>
+    </td>
+    <td>1000</td>
+    <td>
+    Duration of the gallery display transition, in milliseconds.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      itemsBaseURL
+      <br><span class="badge ngy2_ver">v1.0</span><span class="badge  ngy2_type">string</span>
+    </td>
+    <td>''</td>
+    <td>
+      Global path to medias (big images, thumbnail images, videos)<br>
+      If defined, the value will be added to the URLs of medias, which don't start with a protocole (HTTP, HTTPS, ...)
+      <br>
+      Example: <code>itemsBaseURL: 'https://nanogallery2.nanostudio.org/samples/'</code>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      eventsDebounceDelay
+      <br><span class="badge ngy2_ver">v2.2</span><span class="badge  ngy2_type">integer</span>
+    </td>
+    <td>10</td>
+    <td>
+      Thumbnail's lazy display fine tuning<br>
+      Response delay in ms after resizing, rotation and scroll events.
+    </td>
+  </tr>
 </tbody>
 </table>
 </div>
@@ -3189,7 +3215,7 @@ Where:
 
 <div id="ngy2_navigation"></div>
 <br><br><br><br><br><br><br>
-<h2><b><i class="fa fa-certificate ngy2color1" aria-hidden="true"></i> NAVIGATION</b></h2>
+<h2><b><i class="fa fa-certificate ngy2color1" aria-hidden="true"></i> NAVIGATION / FILTERING</b></h2>
 <p class="lead">
   Configure how the user can navigate in albums, filter the thumbnails based on tags, and the touch/tap handling.
 </p>
@@ -3255,11 +3281,24 @@ Where:
 </tr>
 <tr>
   <td>
+  galleryFilterTagsMode<br>galleryL1FilterTagsMode
+  <br><span class="badge ngy2_ver">v3.0</span><span class="badge  ngy2_type">string</span>
+  </td>
+  <td>'single'</td>
+  <td>
+    Tag selection handling.
+    <br>Possible values:
+    <br>- <b>'single'</b>: only one tag can be selected
+    <br>- <b>'multiple'</b>: multiple tag selection
+  </td>
+</tr>
+<tr>
+  <td>
   thumbnailLevelUp
   <br><span class="badge ngy2_ver">v1.0</span><span class="badge  ngy2_type">boolean</span>
   </td>
   <td>false</td>
-  <td>Display one thumbnail to navigate in the parent album.</td>
+  <td>Display one thumbnail to navigate to the parent album.</td>
 </tr>
 <tr>
   <td>
@@ -3360,7 +3399,7 @@ Where:
 
 <div id="ngy2_lightbox"></div>
 <br><br><br><br><br><br><br>
-<h2><b><i class="fa fa-certificate ngy2color1" aria-hidden="true"></i> IMAGE DISPLAY - LIGHTBOX</b></h2>
+<h2><b><i class="fa fa-certificate ngy2color1" aria-hidden="true"></i> LIGHTBOX: MEDIA DISPLAY</b></h2>
 <p class="lead">
    The lightbox is used to display medias (images and videos) in full size.
 </p>
@@ -3504,7 +3543,7 @@ To add custom elements in a toolbar, use the label <b>customN</b>, where <b>N</b
 
 <tr>
   <td colspan=3S>
-    <h3>Lightbox toolbars</h3>
+    <h3>Lightbox toolbar</h3>
   </td>
 </tr>
 <tr>
@@ -3685,51 +3724,6 @@ To add custom elements in a toolbar, use the label <b>customN</b>, where <b>N</b
 </tbody>
 </table>
 </div>
-<div id="ngy2_global"></div>
-<br><br><br><br><br><br><br>
-<h2><b><i class="fa fa-certificate ngy2color1" aria-hidden="true"></i> GLOBAL SETTINGS</b></h2>
-<hr>
-<p class="lead">
-  These settings are used for the gallery and the lightbox.
-</p>
-<br><br>
-<div class="table-responsive">
-<table class="table table-borderless table-stripedx table-hoverx">
-<thead>
-  <tr>
-  <th>property</th>
-  <th>default</th>
-  <th>description</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td>
-      itemsBaseURL
-      <br><span class="badge ngy2_ver">v1.0</span><span class="badge  ngy2_type">string</span>
-    </td>
-    <td>''</td>
-    <td>
-      Global path to medias (big images, thumbnail images, videos)<br>
-      The value will be added to the URLs of medias, which don't start with a protocole (HTTP, HTTPS, ...)
-      <br>
-      Example: <code>itemsBaseURL: 'https://nanogallery2.nanostudio.org/samples/'</code>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      eventsDebounceDelay
-      <br><span class="badge ngy2_ver">v2.2</span><span class="badge  ngy2_type">integer</span>
-    </td>
-    <td>50</td>
-    <td>
-      Thumbnail's lazy display fine tuning<br>
-      Response delay in ms after resizing, rotation and scroll events.
-    </td>
-  </tr>
-</tbody>
-</table>
-</div>
 
 
 
@@ -3847,7 +3841,9 @@ shareMail:                    '&lt;i  style="color:#555;" class="nGY2Icon-mail-a
   You can define your own customized theme.<br><br>
 
   Example, set the background and the border color of the thumbnails, set the toolbar content color:<br>
-  <pre>
+</p>
+  <span class="badge ngy2_code_js">Javascript example</span>
+<pre>
     $("#my_nanogallery2").nanogallery2({
       ...
       galleryTheme: {
@@ -3857,7 +3853,7 @@ shareMail:                    '&lt;i  style="color:#555;" class="nGY2Icon-mail-a
       ...
     });
   </pre>  
-</p>
+<br>
 <p>
   Gallery theme format (with default values):<br>
 </p>
@@ -4009,7 +4005,7 @@ Here's the list of depreciated and no more supported options.
 <table class="table table-borderless table-stripedx table-hoverx">
 <thead>
 <tr>
-<th>callbacks</th>
+<th>callback</th>
 <th>comment</th>
 </tr>
 </thead>
@@ -4027,7 +4023,7 @@ Here's the list of depreciated and no more supported options.
 <table class="table table-borderless table-stripedx table-hoverx">
 <thead>
 <tr>
-<th>API methods</th>
+<th>API method</th>
 <th>comment</th>
 </tr>
 </thead>
@@ -4191,16 +4187,13 @@ do not combine too much effects (smooth animation on a computer may be slow on a
 <a href="#ngy2_thumbnail_tools"> &nbsp; Thumbnail tools</a>
 </li>
 <li>
-<a href="#ngy2_navigation"> &nbsp; Navigation</a>
+<a href="#ngy2_navigation"> &nbsp; Navigation / Filtering</a>
 </li>
 <li>
 <a href="#ngy2_navigation_first"> &nbsp; First album level</a>
 </li>
 <li>
-<a href="#ngy2_lightbox"> &nbsp; Lightbox</a>
-</li>
-<li>
-<a href="#ngy2_global"> &nbsp; Global settings</a>
+<a href="#ngy2_lightbox"> &nbsp; Lightbox / media display</a>
 </li>
 <li>
 <a href="#ngy2_icons"> &nbsp; Custom icons</a>
@@ -4225,6 +4218,7 @@ do not combine too much effects (smooth animation on a computer may be slow on a
 </div>
 </div>
 </div>
+
 
   <!-- ######################## -->
   <!-- #####  INCLUDE JS  ##### -->
