@@ -37,16 +37,16 @@ v3.0.0 - Jun 19, 2020
   - media title renaming with option 'titleTranslationMap'
   	
 - changed:
-  - option 'blackList' renamed to 'blockList'
-  - option 'whiteList' renamed to 'allowList'
+  - BREAKING: option 'blackList' renamed to 'blockList'
+  - BREAKING: option 'whiteList' renamed to 'allowList'
   - lightbox toolbar: option viewerToolbar.display now set to false by default
-  - shopping cart handling refactored
+  - BREAKING: shopping cart handling refactored
   - thumbnail label: new option 'valign' in addition to the 'position' option
   - gallery filtering: icon for tags and for tag's filter reset
   - lightbox tool: icons layout and background
   - hover animation on thumbnails are now disabled by default ('touchAnimation' default value changed to false)
-  - option 'thumbnailOpenImage' renamed in 'thumbnailOpenInLightox'
-  - callbacks fnGalleryRenderStart/fnGalleryRenderEnd: now return the album object instead of it's index
+  - BREAKING: option 'thumbnailOpenImage' renamed in 'thumbnailOpenInLightox'
+  - BREAKING: callbacks fnGalleryRenderStart/fnGalleryRenderEnd: now return the album object instead of it's index
   
 - fixed:
   - nano_photos_provider2: on gallery initialization, if an album is defined, gallery does not display sub-albums
