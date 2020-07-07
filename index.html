@@ -2157,6 +2157,9 @@
 
 
 
+  <!-- ######################## -->
+  <!-- ##### JS FOR PAGE  ##### -->
+  <!-- ######################## -->
 	<script type="text/javascript">
 
 
@@ -2231,8 +2234,7 @@
         <!-- thumbnailL1GutterWidth: 30, -->
         locationHash: false
   });
-  var ngy2data=$("#nanogallery_debug_on").nanogallery2('data');
-
+  <!-- var ngy2data=$("#nanogallery_debug_on").nanogallery2('data'); -->
 
 			
 			
@@ -2350,7 +2352,7 @@
 
       
       // DEBUG GALLERY
-      jQuery("#nanogallery_debug_onXX").nanogallery2({
+      jQuery("#nanogallery_debug_onxxx").nanogallery2({
         // imageTransition : 'slideAppear',
         // debugMode: true,
         
@@ -2372,10 +2374,10 @@
             { src: 'blocks.webm', srct: 'blocks_webm_t.jpg', title: 'Blocks video WEBM' }
           ],
 
-        kind: 'nano_photos_provider2',
+        <!-- kind: 'nano_photos_provider2', -->
 //        dataProvider: 'https://nano.gallery/nano_photos_provider2/nano_photos_provider2.php',
-        dataProvider: 'https://nano.gallery/nano_photos_provider2_kris/nano_photos_provider2.php',
-        dataProvider: 'https://urbanicc.fr/zac_ic/nano_photos_provider2/nano_photos_provider2.php',
+        <!-- dataProvider: 'https://nano.gallery/nano_photos_provider2_kris/nano_photos_provider2.php', -->
+        <!-- dataProvider: 'https://urbanicc.fr/zac_ic/nano_photos_provider2/nano_photos_provider2.php', -->
         // kind: 'flickr',
         // userID: '149035168@N08',    // nano studio
         //album: 'none',
@@ -2445,8 +2447,8 @@
 
 
         galleryPaginationMode: 'rectangles',
-thumbnailLabel:       { display: false, position: 'overImage', valign: 'bottom', hideIcons: true, titleMultiLine: true },
-thumbnailL1Label:     { display: true, position: 'right', valign: 'middle', align: 'center', hideIcons: true, titleMultiLine: true },      
+<!-- thumbnailLabel:       { display: false, position: 'overImage', valign: 'bottom', hideIcons: true, titleMultiLine: true }, -->
+<!-- thumbnailL1Label:     { display: true, position: 'right', valign: 'middle', align: 'center', hideIcons: true, titleMultiLine: true },       -->
         
         //galleryBuildInit2 : 'transform-origin_top right',
         //thumbnailL1BuildInit2: 'thumbnail_transform-origin_50% 150%',
@@ -2541,11 +2543,13 @@ gallerySorting : 'titleAsc',
           { title: '', replace: '' },
           { title: '', replace: '' },
           { title: 'hzac le monde', replace:'Les Lettres - Le Monde [hors ZAC]' }
-        ]
-
+        ],
+		viewerFullscreen:true
       });
 
-            
+      
+      
+    
       
       function goToByScroll(id){
           // Remove "link" from the ID
@@ -2757,7 +2761,7 @@ gallerySorting : 'titleAsc',
           galleryMaxRows: 1,
           galleryDisplayMode: 'rows',
           gallerySorting: 'random',
-					thumbnailDisplayOrder: 'random',
+          thumbnailDisplayOrder: 'random',
 
           thumbnailHeight: '180', thumbnailWidth: '220',
           thumbnailAlignment: 'scaled',
@@ -2769,12 +2773,12 @@ gallerySorting : 'titleAsc',
           thumbnailLabel: { display: false },
 
           // DISPLAY ANIMATION
-					// for gallery
+          // for gallery
           galleryDisplayTransitionDuration: 1500,
-					// for thumbnails
-          thumbnailDisplayTransition: 'imageslideup',
+          // for thumbnails
+          thumbnailDisplayTransition: 'imageSlideUp',
           thumbnailDisplayTransitionDuration: 1200,
-					thumbnailDisplayTransitionEasing: 'easeInOutQuint',
+          thumbnailDisplayTransitionEasing: 'easeInOutQuint',
           thumbnailDisplayInterval: 60,
 
           // THUMBNAIL HOVER ANIMATION
@@ -2813,50 +2817,33 @@ gallerySorting : 'titleAsc',
          
           // GALLERY AND THUMBNAIL LAYOUT
           galleryMosaic : [                       // default layout
-            { w: 1, h: 1, c: 1, r: 1 },
-            { w: 1, h: 1, c: 2, r: 1 },
-            { w: 1, h: 1, c: 3, r: 1 },
-            { w: 1, h: 1, c: 4, r: 1 },
-            { w: 1, h: 1, c: 5, r: 1 },
-            { w: 1, h: 1, c: 6, r: 1 },
-            { w: 1, h: 2, c: 1, r: 2 },
-            { w: 2, h: 2, c: 2, r: 2 },
-            { w: 2, h: 2, c: 4, r: 2 },
-            { w: 1, h: 2, c: 6, r: 2 },
-            { w: 1, h: 1, c: 1, r: 4 },
-            { w: 1, h: 1, c: 2, r: 4 },
-            { w: 1, h: 1, c: 3, r: 4 },
-            { w: 1, h: 1, c: 4, r: 4 },
-            { w: 1, h: 1, c: 5, r: 4 },
-            { w: 1, h: 1, c: 6, r: 4 }
+             { "w": 16, "h": 18, "c": 1,  "r": 1  },
+             { "w": 8,  "h": 9,  "c": 21, "r": 5  },
+             { "w": 4,  "h": 6,  "c": 28, "r": 2  },
+             { "w": 4,  "h": 6,  "c": 19, "r": 11 },
+             { "w": 6,  "h": 8,  "c": 27, "r": 10 }
           ],
           galleryMosaicXS : [                     // layout for XS width
-            { w: 1, h: 1, c: 1, r: 1 },
-            { w: 1, h: 1, c: 2, r: 1 },
-            { w: 1, h: 1, c: 3, r: 1 },
-            { w: 1, h: 2, c: 1, r: 2 },
-            { w: 2, h: 2, c: 2, r: 2 },
-            { w: 1, h: 1, c: 1, r: 4 },
-            { w: 1, h: 1, c: 2, r: 4 },
-            { w: 1, h: 1, c: 3, r: 4 },
+             { "w": 6, "h": 9, "c": 1,  "r": 1  },
+             { "w": 4,  "h": 4,  "c": 9, "r": 3  },
+             { "w": 2,  "h": 3,  "c": 12, "r": 1  },
+             { "w": 2,  "h": 3,  "c": 8, "r": 5 },
+             { "w": 3,  "h": 4,  "c": 12, "r": 6 }
           ],
           galleryMosaicSM : [                     // layout for SM width
-            { w: 1, h: 1, c: 1, r: 1 },
-            { w: 1, h: 1, c: 2, r: 1 },
-            { w: 1, h: 1, c: 3, r: 1 },
-            { w: 1, h: 2, c: 1, r: 2 },
-            { w: 2, h: 2, c: 2, r: 2 },
-            { w: 1, h: 1, c: 1, r: 4 },
-            { w: 1, h: 1, c: 2, r: 4 },
-            { w: 1, h: 1, c: 3, r: 4 },
+             { "w": 6, "h": 9, "c": 1,  "r": 1  },
+             { "w": 4,  "h": 4,  "c": 9, "r": 3  },
+             { "w": 2,  "h": 3,  "c": 12, "r": 1  },
+             { "w": 2,  "h": 3,  "c": 8, "r": 5 },
+             { "w": 3,  "h": 4,  "c": 12, "r": 6 }
           ],
           galleryMaxRows: 1,
           galleryDisplayMode: 'rows',
           gallerySorting: 'random',
-					thumbnailDisplayOrder: 'random',
+          thumbnailDisplayOrder: 'random',
 
           thumbnailAlignment: 'scaled',
-          thumbnailHeight: '180', thumbnailWidth: '220',
+          thumbnailHeight: 100, thumbnailWidth: 100,
           thumbnailGutterWidth: 0, thumbnailGutterHeight: 0,
           thumbnailBorderHorizontal: 0, thumbnailBorderVertical: 0,
 
@@ -2865,7 +2852,6 @@ gallerySorting : 'titleAsc',
 
           thumbnailLabel: { display: false },
           
-          // DISPLAY ANIMATION
           // DISPLAY ANIMATION
           galleryDisplayTransition: 'rotateX',        // gallery display animation
           galleryDisplayTransitionDuration: 1500,
@@ -2883,11 +2869,12 @@ gallerySorting : 'titleAsc',
 
           // LIGHTBOX
           viewerToolbar:    {   // bottom toolbar
+            display: true,
             standard:  'label',
             minimized: 'label' },
           viewerTools:    {
             topLeft:   '',
-            topRight:  'shareButton, rotateLeft, rotateRight, fullscreenButton, closeButton'
+            topRight:  'rotateLeft, rotateRight, fullscreenButton, closeButton'
           },
       
           // DEEP LINKING
