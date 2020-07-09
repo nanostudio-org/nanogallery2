@@ -23,18 +23,25 @@
 // nanogallery v3.0.2beta3
 /*
 
+- new: option thumbnailDisplayByRow to display the thumbnails row by row (vs individually)
+- new: [BREAKING CHANGE for FLICKR user]: custom Flickr API key needed: set new option flickrAPIKey
+    (to obtain it: https://www.flickr.com/services/apps/create/)
+- new: ignore markup elements which do not contain media data
+    
 - fixed: lightbox does nor free it's resources on close, in some case
-- fixed: ignore markup elements which do not contain media data
 - fixed: lightbox previous media displayed over current media on startup
 - fixed: #266 Layout is not adjusted immediately anymore when resizing the browser window
-- changed: option 'galleryResizeAnimation' not set to false by default
-- 
+- fixed: #268 Self hosted video is not playing when clicked
+- fixed: Vimeo videos no playing
+- changed: option 'galleryResizeAnimation' now set to false by default
 - minor bugfixes
 
 todo:
 - open image based on ID / filename
 - thumbnail background
+- thumbnail display animation even/odd rows
 - doc lb standalone js
+- remove delay in thumbnail display
 */
  
  
@@ -437,7 +444,7 @@ todo:
             
             // public
             this.kind =                 '';       // 'image', 'album' or 'albumUp'
-            this.mediaKind =            'img';    // 'img', 'iframe'
+            this.mediaKind =            'img';    // 'img', 'iframe', 'video'
             this.mediaMarkup =          '';
             this.G =                    null;     // pointer to global instance
             this.title =                '';       // image title
@@ -1351,6 +1358,7 @@ todo:
     albumList2 :                  null,
     RTL :                         false,
     flickrSkipOriginal :          true,
+    flickrAPIKey:                 '',
     breadcrumbAutoHideTopLevel :  true,
     displayBreadcrumb :           true,
     breadcrumbOnlyCurrentLevel :  true,
@@ -1466,6 +1474,8 @@ todo:
     thumbnailDisplayOrder :       '',
     thumbnailL1DisplayOrder :     null,
     thumbnailDisplayInterval :    15,
+    thumbnailDisplayByRow:        false,
+    thumbnailDisplayByCol:        false,
     thumbnailL1DisplayInterval :  null,
     thumbnailDisplayTransition :  'fadeIn',
     thumbnailL1DisplayTransition : null,
@@ -4602,12 +4612,12 @@ todo:
                 // ThumbnailBuild( item, curTn.thumbnailIdx, i, (i+1) == nbTn );
                 ThumbnailBuild( item, curTn.thumbnailIdx, i );
               }
-              tnToDisplay.push({idx:i, delay:cnt});
+              tnToDisplay.push({idx:i, delay:cnt, top: curTn.top, left: curTn.left});
               cnt++;
             }
           }
           else {
-            tnToReDisplay.push({idx: i, delay: 0});
+            tnToReDisplay.push({idx: i, delay: 0, top: curTn.top, left: curTn.left});
           }
           // G.GOM.itemsDisplayed++;
           lastTnIdx = i;
@@ -4662,25 +4672,11 @@ todo:
       
       // batch set position (and display animation) to all thumbnails
       // first display newly built thumbnails
-			if( G.tn.opt.Get('displayOrder') == 'random' ) {
-				NGY2Tools.AreaShuffle( tnToDisplay );
-			}
-      var nbBuild = tnToDisplay.length;
-      G.GOM.thumbnails2Display=[];
-      for( var i = 0; i < nbBuild ; i++ ) {
-        // ThumbnailSetPosition(tnToDisplay[i].idx, tnToDisplay[i].delay+10);
-        ThumbnailSetPosition(tnToDisplay[i].idx, i);
-      }
       
-      // then re-position already displayed thumbnails
-			if( G.tn.opt.Get('displayOrder') == 'random' ) {
-				NGY2Tools.AreaShuffle( tnToReDisplay );
-			}
-      var n = tnToReDisplay.length;
-      for( var i = 0; i < n ; i++ ) {
-        // ThumbnailSetPosition(tnToReDisplay[i].idx, nbBuild+1);
-        ThumbnailSetPosition(tnToReDisplay[i].idx, i);
-      }
+      G.GOM.thumbnails2Display=[];
+      
+      var duration = ThumbnailPreparePosition( tnToDisplay );
+      ThumbnailPreparePosition( tnToReDisplay );
       
       ThumbnailDisplayAnimBatch();
 
@@ -4696,11 +4692,79 @@ todo:
           G.galleryResizeEventEnabled = true;
           // GalleryThumbnailSliderBuildAndStart();  // image slider on last displayed thumbnail
           TriggerCustomEvent('galleryDisplayed');
-        }, nbBuild * G.tn.opt.Get('displayInterval'));
+        // }, nbBuild * G.tn.opt.Get('displayInterval'));
+        }, duration * G.tn.opt.Get('displayInterval'));
       }
       
     }
     
+    
+    function ThumbnailPreparePosition( lstThumb ) {
+			if( G.tn.opt.Get('displayOrder') == 'random' ) {
+				NGY2Tools.AreaShuffle( lstThumb );
+			}
+      
+       var rowByRow = false;
+      if( G.O.thumbnailDisplayByRow && ( G.layout.engine == 'JUSTIFIED' || G.layout.engine == 'GRID' )) {
+        rowByRow = true;
+      }
+
+      var colByCol = 'none';
+      if( G.O.thumbnailDisplayByCol != false && (G.layout.engine == 'CASCADING' || G.layout.engine == 'GRID' )) {
+        colByCol = G.O.thumbnailDisplayByCol;
+      }
+      
+      var nbBuild = lstThumb.length;
+      var d = 0;
+      var top = 0;
+      if( nbBuild > 0 ) {
+        
+        // DISPLAY COLUMN BY COLUMN
+        if( colByCol != 'none' ) {
+          var tab = [];
+          var cols = [];
+          for( var i = 0; i < nbBuild ; i++ ) {
+            if( tab[lstThumb[i].left] == undefined ) {
+              tab[lstThumb[i].left] = [];
+              cols.push( lstThumb[i].left );
+            }
+            tab[lstThumb[i].left].push( lstThumb[i].idx )
+          }
+          if( colByCol == 'fromRight' ) {
+            cols = cols.reverse();
+          }
+          for( var i = 0; i < cols.length; i++ ) {
+            var col = cols[i];
+            for( var j = 0; j < tab[col].length; j++ ) {
+              ThumbnailSetPosition( tab[col][j], i);
+            }
+          }
+          return(i);
+        }
+        else {
+          // STANDARD DISPLAY OR ROW BY ROW
+          top = lstThumb[0].top;
+          for( var i = 0; i < nbBuild ; i++ ) {
+            // ThumbnailSetPosition(tnToDisplay[i].idx, tnToDisplay[i].delay+10);
+            // ThumbnailSetPosition(tnToDisplay[i].idx, i);
+
+            if( rowByRow ) {
+              // DISPLAY ROW BY ROW
+              if( lstThumb[i].top > top ) {
+                d++;
+                top = lstThumb[i].top;
+              }
+            }
+            else {
+              d++;
+            }
+            ThumbnailSetPosition(lstThumb[i].idx, d);
+          }
+          return(d);
+        }
+      }
+      
+    }
     
     // Thumbnail: set the new position
     function ThumbnailSetPosition( GOMidx, cnt ) {
@@ -6099,14 +6163,15 @@ todo:
           // https://stackoverflow.com/questions/2916544/parsing-a-vimeo-id-using-javascript
           // var s = url.match( /^.*(vimeo\.com\/)((channels\/[A-z]+\/)|(groups\/[A-z]+\/videos\/))?([0-9]+)/ );
           var s = url.match( /(http|https)?:\/\/(www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|)(\d+)(?:|\/\?)/ );
-          return s != null ? s[5] : null;
+          return s != null ? s[4] : null;
         },
         url: function( id ) {
           return 'https://player.vimeo.com/video/' + id;
         },
         markup: function( id ) {
           // return '<iframe class="nGY2ViewerMedia" src="https://player.vimeo.com/video/' + id + '?rel=0" frameborder="0" gesture="media" allowfullscreen></iframe>';
-          return '<iframe class="nGY2ViewerMedia" src="https://player.vimeo.com/video/' + id + '?rel=0" frameborder="0" allow="autoplay" allowfullscreen></iframe>';
+          // return '<iframe class="nGY2ViewerMedia" src="https://player.vimeo.com/video/' + id + '?rel=0" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>';
+          return '<iframe class="nGY2ViewerMedia" src="https://player.vimeo.com/video/' + id + '" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>';
         },
         kind: 'iframe'
       },
@@ -6268,7 +6333,7 @@ todo:
         
         // media source url - img is the default media kind
         newItem.setMediaURL( src, 'img');
-
+debugger;
         // manage media kinds other than IMG
         jQuery.each(mediaList, function ( n, media ) {
           var id = media.getID(src);
@@ -6536,9 +6601,6 @@ todo:
           title = title_from_url;
         }
 
-console.log(thumbsrc);
-        
-        
         var newItem = NGY2Item.New( G, title, description, ID, albumID, kind, tags );
         if( title != '' ) {
           nbTitles++;
@@ -8416,7 +8478,7 @@ console.log(thumbsrc);
     function ViewerZoomStart() {
       if( G.O.viewerZoom && !G.VOM.viewerMediaIsChanged ) {
         var item = G.VOM.content.current.NGY2Item();
-        if( item.imageHeight > 0 && item.imageWidth > 0 ) {
+        if( item.mediaKind == 'img' && item.imageHeight > 0 && item.imageWidth > 0 ) {
           if( G.VOM.zoom.isZooming === false ) {
             // default zoom
             G.VOM.zoom.userFactor = 1;
@@ -8425,6 +8487,7 @@ console.log(thumbsrc);
           return true;
         }
       }
+      return false;
     }
           
     function ViewerZoomIn( zoomIn ) {
@@ -8554,7 +8617,7 @@ console.log(thumbsrc);
     }
 
     // position the image depending on the zoom factor and the pan X/Y position
-    // IMG is the only media supporting zoom/pan
+    // IMG is the only media kind supporting zoom/pan
     function ViewerImagePanSetPosition(posX, posY, imageContainer, savePosition ) {
       if( savePosition ) {
         G.VOM.panPosX = posX;
@@ -9016,8 +9079,9 @@ console.log(thumbsrc);
             else {
 							// toolbars are displayed -> display next/previous media
 							if( (new Date().getTime()) - G.VOM.singletapTime < 400 ) { return; }		// to avoid conflict with MOUSEMOVE event
-              if( ev.target.className.indexOf('nGY2ViewerMedia') !== -1 ) {
-								var x =0;
+
+              if( G.VOM.content.current.NGY2Item().mediaKind == 'img' && ev.target.className.indexOf('nGY2ViewerMedia') !== -1 ) {
+                var x =0;
 								if( ev.srcEvent instanceof MouseEvent ) {
 									x = ev.srcEvent.pageX;
 								}
@@ -10478,7 +10542,9 @@ console.log(thumbsrc);
       
       // mouse wheel to zoom in/out the image displayed in the internal lightbox
       jQuery(window).bind('mousewheel wheel', function(e){
-        if( G.VOM.viewerDisplayed ) {
+
+        if( G.VOM.viewerDisplayed && G.VOM.content.current.NGY2Item().mediaKind == 'img' ) {
+
           var deltaY = 0;
           e.preventDefault();
 
@@ -16587,13 +16653,15 @@ if (typeof define === 'function' && define.amdDISABLED) {
       thumbAvailableSizesStr :  new Array('sq', 't', 'q', 's', 'm', 'z'),
       photoSize :               '0',
       photoAvailableSizes :     new Array(75, 100, 150, 240, 500, 640, 1024, 1024, 1600, 2048, 10000),
-      photoAvailableSizesStr :  new Array('sq', 't', 'q', 's', 'm', 'z', 'b', 'l', 'h', 'k', 'o'),
-      ApiKey :                  "2f0e634b471fdb47446abcb9c5afebdc"
+      photoAvailableSizesStr :  new Array('sq', 't', 'q', 's', 'm', 'z', 'b', 'l', 'h', 'k', 'o')
     };
     
     
     /** @function AlbumGetContent */
     var AlbumGetContent = function(albumID, fnToCall, fnParam1, fnParam2) {
+      if( G.O.flickrAPIKey == '' ) {
+        NanoAlert(G, 'Please set your Flickr API Key (option flickrAPIKey)');
+      }
 
       var albumIdx = NGY2Item.GetIdx(G, albumID);
       var url = '';
@@ -16601,17 +16669,17 @@ if (typeof define === 'function' && define.amdDISABLED) {
         // photos
         if( G.O.photoset.toUpperCase() == 'NONE' || G.O.album.toUpperCase() == 'NONE' ) {
           // get photos from full photostream
-          url = Flickr.url() + "?&method=flickr.people.getPublicPhotos&api_key=" + Flickr.ApiKey + "&user_id="+G.O.userID+"&extras=description,views,tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_z,url_b,url_h,url_k&per_page=500&format=json";
+          url = Flickr.url() + "?&method=flickr.people.getPublicPhotos&api_key=" + G.O.flickrAPIKey + "&user_id="+G.O.userID+"&extras=description,views,tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_z,url_b,url_h,url_k&per_page=500&format=json";
         }
         else
           if( G.I[albumIdx].GetID() == 0 ) {
           // retrieve the list of albums
-          url = Flickr.url() + "?&method=flickr.photosets.getList&api_key=" + Flickr.ApiKey + "&user_id="+G.O.userID+"&per_page=500&primary_photo_extras=tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_l,url_z,url_b,url_h,url_k&format=json";
+          url = Flickr.url() + "?&method=flickr.photosets.getList&api_key=" + G.O.flickrAPIKey + "&user_id="+G.O.userID+"&per_page=500&primary_photo_extras=tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_l,url_z,url_b,url_h,url_k&format=json";
           kind='album';
         }
           else {
             // photos from one specific photoset
-            url = Flickr.url() + "?&method=flickr.photosets.getPhotos&api_key=" + Flickr.ApiKey + "&photoset_id="+G.I[albumIdx].GetID()+"&extras=description,views,tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_l,url_z,url_b,url_h,url_k&format=json";
+            url = Flickr.url() + "?&method=flickr.photosets.getPhotos&api_key=" + G.O.flickrAPIKey + "&photoset_id="+G.I[albumIdx].GetID()+"&extras=description,views,tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_l,url_z,url_b,url_h,url_k&format=json";
           }
 
       if( G.O.debugMode ) { console.log('Flickr URL: ' + url); }
