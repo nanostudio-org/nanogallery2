@@ -870,8 +870,8 @@
 	-moz-box-sizing: border-box;
 	-o-box-sizing: border-box;
 }
-.nGY2 iframe.nGY2ViewerMedia {
-	/* allow pointer events for medias displayed in an IFRAME */
+.nGY2 .nGY2ViewerMedia:not(img) {
+	/* allow pointer events for medias not displayed in an IMG (-> IFRAME, VIDEO...) */
 	pointer-events: 			auto;
 }
 /* spinner by https://codepen.io/fox_hover/pen/YZxGed */
