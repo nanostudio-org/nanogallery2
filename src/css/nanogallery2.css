@@ -1,4 +1,4 @@
-/* CSS for nanogallery2 - www.nanogallery2.nanostudio.org */
+/* CSS for nanogallery2 - https://nanogallery2.nanostudio.org */
 
 /**************************************/
 /* nanogallery2 - main container      */
@@ -870,7 +870,10 @@
 	-moz-box-sizing: border-box;
 	-o-box-sizing: border-box;
 }
-
+.nGY2 .nGY2ViewerMedia:not(img) {
+	/* allow pointer events for medias not displayed in an IMG (-> IFRAME, VIDEO...) */
+	pointer-events: 			auto;
+}
 /* spinner by https://codepen.io/fox_hover/pen/YZxGed */
 .nGY2 .nGY2ViewerMediaLoaderDisplayed {
   visibility: visible;
