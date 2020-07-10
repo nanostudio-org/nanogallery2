@@ -2301,6 +2301,7 @@
         kind: 'flickr',
         userID: '149035168@N08',
         photoset:        '72157675219521270',
+        flickrAPIKey:   '2f0e634b471fdb47446abcb9c5afebdc',
         thumbnailHeight: 100, thumbnailWidth: 100,
         thumbnailLabel: { display: false },
         thumbnailHoverEffect2: null, 
@@ -2935,7 +2936,7 @@ gallerySorting : 'titleAsc',
           // DISPLAY ANIMATION
           galleryDisplayTransition: 'rotateX',        // gallery display animation
           galleryDisplayTransitionDuration: 1500,
-          thumbnailDisplayTransition: 'flipDown',     // thumbnail display animation
+          thumbnailDisplayTransition: 'scaleUp',     // thumbnail display animation
           thumbnailDisplayTransitionDuration: 600,
           thumbnailDisplayInterval: 30,
 
@@ -2984,7 +2985,7 @@ gallerySorting : 'titleAsc',
 
           thumbnailAlignment: 'center',
           thumbnailBorderHorizontal: 0, thumbnailBorderVertical: 0,
-          thumbnailGutterWidth : 80, thumbnailGutterHeight : 80,
+          thumbnailGutterWidth : '80 XS20 SM20' , thumbnailGutterHeight : '80 XS20 SM20',
           
           // THUMBNAIL TOOLS & LABEL
           thumbnailLabel: { display: true, position: 'onBottom', align: 'left'},
@@ -2997,7 +2998,7 @@ gallerySorting : 'titleAsc',
           galleryDisplayTransitionDuration: 1000,
           thumbnailDisplayTransition: 'scaleDown',
           thumbnailDisplayTransitionDuration: 300,
-          thumbnailDisplayInterval: 10,
+          thumbnailDisplayInterval: 50,
 
 
           // THUMBNAIL'S HOVER ANIMATION
@@ -3047,7 +3048,8 @@ gallerySorting : 'titleAsc',
           galleryDisplayTransitionDuration: 1000,
           thumbnailDisplayTransition: 'scaleUp',
           thumbnailDisplayTransitionDuration: 300,
-          thumbnailDisplayInterval: 15,
+          thumbnailDisplayInterval: 150,
+          thumbnailDisplayByCol: 'fromRight',
 
           // THUMBNAIL TOOLS & LABEL
           thumbnailLabel: { display: true, position:'onBottomOverImage', hideIcons: true, titleFontSize: '1em', align: 'left', titleMultiLine:true, displayDescription: false},
@@ -3099,7 +3101,8 @@ gallerySorting : 'titleAsc',
           // DISPLAY ANIMATION
           thumbnailDisplayTransition: 'flipUp',       // thumbnail display animation
           thumbnailDisplayTransitionDuration: 400,
-          thumbnailDisplayInterval: 60,
+          thumbnailDisplayInterval: 200,
+          thumbnailDisplayByRow: true,
 
           // THUMBNAIL'S HOVER ANIMATION
           thumbnailHoverEffect2: 'toolsSlideUp|labelSlideDown',
@@ -3271,7 +3274,7 @@ gallerySorting : 'titleAsc',
 
 
           // thumbnail
-          thumbnailHeight: 300, thumbnailWidth: 'auto',
+          thumbnailHeight: 200, thumbnailWidth: 350,
           thumbnailGutterWidth: 2,
           thumbnailGutterHeight: 2,
           thumbnailBorderHorizontal: 0,
