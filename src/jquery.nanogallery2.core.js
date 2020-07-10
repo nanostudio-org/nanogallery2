@@ -2514,7 +2514,7 @@ todo:
     G.CSSbackfaceVisibilityName = FirstSupportedPropertyName(["backfaceVisibility", "msBackfaceVisibility", "MozBackfaceVisibility", "WebkitBackfaceVisibility", "OBackfaceVisibility"]);
     G.CSStransitionName =         FirstSupportedPropertyName(["transition", "msTransition", "MozTransition", "WebkitTransition", "OTransition"]);
     G.CSSanimationName =          FirstSupportedPropertyName(["animation", "msAnimation", "MozAnimation", "WebkitAnimation", "OAnimation"]);
-    G.GalleryResizeThrottled =    throttle(GalleryResize, 30, {leading: false});
+    G.GalleryResizeThrottled =    throttle(GalleryResize, 15, {leading: false});
     
     G.blockList =                 null;     // album names - block list
     G.allowList =                 null;     // album names - allow list
@@ -3786,13 +3786,13 @@ todo:
               // display gallery
               // GalleryRenderPart2( albumIdx );
               // setTimeout(function(){ GalleryRenderPart2(albumIdx) }, 60);
-              requestTimeout(function(){ GalleryRenderPart2(albumIdx) }, 60);
+              requestTimeout(function(){ GalleryRenderPart2(albumIdx) }, 20);
             // });
           }
         });
       }
       else {
-        requestTimeout(function(){ GalleryRenderPart2(albumIdx) }, 60);
+        requestTimeout(function(){ GalleryRenderPart2(albumIdx) }, 20);
       }
 
     }
@@ -3833,7 +3833,7 @@ todo:
       }
       
       // setTimeout(function(){ GalleryRenderPart3(albumIdx) }, 60);
-      requestTimeout(function(){ GalleryRenderPart3(albumIdx) }, 60);
+      requestTimeout(function(){ GalleryRenderPart3(albumIdx) }, 20);
       // GalleryRenderPart3(albumIdx);
 
     }
@@ -3873,9 +3873,10 @@ todo:
         
         // step 4: display thumbnails
         GalleryDisplayPart1();
-        requestTimeout(function(){ GalleryDisplayPart2( false ) }, 120);
+        requestTimeout(function(){ GalleryDisplayPart2( false ) }, 20);
       }
       else {
+        // 
         G.galleryResizeEventEnabled = true;
       }
       
@@ -3910,7 +3911,6 @@ todo:
     function GalleryPopulateGOM() {
       
       var preloadImages = '';
-      var imageSizeRequested = false;
       var albumID = G.I[G.GOM.albumIdx].GetID();
       var l = G.I.length;
       var cnt = 0;
@@ -3924,7 +3924,6 @@ todo:
           // if unknown image size and layout is not grid --> we need to retrieve the size of the images
           if( G.layout.prerequisite.imageSize && ( w == 0 || h == 0) ) {
           // if( true ) {
-            imageSizeRequested = true;
             preloadImages += '<img src="'+item.thumbImg().src+'" data-idx="'+cnt+'" data-albumidx="'+G.GOM.albumIdx+'">';
           }
           
@@ -3946,8 +3945,8 @@ todo:
       if( fu !== null ) {
         typeof fu == 'function' ? fu() : window[fu]();
       }
-      
-      if( imageSizeRequested ) {
+
+      if( preloadImages != '' ) {
         // preload images to retrieve their size and then resize the gallery (=GallerySetLayout()+ GalleryDisplay())
         var $newImg = jQuery(preloadImages);
         var gi_imgLoad = ngimagesLoaded( $newImg );
@@ -4295,18 +4294,16 @@ todo:
         }
       }
       
+      // hover effect on gallery (vs on thumbnail) --> experimental / not used
       if( false ) {
         var newTop = 0;
         if( typeof GOMidx !== 'undefined' ) {
-          // hover effect on gallery (vs on thumbnail) --> experimental / not used
           if( G.GOM.albumIdx != -1 ) {
             var hoveredTn = G.GOM.items[GOMidx];
-            // var item = G.I[hoveredTn.thumbnailIdx];
             
             // hovered thumbnail
             hoveredTn.width += 40;
             hoveredTn.height += 40;
-            // todo : left
             
             for( var i = 0; i < nbTn ; i++ ) {
               var curTn = G.GOM.items[i];
@@ -4316,9 +4313,6 @@ todo:
                   newTop = 40;
                   if( hoveredTn.thumbnailIdx != curTn.thumbnailIdx ) {
                     // not hovered thumbnail
-                    // curTn.resizedContentWidth+=10;
-                    // curTn.resizedContentHeight+=20;
-                    // curTn.width+=10;
                     curTn.top += 30;
                     curTn.width -= 20;
                     curTn.height -= 20;
@@ -4676,7 +4670,7 @@ todo:
       
       var duration = ThumbnailPreparePosition( tnToDisplay );
       ThumbnailPreparePosition( tnToReDisplay );
-      
+
       ThumbnailDisplayAnimBatch();
 
       if( G.tn.opt.Get('displayTransition') == 'NONE' ) {
@@ -4762,6 +4756,7 @@ todo:
           return(d);
         }
       }
+      return 0;
       
     }
     
