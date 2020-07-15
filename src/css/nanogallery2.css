@@ -871,7 +871,9 @@
 	-o-box-sizing: border-box;
 }
 /* allow pointer events for medias not displayed in an IMG (-> IFRAME, VIDEO...) */
-.nGY2 .nGY2ViewerMedia:not(img) {
+/* .nGY2 .nGY2ViewerMedia:not(img) { */
+.nGY2 video.nGY2ViewerMedia,
+.nGY2 iframe.nGY2ViewerMedia { 
 	pointer-events: 			auto;
 }
 
