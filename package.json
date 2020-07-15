@@ -1,6 +1,6 @@
 {
   "name": "nanogallery2",
-  "description": "nanogallery2 creates beautiful, modern and high quality image galleries for your website",
+  "description": "modern photo / video gallery and lightbox",
   "author": "Christophe Brisbois",
   "version": "0.0.0",
   "homepage": "http://nanogallery2.nanostudio.org",
@@ -13,7 +13,7 @@
     "grunt-contrib-jshint": "latest",
     "grunt-contrib-qunit": "latest",
     "grunt-terser": "latest",
-    "grunt-contrib-cssmin": "^1.0.2",
+    "grunt-contrib-cssmin": "latest",
     "grunt-gh-pages": "latest"
   },
   "scripts": {
