@@ -870,10 +870,11 @@
 	-moz-box-sizing: border-box;
 	-o-box-sizing: border-box;
 }
+/* allow pointer events for medias not displayed in an IMG (-> IFRAME, VIDEO...) */
 .nGY2 .nGY2ViewerMedia:not(img) {
-	/* allow pointer events for medias not displayed in an IMG (-> IFRAME, VIDEO...) */
 	pointer-events: 			auto;
 }
+
 /* spinner by https://codepen.io/fox_hover/pen/YZxGed */
 .nGY2 .nGY2ViewerMediaLoaderDisplayed {
   visibility: visible;
