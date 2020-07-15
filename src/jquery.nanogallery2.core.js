@@ -1,5 +1,5 @@
 /*!
- * @preserve nanogallery2 v3.0.1 - javascript photo / video gallery and lightbox
+ * @preserve nanogallery2 v3.0.2beta3 - javascript photo / video gallery and lightbox
  * Homepage: http://nanogallery2.nanostudio.org
  * Sources:  https://github.com/nanostudio-org/nanogallery2
  *
@@ -19,16 +19,28 @@
  */
 
  
-// nanogallery v3.0.1
+// nanogallery v3.0.2beta3
 /*
 
-- fixed: Flickr connector
-- fixed: lightbox error when thumbnails are disabled
-- fixed: fullscreen mode remains activated when lightbox is closed after having been started in fullscreen mode
-- fixed: requestAnimationFrame not used in some case
-- fixed: does not scroll to top of gallery when an album is opened
+- new: option thumbnailDisplayByRow to display the thumbnails row by row (vs individually)
+- new: [BREAKING CHANGE for FLICKR user]: custom Flickr API key needed: set new option flickrAPIKey
+    (to obtain it: https://www.flickr.com/services/apps/create/)
+- new: ignore markup elements which do not contain media data
+    
+- fixed: lightbox does nor free it's resources on close, in some case
+- fixed: lightbox previous media displayed over current media on startup
+- fixed: #266 Layout is not adjusted immediately anymore when resizing the browser window
+- fixed: #268 Self hosted video is not playing when clicked
+- fixed: Vimeo videos no playing
+- changed: option 'galleryResizeAnimation' now set to false by default
 - minor bugfixes
 
+todo:
+- open image based on ID / filename
+- thumbnail background
+- thumbnail display animation even/odd rows
+- doc lb standalone js
+- remove delay in thumbnail display
 */
  
  
@@ -431,7 +443,7 @@
             
             // public
             this.kind =                 '';       // 'image', 'album' or 'albumUp'
-            this.mediaKind =            'img';    // 'img', 'iframe'
+            this.mediaKind =            'img';    // 'img', 'iframe', 'video'
             this.mediaMarkup =          '';
             this.G =                    null;     // pointer to global instance
             this.title =                '';       // image title
@@ -1345,6 +1357,7 @@
     albumList2 :                  null,
     RTL :                         false,
     flickrSkipOriginal :          true,
+    flickrAPIKey:                 '',
     breadcrumbAutoHideTopLevel :  true,
     displayBreadcrumb :           true,
     breadcrumbOnlyCurrentLevel :  true,
@@ -1388,8 +1401,8 @@
     galleryL1DisplayTransition :  null,
     galleryDisplayTransitionDuration :    1000,
     galleryL1DisplayTransitionDuration :  null,
-    galleryResizeAnimation :      true,
-    galleryRenderDelay :          30,
+    galleryResizeAnimation :      false,
+    galleryRenderDelay :          10,
 
     thumbnailCrop :               true,
     thumbnailL1Crop :             null,
@@ -1435,7 +1448,7 @@
     thumbnailSliderDelay:         2000,
     galleryBuildInit2 :           '',
     portable :                    false,
-    eventsDebounceDelay:          30,
+    eventsDebounceDelay:          10,
     
     touchAnimation :              false,
     touchAnimationL1 :            undefined,
@@ -1460,6 +1473,8 @@
     thumbnailDisplayOrder :       '',
     thumbnailL1DisplayOrder :     null,
     thumbnailDisplayInterval :    15,
+    thumbnailDisplayByRow:        false,
+    thumbnailDisplayByCol:        false,
     thumbnailL1DisplayInterval :  null,
     thumbnailDisplayTransition :  'fadeIn',
     thumbnailL1DisplayTransition : null,
@@ -2499,7 +2514,7 @@
     G.CSSbackfaceVisibilityName = FirstSupportedPropertyName(["backfaceVisibility", "msBackfaceVisibility", "MozBackfaceVisibility", "WebkitBackfaceVisibility", "OBackfaceVisibility"]);
     G.CSStransitionName =         FirstSupportedPropertyName(["transition", "msTransition", "MozTransition", "WebkitTransition", "OTransition"]);
     G.CSSanimationName =          FirstSupportedPropertyName(["animation", "msAnimation", "MozAnimation", "WebkitAnimation", "OAnimation"]);
-    G.GalleryResizeThrottled =    throttle(GalleryResize, 30, {leading: false});
+    G.GalleryResizeThrottled =    throttle(GalleryResize, 15, {leading: false});
     
     G.blockList =                 null;     // album names - block list
     G.allowList =                 null;     // album names - allow list
@@ -2542,7 +2557,6 @@
       lastFullRow :               -1,       // number of the last row without holes
       lastDisplayedIdx:           -1,       // used to display the counter of not displayed items
       displayInterval :           { from: 0, len: 0 },
-      userEvents:                 null,
       hammertime:                 null,
       curNavLevel:                'l1',   // current navigation level (l1 or LN)
       curWidth:                   'me',
@@ -2779,7 +2793,6 @@
         }
 				
 			},
-      userEvents:         null,   // user events management
       hammertime:         null,   // hammer.js manager
       swipePosX:          0,      // current horizontal swip position
       panPosX:            0,      // position for manual pan
@@ -3773,13 +3786,13 @@
               // display gallery
               // GalleryRenderPart2( albumIdx );
               // setTimeout(function(){ GalleryRenderPart2(albumIdx) }, 60);
-              requestTimeout(function(){ GalleryRenderPart2(albumIdx) }, 60);
+              requestTimeout(function(){ GalleryRenderPart2(albumIdx) }, 20);
             // });
           }
         });
       }
       else {
-        requestTimeout(function(){ GalleryRenderPart2(albumIdx) }, 60);
+        requestTimeout(function(){ GalleryRenderPart2(albumIdx) }, 20);
       }
 
     }
@@ -3820,7 +3833,7 @@
       }
       
       // setTimeout(function(){ GalleryRenderPart3(albumIdx) }, 60);
-      requestTimeout(function(){ GalleryRenderPart3(albumIdx) }, 60);
+      requestTimeout(function(){ GalleryRenderPart3(albumIdx) }, 20);
       // GalleryRenderPart3(albumIdx);
 
     }
@@ -3860,9 +3873,10 @@
         
         // step 4: display thumbnails
         GalleryDisplayPart1();
-        requestTimeout(function(){ GalleryDisplayPart2( false ) }, 120);
+        requestTimeout(function(){ GalleryDisplayPart2( false ) }, 20);
       }
       else {
+        // 
         G.galleryResizeEventEnabled = true;
       }
       
@@ -3897,7 +3911,6 @@
     function GalleryPopulateGOM() {
       
       var preloadImages = '';
-      var imageSizeRequested = false;
       var albumID = G.I[G.GOM.albumIdx].GetID();
       var l = G.I.length;
       var cnt = 0;
@@ -3911,7 +3924,6 @@
           // if unknown image size and layout is not grid --> we need to retrieve the size of the images
           if( G.layout.prerequisite.imageSize && ( w == 0 || h == 0) ) {
           // if( true ) {
-            imageSizeRequested = true;
             preloadImages += '<img src="'+item.thumbImg().src+'" data-idx="'+cnt+'" data-albumidx="'+G.GOM.albumIdx+'">';
           }
           
@@ -3933,8 +3945,8 @@
       if( fu !== null ) {
         typeof fu == 'function' ? fu() : window[fu]();
       }
-      
-      if( imageSizeRequested ) {
+
+      if( preloadImages != '' ) {
         // preload images to retrieve their size and then resize the gallery (=GallerySetLayout()+ GalleryDisplay())
         var $newImg = jQuery(preloadImages);
         var gi_imgLoad = ngimagesLoaded( $newImg );
@@ -4282,18 +4294,16 @@
         }
       }
       
+      // hover effect on gallery (vs on thumbnail) --> experimental / not used
       if( false ) {
         var newTop = 0;
         if( typeof GOMidx !== 'undefined' ) {
-          // hover effect on gallery (vs on thumbnail) --> experimental / not used
           if( G.GOM.albumIdx != -1 ) {
             var hoveredTn = G.GOM.items[GOMidx];
-            // var item = G.I[hoveredTn.thumbnailIdx];
             
             // hovered thumbnail
             hoveredTn.width += 40;
             hoveredTn.height += 40;
-            // todo : left
             
             for( var i = 0; i < nbTn ; i++ ) {
               var curTn = G.GOM.items[i];
@@ -4303,9 +4313,6 @@
                   newTop = 40;
                   if( hoveredTn.thumbnailIdx != curTn.thumbnailIdx ) {
                     // not hovered thumbnail
-                    // curTn.resizedContentWidth+=10;
-                    // curTn.resizedContentHeight+=20;
-                    // curTn.width+=10;
                     curTn.top += 30;
                     curTn.width -= 20;
                     curTn.height -= 20;
@@ -4598,12 +4605,12 @@
                 // ThumbnailBuild( item, curTn.thumbnailIdx, i, (i+1) == nbTn );
                 ThumbnailBuild( item, curTn.thumbnailIdx, i );
               }
-              tnToDisplay.push({idx:i, delay:cnt});
+              tnToDisplay.push({idx:i, delay:cnt, top: curTn.top, left: curTn.left});
               cnt++;
             }
           }
           else {
-            tnToReDisplay.push({idx: i, delay: 0});
+            tnToReDisplay.push({idx: i, delay: 0, top: curTn.top, left: curTn.left});
           }
           // G.GOM.itemsDisplayed++;
           lastTnIdx = i;
@@ -4658,26 +4665,12 @@
       
       // batch set position (and display animation) to all thumbnails
       // first display newly built thumbnails
-			if( G.tn.opt.Get('displayOrder') == 'random' ) {
-				NGY2Tools.AreaShuffle( tnToDisplay );
-			}
-      var nbBuild = tnToDisplay.length;
+      
       G.GOM.thumbnails2Display=[];
-      for( var i = 0; i < nbBuild ; i++ ) {
-        // ThumbnailSetPosition(tnToDisplay[i].idx, tnToDisplay[i].delay+10);
-        ThumbnailSetPosition(tnToDisplay[i].idx, i);
-      }
       
-      // then re-position already displayed thumbnails
-			if( G.tn.opt.Get('displayOrder') == 'random' ) {
-				NGY2Tools.AreaShuffle( tnToReDisplay );
-			}
-      var n = tnToReDisplay.length;
-      for( var i = 0; i < n ; i++ ) {
-        // ThumbnailSetPosition(tnToReDisplay[i].idx, nbBuild+1);
-        ThumbnailSetPosition(tnToReDisplay[i].idx, i);
-      }
-      
+      var duration = ThumbnailPreparePosition( tnToDisplay );
+      ThumbnailPreparePosition( tnToReDisplay );
+
       ThumbnailDisplayAnimBatch();
 
       if( G.tn.opt.Get('displayTransition') == 'NONE' ) {
@@ -4692,11 +4685,80 @@
           G.galleryResizeEventEnabled = true;
           // GalleryThumbnailSliderBuildAndStart();  // image slider on last displayed thumbnail
           TriggerCustomEvent('galleryDisplayed');
-        }, nbBuild * G.tn.opt.Get('displayInterval'));
+        // }, nbBuild * G.tn.opt.Get('displayInterval'));
+        }, duration * G.tn.opt.Get('displayInterval'));
       }
       
     }
     
+    
+    function ThumbnailPreparePosition( lstThumb ) {
+			if( G.tn.opt.Get('displayOrder') == 'random' ) {
+				NGY2Tools.AreaShuffle( lstThumb );
+			}
+      
+       var rowByRow = false;
+      if( G.O.thumbnailDisplayByRow && ( G.layout.engine == 'JUSTIFIED' || G.layout.engine == 'GRID' )) {
+        rowByRow = true;
+      }
+
+      var colByCol = 'none';
+      if( G.O.thumbnailDisplayByCol != false && (G.layout.engine == 'CASCADING' || G.layout.engine == 'GRID' )) {
+        colByCol = G.O.thumbnailDisplayByCol;
+      }
+      
+      var nbBuild = lstThumb.length;
+      var d = 0;
+      var top = 0;
+      if( nbBuild > 0 ) {
+        
+        // DISPLAY COLUMN BY COLUMN
+        if( colByCol != 'none' ) {
+          var tab = [];
+          var cols = [];
+          for( var i = 0; i < nbBuild ; i++ ) {
+            if( tab[lstThumb[i].left] == undefined ) {
+              tab[lstThumb[i].left] = [];
+              cols.push( lstThumb[i].left );
+            }
+            tab[lstThumb[i].left].push( lstThumb[i].idx )
+          }
+          if( colByCol == 'fromRight' ) {
+            cols = cols.reverse();
+          }
+          for( var i = 0; i < cols.length; i++ ) {
+            var col = cols[i];
+            for( var j = 0; j < tab[col].length; j++ ) {
+              ThumbnailSetPosition( tab[col][j], i);
+            }
+          }
+          return(i);
+        }
+        else {
+          // STANDARD DISPLAY OR ROW BY ROW
+          top = lstThumb[0].top;
+          for( var i = 0; i < nbBuild ; i++ ) {
+            // ThumbnailSetPosition(tnToDisplay[i].idx, tnToDisplay[i].delay+10);
+            // ThumbnailSetPosition(tnToDisplay[i].idx, i);
+
+            if( rowByRow ) {
+              // DISPLAY ROW BY ROW
+              if( lstThumb[i].top > top ) {
+                d++;
+                top = lstThumb[i].top;
+              }
+            }
+            else {
+              d++;
+            }
+            ThumbnailSetPosition(lstThumb[i].idx, d);
+          }
+          return(d);
+        }
+      }
+      return 0;
+      
+    }
     
     // Thumbnail: set the new position
     function ThumbnailSetPosition( GOMidx, cnt ) {
@@ -6095,14 +6157,15 @@
           // https://stackoverflow.com/questions/2916544/parsing-a-vimeo-id-using-javascript
           // var s = url.match( /^.*(vimeo\.com\/)((channels\/[A-z]+\/)|(groups\/[A-z]+\/videos\/))?([0-9]+)/ );
           var s = url.match( /(http|https)?:\/\/(www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|)(\d+)(?:|\/\?)/ );
-          return s != null ? s[5] : null;
+          return s != null ? s[4] : null;
         },
         url: function( id ) {
           return 'https://player.vimeo.com/video/' + id;
         },
         markup: function( id ) {
           // return '<iframe class="nGY2ViewerMedia" src="https://player.vimeo.com/video/' + id + '?rel=0" frameborder="0" gesture="media" allowfullscreen></iframe>';
-          return '<iframe class="nGY2ViewerMedia" src="https://player.vimeo.com/video/' + id + '?rel=0" frameborder="0" allow="autoplay" allowfullscreen></iframe>';
+          // return '<iframe class="nGY2ViewerMedia" src="https://player.vimeo.com/video/' + id + '?rel=0" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>';
+          return '<iframe class="nGY2ViewerMedia" src="https://player.vimeo.com/video/' + id + '" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>';
         },
         kind: 'iframe'
       },
@@ -6264,7 +6327,7 @@
         
         // media source url - img is the default media kind
         newItem.setMediaURL( src, 'img');
-
+debugger;
         // manage media kinds other than IMG
         jQuery.each(mediaList, function ( n, media ) {
           var id = media.getID(src);
@@ -6410,6 +6473,9 @@
         // compare to group defined on the element that has been clicked (lightbox standalone)
         if( item.dataset.nanogallery2Lgroup != group ) { return; }
 
+        // ignore element <SCRIPT>
+        if( item.nodeName == 'SCRIPT' ) { return; }
+
         // create dictionnary with all data attribute name in lowercase (to be case unsensitive)
         var data = {
           // all possible data attributes with some default values
@@ -6482,7 +6548,7 @@
           // src = data['href'];
         // }
         src = src || data['data-ngsrc'] || data['href'];
-        if( !StartsWithProtocol(src) ) {          // do not add the base URL if src starts with a protocol (http, https...)
+        if( src !== undefined && !StartsWithProtocol(src) ) {          // do not add the base URL if src starts with a protocol (http, https...)
           src = G.O.itemsBaseURL + src;
         }
 
@@ -6500,10 +6566,14 @@
         if( thumbsrc == '' ) {
           thumbsrc = src;       // no thumbnail image URL -> use big image URL
         }
-				if( !StartsWithProtocol(thumbsrc) ) {
+				if( thumbsrc !== undefined && !StartsWithProtocol(thumbsrc) ) {
 					thumbsrc = G.O.itemsBaseURL + thumbsrc;
 				}
 
+        // ignore if no media URL at all
+        if( src === undefined && thumbsrc === undefined ) { return; }
+        
+        
         //newObj.description=jQuery(item).attr('data-ngdesc');
         var description = data['data-ngdesc'];
         var ID = data['id'] || data['data-ngid'];
@@ -6524,7 +6594,6 @@
         if( title_from_url != '' ) {
           title = title_from_url;
         }
-
 
         var newItem = NGY2Item.New( G, title, description, ID, albumID, kind, tags );
         if( title != '' ) {
@@ -8403,7 +8472,7 @@
     function ViewerZoomStart() {
       if( G.O.viewerZoom && !G.VOM.viewerMediaIsChanged ) {
         var item = G.VOM.content.current.NGY2Item();
-        if( item.imageHeight > 0 && item.imageWidth > 0 ) {
+        if( item.mediaKind == 'img' && item.imageHeight > 0 && item.imageWidth > 0 ) {
           if( G.VOM.zoom.isZooming === false ) {
             // default zoom
             G.VOM.zoom.userFactor = 1;
@@ -8412,6 +8481,7 @@
           return true;
         }
       }
+      return false;
     }
           
     function ViewerZoomIn( zoomIn ) {
@@ -8541,7 +8611,7 @@
     }
 
     // position the image depending on the zoom factor and the pan X/Y position
-    // IMG is the only media supporting zoom/pan
+    // IMG is the only media kind supporting zoom/pan
     function ViewerImagePanSetPosition(posX, posY, imageContainer, savePosition ) {
       if( savePosition ) {
         G.VOM.panPosX = posX;
@@ -8585,7 +8655,7 @@
       }
       G.VOM.content.previous.vIdx = G.VOM.IdxNext();
       G.VOM.content.next.vIdx = G.VOM.IdxPrevious();   
- 
+
       var sMedia = '<div class="nGY2ViewerMediaPan"><div class="nGY2ViewerMediaLoaderDisplayed"></div>' + G.VOM.content.previous.NGY2Item().mediaMarkup + '</div>';    // previous media
       sMedia    += '<div class="nGY2ViewerMediaPan"><div class="nGY2ViewerMediaLoaderDisplayed"></div>' + G.VOM.content.current.NGY2Item().mediaMarkup  + '</div>';    // current media
       sMedia    += '<div class="nGY2ViewerMediaPan"><div class="nGY2ViewerMediaLoaderDisplayed"></div>' + G.VOM.content.next.NGY2Item().mediaMarkup  + '</div>';    // next media
@@ -8610,6 +8680,12 @@
       G.VOM.content.current.$media = $mediaPan.eq(1);     // pointer to current media container
       G.VOM.content.next.$media = $mediaPan.eq(2);        // pointer to next media container
 
+      // position next/previous media
+      var vP = G.GOM.cache.viewport;
+      G.VOM.content.previous.$media[0].style[G.CSStransformName] = 'translate(-' + vP.w + 'px, 0px)';
+      G.VOM.content.next.$media[0].style[G.CSStransformName] = 'translate(' + vP.w + 'px, 0px)';
+      
+      
       G.VOM.ImageLoader.loadImage( VieweImgSizeRetrieved, G.VOM.content.current.NGY2Item()  );
       G.VOM.ImageLoader.loadImage( VieweImgSizeRetrieved, G.VOM.content.previous.NGY2Item() );
       G.VOM.ImageLoader.loadImage( VieweImgSizeRetrieved, G.VOM.content.next.NGY2Item()  );
@@ -8997,8 +9073,9 @@
             else {
 							// toolbars are displayed -> display next/previous media
 							if( (new Date().getTime()) - G.VOM.singletapTime < 400 ) { return; }		// to avoid conflict with MOUSEMOVE event
-              if( ev.target.className.indexOf('nGY2ViewerMedia') !== -1 ) {
-								var x =0;
+
+              if( G.VOM.content.current.NGY2Item().mediaKind == 'img' && ev.target.className.indexOf('nGY2ViewerMedia') !== -1 ) {
+                var x =0;
 								if( ev.srcEvent instanceof MouseEvent ) {
 									x = ev.srcEvent.pageX;
 								}
@@ -9944,8 +10021,6 @@
           G.VOM.playSlideshow = false;
         }
 
-        // G.VOM.userEvents.removeEventListeners();
-        // G.VOM.userEvents=null;
         G.VOM.hammertime.destroy();
         G.VOM.hammertime = null;
 
@@ -9954,7 +10029,10 @@
           ngscreenfull.exit();
         }
         
-        G.VOM.$baseCont.hide(0).off().show(0).html('').remove();
+        // G.VOM.$baseCont.hide(0).off().show(0).html('').remove();
+        // G.VOM.$baseCont.remove();         // does not work... (?)
+        jQuery('.nGY2ViewerContainer').remove();
+        G.VOM.$baseCont = null;
         G.VOM.viewerDisplayed = false;
 
         if( G.O.lightboxStandalone ) { return; }
@@ -10458,7 +10536,9 @@
       
       // mouse wheel to zoom in/out the image displayed in the internal lightbox
       jQuery(window).bind('mousewheel wheel', function(e){
-        if( G.VOM.viewerDisplayed ) {
+
+        if( G.VOM.viewerDisplayed && G.VOM.content.current.NGY2Item().mediaKind == 'img' ) {
+
           var deltaY = 0;
           e.preventDefault();
 
@@ -10629,6 +10709,7 @@
 								G.GOM.curWidth = nw;
 								G.GOM.pagination.currentPage = 0;
 								GalleryRender( G.GOM.albumIdx );
+                return;
 							}
 						}
 						else {
@@ -10639,13 +10720,14 @@
 								//G.layout.SetEngine();
 								G.GOM.pagination.currentPage = 0;
 								GalleryRender( G.GOM.albumIdx );
+                return;
 							}
 						}
-						return;
+						// return;
           }
-          else {
+          // else {
             GalleryResize();
-          }
+          // }
         }
       }
     }

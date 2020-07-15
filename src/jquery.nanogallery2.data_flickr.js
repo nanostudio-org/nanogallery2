@@ -42,13 +42,15 @@
       thumbAvailableSizesStr :  new Array('sq', 't', 'q', 's', 'm', 'z'),
       photoSize :               '0',
       photoAvailableSizes :     new Array(75, 100, 150, 240, 500, 640, 1024, 1024, 1600, 2048, 10000),
-      photoAvailableSizesStr :  new Array('sq', 't', 'q', 's', 'm', 'z', 'b', 'l', 'h', 'k', 'o'),
-      ApiKey :                  "2f0e634b471fdb47446abcb9c5afebdc"
+      photoAvailableSizesStr :  new Array('sq', 't', 'q', 's', 'm', 'z', 'b', 'l', 'h', 'k', 'o')
     };
     
     
     /** @function AlbumGetContent */
     var AlbumGetContent = function(albumID, fnToCall, fnParam1, fnParam2) {
+      if( G.O.flickrAPIKey == '' ) {
+        NanoAlert(G, 'Please set your Flickr API Key (option flickrAPIKey)');
+      }
 
       var albumIdx = NGY2Item.GetIdx(G, albumID);
       var url = '';
@@ -56,17 +58,17 @@
         // photos
         if( G.O.photoset.toUpperCase() == 'NONE' || G.O.album.toUpperCase() == 'NONE' ) {
           // get photos from full photostream
-          url = Flickr.url() + "?&method=flickr.people.getPublicPhotos&api_key=" + Flickr.ApiKey + "&user_id="+G.O.userID+"&extras=description,views,tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_z,url_b,url_h,url_k&per_page=500&format=json";
+          url = Flickr.url() + "?&method=flickr.people.getPublicPhotos&api_key=" + G.O.flickrAPIKey + "&user_id="+G.O.userID+"&extras=description,views,tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_z,url_b,url_h,url_k&per_page=500&format=json";
         }
         else
           if( G.I[albumIdx].GetID() == 0 ) {
           // retrieve the list of albums
-          url = Flickr.url() + "?&method=flickr.photosets.getList&api_key=" + Flickr.ApiKey + "&user_id="+G.O.userID+"&per_page=500&primary_photo_extras=tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_l,url_z,url_b,url_h,url_k&format=json";
+          url = Flickr.url() + "?&method=flickr.photosets.getList&api_key=" + G.O.flickrAPIKey + "&user_id="+G.O.userID+"&per_page=500&primary_photo_extras=tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_l,url_z,url_b,url_h,url_k&format=json";
           kind='album';
         }
           else {
             // photos from one specific photoset
-            url = Flickr.url() + "?&method=flickr.photosets.getPhotos&api_key=" + Flickr.ApiKey + "&photoset_id="+G.I[albumIdx].GetID()+"&extras=description,views,tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_l,url_z,url_b,url_h,url_k&format=json";
+            url = Flickr.url() + "?&method=flickr.photosets.getPhotos&api_key=" + G.O.flickrAPIKey + "&photoset_id="+G.I[albumIdx].GetID()+"&extras=description,views,tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_l,url_z,url_b,url_h,url_k&format=json";
           }
 
       if( G.O.debugMode ) { console.log('Flickr URL: ' + url); }
