@@ -265,7 +265,7 @@
 	padding: 0px;
 	overflow:hidden;
 }
-.nGY2 .nGY2GThumbnailSubSelected{
+.nGY2 .nGY2GThumbnailSubSelected {
   -webkit-transform: scale(0.90);
   -ms-transform: scale(0.90);
   transform: scale(0.90);
@@ -870,10 +870,13 @@
 	-moz-box-sizing: border-box;
 	-o-box-sizing: border-box;
 }
-/* allow pointer events for medias not displayed in an IMG (-> IFRAME, VIDEO...) */
 /* .nGY2 .nGY2ViewerMedia:not(img) { */
-.nGY2 video.nGY2ViewerMedia,
+.nGY2 video.nGY2ViewerMedia {
+  /* allow pointer events for medias not displayed in an IMG (-> IFRAME, VIDEO...) */
+	pointer-events: 			auto;
+}
 .nGY2 iframe.nGY2ViewerMedia { 
+  /* allow pointer events for medias not displayed in an IMG (-> IFRAME, VIDEO...) */
 	pointer-events: 			auto;
 }
 
