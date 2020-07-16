@@ -106,7 +106,7 @@ module.exports = function(grunt) {
         taskName: {
           options: {
             position: 'top',
-            banner: '// banner text <%= templates encouraged %>',
+            banner: '/* banner text <%= templates encouraged %> */',
             linebreak: true
           },
           files: {
@@ -125,7 +125,7 @@ module.exports = function(grunt) {
       'terser:standardTargetNanoPhotosProvider2',
       'cssmin',
       'gh-pages',
-      'banner:usebanner'
+      'usebanner'
       /* 'uglify:standardTarget',
       'concat:minimalDebug',
       'yuidoc',
