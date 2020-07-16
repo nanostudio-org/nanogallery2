@@ -5,7 +5,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-terser');
   grunt.loadNpmTasks('grunt-bump');
-  grunt.loadNpmTasks('grunt-codepainter');
+  /* grunt.loadNpmTasks('grunt-codepainter'); */
   /* grunt.loadNpmTasks('grunt-contrib-yuidoc'); */
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-gh-pages');
@@ -124,7 +124,8 @@ module.exports = function(grunt) {
       'terser:standardTargetFlickr',
       'terser:standardTargetNanoPhotosProvider2',
       'cssmin',
-      'gh-pages'
+      'gh-pages',
+      'usebanner'
       /* 'uglify:standardTarget',
       'concat:minimalDebug',
       'yuidoc',
