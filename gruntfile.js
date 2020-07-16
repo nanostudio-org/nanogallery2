@@ -125,7 +125,7 @@ module.exports = function(grunt) {
       'terser:standardTargetNanoPhotosProvider2',
       'cssmin',
       'gh-pages',
-      'usebanner'
+      'banner:usebanner'
       /* 'uglify:standardTarget',
       'concat:minimalDebug',
       'yuidoc',
