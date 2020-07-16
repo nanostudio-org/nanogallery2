@@ -106,7 +106,7 @@ module.exports = function(grunt) {
         taskName: {
           options: {
             position: 'top',
-            banner: '/* banner text <%= templates encouraged %> */',
+            banner: '/* <%= pkg.name %> - v<%= pkg.version %> */',
             linebreak: true
           },
           files: {
