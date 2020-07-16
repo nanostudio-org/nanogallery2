@@ -10,6 +10,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-gh-pages');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-banner');
     
   var banner = [
         '/* <%= pkg.name %> - v<%= pkg.version %> - ',
@@ -100,7 +101,19 @@ module.exports = function(grunt) {
           repo: 'https://' + process.env.GITHUB_API_KEY + '@github.com/nanostudio-org/nanogallery2.git'
         },
         src: '**/*'
-      }
+      },
+      usebanner: {
+        taskName: {
+          options: {
+            position: 'top',
+            banner: '// banner text <%= templates encouraged %>',
+            linebreak: true
+          },
+          files: {
+            src: [ 'build/dist/css/nanogallery2.min.css', 'build/dist/*.min.js' ]
+          }
+        }
+      }      
     });
       
     grunt.registerTask('build-nanogallery2', [
