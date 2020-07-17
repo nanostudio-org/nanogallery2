@@ -11,6 +11,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-gh-pages');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-banner');
+  grunt.loadNpmTasks('grunt-header');
     
   var banner = [
         '/* <%= pkg.name %> - v<%= pkg.version %> - ',
@@ -113,7 +114,18 @@ module.exports = function(grunt) {
             src: [ 'build/dist/css/nanogallery2.min.css', 'build/dist/*.min.js' ]
           }
         }
-      }      
+      },
+      info: 'header text',
+      header: {
+        dist: {
+            options: {
+                text: '<%= info %>'
+            },
+            files: {
+                'build/dist/css/nanogallery2.min.css': 'build/dist/jquery.nanogallery2.min.js'
+            }
+        }
+      }
     });
       
     grunt.registerTask('build-nanogallery2', [
@@ -124,7 +136,8 @@ module.exports = function(grunt) {
       'terser:standardTargetFlickr',
       'terser:standardTargetNanoPhotosProvider2',
       'cssmin',
-      'gh-pages'
+      'gh-pages',
+      'header'
       /* 'usebanner' */
       /* 'uglify:standardTarget',
       'concat:minimalDebug',
