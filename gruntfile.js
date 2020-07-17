@@ -86,7 +86,18 @@ module.exports = function(grunt) {
       cssmin: {
         'build/dist/css/nanogallery2.min.css': 'src/css/nanogallery2.css',
         'build/dist/css/nanogallery2.woff.min.css': 'src/css/nanogallery2.woff.css'
-      },      
+      },
+      info: 'header text',
+      header: {
+        dist: {
+            options: {
+                text: '<%= info %>'
+            },
+            files: {
+                'build/dist/css/nanogallery2a.min.css': 'src/css/nanogallery2.css'
+            }
+        }
+      },
       'gh-pages': {
         options: {
           base: 'build',
@@ -113,17 +124,6 @@ module.exports = function(grunt) {
           files: {
             src: [ 'build/dist/css/nanogallery2.min.css', 'build/dist/*.min.js' ]
           }
-        }
-      },
-      info: 'header text',
-      header: {
-        dist: {
-            options: {
-                text: '<%= info %>'
-            },
-            files: {
-                'build/dist/css/nanogallery2a.min.css': 'src/css/nanogallery2.css'
-            }
         }
       }
     });
