@@ -91,10 +91,10 @@ module.exports = function(grunt) {
       header: {
         dist: {
             options: {
-                text: '<%= info %>'
+                text: '/* <%= pkg.name %> - v<%= pkg.version %> */'
             },
             files: {
-                'build/dist/css/nanogallery2a.min.css': 'src/css/nanogallery2.css'
+                'build/dist/css/nanogallery2.min.css': 'build/dist/css/nanogallery2.min.css'
             }
         }
       },
