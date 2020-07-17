@@ -122,7 +122,7 @@ module.exports = function(grunt) {
                 text: '<%= info %>'
             },
             files: {
-                'build/dist/css/nanogallery2a.min.css': 'build/dist/css/nanogallery2.min.css'
+                'build/dist/css/nanogallery2a.min.css': 'src/css/nanogallery2.css'
             }
         }
       }
