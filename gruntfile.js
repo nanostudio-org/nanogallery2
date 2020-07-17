@@ -136,8 +136,8 @@ module.exports = function(grunt) {
       'terser:standardTargetFlickr',
       'terser:standardTargetNanoPhotosProvider2',
       'cssmin',
-      'gh-pages',
-      'header'
+      'header',
+      'gh-pages'
       /* 'usebanner' */
       /* 'uglify:standardTarget',
       'concat:minimalDebug',
