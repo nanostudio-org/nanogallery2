@@ -28,7 +28,7 @@ header text
   overflow: hidden;
 }
 .test {
-  
+  display: none;
 }
 
 /*******************************************/
