@@ -118,7 +118,7 @@ module.exports = function(grunt) {
         taskName: {
           options: {
             position: 'top',
-            banner: '/* <%= pkg.name %> - v<%= pkg.version %> */',
+            banner: '/* <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %> */',
             linebreak: true
           },
           files: {
