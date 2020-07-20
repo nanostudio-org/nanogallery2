@@ -1,6 +1,5 @@
-nanogallery2 - ChangeLog
-===========
-List of releases with new features and improvements
+# nanogallery2 - ChangeLog
+### List of releases with new features and improvements
 
 
 v3.0.1 - Jun 26, 2020
