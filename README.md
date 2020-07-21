@@ -4,7 +4,7 @@
   
 nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 include rich UI interactions, multiple responsive layouts, swipe and zoom gestures, multi-level albums, an HTML page generator and limitless options. Setup and use are simple. The documentation includes tutorials, samples and ready to use HTML pages.   
    
-<img src="http://nanogallery2.nanostudio.org/img/nanogallery2si.png" alt="nanogallery2"/>  
+<img src="http://nanogallery2.nanostudio.org/img/nanogallery_logo_v3_main_black.png" alt="nanogallery2"/>  
   
 
 ![version](https://img.shields.io/badge/version-3.0.1-orange)
