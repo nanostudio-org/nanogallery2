@@ -108,7 +108,7 @@ HTML markup setup examples:
 ```
 ```
   <div id="my_nanogallery2" data-nanogallery2  >
-    <a href="img/img_01.jpg">Title Image 2
+    <a href="img/img_01.jpg">Title Image 1
       <img src="img/img_01_thumbnail.jpg"/>
     </a>
     <a href="img/img_02.jpg">Title Image 2
