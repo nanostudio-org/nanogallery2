@@ -868,7 +868,7 @@
 	-moz-box-sizing: border-box;
 	-o-box-sizing: border-box;
 }
-/* .nGY2 .nGY2ViewerMedia:not(img) { */
+/*.nGY2 .nGY2ViewerMedia:not(img) {*/
 .nGY2 video.nGY2ViewerMedia {
   /* allow pointer events for medias not displayed in an IMG (-> IFRAME, VIDEO...) */
 	pointer-events: 			auto;
