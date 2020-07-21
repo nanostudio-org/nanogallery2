@@ -2,6 +2,21 @@
 ### List of releases with new features and improvements
 
 
+v3.0.2 - Jul 21, 2020
+------
+- new: **[BREAKING CHANGE for FLICKR user] a custom Flickr API key is now required:**  
+      To request one: https://www.flickr.com/services/apps/create/  
+      And set it with the new option 'flickrAPIKey'  
+- new: data source, ignore markup elements which do not contain media data
+- fixed: lightbox does not free it's resources on close, in some case
+- fixed: lightbox previous media displayed over current media on startup
+- fixed: #266 layout is not adjusted immediately anymore when resizing the browser window
+- fixed: #268 self hosted video is not playing when clicked
+- fixed: #269 value 'none' for option 'viewerGallery' not working
+- fixed: Vimeo videos no playing
+- changed: option 'galleryResizeAnimation' now set to false by default
+- minor bugfixes
+
 v3.0.1 - Jun 26, 2020
 ------
 - fixed: Flickr connector
