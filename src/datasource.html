@@ -1,4 +1,3 @@
-
 <div class="container ngy2documentation">
 <div class="row">
 <div class="col-md-10">
@@ -1017,6 +1016,7 @@ jQuery("#nanogallery2").nanogallery2({
     <pre>&lt;div id="nanogallery2" data-nanogallery2='{
         "kind":             "flickr",
         "userID":           "YOUR_FLICKR_ID",
+        "flickrAPIKey":     "YOUR_FLICKR_API_KEY",
         "thumbnailHeight":  150,
         "thumbnailWidth":   150
       }'>      
@@ -1028,6 +1028,7 @@ jQuery("#nanogallery2").nanogallery2({
     <pre>jQuery("#nanogallery2").nanogallery2({
       kind:             'flickr',
       userID:           'YOUR_FLICKR_ID',
+      flickrAPIKey:     'YOUR_FLICKR_API_KEY',
       thumbnailHeight:  150,
       thumbnailWidth:   150
     });
@@ -1070,13 +1071,24 @@ jQuery("#nanogallery2").nanogallery2({
       <tbody>
         <tr>
           <td>
-          kind
+            kind
           <br><span class="badge ngy2_type">string</span><span class="badge ngy2_ver">v1.0</span>
           </td>
           <td></td>
           <td>
-          <b>MANDATORY</b><br>
-          Storage type. Must be set to <code>'flickr'</code> to access Flickr data.
+            Storage type. Must be set to <code>'flickr'</code> to access Flickr data.
+            <div class="important-note">MANDATORY.</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            flickrAPIKey
+          <br><span class="badge ngy2_type">string</span><span class="badge ngy2_ver">v3.0.2</span>
+          </td>
+          <td></td>
+          <td>
+            Your personal Flickr API key.
+            <div class="important-note">MANDATORY. To request one: <a href="https://www.flickr.com/services/apps/create/" target="_blank" style="background-color:#eee;">check this page</a></div>
           </td>
         </tr>
         <tr>
@@ -1086,10 +1098,12 @@ jQuery("#nanogallery2").nanogallery2({
           </td>
           <td></td>
           <td>
-          <b>MANDATORY</b><br>
           The Flickr user account ID.
           <br>
-          To retrieve your Flickr user ID: <a href="https://www.flickr.com/services/api/explore/flickr.people.findByUsername" target="_blank" style="background-color:#eee;"><b>use this page</b></a>
+          <div class="important-note">
+            MANDATORY.
+            To retrieve your Flickr user ID: <a href="https://www.flickr.com/services/api/explore/flickr.people.findByUsername" target="_blank" style="background-color:#eee;">check this page</a>
+          </div>
           </td>
         </tr>
         <tr>
@@ -1417,3 +1431,4 @@ jQuery("#nanogallery2").nanogallery2({
   </div>
 </div>
 </div>
+
