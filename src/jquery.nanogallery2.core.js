@@ -1,5 +1,5 @@
 /*!
- * @preserve nanogallery2 v3.0.2beta3 - javascript photo / video gallery and lightbox
+ * @preserve nanogallery2 - javascript photo / video gallery and lightbox
  * Homepage: http://nanogallery2.nanostudio.org
  * Sources:  https://github.com/nanostudio-org/nanogallery2
  *
@@ -16,33 +16,7 @@
  * Tools:
  *  - webfont generated with http://fontello.com - mainly based on Font Awesome Copyright (C) 2012 by Dave Gandy (http://fontawesome.io/)
  *  - ICO online converter: https://iconverticons.com/online/
- */
-
- 
-// nanogallery v3.0.2beta3
-/*
-
-- new: option thumbnailDisplayByRow to display the thumbnails row by row (vs individually)
-- new: [BREAKING CHANGE for FLICKR user]: custom Flickr API key needed: set new option flickrAPIKey
-    (to obtain it: https://www.flickr.com/services/apps/create/)
-- new: ignore markup elements which do not contain media data
-    
-- fixed: lightbox does nor free it's resources on close, in some case
-- fixed: lightbox previous media displayed over current media on startup
-- fixed: #266 Layout is not adjusted immediately anymore when resizing the browser window
-- fixed: #268 Self hosted video is not playing when clicked
-- fixed: Vimeo videos no playing
-- changed: option 'galleryResizeAnimation' now set to false by default
-- minor bugfixes
-
-todo:
-- open image based on ID / filename
-- thumbnail background
-- thumbnail display animation even/odd rows
-- doc lb standalone js
-- remove delay in thumbnail display
-*/
- 
+ */ 
  
 // ###########################################
 // ##### nanogallery2 as a JQUERY PLUGIN #####
@@ -1473,8 +1447,6 @@ todo:
     thumbnailDisplayOrder :       '',
     thumbnailL1DisplayOrder :     null,
     thumbnailDisplayInterval :    15,
-    thumbnailDisplayByRow:        false,
-    thumbnailDisplayByCol:        false,
     thumbnailL1DisplayInterval :  null,
     thumbnailDisplayTransition :  'fadeIn',
     thumbnailL1DisplayTransition : null,
@@ -4693,70 +4665,70 @@ todo:
     
     
     function ThumbnailPreparePosition( lstThumb ) {
-			if( G.tn.opt.Get('displayOrder') == 'random' ) {
+
+      var nbBuild = lstThumb.length;
+      if( nbBuild == 0 ) { return 0; }
+    
+      
+      var displayOrder = G.tn.opt.Get('displayOrder');
+      
+			if( displayOrder == 'random' ) {
 				NGY2Tools.AreaShuffle( lstThumb );
 			}
-      
-       var rowByRow = false;
-      if( G.O.thumbnailDisplayByRow && ( G.layout.engine == 'JUSTIFIED' || G.layout.engine == 'GRID' )) {
-        rowByRow = true;
+      else {
+        if( displayOrder == 'rowByRow' && !( G.layout.engine == 'JUSTIFIED' || G.layout.engine == 'GRID' )) {
+          displayOrder = '';
+        }
+        if( (displayOrder == 'colFromRight' || displayOrder == 'colFromLeft' ) && !(G.layout.engine == 'CASCADING' || G.layout.engine == 'GRID' )) {
+          displayOrder = '';
+        }
       }
-
-      var colByCol = 'none';
-      if( G.O.thumbnailDisplayByCol != false && (G.layout.engine == 'CASCADING' || G.layout.engine == 'GRID' )) {
-        colByCol = G.O.thumbnailDisplayByCol;
-      }
-      
-      var nbBuild = lstThumb.length;
-      var d = 0;
-      var top = 0;
-      if( nbBuild > 0 ) {
+     
         
-        // DISPLAY COLUMN BY COLUMN
-        if( colByCol != 'none' ) {
-          var tab = [];
-          var cols = [];
-          for( var i = 0; i < nbBuild ; i++ ) {
-            if( tab[lstThumb[i].left] == undefined ) {
-              tab[lstThumb[i].left] = [];
-              cols.push( lstThumb[i].left );
-            }
-            tab[lstThumb[i].left].push( lstThumb[i].idx )
+      // DISPLAY COLUMN BY COLUMN
+      if( displayOrder == 'colFromRight' || displayOrder == 'colFromLeft' ) {
+        var tab = [];
+        var cols = [];
+        for( var i = 0; i < nbBuild ; i++ ) {
+          if( tab[lstThumb[i].left] == undefined ) {
+            tab[lstThumb[i].left] = [];
+            cols.push( lstThumb[i].left );
           }
-          if( colByCol == 'fromRight' ) {
-            cols = cols.reverse();
+          tab[lstThumb[i].left].push( lstThumb[i].idx )
+        }
+        if( displayOrder == 'colFromRight' ) {
+          cols = cols.reverse();
+        }
+        for( var i = 0; i < cols.length; i++ ) {
+          var col = cols[i];
+          for( var j = 0; j < tab[col].length; j++ ) {
+            ThumbnailSetPosition( tab[col][j], i);
           }
-          for( var i = 0; i < cols.length; i++ ) {
-            var col = cols[i];
-            for( var j = 0; j < tab[col].length; j++ ) {
-              ThumbnailSetPosition( tab[col][j], i);
-            }
+        }
+        return(i);
+      }
+        
+        
+      // STANDARD DISPLAY OR ROW BY ROW
+      var d = 0;
+      var top = lstThumb[0].top;
+      for( var i = 0; i < nbBuild ; i++ ) {
+        // ThumbnailSetPosition(tnToDisplay[i].idx, tnToDisplay[i].delay+10);
+        // ThumbnailSetPosition(tnToDisplay[i].idx, i);
+
+        if( displayOrder == 'rowByRow' ) {
+          // DISPLAY ROW BY ROW
+          if( lstThumb[i].top > top ) {
+            d++;
+            top = lstThumb[i].top;
           }
-          return(i);
         }
         else {
-          // STANDARD DISPLAY OR ROW BY ROW
-          top = lstThumb[0].top;
-          for( var i = 0; i < nbBuild ; i++ ) {
-            // ThumbnailSetPosition(tnToDisplay[i].idx, tnToDisplay[i].delay+10);
-            // ThumbnailSetPosition(tnToDisplay[i].idx, i);
-
-            if( rowByRow ) {
-              // DISPLAY ROW BY ROW
-              if( lstThumb[i].top > top ) {
-                d++;
-                top = lstThumb[i].top;
-              }
-            }
-            else {
-              d++;
-            }
-            ThumbnailSetPosition(lstThumb[i].idx, d);
-          }
-          return(d);
+          d++;
         }
+        ThumbnailSetPosition(lstThumb[i].idx, d);
       }
-      return 0;
+      return(d);
       
     }
     
@@ -9745,7 +9717,7 @@ debugger;
             new_content_item.$media[0].style[G.CSStransformName] = 'translate(' + (-dir) + 'px, 0px) '
 
             if( velocity == 0 ) {
-              t_easing = G.O.imageTransition == 'swipe' ? 'easeInOutSine' : 'easeInQuart';
+              t_easing = G.O.imageTransition == 'swipe' ? 'easeInOutSine' : 'easeOutCubic';
             }
             
             ViewerSetMediaVisibility(G.VOM.content.current, 1);
