@@ -78,6 +78,9 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 <br />
 
 ## Some screenshots
+<img src="https://github.com/nanostudio-org/nanogallery2/raw/master/screenshots/ngy2_mosaic3.jpg?raw=true" width="500px">
+<img src="https://github.com/nanostudio-org/nanogallery2/raw/master/screenshots/ngy2_mosaic1.jpg?raw=true" width="500px">
+<img src="https://github.com/nanostudio-org/nanogallery2/raw/master/screenshots/ngy2_mosaic2.jpg?raw=true" width="500px">
 <img src="https://github.com/nanostudio-org/nanogallery2/raw/master/screenshots/ngy2_cascading.jpg?raw=true" width="500px">
 <img src="https://github.com/nanostudio-org/nanogallery2/raw/master/screenshots/ngy2_justified.jpg?raw=true" width="500px">
 <img src="https://github.com/nanostudio-org/nanogallery2/raw/master/screenshots/ngy2_grid1.jpg?raw=true" width="500px">
