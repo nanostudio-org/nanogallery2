@@ -513,12 +513,12 @@
       var html_part1='&lt;html&gt;\n';
       html_part1+='  &lt;head&gt;\n';
       html_part1+='    &lt;meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"&gt;\n\n';
-      html_part1+='    &lt;script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"&gt;&lt;/script&gt;\n\n';
-      html_part1+='    &lt;link href="https://unpkg.com/nanogallery2/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css"&gt;\n';
+      html_part1+='    &lt;script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"&gt;&lt;/script&gt;\n\n';
+      html_part1+='    &lt;link href="https://cdn.jsdelivr.net/npm/nanogallery2@3/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css"&gt;\n';
       // html_part1+='    &lt;script type="text/javascript" src="jquery.nanogallery2.core.js"&gt;&lt;/script&gt;\n';
       // html_part1+='    &lt;script type="text/javascript" src="jquery.nanogallery2.data.google.js"&gt;&lt;/script&gt;\n';
       // html_part1+='    &lt;script type="text/javascript" src="jquery.nanogallery2.data.flickr.js"&gt;&lt;/script&gt;\n';
-      html_part1+='    &lt;script type="text/javascript" src="https://unpkg.com/nanogallery2/dist/jquery.nanogallery2.min.js"&gt;&lt;/script&gt;\n';
+      html_part1+='    &lt;script type="text/javascript" src="https://cdn.jsdelivr.net/npm/nanogallery2@3/dist/jquery.nanogallery2.min.js"&gt;&lt;/script&gt;\n';
       html_part1+='\n';
       var html_part2='  &lt;/head&gt;\n';
       html_part2+='  &lt;body&gt;\n\n';
