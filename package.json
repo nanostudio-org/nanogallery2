@@ -9,6 +9,7 @@
   "version": "3.1.0beta",
   "homepage": "https://nanogallery2.nanostudio.org",
   "main": "./dist/jquery.nanogallery2.js",
+  "license": "GPL-3.0",
   "keywords": "image photo video gallery galleries lightbox album",
   "repository": {
     "type": "git",
