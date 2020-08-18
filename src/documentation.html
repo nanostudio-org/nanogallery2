@@ -369,15 +369,24 @@ thumbnailHoverEffect2:      'scale120'
   <div class="row">
     <div class="col-md-8">
       <p>
-        The width of the thumbnail is calculated to respect the image ratio. There's no cropping and no reordering.
-        Set the special value <code>auto</code> to the <code>thumbnailWidth</code> property.
-        <br><br>
+        All thumbnails in one row are scaled down to the same height. 
+        The width of the thumbnail is calculated to respect the thumbnail's image ratio.
+        Row height may vary but will not exceed the defined height.
+        There's no cropping and no reordering.
+        <br>
+        <i class="fa fa-long-arrow-right" aria-hidden="true"></i> To use this layout, set the special value <code>auto</code> to the <code>thumbnailWidth</code> property.
+        <br>
+        <br>
       </p>
         <span class="badge ngy2_code_markup"> HTML markup example</span> &nbsp; &nbsp; 
         <pre>
   "thumbnailWidth":   "auto",
   "thumbnailHeight":  200
         </pre>
+        <br>
+        <div class="important-note">
+          It is highly recommended to set the size of each thumbnail image, for justified layout.
+        </div>
     </div>
     <div class="col-md-4 text-center">
       <div class="ngy2_background_rounded_back">
@@ -398,7 +407,7 @@ thumbnailHoverEffect2:      'scale120'
       <p>
         Sometimes also called masonry layout. This layout is column based. Image aspect ratio is conserved, with no cropping.
         <br>
-        Set the special value <code>auto</code> to the <code>thumbnailHeight</code> property.
+        <i class="fa fa-long-arrow-right" aria-hidden="true"></i> Set the special value <code>auto</code> to the <code>thumbnailHeight</code> property.
       </p>
         <span class="badge ngy2_code_markup"> HTML markup example</span> &nbsp; &nbsp; 
         <pre>
@@ -431,6 +440,10 @@ thumbnailHoverEffect2:      'scale120'
   "thumbnailHeight":          "auto",
   "thumbnailBaseGridHeight" : 100
         </pre>
+        <br>
+        <div class="important-note">
+          It is highly recommended to set the size of each thumbnail image, for cascading layout.
+        </div>
     </div>
     <div class="col-md-4 text-center">
       <div class="ngy2_background_rounded_back">
@@ -453,7 +466,7 @@ thumbnailHoverEffect2:      'scale120'
         Enables full control of the layout.
         The layout is not computed but is based on a pattern. Images may be cropped to fit the thumbnail's size. Thumbnails can overlap one another.
         <br>
-        To use it, set the base <b>thumbnail width AND height</b>, and define a pattern for position and real thumbnail size.
+        <i class="fa fa-long-arrow-right" aria-hidden="true"></i> To use it, set the base <b>thumbnail width AND height</b>, and define a pattern for position and real thumbnail size.
         <br>
         Gallery will be scaled down to fit its container's width if necessary.
         <br>
@@ -923,12 +936,13 @@ See the <a href="#ngy2_gallery_thumbnails_hover_tuning"><b>tuning section</b></a
   </tr>
   <tr>
     <td>
-    paginationSwipe
+    gallerySwipe<br>
+    <strike>paginationSwipe</strike>
     <br><span class="badge ngy2_ver">v1.0</span><span class="badge  ngy2_type">boolean</span>
     </td>
     <td>true</td>
     <td>
-    Enables swipe gesture to display next/previous gallery page, in gallery pagination mode.
+      Enables swipe gesture on the gallery, to display next/previous content in pagination or swipe mode.
     </td>
   </tr>
   <tr>
@@ -980,7 +994,7 @@ See the <a href="#ngy2_gallery_thumbnails_hover_tuning"><b>tuning section</b></a
     galleryResizeAnimation
     <br><span class="badge ngy2_ver">v1.0</span><span class="badge  ngy2_type">boolean</span>
     </td>
-    <td>true</td>
+    <td>false</td>
     <td>Animates the thumbnails to their new position when the gallery/display is resized.</td>
   </tr>
   <tr>
@@ -1356,7 +1370,9 @@ See the <a href="#ngy2_gallery_thumbnails_hover_tuning"><b>tuning section</b></a
   <br><span class="badge ngy2_ver">v1.4</span><span class="badge  ngy2_type">boolean</span>
   </td>
   <td>true</td>
-  <td>Waits until thumbails images are fully downloaded before displaying them smoothly.</td>
+  <td>
+    When enabled, each thumbnail image is fully downloaded and is then displayed  smoothly.
+    </td>
 </tr>
 <tr>
   <td>
@@ -1962,6 +1978,26 @@ Where:
 </tr>
 <tr>
   <td>
+  galleryPaginationTopButtons
+  <br><span class="badge ngy2_ver">v3.0</span><span class="badge  ngy2_type">boolean</span>
+  </td>
+  <td>true</td>
+  <td>
+    Display 2 buttons on top of the gallery, for navigating to next / previous page of thumbnails.
+  </td>
+</tr>
+<tr>
+  <td>
+  galleryNavigationOverlayButtons
+  <br><span class="badge ngy2_ver">v3.1</span><span class="badge  ngy2_type">boolean</span>
+  </td>
+  <td>false</td>
+  <td>
+    Display 2 buttons on the left and right side of the gallery, for navigating to next / previous page of thumbnails.
+  </td>
+</tr>
+<tr>
+  <td>
   thumbnailLevelUp
   <br><span class="badge ngy2_ver">v1.0</span><span class="badge  ngy2_type">boolean</span>
   </td>
@@ -2168,7 +2204,11 @@ To add custom elements in a toolbar, use the label <b>customN</b>, where <b>N</b
   <br><span class="badge ngy2_ver">v1.3</span><span class="badge  ngy2_type">integer</span>
   </td>
   <td>4000</td>
-  <td>Delay of inactivity before hidding the tools and labels.</td>
+  <td>
+    Delay of inactivity before hiding tools and labels.
+    <br>
+    Use value -1 to disable this feature.
+  </td>
 </tr>
 <tr>
   <td>
@@ -2269,7 +2309,7 @@ To add custom elements in a toolbar, use the label <b>customN</b>, where <b>N</b
   <br><span class="badge ngy2_ver">v1.0</span><span class="badge  ngy2_type">integer</span>
   </td>
   <td>800</td>
-  <td>Breakpoint for switching between minimized and standard toolbar.<br>If the width is lower than this value, the toolbar is switched to minimized.</td>
+  <td>Breakpoint (in pixels) for switching between minimized and standard toolbar.<br>If the width is lower than this value, the toolbar is switched to minimized.</td>
 </tr>
 <tr>
   <td class="ngy2_object">
@@ -2296,7 +2336,7 @@ To add custom elements in a toolbar, use the label <b>customN</b>, where <b>N</b
   For this toolbar, <b>'minimizeButton'</b> is additionally available.<br>
   Default value:
   <br>
-  <code>viewerToolbar: { standard :'minimizeButton, label, infoButton, shareButton, fullscreenButton'}</code><br>
+  <code>viewerToolbar: { minimized :'minimizeButton, label, fullscreenButton'}</code><br>
   </td>
 </tr>
 
@@ -2334,7 +2374,7 @@ To add custom elements in a toolbar, use the label <b>customN</b>, where <b>N</b
   <td>
   Toolbar positioned in the top right corner.<br>
   Default value:<br>
-  <code>viewerTools : { topRight: 'zoomButton, closeButton'}</code>
+  <code>viewerTools : { topRight: 'rotateLeft, rotateRight, zoomButton, closeButton'}</code>
   </td>
 </tr>
 
@@ -2436,6 +2476,12 @@ breadcrumbSeparatorRtl:       '&lt;i class="nGY2Icon-right-open"&gt;&lt;/i&gt;' 
 navigationFilterSelected:     '&lt;i style="color:#bff;" class="nGY2Icon-toggle-on"&gt;&lt;/i&gt;' // selected icon
 navigationFilterUnselected:   '&lt;i class="nGY2Icon-toggle-off"&gt;&lt;/i&gt;'          // unselected icon
 navigationFilterSelectedAll:  '&lt;i class="nGY2Icon-toggle-off"&gt;&lt;/i&gt;'          // unselect all icon
+
+// PAGNIATION/SLIDER:
+navigationPaginationNext:     '&lt;i class="nGY2Icon-ngy2_chevron-right">&lt;/i>',
+navigationPaginationPrevious: '&lt;i class="nGY2Icon-ngy2_chevron-left">&lt;/i>',
+navigationBtnOverlayNext:     '&lt;i style="margin-right:0;" class="nGY2Icon-ngy2_chevron-right">&lt;/i>',
+navigationBtnOverlayPrevious: '&lt;i class="nGY2Icon-ngy2_chevron-left">&lt;/i>',
 
 // THUMBNAILS:
 thumbnailAlbum:               '&lt;i class="nGY2Icon-folder-empty"&gt;&lt;/i&gt;'        // album icon 
@@ -2886,3 +2932,4 @@ do not combine too much effects (smooth animation on a computer may be slow on a
 </div>
 </div>
 </div>
+
