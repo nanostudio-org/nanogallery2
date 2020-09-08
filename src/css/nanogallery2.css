@@ -27,8 +27,6 @@
   overflow: hidden;
 }
 
-
-
 /*******************************************/
 /* NGY2 ICON FONT                          */
 /* generated with http://fontello.com      */
@@ -217,8 +215,6 @@
   touch-action: auto !important;
 }
 */
-
-
 /**************************************/
 /* THUMBNAILS                         */
 /**************************************/
@@ -547,43 +543,6 @@
   100%   { transform: rotate(-360deg);  }
 }
 
-.nGY2 .nGY2GThumbnailPlaceholder {
-  position: absolute;
-}
-
-/**************************************/
-/* GALLERY OVERLAY                    */
-/**************************************/
-
-
-.nGY2 .nGY2GalleryBtnOverlay {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  top: 50%;
-  margin-top: -20px;
-  z-index:10;
-  color: #000;
-  background: rgba(255, 255, 255, 0.7);
-  font-weight: bolder !important;
-  font-size: 1.5em;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor:pointer;
-}
-.nGY2 .nGY2GalleryBtnOverlayLeft {
-  left: 10px;
-}
-.nGY2 .nGY2GalleryBtnOverlayRight {
-  right: 10px;
-}
-
-.nGY2 .nGY2GalleryBtnOverlayHidden .nGY2GalleryBtnOverlay {
-   display: none;
-}
-
 /**************************************/
 /* GALLERY BOTTOM                     */
 /**************************************/
@@ -597,9 +556,6 @@
 	overflow:hidden;
 	white-space: nowrap;
 }
-
-
-
 
 /**************************************/
 /* GALLERY MORE-BUTTON                */
