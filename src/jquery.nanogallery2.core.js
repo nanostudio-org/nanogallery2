@@ -23,29 +23,6 @@
 // ###########################################
 
 
-/* 3.1.0BETA
-New:
-- option galleryLimitedToContainer *false*
-- value 'slider' for option 'galleryDisplayMode'
-- option     gallerySliderElement:      *'container'* / 'thumbnailsPush' / 'thumbnailsPull'
-- slider:
-    navigationBtnOverlayNext/navigationBtnOverlayPrevious
-    galleryNavigationOverlayButtons: true/*false*
-- galleryPlaceholder *none* or CSS background
-- fixed #281 Hover-over Effects Stick When Pointer Scrolls Off Image
-
-ToDo:
-- external script info popup (?)
-- disable mouse zoom
-- pagination : progress  / scrollbar
-    numbers -> fractions
-- progressbar -> like left/right click
-- thumbnails without images, only html content
-    
-*/
-
-  
-
 // Expose plugin as an AMD module if AMD loader is present:
 (function (factory) {
     "use strict";
@@ -327,7 +304,6 @@ ToDo:
                 let item = this.I[this.GOM.albumIdxLoading];
                 item.$Elts['.nGY2TnImg'].addClass('nGY2GThumbnailLoaderDisplayed');
               }
-              
             }
             else {
               // loading bar at the top of the gallery
@@ -494,7 +470,6 @@ ToDo:
             this.exif = { exposure: '', flash: '', focallength: '', fstop: '', iso: '', model: '', time: '', location: ''};
             this.deleted =              false;    // item is deleted -> do not display anymore
             this.rotationAngle =        0;        // image display rotation angle
-            this.$placeholder =         null;
           }
 
           // public static
@@ -679,8 +654,8 @@ ToDo:
                 G.I[foundIdx].$elt.remove();      // delete thumbnail DOM object
               }
               G.GOM.items.splice(foundGOMidx, 1);   // delete in GOM
-              if( G.GOM.tn_with_counter.idx != -1 ) {
-                G.GOM.tn_with_counter.idx -= 1;
+              if( G.GOM.lastDisplayedIdx != -1 ) {
+                G.GOM.lastDisplayedIdx -= 1;
               }
             }
             
@@ -1379,10 +1354,8 @@ ToDo:
     galleryDisplayMoreStep :      2,
     galleryDisplayMode :          'fullContent',
     galleryL1DisplayMode :        null,
-    galleryPlaceholder:           'none',
     galleryPaginationMode :       'rectangles',   // 'dots', 'rectangles', 'numbers'
     galleryPaginationTopButtons : true,
-    galleryNavigationOverlayButtons: false,
     galleryMaxRows :              2,
     galleryL1MaxRows :            null,
     galleryLastRowFull:           false,
@@ -1404,9 +1377,6 @@ ToDo:
     galleryL1DisplayTransitionDuration :  null,
     galleryResizeAnimation :      false,
     galleryRenderDelay :          10,
-    galleryLimitedToContainer:    false,
-    
-    gallerySliderElement:         'container',
 
     thumbnailCrop :               true,
     thumbnailL1Crop :             null,
@@ -1557,10 +1527,8 @@ ToDo:
       navigationFilterSelected:     '<i style="color:#fff;" class="nGY2Icon-ok"></i>',
       navigationFilterUnselected:   '<i style="color:#ddd;opacity:0.3;" class="nGY2Icon-circle-empty"></i>',
       navigationFilterSelectedAll:  '<i class="nGY2Icon-ccw"></i>',
-      navigationPaginationNext:     '<i class="nGY2Icon-ngy2_chevron-right"></i>',
       navigationPaginationPrevious: '<i class="nGY2Icon-ngy2_chevron-left"></i>',
-      navigationBtnOverlayNext:     '<i style="margin-right:0;" class="nGY2Icon-ngy2_chevron-right"></i>',
-      navigationBtnOverlayPrevious: '<i class="nGY2Icon-ngy2_chevron-left"></i>',
+      navigationPaginationNext:     '<i class="nGY2Icon-ngy2_chevron-right"></i>',
       thumbnailSelected:            '<i style="color:#bff;" class="nGY2Icon-ok-circled"></i>',
       thumbnailUnselected:          '<i style="color:#bff;" class="nGY2Icon-circle-empty"></i>',
       thumbnailFeatured:            '<i style="color:#dd5;" class="nGY2Icon-star"></i>',
@@ -2128,9 +2096,6 @@ ToDo:
     // Normally, the throttled function will run as much as it can, without ever going more than once per wait duration;
     // but if you’d like to disable the execution on the leading edge, pass {leading: false}.
     // To disable execution on the trailing edge, ditto.
-
-
-
     var throttle = function(func, wait, options) {
       var context, args, result;
       var timeout = null;
@@ -2539,31 +2504,15 @@ ToDo:
     G.GOM = {
       albumIdx :                  -1, // index (in G.I) of the currently displayed album
       clipArea :                  { top: 0, height: 0 }, // area of the GOM to display on screen
-      layoutArea :                { width: 0 , height: 0 }, // size of the full GOM area (=used area, not the available area)
-      layoutAreaLast :            { width: 0 , height: 0 }, // previous size of the GOM area
+      displayArea :               { width: 0 , height: 0 }, // size of the GOM area (=used area, not available area)
+      displayAreaLast :           { width: 0 , height: 0 }, // previous size of the GOM area
       displayedMoreSteps :        0,  // current number of displayed steps (moreButton mode)
-      slider: {
-        tweenable: [],
-        left : {
-          container: 0,
-          thumbnails: 0,
-          initial: 0
-        },
-        Left: function() {
-          if( G.O.gallerySliderElement == 'container' ) {
-            return this.left.container;
-          }
-          else {
-            return this.left.thumbnails;
-          }
-        }
-      },
-      items:                      [],       // array containing the current items of the GOMS
+      items:                      [], // current items of the GOMS
       $imgPreloader:              [],
       thumbnails2Display:         [],
-      itemsDisplayed :            0,        // number of currently displayed thumbnails
+      itemsDisplayed :            0, // number of currently displayed thumbnails
       firstDisplay :              true,
-      firstDisplayTime :          0,        // in conjunction with galleryRenderDelay
+      firstDisplayTime :          0,      // in conjunction with galleryRenderDelay
       navigationBar : {           // content of the navigation bar (for breadcrumb, filter tags and next/previous pagination)
         displayed:                false,
         $newContent:              ''
@@ -2571,44 +2520,23 @@ ToDo:
       cache : {                   // cached data
         viewport:                 null,
         containerOffset:          null,
-        areaWidth:                100       // available area width
+        areaWidth:                100         // available area width
       },
       nbSelected :                0,        // number of selected items
-      pagination: {               // pagination data
-        currentPage: 0
-      },
+      pagination :                { currentPage: 0 }, // pagination data
       panThreshold:               60,       // threshold value (in pixels) to block horizontal pan/swipe
       panYOnly:                   false,    // threshold value reach -> definitively block horizontal pan until end of pan
       lastFullRow :               -1,       // number of the last row without holes
-      
+      lastDisplayedIdx:           -1,       // used to display the counter of not displayed items
       displayInterval :           { from: 0, len: 0 },
       hammertime:                 null,
-      curNavLevel:                'l1',     // current navigation level (l1 or LN)
+      curNavLevel:                'l1',   // current navigation level (l1 or LN)
       curWidth:                   'me',
-      albumSearch:                '',       // current search string -> title (used to filter the thumbnails on screen)
-      albumSearchTags:            '',       // current search string -> tags
-      lastZIndex:                 0,        // used to put a thumbnail on top of all others (for exemple for scale hover effect)
+      albumSearch:                '',     // current search string -> title (used to filter the thumbnails on screen)
+      albumSearchTags:            '',     // current search string -> tags
+      lastZIndex:                 0,      // used to put a thumbnail on top of all others (for exemple for scale hover effect)
       lastRandomValue:            0,
-      tn_with_counter: {          // handling of the counter on the last displayed thumbnail
-        idx: -1,                            // index of thumbnail hosting the counter
-        idxNew: -1,                         // index of the new thumbnail hosting the counter
-        Enabled: function() {
-          if( G.layout.support.rows ) {
-            switch( G.galleryDisplayMode.Get() ) {
-              case 'ROWS':
-                return true;
-                break;
-              case 'SLIDER':
-              case 'FULLCONTENT':
-                if(  G.galleryMaxRows.Get() > 0 && G.GOM.lastFullRow != -1 ) {
-                  return true;
-                }
-            }
-          }
-          return false;
-        }
-      },
-      tn_slider : {                         // slider on last thumbnail
+      slider : {                          // slider on last thumbnail
         hostIdx:                  -1,       // idx of the thumbnail hosting the slider
         hostItem:                 null,     // item hosting the slider
         currentIdx:               0,        // idx of the current displayed item
@@ -2636,7 +2564,7 @@ ToDo:
         this.resizedContentHeight = 0;
         this.displayed =            false;
         this.neverDisplayed =       true;
-        this.inDisplayInterval =    false;
+        this.inDisplayArea =        false;
       },
       // Position the top of the gallery to make it visible, if not displayed
       ScrollToTop: function() {
@@ -3407,58 +3335,19 @@ ToDo:
         }
       }
       
-      
-      
-      // --- Gallery pagination/slider next/previous
-      if( (G.galleryDisplayMode.Get() == "PAGINATION" || G.galleryDisplayMode.Get() == "SLIDER" ) ) {
-        
-        if( G.layout.support.rows && G.galleryMaxRows.Get() > 0 ) {
-
-          if( G.O.galleryPaginationTopButtons ) {
+      // --- Gallery pagination next/previous
+      if( G.galleryDisplayMode.Get() == "PAGINATION" && G.O.galleryPaginationTopButtons ) {
+          if( G.layout.support.rows && G.galleryMaxRows.Get() > 0 ) {
+            // ManagePagination( G.GOM.albumIdx );
             var $newTagPrev = jQuery('<div class="nGY2NavigationbarItem nGY2NavPagination">'+G.O.icons.navigationPaginationPrevious+'</div>').appendTo(G.GOM.navigationBar.$newContent);
             $newTagPrev.click(function() {
-              if( G.galleryDisplayMode.Get() == "PAGINATION" ) {
-                paginationPreviousPage();
-              }
-              else {
-                SliderMoveThrottled( 'previous' );
-
-              }
+              paginationPreviousPage();
             });
-            
             var $newTagNext = jQuery('<div class="nGY2NavigationbarItem nGY2NavPagination">'+G.O.icons.navigationPaginationNext+'</div>').appendTo(G.GOM.navigationBar.$newContent);
             $newTagNext.click(function() {
-              if( G.galleryDisplayMode.Get() == "PAGINATION" ) {
-                paginationNextPage();
-              }
-              else {
-                SliderMoveThrottled( 'next' );
-              }
+              paginationNextPage();
             });
           }
-          
-         
-          if( G.O.galleryNavigationOverlayButtons ) {
-            var $newBtnPrevious = jQuery('<div class="nGY2GalleryBtnOverlay nGY2GalleryBtnOverlayLeft">'+G.O.icons.navigationBtnOverlayPrevious+'</div>').appendTo( G.$E.conTnParent );
-            $newBtnPrevious.click(function() {
-              if( G.galleryDisplayMode.Get() == "PAGINATION" ) {
-                paginationPreviousPage();
-              }
-              else {
-                SliderMoveThrottled( 'previous' );
-              }
-            });
-            var $newBtnNext = jQuery('<div class="nGY2GalleryBtnOverlay nGY2GalleryBtnOverlayRight">'+G.O.icons.navigationBtnOverlayNext+'</div>').appendTo( G.$E.conTnParent );
-            $newBtnNext.click(function() {
-              if( G.galleryDisplayMode.Get() == "PAGINATION" ) {
-                paginationNextPage();
-              }
-              else {
-                SliderMoveThrottled( 'next' );
-              }
-            });
-          }
-        }
       }
 
     }
@@ -3693,196 +3582,8 @@ ToDo:
       GalleryDisplayPart1();
       GalleryDisplayPart2( true );
     }
-    
-    
-    
-    
-    function SliderAnimationForceFinish() {
-      for( var i=0; i< G.GOM.slider.tweenable.length; i++ ) {
-        if( G.GOM.slider.tweenable[i]._isTweening ) {
-          // still sliding -> force tween finish
-          G.GOM.slider.tweenable[i].stop(true);
-        }
-      }
-      G.GOM.slider.tweenable = [];
-    }
-  
-    // Move the slider (next/previous)
-    var SliderMoveThrottled = throttle( SliderMove, 50, {leading: true, trailing: false});
-    function SliderMove( direction ) {
 
-      SliderAnimationForceFinish();
-      
-      
-      if( G.GOM.layoutArea.width <= G.GOM.cache.areaWidth ) {
-        return 0;
-      }
-      
-      var dist = 0;
-      // loop to find the left position of:
-      // - the last not displayed item before the first displayed one
-      // - the first displayed one
-      // - the next displayed one
-      // note: items are not sorted on their left position
-      var nbTn = G.GOM.items.length;
-      var previous_left = 0;
-      var next_left = G.GOM.layoutArea.width;
-      for( var i = 0; i < nbTn ; i++ ) {
-        let curTn = G.GOM.items[i];
-        
-        if( (G.GOM.slider.Left() + curTn.left) < 0 ){
-          if( curTn.left > previous_left ) {
-            previous_left = curTn.left;
-          }
-        }
-        if( (G.GOM.slider.Left() + curTn.left) > 0 ){
-          if( curTn.left < next_left ) {
-            next_left = curTn.left;
-          }
-        }
-      }
-
-      var current_left = -G.GOM.slider.Left();
-      if( direction == 'previous' ) {
-        dist = current_left - previous_left;
-        // dist -= current_left + G.GOM.slider.container_left;       // align the new first displayed thumbnails to the left border of the gallery container
-      }
-      else {
-        dist = -(next_left - current_left);
-      }
-      
-      SliderMove2( dist );
-      
-    }
-
-    function SliderMove2( dist ) {
-      
-      var nbTn = G.GOM.items.length;
-
-      // Adapt distance value
-      var l = G.GOM.slider.Left();
-      if( dist > 0 ) {
-        // slide to left
-        if( (l + dist) > 0 ) {
-          dist = -l;
-        }
-      }
-      else {
-        // slide to right
-        if( ( G.GOM.cache.areaWidth -l - dist) > G.GOM.layoutArea.width ) {
-          dist = -(G.GOM.layoutArea.width - G.GOM.cache.areaWidth + l);
-        }
-      }  
-
-      if( dist == 0 ) { return; }
-     
-      if( G.O.gallerySliderElement == 'container' ) {
-        // slide the thumbnails container
-        var t = new NGTweenable();
-        G.GOM.slider.tweenable.push( t );
-        t.tween({
-          from:         { left: 0 },
-          to:           { left: dist },
-          duration:     250,
-          easing:       'easeOutBack',    //'easeOutCubic',
-          step:         function (state, att) {
-            G.$E.conTn.css('left', (G.GOM.slider.left.container + state.left) +'px');
-          },
-          finish:       function (state, att) {
-            G.$E.conTn.css('left', (G.GOM.slider.left.container + state.left) +'px');
-            G.GOM.slider.left.container += state.left;
-            // GalleryDisplayPart1();
-            GalleryDisplayPart2( false );
-          }
-        });          
-      }
-      else {
-        // slide thumbnails grouped by columns
-        var tns = []
-
-        for( var i = 0; i < nbTn ; i++ ) {
-          let curTn = G.GOM.items[i];
-          if( curTn.displayed ) {
-            tns.push(curTn);
-          }
-        }
-
-        
-        if( tns.length > 0 ) {
-          var tab = [];     // left positions
-          var cols = [];    // columns
-          for( var i = 0; i < tns.length ; i++ ) {
-            if( tab[tns[i].left] == undefined ) {
-              tab[tns[i].left] = [];
-              cols.push( tns[i].left );
-            }
-            tab[tns[i].left].push( tns[i] );
-          }
-          cols = cols.sort(function(a, b){return a-b});   // sort in ascending order
-       
-          if( G.O.gallerySliderElement == 'thumbnailsPush' && dist < 0 ) {
-            // <0 = push
-            // >0 = pull
-            cols = cols.reverse();
-          }
-
-          // translate each thumbnail to his new position
-          for( var i = 0; i < cols.length; i++ ) {
-            var t = new NGTweenable();
-            G.GOM.slider.tweenable.push( t );
-            t.tween({
-              from:         { left: 0 },
-              to:           { left: dist },
-              duration:     250,
-              delay:        i * 25,
-              easing:       'easeOutBack',    //'easeOutCubic',
-              attachment:   { tns: tab[cols[i]], isLast: false },
-              step:         function (state, att) {
-                
-                att.tns.forEach(function(tn){
-                  var item = G.I[tn.thumbnailIdx];
-                  item.$elt.css({ left: item.left + G.GOM.slider.left.thumbnails + state.left });
-                });
-                 
-              },
-              finish:       function (state, att) {
-                att.tns.forEach(function(tn){
-                  var item = G.I[tn.thumbnailIdx];
-                  item.$elt.css({ left: item.left + G.GOM.slider.left.thumbnails + state.left });
-                });
-                if( att.isLast ) {
-                  G.GOM.slider.left.thumbnails += state.left;
-                  // GalleryDisplayPart1();
-                  GalleryDisplayPart2( false );
-                }
-              }
-            });          
-          }
-
-          // last animation: enable following procedures
-          G.GOM.slider.tweenable[G.GOM.slider.tweenable.length-1]._attachment.isLast = true;
-        }
-      }
-    }      
-    
-       
-    // Slider pan left/right (gesture/mouse)
-    var SliderPanThrottled = throttle( SliderPan, 100, {leading: true, trailing: false});
-    function SliderPan( deltaX ) {
-      
-      SliderAnimationForceFinish();
-      
-      var d = -(G.GOM.slider.Left() -(G.GOM.slider.left.initial + deltaX));
-
-      if( d != 0 ) {
-        SliderMove2( d );
-      }
-
-    }
-    
-
-
-    // retrieve the from/to interval for gallery thumbnail render
+    // retrieve the from/to intervall for gallery thumbnail render
     function GalleryRenderGetInterval() {
       G.GOM.displayInterval.from = 0;
       G.GOM.displayInterval.len = G.I.length;
@@ -3939,9 +3640,8 @@ ToDo:
           }
           break;
         default:
-        case 'SLIDER':
         case 'FULLCONTENT':
-          if( G.layout.support.rows && G.galleryLastRowFull.Get() && G.GOM.lastFullRow != -1 ) {
+        if( G.layout.support.rows && G.galleryLastRowFull.Get() && G.GOM.lastFullRow != -1 ) {
             let nbTn = G.GOM.items.length;
             let lastRow = G.GOM.lastFullRow + 1;
             G.GOM.displayInterval.len = 0;
@@ -3960,8 +3660,8 @@ ToDo:
     // RENDER THE GALLERY
     function GalleryRender( albumIdx ) {
       TriggerCustomEvent('galleryRenderStart');
-      clearTimeout(G.GOM.tn_slider.timerID);
-      G.GOM.tn_slider.hostIdx = -1;      // disabled slider on thumbnail
+      clearTimeout(G.GOM.slider.timerID);
+      G.GOM.slider.hostIdx = -1;      // disabled slider on thumbnail
       
       var fu=G.O.fnGalleryRenderStart;
       if( fu !== null ) {
@@ -3972,7 +3672,7 @@ ToDo:
       G.layout.SetEngine();
       G.galleryResizeEventEnabled = false;
       G.GOM.albumIdx = -1;
-      G.GOM.tn_with_counter.idx = -1;
+      G.GOM.lastDisplayedIdx = -1;
 
       // pagination
       if( G.$E.conTnBottom !== undefined ) {
@@ -3982,11 +3682,6 @@ ToDo:
 
       // navigation toolbar (breadcrumb + tag filters + pagination next/previous)
       GalleryNavigationBar(albumIdx);
-
-      // hide overlay next/previous buttons
-      G.$E.conTnParent.addClass('nGY2GalleryBtnOverlayHidden');
-            
-
       
       if( G.GOM.firstDisplay ) {
 				// first gallery display
@@ -4099,18 +3794,7 @@ ToDo:
         item.resizedContentWidth = 0;
         item.resizedContentHeight = 0;
         item.thumbnailImgRevealed = false;
-        item.displayed = false;
-        item.neverDisplayed = true;
-        item.$placeholder = [];
       }
-      
-      // re-init pagination
-      G.GOM.pagination.currentPage = 0;
-      // slider
-      G.GOM.slider.left.container = 0;
-      G.GOM.slider.left.thumbnails = 0;
-      G.$E.conTn.css('left', 'auto');
-      
 
       if( G.CSStransformName == null ) {
         G.$E.conTn.css('left', '0px');
@@ -4296,12 +3980,11 @@ ToDo:
       var r = true;
       // width of the available area
       G.GOM.cache.areaWidth = G.$E.conTnParent.width();
-      G.GOM.layoutArea.width = 0;
-      G.GOM.layoutArea.height = 0;
+      G.GOM.displayArea = { width:0, height:0 };
 
       switch( G.layout.engine ) {
         case 'JUSTIFIED':
-          r = GallerySetLayoutJustified();
+          r = GallerySetLayoutWidthtAuto();
           break;
         case 'CASCADING':
           r = GallerySetLayoutHeightAuto();
@@ -4428,13 +4111,13 @@ ToDo:
         }
       }
 
-      G.GOM.layoutArea.width= maxCol * (tnWidth + gutterWidth) - gutterWidth;
+      G.GOM.displayArea.width= maxCol * (tnWidth + gutterWidth) - gutterWidth;
       return true;
     }
     
     
     //----- JUSTIFIED LAYOUT
-    function GallerySetLayoutJustified() {
+    function GallerySetLayoutWidthtAuto() {
       var curWidth =               0,
       areaWidth =                  G.GOM.cache.areaWidth,
       lastPosX =                   0,
@@ -4458,27 +4141,6 @@ ToDo:
       var nbTnInCurrRow = 1;
       var nbTn = G.GOM.items.length;
 
-      
-      
-      if( G.galleryDisplayMode.Get() == 'SLIDER' ) {
-        // mode slider -> evaluate the width of the container
-        for( var i = 0; i < nbTn ; i++ ) {
-          let curTn = G.GOM.items[i];
-          if( curTn.imageWidth > 0 ) {
-            let imageRatio = curTn.imageWidth / curTn.imageHeight;
-            let imageWidth = Math.floor( tnHeight * imageRatio );
-            
-            curWidth += imageWidth + gutterWidth;
-          }
-        }
-        curWidth -= gutterWidth;
-        var nb_rows = G.galleryMaxRows.Get() > 0 ? G.galleryMaxRows.Get() : 1;
-        areaWidth = curWidth / nb_rows;
-        curWidth = 0;
-      }
-
-      
-      
       // first loop --> retrieve each row image height
       for( var i = 0; i < nbTn ; i++ ) {
         let curTn = G.GOM.items[i];
@@ -4518,7 +4180,7 @@ ToDo:
             rowLastItem[rowNum] = i;
           }
           else {
-            // new row after current item --> we need to adjust the row height to have enough space for the current thumbnail
+            // new row after current item --> we need to adujet the row height to have enough space for the current thumbnail
             curWidth += gutterWidth+imageWidth;
             let ratio = (areaWidth - nbTnInCurrRow * borderWidth) / curWidth;
             let rH = Math.floor(tnHeight * ratio);
@@ -4546,7 +4208,7 @@ ToDo:
       lastPosX = 0;
       cnt = 0;
       
-      G.GOM.lastFullRow = 0;    // display at least 1 row (even if not full)
+      G.GOM.lastFullRow = 0;    // display at leat 1 row (even if not full)
       
       // second loop --> calculate each thumbnail size
       for( var i = 0; i < nbTn ; i++ ) {
@@ -4643,7 +4305,7 @@ ToDo:
         }
       }
       
-      G.GOM.layoutArea.width = areaWidth;
+      G.GOM.displayArea.width = areaWidth;
       return true;
     }    
     
@@ -4662,9 +4324,9 @@ ToDo:
       var row = 0;
       var h = 0;
       var n = 0;
-      var max_patterns_per_row = 1;      
       
-      // first loop: evaluate the gallery width based on the content of the first pattern instance
+      
+      // first loop: evaluate the gallery width based on the first row
       var nbCols = 0;
       var maxW = 0;
       let mosaicPattern = G.tn.settings.getMosaic();
@@ -4680,48 +4342,17 @@ ToDo:
 
         n++;
         if( n >= mosaicPattern.length ) {
-          // end of the pattern
+          // end of pattern
           break;
         }
       }
       var totalGutterWidth = (nbCols - 1) * gutterWidth;
-      var scaleFactor =  (areaWidth - totalGutterWidth ) / ( maxW - totalGutterWidth );
+      var scaleFactor = Math.min( (areaWidth - totalGutterWidth ) / ( maxW - totalGutterWidth ), 1);
       
-      // scaled --> evaluate scale factor and number of columns
-      if( scaleFactor > 1 ) {
-        if( G.O.thumbnailAlignment == 'fillWidth' ) {
-          // scale down to display another pattern on the same row
-          max_patterns_per_row = Math.ceil(areaWidth / maxW);
-          var max_patterns = Math.ceil(nbTn / mosaicPattern.length);
-          max_patterns_per_row = Math.min(max_patterns_per_row, max_patterns)
-          var totalGutterWidth2 = (max_patterns_per_row-1) * gutterWidth;
-          scaleFactor =  (areaWidth - totalGutterWidth2 ) / ( (maxW*max_patterns_per_row) );
-        }
-        else {
-          // no upscale to avoid blurred images
-          scaleFactor = 1;
-        }
-      }
-      
-      if( G.galleryDisplayMode.Get() == 'SLIDER' ) {
-        if( G.galleryLastRowFull.Get() ) {
-          max_patterns_per_row = Math.floor(nbTn / mosaicPattern.length);
-        }
-        else {
-          max_patterns_per_row = Math.ceil(nbTn / mosaicPattern.length);
-        }
-        var nb_rows = G.galleryMaxRows.Get() > 0 ? G.galleryMaxRows.Get() : 1;
-        max_patterns_per_row = Math.ceil(max_patterns_per_row / nb_rows);
-      }
-      
-      
-      // Loop for positioning all the thumbnails based on the layout pattern
+      // second loop: position all the thumbnails based on the layout pattern
       row = 0;
       n = 0;
-      var used_width = 0;
-      maxW = 0;
-      var cnt_hor_patterns = 0;
-      var base_left = 0;
+      // let mosaicPattern = G.tn.settings.getMosaic();
       for( var i = 0; i < nbTn ; i++ ) {
         let curTn = G.GOM.items[i];
         let curPatternElt = mosaicPattern[n];
@@ -4732,46 +4363,27 @@ ToDo:
         }
 
         curTn.left = (curPatternElt.c - 1) * Math.round(G.tn.defaultSize.getOuterWidth()*scaleFactor) + (curPatternElt.c - 1) * gutterWidth;
-        
+
         curTn.height = Math.round(curPatternElt.h * G.tn.defaultSize.getOuterHeight() * scaleFactor) + (curPatternElt.h - 1) * gutterHeight + (G.tn.labelHeight.get() * curPatternElt.h);
         curTn.resizedContentHeight = curTn.height - G.tn.labelHeight.get() - borderHeight;
 
         curTn.width = Math.round(curPatternElt.w * G.tn.defaultSize.getOuterWidth()*scaleFactor) + (curPatternElt.w - 1) * gutterWidth;
         curTn.resizedContentWidth = curTn.width - borderWidth ;
 
-        maxW = Math.max(maxW, curTn.left + curTn.width );
-
-        curTn.left += base_left; 
-        used_width = Math.max(used_width, curTn.left + curTn.width);
-        
         curTn.row = row;
         if( row == 0 ) {
-          h = Math.max(h, curTn.top + curTn.height);
+          h=Math.max(h, curTn.top + curTn.height);
         }
 
         n++;
         if( n >= mosaicPattern.length ) {
-          // end pattern -> new one
+          // end pattern -> new line
           n = 0;
-          
-          cnt_hor_patterns++;
-          if( cnt_hor_patterns >= max_patterns_per_row ) {
-            // new row
-            cnt_hor_patterns = 0;
-            row++;
-          }
-
-          base_left = cnt_hor_patterns * ( maxW + gutterWidth );
-
+          row++;
         }
       }
-
-      G.GOM.lastFullRow = row;
-      if( Math.floor( nbTn / mosaicPattern.length) < Math.ceil( nbTn / mosaicPattern.length) ) {
-        G.GOM.lastFullRow--;
-      }
       
-      G.GOM.layoutArea.width = used_width;
+      G.GOM.displayArea.width = (maxW - totalGutterWidth) * scaleFactor + totalGutterWidth;
       return true;
     }
     
@@ -4794,9 +4406,9 @@ ToDo:
       var nbTn=         G.GOM.items.length;
       var borderWidth   = G.tn.opt.Get('borderHorizontal') * 2;
       var borderHeight  = G.tn.opt.Get('borderVertical') * 2;
-
+      
       // retrieve gutter width
-      if( G.O.thumbnailAlignment == 'justified' && G.galleryDisplayMode.Get() != 'SLIDER' ) {
+      if( G.O.thumbnailAlignment == 'justified' ) {
         maxCol = Math.min( maxCol, nbTn);
         gutterWidth = (maxCol==1 ? 0 : (areaWidth-(maxCol*tnWidth))/(maxCol-1));
       }
@@ -4804,39 +4416,26 @@ ToDo:
         gutterWidth = G.tn.settings.GetResponsive('gutterWidth');
       }
 
-      // scaled --> evaluate scale factor and number of columns
+      // first loop to retrieve the real used width of the area (the evaluation is based on the content of the first line)
+      // Retrieve the real used width of the area (the evaluation is based on the content of the first line)
       if( G.O.RTL || G.O.thumbnailAlignment == 'fillWidth' ) {
+        // scaled --> evaluate scale factor and number of columns
         var totalGutterWidth = (maxCol-1) * gutterWidth;
         scaleFactor = (areaWidth - totalGutterWidth) / (maxCol*tnWidth);
         if( scaleFactor > 1 ) {
-          // no upscale to avoid blurry images
           maxCol++; // add one column and re-evaluate the scale factor
         }
         totalGutterWidth = (maxCol-1) * gutterWidth;
-        scaleFactor = Math.min( (areaWidth - totalGutterWidth) / (maxCol*tnWidth), 1);
-        tnWidth = Math.round(tnWidth * scaleFactor);
-      }
-
-      
-      
-      if( G.galleryDisplayMode.Get() == 'SLIDER' ) {
-        var nb_rows = G.galleryMaxRows.Get() > 0 ? G.galleryMaxRows.Get() : 1;
-        maxCol = Math.round( nbTn / nb_rows );
-        var totalGutterWidth = (maxCol-1) * gutterWidth;
+        scaleFactor = Math.min( (areaWidth - totalGutterWidth) / (maxCol*tnWidth), 1);   // no upscale
         newAreaWidth = (maxCol*tnWidth) + totalGutterWidth;
-        if( newAreaWidth < areaWidth ) {
-          nb_rows--;
-          maxCol = Math.round( nbTn / nb_rows );
-          totalGutterWidth = (maxCol-1) * gutterWidth;
-          newAreaWidth = (maxCol*tnWidth) + totalGutterWidth;
-        }
       }
 
-     
-      G.GOM.lastFullRow = 0 ;    // display at least 1 row (even if not full)
+      
+      G.GOM.lastFullRow = 0 ;    // display at leat 1 row (even if not full)
       // var lastPosY = 0;
       var row = 0;
       
+      tnWidth = Math.round(tnWidth * scaleFactor);
       var contentWidth = tnWidth - borderWidth;
       var tnHeight = Math.round(G.tn.defaultSize.getOuterHeight() * scaleFactor) + G.tn.labelHeight.get();
       var contentHeight = Math.round( G.tn.defaultSize.getOuterHeight() * scaleFactor) - borderHeight;
@@ -4880,7 +4479,7 @@ ToDo:
           row++;
         }
       }
-      G.GOM.layoutArea.width = w;
+      G.GOM.displayArea.width = w;
 
       return true;
     }
@@ -4925,13 +4524,12 @@ ToDo:
       var cnt = 0;    // counter for delay between each thumbnail display
       
 
-      // retrieve the interval of objects from the full collection of objects
       GalleryRenderGetInterval();
       
       for( var i = 0; i < nbTn ; i++ ) {
         let curTn = G.GOM.items[i];
         if( i >= G.GOM.displayInterval.from && cnt < G.GOM.displayInterval.len ) {
-          curTn.inDisplayInterval = true;
+          curTn.inDisplayArea = true;
           if( forceTransition ) {
             curTn.neverDisplayed = true;
           }
@@ -4939,7 +4537,7 @@ ToDo:
           cnt++;
         }
         else{
-          curTn.inDisplayInterval = false;
+          curTn.inDisplayArea = false;
         }
       }
 
@@ -4948,7 +4546,7 @@ ToDo:
 
       var tnToDisplay = [];
       var tnToReDisplay = [];
-
+      
       CacheViewport();
       G.GOM.clipArea.top = -1;
       cnt = 0 ;
@@ -4957,19 +4555,7 @@ ToDo:
       // NOTE: loop always the whole GOM.items --> in case an already displayed thumbnail needs to be removed
       for( var i = 0; i < nbTn ; i++ ) {
         let curTn = G.GOM.items[i];
-        
-        
-        // Display thumbnails placeholders
-        if( G.O.galleryPlaceholder != 'none' ) {
-          if( curTn.$placeholder == null ) {
-            curTn.$placeholder = jQuery('<div class="nGY2GThumbnailPlaceholder" style="background:'+G.O.galleryPlaceholder+';"></div>').appendTo(G.$E.conTn);
-          }
-          curTn.$placeholder.css({ top: curTn.top, left: curTn.left + G.GOM.slider.left.thumbnails, width: curTn.width, height: curTn.height });
-        }
-
-        
-        
-        if( curTn.inDisplayInterval ) {
+        if( curTn.inDisplayArea ) {
           if( G.GOM.clipArea.top == -1 ) {
             G.GOM.clipArea.top = curTn.top;
           }
@@ -4980,55 +4566,25 @@ ToDo:
 
           G.GOM.clipArea.height = Math.max( G.GOM.clipArea.height, curTn.top-G.GOM.clipArea.top + curTn.height);
         
-          var tn_in_visible_area = false;
-        
-          // Vertical check in VIEWPORT
-          // thumbnail is not displayed -> check if in viewport to display or not
-          var top = G.GOM.cache.containerOffset.top + (curTn.top - G.GOM.clipArea.top);
-          // var left=containerOffset.left+curTn.left;
-          if( (top + curTn.height) >= (G.GOM.cache.viewport.t - threshold) && top <= (G.GOM.cache.viewport.t + G.GOM.cache.viewport.h + threshold) ) {
-            tn_in_visible_area = true;
-          }
-        
-          // Horizontal check (only in slider mode)
-          // check if in gallery container
-          if( G.galleryDisplayMode.Get() == "SLIDER" 
-              && ( ((curTn.left+G.GOM.slider.Left() ) > G.GOM.cache.areaWidth ) || (curTn.left+curTn.width+ G.GOM.slider.Left() ) < 0 )
-          ){
-            tn_in_visible_area = false;
-          }
-        
-          if( tn_in_visible_area ) {
-            if( curTn.neverDisplayed ) {
+          if( curTn.neverDisplayed ) {
+						// thumbnail is not displayed -> check if in viewport to display or not
+            var top = G.GOM.cache.containerOffset.top + (curTn.top - G.GOM.clipArea.top);
+            // var left=containerOffset.left+curTn.left;
+            if( (top + curTn.height) >= (G.GOM.cache.viewport.t - threshold) && top <= (G.GOM.cache.viewport.t + G.GOM.cache.viewport.h + threshold) ) {
               // build thumbnail
               let item = G.I[curTn.thumbnailIdx];
               if( item.$elt == null ) {
                 // ThumbnailBuild( item, curTn.thumbnailIdx, i, (i+1) == nbTn );
                 ThumbnailBuild( item, curTn.thumbnailIdx, i );
               }
-              // Display thumbnail with animation
               tnToDisplay.push({idx:i, delay:cnt, top: curTn.top, left: curTn.left});
               cnt++;
             }
-            else {
-              // Display without animation
-              tnToReDisplay.push({idx: i, delay: 0, top: curTn.top, left: curTn.left});
-            }
           }
           else {
-            if( curTn.displayed ) {
-              curTn.displayed = false;
-              if( G.galleryDisplayMode.Get() == "SLIDER" ) {
-                curTn.neverDisplayed = true;      // force to re-display with animation
-              }
-              let item = G.I[curTn.thumbnailIdx];
-              if( item.$elt != null ){
-                item.$elt.css({ opacity: 0, display: 'none' });
-              }
-            }
-    
+            tnToReDisplay.push({idx: i, delay: 0, top: curTn.top, left: curTn.left});
           }
-
+          // G.GOM.itemsDisplayed++;
           lastTnIdx = i;
         }
         else {
@@ -5038,19 +4594,17 @@ ToDo:
             item.$elt.css({ opacity: 0, display: 'none' });
           }
         }
-        
       }
 
-      
       var areaWidth = G.$E.conTnParent.width();
 
       // set gallery area really used size
-      // if( G.GOM.layoutArea.width != G.GOM.layoutAreaLast.width || G.GOM.layoutArea.height != G.GOM.layoutAreaLast.height ) {
-      if( G.GOM.layoutArea.width != G.GOM.layoutAreaLast.width || G.GOM.clipArea.height != G.GOM.layoutAreaLast.height ) {
-        G.$E.conTn.width( G.GOM.layoutArea.width ).height( G.GOM.clipArea.height );
-        G.GOM.layoutAreaLast.width = G.GOM.layoutArea.width;
-        G.GOM.layoutAreaLast.height = G.GOM.clipArea.height;
-        // G.GOM.layoutAreaLast.height=G.GOM.layoutArea.height-G.GOM.clipArea.top;
+      // if( G.GOM.displayArea.width != G.GOM.displayAreaLast.width || G.GOM.displayArea.height != G.GOM.displayAreaLast.height ) {
+      if( G.GOM.displayArea.width != G.GOM.displayAreaLast.width || G.GOM.clipArea.height != G.GOM.displayAreaLast.height ) {
+        G.$E.conTn.width( G.GOM.displayArea.width ).height( G.GOM.clipArea.height );
+        G.GOM.displayAreaLast.width = G.GOM.displayArea.width;
+        G.GOM.displayAreaLast.height = G.GOM.clipArea.height;
+        // G.GOM.displayAreaLast.height=G.GOM.displayArea.height-G.GOM.clipArea.top;
       }
 
       if( areaWidth != G.$E.conTnParent.width() ) {
@@ -5063,20 +4617,20 @@ ToDo:
         return;
       }
 
-      
-      // Counter of the not displayed thumbnails (is displayed over the last thumbnail)
-      if( G.GOM.tn_with_counter.Enabled() ) {
-        // if( lastTnIdx != -1 && lastTnIdx < (nbTn - 1) ) {
-        if( lastTnIdx < (nbTn - 1) ) {
-          G.GOM.tn_with_counter.idxNew = lastTnIdx;
-        }
-        else {
-          G.GOM.tn_with_counter.idxNew =- 1;
-        }
-        // remove last displayed counter
-        if( G.GOM.tn_with_counter.idx != -1 ) {
-          let item = G.I[G.GOM.items[G.GOM.tn_with_counter.idx].thumbnailIdx];
-          item.$getElt('.nGY2GThumbnailIconsFullThumbnail').html('');
+      // counter of not displayed images (is displayed on the last thumbnail)
+      if( G.layout.support.rows ) {
+        if( G.galleryDisplayMode.Get() == 'ROWS' || (G.galleryDisplayMode.Get() == 'FULLCONTENT' && G.galleryLastRowFull.Get() && G.GOM.lastFullRow != -1) ){
+          if( lastTnIdx < (nbTn - 1) ) {
+            G.GOM.lastDisplayedIdxNew = lastTnIdx;
+          }
+          else {
+            G.GOM.lastDisplayedIdxNew =- 1;
+          }
+          // remove last displayed counter
+          if( G.GOM.lastDisplayedIdx != -1 ) {
+            let item = G.I[G.GOM.items[G.GOM.lastDisplayedIdx].thumbnailIdx];
+            item.$getElt('.nGY2GThumbnailIconsFullThumbnail').html('');
+          }
         }
       }
 
@@ -5084,7 +4638,7 @@ ToDo:
       // batch set position (and display animation) to all thumbnails
       // first display newly built thumbnails
       
-      G.GOM.thumbnails2Display = [];
+      G.GOM.thumbnails2Display=[];
       
       var duration = ThumbnailPreparePosition( tnToDisplay );
       ThumbnailPreparePosition( tnToReDisplay );
@@ -5094,17 +4648,14 @@ ToDo:
       if( G.tn.opt.Get('displayTransition') == 'NONE' ) {
         G.galleryResizeEventEnabled = true;
         // GalleryThumbnailSliderBuildAndStart();  // image slider on last displayed thumbnail
-        G.$E.conTnParent.removeClass('nGY2GalleryBtnOverlayHidden');   // display gallery overlay for next/previous buttons
-
         TriggerCustomEvent('galleryDisplayed');
       }
       else {
         // setTimeout(function() {
         requestTimeout( function() {
-          // change value after the end of the display transition of the newly built thumbnails
+          // change value after the end of the display transistion of the newly built thumbnails
           G.galleryResizeEventEnabled = true;
           // GalleryThumbnailSliderBuildAndStart();  // image slider on last displayed thumbnail
-          G.$E.conTnParent.removeClass('nGY2GalleryBtnOverlayHidden');   // display gallery overlay for next/previous buttons
           TriggerCustomEvent('galleryDisplayed');
         // }, nbBuild * G.tn.opt.Get('displayInterval'));
         }, duration * G.tn.opt.Get('displayInterval'));
@@ -5143,7 +4694,7 @@ ToDo:
             tab[lstThumb[i].left] = [];
             cols.push( lstThumb[i].left );
           }
-          tab[lstThumb[i].left].push( lstThumb[i].idx );
+          tab[lstThumb[i].left].push( lstThumb[i].idx )
         }
         if( displayOrder == 'colFromRight' ) {
           cols = cols.reverse();
@@ -5194,10 +4745,10 @@ ToDo:
         if( G.tn.opt.Get('stacks') > 0 ) {
           // we have stacks -> do not display them here. They will be displayed at the end of the display animation
           item.$elt.last().css({ display: 'block'});
-          item.$elt.css({ top: top , left: curTn.left + G.GOM.slider.left.thumbnails });
+          item.$elt.css({ top: top , left: curTn.left });
         }
         else {
-          item.$elt.css({ display: 'block', top: top , left: curTn.left + G.GOM.slider.left.thumbnails });
+          item.$elt.css({ display: 'block', top: top , left: curTn.left });
         }
         newTop=top;
         
@@ -5237,15 +4788,17 @@ ToDo:
                 // with transition
                 var tweenable = new NGTweenable();
                 tweenable.tween({
-                  from:       { top: item.top, left: item.left + G.GOM.slider.left.thumbnails,  height: item.height,  width: item.width },
-                  to:         { top: newTop,   left: curTn.left + G.GOM.slider.left.thumbnails, height: curTn.height, width: curTn.width },
+                  from:       { top: item.top, left: item.left,  height: item.height,  width: item.width },
+                  to:         { top: newTop,   left: curTn.left, height: curTn.height, width: curTn.width },
                   attachment: { $e: item.$elt },
                   duration:   100,
                   delay:      cnt * G.tn.opt.Get('displayInterval') / 5,
                   // easing:     'easeInOutQuad',
                   easing:     'easeOutQuart',
                   step:       function (state, att) {
+                    // window.ng_draf( function() {
                       att.$e.css(state);
+                    // });
                   },
                   finish:     function (state, att) {
                     var _this=this;
@@ -5257,23 +4810,23 @@ ToDo:
               }
               else {
                 // set position without transition
-                item.$elt.css({ top: newTop , left: curTn.left + G.GOM.slider.left.thumbnails });
+                // item.$elt.css({ top: curTn.top , left: curTn.left });
+                item.$elt.css({ top: newTop , left: curTn.left });
               }
             }
           }
           else {
             // re-display thumbnail
             curTn.displayed = true;
-            item.$elt.css({ display: 'block', top: newTop, left: curTn.left + G.GOM.slider.left.thumbnails, opacity: 1 });
+            // item.$elt.css({ display: 'block', top: curTn.top , left: curTn.left, opacity:1 });
+            item.$elt.css({ display: 'block', top: newTop, left: curTn.left, opacity: 1 });
             ThumbnailAppearFinish(item);
           }
         }
         else {
-          // un-display thumbnail if not in viewport+margin --> performance gain
-          if( !G.O.thumbnailDisplayOutsideScreen ) {
-            curTn.displayed = false;
-            item.$elt.css({ display: 'none'});
-          }
+          // undisplay thumbnail if not in viewport+margin --> performance gain
+          curTn.displayed = false;
+          item.$elt.css({ display: 'none'});
         }
       }
       item.left = curTn.left;
@@ -5305,10 +4858,8 @@ ToDo:
       
       
       // add counter of remaining (not displayed) images 
-      if( G.GOM.tn_with_counter.idxNew == GOMidx ) {
-      // if( G.GOM.tn_with_counter.idxNew == GOMidx &&  G.layout.support.rows ) {
-        // if( (G.galleryDisplayMode.Get() == 'SLIDER' && G.galleryMaxRows.Get() > 0 && G.GOM.lastFullRow != -1) || (G.galleryDisplayMode.Get() == 'ROWS' && G.galleryMaxRows.Get() > 0) || (G.galleryDisplayMode.Get() == 'FULLCONTENT' && G.galleryLastRowFull.Get() && G.GOM.lastFullRow != -1) ){
-        if( G.GOM.tn_with_counter.Enabled() ) {
+      if( G.GOM.lastDisplayedIdxNew == GOMidx &&  G.layout.support.rows ) {
+        if( (G.galleryDisplayMode.Get() == 'ROWS' && G.galleryMaxRows.Get() > 0) || (G.galleryDisplayMode.Get() == 'FULLCONTENT' && G.galleryLastRowFull.Get() && G.GOM.lastFullRow != -1) ){
           // number of items
           var nb = G.GOM.items.length - GOMidx - 1;
           if( item.albumID != '0' && G.O.thumbnailLevelUp ) {
@@ -5321,18 +4872,18 @@ ToDo:
               item.$getElt('.nGY2GThumbnailIconsFullThumbnail').html( '+' + nb);
             }
 
-            // if( G.layout.engine == 'GRID' && G.GOM.tn_slider.hostItem != G.GOM.NGY2Item(GOMidx) ) {
+            // if( G.layout.engine == 'GRID' && G.GOM.slider.hostItem != G.GOM.NGY2Item(GOMidx) ) {
             // image slider on last displayed thumbnail
             if( G.O.thumbnailLabel.get('position') != 'right' && G.O.thumbnailLabel.get('position') != 'left' ) {
-              if( G.GOM.tn_slider.hostItem != G.GOM.NGY2Item(GOMidx) ) {
+              if( G.GOM.slider.hostItem != G.GOM.NGY2Item(GOMidx) ) {
 
                 // set current slider back to initial content
-                GalleryThumbnailSliderSetContent( G.GOM.tn_slider.hostItem );
+                GalleryThumbnailSliderSetContent( G.GOM.slider.hostItem );
                 // new slider
-                G.GOM.tn_slider.hostIdx = GOMidx;
-                G.GOM.tn_slider.hostItem = G.GOM.NGY2Item(GOMidx);
-                G.GOM.tn_slider.nextIdx = GOMidx;
-                G.GOM.tn_slider.currentIdx = GOMidx;
+                G.GOM.slider.hostIdx = GOMidx;
+                G.GOM.slider.hostItem = G.GOM.NGY2Item(GOMidx);
+                G.GOM.slider.nextIdx = GOMidx;
+                G.GOM.slider.currentIdx = GOMidx;
                 GalleryThumbnailSliderBuildAndStart();  // image slider on last displayed thumbnail
                 // GalleryThumbnailSliderSetNextContent();
               }
@@ -5340,11 +4891,11 @@ ToDo:
           }
           else {
             // reset slider content to initial content because all thumbnails are displayed
-            GalleryThumbnailSliderSetContent( G.GOM.tn_slider.hostItem );
-            G.GOM.tn_slider.hostIdx = -1;
+            GalleryThumbnailSliderSetContent( G.GOM.slider.hostItem );
+            G.GOM.slider.hostIdx = -1;
           }
           
-          G.GOM.tn_with_counter.idx = GOMidx;
+          G.GOM.lastDisplayedIdx = GOMidx;
         }
       }
 
@@ -5355,12 +4906,12 @@ ToDo:
     // function GalleryLastThumbnailSlideImage() {
     function GalleryThumbnailSliderBuildAndStart() {
 
-      if( G.O.thumbnailSliderDelay == 0 || G.GOM.tn_slider.hostIdx == -1 ) {
+      if( G.O.thumbnailSliderDelay == 0 || G.GOM.slider.hostIdx == -1 ) {
         return;
       }
-      clearTimeout(G.GOM.tn_slider.timerID);
+      clearTimeout(G.GOM.slider.timerID);
       
-      var item = G.GOM.tn_slider.hostItem;
+      var item = G.GOM.slider.hostItem;
 
       // dupplicate image layer -> for the next image
       if( item.$getElt('.nGY2TnImgNext').length == 0 ) {
@@ -5377,30 +4928,30 @@ ToDo:
 
       GalleryThumbnailSliderSetNextContent();
       
-      // clearTimeout(G.GOM.tn_slider.timerID);
-      // G.GOM.tn_slider.timerID = setTimeout(function(){ GalleryThumbnailSliderStartTransition() }, G.O.thumbnailSliderDelay);
-      G.GOM.tn_slider.timerID = requestTimeout(function(){ GalleryThumbnailSliderStartTransition() }, G.O.thumbnailSliderDelay);
+      // clearTimeout(G.GOM.slider.timerID);
+      // G.GOM.slider.timerID = setTimeout(function(){ GalleryThumbnailSliderStartTransition() }, G.O.thumbnailSliderDelay);
+      G.GOM.slider.timerID = requestTimeout(function(){ GalleryThumbnailSliderStartTransition() }, G.O.thumbnailSliderDelay);
     }
 
     
     function GalleryThumbnailSliderSetNextContent() {
 
-      G.GOM.tn_slider.nextIdx++;
-      if( G.GOM.tn_slider.nextIdx >= G.GOM.items.length ) {
-        G.GOM.tn_slider.nextIdx = G.GOM.tn_slider.hostIdx;
+      G.GOM.slider.nextIdx++;
+      if( G.GOM.slider.nextIdx >= G.GOM.items.length ) {
+        G.GOM.slider.nextIdx = G.GOM.slider.hostIdx;
       }
       
       // new image
-      var newItem = G.GOM.NGY2Item(G.GOM.tn_slider.nextIdx);
+      var newItem = G.GOM.NGY2Item(G.GOM.slider.nextIdx);
       // var imgBlurred = G.emptyGif;
       var bgImg = "url('" + G.emptyGif + "')";
       if( newItem.imageDominantColors != null ) {
         // imgBlurred = newItem.imageDominantColors;
         bgImg = "url('" + newItem.imageDominantColors + "')";
       }
-      G.GOM.tn_slider.hostItem.$getElt('.nGY2TnImgBackNext', true).css({'background-image': bgImg, opacity: 1 });
-      G.GOM.tn_slider.hostItem.$getElt('.nGY2TnImgNext', true).css({ 'background-image': "url('" + newItem.thumbImg().src + "')", opacity: 1 });
-      G.GOM.tn_slider.hostItem.$getElt('.nGY2TnImgNext .nGY2GThumbnailImg', true).attr('src', newItem.thumbImg().src );
+      G.GOM.slider.hostItem.$getElt('.nGY2TnImgBackNext', true).css({'background-image': bgImg, opacity: 1 });
+      G.GOM.slider.hostItem.$getElt('.nGY2TnImgNext', true).css({ 'background-image': "url('" + newItem.thumbImg().src + "')", opacity: 1 });
+      G.GOM.slider.hostItem.$getElt('.nGY2TnImgNext .nGY2GThumbnailImg', true).attr('src', newItem.thumbImg().src );
       
 
     }
@@ -5408,11 +4959,11 @@ ToDo:
     // thumbnail slider - transition from one image to the next one
     function GalleryThumbnailSliderStartTransition() {
       
-      if( G.GOM.tn_slider.hostItem.$getElt() != null ) {
+      if( G.GOM.slider.hostItem.$getElt() != null ) {
 
         // slider transition
         var tweenable = new NGTweenable();
-        G.GOM.tn_slider.tween = tweenable;
+        G.GOM.slider.tween = tweenable;
         tweenable.tween({
           from:         { 'left': 100 },
           to:           { 'left': 0 },
@@ -5422,41 +4973,46 @@ ToDo:
           easing:       'easeOutQuart',
           
           step: function (state) {
-            if( G.GOM.tn_slider.hostItem.$getElt() == null ) {
+            if( G.GOM.slider.hostItem.$getElt() == null ) {
               // the thumbnail may have been destroyed since the start of the animation
-              G.GOM.tn_slider.tween.stop(false);
+              G.GOM.slider.tween.stop(false);
               return;
             }
 
-            // slide current content
-            G.GOM.tn_slider.hostItem.CSSTransformSet('.nGY2TnImgBack', 'translateX', -(100 - state.left) + '%');
-            G.GOM.tn_slider.hostItem.CSSTransformApply( '.nGY2TnImgBack' );
-            G.GOM.tn_slider.hostItem.CSSTransformSet('.nGY2TnImg', 'translateX', -(100 - state.left) + '%');
-            G.GOM.tn_slider.hostItem.CSSTransformApply( '.nGY2TnImg' );
+            // window.ng_draf( function() {
+              // slide current content
+              G.GOM.slider.hostItem.CSSTransformSet('.nGY2TnImgBack', 'translateX', -(100 - state.left) + '%');
+              G.GOM.slider.hostItem.CSSTransformApply( '.nGY2TnImgBack' );
+              G.GOM.slider.hostItem.CSSTransformSet('.nGY2TnImg', 'translateX', -(100 - state.left) + '%');
+              G.GOM.slider.hostItem.CSSTransformApply( '.nGY2TnImg' );
 
-            // slide new content
-            G.GOM.tn_slider.hostItem.CSSTransformSet('.nGY2TnImgBackNext', 'translateX', state.left + '%');
-            G.GOM.tn_slider.hostItem.CSSTransformApply( '.nGY2TnImgBackNext' );
-            G.GOM.tn_slider.hostItem.CSSTransformSet('.nGY2TnImgNext', 'translateX', state.left + '%');
-            G.GOM.tn_slider.hostItem.CSSTransformApply( '.nGY2TnImgNext' );
+              // slide new content
+              G.GOM.slider.hostItem.CSSTransformSet('.nGY2TnImgBackNext', 'translateX', state.left + '%');
+              G.GOM.slider.hostItem.CSSTransformApply( '.nGY2TnImgBackNext' );
+              G.GOM.slider.hostItem.CSSTransformSet('.nGY2TnImgNext', 'translateX', state.left + '%');
+              G.GOM.slider.hostItem.CSSTransformApply( '.nGY2TnImgNext' );
+            // });
+
             
           },
           finish: function (state) {
-            if( G.GOM.tn_slider.hostItem.$getElt() == null ) {
+            if( G.GOM.slider.hostItem.$getElt() == null ) {
               // the thumbnail may be destroyed since the start of the animation
               return;
             }
            
-            if( G.GOM.NGY2Item(G.GOM.tn_slider.nextIdx) == null ) { return; } // item does not exist anymore
+            if( G.GOM.NGY2Item(G.GOM.slider.nextIdx) == null ) { return; } // item does not exist anymore
             
-            // set new content as current content
-            GalleryThumbnailSliderSetContent( G.GOM.NGY2Item(G.GOM.tn_slider.nextIdx) );
-            G.GOM.tn_slider.currentIdx = G.GOM.tn_slider.nextIdx;
-            GalleryThumbnailSliderSetNextContent();
-            
-            clearTimeout(G.GOM.tn_slider.timerID);
-            // G.GOM.tn_slider.timerID=setTimeout(function(){ GalleryThumbnailSliderStartTransition() }, G.O.thumbnailSliderDelay);
-            G.GOM.tn_slider.timerID = requestTimeout(function(){ GalleryThumbnailSliderStartTransition() }, G.O.thumbnailSliderDelay);
+            // window.ng_draf( function() {
+              // set new content as current content
+              GalleryThumbnailSliderSetContent( G.GOM.NGY2Item(G.GOM.slider.nextIdx) );
+              G.GOM.slider.currentIdx = G.GOM.slider.nextIdx;
+              GalleryThumbnailSliderSetNextContent();
+              
+              clearTimeout(G.GOM.slider.timerID);
+              // G.GOM.slider.timerID=setTimeout(function(){ GalleryThumbnailSliderStartTransition() }, G.O.thumbnailSliderDelay);
+              G.GOM.slider.timerID = requestTimeout(function(){ GalleryThumbnailSliderStartTransition() }, G.O.thumbnailSliderDelay);
+            // });
           }
         });
       }
@@ -5465,11 +5021,11 @@ ToDo:
     // set main content of the thumbnail hosting the slider
     // hide the elements for the next content of the slider
     function GalleryThumbnailSliderSetContent( ngy2itemContent ) {
-        if( G.GOM.tn_slider.hostIdx == -1 ) { return; }
+        if( G.GOM.slider.hostIdx == -1 ) { return; }
         
-        if( G.GOM.tn_slider.tween != null ) {
-          if( G.GOM.tn_slider.tween._isTweening  == true ) {
-            G.GOM.tn_slider.tween.stop(false);
+        if( G.GOM.slider.tween != null ) {
+          if( G.GOM.slider.tween._isTweening  == true ) {
+            G.GOM.slider.tween.stop(false);
           }
         }
 
@@ -5477,20 +5033,20 @@ ToDo:
         if( ngy2itemContent.imageDominantColors != null ) {
           bgImg = "url('" + ngy2itemContent.imageDominantColors + "')";
         }
-        G.GOM.tn_slider.hostItem.$getElt('.nGY2TnImgBack').css('background-image', bgImg);
-        G.GOM.tn_slider.hostItem.$getElt('.nGY2TnImg').css('background-image', "url('" + ngy2itemContent.thumbImg().src + "')" );
-        G.GOM.tn_slider.hostItem.$getElt('.nGY2TnImg .nGY2GThumbnailImg').attr('src', ngy2itemContent.thumbImg().src );
+        G.GOM.slider.hostItem.$getElt('.nGY2TnImgBack').css('background-image', bgImg);
+        G.GOM.slider.hostItem.$getElt('.nGY2TnImg').css('background-image', "url('" + ngy2itemContent.thumbImg().src + "')" );
+        G.GOM.slider.hostItem.$getElt('.nGY2TnImg .nGY2GThumbnailImg').attr('src', ngy2itemContent.thumbImg().src );
         
-        G.GOM.tn_slider.hostItem.CSSTransformSet('.nGY2TnImgBack', 'translateX', '0%');
-        G.GOM.tn_slider.hostItem.CSSTransformApply( '.nGY2TnImgBack' );
-        G.GOM.tn_slider.hostItem.CSSTransformSet('.nGY2TnImg', 'translateX', '0%');
-        G.GOM.tn_slider.hostItem.CSSTransformApply( '.nGY2TnImg' );
+        G.GOM.slider.hostItem.CSSTransformSet('.nGY2TnImgBack', 'translateX', '0');
+        G.GOM.slider.hostItem.CSSTransformApply( '.nGY2TnImgBack' );
+        G.GOM.slider.hostItem.CSSTransformSet('.nGY2TnImg', 'translateX', '0');
+        G.GOM.slider.hostItem.CSSTransformApply( '.nGY2TnImg' );
 
         // place the containers for the next image slider outside of the thumbnail (=hidden)
-        G.GOM.tn_slider.hostItem.CSSTransformSet('.nGY2TnImgBackNext', 'translateX', '100%', true);
-        G.GOM.tn_slider.hostItem.CSSTransformApply( '.nGY2TnImgBackNext' );
-        G.GOM.tn_slider.hostItem.CSSTransformSet('.nGY2TnImgNext', 'translateX', '100%', true);
-        G.GOM.tn_slider.hostItem.CSSTransformApply( '.nGY2TnImgNext' );
+        G.GOM.slider.hostItem.CSSTransformSet('.nGY2TnImgBackNext', 'translateX', '100%', true);
+        G.GOM.slider.hostItem.CSSTransformApply( '.nGY2TnImgBackNext' );
+        G.GOM.slider.hostItem.CSSTransformSet('.nGY2TnImgNext', 'translateX', '100%', true);
+        G.GOM.slider.hostItem.CSSTransformApply( '.nGY2TnImgNext' );
 
         // set new title and description
         if( G.O.thumbnailLabel.get('display') == true ) {
@@ -5498,8 +5054,8 @@ ToDo:
           if( ngy2itemContent.kind != 'album' ) {
             icons = G.O.icons.thumbnailImage;
           }
-          G.GOM.tn_slider.hostItem.$getElt('.nGY2GThumbnailTitle').html(icons + getThumbnailTitle(ngy2itemContent));
-          G.GOM.tn_slider.hostItem.$getElt('.nGY2GThumbnailDescription').html(icons + getTumbnailDescription(ngy2itemContent));
+          G.GOM.slider.hostItem.$getElt('.nGY2GThumbnailTitle').html(icons + getThumbnailTitle(ngy2itemContent));
+          G.GOM.slider.hostItem.$getElt('.nGY2GThumbnailDescription').html(icons + getTumbnailDescription(ngy2itemContent));
         }
       }
     
@@ -6412,9 +5968,8 @@ ToDo:
 
 
     function ThumbnailHover( GOMidx ) {
-      // if( G.GOM.albumIdx == -1 || !G.galleryResizeEventEnabled ) { return; };
-      if( G.GOM.albumIdx == -1 ) { return; };
-      if( G.GOM.tn_slider.hostIdx == GOMidx ) {
+      if( G.GOM.albumIdx == -1 || !G.galleryResizeEventEnabled ) { return; };
+      if( G.GOM.slider.hostIdx == GOMidx ) {
         // slider hosted on thumbnail -> no hover effect
         return;
       }
@@ -6450,7 +6005,7 @@ ToDo:
       if( G.GOM.albumIdx == -1 ) { return; };
       var l = G.GOM.items.length;
       for( var i = 0; i < l ; i++ ) {
-        if( G.GOM.items[i].inDisplayInterval ) {
+        if( G.GOM.items[i].inDisplayArea ) {
           ThumbnailHoverOut(i);
         }
         else {
@@ -6461,10 +6016,9 @@ ToDo:
 
     
     function ThumbnailHoverOut( GOMidx ) {
-      // if( G.GOM.albumIdx == -1 || !G.galleryResizeEventEnabled ) { return; }
-      if( G.GOM.albumIdx == -1 ) { return; }
+      if( G.GOM.albumIdx == -1 || !G.galleryResizeEventEnabled ) { return; }
 
-      if( G.GOM.tn_slider.hostIdx == GOMidx ) {
+      if( G.GOM.slider.hostIdx == GOMidx ) {
         // slider on thumbnail -> no hover effect
         return;
       }
@@ -8374,9 +7928,8 @@ debugger;
       if( r.GOMidx == -1 ) { return 'exit'; }
       
       var idx = G.GOM.items[r.GOMidx].thumbnailIdx;
-      if( G.GOM.tn_slider.hostIdx == r.GOMidx ) {
-        // slider clicked
-        idx = G.GOM.items[G.GOM.tn_slider.currentIdx].thumbnailIdx;
+      if( G.GOM.slider.hostIdx == r.GOMidx ) {
+        idx = G.GOM.items[G.GOM.slider.currentIdx].thumbnailIdx;
       }
       switch( r.action ) {
         case 'OPEN':
@@ -8670,7 +8223,6 @@ debugger;
     }
     
     function GalleryMouseLeave(e) {
-
       if( !G.VOM.viewerDisplayed && G.GOM.albumIdx != -1 ) {
         var r = GalleryEventRetrieveElementl(e, true);
         if( r.GOMidx != -1 ) {
@@ -9561,9 +9113,7 @@ debugger;
           // click/tap on image to go to next/previous one
           // G.VOM.hammertime.on('tap', function(ev) {
           G.VOM.hammertime.on('singletap', function(ev) {
-
             if( !ViewerEvents() ) { return; }
-            
             StopPropagationPreventDefault( ev.srcEvent );
             if( G.VOM.toolbarsDisplayed == false  ){
               // display tools on tap if hidden
@@ -10706,29 +10256,24 @@ debugger;
         }
         
         // configure gallery depending on some thumbnail hover effects
-        // var effects=G.tn.hoverEffects.std.concat(G.tn.hoverEffects.level1);
-        // for( var j=0; j<effects.length; j++) {
-          // switch( effects[j].type ) {
-            // case 'scale':
-            // case 'rotateZ':
-            // case 'rotateX':
-            // case 'rotateY':
-            // case 'translateX':
-            // case 'translateY':
+        var effects=G.tn.hoverEffects.std.concat(G.tn.hoverEffects.level1);
+        for( var j=0; j<effects.length; j++) {
+          switch( effects[j].type ) {
+            case 'scale':
+            case 'rotateZ':
+            case 'rotateX':
+            case 'rotateY':
+            case 'translateX':
+            case 'translateY':
               // handle some special cases
-              // if( effects[j].element == '.nGY2GThumbnail' ) {
+              if( effects[j].element == '.nGY2GThumbnail' ) {
                 // allow thumbnail upscale over the gallery's aera
-                // G.$E.base.css('overflow', 'visible');
-                // G.$E.base.find('.nGY2GallerySub').css('overflow', 'visible');
-                // G.$E.conTnParent.css('overflow', 'visible');
-              // }
-              // break;
-          // }
-        // }
-        if( !G.O.galleryLimitedToContainer ) {
-          G.$E.base.css('overflow', 'visible');
-          G.$E.base.find('.nGY2GallerySub').css('overflow', 'visible');
-          G.$E.conTnParent.css('overflow', 'visible');
+                G.$E.base.css('overflow', 'visible');
+                G.$E.base.find('.nGY2GallerySub').css('overflow', 'visible');
+                G.$E.conTnParent.css('overflow', 'visible');
+              }
+              break;
+          }
         }
         
         // Gallery bottom container
@@ -10766,15 +10311,15 @@ debugger;
 
         // do special settings depending for some options
         // thumbnail display transition
-        // switch( G.tn.opt.Get('displayTransition') ) {
-          // case 'SCALEDOWN':
-          // case 'RANDOMSCALE':
-          // default:
-            // G.$E.base.css('overflow', 'visible');
-            // G.$E.conTnParent.css('overflow', 'visible');
-            // G.$E.conTn.css('overflow', 'visible');
-            // break;
-        // }
+        switch( G.tn.opt.Get('displayTransition') ) {
+          case 'SCALEDOWN':
+          case 'RANDOMSCALE':
+          default:
+            G.$E.base.css('overflow', 'visible');
+            G.$E.conTnParent.css('overflow', 'visible');
+            G.$E.conTn.css('overflow', 'visible');
+            break;
+        }
       }
       
     }
@@ -10803,29 +10348,14 @@ debugger;
           mouseleave: GalleryMouseLeave
         }, ".nGY2GThumbnail");    //pass the element as an argument to .on
       
-
-      // G.GOM.hammertime = new NGHammer(G.$E.conTn[0], { touchAction: 'none' });
+        // G.GOM.hammertime = new NGHammer(G.$E.conTn[0], { touchAction: 'none' });
         G.GOM.hammertime = new NGHammer( G.$E.conTn[0] );
         // G.GOM.hammertime.domEvents = true;
       
-        G.GOM.hammertime.get('pan').set({ direction: NGHammer.DIRECTION_HORIZONTAL });
         
         // PAN on gallery (pagination)
-        G.GOM.hammertime.on('panstart', function(ev) {
-          if( !G.VOM.viewerDisplayed ) {
-            
-            // Slider
-            if( G.galleryDisplayMode.Get() == 'SLIDER' ) {
-              G.GOM.slider.left.initial = G.GOM.slider.Left();
-            }
-          }
-        });
-        
-        
         G.GOM.hammertime.on('pan', function(ev) {
           if( !G.VOM.viewerDisplayed ) {
-            
-            // Pagination
             if( G.O.paginationSwipe && G.layout.support.rows && G.galleryDisplayMode.Get() == 'PAGINATION' ) {
               if( Math.abs(ev.deltaY) > G.GOM.panThreshold ) {
                 G.GOM.panYOnly = true;
@@ -10834,19 +10364,10 @@ debugger;
                 G.$E.conTn.css( G.CSStransformName , 'translate('+(ev.deltaX)+'px,0px)');
               }
             }
-            
-            // Slider
-            if( G.galleryDisplayMode.Get() == 'SLIDER' ) {
-              SliderPanThrottled( ev.deltaX );
-            }
           }
         });
-        
-        
         G.GOM.hammertime.on('panend', function(ev) {
           if( !G.VOM.viewerDisplayed ) {
-
-            // Pagination
             if( G.O.paginationSwipe && G.layout.support.rows && G.galleryDisplayMode.Get() == 'PAGINATION' ) {
               if( !G.GOM.panYOnly ) {
                 if( ev.deltaX > 50 ) {
@@ -10860,13 +10381,12 @@ debugger;
               }
               G.GOM.panYOnly = false;
               G.$E.conTn.css( G.CSStransformName , 'translate(0px,0px)');
+              // pX=0;
             }
-            
           }
         });
         // tap on gallery
         G.GOM.hammertime.on('tap', function(ev) {
-          
           if( !G.VOM.viewerDisplayed ) {
             ev.srcEvent.stopPropagation();
             ev.srcEvent.preventDefault();  // cancel  mouseenter event
@@ -10883,10 +10403,10 @@ debugger;
                 return;
               }
               
-              if( G.GOM.tn_slider.hostIdx == r.GOMidx ) {
+              if( G.GOM.slider.hostIdx == r.GOMidx ) {
                 // touch on thumbnail slider -> open immediately
                 ThumbnailHoverOutAll();
-                ThumbnailOpen(G.GOM.items[G.GOM.tn_slider.currentIdx].thumbnailIdx, true);
+                ThumbnailOpen(G.GOM.items[G.GOM.slider.currentIdx].thumbnailIdx, true);
                 return;
               }
 
@@ -11050,7 +10570,7 @@ debugger;
       }
       
       if( newLocationHash == '' ) {
-        // if( G.GOM.tn_with_counter.idx != -1 ) {
+        // if( G.GOM.lastDisplayedIdx != -1 ) {
         if( G.locationHashLastUsed !== '' ) {
           // back button and no hash --> display first album
           if( G.O.debugMode ) { console.log('display root album'  ); }
@@ -11159,6 +10679,7 @@ debugger;
 							if( JSON.stringify(s.mosaic[l][w]) !== JSON.stringify(s.mosaic[l][nw]) ) {
 								// mosaic definition changed
 								G.GOM.curWidth = nw;
+								G.GOM.pagination.currentPage = 0;
 								GalleryRender( G.GOM.albumIdx );
                 return;
 							}
@@ -11169,6 +10690,7 @@ debugger;
 								// thumbnail size / gutter size changed --> render the gallery with the new values
 								G.GOM.curWidth = nw;
 								//G.layout.SetEngine();
+								G.GOM.pagination.currentPage = 0;
 								GalleryRender( G.GOM.albumIdx );
                 return;
 							}
