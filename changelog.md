@@ -4,6 +4,11 @@
 ### List of releases with new features and improvements
 
 
+
+v3.0.3 - Sep 08, 2020
+------
+- fixed #252 module not found (npmjs)  
+
 v3.0.2 - Jul 21, 2020
 ------
 - new: **[BREAKING CHANGE for FLICKR user] a custom Flickr API key is now required:**  
