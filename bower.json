@@ -27,6 +27,7 @@
     "**/.*",
     "demonstration",
     "doc",
-    "third.party"
+    "third.party",
+    "screenshots"
   ]
 }
