@@ -1,6 +1,6 @@
 <img src="http://nanogallery2.nanostudio.org/img/nanogallery_logo_v3_main_black.png" alt="nanogallery2"/>  
 
-# nanogallery2 - ChangeLog
+# nanogallery2
 ### List of releases with new features and improvements
 
 
