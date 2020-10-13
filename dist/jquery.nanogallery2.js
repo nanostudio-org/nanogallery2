@@ -24,6 +24,7 @@
 // ###########################################
 
 
+
 // Expose plugin as an AMD module if AMD loader is present:
 (function (factory) {
     "use strict";
@@ -383,7 +384,7 @@
               }
               
               // remove the albums's items from the global items array
-              this.I.removeIf( function( obj ) {
+              this.I.ngy2removeIf( function( obj ) {
                 return( obj.albumID == albumID && obj.kind != 'albumUp' );
               });
               
@@ -660,7 +661,7 @@
               }
             }
             
-            // TODO: update medianumber of the other item in the same album
+            // TODO: update media-number of the other item in the same album
           }
 
           NGY2Item.prototype.addToGOM = function( ) {
@@ -7899,8 +7900,8 @@ debugger;
           };
       }());
       
-      // array.removeIf -> removes items from array base on a function's result
-      Array.prototype.removeIf = function(callback) {
+      // array.ngy2removeIf -> removes items from array base on a function's result
+      Array.prototype.ngy2removeIf = function(callback) {
         var i = this.length;
         while (i--) {
           if (callback(this[i], i)) {
