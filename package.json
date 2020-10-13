@@ -6,7 +6,7 @@
     "email" : "chr@brisbois.fr",
     "url" : "https://brisbois.fr"
   },
-  "version": "3.0.3",
+  "version": "3.0.4",
   "homepage": "https://nanogallery2.nanostudio.org",
   "main": "./dist/jquery.nanogallery2.js",
   "license": "GPL-3.0",
