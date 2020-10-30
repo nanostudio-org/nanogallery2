@@ -914,9 +914,9 @@
             this.mediaKind = mediaKind;
             if (this.description !== '' && this.G.O.viewerDescription === true) {
               if( mediaKind == 'img' ) {
-                this.mediaMarkup = '<img class="nGY2ViewerMedia withDescription" src="' + url + '" alt="' + this.title.replace(/[\u00A0-\u9999<>\&]/gim, function(i) { return '&#' + i.charCodeAt(0) + ';'; }) + '" itemprop="contentURL" draggable="false" >';
+                this.mediaMarkup = '<img class="nGY2ViewerMedia withDescription" src="' + url + '" alt="" itemprop="contentURL" draggable="false" >';
               }
-              this.mediaMarkup += '<div class="nGY2ViewerMediaDescription"><h3>' + this.title.replace(/[\u00A0-\u9999<>\&]/gim, function(i) { return '&#' + i.charCodeAt(0) + ';'; }) + '</h3><p>' + this.description.replace(/[\u00A0-\u9999<>\&]/gim, function(i) { return '&#' + i.charCodeAt(0) + ';'; }).replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>') + '</p></div>';
+              this.mediaMarkup += '<div class="nGY2ViewerMediaDescription"><h3>' + this.title + '</h3><p>' + this.description.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>') + '</p></div>';
             } else {
               if( mediaKind == 'img' ) {
                 this.mediaMarkup = '<img class="nGY2ViewerMedia" src="' + url + '" alt=" " itemprop="contentURL" draggable="false" >';
@@ -8545,17 +8545,22 @@ debugger;
       }
       
       // retrieve the base zoom factor (image fill screen)
-      var zoomBaseFactorW = (G.VOM.window.lastWidth  - G.VOM.padding.V) / (item.imageWidth  / dpr);
-      var zoomBaseFactorH = (G.VOM.window.lastHeight - G.VOM.padding.H) / (item.imageHeight / dpr);
-      var zoomBaseFactor = Math.min(zoomBaseFactorW, zoomBaseFactorH);
+      var zoomBaseFactorW, zoomBaseFactorH, zoomBaseFactor;
+      if (G.O.viewerDescription && item.description !== '' && (RetrieveCurWidth() == 'sm' || RetrieveCurWidth() == 'xs')) {
+        zoomBaseFactorW = (G.VOM.window.lastWidth  - G.VOM.padding.V) / (item.imageWidth / dpr);
+        zoomBaseFactorH = (G.VOM.window.lastHeight / 2 - G.VOM.padding.H) / (item.imageHeight / dpr);
+      } else if (G.O.viewerDescription && item.description !== '') {
+        zoomBaseFactorW = (G.VOM.window.lastWidth / 2  - G.VOM.padding.V) / (item.imageWidth / dpr);
+        zoomBaseFactorH = (G.VOM.window.lastHeight - G.VOM.padding.H) / (item.imageHeight / dpr);
+      } else {
+        zoomBaseFactorW = (G.VOM.window.lastWidth  - G.VOM.padding.V) / (item.imageWidth  / dpr);
+        zoomBaseFactorH = (G.VOM.window.lastHeight - G.VOM.padding.H) / (item.imageHeight / dpr);
+      }
+      zoomBaseFactor = Math.min(zoomBaseFactorW, zoomBaseFactorH);
       if( zoomBaseFactor > 1 && G.O.viewerImageDisplay != 'upscale' ) {
         // no upscale
         zoomBaseFactor = 1;
       }
-
-      if (G.O.viewerDescription && item.description !== '') {
-        dpr *= 2;
-      } 
 
       var imageCurrentHeight = (item.imageHeight / dpr) * zoomUserFactor * zoomBaseFactor;
       var imageCurrentWidth  = (item.imageWidth / dpr)  * zoomUserFactor * zoomBaseFactor;
