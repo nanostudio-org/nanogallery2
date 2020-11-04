@@ -19,7 +19,7 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
   
 <br />   <br />   
 ## Documentation, Demonstrations and Tutorials
--> [Check the homepage of the project](https://nanogallery2.nanostudio.org/academy.html)   
+-> [Check the homepage of the project](https://nanogallery2.nanostudio.org/documentation.html)   
   
 <!--  
 [![nanogallery2 youtube demo](https://github.com/nanostudio-org/nanogallery2/raw/gh-pages/videos/youtube_nanogallery2.png)](https://www.youtube.com/watch?v=Ir098VWCv8Q)
