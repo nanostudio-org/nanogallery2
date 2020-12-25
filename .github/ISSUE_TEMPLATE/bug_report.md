@@ -1,41 +1,25 @@
 ---
-name: Bug report
-about: Create a report to help us improve
+name: Issue report
+about: C
 title: ''
 labels: ''
 assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**Describe the issue**  
+A clear and concise description of your interrogation.
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+**CODE PLAYGROUND**  
+Please provide a code playround to show/reproduce your issue.  
+You may use one of the following Codepen template:
+- [HTML markup](https://codepen.io/Kris-B/pen/LyBwvN)
+- [Javascript](https://codepen.io/Kris-B/pen/mROmKM)
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
-  
-**CODEPEN**
-Please provide a Codepen to reproduce your issue.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**URL of your page**  
+If you cannot use Codepen, please provide the URL of the page where the issue can be reproduced.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
-
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
 
 **Additional context**
 Add any other context about the problem here.
