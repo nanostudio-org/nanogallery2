@@ -1,6 +1,6 @@
 ---
 name: Issue report
-about: C
+about: Use this for all your interrogations.
 title: ''
 labels: ''
 assignees: ''
