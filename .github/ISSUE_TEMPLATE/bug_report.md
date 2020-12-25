@@ -11,7 +11,7 @@ assignees: ''
 A clear and concise description of your interrogation.
 
 **CODE PLAYGROUND**  
-Please provide a code playround to show/reproduce your issue.  
+Please provide a code playground to show/reproduce your issue.  
 You may use one of the following Codepen template:
 - HTML markup: https://codepen.io/Kris-B/pen/LyBwvN
 - Javascript: https://codepen.io/Kris-B/pen/mROmKM
