@@ -1,5 +1,5 @@
 ---
-name: Issue report
+name: QUESTION
 about: Use this for all your interrogations.
 title: ''
 labels: ''
