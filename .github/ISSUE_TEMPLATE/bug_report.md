@@ -2,7 +2,7 @@
 name: QUESTION
 about: Use this for all your interrogations.
 title: ''
-labels: ''
+labels: 'help wanted'
 assignees: ''
 
 ---
