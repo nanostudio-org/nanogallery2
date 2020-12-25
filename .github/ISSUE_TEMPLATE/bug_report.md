@@ -20,6 +20,3 @@ You may use one of the following Codepen template:
 **URL of your page**  
 If you cannot use Codepen, please provide the URL of the page where the issue can be reproduced.
 
-
-**Additional context**
-Add any other context about the problem here.
