@@ -2122,7 +2122,7 @@ todo:
     // author: underscore.js - http://underscorejs.org/docs/underscore.html
     // Returns a function, that, when invoked, will only be triggered at most once during a given window of time.
     // Normally, the throttled function will run as much as it can, without ever going more than once per wait duration;
-    // but if you’d like to disable the execution on the leading edge, pass {leading: false}.
+    // but if you?d like to disable the execution on the leading edge, pass {leading: false}.
     // To disable execution on the trailing edge, ditto.
     var throttle = function(func, wait, options) {
       var context, args, result;
@@ -2179,7 +2179,32 @@ todo:
           // timeout = requestTimeout(delayed, threshold || 100); 
       };
     }
-    
+
+    // Version of debounce that can reschedule the timeout; func needs to return how many ms to reschedule
+    // For example, we do not want to hide the toolbar after 4 seconds, but 4 seconds after the last mouse activity
+    var debounceMulti = function (func, threshold) {
+      var timeout;
+      return function debounced () {
+        let obj = this
+
+        function execDelayed(additionalDelay) {
+          if (timeout)
+            clearTimeout(timeout);
+          timeout = setTimeout(delayed, additionalDelay || 100);
+        }
+
+        function delayed () {
+          let additionalDelay = func.apply(obj); // If some events require to postpone the action
+
+          if (additionalDelay && additionalDelay>0)
+            execDelayed(additionalDelay);
+          else
+            timeout = null;
+        }
+
+        execDelayed(threshold);
+      };
+    }
 
     // Double requestAnimationFrame
     window.ng_draf = function (cb) {
@@ -7900,7 +7925,7 @@ debugger;
         };
       }
 
-      // requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
+      // requestAnimationFrame polyfill by Erik M?ller. fixes from Paul Irish and Tino Zijdel
       // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
       // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
       // MIT license
@@ -8408,7 +8433,7 @@ debugger;
       var vimg = new VImg(ngy2ItemIdx);
       G.VOM.items.push(vimg);
       items.push(G.I[ngy2ItemIdx]);
-      //TODO -> danger? -> pourquoi reconstruire la liste si déjà ouvert (back/forward)     
+      //TODO -> danger? -> pourquoi reconstruire la liste si d?j? ouvert (back/forward)     
       var l = G.I.length;
       for( let idx = ngy2ItemIdx+1; idx < l ; idx++) {
         let item = G.I[idx];
@@ -9182,16 +9207,26 @@ debugger;
     // Hide toolbars on user inactivity
     function ViewerToolsHide() {
       if( G.VOM.viewerDisplayed ) {
-        G.VOM.toolbarsDisplayed = false;
-        ViewerToolsOpacity(0);
+        let elapsedSinceLastUnHide = G.VOM.lastUnhideTime ? Date.now()-G.VOM.lastUnhideTime : G.O.viewerHideToolsDelay;
+
+        if (elapsedSinceLastUnHide>=G.O.viewerHideToolsDelay) { // Hide
+          G.VOM.toolbarsDisplayed = false;
+          ViewerToolsOpacity(0);
+
+          return -1;
+        }
+        else { // Postpone a bit
+          return G.O.viewerHideToolsDelay - elapsedSinceLastUnHide;
+        }
       }
     }
-    
+
     function ViewerToolsUnHide() {
-			if( G.VOM.viewerDisplayed ) {
+      if( G.VOM.viewerDisplayed ) {
+        G.VOM.lastUnhideTime = Date.now();
         G.VOM.toolbarsDisplayed = true;
         ViewerToolsOpacity(1);
-        G.VOM.toolsHide();        // re-init delay before hide tools+gallery 
+        G.VOM.toolsHide();        // re-init delay before hide tools+gallery
       }
     }
     
@@ -10495,7 +10530,7 @@ debugger;
       }
 			
       // lightbox: hide tools/gallery after defined delay
-      G.VOM.toolsHide = debounce( ViewerToolsHide, G.O.viewerHideToolsDelay, false );
+      G.VOM.toolsHide = debounceMulti( ViewerToolsHide, G.O.viewerHideToolsDelay, false );
       
       // Keyboard management
       jQuery(document).keyup(function(e) {
@@ -10556,6 +10591,8 @@ debugger;
       // mouse move -> unhide lightbox toolbars
       jQuery(window).bind('mousemove', function(e){
         if( G.VOM.viewerDisplayed ) {
+                    // While the user moves the mouse, we want the toolbar to stay visible
+                    G.VOM.lastUnhideTime = Date.now();
 					if( G.VOM.toolbarsDisplayed == false ) {
 						G.VOM.singletapTime = new Date().getTime();		// to avoid conflict with SINGLETAP event
 						debounce( ViewerToolsUnHide, 100, false )();
