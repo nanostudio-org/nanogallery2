@@ -10534,7 +10534,7 @@ debugger;
       }
 			
       // lightbox: hide tools/gallery after defined delay
-      G.VOM.toolsHide = debounceMulti( ViewerToolsHide, G.O.viewerHideToolsDelay, false );
+      G.VOM.toolsHide = debounceMulti( ViewerToolsHide, G.O.viewerHideToolsDelay);
       
       // Keyboard management
       jQuery(document).keyup(function(e) {
