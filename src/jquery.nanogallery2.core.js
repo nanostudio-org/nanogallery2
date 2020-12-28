@@ -1501,7 +1501,8 @@ todo:
       align :                     'center',
       autoMinimize :              0,
       standard :                  'minimizeButton,label',
-      minimized :                 'minimizeButton,label,infoButton,shareButton,fullscreenButton'
+      minimized :                 'minimizeButton,label,infoButton,shareButton,fullscreenButton',
+      preventHidingCallback:      null
     },
     viewerTools : {
       topLeft :                   'pageCounter,playPauseButton',
@@ -9208,6 +9209,9 @@ debugger;
     function ViewerToolsHide() {
       if( G.VOM.viewerDisplayed ) {
         let elapsedSinceLastUnHide = G.VOM.lastUnhideTime ? Date.now()-G.VOM.lastUnhideTime : G.O.viewerHideToolsDelay;
+
+        if (G.O.viewerToolbar.preventHidingCallback && G.O.viewerToolbar.preventHidingCallback())
+          return Math.min(1000, G.O.viewerHideToolsDelay);
 
         if (elapsedSinceLastUnHide>=G.O.viewerHideToolsDelay) { // Hide
           G.VOM.toolbarsDisplayed = false;
