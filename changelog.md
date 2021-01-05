@@ -3,6 +3,18 @@
 # nanogallery2
 ### List of releases with new features and improvements
 
+
+
+v3.0.5 - Jan 6, 2021
+------
+- fixed #299 - Thumbnail for videos not working  
+- fixed #305 - JS requires CSP UNSAFE_EVAL  
+- fixed #311 - debugger; sentence uncommented stops web load  
+- fixed #313 - Lightbox standalone always opens first image, not clicked image  
+- fixed #314 - Thumbnails not showing for youtube vids  
+- fixed #317 - Thumbnails not showing up, but images are loaded  
+- fixed #319 - Video file extension is case sensitive  
+- fixed mixed line endings  
   
   
 v3.0.4 - Oct 14, 2020
