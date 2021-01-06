@@ -101,11 +101,9 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 
 HTML markup setup examples:
 ```
-<body>
   <div id="my_nanogallery2" 
     data-nanogallery2='{ "userID": "34858669@N00", "kind": "flickr", "thumbnailHeight": 150, "thumbnailWidth": 150 }'>
   </div>
-</body>
 ```
 ```
   <div id="my_nanogallery2" data-nanogallery2 = '{ "itemsBaseURL": "https://mywebserver/gallery/myimages/"}' >
