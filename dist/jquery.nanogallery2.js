@@ -1,4 +1,4 @@
-/* nanogallery2 - v3.0.4 - 2020-12-25 - https://nanogallery2.nanostudio.org */
+/* nanogallery2 - v3.0.5 - 2021-01-06 - https://nanogallery2.nanostudio.org */
 /*!
  * @preserve nanogallery2 - javascript photo / video gallery and lightbox
  * Homepage: http://nanogallery2.nanostudio.org
@@ -18,6 +18,8 @@
  *  - webfont generated with http://fontello.com - mainly based on Font Awesome Copyright (C) 2012 by Dave Gandy (http://fontawesome.io/)
  *  - ICO online converter: https://iconverticons.com/online/
  */ 
+
+
  
 // ###########################################
 // ##### nanogallery2 as a JQUERY PLUGIN #####
@@ -1810,7 +1812,7 @@
     * Force reload the current album, if provided by Json
     */
     this.LightboxReOpen = function(){
-      LightboxStandaloneDisplay();
+        LightboxStandaloneDisplay();
     }
 
     /**
@@ -3074,14 +3076,24 @@
       G.GOM.curNavLevel = 'l1';
       var vcnt = 0;
 
-      var srct = G.$E.base[0].src;
+      var elt = G.$E.base[0].attributes;
+      var thumbsrc = '';
+      // src attribute (img element)
+      if( elt.hasOwnProperty('src') ) {
+        thumbsrc = elt['src'].nodeValue;
+      }
+      // data-ngthumb attribute
+      if( thumbsrc == '' && elt.hasOwnProperty('data-ngthumb') ) {
+        thumbsrc = elt['data-ngthumb'].nodeValue;
+      }
+      
       var displayIdx = undefined;
       for( var idx = 0; idx < G.I.length; idx++ ) {
         if( G.I[idx].kind == 'image' ) {
           var vimg = new VImg(idx);
           G.VOM.items.push(vimg);
 
-          if( G.I[idx].thumbImg().src == srct ) {
+          if( G.I[idx].thumbImg().src == thumbsrc ) {
             // same thumbnail URL
             displayIdx = vcnt;
           }
@@ -3897,7 +3909,6 @@
           var h = item.thumbImg().height;
           // if unknown image size and layout is not grid --> we need to retrieve the size of the images
           if( G.layout.prerequisite.imageSize && ( w == 0 || h == 0) ) {
-          // if( true ) {
             preloadImages += '<img src="'+item.thumbImg().src+'" data-idx="'+cnt+'" data-albumidx="'+G.GOM.albumIdx+'">';
           }
           
@@ -5165,6 +5176,7 @@
       }
 
       // var src = encodeURI(item.thumbImg().src),
+     
       var src = (item.thumbImg().src).replace(/'/g, "%27"),   // replace single quote with %27
       sTitle = getThumbnailTitle(item);
 
@@ -5213,7 +5225,8 @@
       newElt[newEltIdx++]='<div class="nGY2GThumbnailImage nGY2TnImgBack" style="' + s1 + '"></div>';
       
       // #### layer for image 
-      var s2 = op + "position: absolute; top: 0px; left: 0px; width:" + w + "px; height:" + h + "px; background-image: url('" + src + "'); background-position: center center; background-repeat: no-repeat; background-size:" + bgSize + "; overflow: hidden;";
+      // for url in CSS: single backslashes are replaced by double backslashes
+      var s2 = op + "position: absolute; top: 0px; left: 0px; width:" + w + "px; height:" + h + "px; background-image: url('" + src.replace(/\\/g, '\\\\') + "'); background-position: center center; background-repeat: no-repeat; background-size:" + bgSize + "; overflow: hidden;";
       newElt[newEltIdx++]='<div class="nGY2GThumbnailImage nGY2TnImg" style="' + s2 + '">';
       newElt[newEltIdx++]='  <img class="nGY2GThumbnailImg nGY2TnImg2" src="' + src + '" alt="' + sTitle + '" style="opacity:0;" data-idx="' + idx + '" data-albumidx="' + G.GOM.albumIdx + '" >';
       newElt[newEltIdx++]='</div>';
@@ -6173,7 +6186,7 @@
           // In order to leave things as is, I used ID to identify the extension
           // https://stackoverflow.com/questions/6997262/how-to-pull-url-file-extension-out-of-url-string-using-javascript
           // Make sure the method used for verifying the extension matches the kind of url your selfhosted video has
-          var extension = url.split('.').pop();
+          var extension = url.split('.').pop().toLowerCase();
 
           // supported extensions
           var s = ( extension === 'mp4' || extension === 'webm' || extension === 'ogv' || extension === '3gp' ) ? extension : null ;
@@ -6301,13 +6314,15 @@
         
         // media source url - img is the default media kind
         newItem.setMediaURL( src, 'img');
-debugger;
+
         // manage media kinds other than IMG
         jQuery.each(mediaList, function ( n, media ) {
           var id = media.getID(src);
           if( id != null ) {
+            if( thumbsrc == src && typeof media.thumbUrl == 'function' ) {
+              thumbsrc = media.thumbUrl(id);  
+            }
             if( typeof media.url == 'function' ) { src = media.url(id);  }
-            if( typeof media.thumbUrl == 'function' ) { thumbsrc = media.thumbUrl(id);  }
             newItem.mediaKind = media.kind;
             newItem.mediaMarkup = ( media.selfhosted ) ? media.markup( src ) : media.markup(id);
             return false;
@@ -6443,7 +6458,7 @@ debugger;
       G.I[0].contentIsLoaded = true;
 
       jQuery.each($elements, function(i, item){
-        
+
         // compare to group defined on the element that has been clicked (lightbox standalone)
         if( item.dataset.nanogallery2Lgroup != group ) { return; }
 
@@ -6526,7 +6541,6 @@ debugger;
           src = G.O.itemsBaseURL + src;
         }
 
-
         // THUMBNAIL IMAGE
         var thumbsrc = '';
 				// src attribute (img element)
@@ -6546,7 +6560,6 @@ debugger;
 
         // ignore if no media URL at all
         if( src === undefined && thumbsrc === undefined ) { return; }
-        
         
         //newObj.description=jQuery(item).attr('data-ngdesc');
         var description = data['data-ngdesc'];
@@ -6582,8 +6595,10 @@ debugger;
         jQuery.each(mediaList, function ( n, media ) {
           var id = media.getID(src);
           if( id != null ) {
+            if( thumbsrc == src && typeof media.thumbUrl == 'function' ) {
+              thumbsrc = media.thumbUrl(id);  
+            }
             if( typeof media.url == 'function' ) { src = media.url(id);  }
-            if( typeof media.thumbUrl == 'function' ) { thumbsrc = media.thumbUrl(id);  }
             newItem.mediaKind = media.kind;
             newItem.mediaMarkup = ( media.selfhosted ) ? media.markup( src ) : media.markup(id);
             return false;
@@ -8841,6 +8856,7 @@ debugger;
 					var idx = G.VOM.items[i].ngy2ItemIdx;
 					var o = G.I[idx];
 					var src = (o.thumbImg().src).replace(/'/g, "%27");   // replace single quote with %27
+          src = src.replace(/\\/g, '\\\\');     // single backslashes are replaced by double backslashes
 					t += '<div class="nGY2VThumbnail" style="width:'+tw+'px;height:'+th+'px;left:'+i*(tw+gutter*2)+'px;background-image: url(&apos;'+src+'&apos;);" data-ngy2_lightbox_thumbnail="true" data-ngy2_idx="' + idx + '" data-ngy2_vidx="' + i + '" ></div>';
 				}
 				G.VOM.gallery.gwidth = (tw+2*gutter) * G.VOM.items.length;
@@ -11520,9 +11536,11 @@ return ngImagesLoaded;
 // 
 // replace "Tweenable" with "NGTweenable"
 // replace "define.amd" with "define.amdDISABLED"
+// replace "var root = this || Function('return this')();" with "const root = typeof window !== 'undefined' ? window : global"
+
 /* shifty - v1.5.3 - 2016-11-29 - http://jeremyckahn.github.io/shifty */
 ;(function () {
-  var root = this || Function('return this')();
+  const root = typeof window !== 'undefined' ? window : global
 
 /**
  * Shifty Core
