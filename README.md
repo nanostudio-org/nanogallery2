@@ -106,13 +106,6 @@ HTML markup setup examples:
   </div>
 ```
 ```
-  <div id="my_nanogallery2" data-nanogallery2 = '{ "itemsBaseURL": "https://mywebserver/gallery/myimages/"}' >
-    <a href="img_01.jpg" data-ngthumb="img_01t.jpg"  data-ngdesc="Description1"        >Title Image1</a>
-    <a href="img_02.jpg" data-ngthumb="img_02ts.jpg" data-ngdesc="Image 2 description" >Title Image2</a>
-    <a href="img_03.jpg" data-ngthumb="img_03t.jpg"                                    >Title Image3</a>
-  </div>
-```
-```
   <div id="my_nanogallery2" data-nanogallery2  >
     <a href="img/img_01.jpg">Title Image 1
       <img src="img/img_01_thumbnail.jpg"/>
@@ -123,6 +116,13 @@ HTML markup setup examples:
     <a href="img/img_03.jpg">Title Image 3
       <img src="img/img_03_thumbnail.jpg"/>
     </a>
+  </div>
+```
+```
+  <div id="my_nanogallery2" data-nanogallery2 = '{ "itemsBaseURL": "https://mywebserver/gallery/myimages/"}' >
+    <a href="img_01.jpg" data-ngthumb="img_01t.jpg"  data-ngdesc="Description1"        >Title Image1</a>
+    <a href="img_02.jpg" data-ngthumb="img_02ts.jpg" data-ngdesc="Image 2 description" >Title Image2</a>
+    <a href="img_03.jpg" data-ngthumb="img_03t.jpg"                                    >Title Image3</a>
   </div>
 ```
 
