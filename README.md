@@ -14,7 +14,7 @@ nanogallery2 is a must have gallery and lightbox. Strengths of nanogallery2 incl
 ![license](https://img.shields.io/static/v1?label=Open%20source%20license&message=GPLv3&color=green)
 ![license](https://img.shields.io/static/v1?label=Commercial%20license&message=for%20use%20in%20a%20revenue-generating%20product&color=green)
 -->
-[![Twitter](https://img.shields.io/twitter/url/https/github.com/nanostudio-org/nanogallery2.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=%5Bobject%20Object%5D)
+
   
   
 <br />   <br />   
