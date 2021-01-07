@@ -4,9 +4,10 @@ First off, thanks for taking the time to contribute!
   
   
 ## Pull request
-PR should only be made with the branch `DEV`.  
-Source code is in the `src` folder.  
-The content of the `dist` folder is automatically generated, please don't edit anything in it.  
+- Submit your PRs against the `master` branch.
+- Source code is in the `src` folder.  
+- **DO NOT** checkin `dist` in the commits.
+- The content of the `dist` folder is automatically generated.
   
 ## Issue  
 Provide as much details as possible.  
