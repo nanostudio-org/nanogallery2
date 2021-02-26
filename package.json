@@ -15,7 +15,7 @@
   "devDependencies": {
     "grunt": "latest",
     "grunt-bump" : "latest",
-    // "grunt-codepainter": "latest",
+    /* "grunt-codepainter": "latest", */
     "grunt-contrib-concat": "latest",
     "grunt-contrib-copy": "latest",
     "grunt-contrib-jshint": "latest",
