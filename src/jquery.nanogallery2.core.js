@@ -9720,7 +9720,7 @@
         
       // animate the image transition between 2 medias
         
-      if( G.CSStransformName == null  ) {
+      if( G.CSStransformName == null  || G.O.imageTransition == 'NONE' ) {
         // no CSS transform support -> no animation
         ViewerSetMediaVisibility(new_content_item, 1);
         ViewerSetMediaVisibility(current_content_item, 1);
