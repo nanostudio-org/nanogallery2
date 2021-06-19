@@ -8454,6 +8454,7 @@
         // G.VOM.$mediaCurrent.children().eq(0).attr('src',G.emptyGif).attr('src', G.VOM.NGY2Item(0).responsiveURL());
         // LightboxDisplay(0, '');
         LightboxDisplay('');
+        LightboxDisplayFinalize('');
       }
     }
     
