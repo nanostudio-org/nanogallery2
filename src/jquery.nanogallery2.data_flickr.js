@@ -161,6 +161,56 @@
     }
 
 
+    // -----------
+    // Retrieve flickr EXIF data
+    function FlickrGetExif ( itemID, newItem ) {
+      jQuery.ajaxSetup({ cache: false });
+      jQuery.support.cors = true;
+
+      var sourceData=[];
+
+      var tId = setTimeout( function() {
+          // workaround to handle JSONP (cross-domain) errors
+          NanoAlert('Could not retrieve AJAX data...');
+      }, 60000 );
+
+      url = Flickr.url() + "?&method=flickr.photos.getExif&api_key=" + G.O.flickrAPIKey + "&photo_id="+itemID+"&format=json";
+
+      jQuery.getJSON( url + '&jsoncallback=?' , function(data, status, xhr) {
+              // Exif - model
+              if( data.photo.camera !== undefined ) { newItem.exif.model = data.photo.camera; }
+              // Exif - flash
+              var flash = data.photo.exif.filter(function(exif) {return exif.tag == "Flash"})
+              if( flash.length == 1 ) { newItem.exif.flash = flash[0].raw._content; }
+              // Exif - focallength
+              var fl = data.photo.exif.filter(function(exif) {return exif.tag == "FocalLength"});
+              if( fl.length == 1 ) { newItem.exif.focallength = fl[0].raw._content; }
+              // Exif - fstop
+              var fstop = data.photo.exif.filter(function(exif) {return exif.tag == "FNumber"});
+              if( fstop.length == 1 ) { newItem.exif.fstop = fstop[0].raw._content; }
+              // Exif - exposure
+              var exposure = data.photo.exif.filter(function(exif) {return exif.tag == "ExposureTime"});
+              if( exposure.length == 1 ) { newItem.exif.exposure = exposure[0].raw._content; }
+              // Exif - iso
+              var iso = data.photo.exif.filter(function(exif) {return exif.tag == "ISO"});
+              if( iso.length == 1 ) { newItem.exif.iso = iso[0].raw._content; }
+              // Exif - time
+              var time = data.photo.exif.filter(function(exif) {return exif.tag == "DateTimeOriginal"});
+              if( time.length == 1 ) { newItem.exif.time = time[0].raw._content; }
+              // Exif - location
+              var location = data.photo.exif.filter(function(exif) {return exif.tag == "LOLcation"});
+              if( location.length == 1 ) { newItem.exif.location  = location[0].raw._content; }
+
+              // author
+              var author = data.photo.exif.filter(function(exif) {return exif.tag == "OwnerName"});
+              if( author.length >= 1 ) { newItem.author  = author[0].raw._content; }
+
+              clearTimeout(tId);
+          }).fail(function(jqXHR, textStatus, errorThrown) {
+              console.log("Unable to get EXIF data from Flickr");
+      })
+    }
+
     
     // -----------
     // Retrieve items for one Flickr photoset
@@ -211,6 +261,11 @@
 
         // create item
         var newItem = NGY2Item.New( G, itemTitle, itemDescription, itemID, albumID, 'image', tags );
+
+        // grab EXIF data
+        if ( G.O.flickrExif ) {
+          FlickrGetExif(itemID, newItem);
+        }
 
         // add image
         newItem.setMediaURL( imgUrl, 'img');
@@ -419,6 +474,3 @@
 // END FLICKR DATA SOURCE FOR NANOGALLERY2
 // }( jQuery ));
 }));
-
-  
-  
