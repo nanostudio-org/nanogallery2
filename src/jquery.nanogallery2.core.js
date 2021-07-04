@@ -8397,7 +8397,7 @@
       var vimg = new VImg(ngy2ItemIdx);
       G.VOM.items.push(vimg);
       items.push(G.I[ngy2ItemIdx]);
-      //TODO -> danger? -> pourquoi reconstruire la liste si déjà ouvert (back/forward)
+      //TODO -> danger? -> pourquoi reconstruire la liste si déjà ouvert (back/forward)     
       var l = G.I.length;
       for( let idx = ngy2ItemIdx+1; idx < l ; idx++) {
         let item = G.I[idx];
