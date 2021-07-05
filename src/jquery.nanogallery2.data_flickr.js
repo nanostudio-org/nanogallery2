@@ -181,25 +181,25 @@
               if( data.photo.camera !== undefined ) { newItem.exif.model = data.photo.camera; }
               // Exif - flash
               var flash = data.photo.exif.filter(function(exif) {return exif.tag == "Flash"})
-              if( flash.length == 1 ) { newItem.exif.flash = flash[0].raw._content; }
+              if( flash.length >= 1 ) { newItem.exif.flash = flash[0].raw._content; }
               // Exif - focallength
               var fl = data.photo.exif.filter(function(exif) {return exif.tag == "FocalLength"});
-              if( fl.length == 1 ) { newItem.exif.focallength = fl[0].raw._content; }
+              if( fl.length >= 1 ) { newItem.exif.focallength = fl[0].raw._content; }
               // Exif - fstop
               var fstop = data.photo.exif.filter(function(exif) {return exif.tag == "FNumber"});
-              if( fstop.length == 1 ) { newItem.exif.fstop = fstop[0].raw._content; }
+              if( fstop.length >= 1 ) { newItem.exif.fstop = fstop[0].raw._content; }
               // Exif - exposure
               var exposure = data.photo.exif.filter(function(exif) {return exif.tag == "ExposureTime"});
-              if( exposure.length == 1 ) { newItem.exif.exposure = exposure[0].raw._content; }
+              if( exposure.length >= 1 ) { newItem.exif.exposure = exposure[0].raw._content; }
               // Exif - iso
               var iso = data.photo.exif.filter(function(exif) {return exif.tag == "ISO"});
-              if( iso.length == 1 ) { newItem.exif.iso = iso[0].raw._content; }
+              if( iso.length >= 1 ) { newItem.exif.iso = iso[0].raw._content; }
               // Exif - time
               var time = data.photo.exif.filter(function(exif) {return exif.tag == "DateTimeOriginal"});
-              if( time.length == 1 ) { newItem.exif.time = time[0].raw._content; }
+              if( time.length >= 1 ) { newItem.exif.time = time[0].raw._content; }
               // Exif - location
               var location = data.photo.exif.filter(function(exif) {return exif.tag == "LOLcation"});
-              if( location.length == 1 ) { newItem.exif.location  = location[0].raw._content; }
+              if( location.length >= 1 ) { newItem.exif.location  = location[0].raw._content; }
 
               // author
               var author = data.photo.exif.filter(function(exif) {return exif.tag == "OwnerName"});
