@@ -470,7 +470,7 @@
             this.tags =                 [];       // list of tags of the current item
             this.albumTagList =         [];       // list of all the tags of the items contained in the current album
             this.albumTagListSel =      [];       // list of currently selected tags (only for albums)
-            this.exif = { exposure: '', flash: '', focallength: '', fstop: '', iso: '', model: '', time: '', location: ''};
+            this.exif = { exposure: '', flash: '', focallength: '', fstop: '', iso: '', model: '', lens: '', time: '', location: ''};
             this.deleted =              false;    // item is deleted -> do not display anymore
             this.rotationAngle =        0;        // image display rotation angle
           }
@@ -6397,6 +6397,8 @@
         // EXIF DATA
         // Exif - model
         if( item.exifModel !== undefined ) { newItem.exif.model = item.exifModel; }
+        // Exif - lens
+        if( item.exifLens !== undefined ) { newItem.exif.lens = item.exifLens; }
         // Exif - flash
         if( item.exifFlash !== undefined ) { newItem.exif.flash = item.exifFlash; }
         // Exif - focallength
@@ -6405,9 +6407,9 @@
         if( item.exifFStop !== undefined ) { newItem.exif.fstop = item.exifFStop; }
         // Exif - exposure
         if( item.exifExposure !== undefined ) { newItem.exif.exposure = item.exifExposure; }
-        // Exif - time
-        if( item.exifIso !== undefined ) { newItem.exif.iso = item.exifIso; }
         // Exif - iso
+        if( item.exifIso !== undefined ) { newItem.exif.iso = item.exifIso; }
+        // Exif - time
         if( item.exifTime !== undefined ) { newItem.exif.time = item.exifTime; }
         // Exif - location
         if( item.exifLocation !== undefined ) { newItem.exif.location  = item.exifLocation; }
@@ -6479,6 +6481,7 @@
           'data-ngimagedominantcolors':   null,       // image dominant colors
           'data-ngimagedominantcolor':    null,       // image dominant colors
           'data-ngexifmodel':             '',         // EXIF data
+          'data-ngexiflens':              '',
           'data-ngexifflash':             '',
           'data-ngexiffocallength':       '',
           'data-ngexiffstop':             '',
@@ -6660,6 +6663,8 @@
 
         // Exif - model
         newItem.exif.model=data['data-ngexifmodel'];
+        // Exif - lens
+        newItem.exif.lens=data['data-ngexiflens'];
         // Exif - flash
         newItem.exif.flash=data['data-ngexifflash'];
         // Exif - focallength
@@ -9330,8 +9335,9 @@
         content  += '<div class="nGY2PopupOneItemText">' + G.O.icons.config + ' ' + ng2item.exif.model + '</div>';
       }
       var sexif = G.O.icons.picture + ':';
-      if( ng2item.exif.flash != '' || ng2item.exif.focallength != '' || ng2item.exif.fstop != '' || ng2item.exif.exposure != '' || ng2item.exif.iso != '' || ng2item.exif.time != '' ) {
+      if( ng2item.exif.lens != '' || ng2item.exif.flash != '' || ng2item.exif.focallength != '' || ng2item.exif.fstop != '' || ng2item.exif.exposure != '' || ng2item.exif.iso != '' || ng2item.exif.time != '' ) {
       sexif += '<br>';
+      sexif += ng2item.exif.lens == '' ? '' : ' &nbsp; ' + ng2item.exif.lens;
       sexif += ng2item.exif.flash == '' ? '' : ' &nbsp; ' + ng2item.exif.flash;
       sexif += ng2item.exif.focallength == '' ? '' : ' &nbsp; ' + ng2item.exif.focallength+'mm';
       sexif += ng2item.exif.fstop == '' ? '' : ' &nbsp; f' + ng2item.exif.fstop;
