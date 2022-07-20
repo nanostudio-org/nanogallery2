@@ -2097,7 +2097,7 @@
     // author: underscore.js - http://underscorejs.org/docs/underscore.html
     // Returns a function, that, when invoked, will only be triggered at most once during a given window of time.
     // Normally, the throttled function will run as much as it can, without ever going more than once per wait duration;
-    // but if you’d like to disable the execution on the leading edge, pass {leading: false}.
+    // but if you'd like to disable the execution on the leading edge, pass {leading: false}.
     // To disable execution on the trailing edge, ditto.
     var throttle = function(func, wait, options) {
       var context, args, result;
@@ -5231,7 +5231,7 @@
       newElt[newEltIdx++]='</div>';
       
       // ##### layer for user customization purposes
-      newElt[newEltIdx++]='<div class="nGY2GThumbnailCustomLayer"></div>';
+      newElt[newEltIdx++]='<div class="nGY2GThumbnailCustomLayer'+ (isVideo(item) ? ' nGY2GThumbnailVideo' : '') +'"></div>';
 
       // ##### layer for labels (title + description and their icons)
       if( G.O.thumbnailLabel.get('display') == true ) {
@@ -5505,7 +5505,31 @@
       return sDesc;
     }
 
-    
+   
+    /**
+     * check the given object item is video kind or not
+     *
+     * @param Obj item
+     * @return bool
+     */ 
+    function isVideo(item) {
+      var result = false;
+
+      if (item.mediaKind === 'video') {
+        result = true;
+      } else if (item.mediaKind === 'iframe') {
+        if (item.src.indexOf('youtube.com') !== -1) {
+          result = true;
+        } else if (item.src.indexOf('vimeo.com') !== -1) {
+          result = true;
+        } else if (item.src.indexOf('dailymotion.com') !== -1) {
+          result = true;
+        }
+      }
+
+      return result;
+    }
+
     
     // Retrieve the maximum number of thumbnails that fits in one row
     function NbThumbnailsPerRow( areaWidth ) {
@@ -7888,7 +7912,7 @@
         };
       }
 
-      // requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
+      // requestAnimationFrame polyfill by Erik Mï¿½ller. fixes from Paul Irish and Tino Zijdel
       // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
       // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
       // MIT license
@@ -8396,7 +8420,7 @@
       var vimg = new VImg(ngy2ItemIdx);
       G.VOM.items.push(vimg);
       items.push(G.I[ngy2ItemIdx]);
-      //TODO -> danger? -> pourquoi reconstruire la liste si déjà ouvert (back/forward)     
+      //TODO -> danger? -> pourquoi reconstruire la liste si dï¿½jï¿½ ouvert (back/forward)     
       var l = G.I.length;
       for( let idx = ngy2ItemIdx+1; idx < l ; idx++) {
         let item = G.I[idx];
@@ -8855,8 +8879,11 @@
 					var idx = G.VOM.items[i].ngy2ItemIdx;
 					var o = G.I[idx];
 					var src = (o.thumbImg().src).replace(/'/g, "%27");   // replace single quote with %27
+          var videoDiv = isVideo(o)
+            ? '<div class="nGY2GThumbnailVideo" style="width:'+tw+'px;height:'+th+'px;background-size:'+tw+'px;" data-ngy2_lightbox_thumbnail="true" data-ngy2_idx="' + idx + '" data-ngy2_vidx="' + i + '"></div>'
+            : '';
           src = src.replace(/\\/g, '\\\\');     // single backslashes are replaced by double backslashes
-					t += '<div class="nGY2VThumbnail" style="width:'+tw+'px;height:'+th+'px;left:'+i*(tw+gutter*2)+'px;background-image: url(&apos;'+src+'&apos;);" data-ngy2_lightbox_thumbnail="true" data-ngy2_idx="' + idx + '" data-ngy2_vidx="' + i + '" ></div>';
+					t += '<div class="nGY2VThumbnail" style="width:'+tw+'px;height:'+th+'px;left:'+i*(tw+gutter*2)+'px;background-image: url(&apos;'+src+'&apos;);" data-ngy2_lightbox_thumbnail="true" data-ngy2_idx="' + idx + '" data-ngy2_vidx="' + i + '" >'+videoDiv+'</div>';
 				}
 				G.VOM.gallery.gwidth = (tw+2*gutter) * G.VOM.items.length;
 				G.VOM.gallery.oneTmbWidth = tw+2*gutter;
