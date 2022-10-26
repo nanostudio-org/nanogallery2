@@ -1485,6 +1485,7 @@
 		viewerGallery:								'bottomOverMedia',
 		viewerGalleryTWidth:					40,
 		viewerGalleryTHeight:  				40,
+    viewerTapToNavigate :         true, // False to disable jumping to next or prev image on tap of image, gestures and buttons still
     
     breakpointSizeSM :            480,
     breakpointSizeME :            992,
@@ -9062,7 +9063,7 @@
             else {
 							// toolbars are displayed -> display next/previous media
 							if( (new Date().getTime()) - G.VOM.singletapTime < 400 ) { return; }		// to avoid conflict with MOUSEMOVE event
-
+              if( !viewerTapToNavigate ){ return; } // disabled
               if( G.VOM.content.current.NGY2Item().mediaKind == 'img' && ev.target.className.indexOf('nGY2ViewerMedia') !== -1 ) {
                 var x =0;
 								if( ev.srcEvent instanceof MouseEvent ) {
@@ -9140,6 +9141,7 @@
             else {
 							// toolbars are displayed -> display next/previous media
 							if( (new Date().getTime()) - G.VOM.singletapTime < 400 ) { return; }		// to avoid conflict with MOUSEMOVE event
+              if( !viewerTapToNavigate ){ return; } // disabled
               if( ev.target.className.indexOf('nGY2ViewerMedia') !== -1 ) {
 								var x = 0;
 								if( ev.srcEvent instanceof MouseEvent ) {
