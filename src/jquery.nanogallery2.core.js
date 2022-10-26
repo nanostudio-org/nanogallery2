@@ -1485,6 +1485,7 @@
 		viewerGallery:								'bottomOverMedia',
 		viewerGalleryTWidth:					40,
 		viewerGalleryTHeight:  				40,
+    viewerGalleryHide:            false,
     
     breakpointSizeSM :            480,
     breakpointSizeME :            992,
@@ -9200,7 +9201,9 @@
       G.VOM.$content.find('.nGY2ViewerAreaPrevious').css('opacity', op);
       
       // gallery
-      // G.VOM.gallery.$elt.css('opacity', op);
+      if (G.O.viewerGalleryHide){
+        G.VOM.gallery.$elt.css('opacity', op);
+      }
     }
     
     
