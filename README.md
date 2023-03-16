@@ -134,8 +134,8 @@ HTML markup setup examples:
 
 <br />  
 
-## License
-Dual licensed:
+## License : GPLv3
+[//]: # "Dual licensed:"
 - GPLv3 for personal or open source projects with GPLv3 license
 - Commercial license for use in a revenue-generating product
 
