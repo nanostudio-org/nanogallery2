@@ -914,8 +914,9 @@
           NGY2Item.prototype.setMediaURL = function( url, mediaKind ) {
             this.src = url;
             this.mediaKind = mediaKind;
+            var alt_text = this.description;
             if( mediaKind == 'img' ) {
-              this.mediaMarkup = '<img class="nGY2ViewerMedia" src="' + url + '" alt=" " itemprop="contentURL" draggable="false">';
+              this.mediaMarkup = '<img class="nGY2ViewerMedia" src="' + url + '" alt="' + alt_text + '" itemprop="contentURL" draggable="false">';
             }
           };
           
