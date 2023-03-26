@@ -8987,9 +8987,6 @@
         });
         
 				
-				// ZOOM FEATURE ENABLED
-        if( G.O.viewerZoom ) {
-
 					G.VOM.hammertime.add( new NGHammer.Tap({ event: 'doubletap', taps: 2, interval: 250 }) );
           G.VOM.hammertime.add( new NGHammer.Tap({ event: 'singletap' }) );
           G.VOM.hammertime.get('doubletap').recognizeWith('singletap');
@@ -9081,6 +9078,8 @@
             }
           });
           
+        // ZOOM FEATURE ENABLED
+        if( G.O.viewerZoom ) {
           // double tap -> zoom
           G.VOM.hammertime.on('doubletap', function(ev) {
             if( !ViewerEvents() ) { return; }
