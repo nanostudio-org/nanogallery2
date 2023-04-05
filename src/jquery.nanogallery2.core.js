@@ -8454,6 +8454,7 @@
         // G.VOM.$mediaCurrent.children().eq(0).attr('src',G.emptyGif).attr('src', G.VOM.NGY2Item(0).responsiveURL());
         // LightboxDisplay(0, '');
         LightboxDisplay('');
+        LightboxDisplayFinalize('');
       }
     }
     
@@ -9720,7 +9721,7 @@
         
       // animate the image transition between 2 medias
         
-      if( G.CSStransformName == null  ) {
+      if( G.CSStransformName == null  || G.O.imageTransition == 'NONE' ) {
         // no CSS transform support -> no animation
         ViewerSetMediaVisibility(new_content_item, 1);
         ViewerSetMediaVisibility(current_content_item, 1);
