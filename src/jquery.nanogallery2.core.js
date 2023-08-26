@@ -1783,7 +1783,7 @@
           nG2.PaginationPreviousPage();
           break;
         case 'paginationNextPage':
-          nG2.paginationNextPage();
+          nG2.PaginationNextPage();
           break;
         case 'paginationGotoPage':
           nG2.PaginationGotoPage( option );
