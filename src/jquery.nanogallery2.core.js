@@ -1335,6 +1335,7 @@
     RTL :                         false,
     flickrSkipOriginal :          true,
     flickrAPIKey:                 '',
+    flickrExif:                   false,
     breadcrumbAutoHideTopLevel :  true,
     displayBreadcrumb :           true,
     breadcrumbOnlyCurrentLevel :  true,
