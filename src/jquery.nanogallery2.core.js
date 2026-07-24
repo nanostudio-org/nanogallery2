@@ -1466,6 +1466,10 @@
     imageTransition :             'swipe2',
     viewerTransitionMediaKind :   'img',
     viewerZoom :                  true,
+    viewerRelativePinchZoom :     false, // If false, pinch to zoom will always start at 1.  True makes it work like expected.
+    viewerMinZoom :               0.2,   // The minimum zoom scale allowed
+    viewerResetZoomAtMin :        false, // When mim zoom is reached reset the view to non-zoomed mode?
+    viewerZoomOutScale :          3.0,   // Zoom out scale when using relative zooming, smaller numbers make zooming out slower
     viewerImageDisplay :          '',
     openOnStart :                 '',
     viewerHideToolsDelay :        4000,
@@ -1485,6 +1489,7 @@
 		viewerGallery:								'bottomOverMedia',
 		viewerGalleryTWidth:					40,
 		viewerGalleryTHeight:  				40,
+    viewerTapToNavigate :         true, // False to disable jumping to next or prev image on tap of image, gestures and buttons still
     
     breakpointSizeSM :            480,
     breakpointSizeME :            992,
@@ -2097,7 +2102,7 @@
     // author: underscore.js - http://underscorejs.org/docs/underscore.html
     // Returns a function, that, when invoked, will only be triggered at most once during a given window of time.
     // Normally, the throttled function will run as much as it can, without ever going more than once per wait duration;
-    // but if you’d like to disable the execution on the leading edge, pass {leading: false}.
+    // but if youï¿½d like to disable the execution on the leading edge, pass {leading: false}.
     // To disable execution on the trailing edge, ditto.
     var throttle = function(func, wait, options) {
       var context, args, result;
@@ -2612,7 +2617,8 @@
         posX:                     0,      // position to center zoom in/out
         posY:                     0,
         userFactor:               1,      // user zoom factor (applied to the baseZoom factor)
-        isZooming:                false
+        isZooming:                false,
+        lastScale:                1,      // The last scale factor requested by pinch to zoom, used for relative zoom
       },
       padding:                    { H: 0, V: 0 }, // padding for the image
       window:                     { lastWidth: 0, lastHeight: 0 },
@@ -3077,13 +3083,15 @@
 
       var elt = G.$E.base[0].attributes;
       var thumbsrc = '';
-      // src attribute (img element)
-      if( elt.hasOwnProperty('src') ) {
-        thumbsrc = elt['src'].nodeValue;
-      }
+
+	  // Let data-ngthumb property take precedent
       // data-ngthumb attribute
-      if( thumbsrc == '' && elt.hasOwnProperty('data-ngthumb') ) {
+      if( elt.hasOwnProperty('data-ngthumb') ) {
         thumbsrc = elt['data-ngthumb'].nodeValue;
+      }
+      // src attribute (img element)
+      if( thumbsrc == '' && elt.hasOwnProperty('src') ) {
+        thumbsrc = elt['src'].nodeValue;
       }
       
       var displayIdx = undefined;
@@ -6542,13 +6550,13 @@
 
         // THUMBNAIL IMAGE
         var thumbsrc = '';
-				// src attribute (img element)
-        if( data.hasOwnProperty('src') ) {
-          thumbsrc = data['src'];
-        }
-				// data-ngthumb attribute
-				if( thumbsrc == '' && data.hasOwnProperty('data-ngthumb') ) {
+		// data-ngthumb attribute
+		if( data.hasOwnProperty('data-ngthumb') ) {
           thumbsrc = data['data-ngthumb'];
+        }
+		// src attribute (img element)
+        if( thumbsrc == '' && data.hasOwnProperty('src') ) {
+          thumbsrc = data['src'];
         }
         if( thumbsrc == '' ) {
           thumbsrc = src;       // no thumbnail image URL -> use big image URL
@@ -7888,7 +7896,7 @@
         };
       }
 
-      // requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
+      // requestAnimationFrame polyfill by Erik Mï¿½ller. fixes from Paul Irish and Tino Zijdel
       // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
       // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
       // MIT license
@@ -8396,7 +8404,7 @@
       var vimg = new VImg(ngy2ItemIdx);
       G.VOM.items.push(vimg);
       items.push(G.I[ngy2ItemIdx]);
-      //TODO -> danger? -> pourquoi reconstruire la liste si déjà ouvert (back/forward)     
+      //TODO -> danger? -> pourquoi reconstruire la liste si dï¿½jï¿½ ouvert (back/forward)     
       var l = G.I.length;
       for( let idx = ngy2ItemIdx+1; idx < l ; idx++) {
         let item = G.I[idx];
@@ -8480,22 +8488,31 @@
       }
       else {
         // zoom out
-        G.VOM.zoom.userFactor -= 0.1;
-        ViewerZoomMin();
+        G.VOM.zoom.userFactor-=0.1;
+        if(ViewerZoomMin() && G.O.viewerResetZoomAtMin){
+          // Reset view
+          G.VOM.zoom.isZooming = false;
+          ResizeLightbox(true);
+        };
       }
       ViewerMediaSetPosAndZoom();
     }
     
     function ViewerZoomMax() {
-      if( G.VOM.zoom.userFactor > 3 ) {
-        G.VOM.zoom.userFactor = 3;
+      var item = G.VOM.content.current.NGY2Item();
+      var zoomBaseFactor = ViewerZoomBaseFactor(item);
+
+      if( G.VOM.zoom.userFactor > (1 / zoomBaseFactor) ) {
+        G.VOM.zoom.userFactor = (1 / zoomBaseFactor);
       }
     }
     function ViewerZoomMin() {
     
-      if( G.VOM.zoom.userFactor < 0.2 ) {
-        G.VOM.zoom.userFactor = 0.2;
+      if( G.VOM.zoom.userFactor < G.O.viewerMinZoom ) {
+        G.VOM.zoom.userFactor = G.O.viewerMinZoom;
+        return true;
       }
+      return false;
     }
     
     
@@ -8526,6 +8543,40 @@
       $media[0].style[G.CSStransformName] = 'translate(0px, "50%") ';
     }
     
+    // Get Zoom Base Factor (image fill viewer)
+    function ViewerZoomBaseFactor(item){
+      var dpr = 1;
+      if( G.O.viewerImageDisplay == 'bestImageQuality' ) {
+        dpr = window.devicePixelRatio;
+      }
+
+      // retrieve the base zoom factor (image fill screen)
+      var zoomBaseFactorW = (G.VOM.window.lastWidth  - G.VOM.padding.V) / (item.imageWidth  / dpr);
+      var zoomBaseFactorH = (G.VOM.window.lastHeight - G.VOM.padding.H) / (item.imageHeight / dpr);
+      var zoomBaseFactor = Math.min(zoomBaseFactorW, zoomBaseFactorH);
+      if( zoomBaseFactor > 1 && G.O.viewerImageDisplay != 'upscale' ) {
+        // no upscale
+        zoomBaseFactor = 1;
+      }
+      return zoomBaseFactor;
+    }
+
+    // Get Media Dimensions
+    function ViewerMediaDimensions(item, isCurrent){
+      var zoomUserFactor = isCurrent == true ? G.VOM.zoom.userFactor : 1;
+
+      var dpr = 1;
+      if( G.O.viewerImageDisplay == 'bestImageQuality' ) {
+        dpr = window.devicePixelRatio;
+      }
+
+      var zoomBaseFactor = ViewerZoomBaseFactor(item);
+
+      var imageCurrentHeight = (item.imageHeight / dpr) * zoomUserFactor * zoomBaseFactor;
+      var imageCurrentWidth  = (item.imageWidth / dpr)  * zoomUserFactor * zoomBaseFactor;
+      return [imageCurrentHeight, imageCurrentWidth];
+    }
+
     // Set position and size of ONE media container
     function ViewerMediaSetPosAndZoomOne(content_item, isCurrent ) {
 
@@ -8544,25 +8595,12 @@
         return;
       }
 
-      // part 1: set the image size
-      var zoomUserFactor = isCurrent == true ? G.VOM.zoom.userFactor : 1;
-      
-      var dpr = 1;
-      if( G.O.viewerImageDisplay == 'bestImageQuality' ) {
-        dpr = window.devicePixelRatio;
-      }
-      
-      // retrieve the base zoom factor (image fill screen)
-      var zoomBaseFactorW = (G.VOM.window.lastWidth  - G.VOM.padding.V) / (item.imageWidth  / dpr);
-      var zoomBaseFactorH = (G.VOM.window.lastHeight - G.VOM.padding.H) / (item.imageHeight / dpr);
-      var zoomBaseFactor = Math.min(zoomBaseFactorW, zoomBaseFactorH);
-      if( zoomBaseFactor > 1 && G.O.viewerImageDisplay != 'upscale' ) {
-        // no upscale
-        zoomBaseFactor = 1;
-      }
+      // part 0: enforce zoom limits
+      ViewerZoomMin();
+      ViewerZoomMax();
 
-      var imageCurrentHeight = (item.imageHeight / dpr) * zoomUserFactor * zoomBaseFactor;
-      var imageCurrentWidth  = (item.imageWidth / dpr)  * zoomUserFactor * zoomBaseFactor;
+      // part 1: set the image size
+      var [imageCurrentHeight, imageCurrentWidth] = ViewerMediaDimensions(item, isCurrent);
       $img.children().eq(1).css( {'height': imageCurrentHeight });
       $img.children().eq(1).css( {'width':  imageCurrentWidth  });
 
@@ -8585,7 +8623,7 @@
         }
         G.VOM.zoom.posX = posX;
         G.VOM.zoom.posY = posY;
-        ViewerImagePanSetPosition(G.VOM.panPosX, G.VOM.panPosY, $img, false);
+        ViewerImagePanSetPosition(item, G.VOM.panPosX, G.VOM.panPosY, $img, false);
       }
       // else {
         //$img[0].style[G.CSStransformName]= 'translate3D('+ posX+'px, '+ posY+'px, 0) ';
@@ -8600,7 +8638,12 @@
 
     // position the image depending on the zoom factor and the pan X/Y position
     // IMG is the only media kind supporting zoom/pan
-    function ViewerImagePanSetPosition(posX, posY, imageContainer, savePosition ) {
+    function ViewerImagePanSetPosition(item, posX, posY, imageContainer, savePosition ) {
+      // limit panning so that edge of image cannot cross center line of viewer
+      var [imageCurrentHeight, imageCurrentWidth] = ViewerMediaDimensions(item, true);
+      posX = Math.max(-(imageCurrentWidth / 2), Math.min(posX, (imageCurrentWidth / 2)));
+      posY = Math.max(-(imageCurrentHeight / 2), Math.min(posY, (imageCurrentHeight / 2)));
+
       if( savePosition ) {
         G.VOM.panPosX = posX;
         G.VOM.panPosY = posY;
@@ -8908,7 +8951,7 @@
           switch( G.VOM.panMode ) {
             case 'zoom':
               // pan zoomed image
-              ViewerImagePanSetPosition(G.VOM.panPosX + ev.deltaX, G.VOM.panPosY + ev.deltaY, G.VOM.content.current.$media, false);
+              ViewerImagePanSetPosition(G.VOM.content.current.NGY2Item(), G.VOM.panPosX + ev.deltaX, G.VOM.panPosY + ev.deltaY, G.VOM.content.current.$media, false);
               G.VOM.toolsHide();
               break;
               
@@ -8954,7 +8997,7 @@
             case 'zoom':
               // PAN END in image zoom mode
               G.VOM.timeImgChanged = new Date().getTime();
-              ViewerImagePanSetPosition( G.VOM.panPosX+ev.deltaX, G.VOM.panPosY+ev.deltaY, G.VOM.content.current.$media, true);
+              ViewerImagePanSetPosition( G.VOM.content.current.NGY2Item(), G.VOM.panPosX+ev.deltaX, G.VOM.panPosY+ev.deltaY, G.VOM.content.current.$media, true);
               break;
             case 'media':
               var panY = false;
@@ -9062,7 +9105,7 @@
             else {
 							// toolbars are displayed -> display next/previous media
 							if( (new Date().getTime()) - G.VOM.singletapTime < 400 ) { return; }		// to avoid conflict with MOUSEMOVE event
-
+              if( !viewerTapToNavigate ){ return; } // disabled
               if( G.VOM.content.current.NGY2Item().mediaKind == 'img' && ev.target.className.indexOf('nGY2ViewerMedia') !== -1 ) {
                 var x =0;
 								if( ev.srcEvent instanceof MouseEvent ) {
@@ -9107,15 +9150,30 @@
             ev.srcEvent.stopPropagation();
             ev.srcEvent.preventDefault();  // cancel  mouseenter event
             G.VOM.timeImgChanged = new Date().getTime();
+            G.VOM.zoom.lastScale = 1;  // reset to 1
           });
           G.VOM.hammertime.on('pinch', function(ev) {
             ev.srcEvent.stopPropagation();
             ev.srcEvent.preventDefault();  // cancel  mouseenter event
             
             if( ViewerZoomStart() ) {
-              G.VOM.zoom.userFactor = ev.scale;
+              if(G.O.viewerRelativePinchZoom){
+                var scale = ev.scale;
+                if (scale < 1){
+                  scale = 1 - ((1 - scale) * G.O.viewerZoomOutScale);
+                }
+                G.VOM.zoom.userFactor = G.VOM.zoom.userFactor + (scale - G.VOM.zoom.lastScale);
+                G.VOM.zoom.lastScale = scale;
+              }
+              else {
+                G.VOM.zoom.userFactor = ev.scale;
+              }
               ViewerZoomMax();
-              ViewerZoomMin();
+              if (ViewerZoomMin() && G.O.viewerResetZoomAtMin){
+                // Reset view
+                G.VOM.zoom.isZooming = false;
+                ResizeLightbox(true);
+              }
               ViewerMediaSetPosAndZoom();   // center media
             }
           });
@@ -9140,6 +9198,7 @@
             else {
 							// toolbars are displayed -> display next/previous media
 							if( (new Date().getTime()) - G.VOM.singletapTime < 400 ) { return; }		// to avoid conflict with MOUSEMOVE event
+              if( !viewerTapToNavigate ){ return; } // disabled
               if( ev.target.className.indexOf('nGY2ViewerMedia') !== -1 ) {
 								var x = 0;
 								if( ev.srcEvent instanceof MouseEvent ) {
